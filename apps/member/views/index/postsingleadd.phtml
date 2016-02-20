@@ -1,0 +1,91 @@
+﻿<link rel="stylesheet" type="text/css" href="/yungou/css/header.css" />
+<link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_q.css" />
+<input type="hidden" id="pageID" value="postsinglelist">
+<div class="buy-detail clrfix">
+    <div class="g-cur-location">
+        您的位置：<a href="<?php echo $this->view->baseUrl?>">首页</a><em class="f-tran">&gt;</em><a href="<?php echo $this->view->baseUrl?>member/index/index">我的1元云购</a><em class="f-tran">&gt;</em><a href="<?php echo $this->view->baseUrl?>member/index/postsinglelist">晒单管理</a><em class="f-tran">&gt;</em>发表晒单
+    </div>
+    <div class="g-buyCon clrfix">
+        <h3 class="gray3">晒单</h3>
+        <div class="m-single-des m-single-expansion" id="div_singletip">
+            晒单说明: 
+        <span class="gray6"><p>1、晒单内容越详细，获得的福分奖励就越多（限时商品除外）；</p><p>2、您的文字描述应不少于<em class="orange">100字</em>，高清的商品实拍照不少于<em class="orange">3张</em>；</p><p>3、请避免晒单内容中文字与图片的大量重复；</p><p>4、为提高晒单的真实性，您可以展示真实有效的<em class="orange">快递单号</em>；</p><p>5、建议晒出<em class="orange">您与商品的合照</em>，您的<em class="orange">手机短信、邮件通知</em>及1元云购网上的<em class="orange">交易详情页面截图</em>等；</p><p>6、注意保持晒单内容与获得商品的关联性，请勿使用其他网站的图片，请勿违反国家相关规定，否则我们有权删除并冻结账号，且保留追究其法律责任的权利；</p><p>7、如果晒单内容非常新颖，那么您有可能会获得更高的奖励！</p></span>
+            <a href="javascript:;" class="gray9" exp="1">收起<s class="u-personal"></s></a>
+        </div>
+        <div class="m-single-contents clrfix">
+            <div class="single-left clrfix fl">
+                <span>
+                     <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $this->view->goodsInfo['_id']?>"><img src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>"></a>
+                </span>
+                <i>
+                    <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $this->view->goodsInfo['_id']?>" class="gray6">(第<?php echo $this->view->goodsInfo['period']?>云)<?php echo $this->view->goodsInfo['name']?></a>
+                </i>
+            </div>
+            <?php if($this->view->postInfo['state'] == \Webcms\Post\Models\Post::STATE_NONE){?>
+            <!-- 晒单 -->
+            <div class="single-right clrfix fl">
+                <dl>
+                    <dd>
+                        <p class="gray6 fl"><i>主</i>题：</p>
+                        <input id="postTitle" type="text" value="标题不少于5个字" maxlength="100" class="fl inputFocus">
+                    </dd>
+                    <dd class="f-text">
+                        <p class="gray6 fl">云购感言：</p>
+                        <textarea id="postContent" rows="10" cols="10" class="fl inputFocus" style="color: rgb(187, 187, 187);">恭喜您云购成功，在此输入您的云购感言吧，内容不少于100字，审核通过即可获得相应福分奖励哦！</textarea>
+                    </dd>
+                    <dd>
+                        <p class="gray6 fl">上传图片：</p>
+                        <div class="f-single-pic clrfix fl">
+                            <ul id="ul_ImgList">
+                                <!-- <li id="img20151228154520733"><img src="http://file.1yyg.com/Temp/20151228154520733.jpg" alt=""><a href="javascript:;" pic="20151228154520733.jpg" class="z-delete u-personal"></a></li> -->
+                                <li>
+                                    <form id="form" name="form" action="" method="post" enctype="multipart/form-data">
+                                        <input id="fuploadFile" name="upload" type="file" class="file">
+                                        <div style="display:none;"><input type="submit" value="upload" id="btn_submit" /></div>
+                                        <a href="javascript:;" class="z-add"><em class="u-personal"></em></a>
+                                     </form>
+                                </li>
+                            </ul>
+                                 
+                            <i>您最少需上传3张，最多可上传10张照片，必须为实物拍摄商品图，单张图片不得超过5M。</i>
+                            <a id="btnSubmit" href="javascript:;" title="提交晒单" class="z-edit-btn">提交晒单</a>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <?php }else{?>
+            <!-- 提交信息后 -->
+            <div class="single-right clrfix fl">
+                <dl>
+                    <dt class="orange">当前状态：等待审核中……</dt>
+                    <dd>
+                        <p class="gray6 fl"><i>主</i>题：</p>
+                        <span id="postTitle" class="gray3 fl"><?php echo $this->view->postInfo['title']?></span>
+                    </dd>
+                    <dd class="f-text">
+                        <p class="gray6 fl">云购感言：</p>
+                        <span id="postContent" class="gray3 fl"><?php echo $this->view->postInfo['content']?></span></dd>
+                    <dd>
+                        <p class="gray6 fl">上传图片：</p>
+                        <div class="f-single-pic clrfix fl">
+                            <ul id="ul_ImgList">
+                                <?php $pics =  explode(',', $this->view->postInfo['pic'])?>
+                                <?php foreach ($pics as $pic) {?>
+                                <li>
+                                    <img src="<?php echo \Webcms\Post\Helpers\PostHelper::getPostImage($this->view->baseUrl, $pic)?>">
+                                    <!-- <cite><s class="u-personal"></s><b></b></cite> -->
+                                </li>
+                                <?php }?>
+                            </ul>
+                            <a href="<?php echo $this->view->baseUrl?>member/index/postsingleedit?goods_id=<?php echo $this->view->goodsInfo['_id']?>" title="编辑晒单" class="z-edit-btn">编辑晒单</a>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <?php }?>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/accounts.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul>
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/userrecharge">网银充值</a></li>
+        </ul>
+        <a href="<?php echo $this->view->baseUrl?>member/index/userbalance" class="z-return blue u-personal">返回我的账户</a>
+    </div>
+
+    <div class="g-please-select clrfix">
+        <h3 class="gray6">请选择充值金额</h3>
+        <ul id="ulMoneyList">
+            <li class="f-checked" money="50"><a href="javascript:;">￥50.00</a><s class="u-personal"></s></li>
+            <li money="100"><a href="javascript:;">￥100.00</a><s class="u-personal"></s></li>
+            <li money="200"><a href="javascript:;">￥200.00</a><s class="u-personal"></s></li>
+            <li money="500"><a href="javascript:;">￥500.00</a><s class="u-personal"></s></li>
+            <li money="0">
+                <input id="txtOtherMoney" type="text" placeholder="输入金额" class="gray9" maxlength="7" onpaste="return false;" onkeypress="if(event.keyCode<48 || event.keyCode>57)event.returnValue=false;">
+                <s class="u-personal"></s>
+            </li>
+        </ul>
+    </div>
+
+    <div class="g-select-mode">
+        <h3 class="gray6">请选择支付方式</h3>
+        <div class="m-tab-menu">
+            <ul id="ul_menu">
+                <li class="curr"><a href="javascript:;">支付平台</a></li>
+            </ul>
+        </div>
+        <div class="f-pay-bank" id="div_platform">
+            <dl class="clrfix">
+                <dd class="checked">
+                    <input type="radio" value="zfbpay" name="account" id="zfbpay" checked="checked"><label for="zfbpay"><span class="u-bank-zfb"></span></label>
+                </dd>
+                <dd>
+                    <input type="radio" value="Swift" name="account" id="Pingan"><label for="Pingan"><span class="u-bank-weixin"></span></label>
+                </dd>
+            </dl>
+        </div>
+        <div class="amounts-payable clrfix">
+            <p>应付金额<b class="orange">￥<em id="b_money">50</em>.00</b></p>
+            <form id="toPayForm" name="toPayForm" action="/" method="post" target="_blank">
+                <!-- <input type="hidden" id="hidPayName" name="payName" value="jdpay"> -->
+                <input type="hidden" id="hidPayBank" name="payBank" value="0">
+                <input type="hidden" id="hidMoney" name="money" value="50">
+                <input id="submit_ok" type="submit" name="submit" value="确认充值" title="确认充值">
+            </form>
+
+        </div>
+        <div id="payAltBox" style="display: none;">
+            <div class="g-remind-box clrfix">
+                <h2 class="gray3">充值提醒</h2>
+                <dl>
+                    <dt class="orange"><s class="u-personal"></s>请您在新开的页面上完成支付！</dt>
+                    <dd>付款完成之前，请不要关闭本窗口！<br>
+                        完成付款后根据您的个人情况完成此操作！</dd>
+                    <dd>
+                        <a href="/member/index/userbalance" class="look" id="btnToRecharge" title="查看充值记录">查看充值记录 </a>
+                        <a href="javascript:;" class="look" id="btnReSelect" title="重选支付方式">重选支付方式</a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

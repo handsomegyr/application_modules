@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购</title>
+    <link rel="stylesheet" type="text/css" href="css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/pageDialog.css" />
+    <link rel="stylesheet" type="text/css" href="css/CartList.css" />
+    <script type="text/javascript" src="js/JQuery.js"></script>
+    <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="js/CartList.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <!--顶部-->
+  <div class="g-toolbar clrfix">
+    <div class="w1190">
+        <ul class="fl">
+            <li class="f-collect">
+                <div class="u-menu-hd">
+                    <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li id="liMobile" class="u-arr">
+                <div class="u-menu-hd transparent-png">
+                    <a href="javascript:;" target="_blank" title="手机云购">手机云购</a>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <p>
+                        <a href="javascript:;" target="_blank">
+                            <img src="images/andriod.jpg">
+                            下载客户端
+                        </a>
+                    </p>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+        </ul>
+        <ul id="ulTopRight" class="fr"><li type="nologin"><div class="u-menu-hd"><a href="member/passport/login.html" title="登录">登录</a></div></li><li type="nologin" class="f-gap"><s></s></li><li type="nologin"><div class="u-menu-hd"><a href="member/passport/register.html" title="注册">注册</a></div></li><li class="f-gap"><s></s></li>
+            <li id="liMember" class="u-arr-1yyg" style="">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="我的1元云购">我的1元云购</a>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <span><a href="javascript:;" title="云购记录">云购记录</a></span>
+                    <span><a href="javascript:;" title="获得的商品">获得的商品</a></span>
+                    <span><a href="javascript:;" title="个人设置">个人设置</a></span>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+            <li id="liHome" style="display: none;">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="我的1元云购">我的1元云购</a>
+                </div>
+            </li>
+            <li class="f-gap" style="display: none;"><s></s></li>
+            <li id="liTopUMsg" class="u-arr-news" style="display: none;" show="-1">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="消息">消息</a>
+                    <h3 style="display: none;"></h3>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <span><a href="javascript:;" title="系统消息">系统消息</a></span>
+                    <span><a href="javascript:;" title="好友请求">好友请求</a></span>
+                    <span><a href="javascript:;" title="好友请求">评论回复</a></span>
+                    <span><a href="javascript:;" title="私信" class="f-msg">私信</a></span>
+                </div>
+            </li>
+            <li class="f-gap" style="display: none;"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="充值">充值</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="帮助">帮助</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="投诉">投诉</a>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+            <li id="lizxkf" class="f-zxkf" style="">
+                <div class="u-menu-hd">
+                    <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+                </div>
+            </li>
+            <li class="f-zxkf" style="display: none;">
+               <div class="u-menu-hd">
+                   <a href="/" title="1元云购首页" class="orange">1元云购首页</a>
+               </div>
+           </li>
+        </ul>
+    </div>
+  </div>
+
+
+    <div class="w1190 clrfix">
+        <!--头部-->
+        <div class="g-special-head">
+            <a href="/" class="f-logo fl transparent-png"></a>
+            <a href="/" title="继续云购" class="f-carryOn fr">继续云购</a>
+        </div>
+
+
+        <!-- 支付失败 -->
+        <div id="divResult" class="g-main-con g-results-bor clrfix">
+            <div class="g-results-success g-results-failure">
+                <i class="z-arrows">
+                </i>
+                <dl>
+                    <dt>
+                        <b>
+                            支付失败！您下手太慢了！
+                        </b>
+                    </dt>
+                    <dd>
+                        <a href="javascript:;" target="_blank" title="查看云购记录">
+                            查看云购记录
+                        </a>
+                        <a href="/" title="继续云购">
+                            继续云购
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="g-resulst-prompt">
+                <span>
+                    1件商品云购失败
+                </span>
+                <b>
+                </b>
+            </div>
+            <div class="g-resulst-failure">
+                <ul>
+                    <li>
+                        <span>
+                            <a href="detail.html" title="(第1618云)恒源祥 男士四季中筒纯棉加厚运动袜 5双礼盒装 均码">
+                                (第1618云)恒源祥 男士四季中筒纯棉加厚运动袜 5双礼盒装 均码
+                            </a>
+                        </span>
+                        <cite>
+                            云购失败，支付金额￥1.00已退回您的云购账户，
+                            <a href="javascript:;" target="_blank">
+                                查看
+                            </a>
+                        </cite>
+                    </li>
+                </ul>
+            </div>
+            <div class="g-results-loading" style="display: none;">
+                <span>
+                    正在提交数据，请稍候……
+                </span>
+                <b>
+                </b>
+            </div>
+            <div id="divWx" class="g-wx-banner" style="">
+                <img alt="" src="images/wx-banner.jpg">
+            </div>
+        </div>
+
+        <!-- 支付成功 -->
+        <div id="divResult" class="g-main-con g-results-bor clrfix">
+            <div class="g-results-success">
+                <i class="z-arrows">
+                </i>
+                <dl>
+                    <dt>
+                        <b>
+                            支付成功！请耐心等待揭晓结果！
+                        </b>
+                    </dt>
+                    <dd>
+                        <a href="javascript:;" target="_blank" title="查看云购记录">
+                            查看云购记录
+                        </a>
+                        <a href="javascript:;" title="继续云购">
+                            继续云购
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="g-resulst-prompt">
+                <span>
+                    1件商品云购成功
+                </span>
+                <b>
+                </b>
+            </div>
+            <div class="g-results-info clrfix">
+                <dl>
+                    <dt>
+                        <span class="u-results-name">
+                            商品名称
+                        </span>
+                        <span class="u-results-time">
+                            云购时间
+                        </span>
+                        <span class="u-results-visitors">
+                            云购人次
+                        </span>
+                        <span class="u-results-code">
+                        </span>
+                    </dt>
+                    <dd>
+                        <span class="u-results-name">
+                            <a href="javascript:;" title="(第7740云)苹果（Apple）iPad Air 2 9.7英寸平板电脑 16G WiFi版"
+                            target="_blank">
+                                (第7740云)苹果（Apple）iPad Air 2 9.7英寸平板电脑 16G WiFi版
+                            </a>
+                        </span>
+                        <span class="u-results-time">
+                            2015-12-06 17:00:07.390
+                        </span>
+                        <span class="u-results-visitors">
+                            1
+                        </span>
+                        <span class="u-results-code">
+                            <em>
+                                <a href="../member/UserBuyDetail.html" target="_blank">
+                                    查看所有云购码
+                                </a>
+                            </em>
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="g-results-loading" style="display: none;">
+                <span>
+                    正在提交数据，请稍候……
+                </span>
+                <b></b>
+            </div>
+            <div id="divWx" class="g-wx-banner" style="">
+                <img alt="" src="images/wx-banner.jpg">
+            </div>
+        </div>
+
+
+    </div>
+
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="javascript:;" target="_blank" title="首页">首页</a><s></s>
+                <a href="javascript:;" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="javascript:;" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="javascript:;" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="javascript:;" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1</div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+</body>
+</html>

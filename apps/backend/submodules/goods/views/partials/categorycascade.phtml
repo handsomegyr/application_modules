@@ -1,0 +1,94 @@
+<label class="control-label"><?php echo $field['name']?> <?php if($field['validation']['required']){?><span class="required">*</span><?php }?></label>
+<div class="controls">
+<select class="span12 m-wrap"  id="select2_gc_id_1_sample6" name="gc_id_1" data-placeholder="">
+<option value="">请选择...</option>
+</select>
+</div>
+<label class="control-label"></label>
+
+<div class="controls">
+<select class="span12 m-wrap"  id="select2_gc_id_2_sample6" name="gc_id_2" data-placeholder="">
+<option value="">请选择...</option>
+</select>
+</div>
+<label class="control-label"></label>
+
+<div class="controls">
+<select class="span12 m-wrap"  id="select2_gc_id_3_sample6" name="gc_id_3" data-placeholder="">
+<option value="">请选择...</option>
+</select>
+</div>
+
+<script>
+<?php 
+$modelCategory = new \Webcms\Backend\Models\Goods\Category();
+$categoryList= $modelCategory->getList4Tree('',1);
+?>
+function Category() {
+	this.items	= <?php echo json_encode($categoryList)?>;
+}
+
+Category.prototype.find	= function(id) {
+	if(typeof(this.items[id]) == "undefined")
+		return false;
+	return this.items[id];
+}
+
+Category.prototype.fillOption	= function(el_id , loc_id , selected_id) {
+	var el	= $('#'+el_id); 
+	var json	= this.find(loc_id); 
+	if (json) {
+		$.each(json , function(k , v) {			
+			var option	= '<option value="'+k+'"'+'>'+v+'</option>';
+			el.append(option);			
+		}) 
+	}
+	el.val(selected_id).trigger("change");	
+}
+
+function categoryCascade() {
+
+	var cat_level_1 = "<?php echo $this->view->row['gc_id_1']?>";
+	var cat_level_2 = "<?php echo $this->view->row['gc_id_2']?>";
+	var cat_level_3 = "<?php echo $this->view->row['gc_id_3']?>";
+	
+	var cat	= new Category();
+	var title	= ['请选择...' , '请选择...' , '请选择...'];
+	$.each(title , function(k , v) {
+		title[k]	= '<option value="">'+v+'</option>';
+	});
+	$('#select2_gc_id_1_sample6').append(title[0]);
+	$('#select2_gc_id_2_sample6').append(title[1]);
+	$('#select2_gc_id_3_sample6').append(title[2]);
+	
+	$("#select2_gc_id_1_sample6,#select2_gc_id_2_sample6,#select2_gc_id_3_sample6").select2()
+	$('#select2_gc_id_1_sample6').change(function() {
+		$('#select2_gc_id_2_sample6').empty();
+		$('#select2_gc_id_2_sample6').append(title[1]);
+		cat.fillOption('select2_gc_id_2_sample6' , $('#select2_gc_id_1_sample6').val());
+		$('#select2_gc_id_2_sample6').change()
+	})
+	
+	$('#select2_gc_id_2_sample6').change(function() {
+		$('#select2_gc_id_3_sample6').empty();
+		$('#select2_gc_id_3_sample6').append(title[2]);
+		cat.fillOption('select2_gc_id_3_sample6' ,  $('#select2_gc_id_2_sample6').val());
+	})
+	
+	$('#select2_gc_id_3_sample6').change(function() {
+		$('#select2_gc_id_sample6').val($(this).val());
+	})
+	
+	if (cat_level_1) {
+		cat.fillOption('select2_gc_id_1_sample6' , '' , cat_level_1);		
+		if (cat_level_2) {
+			cat.fillOption('select2_gc_id_2_sample6' , cat_level_1 , cat_level_2);			
+			if (cat_level_3) {
+				cat.fillOption('select2_gc_id_3_sample6' , cat_level_2 , cat_level_3);
+			}
+		}		
+	} else {
+		cat.fillOption('select2_gc_id_1_sample6' , '',"");
+	}		
+}
+</script>

@@ -1,0 +1,59 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul id="ul_menu">
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/joingroup">加入的圈子</a></li>
+            <li class=""><a href="<?php echo $this->view->baseUrl?>member/index/joingroup01">发表的话题</a></li>
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/joingroup02">回复的话题</a></li>
+        </ul>
+    </div>
+    <div id="div_replaytopic" style="display: block;" class="fri-req-wrap">
+        <div class="reply-wrap">
+            <div class="reply-menu" style="display: none;">
+                <span class="r-title-t">话题</span>
+                <span class="r-option-t">操作</span>
+            </div>
+            <!-- 无数据 -->
+            <ul class="reply-list" style="display: none;"><div class="null-retips-wrapper"><div class="gth-icon transparent-png"></div><span>您还没有回复话题哦！</span></div></ul>
+            <!-- 有数据 -->
+            <ul class="reply-list">
+              <li>
+                  <div class="list-info">
+                      <p>
+                          6分钟前&nbsp;对话题“
+                          <a target="_blank" href="javascript:;" title="到底能不能中奖">到底能不能中奖</a>
+                          ”进行了回复：
+                      </p>
+                      <p class="answer" title="[s:3]">
+                          <img src="http://skin.1yyg.com/Images/Emoticons/3.gif" alt="">
+                      </p>
+                      <div class="del-wrap">
+                          <a name="delete" topicid="12366" replyid="80401" href="javascript:;">删除</a>
+                      </div>
+                  </div>
+              </li>
+              <li>
+                  <div class="list-info">
+                      <p>
+                          8分钟前&nbsp;对话题“
+                          <a target="_blank" href="javascript:;" title="1元云购会员中心全新改版啦！">1元云购会员中心全新改版啦！</a>
+                          ”进行了回复：
+                      </p>
+                      <p class="answer" title="[s:10]">
+                          <img src="http://skin.1yyg.com/Images/Emoticons/10.gif" alt="">
+                      </p>
+                      <div class="del-wrap">
+                          <a name="delete" topicid="12014" replyid="80400" href="javascript:;">删除</a>
+                      </div>
+                  </div>
+              </li>
+          </ul>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,178 @@
+<div id="postpass" class="modal hide fade" tabindex="-1" data-width="760">
+
+	<div class="modal-header">
+
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+		<h3>审核通过</h3>
+
+	</div>
+
+	<div class="modal-body">
+
+		<div class="row-fluid">
+
+			<div class="span12">
+
+				<h4>是否推荐</h4>
+                <p>                
+                <?php 
+                $items =  array(
+                    array(
+                        'name' => '是',
+                        'value' => '1'
+                    ),
+                    array(
+                        'name' => '否',
+                        'value' => '0'
+                    )
+                );
+                foreach ($items as $item) {?>
+                <label class="radio"><input type="radio" name="is_recommend" value="<?php echo $item['value']?>" <?php if(0 == $item['value']){?>checked<?php }?> /><?php echo $item['name']?></label>
+                <?php }?>				
+                </p>
+
+				<h4>获得积分</h4>
+				<p><input id="point" class="span12 m-wrap" type="text" placeholder="获得积分" value=""></p>
+				
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal-footer">
+
+		<button type="button" data-dismiss="modal" class="btn">Close</button>
+        <input type="text" id="id1" value="" style="display:none;">
+		<button type="button" id="pass_btn" class="btn blue">提交</button>
+
+	</div>
+
+</div>
+
+
+<div id="postunpass" class="modal hide fade" tabindex="-1" data-width="760">
+
+	<div class="modal-header">
+
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+		<h3>审核不通过</h3>
+
+	</div>
+
+	<div class="modal-body">
+
+		<div class="row-fluid">
+
+			<div class="span12">
+
+				<h4>失败原因</h4>
+				<p><textarea class="span12 m-wrap" id="fail_reason" name="fail_reason" rows="6" data-required="1">内容不符合要求</textarea></p>
+				
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal-footer">
+
+		<button type="button" data-dismiss="modal" class="btn">Close</button>
+        <input type="text" id="id2" value="" style="display:none;">
+		<button type="button" id="unpass_btn" class="btn blue">提交</button>
+
+	</div>
+
+</div>
+
+<script>
+var Post = function () {
+    return {
+		url : '{{baseUrl}}{{moduleName}}/{{controllerName}}',
+		showPass:function (id){
+			//alert(id);
+			$('#is_recommend').val(0);
+			$('#point').val('');
+			$('#id1').val(id);
+			var $modal = $('#postpass');
+			$modal.modal('show');
+		},
+		showUnPass:function (id){
+			//alert(id);
+			$('#fail_reason').val('');
+			$('#id2').val(id);
+			var $modal = $('#postunpass');
+			$modal.modal('show');
+		},
+        //main function to initiate the module
+        init: function () {
+            $('#pass_btn').click(function (e) {
+                e.preventDefault();	
+				var opt = "pass";
+				var id = $('#id1').val();
+				var is_recommend = $('#is_recommend').val();
+				var point = $('#point').val();
+
+				var data = List.compileFilter();
+				data.id = encodeURIComponent(id);
+				data.is_recommend = encodeURIComponent(is_recommend);
+				data.point = encodeURIComponent(point);
+				
+				$.ajax({
+					type: 'POST',
+					url: Post.url + "/" + opt,
+					data:  data,
+					success: function(result){
+						console.info(result);
+						if (result.message)
+						{
+							alert(result.message);
+						}
+						if (result.error == 0)
+						{
+							var $modal = $('#postpass');
+							$modal.modal('hide');
+							$('#example').DataTable().draw();
+						}
+					 },
+					dataType: "json"
+				});
+            });
+			
+			$('#unpass_btn').click(function (e) {
+                e.preventDefault();	
+				var opt = "unpass";
+				var id = $('#id2').val();
+				var fail_reason = $('#fail_reason').val();
+
+				var data = List.compileFilter();
+				data.id = encodeURIComponent(id);
+				data.fail_reason = encodeURIComponent(fail_reason);
+				
+				$.ajax({
+					type: 'POST',
+					url: Post.url + "/" + opt,
+					data:  data,
+					success: function(result){
+						console.info(result);
+						if (result.message)
+						{
+							alert(result.message);
+						}
+						if (result.error == 0)
+						{
+							var $modal = $('#postpass');
+							$modal.modal('hide');
+							$('#example').DataTable().draw();
+						}
+					 },
+					dataType: "json"
+				});
+            });
+        }
+    };
+}();
+thirdPartys.Post = Post;
+</script>

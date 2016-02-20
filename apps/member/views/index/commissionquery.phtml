@@ -1,0 +1,64 @@
+﻿<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_q.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<input type="hidden" id="pageID" value="commissionquery">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/invitedlist">邀请管理</a></li>
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/commissionquery">佣金明细</a></li>
+        </ul>
+    </div>
+
+    <div class="g-screen-state clrfix">
+        <ul id="ul_state" class="a-screen">
+            <li><a state="0" href="javascript:;" class="z-checked">全部</a></li>
+            <li><a state="1" href="javascript:;">收入记录</a></li>
+            <li><a state="2" href="javascript:;">提现记录</a></li>
+        </ul>
+    </div>
+    <?php $this->partial("partials/regionsearch") ?>
+    <div class="mon-wrap">
+        <div class="mon-inner">
+          <div class="t-head">
+              <span class="u-time">时间</span>
+              <span class="u-name">用户</span>
+              <span class="u-option">
+                  <span id="span_State" class="u-select-con">
+                      <a state="0" href="javascript:;" class="gray6">操作类型<s class="u-personal"></s></a>
+                      <div class="select-state">
+                          <a state="1" href="javascript:;">收入</a>
+                          <a state="2" href="javascript:;">提现</a>
+                      </div>
+                  </span>
+              </span>
+              <span class="u-info">描述</span>
+              <span class="u-much">消费金额</span>
+              <span class="u-money">佣金</span>
+          </div>
+     
+          <ul id="ul_commissionlist" class="t-info">
+            <li>
+                <span class="u-time">2015-10-22</span>
+                <span class="u-name"><a href="/" target="_blank">用户昵称</a></span>
+                <span class="u-option"><span>收入</span></span>
+                <span class="u-info"><a href="javascript:;" target="_blank">第33698云</a></span>
+                <span class="u-much"><span>￥100</span></span>
+                <span class="u-money"><strong class="green">￥10</strong></span>
+            </li>
+            <li>
+                <span class="u-time">2015-10-22</span>
+                <span class="u-name"><a href="/" target="_blank">用户昵称</a></span>
+                <span class="u-option"><span>提现</span></span>
+                <span class="u-info"><a href="javascript:;" target="_blank">第33698云</a></span>
+                <span class="u-much"><span>￥100</span></span>
+                <span class="u-money"><strong class="green">￥10</strong></span>
+            </li>
+            <div class="null-retips-wrapper"><div class="gth-icon transparent-png"></div><span>暂无记录！</span></div>
+          </ul>
+          <div class="g-pagination" id="#g-pagination" style="display:none"></div>
+       </div>
+    </div>
+</div>

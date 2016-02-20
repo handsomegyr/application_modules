@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购</title>
+    <link rel="stylesheet" type="text/css" href="css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/pageDialog.css" />
+    <link rel="stylesheet" type="text/css" href="css/CartList.css" />
+    <script type="text/javascript" src="js/JQuery.js"></script>
+    <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="js/CartList.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <!--顶部-->
+  <div class="g-toolbar clrfix">
+    <div class="w1190">
+        <ul class="fl">
+            <li class="f-collect">
+                <div class="u-menu-hd">
+                    <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li id="liMobile" class="u-arr">
+                <div class="u-menu-hd transparent-png">
+                    <a href="javascript:;" target="_blank" title="手机云购">手机云购</a>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <p>
+                        <a href="javascript:;" target="_blank">
+                            <img src="images/andriod.jpg">
+                            下载客户端
+                        </a>
+                    </p>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+        </ul>
+        <ul id="ulTopRight" class="fr"><li type="nologin"><div class="u-menu-hd"><a href="member/passport/login.html" title="登录">登录</a></div></li><li type="nologin" class="f-gap"><s></s></li><li type="nologin"><div class="u-menu-hd"><a href="member/passport/register.html" title="注册">注册</a></div></li><li class="f-gap"><s></s></li>
+            <li id="liMember" class="u-arr-1yyg" style="">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="我的1元云购">我的1元云购</a>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <span><a href="javascript:;" title="云购记录">云购记录</a></span>
+                    <span><a href="javascript:;" title="获得的商品">获得的商品</a></span>
+                    <span><a href="javascript:;" title="个人设置">个人设置</a></span>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+            <li id="liHome" style="display: none;">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="我的1元云购">我的1元云购</a>
+                </div>
+            </li>
+            <li class="f-gap" style="display: none;"><s></s></li>
+            <li id="liTopUMsg" class="u-arr-news" style="display: none;" show="-1">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="消息">消息</a>
+                    <h3 style="display: none;"></h3>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <span><a href="javascript:;" title="系统消息">系统消息</a></span>
+                    <span><a href="javascript:;" title="好友请求">好友请求</a></span>
+                    <span><a href="javascript:;" title="好友请求">评论回复</a></span>
+                    <span><a href="javascript:;" title="私信" class="f-msg">私信</a></span>
+                </div>
+            </li>
+            <li class="f-gap" style="display: none;"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="充值">充值</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="帮助">帮助</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="投诉">投诉</a>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+            <li id="lizxkf" class="f-zxkf" style="">
+                <div class="u-menu-hd">
+                    <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+                </div>
+            </li>
+            <li class="f-zxkf" style="display: none;">
+               <div class="u-menu-hd">
+                   <a href="/" title="1元云购首页" class="orange">1元云购首页</a>
+               </div>
+           </li>
+        </ul>
+    </div>
+  </div>
+
+
+
+    <input name="hidTotalMoney" type="hidden" id="hidTotalMoney" value="2">
+    <div class="w1190 clrfix">
+        <!--头部-->
+        <div class="g-special-head">
+            <a href="/" class="f-logo fl transparent-png"></a>
+            <a href="/" title="继续云购" class="f-carryOn fr">继续云购</a>
+        </div>
+        <div class="g-main-con clrfix">
+            <div class="m-cart-title gray3"><b>我的购物车</b></div>
+            <!-- 有数据 -->
+            <div id="divCartBox" class="m-cart-list gray9  clrfix">
+                <dl id="dlCartList">
+                    <dt>
+                        <span class="f-cart-comm">商品</span>
+                        <span class="f-cart-price">剩余人次</span>
+                        <span class="f-cart-plusLess">云购人次</span>
+                        <span class="f-cart-subtotal">小计</span>
+                        <span class="f-cart-operate">操作</span>
+                    </dt>
+                    <!--有效商品-->
+                    
+                    <dd codeid="1815966">
+                        <ul>
+                            <li class="f-cart-comm">
+                                <cite><a isvalid="1" type="check" href="javascript:;" class="z-check" codeid="1815966"><b class="z-comms"></b></a></cite>
+                                <cite class="u-cart-pic"><a href="javascript:;" target="_blank" title="小米（MIUI）小米电视 2 40英寸">
+                                    <img alt="" src="images/data/20150402181532388.jpg"></a>
+                                    
+                                </cite>
+                                <cite class="u-cart-name">
+                                    <span>
+                                        <a href="javascript:;" target="_blank" title="小米（MIUI）小米电视 2 40英寸">(第1228云) 小米（MIUI）小米电视 2 40英寸</a>
+                                    </span>
+                                    价值：￥2788.00
+                                </cite>
+                            </li>
+                            <li class="f-cart-price">2487</li>
+                            <li class="f-cart-plusLess">
+                                <span>
+                                    <a href="javascript:;" class="z-arrows z-less"></a>
+                                    <input class="cartNum" name="num" type="text" maxlength="7" value="1" onpaste="return false" surplus="2487" limitbuy="0" mylimitsales="0">
+                                    <a href="javascript:;" class="z-arrows z-plus"></a>
+                                </span>
+                            </li>
+                            <li class="f-cart-subtotal orange">￥1.00</li>
+                            
+                            <li class="f-cart-operate fr"><a href="javascript:;" type="delete" title="删除"></a></li>
+                        </ul>
+                    </dd>
+
+                    <dd codeid="1815966">
+                        <ul>
+                            <li class="f-cart-comm">
+                                <cite><a isvalid="1" type="check" href="javascript:;" class="z-check" codeid="1815966"><b class="z-comms"></b></a></cite>
+                                <cite class="u-cart-pic"><a href="javascript:;" target="_blank" title="小米（MIUI）小米电视 2 40英寸">
+                                    <img alt="" src="images/data/20150402181532388.jpg"></a>
+                                </cite>
+                                <cite class="u-cart-name">
+                                    <span>
+                                        <a href="javascript:;" target="_blank" title="小米（MIUI）小米电视 2 40英寸">(第1228云) 小米（MIUI）小米电视 2 40英寸</a>
+                                    </span>
+                                    价值：￥2788.00
+                                </cite>
+                            </li>
+                            <li class="f-cart-price">2487</li>
+                            <li class="f-cart-plusLess">
+                                <span>
+                                    <a href="javascript:;" class="z-arrows z-less"></a>
+                                    <input class="cartNum" name="num" type="text" maxlength="7" value="1" onpaste="return false" surplus="2487" limitbuy="0" mylimitsales="0">
+                                    <a href="javascript:;" class="z-arrows z-plus"></a>
+                                </span>
+                            </li>
+                            <li class="f-cart-subtotal orange">￥1.00</li>
+                            
+                            <li class="f-cart-operate fr"><a href="javascript:;" type="delete" title="删除"></a></li>
+                        </ul>
+                    </dd>
+                        
+                    <!--已失效商品-->
+                    
+                </dl>
+                <div class="m-list-operating clrfix">
+                    <p class="fl">
+                        <span><a id="sSelAll" class="z-check"><b class="z-comms"></b></a></span>
+                        <span><a id="btnSelAll" href="javascript:;" title="全选">全选</a></span>
+                        <span><a id="btnDelete" href="javascript:;" title="删除">删除</a></span>
+                        
+                    </p>
+                    <cite class="fr">金额总计：<i class="orange" id="iTotalMoney">￥1.00</i></cite>
+                    <div class="f-list-accounts">
+                        <a href="/" title="返回继续云购" class="f-list-return">返回继续云购</a>
+                        <a id="btnGoPay" href="payment.html" title="去结算" class="f-list-jiesuan">去结算</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 无数据 -->
+            <div id="divEmpty" class="z-cart-nothing" style="display:none;"><b></b><span>您的购物车为空！<a href="/" title="立即去云购>>">立即去云购<em class="f-tran">&gt;&gt;</em></a></span></div>
+
+            <div id="divRec" class="m-rqtj-con clrfix">
+            <p>人气推荐</p>
+            <div id="divRecList" class="m-recomm-con clrfix">
+
+                <div class="f-recomm-list" codeid="1882152">
+                    <dl>
+                        <dt><a href="javascript:;" title="2016款 宝马（BMW）3系 320i 时尚型 四门轿车">
+                            <img src="images/data/20151102140442446.jpg"></a></dt>
+                        <dd class="u-recomm-name"><a href="javascript:;" title="2016款 宝马（BMW）3系 320i 时尚型 四门轿车">2016款 宝马（BMW）3系 320i 时尚型 四门轿车</a></dd>
+                        <dd class="gray9">剩余<em>212441</em>人次</dd>
+                    </dl>
+                </div>
+                
+                <div class="f-recomm-list" codeid="1875642">
+                    <dl>
+                        <dt><a href="javascript:;" title="苹果（Apple）iPhone 6s 64G版 4G手机">
+                            <img src="images/data/20151102140442446.jpg"></a></dt>
+                        <dd class="u-recomm-name"><a href="javascript:;" title="苹果（Apple）iPhone 6s 64G版 4G手机">苹果（Apple）iPhone 6s 64G版 4G手机</a></dd>
+                        <dd class="gray9">剩余<em>4152</em>人次</dd>
+                    </dl>
+                </div>
+                
+                <div class="f-recomm-list" codeid="1880206">
+                    <dl>
+                        <dt><a href="javascript:;" title="苹果（Apple）iPhone 6s Plus 128G版 4G手机">
+                            <img src="images/data/20151102140442446.jpg"></a></dt>
+                        <dd class="u-recomm-name"><a href="javascript:;" title="苹果（Apple）iPhone 6s Plus 128G版 4G手机">苹果（Apple）iPhone 6s Plus 128G版 4G手机</a></dd>
+                        <dd class="gray9">剩余<em>7249</em>人次</dd>
+                    </dl>
+                </div>
+                
+                <div class="f-recomm-list" codeid="1876640">
+                    <dl>
+                        <dt><a href="javascript:;" title="苹果（Apple）iPhone 6s 16G版 4G手机">
+                            <img src="images/data/20151102140442446.jpg"></a></dt>
+                        <dd class="u-recomm-name"><a href="javascript:;" title="苹果（Apple）iPhone 6s 16G版 4G手机">苹果（Apple）iPhone 6s 16G版 4G手机</a></dd>
+                        <dd class="gray9">剩余<em>4800</em>人次</dd>
+                    </dl>
+                </div>
+                
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="javascript:;" target="_blank" title="首页">首页</a><s></s>
+                <a href="javascript:;" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="javascript:;" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="javascript:;" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="javascript:;" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1</div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+</body>
+</html>

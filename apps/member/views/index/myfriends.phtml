@@ -1,0 +1,58 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="myfriends">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul>
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/myfriends">我的好友</a></li>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/searchfriends">查找好友</a></li>
+        </ul>
+    </div>
+    <div class="fri-s-wrap">
+        <div class="s-inner">
+            <input id="txtKeyWord" maxlength="100" type="text" value="" class="s-value iptfocus">
+            <a id="btnSearch" href="javascript:;" class="s-btn transparent-png"></a>
+            <span class="placeholder iptem">输入昵称/手机号/邮箱</span>
+        </div>
+    </div>
+    <div id="div_myfriends" class="fri-ship-wrap">
+        <!-- 有数据 -->
+        <ul class="fri-ship-list">
+            <!-- <li>
+                <div class="pro">
+                    <a href="javascript:;" target="_blank" class="h-pic">
+                        <img src="http://faceimg.1yyg.com/UserFace/20151109151534519.jpg" width="80"
+                        height="80">
+                    </a>
+                    <div class="tail">
+                        <a href="javascript:;" target="_blank" class="u-name">
+                            dh*@126.com
+                        </a>
+                        <p>
+                            <span class="level class-icon01">
+                                <s></s>云购小将
+                            </span>
+                        </p>
+                        <p class="qm" title="这家伙忙着云购，还没写签名呢！">
+                            这家伙忙着云购，还没写签名呢！
+                        </p>
+                        <div class="f-option-wrap">
+                            <a href="javascript:;" _con='<iframe hidefocus="true" frameborder="0" scrolling="no" src="<?php echo $this->view->baseUrl?>member/index/message.html" style="width:100%;height:100%;"></iframe>' username="dh*@126.com" class="f-send private_btn">
+                                <i class="transparent-png"></i>发私信
+                            </a>
+                            <a href="javascript:;" userid="9609570" class="f-del">
+                                删除
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li> -->
+        </ul>
+
+        <!-- 没有数据 -->
+        <div class="null-retips-wrapper" style="display:none;"><div class="gth-icon transparent-png"></div><span>您还没有加好友哦！</span></div>
+    </div>
+    <div class="g-pagination" id="g-pagination" style="display:none;"></div>
+</div>

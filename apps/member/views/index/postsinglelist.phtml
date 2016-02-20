@@ -1,0 +1,146 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_q.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="postsinglelist">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">晒单管理</span>
+    </div>
+    <div class="g-screen-state clrfix">
+        <ul class="a-screen" id="ul_state">
+            <li><a state="0" href="javascript:;" class="z-checked" stateText="全部状态">全部</a></li>
+            <li><a state="1" href="javascript:;" stateText="已晒单">已晒单<i>0</i></a></li>
+            <li><a state="2" href="javascript:;" stateText="未晒单">未晒单<i>0</i></a></li>
+        </ul>
+        <div class="u-special gray9">
+            成功晒单并通过审核即可获得相应福分（特殊商品除外）
+        </div>
+    </div>
+    <div id="div_PostList" class="g-purchase-records g-single-manag">
+        <dl>
+            <dt>
+                <span class="u-commodity-pic">图片</span>
+                <span class="u-commodity-name">晒单信息</span>
+                <span id="span_State" class="u-select-con">
+                    <a state="0" href="javascript:;" class="gray6">晒单状态<s class="u-personal"></s></a>
+                    <div class="select-state">
+                        <a state="1" href="javascript:;">已晒单</a>
+                        <a state="2" href="javascript:;">未晒单</a>
+                        <a state="3" href="javascript:;">待审核</a>
+                        <a state="4" href="javascript:;">未通过</a>
+                        <a state="5" href="javascript:;">已通过</a>
+                    </div>
+                </span>
+                <span class="u-operation">操作</span>
+            </dt>
+            <!-- <dd>
+                <span class="u-commodity-pic">
+                    <a target="_blank" href="javascript:;">
+                    <img src="http://goodsimg.1yyg.com/goodspic/pic-70-70/20140218133617171.jpg"><i class="u-personal"></i></a>
+                </span>
+                <span class="u-commodity-name gray9">
+                    <h3><a target="_blank" href="javascript:;" class="gray3">第33698云</a></h3>
+                    价值：￥10.00<br>幸运云购码：1000<br>揭晓时间：2014-10-20
+                </span>
+                <span class="u-select-con">暂未晒单</span>
+                <span class="u-operation"><a target="_blank" href="javascript:;" class="z-perfect-address">立即晒单</a></span>
+            </dd>
+            <dd>
+                <span class="u-commodity-pic">
+                    <a target="_blank" href="http://post.1yyg.com/detail-132289.html">
+                        <img src="http://postimg.1yyg.com/UserPost/Small/20160102141114933.jpg">
+                        <i class="u-personal">
+                        </i>
+                    </a>
+                </span>
+                <span class="u-commodity-name gray9">
+                    <div class="f-already clrfix">
+                        <h3 class="fl">
+                            <a target="_blank" href="http://post.1yyg.com/detail-132289.html" class="gray3">
+                                终于中奖啦！
+                            </a>
+                        </h3>
+                        <cite class="fl">
+                            2016-01-02 14:14
+                        </cite>
+                    </div>
+                    <p class="gray9">
+                        嗯呵呵O(∩_∩)O~，货真价实的读卡器，包装很好~~~物流还不错，基本上都不错，没有什么问题，128G的内存卡感觉真好，可以随便拍照片，随便传电影，再不用担心存储已满的焦急心情…
+                    </p>
+                </span>
+                <span class="u-select-con">待审核</span>
+                <span class="u-operation">
+                    <a target="_blank" href="javascript:;" class="z-determine">修改</a>
+                </span>
+            </dd>
+            <dd>
+                <span class="u-commodity-pic">
+                    <a target="_blank" href="http://post.1yyg.com/detail-132289.html">
+                        <img src="http://postimg.1yyg.com/UserPost/Small/20160102141114933.jpg">
+                        <i class="u-personal">
+                        </i>
+                    </a>
+                </span>
+                <span class="u-commodity-name gray9">
+                    <div class="f-already clrfix">
+                        <h3 class="fl">
+                            <a target="_blank" href="http://post.1yyg.com/detail-132289.html" class="gray3">
+                                终于中奖啦！
+                            </a>
+                        </h3>
+                        <cite class="fl">
+                            2016-01-02 14:14
+                        </cite>
+                    </div>
+                    <p class="gray9">
+                        嗯呵呵O(∩_∩)O~，货真价实的读卡器，包装很好~~~物流还不错，基本上都不错，没有什么问题，128G的内存卡感觉真好，可以随便拍照片，随便传电影，再不用担心存储已满的焦急心情…
+                    </p>
+                </span>
+                <span class="u-select-con orange">未通过<br>
+                    <em>您的晒单内容涉及违规信息<br>请重新修改处理</em>
+                </span>
+                <span class="u-operation">
+                    <a target="_blank" href="javascript:;" class="z-determine">修改</a>
+                </span>
+            </dd>
+            <dd>
+                <span class="u-commodity-pic">
+                    <a target="_blank" href="http://post.1yyg.com/detail-132289.html">
+                        <img src="http://postimg.1yyg.com/UserPost/Small/20160102141114933.jpg">
+                        <i class="u-personal">
+                        </i>
+                    </a>
+                </span>
+                <span class="u-commodity-name gray9">
+                    <div class="f-already clrfix">
+                        <h3 class="fl">
+                            <a target="_blank" href="http://post.1yyg.com/detail-132289.html" class="gray3">
+                                终于中奖啦！
+                            </a>
+                        </h3>
+                        <cite class="fl">
+                            2016-01-02 14:14
+                        </cite>
+                    </div>
+                    <p class="gray9">
+                        嗯呵呵O(∩_∩)O~，货真价实的读卡器，包装很好~~~物流还不错，基本上都不错，没有什么问题，128G的内存卡感觉真好，可以随便拍照片，随便传电影，再不用担心存储已满的焦急心情…
+                    </p>
+                </span>
+                <span class="u-select-con green">
+                    审核通过
+                    <br>
+                    <em class="gray9">
+                        奖励700福分
+                    </em>
+                </span>
+                <span class="u-operation">
+                    <a target="_blank" href="http://post.1yyg.com/detail-132289.html" class="z-see-details">
+                        查看详情
+                    </a>
+                </span>
+            </dd> -->
+        </dl>
+    </div>
+    <div class="g-pagination" id="g-pagination" style="display:none;"></div>
+</div>

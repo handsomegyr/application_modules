@@ -1,0 +1,40 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_q.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="userbuylist">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">云购记录</span>
+    </div>
+    <div class="g-screen-state clrfix">
+        <ul id="ul_state" class="a-screen">
+            <li><a state="0" href="javascript:;" stateText="全部状态" class="z-checked">全部</a></li>
+            <li><a state="1" href="javascript:;" stateText="进行中">进行中</a></li>
+            <li><a state="3" href="javascript:;" stateText="已揭晓">已揭晓</a></li>
+            <li><a state="4" href="javascript:;" stateText="已退购">已退购</a></li>
+        </ul>
+    </div>
+    
+    <?php $this->partial("partials/regionsearch") ?>
+    
+    <div id="div_UserBuyList" class="g-purchase-records">
+        <dl>
+            <dt>
+                <span class="u-commodity-pic">商品图片</span>
+                <span class="u-commodity-name">商品名称</span>
+                <span id="span_BuyState" class="u-select-con">
+                    <a state="0" href="javascript:;" class="gray6">全部状态<s class="u-personal"></s></a>
+                    <div class="select-state">
+                        <a state="1" href="javascript:;">进行中</a>
+                        <a state="3" href="javascript:;">已揭晓</a>
+                        <a state="4" href="javascript:;">已退购</a>
+                    </div>
+                </span>
+                <span class="u-buy-num">期间参与人次</span>
+                <span class="u-operation">操作</span>
+            </dt>
+        </dl>
+    </div>
+    <div class="g-pagination" id="g-pagination" style="display:none;"></div>
+</div>

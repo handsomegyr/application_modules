@@ -1,0 +1,88 @@
+﻿    <div class="g-logo-top">
+        <a href="/" class="transparent-png fl"><img src="images/logo.png"></a>
+        <span class="fr">已有账号？<a id="hylinkLoginPage" class="blue" href="<?php echo $this->view->baseUrl?>member/passport/login">立即登录</a></span>
+    </div>
+
+    <div class="g-contentCon clrfix">
+        <div class="m-main clrfix">
+            <h2 class="gray3">新用户注册</h2>
+            <div class="register-form-con clrfix" style="padding-top:40px;">
+                <ul>
+                    <li>
+                        <input id="txtUserName" class="iptfocus" type="text" maxlength="100">
+                        <b class="passport-icon user-name transparent-png"></b>
+                        <em style="" class="iptem">手机号/邮箱地址</em>
+                        <span class="orange" style="display: none;"></span>
+                        <s class="passport-icon" style="display: none;"></s>
+                    </li>
+                    <li>
+                        <div>
+                            <input id="txtvcode" class="iptfocus" type="text" maxlength="6" style="width:150px;">
+                            <b class="passport-icon verification-code transparent-png"></b>
+                            <em style="" class="iptem">验证码</em>
+                            <a id="btnSend" href="javascript:;" style="
+                                width: 130px;
+                                background: #fbfbfb;
+                                cursor: default;
+                                color: #666;
+                                text-align: center;
+                                border-left: 0 none;
+                                border-radius: 0 2px 2px 0;
+                                float: right;
+                                border: 1px solid #ddd;
+                                height: 40px;
+                                top: 0;
+                                line-height: 40px;
+                                font-size:14px;
+                                cursor: pointer;
+                            ">发送验证码</a> <!-- 重新发送(57) -->
+                        </div>
+                        <span class="orange"></span>
+                    </li>
+                    <li> <!-- class="error-text" -->
+                        <input id="txtPwd" class="iptfocus" type="password" maxlength="20">
+                        <b class="passport-icon login-password transparent-png"></b>
+                        <em style="" class="iptem">设置登录密码</em>
+                        <span class="orange" style="display: none;"></span>
+                        <!-- <span class="orange" style="display: block;"><i class="passport-icon transparent-png"></i>请设置登录密码</span> -->
+                        <s class="passport-icon" style="display: none;"></s>
+                        <span id="pwdStrength" style="display: none;"><p class="yellow"><strong>安全强度：</strong><cite><dfn style="width:33.33%;"></dfn></cite>中</p></span>
+
+                    </li>
+                    <li>
+                        <input id="txtConPwd" class="iptfocus" type="password" maxlength="20">
+                        <b class="passport-icon login-password transparent-png"></b>
+                        <em style="" class="iptem">确认密码</em>
+                        <span class="orange" style="display: none;"></span>
+                        <s class="passport-icon" style="display: none;"></s>
+                    </li>
+                    <li>
+                        <div class="z-code clrfix">
+                            <input id="txtCode" class="iptfocus" type="text" maxlength="4">
+                            <b class="passport-icon verification-code transparent-png"></b>
+                            <em style="" class="iptem">验证码</em>
+                            <img src="<?php echo $this->view->baseUrl?>service/captcha/create?image_width=120&image_height=80" id="imgCode">
+                            <a href="javascript:;" id="btnChangeCode">换一张</a>
+                        </div>
+                        <span class="orange"></span>
+                    </li>
+                </ul>
+                <ul class="j-tips-wrap" id="j-tips-wrap"></ul>
+            </div>
+            <div class="link-con clrfix">
+                <a id="btnAgreeBtn" href="javascript:;" class="z-agreeBtn">同意协议并注册</a>
+                <a id="btnAgreement" href="javascript:;" target="_blank" class="z-agreement">《1元云购服务协议》</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="g-contentCon clrfix" style="display:none;">
+        <div class="sign-success clrfix">
+            <i class="passport-icon"></i>
+            <span>恭喜您，注册成功！</span>
+            <p>您现在可以通过<b class="blue"></b>进行登录和收取获得商品的信息</p>
+            <a href="/" class="orange" id="a_go"><em>立即1元云购</em>（1秒）</a>
+        </div>
+    </div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/login.js"></script>

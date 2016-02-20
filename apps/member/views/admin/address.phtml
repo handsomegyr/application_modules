@@ -1,0 +1,173 @@
+﻿<input type="hidden" id="pageID" value="address">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">收货地址</span>
+    </div>
+    <div class="z-content">
+        <div class="add-wrap">
+            <div class="data-menu">
+                <span class="u-name">收货人</span>
+                <span class="u-tel">手机/电话号码</span>
+                <span class="u-address">详细地址</span>
+                <span class="u-code">邮政编码</span>
+                <span class="u-option">操作</span>
+            </div>
+            
+            <?php if(!empty($this->view->consigneeList)){?>
+            <ul class="add-list" id="ul_addresslist">
+            <?php foreach ($this->view->consigneeList as $consignee) {?>
+                <li>                            
+                    <span class="u-name"><?php echo $consignee['name']?></span>
+                    <span class="u-tel" mobile="<?php echo !empty($consignee['mobile'])?$consignee['mobile']:''?>" telephone="<?php echo !empty($consignee['telephone'])?$consignee['telephone']:''?>"><?php echo !empty($consignee['mobile'])?$consignee['mobile']:$consignee['telephone']?></span>
+                    <span class="u-address" 
+                    provinceID="<?php echo $consignee['province']?>"  
+                    cityID="<?php echo $consignee['city']?>"  
+                    districtID="<?php echo $consignee['district']?>"><?php echo \Webcms\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?></span>
+                    <span class="u-code"><?php echo $consignee['zipcode']?></span>
+                    <span class="u-option">
+                        <a href="javascript:;" id="<?php echo $consignee['_id']?>" class="op-tail btn-modify">修改</a>
+                        <?php if(empty($consignee['is_default'])){?>
+                        <a href="javascript:;" id="<?php echo $consignee['_id']?>" class="op-tail btn-delete">删除</a>
+                        <?php }?>
+                    </span>
+                    <span class="u-set">
+                        <?php if(!empty($consignee['is_default'])){?>
+                        <b class="is-normal">
+                            默认地址
+                        </b>
+                        <?php }else{?>
+
+                        <b class="set-normal" id="<?php echo $consignee['_id']?>">设为默认地址</b>
+                        <?php }?>
+                        
+                    </span>
+                </li>
+             <?php }?>                     
+            </ul>
+            <?php }else{?>
+            <ul class="add-list" id="ul_addresslist"><div class="null-retips-wrapper"><div class="gth-icon transparent-png"></div><span>您还没有收货地址哦！</span></div></ul>
+            <?php }?>
+            <a id="a_add" href="javascrit:;" style="display: block;" class="new-add-btn">添加新地址</a>
+        </div>
+        <div class="new-add-wrap" id="div_form" style="display: none;">
+          <div class="shi-address-box">
+              <h2 class="gray3">
+                  添加收货地址
+              </h2>
+              <ul>
+                  <li class="select-list">
+                      <label>
+                          所在地区：
+                      </label>
+                      <div class="fl clrfix" id="div_area">
+                          <span class="u-select-con" id="selProvinceID">
+                              <a href="javascript:;" class="gray6 select-xiala">
+                                  ---请选择---
+                                  <s class="u-personal"></s>
+                              </a>
+                              <div class="select-state">
+                                <?php $provinceList = \Webcms\System\Helpers\AreaHelper::getProvinceList()?>
+                                <?php foreach ($provinceList as $key => $value) {?>
+                                  <a href="javascript:;" value="<?php echo $key?>"><?php echo $value?></a>
+                                <?php }?>
+                              </div>
+                              <input type="hidden"> <!-- val值 -->
+                          </span>
+                          <span class="u-select-con" id="selCityID">
+                              <a href="javascript:;" class="gray6 select-xiala">
+                                  ---请选择---
+                                  <s class="u-personal"></s>
+                              </a>
+                              <div class="select-state">
+                                  <!-- <a href="javascript:;" value="0">上海</a>
+                                  <a href="javascript:;" value="1">长沙</a> -->
+                              </div>
+                              <input type="hidden"> <!-- val值 -->
+                          </span>
+                          <span class="u-select-con" id="selCountyID">
+                              <a href="javascript:;" class="gray6 select-xiala">
+                                  ---请选择---
+                                  <s class="u-personal"></s>
+                              </a>
+                              <div class="select-state">
+                                  <!-- <a href="javascript:;" value="0">上海</a> -->
+                              </div>
+                              <input type="hidden"> <!-- val值 -->
+                          </span>
+                          <span class="u-select-con" id="selAddressID" style="display:none;">
+                              <a href="javascript:;" class="gray6 select-xiala">
+                                  ---请选择---
+                                  <s class="u-personal"></s>
+                              </a>
+                              <div class="select-state">
+                                  <!-- <a href="javascript:;" value="0">上海</a> -->
+                              </div>
+                              <input type="hidden"> <!-- val值 -->
+                          </span>
+                      </div>
+                      <em class="f-tran">*</em>
+                      <p class="orange">
+                          <b class="u-personal"></b>必填
+                      </p>
+                  </li>
+                  <li class="z-address">
+                      <label>详细地址：</label>
+                      <input id="txtAddress" type="text" maxlength="200">
+                      <em class="f-tran">*</em>
+                      <p class="orange">
+                          <b class="u-personal"></b>必填
+                      </p>
+                      <cite class="gray9">无需重复填写所在地区</cite>
+                  </li>
+                  <li>
+                      <label>邮政编码：</label>
+                      <input id="txtPostCode" type="text" maxlength="10">
+                      <p class="orange">
+                          <b class="u-personal"></b>请填写正确的邮政编码
+                      </p>
+                  </li>
+                  <li>
+                      <label>
+                          收<i>货</i>人：
+                      </label>
+                      <input id="txtConsignee" type="text" maxlength="5">
+                      <em class="f-tran">*</em>
+                      <p class="orange"><b class="u-personal"></b>必填</p>
+                      <cite class="gray9">
+                          请填写真实有效的姓名，否则将无法进行配送
+                      </cite>
+                  </li>
+                  <li>
+                      <label>
+                          固定电话：
+                      </label>
+                      <input id="txtTel" type="text" maxlength="20">
+                      <p class="orange">
+                          <b class="u-personal"></b>
+                          请填写真实有效的固定电话或手机号码
+                      </p>
+                  </li>
+                  <li>
+                      <label>手机号码：</label>
+                      <input id="txtMobile" type="text" maxlength="11">
+                      <p class="orange">
+                          <b class="u-personal">
+                          </b>
+                          请填写真实有效的手机号码或固定电话
+                      </p>
+                  </li>
+                  <li class="set-default">
+                      <a href="javascript:;" id="a_default" class="gray9" value="0">
+                          <i><s class="u-personal"></s></i>
+                          设为默认地址
+                      </a>
+                  </li>
+                  <li class="z-save-btn">
+                      <a id="btnSaveAddress" href="javascript:;" class="save">保存</a>
+                      <a id="btnCancel" href="javascript:;" class="close">取消</a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+    </div>
+</div>

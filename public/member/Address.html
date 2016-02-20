@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购--会员中心</title>
+    <link rel="stylesheet" type="text/css" href="../yungou/css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/member_x.css" />
+    <script type="text/javascript" src="../yungou/js/JQuery.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="../yungou/js/public.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <!--顶部-->
+    <div class="g-toolbar clrfix">
+        <div class="w1190">
+            <ul class="fl">
+                <li class="f-collect">
+                  <div class="u-menu-hd">
+                      <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li id="liMobile" class="u-arr">
+                  <div class="u-menu-hd transparent-png">
+                      <a href="mobile.html" target="_blank" title="手机云购">手机云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <p>
+                          <a href="mobile.html" target="_blank">
+                              <img src="images/andriod.jpg">
+                              下载客户端
+                          </a>
+                      </p>
+                  </div>
+                </li>
+                <li class="f-gap" style="display:none;"><s></s></li>
+                <li id="liCCTV" style="display:none;">
+                  <a href="javascript:;" target="_blank" class="cctv-icon">
+                      <img src="http://skin.1yyg.com/images/cctv-icon.jpg" alt="央视网" width="80" height="35" class="cctv-icon-img">
+                      <span class="cctv-icon-txt">广告合作伙伴</span>
+                  </a>
+                </li>
+            </ul>
+            <ul id="ulTopRight" class="fr"><li><div class="u-menu-hd u-menu-login"><a href="/" title="dhtnuieeq@qq.com" class="blue"><span class="fl"><img src="http://faceimg.1yyg.com/userface/30/00000000000000000.jpg"><s class="transparent-png"></s></span>dhtnuieeq@qq.com</a><a href="./" title="退出">[退出]</a></div></li><li class="f-gap"><s></s></li>
+                <li id="liMember" class="u-arr-1yyg" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <span><a href="UserBuyList.html" title="云购记录">云购记录</a></span>
+                      <span><a href="OrderList.html" title="获得的商品">获得的商品</a></span>
+                      <span><a href="MemberModify.html" title="个人设置">个人设置</a></span>
+                  </div>
+                </li>
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li id="liHome" style="">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="UserRecharge.html" title="充值">充值</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="help.html" title="帮助">帮助</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="htm-contactus.html" title="投诉">投诉</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+                <li id="lizxkf" class="f-zxkf" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+                  </div>
+                </li>
+                <li class="f-zxkf" style="">
+                 <div class="u-menu-hd">
+                     <a href="/" title="1元云购首页" class="orange">1元云购首页</a>
+                 </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--头部-->
+        
+    <!--导航-->
+    <div class="p-center-nav clrfix">
+        <div class="banner-middle clrfix">
+            <div class="nav-new">
+                <ul>
+                    <li><a href="index.html" title="我的1元云购">我的1元云购</a><em class="z-my-1yyg u-personal"></em></li>
+                    <li class="curr"><a href="MemberModify.html" title="账号设置">账号设置</a><em class="z-account-settings u-personal"></em></li>
+                    <li><a target="_blank" href="javascript:;" title="个人主页">个人主页</a><em class="z-home-page u-personal"></em></li>
+                </ul>
+            </div>
+            <div class="nav-return">
+                <a href="/" class="transparent-png"></a>
+            </div>
+        </div>
+        <div class="banner-right"></div>
+    </div>
+    <!--右侧工具栏-->
+    <div id="divMemberRTool" class="g-narrow-con member-narrow" style="display:block">
+        <div class="m-narrow-list" style="height:232px;">
+            <ul>
+                <li class="f-customer-service" id="li_customer_service"><!--客服-->
+                    <div class="u-float-list">
+                        <a href="javascript:;" class="z-customer-on"><s></s><em class="orange">在<br>线<br>客<br>服</em></a><!-- z-customer-off 客服不在线时 -->
+                    </div>
+                </li>
+                <li class="f-member-cart f-member-cart2"><!--购物车-->
+                    <div class="u-float-list">
+                        <a href="../cartList.html" target="_blank">
+                            <em style="">2</em>
+                            <s class="u-personal"></s>
+                            <cite style="display:none;">购<br>物<br>车</cite>
+                        </a>
+                    </div>
+                </li>
+                <li class="f-feedback"><!--意见反馈-->
+                    <div class="u-float-list">
+                        <a href="htm-suggestion.html" target="_blank"><i></i><cite>意见反馈</cite></a>
+                    </div>
+                </li>
+                <li class="f-back-to" style="display:none;"><!--Top-->
+                    <div class="u-float-list">
+                        <a href="javascript:;"><i></i><cite>置顶</cite></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="p-center-main clrfix">
+        <!--左边导航-->
+        <div class="sidebar_l clrfix fl">
+            <ul>
+                <li><a href="MemberModify.html" title="个人资料">个人资料</a><b></b></li>
+                <li><a href="UserPhoto.html" title="修改头像">修改头像</a><b></b></li>
+                <li class="curr z-first"><a href="Address.html" title="收货地址">收货地址</a><b></b></li>
+                <li><a href="SecurityIndex.html" title="账户安全">账户安全</a><b></b></li>
+                <li><a href="PrivacySettings.html" title="隐私设置">隐私设置</a><b></b></li>
+                <li><a href="NoticeSettings.html" title="常用设置">常用设置</a><b></b></li>
+                    
+               </ul>
+        </div>
+        <div class="sidebar_main clrfix fr">
+            <div class="g-purchase-title">
+                <span class="gray3">收货地址</span>
+            </div>
+            <div class="z-content">
+                <div class="add-wrap">
+                    <div class="data-menu">
+                        <span class="u-name">收货人</span>
+                        <span class="u-tel">手机/电话号码</span>
+                        <span class="u-address">详细地址</span>
+                        <span class="u-code">邮政编码</span>
+                        <span class="u-option">操作</span>
+                    </div>
+
+                    <ul class="add-list" id="ul_addresslist">
+                        <li>
+                            <span class="u-name">
+                                周大大
+                            </span>
+                            <span class="u-tel">
+                                15896479654
+                            </span>
+                            <span class="u-address">
+                                上海 上海市 宝山区 外环以外 宝山路500号
+                            </span>
+                            <span class="u-code">
+                                420000
+                            </span>
+                            <span class="u-option">
+                                <a href="javascript:;" name="update" id="1610503" class="op-tail">修改</a>
+                            </span>
+                            <span class="u-set">
+                                <b class="is-normal">
+                                    默认地址
+                                </b>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="u-name">水电费</span>
+                            <span class="u-tel">15824567896</span>
+                            <span class="u-address">北京 北京市 朝阳区 北苑 是的发生的</span>
+                            <span class="u-code"></span>
+                            <span class="u-option"><a href="javascript:;" name="update" id="1642440" class="op-tail">修改</a><a href="javascript:;" name="delete" id="1642440" class="op-tail">删除</a></span>
+                            <span class="u-set"><b class="set-normal" id="1642440">设为默认地址</b></span>
+                        </li>
+                    </ul>
+                    <ul class="add-list" id="ul_addresslist"><div class="null-retips-wrapper"><div class="gth-icon transparent-png"></div><span>您还没有收货地址哦！</span></div></ul>
+                    <a id="a_add" href="javascrit:;" style="display: block;" class="new-add-btn">添加新地址</a>
+                </div>
+                <div class="new-add-wrap" id="div_form" style="display: none;">
+                  <div class="shi-address-box">
+                      <h2 class="gray3">
+                          添加收货地址
+                      </h2>
+                      <ul>
+                          <li class="select-list">
+                              <label>
+                                  所在地区：
+                              </label>
+                              <div class="fl clrfix" id="div_area">
+                                  <span class="u-select-con" id="selProvinceID" areaid="0" areaname="">
+                                      <a href="javascript:;" class="gray6 select-xiala">
+                                          ---请选择---
+                                          <s class="u-personal"></s>
+                                      </a>
+                                      <div class="select-state">
+                                          <a href="javascript:;">上海</a>
+                                          <a href="javascript:;">长沙</a>
+                                      </div>
+                                      <input type="hidden"> <!-- val值 -->
+                                  </span>
+                                  <span class="u-select-con" id="selCityID" areaid="0" areaname="">
+                                      <a href="javascript:;" class="gray6 select-xiala">
+                                          ---请选择---
+                                          <s class="u-personal"></s>
+                                      </a>
+                                      <div class="select-state">
+                                          <a href="javascript:;">上海</a>
+                                          <a href="javascript:;">长沙</a>
+                                      </div>
+                                      <input type="hidden"> <!-- val值 -->
+                                  </span>
+                                  <span class="u-select-con" id="selCountyID" areaid="0" areaname="">
+                                      <a href="javascript:;" class="gray6 select-xiala">
+                                          ---请选择---
+                                          <s class="u-personal"></s>
+                                      </a>
+                                      <div class="select-state">
+                                          <a href="javascript:;">上海</a>
+                                          <a href="javascript:;">长沙</a>
+                                      </div>
+                                      <input type="hidden"> <!-- val值 -->
+                                  </span>
+                                  <span class="u-select-con" id="selAddressID" style="display: none;" areaid="0"
+                                  areaname="">
+                                      <a href="javascript:;" class="gray6 select-xiala">
+                                          ---请选择---
+                                          <s class="u-personal"></s>
+                                      </a>
+                                      <div class="select-state">
+                                          <a href="javascript:;">上海</a>
+                                          <a href="javascript:;">长沙</a>
+                                      </div>
+                                      <input type="hidden"> <!-- val值 -->
+                                  </span>
+                              </div>
+                              <em class="f-tran">*</em>
+                              <p class="orange">
+                                  <b class="u-personal"></b>必填
+                              </p>
+                          </li>
+                          <li class="z-address">
+                              <label>详细地址：</label>
+                              <input id="txtAddress" type="text" maxlength="200">
+                              <em class="f-tran">*</em>
+                              <p class="orange">
+                                  <b class="u-personal"></b>必填
+                              </p>
+                              <cite class="gray9">无需重复填写所在地区</cite>
+                          </li>
+                          <li>
+                              <label>邮政编码：</label>
+                              <input id="txtPostCode" type="text" maxlength="10">
+                              <p class="orange">
+                                  <b class="u-personal"></b>请填写正确的邮政编码
+                              </p>
+                          </li>
+                          <li>
+                              <label>
+                                  收<i>货</i>人：
+                              </label>
+                              <input id="txtConsignee" type="text" maxlength="5">
+                              <em class="f-tran">*</em>
+                              <p class="orange"></p>
+                              <cite class="gray9">
+                                  请填写真实有效的姓名，否则将无法进行配送
+                              </cite>
+                          </li>
+                          <li>
+                              <label>
+                                  固定电话：
+                              </label>
+                              <input id="txtTel" type="text" maxlength="20">
+                              <p class="orange">
+                                  <b class="u-personal"></b>
+                                  请填写真实有效的固定电话或手机号码
+                              </p>
+                          </li>
+                          <li>
+                              <label>手机号码：</label>
+                              <input id="txtMobile" type="text" maxlength="11">
+                              <p class="orange">
+                                  <b class="u-personal">
+                                  </b>
+                                  请填写真实有效的手机号码或固定电话
+                              </p>
+                          </li>
+                          <li class="set-default z-click">
+                              <a href="javascript:;" id="a_default" class="gray9">
+                                  <i><s class="u-personal"></s></i>
+                                  设为默认地址
+                              </a>
+                          </li>
+                          <li class="z-save-btn">
+                              <a id="btnSave" href="javascript:;" class="save">保存</a>
+                              <a id="btnCancel" href="javascript:;" class="close">取消</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="javascript:;" target="_blank" title="首页">首页</a><s></s>
+                <a href="javascript:;" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="javascript:;" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="javascript:;" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="javascript:;" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1</div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

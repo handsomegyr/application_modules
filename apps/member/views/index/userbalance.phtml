@@ -1,0 +1,52 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/accounts.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="userbalance">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">我的账户</span>
+    </div>
+    <div class="g-account-balance">
+        <dl>
+            <dt>
+                <?php $predeposit = \Webcms\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY3)?>
+                <span class="gray6">账户余额：<em class="orange">￥<?php echo number_format($predeposit,2)?></em></span>
+                <a href="<?php echo $this->view->baseUrl?>member/index/userrecharge" class="z-orange-btn">充值</a>
+            </dt>
+            <dd>充值总额：￥<?php echo number_format($this->view->summaryMoney4Type1,2)?>
+                <i>消费总额：￥<?php echo number_format($this->view->summaryMoney4Type2,2)?></i>
+                <i>转入总额：￥<?php echo number_format($this->view->summaryMoney4Type3,2)?></i>
+                <i>转出总额：￥0.00</i>
+            </dd>
+        </dl>
+    </div>
+    <div class="g-screen-state clrfix">
+        <ul id="ul_state" class="a-screen">
+            <li><a state="0" href="javascript:;" stateText="全部状态" class="z-checked">全部</a></li>
+            <li><a state="1" href="javascript:;" stateText="充值记录">充值记录</a></li>
+            <li><a state="2" href="javascript:;" stateText="消费记录">消费记录</a></li>
+            <li><a state="3" href="javascript:;" stateText="转账记录">转账记录</a></li>
+        </ul>
+    </div>
+    <?php $this->partial("partials/regionsearch") ?>
+    <div class="g-purchase-records my-account-con">
+        <dl id="dl_userbalance">
+            <dt>
+                <span class="u-commodity-pic">时间</span>
+                <span id="span_selectop" class="u-select-con">
+                    <a href="javascript:;" state="0" class="gray6">全部类型<s class="u-personal"></s>
+                    </a>
+                    <div class="select-state">
+                        <a state="1" href="javascript:;">充值记录</a>
+                        <a state="2" href="javascript:;">消费记录</a>
+                        <a state="3" href="javascript:;">转账记录</a>
+                    </div>
+                </span>
+                <span class="u-commodity-name">金额</span>
+                <span class="u-operation">备注</span>
+            </dt><dd><span class="u-commodity-pic">2015-11-07 11:29:30</span><span class="u-select-con">消费</span><span class="u-commodity-name orange">-￥1.00</span><span class="u-operation">云购商品</span></dd><dd><span class="u-commodity-pic">2015-11-07 11:29:29</span><span class="u-select-con">充值</span><span class="u-commodity-name green">+￥1.00</span><span class="u-operation">微信支付</span></dd>
+
+        </dl>
+    </div>
+</div>

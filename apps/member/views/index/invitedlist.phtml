@@ -1,0 +1,29 @@
+﻿<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<input type="hidden" id="pageID" value="invitedlist">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">邀请管理</span>
+    </div>
+
+    <!-- 已经绑定 -->
+    <div class="fri-req-wrap">
+        <div class="mana-rules">
+            <p class="gray9">邀请好友并消费即可获得<span class="orange">50福分</span></p>
+            <div class="m-info-wrap">
+                <input id="txtInfo" class="m-info" type="text" value="1元就能买iPhone 6S，一种很有意思的购物方式，快来看看吧！<?php echo $this->view->webUrl?>yungou/index/index?invited_id=<?php echo $this->view->invitationInfo['_id']?>">
+                <a id="btnCopy" href="javascript:;" onClick="oCopy()">复制</a>
+            </div>
+        </div>
+        <div class="mana-protail-wrap">
+            <div class="mana-protail">
+                <div class="title">成功邀请的好友</div>
+                <div id="div_stat" class="blackbord">成功邀请&nbsp;<span class="orange"><?php echo $this->view->invitationInfo['invited_num']?></span>&nbsp;位会员注册，已有&nbsp;<span class="orange"><?php echo $this->view->invitationInfo['worth2']?></span>&nbsp;位会员参与云购，您通过邀请获得奖励：<span class="orange"><?php echo $this->view->invitationInfo['worth']?></span>&nbsp;福分</div>
+                <ul id="ul_invitedlist" class="mana-pro-list"></ul>
+                <div class="g-pagination" id="#g-pagination" style="display:none"></div>
+            </div>
+        </div>
+    </div>
+</div>

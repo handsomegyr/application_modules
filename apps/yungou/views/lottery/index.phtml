@@ -1,0 +1,336 @@
+﻿<link rel="stylesheet" type="text/css" href="css/Lottery.css" />
+<div class="g-main-con clrfix">
+    <div class="w1190">
+        <div class="g-lottery-part1 clrfix">
+            <div class="m-lottery-title">
+                <div class="fl">
+                    <em>最新揭晓</em>
+                    <i></i>
+                    <a href="javascript:;" target="_blank" title="进入地图模式">
+                        <img alt="" src="http://skin.1yyg.com/DataServer/images/map_mode.jpg?date=20141201">
+                    </a>
+                </div>
+                <div class="fr">
+                    <span class="gray9">截至目前共揭晓商品<b class="orange" id="lotteryCount" style="display: inline;"><?php echo $this->view->lotteryCount?></b>个</span>
+                </div>
+            </div>
+            <div class="m-lott-menu" style="overflow: hidden;">
+                <ul>
+                    <li class="<?php if(empty($this->view->i)){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/lottery/index" title="全部">全部</a></li>
+                    <?php $topLevelCategoryList = \Webcms\Goods\Helpers\GoodsHelper::getTopLevelCategoryList();?>
+                    <?php if(!empty($topLevelCategoryList)){?>
+                    <?php foreach ($topLevelCategoryList as $category) {?>                            
+                    <li class="<?php if(!empty($this->view->i) && $this->view->i == $category['_id'] ){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/lottery/index?i=<?php echo $category['_id'] ?>" title="<?php echo $category['name']?>"><?php echo $category['name']?></a></li>
+                    <?php }?>
+                    <?php }?>
+                </ul>
+            </div>
+        </div>
+        
+        <!--加载-->
+        <div id="divLoading" class="g-loading-2014" style="display: none;"><i></i></div>
+
+        <!--提示-->
+        <div id="divMsg" class="g-lott-noRecord" style="display: none;"></div>
+
+        <!--数据列表-->
+        <div id="divLottery" class="g-lottery-part2 clrfix" style="">
+            <!-- <div class="m-lottery-list m-lottery-anning">
+                <ul>
+                    <li class="f-lott-comm">
+                        <a href="javascript:;" target="_blank" title="旺旺 旺仔牛奶 原味 125mlx20盒 礼盒装">
+                            <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20150605151219903.jpg">
+                        </a>
+                    </li>
+                    <li class="f-lott-detailed">
+                        <dl>
+                            <dt>
+                                <a href="javascript:;" target="_blank" title="(第44415云)旺旺 旺仔牛奶 原味 125mlx20盒 礼盒装">
+                                    (第44415云)旺旺 旺仔牛奶 原味 125mlx20盒 礼盒装
+                                </a>
+                            </dt>
+                            <dd>
+                                商品价值：￥53.00
+                            </dd>
+                            <dd class="z-ymy">
+                                已满员
+                            </dd>
+                            <dd class="z-jx-time">
+                                <p>揭晓倒计时</p>
+                                <cite>
+                                    <span class="minute">02</span>
+                                    <em>:</em><span class="second">49</span><em>:</em><span><i class="millisecond">5</i><i class="last">5</i></span>
+                                </cite>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+                <b class="transparent-png"></b>
+            </div>
+            <div class="m-lottery-list m-lottery-anning">
+                <ul>
+                    <li class="f-lott-comm">
+                        <a href="javascript:;" target="_blank" title="旺旺 旺仔牛奶 原味 125mlx20盒 礼盒装">
+                            <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20150605151219903.jpg">
+                        </a>
+                    </li>
+                    <li class="f-lott-detailed">
+                        <dl>
+                            <dt>
+                                <a href="javascript:;" target="_blank" title="(第44415云)旺旺 旺仔牛奶 原味 125mlx20盒 礼盒装">
+                                    (第44415云)旺旺 旺仔牛奶 原味 125mlx20盒 礼盒装
+                                </a>
+                            </dt>
+                            <dd>
+                                商品价值：￥53.00
+                            </dd>
+                            <dd class="z-ymy">
+                                已满员
+                            </dd>
+                            <dd class="z-jx-time">
+                                <p>揭晓倒计时</p>
+                                <cite>
+                                    <span class="minute">02</span>
+                                    <em>:</em><span class="second">49</span><em>:</em><span><i class="millisecond">5</i><i class="last">5</i></span>
+                                </cite>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+                <b class="transparent-png"></b>
+            </div>
+            <div class="m-lottery-list m-lottery-anning m-lottery-bor-rb">
+                <ul>
+                    <li class="f-lott-comm">
+                        <a href="javascript:;" target="_blank" title="旺旺 旺仔牛奶 原味 125mlx20盒 礼盒装">
+                            <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20150605151219903.jpg">
+                        </a>
+                    </li>
+                    <li class="f-lott-detailed">
+                        <dl>
+                            <dt>
+                                <a href="javascript:;" target="_blank" title="(第44415云)旺旺 旺仔牛奶 原味 125mlx20盒 礼盒装">
+                                    (第44415云)旺旺 旺仔牛奶 原味 125mlx20盒 礼盒装
+                                </a>
+                            </dt>
+                            <dd>
+                                商品价值：￥53.00
+                            </dd>
+                            <dd class="z-ymy">
+                                已满员
+                            </dd>
+                            <dd class="z-jx-time">
+                                <p>揭晓倒计时</p>
+                                <cite>
+                                    <span class="minute">02</span>
+                                    <em>:</em><span class="second">49</span><em>:</em><span><i class="millisecond">5</i><i class="last">5</i></span>
+                                </cite>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+                <b class="transparent-png"></b>
+            </div>            
+            <div class="m-lottery-list" type="isRaff">
+                <ul>
+                    <li class="f-lott-comm">
+                        <a href="javascript:;" target="_blank" title="小米（MIUI）红米2A 增强版 移动4G手机">
+                            <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20151019112525255.jpg">
+                        </a>
+                    </li>
+                    <li class="f-lott-detailed">
+                        <div class="u-user-info">
+                            <p class="fl">
+                                <a href="javascript:;" target="_blank" title="启哥稳稳操盘">
+                                    <img type="userPhoto" src="http://faceimg.1yyg.com/UserFace/20151102095521648.jpg">
+                                    <s></s>
+                                </a>
+                            </p>
+                            <dl class="fl">
+                                <dt>
+                                    <em>获得者：</em>
+                                    <span>
+                                        <a href="javascript:;" target="_blank" title="启哥稳稳操盘">启哥稳稳操盘</a>
+                                    </span>
+                                </dt>
+                                <dd class="z-lott-lz">
+                                    来自：安徽省合肥市
+                                </dd>
+                                <dd>
+                                    幸运云购码：
+                                    <strong class="orange">
+                                        10000236
+                                    </strong>
+                                </dd>
+                                <dd>
+                                    本云参与：
+                                    <i class="orange">
+                                        180
+                                    </i>
+                                    人次
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="u-comm-info">
+                            <dl>
+                                <dt>
+                                    <a href="javascript:;" target="_blank" title="(第3830云)小米（MIUI）红米2A 增强版 移动4G手机">
+                                        (第3830云)小米（MIUI）红米2A 增强版 移动4G手机
+                                    </a>
+                                </dt>
+                                <dd>
+                                    商品价值：￥638.00
+                                </dd>
+                                <dd>
+                                    揭晓时间：刚刚
+                                </dd>
+                                <dd class="z-lott-btn">
+                                    <span>
+                                        <a href="javascript:;" target="_blank" title="查看详情">
+                                            查看详情
+                                        </a>
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="m-lottery-list" type="isRaff">
+                <ul>
+                    <li class="f-lott-comm">
+                        <a href="javascript:;" target="_blank" title="小米（MIUI）红米2A 增强版 移动4G手机">
+                            <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20151019112525255.jpg">
+                        </a>
+                    </li>
+                    <li class="f-lott-detailed">
+                        <div class="u-user-info">
+                            <p class="fl">
+                                <a href="javascript:;" target="_blank" title="启哥稳稳操盘">
+                                    <img type="userPhoto" src="http://faceimg.1yyg.com/UserFace/20151102095521648.jpg">
+                                    <s></s>
+                                </a>
+                            </p>
+                            <dl class="fl">
+                                <dt>
+                                    <em>获得者：</em>
+                                    <span>
+                                        <a href="javascript:;" target="_blank" title="启哥稳稳操盘">启哥稳稳操盘</a>
+                                    </span>
+                                </dt>
+                                <dd class="z-lott-lz">
+                                    来自：安徽省合肥市
+                                </dd>
+                                <dd>
+                                    幸运云购码：
+                                    <strong class="orange">
+                                        10000236
+                                    </strong>
+                                </dd>
+                                <dd>
+                                    本云参与：
+                                    <i class="orange">
+                                        180
+                                    </i>
+                                    人次
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="u-comm-info">
+                            <dl>
+                                <dt>
+                                    <a href="javascript:;" target="_blank" title="(第3830云)小米（MIUI）红米2A 增强版 移动4G手机">
+                                        (第3830云)小米（MIUI）红米2A 增强版 移动4G手机
+                                    </a>
+                                </dt>
+                                <dd>
+                                    商品价值：￥638.00
+                                </dd>
+                                <dd>
+                                    揭晓时间：刚刚
+                                </dd>
+                                <dd class="z-lott-btn">
+                                    <span>
+                                        <a href="javascript:;" target="_blank" title="查看详情">
+                                            查看详情
+                                        </a>
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="m-lottery-list m-lottery-special" type="isRaff">
+                <ul>
+                    <li class="f-lott-comm">
+                        <a href="javascript:;" target="_blank" title="小米（MIUI）红米2A 增强版 移动4G手机">
+                            <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20151019112525255.jpg">
+                        </a>
+                    </li>
+                    <li class="f-lott-detailed">
+                        <div class="u-user-info">
+                            <p class="fl">
+                                <a href="javascript:;" target="_blank" title="启哥稳稳操盘">
+                                    <img type="userPhoto" src="http://faceimg.1yyg.com/UserFace/20151102095521648.jpg">
+                                    <s></s>
+                                </a>
+                            </p>
+                            <dl class="fl">
+                                <dt>
+                                    <em>获得者：</em>
+                                    <span>
+                                        <a href="javascript:;" target="_blank" title="启哥稳稳操盘">启哥稳稳操盘</a>
+                                    </span>
+                                </dt>
+                                <dd class="z-lott-lz">
+                                    来自：安徽省合肥市
+                                </dd>
+                                <dd>
+                                    幸运云购码：
+                                    <strong class="orange">
+                                        10000236
+                                    </strong>
+                                </dd>
+                                <dd>
+                                    本云参与：
+                                    <i class="orange">
+                                        180
+                                    </i>
+                                    人次
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="u-comm-info">
+                            <dl>
+                                <dt>
+                                    <a href="javascript:;" target="_blank" title="(第3830云)小米（MIUI）红米2A 增强版 移动4G手机">
+                                        (第3830云)小米（MIUI）红米2A 增强版 移动4G手机
+                                    </a>
+                                </dt>
+                                <dd>
+                                    商品价值：￥638.00
+                                </dd>
+                                <dd>
+                                    揭晓时间：刚刚
+                                </dd>
+                                <dd class="z-lott-btn">
+                                    <span>
+                                        <a href="javascript:;" target="_blank" title="查看详情">
+                                            查看详情
+                                        </a>
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                </ul>
+            </div> -->
+        </div>
+        
+        <!-- 翻页 -->
+        <div class="g-pagination w1190" id="g-pagination"></div>
+    </div>
+</div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/lottery.js"></script>

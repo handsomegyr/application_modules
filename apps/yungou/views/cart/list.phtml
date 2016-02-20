@@ -1,0 +1,96 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/CartList.css" />
+<div class="w1190 clrfix">
+    <!--头部-->
+    <div class="g-special-head">
+        <a href="/" class="f-logo fl transparent-png"></a>
+        <a href="/" title="继续云购" class="f-carryOn fr">继续云购</a>
+    </div>
+    <div class="g-main-con clrfix">
+        <div class="m-cart-title gray3"><b>我的购物车</b></div>
+        <?php if(!empty($this->view->cartList)){ ?>
+        <!-- 购物车有数据 -->
+        <div id="divCartBox" class="m-cart-list gray9  clrfix">
+            <dl id="dlCartList">
+                <dt>
+                    <span class="f-cart-comm">商品</span>
+                    <span class="f-cart-price">剩余人次</span>
+                    <span class="f-cart-plusLess">云购人次</span>
+                    <span class="f-cart-subtotal">小计</span>
+                    <span class="f-cart-operate">操作</span>
+                </dt>                
+                <?php foreach ($this->view->cartList as $cart) {?>
+                <!--有效商品-->
+                <?php if($cart['is_valid']){?><?php }?>    
+                    <dd goodsid="<?php echo $cart['goods_id']?>" class="dd">
+                        <ul>
+                            <li class="f-cart-comm">
+                                <cite><a isvalid="1" type="check" href="javascript:;" class="z-check" goodsid="<?php echo $cart['goods_id']?>"><b class="z-comms"></b></a></cite>
+                                <cite class="u-cart-pic"><a href="javascript:;" target="_blank" title="<?php echo $cart['goods_name']?>">
+                                    <img alt="" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl,$cart['goods_image'],70,70)?>"></a>
+                                </cite>
+                                <cite class="u-cart-name">
+                                    
+                                    <span>
+                                        <a href="javascript:;" target="_blank" title="<?php echo $cart['goods_name']?>">(第<?php echo $cart['period']?>云) <?php echo $cart['goods_name']?></a>
+                                    </span>
+                                    价值：￥<?php echo number_format($cart['goods_price'],2)?>
+                                </cite>
+                            </li>
+                            <li class="f-cart-price"><?php echo $cart['remain_person_time']?></li>
+                            <li class="f-cart-plusLess">
+                                <span>
+                                    <a href="javascript:;" class="z-arrows z-less"></a>
+                                    <input goodsid="<?php echo $cart['goods_id']?>" maxnum="<?php echo $cart['remain_person_time']?>" class="cartNum" type="text" maxlength="7" value="<?php echo $cart['goods_num']?>" onpaste="return false" surplus="<?php echo $cart['remain_person_time']?>">
+                                    <a href="javascript:;" class="z-arrows z-plus"></a>
+                                </span>
+                            </li>
+                            <li class="f-cart-subtotal orange">￥<?php echo number_format($cart['goods_num']*1.00,2)?></li>
+                            
+                            <li class="f-cart-operate fr"><a href="javascript:;" type="delete" class="z-comms cart_delete" title="删除"></a></li>
+                        </ul>
+                    </dd>
+                    
+                <?php }?>
+            </dl>
+            <div class="m-list-operating clrfix">
+                <p class="fl">
+                    <span><a id="sSelAll" class="z-check"><b class="z-comms"></b></a></span>
+                    <span><a id="btnSelAll" href="javascript:;" title="全选">全选</a></span>
+                    <span><a id="btnDelete" href="javascript:;" title="删除">删除</a></span>
+                    
+                </p>
+                <cite class="fr">金额总计：<i class="orange" id="iTotalMoney">￥<?php echo number_format($this->view->totalAmount,2)?></i></cite>
+                <div class="f-list-accounts">
+                    <a href="/" title="返回继续云购" class="f-list-return">返回继续云购</a>
+                    <a id="btnGoPay" href="javascript:;" title="去结算" class="f-list-jiesuan">去结算</a>
+                </div>
+            </div>
+        </div>
+        
+        <?php }else{?>
+        <!-- 购物车无数据 -->
+        <div id="divEmpty" class="z-cart-nothing"><b></b><span>您的购物车为空！<a href="/" title="立即去云购>>">立即去云购<em class="f-tran">&gt;&gt;</em></a></span></div>
+        <?php }?>
+        <div id="divRec" class="m-rqtj-con clrfix">
+        <p>人气推荐</p>
+        <div id="divRecList" class="m-recomm-con clrfix">
+            <?php if(!empty($this->view->commendGoodsList['datas'])){?>
+            <?php foreach ($this->view->commendGoodsList['datas'] as $goods) {?>
+          
+            <div class="f-recomm-list" codeid="<?php echo $goods['_id']?>">
+                <dl>
+                    <dt><a href="javascript:;" title="<?php echo $goods['name']?>">
+                        <img src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>"></a></dt>
+                    <dd class="u-recomm-name"><a href="javascript:;" title="<?php echo $goods['name']?>"><?php echo $goods['name']?></a></dd>
+                    <dd class="gray9">剩余<em><?php echo $goods['remain_person_time']?></em>人次</dd>
+                </dl>
+            </div>
+            <?php }?>
+            <?php }?>
+        </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/cart.js"></script>

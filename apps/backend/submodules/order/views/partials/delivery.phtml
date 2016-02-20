@@ -1,0 +1,107 @@
+<div id="delivery" class="modal hide fade" tabindex="-1" data-width="760">
+
+	<div class="modal-header">
+
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+		<h3>发货设置</h3>
+
+	</div>
+
+	<div class="modal-body">
+
+		<div class="row-fluid">
+
+			<div class="span12">
+
+				<h4>快递公司</h4>
+                <p>
+				<select class="span12 m-wrap" id="express_no" data-placeholder="">    
+					<option value="">请选择...</option>    
+					<?php
+					$defaultValues=array();
+					$modelExpress= new Webcms\Backend\Models\Freight\Express();
+                    $items = $modelExpress->getAll();
+                    foreach ($items as $value=> $name) {?>
+					<option value="<?php echo $value?>" <?php if(in_array($value,$defaultValues)){?>selected<?php }?>><?php echo $name?></option>
+                    <?php }?>
+				</select>
+                </p>
+
+				<h4>发货单号</h4>
+
+				<p><input id="delivery_sn" class="span12 m-wrap" type="text" placeholder="发货单号" value=""></p>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal-footer">
+
+		<button type="button" data-dismiss="modal" class="btn">Close</button>
+        <input type="text" id="id" value="" style="display:none;">
+		<button type="button" id="delivery_btn" class="btn blue">确认发货</button>
+
+	</div>
+
+</div>
+
+<script>
+var Delivery = function () {
+    return {
+		url : '{{baseUrl}}{{moduleName}}/{{controllerName}}',
+		show:function (id){
+			//alert(id);
+			$('#express_no').val('');
+			$('#delivery_sn').val('');
+			$('#id').val(id);
+			var $modal = $('#delivery');
+			$modal.modal('show');
+		},
+        //main function to initiate the module
+        init: function () {
+            $('#delivery_btn').click(function (e) {
+                e.preventDefault();				
+				var cfm = '你确定要进行发货吗？';
+				var opt = 'deliveryorder';
+				if (confirm(cfm))
+				{					
+					var id = $('#id').val();
+					var express_no = $('#express_no').val();
+					var delivery_sn = $('#delivery_sn').val();
+					//alert(id);
+					//alert(express_no);
+					//alert(delivery_sn);
+					var data = List.compileFilter();
+					data.id = encodeURIComponent(id);
+					data.express_no = encodeURIComponent(express_no);
+					data.delivery_sn = encodeURIComponent(delivery_sn);
+					
+					$.ajax({
+						type: 'POST',
+						url: Delivery.url + "/" + opt,
+						data:  data,
+						success: function(result){
+							console.info(result);
+							if (result.message)
+							{
+								alert(result.message);
+							}
+							if (result.error == 0)
+							{
+								var $modal = $('#delivery');
+								$modal.modal('hide');
+								$('#example').DataTable().draw();
+							}
+						 },
+						dataType: "json"
+					});
+				}
+            });
+        }
+    };
+}();
+thirdPartys.Delivery = Delivery;
+</script>

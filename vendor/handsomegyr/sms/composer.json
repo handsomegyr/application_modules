@@ -1,0 +1,22 @@
+{
+    "name": "handsomegyr/sms",
+    "type": "library",
+    "description": "A simple PHP client library for sms",
+    "keywords": ["sms"],
+    "homepage": "http://github.com/handsomegyr/sms",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "guoyongrong",
+            "email": "handsomegyr@gmail.com",
+            "homepage": "http://www.cnblogs.com/guoyongrong/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+		"guzzle/http" : "~3.8.1"
+    },
+    "autoload": {
+        "psr-0": {"Sms": "lib/"}
+    }
+}

@@ -1,0 +1,104 @@
+﻿<input type="hidden" id="pageID" value="security">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">账户安全</span>
+    </div>
+    <div class="security-settings clrfix">
+        <ul>
+            <li>
+                <span class="g-xuan"><i></i>登录密码</span>
+                <span class="orange"><b></b>建议您定期更改密码以保护账户安全。</span>
+                <span class="u-operating"><a href="<?php echo $this->view->baseUrl?>member/security/updatepassword">修改</a></span>
+            </li>
+            <li>
+                <span class="g-xuan <?php if(empty($this->view->memberInfo['paypwd'])){?>g-ganta<?php }?>">
+                    <i></i>支付密码
+                </span>
+                <span>
+                    <b></b>用于使用账户余额、福分支付和转账时使用。
+                </span>
+                <span class="u-operating <?php if(empty($this->view->memberInfo['paypwd'])){?>u-operating-open<?php }?>">
+                    <?php if(empty($this->view->memberInfo['paypwd'])){?>
+                    <a id="btnSetPayPwd" href="<?php echo $this->view->baseUrl?>member/security/setpaypwd?type=1" type="0">立即开启</a>
+                    <?php }else{?>
+                        <a id="btnCloseSmall" href="<?php echo $this->view->baseUrl?>member/security/setpaypwd?type=0">关闭</a>
+                        <a href="<?php echo $this->view->baseUrl?>member/security/setpaypwd?type=1">重置</a>
+                    <?php }?>
+                </span>
+            </li>
+            <li>
+                <span class="g-xuan <?php if(empty($this->view->memberInfo['is_smallmoney_open'])){?>g-ganta<?php }?>">
+                    <i></i>小额免密码设置
+                </span>
+                <span>
+                    <b></b>开启后支付金额小于设置额度时，无需输入支付密码。
+                </span>
+                <span class="u-operating <?php if(empty($this->view->memberInfo['is_smallmoney_open'])){?>u-operating-open<?php }?>">
+                    <?php if(empty($this->view->memberInfo['is_smallmoney_open'])){?>
+                        <a id="btnSetSmall" href="<?php echo $this->view->baseUrl?>member/security/setsmallmoney?isopen=1" type="0">立即开启</a>
+                    <?php }else{?>
+                        <a id="btnCloseSmall" href="<?php echo $this->view->baseUrl?>member/security/setsmallmoney?isopen=0">关闭</a>
+                        <a href="<?php echo $this->view->baseUrl?>member/security/setsmallmoney?isopen=2">修改额度</a>
+                    <?php }?>
+                </span>
+            </li>
+            <li>
+                <span class="g-xuan <?php if(empty($this->view->memberInfo['mobile_bind'])){?>g-ganta<?php }?>">
+                    <i></i>手机号绑定
+                </span>
+                <span>
+                    <b></b>
+                    <?php if(empty($this->view->memberInfo['mobile_bind'])){?>
+                    为了便于您更快捷的收到获得商品通知，请您绑定您常用的手机号哦！
+                    <?php }else{?>
+                    您当前绑定的手机号码<?php echo getHiddenMobile($this->view->memberInfo['mobile'])?>。
+                    <?php }?>
+                </span>
+                <span class="u-operating u-operating-open">
+                <?php if(empty($this->view->memberInfo['mobile_bind'])){?>
+                    <a href="<?php echo $this->view->baseUrl?>member/security/userauth?UserAuth=email">立即绑定</a>
+                <?php }else{?>    
+                    已绑定
+                <?php }?>
+                </span>
+            </li>
+            <li>
+                <span class="g-xuan <?php if(empty($this->view->memberInfo['email_bind'])){?>g-ganta<?php }?>">
+                    <i></i>邮箱绑定
+                </span>
+                <span>
+                    <b></b>
+                    <?php if(empty($this->view->memberInfo['email_bind'])){?>
+                        为了便于您更快捷的收到获得商品通知，请您绑定您常用的邮箱哦！
+                    <?php }else{?>
+                        您当前绑定的邮箱地址<?php echo getHiddenEmail($this->view->memberInfo['email'])?>。
+                    <?php }?>
+                </span>
+                <span class="u-operating u-operating-open">
+                <?php if(empty($this->view->memberInfo['email_bind'])){?>
+                    <a href="<?php echo $this->view->baseUrl?>member/security/userauth?UserAuth=mobile">立即绑定</a>
+                <?php }else{?>
+                    已绑定
+                <?php }?>
+                </span>
+            </li>
+            <!-- 
+            <li>
+                <span class="g-xuan <?php if(empty($this->view->memberInfo['is_login_tip'])){?>g-ganta<?php }?>">
+                    <i></i>登录保护
+                </span>
+                <span>
+                    <b></b>关注官网微信后，登录您的账号时，将使用微信的方式提醒您，防止盗号。
+                </span>
+                <span class="u-operating <?php if(empty($this->view->memberInfo['is_login_tip'])){?>u-operating-open<?php }?>">
+                    <?php if(empty($this->view->memberInfo['is_login_tip'])){?>
+                    <a id="btnSetWxMsg" href="javascript:;">立即开启</a>
+                    <?php }else{?>
+                    <a id="btnCloseWxMsg" href="javascript:;">关闭</a>
+                    <?php }?>
+                </span>
+            </li>
+             -->
+        </ul>
+    </div>
+</div>

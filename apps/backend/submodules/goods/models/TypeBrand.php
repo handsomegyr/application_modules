@@ -1,0 +1,29 @@
+<?php
+namespace Webcms\Backend\Models\Goods;
+
+class TypeBrand extends \Webcms\Common\Models\Goods\TypeBrand
+{
+    
+    use\Webcms\Backend\Models\Base;
+
+    /**
+     * 默认排序
+     */
+    public function getDefaultSort()
+    {
+        $sort = array(
+            'sort' => 1,
+            '_id' => - 1
+        );
+        return $sort;
+    }
+
+    /**
+     * 默认查询条件
+     */
+    public function getQuery()
+    {
+        $query = array();
+        return $query;
+    }
+}

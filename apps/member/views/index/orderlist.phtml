@@ -1,0 +1,103 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_q.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="orderlist">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">获得的记录</span>
+    </div>
+    <div class="g-screen-state clrfix">
+        <ul id="ul_state" class="a-screen">
+            <li><a state="0" href="javascript:;" class="z-checked">全部</a></li>
+            <li><a state="1" href="javascript:;">待确认地址</a></li>
+            <li><a state="2" href="javascript:;">待发货</a></li>
+            <li><a state="3" href="javascript:;">待收货</a></li>
+            <li><a state="4" href="javascript:;">待晒单</a></li>
+        </ul>
+    </div>
+    
+    <?php $this->partial("partials/regionsearch") ?>
+    
+    <div id="div_OrderList" class="g-purchase-records g-get-info">
+        <dl>
+            <dt>
+                <span class="u-commodity-pic">
+                    商品图片
+                </span>
+                <span class="u-commodity-name">
+                    商品名称
+                </span>
+                <span class="u-order-number">
+                    订单号
+                </span>
+                <span class="u-operation">
+                    操作
+                </span>
+            </dt>
+            <!-- 有数据 -->
+            <!-- <dd class="has-announced">
+                <span class="u-commodity-pic">
+                    <a target="_blank" href="../detail.html">
+                        <img src="http://goodsimg.1yyg.com/goodspic/pic-70-70/20140218133617171.jpg">
+                        <i class="u-personal">
+                        </i>
+                    </a>
+                </span>
+                <span class="u-commodity-name gray9">
+                    <h3>
+                        <a target="_blank" href="../detail.html" class="gray3">
+                            (第1847云)苹果（Apple）iPhone 5S 16G版 3G手机 电信版
+                        </a>
+                    </h3>
+                    价值：￥100.00<br />
+                    幸运云购码：123456789<br/>
+                    揭晓时间：2015-10-10 20:50:00
+                </span>
+                <span class="u-order-number">
+                    11111111
+                </span>
+                <span class="u-operation">
+                    <a href="javascript:;" class="z-gray-button z-wait">已完成</a>
+                </span>
+            </dd>
+            <dd class="has-announced">
+                <span class="u-commodity-pic">
+                    <a target="_blank" href="../detail.html">
+                        <img src="http://goodsimg.1yyg.com/goodspic/pic-70-70/20140218133617171.jpg">
+                        <i class="u-personal">
+                        </i>
+                    </a>
+                </span>
+                <span class="u-commodity-name gray9">
+                    <h3>
+                        <a target="_blank" href="../detail.html" class="gray3">
+                            (第1847云)苹果（Apple）iPhone 5S 16G版 3G手机 电信版
+                        </a>
+                    </h3>
+                    价值：￥100.00<br />
+                    幸运云购码：123456789<br/>
+                    揭晓时间：2015-10-10 20:50:00
+                </span>
+                <span class="u-order-number">
+                    11111111
+                </span>
+                <span class="u-operation">
+                    <a href="javascript:;" class="z-perfect-address">完善收货地址</a>
+                    <a href="javascript:;" class="z-gray-button z-wait">待发货</a>
+                    <a href="javascript:;" class="z-determine">确认收货</a>
+                    <a href="javascript:;" class="z-gray-button z-wait">已确认收货</a>
+                    <a href="javascript:;" class="z-determine">晒单赢福分</a>
+                    <a href="javascript:;" class="z-gray-button z-wait">已完成</a>
+                    <a href="javascript:;" class="z-gray-button z-wait">已取消</a>
+                </span>
+            </dd> -->
+
+            <!-- 无数据 -->
+            <div class="null-data" style="display:none;"><b class="gth-icon transparent-png"></b>暂无记录！</div>
+        </dl>
+    </div>
+
+    <div class="g-pagination" id="g-pagination" style="display:none;"></div>
+
+</div>

@@ -1,0 +1,1114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购</title>
+    <link rel="stylesheet" type="text/css" href="css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/GoodsDetail.css" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/share_style2_16.css" />
+    <script type="text/javascript" src="js/JQuery.js"></script>
+    <script type="text/javascript" src="js/detail.js"></script>
+    <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="js/jquery.jqzoom.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
+</head>
+<body>
+  <!--顶部-->
+  <div class="g-toolbar clrfix">
+    <div class="w1190">
+        <ul class="fl">
+            <li class="f-collect">
+                <div class="u-menu-hd">
+                    <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li id="liMobile" class="u-arr">
+                <div class="u-menu-hd transparent-png">
+                    <a href="javascript:;" target="_blank" title="手机云购">手机云购</a>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <p>
+                        <a href="javascript:;" target="_blank">
+                            <img src="images/andriod.jpg">
+                            下载客户端
+                        </a>
+                    </p>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+        </ul>
+        <ul id="ulTopRight" class="fr"><li type="nologin"><div class="u-menu-hd"><a href="member/passport/login.html" title="登录">登录</a></div></li><li type="nologin" class="f-gap"><s></s></li><li type="nologin"><div class="u-menu-hd"><a href="member/passport/register.html" title="注册">注册</a></div></li><li class="f-gap"><s></s></li>
+            <li id="liMember" class="u-arr-1yyg" style="">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="我的1元云购">我的1元云购</a>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <span><a href="javascript:;" title="云购记录">云购记录</a></span>
+                    <span><a href="javascript:;" title="获得的商品">获得的商品</a></span>
+                    <span><a href="javascript:;" title="个人设置">个人设置</a></span>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+            <li id="liHome" style="display: none;">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="我的1元云购">我的1元云购</a>
+                </div>
+            </li>
+            <li class="f-gap" style="display: none;"><s></s></li>
+            <li id="liTopUMsg" class="u-arr-news" style="display: none;" show="-1">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="消息">消息</a>
+                    <h3 style="display: none;"></h3>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <span><a href="javascript:;" title="系统消息">系统消息</a></span>
+                    <span><a href="javascript:;" title="好友请求">好友请求</a></span>
+                    <span><a href="javascript:;" title="好友请求">评论回复</a></span>
+                    <span><a href="javascript:;" title="私信" class="f-msg">私信</a></span>
+                </div>
+            </li>
+            <li class="f-gap" style="display: none;"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="充值">充值</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="帮助">帮助</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="投诉">投诉</a>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+            <li id="lizxkf" class="f-zxkf" style="">
+                <div class="u-menu-hd">
+                    <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+                </div>
+            </li>
+            <li class="f-zxkf" style="display: none;">
+               <div class="u-menu-hd">
+                   <a href="/" title="1元云购首页" class="orange">1元云购首页</a>
+               </div>
+           </li>
+        </ul>
+    </div>
+  </div>
+  <!--头部-->
+  <div class="g-header">
+     <div class="w1190">
+         <div id="topLogoAd" class="logo_1yyg fl">
+             <a href="javascript:;" class="logo transparent-png"></a>
+         </div>
+         <div class="search_cart_wrap fr">
+             <div class="number">
+                 <a href="javascript:;" target="_blank">
+                     <ul id="ulHTotalBuy">
+                         <li class="nobor gray6">累计参与</li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="nobor">,</li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="nobor">,</li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="nobor gray6 u-secondary">人次<b><s></s></b></li>
+                     </ul>
+                 </a>
+             </div>
+
+             <div class="search">
+                 <div class="form">
+                     <input id="txtHSearch" type="text" class="inputFocus" value="输入“汽车”试试" />
+                     <span>
+                         <a href="javascript:;" target="_blank" title="苹果">苹果</a>
+                         <a href="javascript:;" target="_blank" title="小米">小米</a>
+                     </span>
+                 </div>
+                 <a id="btnHSearch" href="javascript:;" class="seaIcon"><i></i></a>
+             </div>
+         </div>
+     </div>
+  </div>
+ 
+  <!--导航-->
+  <div class="g-nav">
+     <div class="w1190">
+         <div id="divGoodsSort" class="m-menu fl">
+             <div class="m-menu-all">
+                 <h3><a href="javascript:;">全部商品分类</a><em></em></h3>
+             </div>
+             <div id="divSortList" class="m-all-sort">
+                 <dl>
+                     <dt><a href="javascript:;">手机数码</a></dt>
+                     <dd>
+                         <a href="javascript:;">手机</a>
+                         <a href="javascript:;">数码</a>
+                         <a href="javascript:;">影音</a>
+                         <a href="javascript:;">苹果手机</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt><a href="javascript:;">电脑办公</a></dt>
+                     <dd>
+                         <a href="javascript:;">笔记本</a>
+                         <a href="javascript:;">平板电脑</a>
+                         <a href="javascript:;">外设</a>
+                         <a href="javascript:;">网络</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt>
+                         <a href="javascript:;">家电</a>
+                         <span>/</span>
+                         <a href="javascript:;">汽车</a>
+                     </dt>
+                     <dd>
+                         <a href="javascript:;">大家电</a>
+                         <a href="javascript:;">厨房</a>
+                         <a href="javascript:;">生活</a>
+                         <a href="javascript:;">个护</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt>
+                         <a href="javascript:;">家电</a>
+                         <span>/</span>
+                         <a href="javascript:;">汽车</a>
+                     </dt>
+                     <dd>
+                         <a href="javascript:;">大家电</a>
+                         <a href="javascript:;">厨房</a>
+                         <a href="javascript:;">生活</a>
+                         <a href="javascript:;">个护</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt>
+                         <a href="javascript:;">家电</a>
+                         <span>/</span>
+                         <a href="javascript:;">汽车</a>
+                     </dt>
+                     <dd>
+                         <a href="javascript:;">大家电</a>
+                         <a href="javascript:;">厨房</a>
+                         <a href="javascript:;">生活</a>
+                         <a href="javascript:;">个护</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt>
+                         <a href="javascript:;">家电</a>
+                         <span>/</span>
+                         <a href="javascript:;">汽车</a>
+                     </dt>
+                     <dd>
+                         <a href="javascript:;">大家电</a>
+                         <a href="javascript:;">厨房</a>
+                         <a href="javascript:;">生活</a>
+                         <a href="javascript:;">个护</a>
+                     </dd>
+                 </dl>
+             </div>
+         </div>
+         <div class="nav-main fl">
+             <ul>
+                 <li class="f-nav-home"><a href="javascript:;">首页</a></li>
+                 <li class="f-nav-lottery"><a href="javascript:;">最新揭晓</a></li>
+                 <li class="f-nav-limit"><span class="nav-new transparent-png"></span><a href="javascript:;">限购专区</a></li>
+                 <li class="f-nav-share"><a href="javascript:;">晒单分享</a></li>
+                 <li class="f-nav-group"><a href="javascript:;">云购圈</a></li>
+                 <li class="f-nav-guide"><a href="javascript:;">新手指南</a></li>
+             </ul>
+         </div>
+         <div id="divHCart" class="nav-cart fr">
+             <div class="nav-cart-btn">
+                 <a href="javascript:;" target="_blank"><i class="f-cart-icon"></i>购物车<span id="spHCart"></span></a>
+             </div>
+             <div class="nav-cart-con">
+                 <div class="m-loading-2014"><em></em></div>
+                 <div class="nav-car-cartEmpty"><i></i>您的购物车为空 !</div>
+                 <div class="nav-cart-select"></div>
+                 <div class="nav-cart-pay"></div>
+             </div>
+         </div>
+     </div>
+  </div>
+      
+
+    <div class="Current_nav">
+        当前位置：<a href="javascript:;">首页</a> <span>&gt;</span> <a href="javascript:;">所有商品</a> <span>&gt;</span> <a href="javascript:;">手机数码</a> <span>&gt;</span> <a href="javascript:;">手机</a> <span>&gt;</span> <a href="javascript:;">手机</a> <span>&gt;</span> 商品详情 
+    </div>   
+
+
+
+
+
+
+
+
+
+
+
+    <div class="ng-wrap">
+        <div id="divMain" class="ng-main-wrapper">
+            <!--期数-->
+            <div class="ng-total-nav">
+                <ul class="ng-sort clearfix">
+                    <li class=""><a href="javascript:;" title="第56792云">第56792云</a></li>
+                    <li class=""><a href="javascript:;" title="第56792云">第56792云</a></li>
+                    <li class=""><a href="javascript:;" title="第56792云">第56792云</a></li>
+                    <li class=""><a href="javascript:;" title="第56792云">第56792云</a></li>
+                    <li class=""><a href="javascript:;" title="第56792云">第56792云</a></li>
+                    <li class=""><a href="javascript:;" title="第56792云">第56792云</a></li>
+                    <li id="li_more"><a href="javascript:;" title="更多">更多<i>+</i></a></li>
+                </ul>
+                <div class="ng-show-past" style="margin-top:0px; height: 521px;display:none;">
+                    <div class="ng-main clearfix">
+                        <div class="ng-period">
+                            <div class="ng-period-inner">
+                                <div class="select-wrap">
+                                    <div class="input-wrapper">
+                                        <div class="label">
+                                            直达第
+                                        </div>
+                                        <div class="inp">
+                                            <input id="txtPeriod" maxlength="7" class="inputFocus" value="请输入" style="color: rgb(187, 187, 187);">
+                                        </div>
+                                        <div class="unit">
+                                            云
+                                        </div>
+                                        <a id="btnGo" href="javascript:;" class="fly ng-result-bg transparent-png">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="div_ngpt" class="ng-pt jspScrollable" tabindex="0" style="overflow: hidden; padding: 0px; width: 1169px;">
+                                    <div class="jspContainer" style="width: 1169px; height: 445px;">
+                                        <div class="jspPane" style="padding: 0px; width: 1119px; top:0px;">
+                                            <ul class="ng-pt-inner clearfix">
+                                                <li class="current">
+                                                    <a href="javascrpt:;">
+                                                        第56901云
+                                                        <b>
+                                                            进行中
+                                                            <span class="dotting">
+                                                            </span>
+                                                        </b>
+                                                    </a>
+                                                </li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                                <li><a href="javascrpt:;">第56900云</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="jspVerticalBar" style="display:none;">
+                                            <div class="jspCap jspCapTop">
+                                            </div>
+                                            <div class="jspTrack" style="height: 445px;">
+                                                <div class="jspDrag" style="height: 281px; top: 12.5670498084291px;">
+                                                    <div class="jspDragTop">
+                                                    </div>
+                                                    <div class="jspDragBottom">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="jspCap jspCapBottom">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="ng_bg_bottom" class="ng-pt-bg" style="">
+                                </div>
+                                <div id="ng_bg_top" class="ng-pt-bg ng-pt-top" style="display:none;">
+                                </div>
+                                <a id="a_close" href="javascript:;" title="关闭" class="ng-frame-close ng-result-bg transparent-png">
+                                    关闭
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--商品信息 begin-->
+            <div id="divMainInfo" class="ng-main clearfix">
+                <!--图片展示-->
+                <div class="ng-goods-img">
+                    <!-- <div id="middlePicRemark" class="middlePicRemark"></div>
+                    <img id="imgGoodsPic" alt="" src="http://goodsimg.1yyg.com/GoodsPic/pic-38-38/20140910144704643.jpg" style="display: none;"> -->
+                    <div id="preview" class="ng-middle-box spec-preview">
+                        <span class="jqzoom">
+                            <img style="width:343px;height:343px;" jqimg="images/data/da_img.jpg" src="images/data/20140910144704643.jpg" />
+                            <div class="product-end">本商品已结束</div>
+                        </span>
+                    </div>
+                    <div class="spec-scroll">
+                        <div class="items">
+                            <ul>
+                                <li><img bimg="images/data/da_img.jpg" src="images/data/20140910144704643.jpg" onmousemove="preview(this);"></li>
+                                <li><img bimg="images/data/da_img.jpg" src="images/data/20140910144704643.jpg" onmousemove="preview(this);"></li>
+                                <li><img bimg="images/data/da_img.jpg" src="images/data/20140910144704643.jpg" onmousemove="preview(this);"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="ng-share-out">
+                        <a id="a_sc" href="javascript:;" class="sc"><i class="t-icon sc-icon ng-box-bg"></i>关注</a>
+                        <div class="fx">
+                            <div class="fx-txt">
+                                <i class="t-icon fx-icon ng-box-bg"></i>分享
+                            </div>
+                            <div>
+                                <div class="fx-out-inner">
+                                    <div class="bdsharebuttonbox bdshare-button-style2-16" data-bd-bind="1446621845888">
+                                        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                                        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                                        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                                        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                                        <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--正在进行中-->
+                <div class="ng-goods-detail">
+                        
+                    <h2 class="title end-title">
+                        2014款 长安奔奔 1.4 IMT 豪华型汽车</h2>
+                    <div class="has-end">
+                        <span>
+                            本商品已结束云购</span>
+                    </div>
+                
+                <div class="about-tips clearfix">
+                    <ul class="f-inner clearfix">
+                        <li class="z-beginning">三大服务保证：</li>
+                        <li><a href="javascript:;" target="_blank"><i class="ng-xq-bg t1"></i>100%公平公正</a></li>
+                        <li class="z-lines"><b></b></li>
+                        <li><a href="javascript:;" target="_blank"><i class="ng-xq-bg t2"></i>100%正品保证</a></li>
+                        <li class="z-lines"><b></b></li>
+                        <li><a href="javascript:;" target="_blank"><i class="ng-xq-bg t3"></i>全国免费配送</a></li>
+                    </ul>
+                </div>
+
+                <div class="advert-wrapper">
+                    <ul class="select-wrapper">
+                        <li class="gray9">怎么玩儿<i class="ng-xq-bg"></i></li>
+                    </ul>
+                    <div id="div_advertinner" class="advert-inner clearfix">
+                        <div class="advert-list01 advert-m">
+                            <div class="ad-icon01 ng-xq-bg"></div>
+                            <p class="ad-title">选择商品</p>
+                            <p class="ad-info">
+                                每个商品规定总需<br>
+                                参与人次(1人次=1元)
+                            </p>
+                            <div class="arrow ng-xq-bg"></div>
+                        </div>
+                        <div class="advert-list02 advert-m">
+                            <div class="ad-icon02 ng-xq-bg"></div>
+                            <p class="ad-title">支付1元</p>
+                            <p class="ad-info">
+                                参与人次越多<br>
+                                获得机率越大
+                            </p>
+                            <div class="arrow ng-xq-bg"></div>
+                        </div>
+                        <div class="advert-list03 advert-m">
+                            <div class="ad-icon03 ng-xq-bg"></div>
+                            <p class="ad-title">抽出幸运获得者</p>
+                            <p class="ad-info">
+                                所有人次售完后根据计算规则<br>
+                                抽出一位幸运获得者
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+                <!--揭晓倒计时-->
+                <div class="ng-goods-detail" style="display:none;">
+                    <h2 class="title">
+                        <span class="num">
+                            (第624云)
+                        </span>
+                        永恒印记 18K红金钻石吊坠+项链
+                    </h2>
+                    <p class="price">
+                        价值：￥4588.00
+                    </p>
+                    <!--倒计时模块-->
+                    <div class="time-model clearfix">
+                        <div class="time-view">
+                            <div class="full-tips">
+                                已满员，揭晓结果即将公布
+                            </div>
+                            <ul id="ul_lotterytime" class="for-begin clearfix">
+                                <li class="cur">
+                                    <em id="liMinute1">
+                                        0
+                                    </em>
+                                    <em id="liMinute2">
+                                        1
+                                    </em>
+                                </li>
+                                <li>
+                                    :
+                                </li>
+                                <li class="cur">
+                                    <em id="liSecond1">
+                                        5
+                                    </em>
+                                    <em id="liSecond2">
+                                        9
+                                    </em>
+                                </li>
+                                <li>
+                                    :
+                                </li>
+                                <li class="cur">
+                                    <em id="liMilliSecond1">
+                                        8
+                                    </em>
+                                    <em id="last">
+                                        3
+                                    </em>
+                                </li>
+                            </ul>
+                            <!--正在计算中-->
+                            <div id="div_eveling" style="display: none;" class="jiexiao-end">
+                                <div class="line-wrapper u-progress">
+                                    <span class="pgbar">
+                                        <span class="pging">
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-view">
+                            <img id="imgFunny" src="images/n9.gif"
+                            border="0" alt="">
+                        </div>
+                    </div>
+                    <!--如何计算-->
+                    <div class="method">
+                        <p class="t">
+                            如何计算？
+                        </p>
+                        <p>
+                            1、取该商品最后购买时间前网站所有商品的最后100条购买时间记录；
+                        </p>
+                        <p>
+                            2、按时、分、秒、毫秒排列取值之和，除以该商品总参与人次后取余数；
+                        </p>
+                        <p>
+                            3、余数加上10000001 即为“幸运云购码”；
+                        </p>
+                        <p>
+                            4、余数是指整数除法中被除数未被除尽部分， 如7÷3 = 2 ......1，1就是余数 。
+                        </p>
+                    </div>
+                    <!--计算过程-->
+                    <div class="process">
+                        <p class="t">
+                            计算过程
+                        </p>
+                        <div class="process-detail clearfix">
+                            <span>
+                                (
+                            </span>
+                            <div class="process-btn step01">
+                                <div class="tb-cell">
+                                    <p class="o-num">
+                                        ?
+                                    </p>
+                                    <p>
+                                        100条时间
+                                        <br>
+                                        取值之和
+                                    </p>
+                                </div>
+                            </div>
+                            <span>
+                                %
+                            </span>
+                            <div class="process-btn step02">
+                                <div class="tb-cell">
+                                    <p class="o-num">
+                                        4588
+                                    </p>
+                                    <p>
+                                        总需参与人次
+                                    </p>
+                                </div>
+                            </div>
+                            <span>
+                                ) +
+                            </span>
+                            <div class="process-btn step03">
+                                <div class="tb-cell">
+                                    <p class="o-num">
+                                        10000001
+                                    </p>
+                                    <p>
+                                        固定数值
+                                    </p>
+                                </div>
+                            </div>
+                            <span>
+                                =
+                            </span>
+                            <div class="process-btn step04">
+                                <div class="tb-cell">
+                                    <p class="o-num">
+                                        ?
+                                    </p>
+                                    <p>
+                                        最终计算结果
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--右侧：云购记录-->
+                <div class="ng-goods-buy">
+                    <div class="ng-buy-list">
+                        <div class="ng-buy-menu">
+                            <span>它们就快揭晓啦，赶快看看吧！</span>
+                        </div>
+                        <div class="list-wrap">
+                                
+                            <div class="ng-buy-select">
+                                <div class="img-wrapper">
+                                    <a rel="nofollow" href="detail.html" title="吉列（Gillette）锋速3 手动剃须刀 1刀架1刀片头">
+                                        <img alt="吉列（Gillette）锋速3 手动剃须刀 1刀架1刀片头" src="http://goodsimg.1yyg.com/GoodsPic/pic-200-200/20151116175458765.jpg" width="82" height="82">
+                                    </a>
+                                </div>
+                                <div class="info-select">
+                                    <p class="p-name"><a rel="nofollow" href="detail.html" title="吉列（Gillette）锋速3 手动剃须刀 1刀架1刀片头">吉列（Gillette）锋速3 手动剃须刀 1刀架1刀片头</a></p>
+                                    <dl class="m-progress">
+                                        <dt><b title="已完成81.03%" style="width: 81.03%"></b></dt>
+                                    </dl>
+                                    <a href="detail.html" class="now-buy">立即1元云购</a>
+                                </div>
+                            </div>
+
+                            <div class="ng-buy-select">
+                                <div class="img-wrapper">
+                                    <a rel="nofollow" href="detail.html" title="吉列（Gillette）锋速3 手动剃须刀 1刀架1刀片头">
+                                        <img alt="吉列（Gillette）锋速3 手动剃须刀 1刀架1刀片头" src="http://goodsimg.1yyg.com/GoodsPic/pic-200-200/20151116175458765.jpg" width="82" height="82">
+                                    </a>
+                                </div>
+                                <div class="info-select">
+                                    <p class="p-name"><a rel="nofollow" href="detail.html" title="吉列（Gillette）锋速3 手动剃须刀 1刀架1刀片头">吉列（Gillette）锋速3 手动剃须刀 1刀架1刀片头</a></p>
+                                    <dl class="m-progress">
+                                        <dt><b title="已完成81.03%" style="width: 81.03%"></b></dt>
+                                    </dl>
+                                    <a href="detail.html" class="now-buy">立即1元云购</a>
+                                </div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                </div>
+                <!--清除浮动-->
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <!--中间浮动导航-->
+        <div id="div_menu" class="ng-goods-option" fixed="0">
+            <ul id="ul_menu" class="options-menu">
+                <li class="current"><span>商品详情</span><i class="bor"></i></li>
+                <li style="display:none;"></li>
+                <li class=""><span>晒单</span><i class="bor"></i></li>
+            </ul>
+            <a id="btnAdd2Card" href="javascript:;" class="op-addcar" style="display: none;">加入购物车<i class="a-icon transparent-png"></i></a>
+        </div>
+
+        <!--商品信息-->
+        <div id="div_desc" class="ng-product-content">
+            <div class="product-con">编辑器内容</div>
+        </div>
+
+        <!--晒单-->
+        <div id="div_postlist" class="ng-share-goods">
+<!--             <div class="ng-share-header">
+                <span class="title">商品晒单</span>
+            </div> -->
+            <div class="total">本商品已有<span class="gray6">2166</span>位幸运用户晒单 <em class="f-mar-left">总共</em><span class="orange">22669</span>条评论</div>
+            <div class="ng-share-wrapper">
+
+
+                <div class="ng-share-detail clearfix">
+                    <div class="ng-share-pic">
+                        <a href="javascript:;" type="showCard" uweb="1006672390"
+                        target="_blank">
+                            <img src="http://faceimg.1yyg.com/UserFace/20150403034413357.jpg" alt=""
+                            width="80" height="80">
+                        </a>
+                    </div>
+                    <div class="ng-share-con">
+                        <div class="name-line">
+                            <a href="javascript:;" target="_blank" rel="nofollow"
+                            class="u-name">
+                                风云裙850850
+                            </a>
+                            <span class="u-time">
+                                11月02日 22:47
+                            </span>
+                        </div>
+                        <div class="u-data">
+                            <span class="u-num">
+                                第<span>16268</span>云晒单
+                            </span>
+                            <a href="javascript:;" class="u-show" target="_blank">
+                                其实中奖真心不难，实力加运气
+                            </a>
+                        </div>
+                        <div class="share-info">
+                            <p>
+                                <a href="javascript:;" target="_blank">
+                                    不知道是自己的运气还是什么，中奖了，收到快递的那一刻赶紧在自己车上拍了几张照片给朋友看了看，晒单来的挺晚了不好意思，这里说句公道话，云购平台办理的非常不错，在自己购物的同时省钱，还能让自己充满信心，希望大家积极参与值得一云，希望大家都中大奖。
+                                </a>
+                            </p>
+                        </div>
+                        <div class="pic-list-wrap">
+                            <ul class="pic-list clearfix">
+                                <li pic="20151102224618045.jpg">
+                                    <span>
+                                        <img width="71px" height="71px" src="http://postimg.1yyg.com/UserPost/Small/20151102224618045.jpg">
+                                    </span>
+                                    <div class="pic-hover transparent-png" style="display:none;">
+                                    </div>
+                                </li>
+                                <li pic="20151102224626289.jpg">
+                                    <span>
+                                        <img width="71px" height="71px" src="http://postimg.1yyg.com/UserPost/Small/20151102224626289.jpg">
+                                    </span>
+                                    <div class="pic-hover transparent-png" style="display:none;">
+                                    </div>
+                                </li>
+                                <li pic="20151102224636019.jpg">
+                                    <span>
+                                        <img width="71px" height="71px" src="http://postimg.1yyg.com/UserPost/Small/20151102224636019.jpg">
+                                    </span>
+                                    <div class="pic-hover transparent-png" style="display:none;">
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="talk-wrap">
+                                <a href="javascript:;" num="0" postid="92122" class="xianmu">
+                                    <i class="transparent-png"></i>羡慕(
+                                    <em>0</em>)
+                                    <img class="transparent-png" src="http://skin.1yyg.com/post/images/xin.png">
+                                </a>
+                                <a rel="nofollow" href="javascript:;" target="_blank"
+                                class="pinglun">
+                                    <i class="transparent-png"></i>评论(<em>1</em>)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="ng-share-detail clearfix">
+                    <div class="ng-share-pic">
+                        <a href="javascript:;" type="showCard" uweb="1006672390"
+                        target="_blank">
+                            <img src="http://faceimg.1yyg.com/UserFace/20150403034413357.jpg" alt=""
+                            width="80" height="80">
+                        </a>
+                    </div>
+                    <div class="ng-share-con">
+                        <div class="name-line">
+                            <a href="javascript:;" target="_blank" rel="nofollow"
+                            class="u-name">
+                                风云裙850850
+                            </a>
+                            <span class="u-time">
+                                11月02日 22:47
+                            </span>
+                        </div>
+                        <div class="u-data">
+                            <span class="u-num">
+                                第<span>16268</span>云晒单
+                            </span>
+                            <a href="javascript:;" class="u-show" target="_blank">
+                                其实中奖真心不难，实力加运气
+                            </a>
+                        </div>
+                        <div class="share-info">
+                            <p>
+                                <a href="javascript:;" target="_blank">
+                                    不知道是自己的运气还是什么，中奖了，收到快递的那一刻赶紧在自己车上拍了几张照片给朋友看了看，晒单来的挺晚了不好意思，这里说句公道话，云购平台办理的非常不错，在自己购物的同时省钱，还能让自己充满信心，希望大家积极参与值得一云，希望大家都中大奖。
+                                </a>
+                            </p>
+                        </div>
+                        <div class="pic-list-wrap">
+                            <ul class="pic-list clearfix">
+                                <li pic="20151102224618045.jpg">
+                                    <span>
+                                        <img width="71px" height="71px" src="http://postimg.1yyg.com/UserPost/Small/20151102224618045.jpg">
+                                    </span>
+                                    <div class="pic-hover transparent-png" style="display:none;">
+                                    </div>
+                                </li>
+                                <li pic="20151102224626289.jpg">
+                                    <span>
+                                        <img width="71px" height="71px" src="http://postimg.1yyg.com/UserPost/Small/20151102224626289.jpg">
+                                    </span>
+                                    <div class="pic-hover transparent-png" style="display:none;">
+                                    </div>
+                                </li>
+                                <li pic="20151102224636019.jpg">
+                                    <span>
+                                        <img width="71px" height="71px" src="http://postimg.1yyg.com/UserPost/Small/20151102224636019.jpg">
+                                    </span>
+                                    <div class="pic-hover transparent-png" style="display:none;">
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="talk-wrap">
+                                <a href="javascript:;" num="0" postid="92122" class="xianmu">
+                                    <i class="transparent-png"></i>羡慕(
+                                    <em>0</em>)
+                                    <img class="transparent-png" src="http://skin.1yyg.com/post/images/xin.png">
+                                </a>
+                                <a rel="nofollow" href="javascript:;" target="_blank"
+                                class="pinglun">
+                                    <i class="transparent-png"></i>评论(<em>1</em>)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="ng-share-detail clearfix">
+                    <div class="ng-share-pic">
+                        <a href="javascript:;" type="showCard" uweb="1006672390"
+                        target="_blank">
+                            <img src="http://faceimg.1yyg.com/UserFace/20150403034413357.jpg" alt=""
+                            width="80" height="80">
+                        </a>
+                    </div>
+                    <div class="ng-share-con">
+                        <div class="name-line">
+                            <a href="javascript:;" target="_blank" rel="nofollow"
+                            class="u-name">
+                                风云裙850850
+                            </a>
+                            <span class="u-time">
+                                11月02日 22:47
+                            </span>
+                        </div>
+                        <div class="u-data">
+                            <span class="u-num">
+                                第<span>16268</span>云晒单
+                            </span>
+                            <a href="javascript:;" class="u-show" target="_blank">
+                                其实中奖真心不难，实力加运气
+                            </a>
+                        </div>
+                        <div class="share-info">
+                            <p>
+                                <a href="javascript:;" target="_blank">
+                                    不知道是自己的运气还是什么，中奖了，收到快递的那一刻赶紧在自己车上拍了几张照片给朋友看了看，晒单来的挺晚了不好意思，这里说句公道话，云购平台办理的非常不错，在自己购物的同时省钱，还能让自己充满信心，希望大家积极参与值得一云，希望大家都中大奖。
+                                </a>
+                            </p>
+                        </div>
+                        <div class="pic-list-wrap">
+                            <ul class="pic-list clearfix">
+                                <li pic="20151102224618045.jpg">
+                                    <span>
+                                        <img width="71px" height="71px" src="http://postimg.1yyg.com/UserPost/Small/20151102224618045.jpg">
+                                    </span>
+                                    <div class="pic-hover transparent-png" style="display:none;">
+                                    </div>
+                                </li>
+                                <li pic="20151102224626289.jpg">
+                                    <span>
+                                        <img width="71px" height="71px" src="http://postimg.1yyg.com/UserPost/Small/20151102224626289.jpg">
+                                    </span>
+                                    <div class="pic-hover transparent-png" style="display:none;">
+                                    </div>
+                                </li>
+                                <li pic="20151102224636019.jpg">
+                                    <span>
+                                        <img width="71px" height="71px" src="http://postimg.1yyg.com/UserPost/Small/20151102224636019.jpg">
+                                    </span>
+                                    <div class="pic-hover transparent-png" style="display:none;">
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="talk-wrap">
+                                <a href="javascript:;" num="0" postid="92122" class="xianmu">
+                                    <i class="transparent-png"></i>羡慕(
+                                    <em>0</em>)
+                                    <img class="transparent-png" src="http://skin.1yyg.com/post/images/xin.png">
+                                </a>
+                                <a rel="nofollow" href="javascript:;" target="_blank"
+                                class="pinglun">
+                                    <i class="transparent-png"></i>评论(<em>1</em>)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+            
+                <div class="g-pagination">
+                    <span class="f-noClick"><a title="上一页" href="javascript:;"><i class="f-tran f-tran-prev">&lt;</i>上一页</a></span>
+                    <span class="current"><a>1</a></span>
+                    <span><a href="javascript:;">2</a></span>
+                    <span><a href="javascript:;">3</a></span>
+                    <span><a href="javascript:;">4</a></span>
+                    <span><a href="javascript:;">5</a></span>
+                    <span>…</span>
+                    <span><a href="javascript:;">6</a></span>
+                    <span><a href="javascript:;">下一页<i class="f-tran f-tran-next">&gt;</i></a></span>
+                    <span class="f-mar-left">共<em>6</em>页，去第</span>
+                    <span><input type="text" value="1">页</span>
+                    <span class="f-mar-left"><a id="btnGotoPage" href="javascript:;" title="确定">确定</a></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+
+    <!--底部-->
+    <div class="g-footer">
+        <div class="w1190">
+         <div class="g-guide clrfix">
+             <dl>
+                 <dt>新手指南</dt>
+                 <dd><a target="_blank" href="about.html" title="了解1元云购">了解1元云购</a></dd>
+                 <dd><a target="_blank" href="htm-questiondetail.html" title="常见问题">常见问题</a></dd>
+                 <dd><a target="_blank" href="htm-userExperience.html" title="会员福分经验值">会员福分经验值</a></dd>
+             </dl>
+             <dl>
+                 <dt>云购保障</dt>
+                 <dd><a target="_blank" href="htm-genuinetwo.html" title="1元云购保障体系">1元云购保障体系</a></dd>
+                 <dd><a target="_blank" href="htm-securepayment.html" title="安全支付">安全支付</a></dd>
+                 <dd><a target="_blank" href="htm-suggestion.html" title="投诉建议">投诉建议</a></dd>
+             </dl>
+             <dl>
+                 <dt>商品配送</dt>
+                 <dd><a target="_blank" href="htm-deliveryfees.html" title="配送费用">配送费用</a></dd>
+                 <dd><a target="_blank" href="htm-prodcheck.html" title="商品验货与签收">商品验货与签收</a></dd>
+                 <dd><a target="_blank" href="htm-shiptwo.html" title="长时间未收到商品">长时间未收到商品</a></dd>
+             </dl>
+             <dl>
+                 <dt>关于1元云购</dt>
+                 <dd><a target="_blank" href="htm-about.html" title="1元云购介绍">1元云购介绍</a></dd>
+                 <dd><a target="_blank" href="fund.html" title="云购公益">云购公益</a></dd>
+                 <dd><a target="_blank" href="htm-contactus.html" title="联系我们">联系我们</a></dd>
+             </dl>
+             <dl>
+                 <dt>携手1元云购</dt>
+                 <dd><a target="_blank" href="htm-business.html" title="商务合作">商务合作</a></dd>
+                 <dd><a target="_blank" href="ReferAuth.html" title="邀请">邀请</a></dd>
+                 <dd><a target="_blank" href="htm-qqgroup.html" title="官方QQ群交流">官方QQ群交流</a></dd>
+             </dl>
+         </div>
+
+         <div class="g-service">
+             <div class="m-ser u-ser1">
+                 <ul>
+                     <li><s class="u-icons"></s></li>
+                     <li>
+                         <dl>
+                             <dt>下载手机客户端</dt>
+                             <dd><b class="u-icons"></b></dd>
+                             <dd><a target="_blank" href="javascript:;" title="立即下载">立即下载</a></dd>
+                         </dl>
+                     </li>
+                 </ul>
+             </div>
+             <div class="m-ser u-ser2">
+                 <ul>
+                     <li><a href="javascript:;">
+                         <img src="images/1yyg-wx.png" /></a></li>
+                     <li>
+                         <dl>
+                             <dt><a target="_blank" href="javascript:;"><i class="u-icons"></i>关注官方微信</a></dt>
+                             <dd><a target="_blank" href="javascript:;"><b class="u-icons"></b></a></dd>
+                         </dl>
+                     </li>
+                 </ul>
+             </div>
+             <div class="m-ser u-ser3">
+                 <ul>
+                     <li><s class="u-icons"></s></li>
+                     <li>
+                         <dl>
+                             <dt>服务器时间</dt>
+                             <dd id="pServerTime">
+                                 <span>00</span>
+                                 <em>:</em>
+                                 <span>00</span>
+                                 <em>:</em>
+                                 <span>00</span>
+                             </dd>
+                         </dl>
+                     </li>
+                 </ul>
+             </div>
+             <div class="m-ser u-ser4">
+                 <ul>
+                     <li><s class="u-icons"></s></li>
+                     <li>
+                         <dl>
+                             <dt>云购公益基金</dt>
+                             <dd><a target="_blank" href="javascript:;" id="spFundTotal">￥0000000.00</a></dd>
+                         </dl>
+                     </li>
+                 </ul>
+             </div>
+             <div class="m-ser u-ser5">
+                 <ul>
+                     <li><s class="u-icons"></s></li>
+                     <li>
+                         <dl>
+                             <dt>服务热线</dt>
+                             <dd class="orange u-tel">400-850-8080</dd>
+                             <dd><a id="btnBtmQQ" href="javascript:;" class="u-service-off u-service"><i></i>在线客服</a></dd>
+                         </dl>
+                     </li>
+                 </ul>
+             </div>
+         </div>
+
+         <div class="g-special clrfix">
+             <ul>
+                 <li>
+                     <a href="htm-genuinetwo.html" target="_blank" title="100%公平公正">
+                        <em class="u-spc-icon1"></em>
+                        <span>100%公平公正</span>
+                        参与过程公开透明，用户可随时查看
+                     </a>
+                 </li>
+                 <li>
+                     <a href="htm-genuine.html" target="_blank" title="100%正品保证">
+                        <em class="u-spc-icon2"></em>
+                        <span>100%正品保证</span>
+                        精心挑选优质商家，100%品牌正品
+                     </a>
+                 </li>
+                 <li>
+                     <a href="htm-deliveryfees.html" target="_blank" title="全国免运费">
+                        <em class="u-spc-icon3"></em>
+                        <span>全国免运费</span>
+                        全场商品全国包邮（港澳台地区除外）
+                     </a>
+                 </li>
+             </ul>
+         </div>
+        </div>
+    </div>
+
+
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="javascript:;" target="_blank" title="首页">首页</a><s></s>
+                <a href="javascript:;" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="javascript:;" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="javascript:;" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="javascript:;" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1</div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹层开始 -->
+    <link rel="stylesheet" type="text/css" href="css/pageDialog.css" /> 
+    <div class="pageDialogBG" id="pageDialogBG"></div>
+    <!-- <div class="pageDialogBorder" id="pageDialogBorder"></div> -->
+    <div class="pageDialog" id="pageDialog">
+        <div class="pageDialogClose" id="pageDialogClose" title="关闭"></div>
+        <div class="pageDialogMain" id="pageDialogMain">
+            <div class="content">
+                <iframe name="fastLoginFrame" id="fastLoginFrame" frameborder="0" src="ShopLogin.html" style="width:390px;height:407px;padding:0px;overflow:auto;"></iframe>
+            </div>
+        </div>
+    </div>
+    <!-- 弹层结束 -->
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

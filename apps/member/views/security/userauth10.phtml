@@ -1,0 +1,40 @@
+﻿<input type="hidden" id="pageID" value="security">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title bor-bot">
+        <span class="gray3">身份验证</span>
+    </div>
+    <div class="z-content">
+        <div class="person-wrap">
+            <ul class="person-list">
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <div class="info-sign"><i></i>温馨提示：为保证您的账户安全，请验证身份！</div>
+                    </span>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">您当前绑定的手机号：<b class="blue"><?php echo getHiddenMobile($this->view->memberInfo['mobile'])?></b></span>
+
+                </li>
+                <li>
+                    <span class="l-side">验证码：</span>
+                    <span class="r-side">
+                        <div class="inp-wrap">
+                            <input id="txtCheckCode" type="text" maxlength="6" class="code-inner inputFocus" value="请输入6位验证码" style="color: rgb(187, 187, 187);">
+                            <a id="btnGetCode" href="javascript:;" class="get-code-btn">点击获取验证码</a>
+                        </div>
+                    </span>
+                    <div id="div_tips"></div>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <a id="btnSubmit" href="<?php echo $this->view->baseUrl?>member/security/setpaypwd" class="set-save-btn">确定</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <a href="javascript:history.go(-1);" class="return-btn">返回</a>
+</div>

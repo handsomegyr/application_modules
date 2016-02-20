@@ -1,0 +1,58 @@
+﻿<link rel="stylesheet" type="text/css" href="/help/css/Help.css" />
+<div class="help-main w1190">
+    <div id="ltlContents" class="help-right-part">
+        <div class="help-right-part">
+            <div class="help-in-rihgt-part">
+                <h2>投诉与建议</h2>
+                <style>
+                .help-nav ul li a.cur09{color:#f60;  position:relative; font-weight:bold;}
+                .help-nav ul li a.cur09 b{width:4px; height:4px; overflow:hidden; background:#f60; display:inline-block; position:absolute; left:-10px; top:5px;}
+                .help-suggestion dl dt,dd,input,select{font-size:14px; vertical-align:middle;}
+                </style>
+                <div class="help-content">
+                    <p class="textindent">
+                        1元云购很高兴您能提供更好的建议与意见使我们不断完善与进步，我们收到您的意见与建议以后会尽快回复您，并根据建议与意见的可执行程度为您赠送礼品。你可以通过以下方式为我们提出意见和建议：</p>
+                    <form action="suggestion.html" method="post">
+                    <div class="help-suggestion">
+                        <dl>
+                            <dt>主题：</dt>
+                            <dd class="dd_text">
+                            <input name="Zti" id="Ztisuggest" class="input_roid" type="radio" checked="checked" value="投诉与建议"><label for="Ztisuggest" class="gender">投诉与建议</label>&nbsp;
+                            <input name="Zti" id="Ztidelivery" class="input_roid" type="radio" value="商品配送"><label for="Ztidelivery" class="gender">商品配送</label>&nbsp;
+                            <input name="Zti" id="Ztiserver" class="input_roid" type="radio" value="售后服务"><label for="Ztiserver" class="gender">售后服务</label>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>昵称：</dt>
+                            <dd><input name="Zname" id="Zname" type="text" class="input_text" maxlength="50"><div id="dZname"></div></dd>
+                        </dl>
+                        <dl>
+                            <dt>电话：</dt>
+                            <dd><input name="Zphone" id="Zphone" type="text" class="input_text" maxlength="20"><div id="dZphone"></div></dd>
+                        </dl>
+                        <dl>
+                            <dt><label style="color:Red">*</label>E-mail：</dt><dd><input name="Zemail" id="Zemail" class="input_text" type="text" maxlength="100"><div id="dZemail"></div></dd>
+                        </dl>
+                        <dl>
+                            <dt><label style="color:Red">*</label>反馈内容：</dt><dd><textarea cols="50" name="Zcontent" class="input_textarea" id="Zcontent" rows="5" style="line-height:22px;"></textarea><div id="dZcontent"></div></dd>
+                        </dl>
+                        <dl>
+                            <dt>验证码：</dt>
+                            <dd><input name="Zyanma" type="text" class="input_text" id="Zyanma" style="width: 55px;float:left;vertical-align: middle;" maxlength="6">
+                            <img src="<?php echo $this->view->baseUrl?>service/captcha/create?image_width=120&image_height=80" id="Zshowimg" name="Zshowimg" width="100" height="34" class="ZImageClass">
+                            <span id="ZshowimgA" style="cursor: pointer;">看不清？</span>
+                            <div id="dZyanma"></div></dd>
+                        </dl>
+                        <div class="help-action">
+                            <input id="butSubmit" name="BT_Add" class="help-btn" type="button" value="提交信息">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php $this->partial("partials/help/leftpart") ?>
+</div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/help.js"></script>

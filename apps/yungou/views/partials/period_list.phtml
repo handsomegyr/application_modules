@@ -1,0 +1,89 @@
+
+        <div class="ng-total-nav">
+            <ul class="ng-sort clearfix">
+            <?php $periodList = \Webcms\Goods\Helpers\GoodsHelper::getPeriodList($this->view->goodsInfo['goods_commonid'])?>
+            <?php if(!empty($periodList)){?>
+            <?php foreach ($periodList as $idx => $goods) {?>
+                <li class="<?php if($this->view->goodsInfo['_id'] == $goods['_id']){?>current now<?php }?>">
+                <?php if($goods['sale_state'] == \Webcms\Goods\Models\Goods::SALE_STATE1){?>
+                <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" title="第<?php echo $goods['period']?>云<?php echo \Webcms\Goods\Helpers\GoodsHelper::getSaleState($goods['sale_state'])?>">第<?php echo $goods['period']?>云<?php echo \Webcms\Goods\Helpers\GoodsHelper::getSaleState($goods['sale_state'])?><span class="dotting"></span></a>
+                <?php }elseif($goods['sale_state'] == \Webcms\Goods\Models\Goods::SALE_STATE3 && $goods['prize_time'] <= getMilliTime()){?>
+                <a href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $goods['_id']?>" title="第<?php echo $goods['period']?>云">第<?php echo $goods['period']?>云</a>
+                <?php }else{?>
+                <a href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $goods['_id']?>" title="第<?php echo $goods['period']?>云">第<?php echo $goods['period']?>云</a>
+                <?php }?>
+                </li>
+            <?php if($idx>=8)break;?>
+            <?php }?>                
+                <li id="li_more"><a href="javascript:;" title="更多">更多<i>+</i></a></li>
+            <?php }?>
+            </ul>
+            <div class="ng-show-past" style="margin-top:-524px; height: 521px;left:-1px;">
+                <div class="ng-main clearfix">
+                    <div class="ng-period">
+                        <div class="ng-period-inner">
+                            <div class="select-wrap">
+                                <div class="input-wrapper">
+                                    <div class="label">
+                                        直达第
+                                    </div>
+                                    <div class="inp">
+                                        <input id="txtPeriod" maxlength="7" class="inputFocus" value="请输入" style="color: rgb(187, 187, 187);">
+                                    </div>
+                                    <div class="unit">
+                                        云
+                                    </div>
+                                    <a id="btnGo" href="javascript:;" class="fly ng-result-bg transparent-png">
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="div_ngpt" class="ng-pt jspScrollable" tabindex="0" style="overflow: hidden; padding: 0px; width: 1169px;">
+                                <div class="jspContainer" style="width: 1169px; height: 445px;">
+                                    <div class="jspPane" style="padding: 0px; width: 1119px; top:0px;">
+                                        <ul class="ng-pt-inner clearfix">
+                                            <?php if(!empty($periodList)){?>
+                                            <?php foreach ($periodList as $idx => $goods) {?>
+                                            
+                                            <li <?php if($this->view->goodsInfo['_id'] == $goods['_id']){?>class="current"<?php }?>>
+                                                <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>">
+                                                    第<?php echo $goods['period']?>云
+                                                    <?php if($idx==0){?>
+                                                    <b>
+                                                        <?php echo \Webcms\Goods\Helpers\GoodsHelper::getSaleState($goods['sale_state'])?>
+                                                        <span class="dotting">
+                                                        </span>
+                                                    </b>
+                                                    <?php }?>
+                                                </a>
+                                            </li><?php }?>
+                                            <?php }?>                                            
+                                        </ul>
+                                    </div>
+                                    <div class="jspVerticalBar" style="display:none;">
+                                        <div class="jspCap jspCapTop">
+                                        </div>
+                                        <div class="jspTrack" style="height: 445px;">
+                                            <div class="jspDrag" style="height: 281px; top: 12.5670498084291px;">
+                                                <div class="jspDragTop">
+                                                </div>
+                                                <div class="jspDragBottom">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="jspCap jspCapBottom">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="ng_bg_bottom" class="ng-pt-bg" style="">
+                            </div>
+                            <div id="ng_bg_top" class="ng-pt-bg ng-pt-top" style="display:none;">
+                            </div>
+                            <a id="a_close" href="javascript:;" title="关闭" class="ng-frame-close ng-result-bg transparent-png">
+                                关闭
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

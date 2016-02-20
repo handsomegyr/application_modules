@@ -1,0 +1,276 @@
+﻿<input type="hidden" id="pageID" value="membermodify">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title bor-bot">
+        <span class="gray3">个人资料</span>
+    </div>
+    <div class="z-content">
+        <div class="con">
+            <div class="pic-side">
+                <div class="pic-wrap">
+                    <a href="<?php echo $this->view->baseUrl?>member/admin/userphoto" class="h-pic">
+                    <img src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>" width="120" height="120">
+                    </a><a href="<?php echo $this->view->baseUrl?>member/admin/userphoto" class="h-txt">修改头像</a>
+                </div>
+                
+                <div class="pic-wrap">
+                    <?php if(empty($this->view->memberInfo['mobile_bind'])){?>
+                    <a href="<?php echo $this->view->baseUrl?>member/security/index"><span class="p-icon"><i class="tel"></i></span><p class="gray9">未绑定</p></a>
+                    <?php }else{?>
+                    <a href="<?php echo $this->view->baseUrl?>member/security/index"><span class="p-icon"><i class="tel"></i></span><p class="gray9">已绑定</p><p class="gray6"><?php echo $this->view->memberInfo['mobile']?></p></a>
+                    <?php }?>
+                </div>
+                
+                <div class="pic-wrap">
+                    <?php if(empty($this->view->memberInfo['email_bind'])){?>
+                    <a href="<?php echo $this->view->baseUrl?>member/security/index"><span class="p-icon"><i class="mail"></i></span><p class="gray9">未绑定</p></a>
+                    <?php }else{?>
+                    <a href="<?php echo $this->view->baseUrl?>member/security/index"><span class="p-icon"><i class="mail"></i></span><p class="gray9">已绑定</p><p class="gray6"><?php echo $this->view->memberInfo['email']?></p></a>
+                    <?php }?>
+                </div>
+                
+            </div>
+            <div class="info-side">
+                <div class="info-sign"><i></i>温馨提示：完善以下资料即可获得50福分，1元云购不会以任何形式公开您的个人隐私！</div>
+                <ul class="info-list">
+                    <li>
+                        <span class="label">昵　　称：</span>
+                        <input name="txtName" type="text" id="txtName" nickname="<?php echo $this->view->memberInfo['nickname']?>" class="inp-long inputFocus" value="2-20个字符，汉字、字母、数字、“_-”组成">
+                        <em class="orange">*</em>
+                        <span class="orange"></span>
+                    </li>
+                    <li>
+                        <span class="label">备用电话：</span>
+                        <input name="txtPhone" type="text" id="txtPhone" telMobile="<?php echo $this->view->memberInfo['tel_mobile']?>" class="inp-long inputFocus" value="手机号/座机">
+                        <span class="orange"></span>
+                    </li>
+                    <li>
+                        <span class="label">性　　别：</span>
+                        <div class="sex-list">
+                            <?php $sexList = \Webcms\System\Helpers\EnumHelper::getSexList()?>
+                            <?php foreach ($sexList as $key => $value) {?>
+                            <div class="box" value="<?php echo $key?>">
+                                <div class="box-check">
+                                    <i></i>
+                                </div>
+                                <span class="blank1" name="<?php echo $key?>"><?php echo $value?></span>
+                            </div>
+                            <?php }?>
+                            <input type="hidden" id="sex" value="<?php echo $this->view->memberInfo['sex']?>"> <!-- val值 -->
+                        </div>
+                        <span class="orange"></span>
+                    </li>
+                    <li>
+                        <span class="label">生　　日：</span>
+                        <div class="shi-address-box date-address-box birthday">
+                            <ul>
+                                <li class="select-list">
+                                    <div class="fl clrfix">
+                                        <?php 
+                                            $birthday_year = '';
+                                            $birthday_month = '';
+                                            $birthday_day = '';                                            
+                                            if(!empty($this->view->memberInfo['birthday'])){
+                                                $birthday=explode('-', $this->view->memberInfo['birthday']);
+                                                $birthday_year = $birthday[0];
+                                                $birthday_month = $birthday[1];
+                                                $birthday_day = $birthday[2];
+                                            }
+                                        ?>
+                                        <span id="sltYear" class="u-select-con">
+                                            <a href="javascript:;" class="gray6 select-xiala">年<s class="u-personal"></s></a>
+                                            <!-- <a href="javascript:;" class="gray6 select-xiala">数据库值<s class="u-personal"></s></a> -->
+                                            <div class="select-state" style="width: 63px;">
+                                                <!-- <a href="javascript:;" value="2010">2010</a> -->
+                                            </div>
+                                            <input type="hidden" value="<?php echo $birthday_year?>"> <!-- val值 -->
+                                        </span>
+                                        <span id="sltMonth" class="u-select-con">
+                                            <a href="javascript:;" class="gray6 select-xiala">月<s class="u-personal"></s></a>
+                                            <!-- <a href="javascript:;" class="gray6 select-xiala">数据库值<s class="u-personal"></s></a> -->
+                                            <div class="select-state" style="width: 63px;">
+                                                <a href="javascript:;" value="01">01</a>
+                                                <a href="javascript:;" value="02">02</a>
+                                                <a href="javascript:;" value="03">03</a>
+                                                <a href="javascript:;" value="04">04</a>
+                                                <a href="javascript:;" value="05">05</a>
+                                                <a href="javascript:;" value="06">06</a>
+                                                <a href="javascript:;" value="07">07</a>
+                                                <a href="javascript:;" value="08">08</a>
+                                                <a href="javascript:;" value="09">09</a>
+                                                <a href="javascript:;" value="10">10</a>
+                                                <a href="javascript:;" value="11">11</a>
+                                                <a href="javascript:;" value="12">12</a>
+                                            </div>
+                                            <input type="hidden" value="<?php echo $birthday_month?>"> <!-- val值 -->
+                                        </span>
+                                        <span id="sltDay" class="u-select-con">
+                                            <a href="javascript:;" class="gray6 select-xiala">日<s class="u-personal"></s></a>
+                                            <!-- <a href="javascript:;" class="gray6 select-xiala">数据库值<s class="u-personal"></s></a> -->
+                                            <div class="select-state" style="width: 63px;">
+                                                <!-- <a href="javascript:;" value="20">20</a> -->
+                                            </div>
+                                            <input type="hidden" value="<?php echo $birthday_day?>"> <!-- val值 -->
+                                        </span>
+                                    </div>
+                                    <span id="span_tip" class="orange">生日当月享双倍福分(保存后,一年后才能再次编辑)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">星　　座：</span>
+                        <div class="shi-address-box oth-address-box">
+                            <ul>
+                                <li class="select-list">
+                                    <div class="fl clrfix">
+                                        <span id="sltCons" class="u-select-con" value="">
+                                            <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
+                                            <!-- <a href="javascript:;" class="gray6 select-xiala">数据库值<s class="u-personal"></s></a> -->
+                                            <div class="select-state" style="width: 126px;">
+                                            <?php $constellationList = \Webcms\System\Helpers\EnumHelper::getConstellationList()?>
+                                            <?php foreach ($constellationList as $key => $value) {?>
+                                                <a href="javascript:;" value="<?php echo $key?>"><?php echo $value?></a>
+                                            <?php }?>
+                                            </div>
+                                            <input type="hidden" value="<?php echo $this->view->memberInfo['constellation']?>"> <!-- val值 -->
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">所<em class="blank2">在</em>地：</span>
+                        <div class="shi-address-box oth-address-box now-add" style="width:418px;">
+                            <ul>
+                                <li class="select-list">
+                                    <div class="fl clrfix" id="div_live">
+                                        <?php 
+                                        $province_id='';
+                                        $city_id='';
+                                        $district_id='';
+                                        if(!empty($this->view->memberInfo['location'])){
+                                            $locationArr = explode('|', $this->view->memberInfo['location']);
+                                            $province_id = $locationArr[0];
+                                            $city_id = $locationArr[1];
+                                            $district_id = $locationArr[2];
+                                        }   
+                                        ?>
+                                        <span id="selLiveA" class="u-select-con">
+                                            <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
+                                            <!-- <a href="javascript:;" class="gray6 select-xiala" provinceid="">数据库值<s class="u-personal"></s></a> -->
+                                            <div class="select-state">
+                                            <?php $provinceList = \Webcms\System\Helpers\AreaHelper::getProvinceList()?>
+                                            <?php foreach ($provinceList as $key => $value) {?>
+                                                <a href="javascript:;" value="<?php echo $key?>"><?php echo $value?></a>
+                                            <?php }?>
+                                            </div>
+                                            <input type="hidden" value="<?php echo $province_id?>"> <!-- val值 -->
+                                        </span>
+                                        <span id="selLiveB" class="u-select-con">
+                                            <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
+                                            <!-- <a href="javascript:;" class="gray6 select-xiala" provinceid="">数据库值<s class="u-personal"></s></a> -->
+                                            <div class="select-state">
+                                                <!-- <a href="javascript:;">上海</a> -->
+                                            </div>
+                                            <input type="hidden" value="<?php echo $city_id?>"> <!-- val值 -->
+                                        </span>
+                                        <span id="selLiveC" class="u-select-con">
+                                            <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
+                                            <!-- <a href="javascript:;" class="gray6 select-xiala" provinceid="">数据库值<s class="u-personal"></s></a> -->
+                                            <div class="select-state">
+                                                <!-- <a href="javascript:;">上海</a> -->
+                                            </div>
+                                            <input type="hidden" value="<?php echo $district_id?>"> <!-- val值 -->
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <span class="orange"></span>
+                    </li>
+                    <li>
+                        <span class="label">家　　乡：</span>
+                        <div class="shi-address-box oth-address-box old-add" style="width:418px;">
+                            <ul>
+                                <li class="select-list">
+                                    <?php 
+                                        $province_id='';
+                                        $city_id='';
+                                        $district_id='';
+                                        if(!empty($this->view->memberInfo['hometown'])){
+                                            $locationArr = explode('|', $this->view->memberInfo['hometown']);
+                                            $province_id = $locationArr[0];
+                                            $city_id = $locationArr[1];
+                                            $district_id = $locationArr[2];
+                                        }   
+                                        ?>
+                                    <div class="fl clrfix" id="div_home">
+                                        <span id="selHomeA" class="u-select-con">
+                                            <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
+                                            <div class="select-state">
+                                            <?php foreach ($provinceList as $key => $value) {?>
+                                                <a href="javascript:;" value="<?php echo $key?>"><?php echo $value?></a>
+                                            <?php }?>
+                                            </div>
+                                            <input type="hidden" value="<?php echo $province_id?>"> <!-- val值 -->
+                                        </span>
+                                        <span id="selHomeB" class="u-select-con">
+                                            <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
+                                            <div class="select-state">
+                                                <!-- <a href="javascript:;">上海</a> -->
+                                            </div>
+                                            <input type="hidden" value="<?php echo $city_id?>"> <!-- val值 -->
+                                        </span>
+                                        <span id="selHomeC" class="u-select-con">
+                                            <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
+                                            <div class="select-state">
+                                                <!-- <a href="javascript:;">上海</a> -->
+                                            </div>
+                                            <input type="hidden" value="<?php echo $district_id?>"> <!-- val值 -->
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <span class="orange"></span>
+                    </li>
+                    <li>
+                        <span class="label">QQ&nbsp;号码：</span>
+                        <input name="txtQQ" type="text" id="txtQQ" class="inp-long inputFocus" txtqq="<?php echo $this->view->memberInfo['qq']?>" value="您的QQ号码">
+                        <span class="orange"></span>
+                        <div class="clear"></div>
+                    </li>
+                    <li>
+                        <span class="label">月<em class="blank2">收</em>入：</span>
+                        <div class="shi-address-box oth-address-box">
+                            <ul>
+                                <li class="select-list">
+                                    <div class="fl clrfix">
+                                        <span id="selMonthIncome" class="u-select-con" value="">
+                                            <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
+                                            <div class="select-state" style="width: 126px;">
+                                            <?php $monthlyIncomeList = \Webcms\System\Helpers\EnumHelper::getMonthlyIncomeList()?>
+                                            <?php foreach ($monthlyIncomeList as $key => $value) {?>
+                                                <a href="javascript:;" value="<?php echo $key?>"><?php echo $value?></a>
+                                            <?php }?>    
+                                            </div>
+                                            <input type="hidden" value="<?php echo $this->view->memberInfo['monthly_income']?>"> <!-- val值 -->
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">签　　名：</span>
+                        <textarea name="txtSignature" id="txtSignature" rows="5" cols="10" class="u-sign inputFocus" txtSignature="<?php echo $this->view->memberInfo['signature']?>">让别人看到不一样的你</textarea>
+                    </li>
+                    <li>
+                        <a id="membermodifySave" href="javascript:;" class="save-btn">保存</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div> 

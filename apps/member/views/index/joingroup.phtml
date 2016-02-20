@@ -1,0 +1,36 @@
+﻿<input type="hidden" id="pageID" value="">
+<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul id="ul_menu">
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/joingroup">加入的圈子</a></li>
+            <li class=""><a href="<?php echo $this->view->baseUrl?>member/index/joingroup01">发表的话题</a></li>
+            <li class=""><a href="<?php echo $this->view->baseUrl?>member/index/joingroup02">回复的话题</a></li>
+        </ul>
+    </div>
+
+    <div id="div_grouplist" class="fri-req-wrap" style="display: block;">
+      <!-- 有数据 -->
+      <div class="qz-wrap">
+          <ul class="qz-list">
+              <li>
+                  <a href="javascript:;" target="_blank" class="h-pic"><img src="http://img.1yyg.com/GroupIco/00000000000000004.jpg" width="80px" height="80"></a>
+                  <div class="q-info">
+                      <a href="javascript:;" target="_blank">活动专区</a>
+                      <p class="person">
+                          成员：18330&nbsp;&nbsp;&nbsp;话题：1231
+                      </p>
+                      <p class="tail">
+                          官方进行任何活动，都会在此发布，期待大家踊跃参与！同时，大家也可自发组织活动，优…
+                      </p>
+                  </div>
+              </li>
+          </ul>
+      </div>
+      <!-- 无数据 -->
+      <div class="null-retips-wrapper" style="display: none;"><div class="gth-icon transparent-png"></div><span>您还没有加入圈子哦！</span></div>
+    </div>
+</div>

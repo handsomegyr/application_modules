@@ -1,0 +1,46 @@
+﻿<link rel="stylesheet" type="text/css" href="/group/css/groups.css" />
+<link rel="stylesheet" type="text/css" href="/group/css/Comm.css" />
+<style type="text/css">
+    .detail-Ctl, .detail-tit{width: 100%;text-align: center;margin: 0;padding: 0;padding: 6px 0;}
+    .detail-Con{padding:18px 40px 20px 40px;font-size: 14px;line-height: 30px;word-wrap: break-word;word-break: normal;}
+</style>
+<div class="layout980">
+    <div class="Topic-left" style="width:100%;">
+        <div id="divTopicShow" class="detail-content">
+            <div class="detail-Ctitle">
+                <div class="detail-Ctl">
+                    <p class="detail-tit gray">
+                        <?php echo $this->view->newsInfo['title']?>
+                    </p>
+                    <div class="detail-Ctit gray03">
+                        <span class="time gray02"><?php echo date('Y-m-d H:i:s',$this->view->newsInfo['article_time']->sec)?></span>
+                        &nbsp;&nbsp;
+                        <span class="gray03">人气(5863)</span>
+                    </div>
+                </div>
+            </div>
+            <div id="divTopicContent" class="detail-Con gray01">
+                <?php echo $this->view->newsInfo['content']?>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/news.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

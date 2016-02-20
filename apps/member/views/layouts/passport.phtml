@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购</title>
+    <base href="<?php echo $this->view->resourceUrl?>" />
+    <link rel="stylesheet" type="text/css" href="css/sslComm.css" />
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+</head>
+<body>
+<div class="wrapper"><?php echo $this->getContent(); ?>
+    <!-- 底部版权 -->
+    <div class="g-copyrightCon clrfix">
+        <?php $this->partial("partials/g_links") ?>
+        <?php $this->partial("partials/g_copyright") ?>
+    </div>
+</div>
+</body>
+</html>

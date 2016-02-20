@@ -1,0 +1,41 @@
+    <div class="g-header">
+	 <div class="w1190">
+	     <div id="topLogoAd" class="logo_1yyg fl">
+	         <a href="<?php echo $this->view->baseUrl?>" class="logo transparent-png"></a>
+	     </div>
+	     <div class="search_cart_wrap fr">
+	         <div class="number">
+	             <a href="<?php echo $this->view->baseUrl?>yungou/index/historybuyrecords" target="_blank">
+	                 <ul id="ulHTotalBuy">
+	                     <li class="nobor gray6">累计参与</li>
+	                     <li class="num"><cite><em>0</em></cite><i></i></li>
+	                     <li class="num"><cite><em>0</em></cite><i></i></li>
+	                     <li class="num"><cite><em>0</em></cite><i></i></li>
+	                     <li class="nobor">,</li>
+	                     <li class="num"><cite><em>0</em></cite><i></i></li>
+	                     <li class="num"><cite><em>0</em></cite><i></i></li>
+	                     <li class="num"><cite><em>0</em></cite><i></i></li>
+	                     <li class="nobor">,</li>
+	                     <li class="num"><cite><em>0</em></cite><i></i></li>
+	                     <li class="num"><cite><em>0</em></cite><i></i></li>
+	                     <li class="num"><cite><em>0</em></cite><i></i></li>
+	                     <li class="nobor gray6 u-secondary">人次<b><s></s></b></li>
+	                 </ul>
+	             </a>
+	         </div>
+
+	         <div class="search">
+	             <div class="form">
+	                 <input id="txtHSearch" type="text" class="inputFocus" value="输入“汽车”试试" />
+	                 <span>
+	                 <?php $hotSearchList = \Webcms\Site\Helpers\SiteHelper::getHotSearchList();?>
+	                 <?php foreach ($hotSearchList as $hotsearch) {?>
+	                     <a href="<?php echo $this->view->baseUrl?>yungou/product/search?q=<?php echo $hotsearch?>" target="_blank" title="<?php echo $hotsearch?>"><?php echo $hotsearch?></a>
+	                 <?php }?>
+	                 </span>
+	             </div>
+	             <a id="btnHSearch" href="javascript:;" class="seaIcon"><i></i></a>
+	         </div>
+	     </div>
+	 </div>
+	</div>

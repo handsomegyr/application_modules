@@ -1,0 +1,271 @@
+<link rel="stylesheet" type="text/css" href="css/GoodsDetail.css" />
+<link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/share_style2_16.css" />
+<input type="hidden" id="pageID" value="productindex">
+<!--[if lte IE 9]>
+    <script src="js/requestAnimationFrame.js"></script>
+<![endif]-->
+<?php $this->partial("partials/current_nav") ?>  
+<div class="ng-wrap">
+    <div id="divMain" class="ng-main-wrapper">
+        <!--期数-->
+        <?php $this->partial("partials/period_list") ?>
+        
+        <!--商品信息 begin-->
+        <div id="divMainInfo" class="ng-main clearfix">
+            <!--图片展示-->
+            <div class="ng-goods-img">
+                <!-- <div id="middlePicRemark" class="middlePicRemark"></div>
+                <img id="imgGoodsPic" alt="" src="http://goodsimg.1yyg.com/GoodsPic/pic-38-38/20140910144704643.jpg" style="display: none;"> -->
+                <div id="preview" class="ng-middle-box spec-preview">
+                    <span class="jqzoom">
+                        <?php if(\Webcms\Goods\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>
+                        <!-- 已结束需要显示内容 -->
+                        <div class="product-end">本商品已结束</div>
+                        <?php }?>
+                        <img style="width:343px;height:343px;" jqimg="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'],343,343)?>" />
+                    </span>
+                </div>
+                <div class="spec-scroll">
+                    <div class="items">
+                        <ul>
+                        <?php if(!empty($this->view->goodsImageList)){?>
+                        <?php foreach ($this->view->goodsImageList as $idx => $goodsImage) {?>
+                            <li><img bimg="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'])?>" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'],56,56)?>" onmousemove="preview(this);"></li>
+                        <?php if($idx>=6)break?>
+                        <?php }?>
+                        <?php }?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ng-share-out">
+                    <a id="a_sc" href="javascript:;" goodsid="<?php echo $this->view->goodsInfo['goods_commonid']?>" class="sc"><i class="t-icon sc-icon ng-box-bg"></i>关注</a>
+                    <!-- <a id="a_sc" href="javascript:;" class="sc has-in"><i class="t-icon sc-icon ng-box-bg sc-icon-past"></i>已关注</a> -->
+                    <div class="fx">
+                        <div class="fx-txt">
+                            <i class="t-icon fx-icon ng-box-bg"></i>分享
+                        </div>
+                        <div>
+                            <div class="fx-out-inner">
+                                <div class="bdsharebuttonbox bdshare-button-style2-16" data-bd-bind="1446621845888">
+                                    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                                    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                                    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                                    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                                    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                                </div>
+                                <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--正在进行中-->
+            <div class="ng-goods-detail ng-goods-detail-height" style="display:block;">
+                <?php if(!\Webcms\Goods\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>
+                <!-- 正在进行内容 -->
+                <h2 class="o-title"><span class="num">
+                    (第<?php echo $this->view->goodsInfo['period']?>云)</span><?php echo $this->view->goodsInfo['name']?><span class="o-info"><?php echo $this->view->goodsInfo['jingle']?></span>
+                </h2>
+                <p class="text-left price o-p">价值：￥<?php echo number_format($this->view->goodsInfo['price'],2)?></p>
+                <div class="line-time">
+                    <div class="line-wrapper u-progress" title="完成<?php echo number_format($this->view->goodsInfo['purchase_person_time']*100/$this->view->goodsInfo['total_person_time'],2)?>%"><span class="pgbar" style="width:<?php echo number_format($this->view->goodsInfo['purchase_person_time']*100/$this->view->goodsInfo['total_person_time'],2)?>%;display:"><span class="pging"></span></span></div>
+                    <div class="text-wrapper clearfix">
+                        <div class="now-has">
+                            <span id="purchasePersonTime" purchasePersonTime="<?php echo $this->view->goodsInfo['purchase_person_time']?>">
+                                <?php echo $this->view->goodsInfo['purchase_person_time']?></span>
+                            <p>已参与</p>
+                        </div>
+                        <div class="total-has">
+                            <span id="totalPersonTime" totalPersonTime="<?php echo $this->view->goodsInfo['total_person_time']?>">
+                                <?php echo $this->view->goodsInfo['total_person_time']?></span>
+                            <p>总需人次</p>
+                        </div>
+                        <div class="overplus-has">
+                            <span id="remainPersonTime" remainPersonTime="<?php echo $this->view->goodsInfo['remain_person_time']?>">
+                                <?php echo $this->view->goodsInfo['remain_person_time']?></span>
+                            <p>剩余</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-buy clearfix">
+                    <p class="mine">我要参与</p>
+                    <div id="divNumber" class="option-wrapper clearfix">
+                        <a href="javascript:;" class="mius">-</a>
+                        <input type="text" class="input-num" value="1" goodsid="<?php echo $this->view->goodsInfo['_id']?>">
+                        <a href="javascript:;" class="add">+</a>
+                    </div>
+                    <ul class="check-num clearfix"></ul>
+                    <p class="fl">人次</p>
+                    <div class="mine-prob" style="display:none;"><i></i></div>
+                    <span id="span_tip"></span>
+                </div>
+                <div id="divBuy" class="consume-wrapper clearfix">
+                    <a goodsid="<?php echo $this->view->goodsInfo['_id']?>" href="javascript:;" class="consume-now">立即1元云购</a>
+                    <a goodsid="<?php echo $this->view->goodsInfo['_id']?>" href="javascript:;" _src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" class="consume-addcar">加入购物车</a>
+                </div>
+                <?php }else{?>
+
+                <!-- 已经结束内容 -->
+                <h2 class="title end-title"><?php echo $this->view->goodsInfo['name']?></h2>
+                <div class="has-end"><span>本商品已结束云购</span></div>
+                <?php }?>
+                <div class="about-tips clearfix">
+                    <ul class="f-inner clearfix">
+                        <li class="z-beginning">三大服务保证：</li>
+                        <li><a href="javascript:;" target="_blank"><i class="ng-xq-bg t1"></i>100%公平公正</a></li>
+                        <li class="z-lines"><b></b></li>
+                        <li><a href="javascript:;" target="_blank"><i class="ng-xq-bg t2"></i>100%正品保证</a></li>
+                        <li class="z-lines"><b></b></li>
+                        <li><a href="javascript:;" target="_blank"><i class="ng-xq-bg t3"></i>全国免费配送</a></li>
+                    </ul>
+                </div>
+
+                <div class="advert-wrapper">
+                    <ul class="select-wrapper">
+                        <li class="gray9">怎么玩儿<i class="ng-xq-bg"></i></li>
+                    </ul>
+                    <div id="div_advertinner" class="advert-inner clearfix">
+                        <div class="advert-list01 advert-m">
+                            <div class="ad-icon01 ng-xq-bg"></div>
+                            <p class="ad-title">选择商品</p>
+                            <p class="ad-info">
+                                每个商品规定总需<br>
+                                参与人次(1人次=1元)
+                            </p>
+                            <div class="arrow ng-xq-bg"></div>
+                        </div>
+                        <div class="advert-list02 advert-m">
+                            <div class="ad-icon02 ng-xq-bg"></div>
+                            <p class="ad-title">支付1元</p>
+                            <p class="ad-info">
+                                参与人次越多<br>
+                                获得机率越大
+                            </p>
+                            <div class="arrow ng-xq-bg"></div>
+                        </div>
+                        <div class="advert-list03 advert-m">
+                            <div class="ad-icon03 ng-xq-bg"></div>
+                            <p class="ad-title">抽出幸运获得者</p>
+                            <p class="ad-info">
+                                所有人次售完后根据计算规则<br>
+                                抽出一位幸运获得者
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--右侧：云购记录-->
+            <div class="ng-goods-buy">    
+
+                <?php if(!\Webcms\Goods\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>       
+                <!--进行中状态-->
+                <div class="ng-buy-list">
+                    <div id="div_buynav" class="ng-buy-nav">
+                        <a href="javascript:;" title="最新云购记录" class="ng-fl current">最新云购记录</a>
+                        <a href="javascript:;" title="我的云购记录" class="ng-fr">我的云购记录</a>
+                        <div class="b-line"></div>
+                    </div>
+                    <div id="div_goodsrecord" class="list-wrap">
+                        <div class="my-list">
+                            <ul id="UserBuyNewList" class="list"></ul>
+                        </div>
+                        <a href="javascript:;" style="display:none;" class="select-all">查看全部</a>
+                    </div>
+
+                    <div id="div_myrecord" class="list-wrap" style="display: none;">
+                        <div class="my-record">
+                            <?php if(!empty($_SESSION['member_id'])){?>
+                            <?php 
+                                $ret=\Webcms\Order\Helpers\OrderHelper::getUserBuyList($_SESSION['member_id'], $this->view->goodsInfo['_id']);
+                                $lotteryCodeList =$ret['lotteryCodeList']; 
+                                $lastPurchaseTime =$ret['lastPurchaseTime'];
+                            ?>
+                            <?php if(!empty($lotteryCodeList)){?>
+                            <dl class="clearfix last">
+                                <dt><?php echo $lastPurchaseTime?></dt>
+                                <?php foreach ($lotteryCodeList as $lottery_code) {?>
+                                <dd><?php echo $lottery_code?></dd>
+                                <?php }?>
+                            </dl>
+                            <?php }else{?>
+                            <div class="null-mytips-wrapper clearfix"><div class="gth-icon transparent-png"></div><span class="my-text">您还没有参与本云商品哦！</span></div>
+                            <?php }?>
+                            
+                            <?php }else{?>
+                            <!--未登录-->
+                            <div class="no-login-wrapper">
+                                <div class="gth-icon transparent-png"></div>
+                                <p class="ng-see-mycord">请您<a id="a_login" href="javascript:;">登录</a>后查看云购记录！</p>
+                            </div>
+                            <?php }?>
+                        </div>
+                        <a href="javascript:;" style="display: none;" target="_blank" class="select-all">查看全部</a>
+                    </div>
+                </div>
+                <?php }else{?>
+                <!-- 已结束 -->
+                <div class="ng-buy-list">
+                    <div class="ng-buy-menu">
+                        <span>它们就快揭晓啦，赶快看看吧！</span>
+                    </div>
+                    <div class="list-wrap">
+                        <?php if(!empty($this->view->announcedSoonGoodsList['datas'])){?>
+                        <?php foreach ($this->view->announcedSoonGoodsList['datas'] as $idx => $goods) {?>
+                        
+                        <div class="ng-buy-select">
+                            <div class="img-wrapper">
+                                <a rel="nofollow" href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" title="<?php echo $goods['name']?>">
+                                    <img alt="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>" width="82" height="82"></a>
+                            </div>
+                            <div class="info-select">
+                                <p class="p-name"><a rel="nofollow" href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" title="<?php echo $goods['name']?>"><?php echo $goods['name']?></a></p>
+                                <dl class="m-progress">
+                                    <dt><b title="已完成<?php echo number_format($goods['complete_percent'],2)?>%" style="width:<?php echo number_format($goods['complete_percent'],2)?>%"></b></dt>
+                                </dl>
+                                <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" class="now-buy">立即1元云购</a>
+                            </div>
+                        </div>
+                        <?php }?>
+                        <?php }?>
+                    </div>
+                </div>
+                <?php }?>
+
+            </div>
+            <!--清除浮动-->
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <!--中间浮动导航-->
+    <div id="div_menu" class="ng-goods-option" fixed="0">
+        <ul id="ul_menu" class="options-menu">
+            <li class="current"><span>商品详情</span><i class="bor"></i></li><li class=""><span>所有参与记录</span><i class="bor"></i></li><li class=""><span>晒单</span><i class="bor"></i></li>
+        </ul>
+        <a id="btnAdd2Card" href="javascript:;" class="op-addcar" style="display: none;">加入购物车<i class="a-icon transparent-png"></i></a>
+    </div>
+
+    <!--商品信息-->
+    <div id="div_desc" class="ng-product-content div-data-box-a">
+        <div class="product-con"><?php echo $this->view->goodsInfo['body']?></div>
+    </div>
+
+    <!--所有参与记录-->
+    <div id="div_allrecord" class="ng-all-record div-data-box-b" style="display:none;">
+        <div class="record">
+            <ul class="record-list"></ul>
+        </div>
+        <div class="g-pagination w1190" id="g-pagination-a" style="display:none;"></div>
+    </div>
+
+    <!--晒单-->
+    <div id="div_postlist" class="ng-share-goods div-data-box-c" style="display:none;">
+        <div class="total" style="display:none;">本商品已有<span class="gray6">0</span>位幸运用户晒单 <em class="f-mar-left">总共</em><span class="orange">0</span>条评论</div>
+        <div class="ng-share-wrapper ng-share-data"></div>
+        <div class="g-pagination" id="g-pagination-b" style="display:none;"></div>
+    </div>
+</div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/detail.js"></script>

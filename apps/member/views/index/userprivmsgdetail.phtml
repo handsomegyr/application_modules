@@ -1,0 +1,76 @@
+﻿<link rel="stylesheet" type="text/css" href="css/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="userprivmsgdetail">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul id="ul_menu">
+        <li><a href="<?php echo $this->view->baseUrl?>member/index/usermessage">系统消息</a></li>
+        <li><a href="<?php echo $this->view->baseUrl?>member/index/friendsapply">好友请求</a></li>
+        <li><a href="<?php echo $this->view->baseUrl?>member/index/replycommentsmsg">评论回复消息</a></li>
+        <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/userprivmsg">私信</a></li>
+    </ul>
+    </div>
+
+    <div class="fri-msg-wrap">
+      <div class="pri-title">
+          <p class="fl" id="msgCountInfo">
+            <span>我和</span>&nbsp;<a class="blue" href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->user_id?>" target="_blank"><?php echo $this->view->userName?></a>&nbsp;<span>的对话&nbsp;共</span>&nbsp;<span class="orange"><?php echo $this->view->msg_num?></span>&nbsp;<span>条私信</span>
+          </p>
+          <a class="return-btn" href="<?php echo $this->view->baseUrl?>member/index/userprivmsg">返回私信列表</a>
+      </div>
+      <div class="fri-pri-info">
+          <p class="warn">系统提醒：1元云购不会以私信方式向云友索取任何相关信息，以防诈骗。</p>
+          <div class="mine clrfix">
+              <a class="h-pic" href="javascript:;" target="_blank"><img width="50" height="50" src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>"></a>
+              <div class="info-tail text-wrap" style="height:162px; padding: 10px 10px 0 10px;width: 587px;"></div>
+          </div>
+          <ul id="ul_msglist">
+              <!-- <li class="other clrfix">
+                  <a class="h-pic" href="javascript:;" target="_blank">
+                      <img width="50" height="50" src="/Images/UserFace-160-0000.jpg">
+                  </a>
+                  <div class="info-tail">
+                      <p>
+                          <a class="blue" href="u1.html" target="_blank">dh*@qq.com</a>：
+                          <span>sdfasdfasdfasdf</span>
+                      </p>
+                      <span class="gray9">8分钟前</span>
+                      <b><b></b></b>
+                      <a class="close-btn" href="javascript:;"><span></span></a>
+                  </div>
+              </li>
+              <li class="mine clrfix">
+                  <a href="http://u.1yyg.com/1010029819" target="_blank" class="h-pic">
+                      <img src="http://faceimg.1yyg.com/UserFace/20151212152923647.jpg" width="50"
+                      height="50">
+                  </a>
+                  <div class="info-tail">
+                      <p>
+                          <a href="http://u.1yyg.com/1010029819" target="_blank" class="blue">
+                              中个奖有这么困难嘛
+                          </a>
+                          ：
+                          <span>
+                              是打发士大夫
+                          </span>
+                      </p>
+                      <span class="gray9">
+                          2分钟前
+                      </span>
+                      <b>
+                          <b>
+                          </b>
+                      </b>
+                      <a href="javascript:;" oppuserid="9563477" msgid="1212776" class="close-btn"
+                      style="display: none;">
+                          <span>
+                          </span>
+                      </a>
+                  </div>
+              </li> -->
+          </ul>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+{
+  "name" : "icatholic/weixin",
+  "description" : "A simple PHP client library for weixin",
+  "require" : {
+    "php" : ">=5.2.11",
+    "guzzle/http" : "~3.8.1"
+  },
+  "authors" : [ {
+    "name" : "icatholic",
+    "email" : "handsomegyr@gmail.com",
+    "homepage" : "http://github.com/icatholic/"
+  }, {
+    "name" : "icatholic",
+    "email" : "youngyang@icatholic.net.cn",
+    "homepage" : "http://github.com/icatholic/"
+  } ],
+  "keywords" : [ "weixin", "icatholic" ],
+  "autoload" : {
+    "psr-0" : {
+      "Weixin" : "lib/"
+    }
+  },
+  "license" : "MIT",
+  "type" : "library",
+  "homepage" : "http://github.com/icatholic/weixin"
+}

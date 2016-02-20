@@ -1,0 +1,39 @@
+﻿<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/accounts.css" />
+<input type="hidden" id="pageID" value="">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/userrecharge">网银充值</a></li>
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/cardrecharge">充值卡充值</a></li>
+        </ul>
+        <a href="<?php echo $this->view->baseUrl?>member/index/userbalance" class="z-return blue u-personal">返回我的账户</a>
+    </div>
+
+    <div class="g-rec-info">
+        请使用1元云购官方充值卡进行充值，<a target="_blank" href="/" class="blue">立即购买充值卡&gt;&gt;</a>
+    </div>
+
+    <div class="g-recharge-card clrfix">
+        <dl>
+            <dd>
+                <!--已输入-->
+                <label>充值卡号：</label>
+                <input type="text" id="txtCardNO" class="inputFocus" value="12位卡号" maxlength="14">
+                <p class="orange"></p>
+            </dd>
+            <dd>
+                <label>充值密码：</label>
+                <input type="text" id="txtCardPwd" class="inputFocus" value="8位密码" maxlength="8">
+                <p class="orange"><s class="u-personal"></s>密码输入错误5次，请于1小时后再试</p>
+            </dd>
+            <dd class="f-amount" id="liMoney" style="display:none;">
+                <label>充值金额：</label>
+                <b class="blue"></b>
+            </dd>
+        </dl>
+        <a id="btnSubmit" href="javascript:;" class="z-gray-button">确认充值</a>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+    <div class="g-screen-date clrfix">
+        <ul id="ul_region" class="a-screen fl">
+            <li><a state="9" period="<?php echo date('Y-m-d',time()-3600*24*30).'|'.date('Y-m-d')?>" href="javascript:;">最近1个月</a></li>
+            <li><a state="10" period="<?php echo date('Y-m-d',time()-3600*24*30*3).'|'.date('Y-m-d')?>" href="javascript:;" class="z-checked">最近3个月</a></li>
+        </ul>
+        <ul class="m-select fl">
+            <li class="gray9">
+                <label>日期</label></li>
+            <li style="position: relative;">
+                <input id="dpd1" type="text" maxlength="10" value="<?php echo date('Y-m-d',time()-3600*24*30)?>">
+                <b class="u-personal" style="right: 6px;top: 6px;"></b>
+            </li>
+            <li><em>-</em></li>
+            <li style="position: relative;">
+                <input id="dpd2" type="text" maxlength="10" value="<?php echo date('Y-m-d')?>">
+                <b class="u-personal" style="right: 6px;top: 6px;"></b>
+            </li>
+            <li><a id="a_serach" href="javascript:;">确定</a></li>
+        </ul>
+        <script type="text/javascript">
+            // var nowTemp = new Date();
+            // var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+             
+            // var checkin = $('#dpd1').datepicker({
+            //     format: 'yyyy-mm-dd',
+            //     onRender: function(date) {
+            //         return date.valueOf() < now.valueOf() ? 'disabled' : '';
+            //     }
+            // }).on('changeDate', function(ev) {
+            //   if (ev.date.valueOf() > checkout.date.valueOf()) {
+            //     var newDate = new Date(ev.date)
+            //     newDate.setDate(newDate.getDate() + 1);
+            //     checkout.setValue(newDate);
+            //   }
+            //   checkin.hide();
+            //   $('#dpd2')[0].focus();
+            // }).data('datepicker');
+
+
+            // var checkout = $('#dpd2').datepicker({
+            //     format: 'yyyy-mm-dd',
+            //     onRender: function(date) {
+            //         return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+            //     }
+            // }).on('changeDate', function(ev) {
+            //   checkout.hide();
+            // }).data('datepicker');
+
+            // var checkin = $('#dpd1').datepicker({
+            //     format: 'yyyy-mm-dd'
+            // }).on('changeDate', function(ev) {
+            //     checkin.hide();
+            // }).data('datepicker');
+
+            // var checkout = $('#dpd2').datepicker({
+            //     format: 'yyyy-mm-dd'
+            // }).on('changeDate', function(ev) {
+            //     checkout.hide();
+            // }).data('datepicker');
+
+        </script>
+    </div>

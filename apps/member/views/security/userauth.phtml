@@ -1,0 +1,101 @@
+﻿<input type="hidden" id="pageID" value="userauth">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title bor-bot">
+        <span class="gray3">绑定信息</span>
+    </div>
+    <div class="z-content">
+        <!-- 验证 -->
+        <div class="person-wrap" id="VerificationSend">
+            <ul class="person-list">
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <div class="info-sign"><i></i>温馨提示：为保证您的账户安全，请验证身份！</div>
+                    </span>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                        <span class="r-side">您当前绑定的邮箱：<b class="blue"><?php echo getHiddenEmail($this->view->memberInfo['email'])?></b></span>
+                    <?php }else{?>
+                        <span class="r-side">您当前绑定的手机：<b class="blue"><?php echo getHiddenMobile($this->view->memberInfo['mobile'])?></b></span>
+                    <?php }?>
+                </li>
+                <li>
+                    <span class="l-side">验证码：</span>
+                    <span class="r-side">
+                        <div class="inp-wrap">
+                            <input id="txtCheckCode" type="text" maxlength="6" class="code-inner inputFocus" value="请输入6位验证码" style="color: rgb(187, 187, 187);">
+                            <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                                <a id="btnGetCode" regesterBy="<?php echo ($this->view->memberInfo['email'])?>" href="javascript:;" class="get-code-btn">点击获取验证码</a>
+                            <?php }else{?>
+                                <a id="btnGetCode" regesterBy="<?php echo ($this->view->memberInfo['mobile'])?>" href="javascript:;" class="get-code-btn">点击获取验证码</a>
+                            <?php }?>
+                        </div>
+                    </span>
+                    <div id="div_tips"></div>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <a id="btnSubmit" href="javascript:;" class="set-save-btn gray-btn">确定</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <!--绑定信息-->
+        <div class="person-wrap" id="BindingSend" style="display:none;">
+            <ul class="person-list">
+                <li style="padding-bottom:20px;">
+                    <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                        <span class="l-side">输入手机号：</span>
+                        <span class="r-side">
+                            <div class="inp-wrap ">
+                                <input id="txtSaveSN" maxlength="20" type="text" class="code-inner inp-long inputFocus" value="请输入手机号" style="color: rgb(187, 187, 187);">
+                            </div>
+                        </span>
+                    <?php }else{?>
+                        <span class="l-side">输入邮箱地址：</span>
+                        <span class="r-side">
+                            <div class="inp-wrap ">
+                                <input id="txtSaveSN" maxlength="20" type="text" class="code-inner inp-long inputFocus" value="请输入邮箱地址" style="color: rgb(187, 187, 187);">
+                            </div>
+                        </span>
+                    <?php }?>
+                    <div id="div_tips1"></div>
+                </li>
+                <li>
+                    <span class="l-side">验证码：</span>
+                    <span class="r-side">
+                        <div class="inp-wrap ">
+                            <input id="txtSN" maxlength="12" type="text" class="code-inner inputFocus" value="请输入6位验证码">
+                            <a id="btnSendSN" href="javascript:;" class="get-code-btn">发送验证码</a>
+                        </div>
+                    </span>
+                    <div id="div_tips2"></div>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <a id="butSaveSubmit" href="javascript:;" class="set-save-btn gray-btn">确定</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <!-- 绑定成功 -->
+        <div class="suc-wrap" id="SendSuccess" style="display:none;">
+            <div class="s-man"></div>
+            <div class="s-info">
+                <b class="orange">绑定成功！</b>
+                <!-- <p>您现在可以使用您的新手机号<b class="orange">15821039514</b>或者邮箱账号<b class="orange">dhtnuieeq@qq.com</b>进行登录！</p> -->
+                <p>您现在可以使用您的手机号或者邮箱账号进行登录！</p>
+                <p>
+                    您还可以：<a href="/" class="blue">开始云购</a>
+                    <a href="<?php echo $this->view->baseUrl?>member/admin/membermodify" class="blue">去账户安全中心</a>
+                </p>
+                <p>如果没有任何操作，系统将在<b class="orange" id="spanNum">10</b>秒后自动跳转到账户安全中心！</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

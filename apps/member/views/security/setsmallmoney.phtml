@@ -1,0 +1,76 @@
+﻿<input type="hidden" id="pageID" value="setsmallmoney">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title bor-bot">
+        <span class="gray3">小额免密码设置</span>
+    </div>
+    <div class="z-content">
+        <div class="s-much-wrap person-wrap">
+            <ul class="person-list">
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <div class="info-sign"><i></i>温馨提示：为保证您的账户安全，请验证身份！</div>
+                    </span>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                        <span class="r-side">您当前绑定的邮箱：<b class="blue"><?php echo getHiddenEmail($this->view->memberInfo['email'])?></b></span>
+                    <?php }else{?>
+                        <span class="r-side">您当前绑定的手机：<b class="blue"><?php echo getHiddenMobile($this->view->memberInfo['mobile'])?></b></span>
+                    <?php }?>
+                </li>
+                <li>
+                    <span class="l-side">验证码：</span>
+                    <span class="r-side">
+                        <div class="inp-wrap">
+                            <input id="txtCheckCode" type="text" maxlength="6" class="code-inner inputFocus" value="请输入6位验证码" style="color: rgb(187, 187, 187);">
+                            <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                                <a id="btnGetCode" regesterBy="<?php echo ($this->view->memberInfo['email'])?>" href="javascript:;" class="get-code-btn">点击获取验证码</a>
+                            <?php }else{?>
+                                <a id="btnGetCode" regesterBy="<?php echo ($this->view->memberInfo['mobile'])?>" href="javascript:;" class="get-code-btn">点击获取验证码</a>
+                            <?php }?>
+                        </div>
+                    </span>
+                    <div id="div_tips"></div>
+                </li>
+                <!-- <li style="display:none" id="isopenNull">
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <a id="btnSubmit" href="javascript:;" class="set-save-btn gray-btn">确定</a>
+                    </span>
+                </li> -->
+            </ul>
+            <div class="s-much-inner">
+                <div class="div">
+                    <h3>当支付额度小于您设置的额度时，无需支付密码即可支付！</h3>
+                    <ul smallmoney="<?php echo $this->view->memberInfo['smallmoney']?>" id="ulItems" class="s-much-list">
+                        <li value="50" class="current">
+                            <span>≤ 50元/单笔</span>
+                            <i><code></code></i>
+                        </li>
+                        <li value="100">
+                            <span>≤ 100元/单笔</span>
+                            <i><code></code></i>
+                        </li>
+                        <li value="200">
+                            <span>≤ 200元/单笔</span>
+                            <i><code></code></i>
+                        </li>
+                        <li value="500">
+                            <span>≤ 500元/单笔</span>
+                            <i><code></code></i>
+                        </li>
+                        <li id="liDefined" class="auto">
+                            <span>自定义</span>
+                            <p style="display:none;">≤<em id="emMoney" contenteditable="true"></em>元/单笔</p>
+                        </li>
+                    </ul>
+                    <p class="grayb">请选择免密支付额度</p>
+                </div>
+                <a id="btnSubmit" href="javascript:;" class="set-save-btn gray-btn">确定</a>
+            </div>
+        </div>
+    </div>
+    <a href="javascript:history.go(-1);" class="return-btn">返回</a>
+</div>

@@ -1,0 +1,25 @@
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="<?php echo $this->view->baseUrl?>" target="_blank" title="首页">首页</a><s></s>
+                <a href="<?php echo $this->view->baseUrl?>yungou/help/about" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="<?php echo $this->view->baseUrl?>yungou/help/privacy" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="<?php echo $this->view->baseUrl?>yungou/help/business" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="<?php echo $this->view->baseUrl?>yungou/help/link" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="<?php echo $this->view->baseUrl?>yungou/help/jobs" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="<?php echo $this->view->baseUrl?>yungou/help/contactus" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <?php $siteSettings=\Webcms\Site\Helpers\SiteHelper::getSettings();?>
+            <div class="g-copyright"><?php echo $siteSettings['copyrights']?> <?php echo $siteSettings['icp_number']?></div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>

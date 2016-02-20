@@ -1,0 +1,69 @@
+﻿<link rel="stylesheet" href="Jcrop/css/jquery.Jcrop.css" type="text/css" />
+<input type="hidden" id="pageID" value="userphoto">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul>
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/admin/userphoto">上传头像</a></li>
+        </ul>
+    </div>
+    <div class="z-content">
+        <div class="con">
+            <div class="pic-side">
+                <div class="pic-style-wrap">
+                    <span class="pic-style01">
+                    <img src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>" id="img160" width="160" height="160" border="0">
+                    </span>
+                    <p class="gray9">160X160</p>
+                </div>
+                <div class="pic-style-wrap">
+                    <span class="pic-style02">
+                    <img src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>" id="img80" width="80" height="80" border="0">
+                    </span>
+                    <p class="gray9">80X80</p>
+                </div>
+                <div class="pic-style-wrap">
+                    <span class="pic-style03">
+                    <img src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>" id="img30" width="30" height="30" border="0">
+                    </span>
+                    <p class="gray9">30X30</p>
+                </div>
+            </div>
+            <div class="check-img-side">
+                <div class="inner">
+                    <form id="form" name="form" action="" method="post" enctype="multipart/form-data">
+                        <div class="upload">
+                            <div id="div_upfile">
+                                <div class="c-icon-wrap" style="cursor: pointer;">
+                                    <span class="t1"></span>
+                                    <span class="t2"></span>
+                                    <span class="t3"></span>
+                                    <span class="t4"></span>
+                                </div>
+                                <p class="c-icon-text">点击上传本地图片</p>
+                            </div>
+
+                            <img src="i" id="imgPhoto" style="display: none;" height="400" width="400">
+                        </div>
+
+                        <input id="fuploadFace" name="upload" type="file" class="c-file">
+                        <div style="display:none;"><input type="submit" value="upload" id="btn_submit" /></div>
+                    </form>
+                    <p class="op-pic-txt">点击图片并拉动以选择需要裁剪的区域</p>
+                    <div id="div_operate" style="display: none;">
+                        <a id="btnResetUpFile" href="javascript:;" class="reset-btn" title="重新上传">重新上传</a>
+                        <a id="btnSavePhoto" href="javascript:;" class="save-btn" title="保存头像">保存头像</a>
+                        <div class="clear"></div>
+                    </div>
+
+                    <!-- 起点坐标与裁剪区域大小 -->
+                    <input type="hidden" id="cutX" value="">
+                    <input type="hidden" id="cutY" value="">
+                    <input type="hidden" id="cutW" value="">
+                    <input type="hidden" id="cutH" value="">
+                    <input type="hidden" id="hidPicUrl">
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

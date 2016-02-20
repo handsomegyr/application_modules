@@ -1,0 +1,746 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购--会员中心</title>
+    <link rel="stylesheet" type="text/css" href="../yungou/css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/home.css" />
+    <link rel="stylesheet" type="text/css" href="../yungou/css/share_style2_16.css" />
+    <script type="text/javascript" src="../yungou/js/JQuery.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="../yungou/js/public.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <!--顶部-->
+    <div class="g-toolbar clrfix">
+        <div class="w1190">
+            <ul class="fl">
+                <li class="f-collect">
+                  <div class="u-menu-hd">
+                      <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li id="liMobile" class="u-arr">
+                  <div class="u-menu-hd transparent-png">
+                      <a href="mobile.html" target="_blank" title="手机云购">手机云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <p>
+                          <a href="mobile.html" target="_blank">
+                              <img src="images/andriod.jpg">
+                              下载客户端
+                          </a>
+                      </p>
+                  </div>
+                </li>
+                <li class="f-gap" style="display:none;"><s></s></li>
+                <li id="liCCTV" style="display:none;">
+                  <a href="javascript:;" target="_blank" class="cctv-icon">
+                      <img src="http://skin.1yyg.com/images/cctv-icon.jpg" alt="央视网" width="80" height="35" class="cctv-icon-img">
+                      <span class="cctv-icon-txt">广告合作伙伴</span>
+                  </a>
+                </li>
+            </ul>
+            <ul id="ulTopRight" class="fr">
+
+                <!-- 登录后 -->
+                <li style="display:none;"><div class="u-menu-hd u-menu-login"><a href="/" title="dhtnuieeq@qq.com" class="blue"><span class="fl"><img src="http://faceimg.1yyg.com/userface/30/00000000000000000.jpg"><s class="transparent-png"></s></span>dhtnuieeq@qq.com</a><a href="/" title="退出">[退出]</a></div></li>
+
+                <!-- 未登录 -->
+                <li type="nologin"><div class="u-menu-hd"><a href="../login.html" title="登录">登录</a></div></li><li type="nologin" class="f-gap"><s></s></li>
+                <li type="nologin"><div class="u-menu-hd"><a href="../register.html" title="注册">注册</a></div></li>
+
+
+                <li class="f-gap"><s></s></li>
+                <li id="liMember" class="u-arr-1yyg" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <span><a href="UserBuyList.html" title="云购记录">云购记录</a></span>
+                      <span><a href="OrderList.html" title="获得的商品">获得的商品</a></span>
+                      <span><a href="MemberModify.html" title="个人设置">个人设置</a></span>
+                  </div>
+                </li>
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li id="liHome" style="">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="UserRecharge.html" title="充值">充值</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="help.html" title="帮助">帮助</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="htm-contactus.html" title="投诉">投诉</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+                <li id="lizxkf" class="f-zxkf" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+                  </div>
+                </li>
+                <li class="f-zxkf" style="">
+                 <div class="u-menu-hd">
+                     <a href="/" title="1元云购首页" class="orange">1元云购首页</a>
+                 </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--头部-->
+        
+    <!--导航-->
+    <div class="p-center-nav clrfix">
+        <div class="banner-middle clrfix">
+            <div class="nav-new">
+                <ul>
+                    <li class="curr"><a href="index.html" title="我的1元云购">我的1元云购</a><em class="z-my-1yyg u-personal"></em></li>
+                    <li><a href="MemberModify.html" title="账号设置">账号设置</a><em class="z-account-settings u-personal"></em></li>
+                    <li><a target="_blank" href="u1.html" title="个人主页">个人主页</a><em class="z-home-page u-personal"></em></li>
+                </ul>
+            </div>
+            <div class="nav-return">
+                <a href="/" class="transparent-png"></a>
+            </div>
+        </div>
+        <div class="banner-right"></div>
+    </div>
+
+
+    <!--右侧工具栏-->
+    <div id="divMemberRTool" class="g-narrow-con member-narrow" style="display:block">
+        <div class="m-narrow-list" style="height:232px;">
+            <ul>
+                <li class="f-customer-service" id="li_customer_service"><!--客服-->
+                    <div class="u-float-list">
+                        <a href="javascript:;" class="z-customer-on"><s></s><em class="orange">在<br>线<br>客<br>服</em></a><!-- z-customer-off 客服不在线时 -->
+                    </div>
+                </li>
+                <li class="f-member-cart f-member-cart2"><!--购物车-->
+                    <div class="u-float-list">
+                        <a href="../cartList.html" target="_blank">
+                            <em style="">2</em>
+                            <s class="u-personal"></s>
+                            <cite style="display:none;">购<br>物<br>车</cite>
+                        </a>
+                    </div>
+                </li>
+                <li class="f-feedback"><!--意见反馈-->
+                    <div class="u-float-list">
+                        <a href="htm-suggestion.html" target="_blank"><i></i><cite>意见反馈</cite></a>
+                    </div>
+                </li>
+                <li class="f-back-to" style="display:none;"><!--Top-->
+                    <div class="u-float-list">
+                        <a href="javascript:;"><i></i><cite>置顶</cite></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="p-center-main clrfix">
+
+        <!--左边导航-->
+        <div class="sidebar_l clrfix fl">
+            <ul>
+                <li class="curr z-first"><a href="index.html" title="首页">首页</a><b></b></li>
+                <li><a href="UserBuyList.html" title="云购记录">云购记录</a><b></b></li>
+                <li><a href="OrderList.html" title="获得的商品">获得的商品</a><b></b></li>
+                <li><a href="PostSingleList.html" title="晒单管理">晒单管理</a><b></b></li>
+                <li><a href="CollectList.html" title="我的关注">我的关注</a><b></b></li>
+                <li><a href="UserBalance.html" title="我的账户">我的账户</a><b></b></li>
+                <li><a href="MyFriends.html" title="我的好友">我的好友</a><b></b></li>
+                <li><a href="JoinGroup.html" title="云购圈">云购圈</a><b></b></li>
+                <li><a href="InvitedList.html" title="邀请管理">邀请管理</a><b></b></li>
+                <li><a href="MemberPoints.html" title="我的福分">我的福分</a><b></b></li>
+                <li><a href="UserMessage.html" title="消息管理">消息管理</a><b></b></li>
+            </ul>
+        </div>
+
+        
+        <div class="sidebar_m clrfix fl">
+            <div class="g-information clrfix">
+                <div class="m-info-up clrfix">
+                    <div class="info-up-left ">
+
+                        <div class="head-portrait fl">
+                            <a id="a_UserPhoto" href="javascript:;" target="_blank"><img src="http://faceimg.1yyg.com/UserFace/00000000000000000.jpg"><b class="u-personal"></b></a>
+                            <p><cite>修改头像</cite><em></em></p>
+                        </div>
+
+                        <dl class="fl">
+                            <dt class="gray3">
+                                上午好！<a href="javascript:;" target="_blank"><cite>dhtnuieeq@qq.com</cite><em class="gray9"></em></a></dt>
+                            <dd class="gray9">
+                                <span class="class-icon01"><s></s>云购小将</span>(还差10000经验值即可升级到云购少将)<a href="javascript:;" target="_blank">查看等级介绍</a></dd>
+                        </dl>
+                    </div>
+                    <div class="info-up-right fr">
+                        <ul>
+                            <li class="z-news">
+                                <a href="UserMessage.html" class="u-personal"><b class="u-personal"></b>消息</a>
+                            </li>
+                            <li class="z-not-bound">
+                                <a href="javascript:;" class="u-personal"><b class="u-personal"></b>已绑定</a>
+                            </li>
+                            <li class="z-binding">
+
+                                <a href="javascript:;" class="u-personal"><b class="u-personal"></b>未绑定</a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-info-down clrfix">
+                    <div class="info-down-l fl">
+                        <span class="fl gray9">
+                            <b class="orange">￥0.00</b>
+                            可用余额
+                        </span>
+                        <p class="fl">
+                            <a href="UserRecharge.html" title="充值" class="z-recharge-btn">充值</a>
+                            <a href="UserBalance.html" id="a_transaccount" title="转账" class="z-transfer-accounts">转账</a>
+                        </p>
+                    </div>
+                    <div id="div_stat" class="info-down-r fr" style="">
+                        <ul>
+                            <li class="z-dividing-line"><s></s></li>
+                            <li><a href="MemberPoints.html"><em>10</em>可用福分</a></li>
+                            <li class="z-dividing-line z-ends-line"><s></s></li>
+                            <li class="z-fatal-frame"><a id="a_drq" href="OrderList.html"><em>0</em>待确认</a></li>
+                            <li class="z-dividing-line"><s></s></li>
+                            <li class="z-fatal-frame"><a id="a_dfh" href="OrderList.html"><em>0</em>待发货</a></li>
+                            <li class="z-dividing-line"><s></s></li>
+                            <li class="z-fatal-frame"><a id="a_dsh" href="OrderList.html"><em>0</em>待收货</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--提示信息列表-->
+            <div class="g-operation clrfix">                
+                <div class="m-modify-single m-verification clrfix">
+                    <p class="orange"><b class="u-personal u-phone-icon"></b>您还未验证手机哦，请及时验证！</p>
+                    <a href="MobileChecking.html" class="z-operation-btn">立即验证</a>
+                    <a onclick="ColseMessage(this,'.g-operation')" class="z-operation-close u-personal"></a>
+                </div>        
+            </div>
+            <!--获得的商品列表-->
+            
+            <!--云购记录列表-->
+            <div id="g_buys_records" class="g-buys-records g-common-control clrfix">
+                <div class="m-getGood-title clrfix">
+                    <a href="UserBuyList.html" class="gray9">全部<em class="f-tran">&gt;</em></a><b class="gray3">云购记录</b>
+                </div>
+                <div class="m-comm-scroll">
+                    <!-- 暂无数据 -->
+                    <div class="null-data" style="display:none;">
+                        <b class="gth-icon"></b>您还没有参与云购？ 梦想与您只有1元的距离！<br><a href="http://www.1yyg.com" class="blue" target="_blank">去云购</a>
+                    </div>
+                    <!-- 有数据 -->
+                    <a href="javascript:;" class="z-prev" style="display: none;">
+                        <i class="u-personal"></i><span></span>
+                    </a>
+                    <a href="javascript:;" class="z-next" style="display: none;">
+                        <i class="u-personal"></i><span></span>
+                    </a>
+                    <div class="commodity-list clrfix">
+                        <div id="div_UserBuyList" style="width: 182px;float: left;">
+                            <div idx="1" class="productsCon">
+                                <div class="proList">
+                                    <ul>
+                                        <li class="list-pic">
+                                            <a target="_blank" href="../detail.html">
+                                                <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20140218133617171.jpg">
+                                            </a>
+                                        </li>
+                                        <li class="list-name">
+                                            <a target="_blank" href="../detail.html">
+                                                (第1847云)苹果（Apple）iPhone 5S 16G版 3G手机 电信版
+                                            </a>
+                                        </li>
+                                        <li class="list-over">
+                                            <a href="../detail.html">
+                                                正在揭晓
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="div_UserBuyList" style="width: 182px;float: left;">
+                            <div idx="1" class="productsCon">
+                                <div class="proList">
+                                    <ul>
+                                        <li class="list-pic">
+                                            <a target="_blank" href="../detail.html">
+                                                <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20140218133617171.jpg">
+                                            </a>
+                                        </li>
+                                        <li class="list-name">
+                                            <a target="_blank" href="../detail.html">
+                                                (第1847云)苹果（Apple）iPhone 5S 16G版 3G手机 电信版
+                                            </a>
+                                        </li>
+                                        <li class="list-over">
+                                            <a href="../detail.html">
+                                                正在揭晓
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="div_UserBuyList" style="width: 182px;float: left;">
+                            <div idx="1" class="productsCon">
+                                <div class="proList">
+                                    <ul>
+                                        <li class="list-pic">
+                                            <a target="_blank" href="../detail.html">
+                                                <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20140218133617171.jpg">
+                                            </a>
+                                        </li>
+                                        <li class="list-name">
+                                            <a target="_blank" href="../detail.html">
+                                                (第1847云)苹果（Apple）iPhone 5S 16G版 3G手机 电信版
+                                            </a>
+                                        </li>
+                                        <li class="list-over">
+                                            <a href="../detail.html">
+                                                正在揭晓
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="div_UserBuyList" style="width: 182px;float: left;">
+                            <div idx="1" class="productsCon">
+                                <div class="proList">
+                                    <ul>
+                                        <li class="list-pic">
+                                            <a target="_blank" href="../detail.html">
+                                                <img src="http://goodsimg.1yyg.com/goodspic/pic-200-200/20140218133617171.jpg">
+                                            </a>
+                                        </li>
+                                        <li class="list-name">
+                                            <a target="_blank" href="../detail.html">
+                                                (第1847云)苹果（Apple）iPhone 5S 16G版 3G手机 电信版
+                                            </a>
+                                        </li>
+                                        <li class="list-over">
+                                            <a href="../detail.html">
+                                                正在揭晓
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--关注列表-->
+            <div class="g-my-attention g-common-control clrfix" style="display: none;">
+                <div class="m-getGood-title clrfix">
+                    <a href="CollectList.html" class="gray9">全部<em class="f-tran">&gt;</em></a><b class="gray3">我的关注</b>
+                </div>
+                <div class="m-comm-scroll">
+                    <div class="loading-2015">
+                        <em></em>
+                    </div>
+                    <a href="javascript:;" class="z-prev" style="display: none;"><i class="u-personal"></i><span></span></a>
+                    <a href="javascript:;" class="z-next" style="display: none;"><i class="u-personal"></i><span></span></a>
+                    <div class="commodity-list">
+                        <div id="div_AttentionList" style="position: absolute;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--最新晒单列表-->
+            <div class="g-common-control clrfix" style="">
+                <div class="m-getGood-title clrfix">
+                    <b id="b_posttitle" class="gray3">云友最新晒单</b>
+                </div>
+
+                <div id="div_PostList" class="single-part clrfix">
+                    <div idx="1" class="m-single">
+                        <div class="single-list">
+                            <ul>
+                                <li class="sig-pic">
+                                    <a target="_blank" href="javascript:;">
+                                        <img src="http://postimg.1yyg.com/UserPost/RecHome/20151106202957678.jpg">
+                                    </a>
+                                </li>
+                                <li class="sig-title">
+                                    <a target="_blank" href="javascript:;">
+                                        <b>
+                                            中了！中了！！！
+                                        </b>
+                                    </a>
+                                </li>
+                                <li class="sig-text">
+                                    非常感谢云购！两元钱中了个电饭锅！！在我投入几百块后中的价值最高的一份！！感谢运气…
+                                </li>
+                                <li>
+                                    昨天 19:37
+                                </li>
+                                <li class="sig-xmjdh">
+                                    <a href="javascript:;">
+                                        <cite class="fl">
+                                            <img src="http://faceimg.1yyg.com/UserFace/30/20150925195613617.jpg">
+                                            <s></s>
+                                        </cite>
+                                        <em class="fl">
+                                            18606****75
+                                        </em>
+                                    </a>
+                                    <b class="curr-arrow">
+                                        <s class="u-personal">
+                                        </s>
+                                    </b>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div idx="1" class="m-single">
+                        <div class="single-list">
+                            <ul>
+                                <li class="sig-pic">
+                                    <a target="_blank" href="javascript:;">
+                                        <img src="http://postimg.1yyg.com/UserPost/RecHome/20151106202957678.jpg">
+                                    </a>
+                                </li>
+                                <li class="sig-title">
+                                    <a target="_blank" href="javascript:;">
+                                        <b>
+                                            中了！中了！！！
+                                        </b>
+                                    </a>
+                                </li>
+                                <li class="sig-text">
+                                    非常感谢云购！两元钱中了个电饭锅！！在我投入几百块后中的价值最高的一份！！感谢运气…
+                                </li>
+                                <li>
+                                    昨天 19:37
+                                </li>
+                                <li class="sig-xmjdh">
+                                    <a href="javascript:;">
+                                        <cite class="fl">
+                                            <img src="http://faceimg.1yyg.com/UserFace/30/20150925195613617.jpg">
+                                            <s></s>
+                                        </cite>
+                                        <em class="fl">
+                                            18606****75
+                                        </em>
+                                    </a>
+                                    <b class="curr-arrow">
+                                        <s class="u-personal">
+                                        </s>
+                                    </b>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div idx="1" class="m-single">
+                        <div class="single-list">
+                            <ul>
+                                <li class="sig-pic">
+                                    <a target="_blank" href="javascript:;">
+                                        <img src="http://postimg.1yyg.com/UserPost/RecHome/20151106202957678.jpg">
+                                    </a>
+                                </li>
+                                <li class="sig-title">
+                                    <a target="_blank" href="javascript:;">
+                                        <b>
+                                            中了！中了！！！
+                                        </b>
+                                    </a>
+                                </li>
+                                <li class="sig-text">
+                                    非常感谢云购！两元钱中了个电饭锅！！在我投入几百块后中的价值最高的一份！！感谢运气…
+                                </li>
+                                <li>
+                                    昨天 19:37
+                                </li>
+                                <li class="sig-xmjdh">
+                                    <a href="javascript:;">
+                                        <cite class="fl">
+                                            <img src="http://faceimg.1yyg.com/UserFace/30/20150925195613617.jpg">
+                                            <s></s>
+                                        </cite>
+                                        <em class="fl">
+                                            18606****75
+                                        </em>
+                                    </a>
+                                    <b class="curr-arrow">
+                                        <s class="u-personal">
+                                        </s>
+                                    </b>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div idx="1" class="m-single">
+                        <div class="single-list">
+                            <ul>
+                                <li class="sig-pic">
+                                    <a target="_blank" href="javascript:;">
+                                        <img src="http://postimg.1yyg.com/UserPost/RecHome/20151106202957678.jpg">
+                                    </a>
+                                </li>
+                                <li class="sig-title">
+                                    <a target="_blank" href="javascript:;">
+                                        <b>
+                                            中了！中了！！！
+                                        </b>
+                                    </a>
+                                </li>
+                                <li class="sig-text">
+                                    非常感谢云购！两元钱中了个电饭锅！！在我投入几百块后中的价值最高的一份！！感谢运气…
+                                </li>
+                                <li>
+                                    昨天 19:37
+                                </li>
+                                <li class="sig-xmjdh">
+                                    <a href="javascript:;">
+                                        <cite class="fl">
+                                            <img src="http://faceimg.1yyg.com/UserFace/30/20150925195613617.jpg">
+                                            <s></s>
+                                        </cite>
+                                        <em class="fl">
+                                            18606****75
+                                        </em>
+                                    </a>
+                                    <b class="curr-arrow">
+                                        <s class="u-personal">
+                                        </s>
+                                    </b>
+                                </li>
+                            </ul>
+                        </div>
+                    </div><div idx="1" class="m-single">
+                        <div class="single-list">
+                            <ul>
+                                <li class="sig-pic">
+                                    <a target="_blank" href="javascript:;">
+                                        <img src="http://postimg.1yyg.com/UserPost/RecHome/20151106202957678.jpg">
+                                    </a>
+                                </li>
+                                <li class="sig-title">
+                                    <a target="_blank" href="javascript:;">
+                                        <b>
+                                            中了！中了！！！
+                                        </b>
+                                    </a>
+                                </li>
+                                <li class="sig-text">
+                                    非常感谢云购！两元钱中了个电饭锅！！在我投入几百块后中的价值最高的一份！！感谢运气…
+                                </li>
+                                <li>
+                                    昨天 19:37
+                                </li>
+                                <li class="sig-xmjdh">
+                                    <a href="javascript:;">
+                                        <cite class="fl">
+                                            <img src="http://faceimg.1yyg.com/UserFace/30/20150925195613617.jpg">
+                                            <s></s>
+                                        </cite>
+                                        <em class="fl">
+                                            18606****75
+                                        </em>
+                                    </a>
+                                    <b class="curr-arrow">
+                                        <s class="u-personal">
+                                        </s>
+                                    </b>
+                                </li>
+                            </ul>
+                        </div>
+                    </div><div idx="1" class="m-single">
+                        <div class="single-list">
+                            <ul>
+                                <li class="sig-pic">
+                                    <a target="_blank" href="javascript:;">
+                                        <img src="http://postimg.1yyg.com/UserPost/RecHome/20151106202957678.jpg">
+                                    </a>
+                                </li>
+                                <li class="sig-title">
+                                    <a target="_blank" href="javascript:;">
+                                        <b>
+                                            中了！中了！！！
+                                        </b>
+                                    </a>
+                                </li>
+                                <li class="sig-text">
+                                    非常感谢云购！两元钱中了个电饭锅！！在我投入几百块后中的价值最高的一份！！感谢运气…
+                                </li>
+                                <li>
+                                    昨天 19:37
+                                </li>
+                                <li class="sig-xmjdh">
+                                    <a href="javascript:;">
+                                        <cite class="fl">
+                                            <img src="http://faceimg.1yyg.com/UserFace/30/20150925195613617.jpg">
+                                            <s></s>
+                                        </cite>
+                                        <em class="fl">
+                                            18606****75
+                                        </em>
+                                    </a>
+                                    <b class="curr-arrow">
+                                        <s class="u-personal">
+                                        </s>
+                                    </b>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="m-see-more clrfix">
+                    想要看更多？去<a href="javascript:;" target="_blank" class="orange">晒单分享</a>看看
+                </div>
+
+            </div>
+        </div>
+
+        <!--右侧-->
+        <div class="sidebar_r clrfix fr">
+            <div class="g-my-cart g-sid-title">
+                <h3 class="gray3"><b>购物车</b></h3>
+
+                <div id="div_cart">
+                    <cite id="myCart"><a href="../cartList.html" class="gray9" target="_blank">您的购物车有<em class="orange">2</em>件商品，合计:<em class="orange">￥2.00</em><i class="f-tran">&gt;</i></a></cite>
+                </div>
+            </div>
+            
+            <!-- 未绑定 -->
+            <div class="g-invitation g-sid-title">
+                <h3 class="gray3"><b>邀请有奖</b></h3>
+                <span>邀请好友并消费即可获得<em class="orange">50福分</em>加<em class="orange">6%现金奖励</em></span>
+                <p class="gray3">验证手机号立即生成专属邀请链接</p>
+                <a href="UserAuth-40.html" class="z-immediate-binding">立即验证</a>
+            </div>
+
+            <!-- 已经绑定 -->
+            <div class="g-invitation g-sid-title" style="display:none;">
+                <h3 class="gray3"><b>邀请有奖</b></h3>
+               <span>邀请好友并消费即可获得<em class="orange">50福分</em>加<em class="orange">6%现金奖励</em></span>
+                <textarea id="txtInfo" rows="3" cols="10" class="gray6"></textarea>
+                <div class="fx-out-inner">
+                    <a id="btnCopy" href="javascript:;" class="z-copy-share fr">复制分享</a>
+                    <div class="bdsharebuttonbox bdshare-button-style2-16" data-bd-bind="1446952899696">
+                        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                        <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                        <!--<a href="#" class="bds_more" data-cmd="more"></a>-->
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="g-dynamic g-sid-title">
+                <h3 class="gray3"><b id="b_dynamictitle">好友动态</b></h3>                
+                    <div class="m-dynamic-none">
+                        <b class="gth-icon transparent-png"></b>
+                        您的好友都去哪儿了？
+                    </div>
+                
+            </div>
+
+            <div class="g-QR-code g-sid-title">
+                <h3 class="gray3"><b>下载手机APP</b></h3>
+                <div class="clrfix">
+                    <span class="fl"><a href="mobile.html" target="_blank">
+                        <img src="http://skin.1yyg.com/Member/images/app.jpg"></a></span>
+                    <p class="fl gray6">
+                        参与云购随心所欲！
+                    <a href="mobile.html" target="_blank">立即下载</a>
+                    </p>
+                </div>
+                <s class="u-personal"></s>
+            </div>
+
+            <div class="g-QR-code g-sid-title">
+                <h3 class="gray3"><b>关注官方微信</b></h3>
+                <div class="clrfix">
+                    <span class="fl"><a href="microchannel.html" target="_blank">
+                        <img src="http://skin.1yyg.com/Member/images/wx.jpg"></a></span>
+                    <p class="fl gray6">
+                        扫一扫<br>
+                        享受更多微信专享服务
+                    </p>
+                </div>
+                <em class="u-personal"></em>
+            </div>
+            <div class="g-service-hotline g-sid-title">
+                <h3 class="gray3"><b>服务热线</b></h3>
+                <p class="orange">400-850-8080<i>（工作时间：09:00-21:00）</i></p>
+                <a id="a_service" href="javascript:;" class=""><b class="u-personal"></b>在线客服</a>
+                <em class="u-personal"></em>
+            </div>
+        </div>
+
+    </div>
+
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="javascript:;" target="_blank" title="首页">首页</a><s></s>
+                <a href="javascript:;" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="javascript:;" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="javascript:;" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="javascript:;" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1</div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<link type="text/css" rel="stylesheet" href="https://skin.1yyg.com/CSS/pageDialog.css?v=141125" />
+<div class="pageDialogBG" id="pageDialogBG"></div>
+<div class="pageDialogBorder" id="pageDialogBorder"></div>
+<div class="pageDialog" id="pageDialog">
+    <div class="pageDialogClose" id="pageDialogClose" title="关闭"></div>
+    <div class="pageDialogMain" id="pageDialogMain">
+        <div class="content"></div>
+    </div>
+</div>
+</div>
+</body>
+</html>

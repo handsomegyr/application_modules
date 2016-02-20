@@ -1,0 +1,114 @@
+﻿<link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/mine-index.css" />
+<input type="hidden" id="pageID" value="umy">
+<div class="mine-wrapper">
+    <div class="mine-inner">
+        <!--banner以及相关操作-->
+        <div class="map-banner">
+            <div class="map-info">
+                <div class="h-pic"><a class="pic" href="javascript:;"><img alt="" src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>" width="140" height="140"> </a></div><div class="text-info">
+                <a class="name" href="javascript:;"><?php if(empty($this->view->memberInfo['nickname'])){?><?php echo \Webcms\Member\Helpers\MemberHelper::getRegisterName($this->view->memberInfo,true)?><?php }else{?><?php echo $this->view->memberInfo['nickname']?>(<?php echo \Webcms\Member\Helpers\MemberHelper::getRegisterName($this->view->memberInfo,true)?>)<?php }?></a>
+                <p><?php if(!empty($this->view->isCanSeeAreaInfo)){?><?php if(!empty($this->view->hometown)){?><span class="address"><?php echo \Webcms\System\Helpers\AreaHelper::getAddress($this->view->hometown[0],$this->view->hometown[1],$this->view->hometown[2],'')?></span><?php }?><?php }?>
+                <span class="net"><?php echo $this->view->webUrl?>yungou/member/index?id=<?php echo $this->view->memberInfo['_id']?></span></p>
+                <?php $exp = \Webcms\Points\Helpers\PointsUserHelper::getPoints($this->view->memberInfo['_id'], POINTS_CATEGORY2)?>
+				<?php $gradeInfo= \Webcms\Member\Helpers\MemberGradeHelper::getGradeInfo($exp)?>
+                <p class="mr4"><span class="level class-icon<?php echo str_pad($gradeInfo['current']['level'], 2, '0', STR_PAD_LEFT)?>"><s></s><?php echo $gradeInfo['current']['name']?></span>&nbsp;<span class="grade">经验值：<?php echo $exp?></span></p><p class="about" title="<?php echo $this->view->memberInfo['signature']?>"><?php echo $this->view->memberInfo['signature']?></p></div>
+                <!--三个操作选项-->
+                <ul class="option-wrapper">
+                    <!-- <li><a  href="javascript:;"><b class="code transparent-png"></b><span>扫码</span> </a><i class="animation-bg transparent-png"></i></li>
+                    <li style="display: none;"><a  class="o-inner" href="javascript:;"><b class="friend transparent-png"></b><span>加好友</span> </a><i class="animation-bg transparent-png"></i></li>
+                    <li style="<?php if(empty($this->isCanSendPrivMsg)){?>display: none;<?php }?>"><a  class="o-inner" href="javascript:;"><b class="message transparent-png"></b><span>发私信</span> </a><i class="animation-bg transparent-png"></i></li>-->
+                    <li style="display:none;">
+                        <i class="o-inner"></i>
+                        <a id="btnAddFriend" class="o-href" href="javascript:;"><b class="friend transparent-png"></b><span>加好友</span> </a>
+                    </li>
+                    <li style="">
+                        <i class="o-inner"></i>
+                        <a id="btnSendMsg" class="o-href" href="javascript:;"><b class="message transparent-png"></b><span>发私信</span></a>
+                    </li>
+                    
+                </ul>
+                <div id="div_jb" class="ju-b-wrap" style="right: 0px; display: none;">举报</div>
+                <!--私信编辑框-->
+                <div id="divMsgBox" class="Pop-news">
+                    <div class="Pop-Con">
+                        <div class="arrow arrow_left"><em></em><span></span></div>
+                        <div class="Close"><a href="javascript:void(0);"></a></div>
+                        <div class="Comment_form">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--详细记录-->
+        <div class="mine-content">
+            <div class="left-sides">
+                <div class="con">
+                    <div class="c-nav">
+                        <ul id="ul_Menu">
+                            <li class="current"><a href="javascript:;">云购记录</a> </li>
+                            <li class=""><a href="javascript:;">获得的商品</a> </li>
+                            <li class=""><a href="javascript:;">晒单</a> </li>
+                        </ul>
+                        <div id="midNavLine" class="c-line" style="left: 297px; width: 64px; display: block;"></div>
+                    </div>
+                    <!--云购记录-->
+                    <div id="div_BuyList" class="content-wrap" style="display: block;">
+                        <div class="content">
+                            <div class="good-list-wrap">
+                                <ul class="good-list"></ul>
+                                <div class="s-line">
+                                    <div class="s-top"></div>
+                                    <div class="s-bottom"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="g-pagination" id="g-pagination-a" style="display:none;"></div>
+                    </div>
+                    <!--获得的商品-->
+                    <div id="div_OrderList" style="display: none;" class="content-wrap">
+                        <div class="content">
+                            <div class="good-list-wrap">
+                                <ul class="good-list"></ul>
+                                <div class="s-line">
+                                    <div class="s-top"></div>
+                                    <div class="s-bottom"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="g-pagination" id="g-pagination-b" style="display:none;"></div>
+                    </div>
+                    <!--晒单列表-->
+                    <div id="div_PostList" style="display: none;" class="content-wrap">
+                        <div class="content">
+                            <div class="good-list-wrap">
+                                <ul class="good-list good-share"></ul>
+                                <div class="s-line">
+                                    <div class="s-top">
+                                    </div>
+                                    <div class="s-bottom">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="g-pagination" id="g-pagination-c" style="display:none;"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="right-sides">
+                <div class="con">
+                    <p class="title">近期访客</p>
+                    <div class="user-list-wrap">
+                        <ul id="ul_visitors" class="user-list"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/uMy.js"></script>

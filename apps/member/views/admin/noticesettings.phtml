@@ -1,0 +1,26 @@
+﻿<input type="hidden" id="pageID" value="noticesettings">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">常用设置</span>
+    </div>
+    <div class="z-content">
+        <div class="always">
+            <span class="gray9 set">设置接受参与云购未获得商品的提醒通知</span>
+            <div class="lab-wrap" id="ckSysMsg">
+                <label for="win">
+                    <div class="lab <?php if(!empty($this->view->memberInfo['noticesettings']['sysMsgSet'])){?>current<?php }?>"><i class="right-icon transparent-png"></i></div>
+                    <div>接受系统消息</div>
+                    <input type="hidden" value="<?php echo empty($this->view->memberInfo['noticesettings']['sysMsgSet'])?0:1?>"> <!-- val值 0是未选择 1是选择 -->
+                </label>
+            </div>
+            <div class="lab-wrap" id="ckWxMail">
+                <label for="mail">
+                    <div class="lab <?php if(!empty($this->view->memberInfo['noticesettings']['wxMailSet'])){?>current<?php }?>"><i class="right-icon transparent-png"></i></div>
+                    <div>接受微信或邮件消息</div>
+                    <input type="hidden" value="<?php echo empty($this->view->memberInfo['noticesettings']['wxMailSet'])?0:1?>"> <!-- val值 0是未选择 1是选择 -->
+                </label>
+            </div>
+        </div>
+        <a id="btnSave" href="javascript:;" class="always-save">保存</a>
+    </div>
+</div>

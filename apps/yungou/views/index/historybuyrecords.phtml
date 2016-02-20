@@ -1,0 +1,60 @@
+﻿<link rel="stylesheet" type="text/css" href="css/Comm.css" />
+<link rel="stylesheet" type="text/css" href="css/ygRecord.css" />
+<script type="text/javascript" src="/member/datepicker/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="/member/datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="/member/datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="historybuyrecords">
+<script type="text/javascript" src="js/buyrecords.js"></script>
+<div class="ygRecord">
+    <h3><span>历史云购记录</span><p><a href="/yungou/index/newestbuyrecords">查看最新云购记录&gt;&gt;</a></p></h3>
+    <div class="border"></div>
+    <div class="RecordSearch">
+        <div BTime="<?php echo date('Y-m-d H:i:s',time()-3600*24*365)?>" class="from">
+            <p>起止时间：</p>
+            <input id="txtFirstT1" type="text" class="time" value="<?php echo date('Y-m-d')?>">
+            <select id="sltFirstT2"></select>
+            <p>时</p>
+            <select id="sltFirstT3"></select>
+            <p>分&nbsp;&nbsp;&nbsp;至</p>
+        </div>
+        <div ETime="<?php echo date('Y-m-d H:i:s',time())?>" class="over">
+            <input id="txtEndT1" type="text" class="time" value="<?php echo date('Y-m-d')?>">
+            <select id="sltEndT2"></select>
+            <p>时</p>
+            <select id="sltEndT3"></select>
+            <p>分</p>
+        </div>
+        <input id="btnQuery" type="submit" class="Recordcx" value="查询">
+        <span id="spanServerTime" style="display: none"><?php echo date('Y-m-d H:i:s',time()-3600*24*365)?></span> <!-- 输出服务器时间 -->
+    </div>
+    <script type="text/javascript">
+            var checkin = $('#txtFirstT1').datepicker({
+                format: 'yyyy-mm-dd'
+            }).on('changeDate', function(ev) {
+                checkin.hide();
+            }).data('datepicker');
+
+            var checkout = $('#txtEndT1').datepicker({
+                format: 'yyyy-mm-dd'
+            }).on('changeDate', function(ev) {
+                checkout.hide();
+            }).data('datepicker');
+
+        </script>
+    <ul class="Record_title">
+        <li class="time">云购时间</li>
+        <li class="nem">会员账号</li>
+        <li class="name">云购商品名称</li>
+        <li class="much">云购人次</li>
+    </ul>
+    <div id="recordList">
+        <!-- <ul class="Record_contents">
+            <li class="time">2016-01-01 13:12:17.089</li>
+            <li class="nem">
+                <a class="blue" href="http://u.1yyg.com/1009061843" target="_blank">13620****30</a>
+            </li>
+            <li class="name"><a href="http://www.1yyg.com/product/2721076.html">（第28云）新加坡版美素佳儿 Friso 金装幼儿奶粉3段 900g/罐x2</a></li>
+            <li class="much">2人次</li>
+        </ul> -->
+    </div>
+</div>

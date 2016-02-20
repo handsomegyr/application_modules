@@ -1,0 +1,94 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="searchfriends">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/myfriends">我的好友</a></li>
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/searchfriends">查找好友</a></li>
+        </ul>
+    </div>
+    <div class="menu-wrap bor-bot">
+        <ul id="ul_menu" class="menu-inner">
+            <li class="current">搜索</li>
+            <li class="">获得商品最多</li>
+            <li class="">活跃会员</li>
+            <li class="">最新加入</li>
+        </ul>
+        <div id="midNavLine" class="m-line" style="width: 32px; left: 269px; display: block;"></div>
+    </div>
+    <div id="div_search" class="fri-s-wrap" style="display: block;">
+        <div class="s-inner current">
+            <input id="txtKeyWord" maxlength="100" type="text" value="" class="s-value iptfocus">
+            <a id="btnSearch" href="javascript:;" class="s-btn transparent-png"></a>
+            <span class="placeholder iptem">输入昵称/手机号/邮箱</span>
+        </div>
+    </div>
+    <div id="div_title" class="other-person" style="display: block;">
+        <span>可能认识的人</span>
+        <div class="line left"></div>
+        <div class="line right"></div>
+    </div>
+    <div id="div_userlist" class="fri-ship-wrap">
+      <ul class="fri-ship-list">
+        <!-- <li>
+          <div class="pro">
+              <a target="_blank" href="http://u.1yyg.com/1001787746" class="h-pic">
+                  <img src="http://faceimg.1yyg.com/UserFace/20131111091910463.jpg" width="80" height="80">
+              </a>
+              <div class="tail">
+                  <a target="_blank" href="http://u.1yyg.com/1001787746" class="u-name">
+                      小鱼来购购
+                  </a>
+                  <p>
+                      <span class="level class-icon02">
+                          <s></s>云购少将
+                      </span>
+                      <span class="u-address">
+                          <i class="transparent-png"></i>
+                          上海上海市
+                      </span>
+                  </p>
+                  <p class="qm" title="中个大奖&nbsp;送老婆！嘿嘿&nbsp;加油&nbsp;&nbsp;~~">
+                      中个大奖&nbsp;送老婆！嘿嘿&nbsp;加油&nbsp;&nbsp;~~
+                  </p>
+                  <a href="javascript:;" userid="899158" class="f-add">
+                      <i class="transparent-png"></i>
+                      加好友
+                  </a>
+              </div>
+          </div>
+        </li> -->
+      </ul>
+    </div>
+    <div id="div_change" class="update-wrap" style="display:none;">
+        <a href="javascript:;"><i class="transparent-png"></i>换一批</a>
+    </div>
+    <div class="g-pagination" id="g-pagination" style="display:none;">
+        <!-- <span>
+            <a title="上一页" href="javascript:CBLPageFun.gotoPageIndex(1)">
+                <i class="f-tran f-tran-prev">&lt;</i>上一页
+            </a>
+        </span>
+        <span>
+            <a href="javascript:CBLPageFun.gotoPageIndex(1)">1</a>
+        </span>
+        <span class="current">
+            <a>2</a>
+        </span>
+        <span class="f-noClick">
+            <a>下一页<i class="f-tran f-tran-next">&gt;</i></a>
+        </span>
+        <span class="f-mar-left">
+            共<em>2</em>页，去第
+        </span>
+        <span>
+            <input type="text" value="2">页
+        </span>
+        <span class="f-mar-left">
+            <a id="btnGotoPage" href="javascript:;" title="确定">确定</a>
+        </span> -->
+    </div>
+</div>

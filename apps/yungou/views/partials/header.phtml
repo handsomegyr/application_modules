@@ -1,0 +1,109 @@
+    <!--顶部-->
+	<div class="g-toolbar clrfix">
+		<div class="w1190">
+		    <ul class="fl">
+		        <li class="f-collect">
+		            <div class="u-menu-hd">
+		                <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+		            </div>
+		        </li>
+		        <li class="f-gap"><s></s></li>
+		        <li id="liMobile" class="u-arr">
+		            <div class="u-menu-hd transparent-png">
+		                <a href="javascript:;" target="_blank" title="手机云购">手机云购</a>
+		                <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+		            </div>
+		            <div class="u-select">
+		                <p>
+		                    <a href="javascript:;" target="_blank">
+		                        <img src="images/andriod.jpg">
+		                        下载客户端
+		                    </a>
+		                </p>
+		            </div>
+		        </li>
+		        <li class="f-gap" style=""><s></s></li>
+		    </ul>
+		    <ul id="ulTopRight" class="fr">
+                <?php if(!empty($_SESSION['member_id'])){?>
+                <?php                
+                    $loginName = \Webcms\Member\Helpers\MemberHelper::getLoginName($this->view->memberInfo);
+                ?>
+		    	<!-- 已登录 -->		    	
+                <li><div class="u-menu-hd u-menu-login">
+                <a href="<?php echo $this->view->baseUrl?>member/index/index" title="<?php echo $loginName?>" class="blue">
+                <span class="fl">
+                <img src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl, $this->view->memberInfo['avatar'],30,30)?>">
+                <s class="transparent-png"></s>
+                </span><?php echo $loginName?></a><a href="<?php echo $this->view->baseUrl?>member/passport/logout" title="退出">[退出]</a></div></li>
+                <?php }else{?>
+		    	<!-- 未登录 -->
+		    	<li type="nologin"><div class="u-menu-hd"><a href="<?php echo $this->view->baseUrl?>member/passport/login" title="登录">登录</a></div></li>
+		    	<li type="nologin" class="f-gap"><s></s></li>
+		    	<li type="nologin"><div class="u-menu-hd"><a href="<?php echo $this->view->baseUrl?>member/passport/register" title="注册">注册</a></div></li>
+                <?php }?>
+
+		    	<li class="f-gap"><s></s></li>
+		        <li id="liMember" class="u-arr-1yyg" style="">
+		            <div class="u-menu-hd">
+		                <a href="<?php echo $this->view->baseUrl?>member/index/index" title="我的1元云购">我的1元云购</a>
+		                <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+		            </div>
+		            <div class="u-select">
+		                <span><a href="<?php echo $this->view->baseUrl?>member/index/userbuylist" title="云购记录">云购记录</a></span>
+		                <span><a href="<?php echo $this->view->baseUrl?>member/index/orderlist" title="获得的商品">获得的商品</a></span>
+		                <span><a href="<?php echo $this->view->baseUrl?>member/admin/membermodify" title="个人设置">个人设置</a></span>
+		            </div>
+		        </li>
+		        <li class="f-gap" style=""><s></s></li>
+		        <li id="liHome" style="display: none;">
+		            <div class="u-menu-hd">
+		                <a href="<?php echo $this->view->baseUrl?>member/index/index" title="我的1元云购">我的1元云购</a>
+		            </div>
+		        </li>
+		        <li class="f-gap" style="display: none;"><s></s></li>
+		        <li id="liTopUMsg" class="u-arr-news" style="display: none;" show="-1">
+		            <div class="u-menu-hd">
+		                <a href="javascript:;" title="消息">消息</a>
+		                <h3 style="display: none;"></h3>
+		                <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+		            </div>
+		            <div class="u-select">
+		                <span><a href="<?php echo $this->view->baseUrl?>member/index/usermessage" title="系统消息">系统消息</a></span>
+		                <span><a href="<?php echo $this->view->baseUrl?>member/index/friendsapply" title="好友请求">好友请求</a></span>
+		                <span><a href="<?php echo $this->view->baseUrl?>member/index/replycommentsmsg" title="好友请求">评论回复</a></span>
+		                <span><a href="<?php echo $this->view->baseUrl?>member/index/userprivmsg" title="私信" class="f-msg">私信</a></span>
+		            </div>
+		        </li>
+		        <li class="f-gap" style="display: none;"><s></s></li>
+		        <li>
+		            <div class="u-menu-hd">
+		                <a href="<?php echo $this->view->baseUrl?>member/index/userrecharge" title="充值">充值</a>
+		            </div>
+		        </li>
+		        <li class="f-gap"><s></s></li>
+		        <li>
+		            <div class="u-menu-hd">
+		                <a href="<?php echo $this->view->baseUrl?>yungou/help/index" title="帮助">帮助</a>
+		            </div>
+		        </li>
+		        <li class="f-gap"><s></s></li>
+		        <li>
+		            <div class="u-menu-hd">
+		                <a href="<?php echo $this->view->baseUrl?>yungou/help/contactus" title="投诉">投诉</a>
+		            </div>
+		        </li>
+		        <li class="f-gap" style=""><s></s></li>
+		        <li id="lizxkf" class="f-zxkf" style="">
+		            <div class="u-menu-hd">
+		                <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+		            </div>
+		        </li>
+		        <li class="f-zxkf" style="display: none;">
+		           <div class="u-menu-hd">
+		               <a href="<?php echo $this->view->baseUrl?>" title="1元云购首页" class="orange">1元云购首页</a>
+		           </div>
+		       </li>
+		    </ul>
+		</div>
+	</div>

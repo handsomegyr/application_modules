@@ -1,0 +1,223 @@
+<div id="rightTool" class="g-outer" style="display:none">
+    <div class="g-status-standard">
+        <div class="m-banner-list">
+            <div class="u-sentence"><span></span></div>
+            <!--工具项-->
+            <div class="u-shortcut">
+                <ul id="ulRToolList">
+                    <li class="f-shopping-cart">
+                        <!--购物车-->
+                        <div class="u-float-list">
+                            <a href="javascript:;" target="_blank">
+                                <i id="end"></i>
+                                <em id="rightCartNum" style="display:none;">0</em>
+                                <span>购物车</span>
+                            </a>
+                            <b class="curr-arrow"></b>
+                        </div>
+                    </li>
+                    <li class="f-attention">
+                        <!--关注-->
+                        <div class="u-float-list">
+                            <a href="javascript:;" target="_blank">
+                                <i></i>
+                                <cite>我的关注</cite>
+                            </a>
+                            <b class="curr-arrow" style="display: none;"></b>
+                        </div>
+                    </li>
+                    <li class="f-customer-service">
+                        <!--客服-->
+                        <div class="u-float-list">
+                            <a id="btnRigQQ" href="javascript:;" class="z-customer-off"><i></i><cite>在线客服</cite></a>
+                        </div>
+                    </li>
+                    <li class="f-client">
+                        <!--客户端-->
+                        <div class="u-float-list">
+                            <a href="javascript:;"><i></i><cite>手机APP</cite></a>
+                            <b class="curr-arrow"></b>
+                        </div>
+                        <div class="u-activate">
+                            <a href="javascript:;" target="_blank">
+                                <img src="images/andriod.jpg">
+                                下载客户端
+                            </a>
+                        </div>
+                    </li>
+                    <li class="f-weixin">
+                        <!--微信-->
+                        <div class="u-float-list">
+                            <a href="javascript:;"><i></i><cite>官方微信</cite></a>
+                            <b class="curr-arrow"></b>
+                        </div>
+                        <div class="u-activate">
+                            <a href="javascript:;" target="_blank">
+                                <img src="images/1yyg-wx.png?v=140105">
+                                关注官方微信
+                            </a>
+                        </div>
+                    </li>
+                    <li class="f-feedback">
+                        <!--意见反馈-->
+                        <div class="u-float-list">
+                            <a href="javascript:;" target="_blank"><i></i><cite>意见反馈</cite></a>
+                        </div>
+                    </li>
+                    <li class="f-back-to">
+                        <!--Top-->
+                        <div class="u-float-list">
+                            <a href="javascript:;"><i></i><cite>置顶</cite></a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--购物车列表-->
+        <div id="divRTCartMain" class="m-unfold-cart clrfix">
+            <!--头部-->
+            <div class="f-unfold-title" style="display:none;">
+                <span class="fl">购物车</span>
+                <cite class="fr"><a href="/yungou/cart/list" target="_blank" title="全屏查看">全屏查看</a></cite>
+            </div>
+            <!--列表-->
+            <div id="cart_container" class="f-unfold-con clrfix" style="display:none;">
+                <div id="cart_container" class="clrfix">
+                    <div id="cart_box" class="scrollcontent" style="height: 852px; display: block;">
+                        <div id="cart_shower" class="unfold-list" style="display: block; top: 0px;">
+                            <!-- <dl>
+                                <dd>
+                                    <a href="detail.html" title="亿觅（emie） 能量刀锋 全球超薄移动电源 8000毫安" target="_blank">
+                                        <img src="images/data/20131227091303137.jpg">
+                                    </a>
+                                </dd>
+                                <dd class="z-ygrc">
+                                    <p class="two-row" style="display: block;">
+                                        <cite>
+                                            <em>云购人次：</em><em class="shuliang">3</em>
+                                        </cite>
+                                        <cite>
+                                            <em>小计：</em>￥<em class="jiage">3</em>.00
+                                        </cite>
+                                    </p>
+                                    <p class="three-row" style="display: none;">
+                                        <span class="gray6">剩余 57人次</span>
+                                        <span class="modify">
+                                            <a href="javascript:;" class="r-less">-</a>
+                                            <input type="text" value="1">
+                                            <a href="javascript:;" class="r-plus">+</a>
+                                        </span>
+                                        <span id="miniTips"></span>
+                                    </p>
+                                </dd>
+                                <dd class="z-close">
+                                    <a href="javascript:;" title="删除" class="delete-close transparent-png"></a>
+                                </dd>
+                            </dl> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--加载-->
+            <!-- <div class="loading-2015 clrfix"><em></em></div> -->
+            <!--购物车为空-->
+            <div class="cartEmpty clrfix" style="display:none;margin-top:50px;"><i></i>您的购物车为空 !</div>
+            <!--支付-->
+            <div class="f-unfold-pay clrfix" style="display:none;">
+                <ul>
+                    <li class="total-txt">
+                        共<em class="orange">0</em>个商品，合计：<b class="orange">0.00</b>元
+                    </li>
+                    <li class="accounts-btn">
+                        <a type="pay" href="javascript:;" title="去结算">去结算</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--登录-->
+        <div id="divRTLogin" class="m-cart-login clrfix"></div>
+        <!--关注-->
+        <div id="divRTColect" class="m-unfold-cart clrfix">
+            <!--头部-->
+            <div class="f-unfold-title" style="display: block;">
+                <span class="fl">我的关注</span>
+                <cite class="fr"><a href="/member/index/collectlist" target="_blank" title="全屏查看">全屏查看</a></cite>
+            </div>
+            <!--列表-->
+            <div id="colect_container" class="f-unfold-con clrfix">
+                <div id="colect_container" class="f-unfold-con clrfix">
+                  <div id="colect_box" class="scrollcontent" style="display: block; height: 914px;">
+                      <div id="colect_shower" class="attentionCon">
+                          <div class="no-login-wrapper" style="padding-top:432px">
+                              <div class="gth-icon transparent-png">
+                              </div>
+                              <p class="ng-see-mycord">
+                                  请您<a id="btnCltLogin" href="javascript:;">登录</a>后查看关注记录！
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divRTool" class="g-narrow-con" style="display:none;">
+      <div class="m-narrow-list">
+          <ul>
+              <li class="f-attention">
+                  <!--关注-->
+                  <div class="u-float-list">
+                      <a href="javascript:;" target="_blank"><i></i><cite>我的关注</cite></a>
+                  </div>
+              </li>
+              <li class="f-customer-service">
+                  <!--客服-->
+                  <div class="u-float-list">
+                      <a id="btnRigQQ2" href="javascript:;" class="u-customer-on"><i></i><cite>在线客服</cite></a><!-- z-customer-off 客服不在线时 -->
+                  </div>
+              </li>
+              <li class="f-client">
+                  <!--客户端-->
+                  <div class="u-float-list">
+                      <a href="javascript:;" target="_blank"><i></i><cite>手机APP</cite></a>
+                      <b class="curr-arrow"><s></s></b>
+                  </div>
+                  <div class="activateCon">
+                      <div class="u-activate">
+                          <a href="javascript:;" target="_blank">
+                              <img src="/yungou/images/andriod.jpg">下载客户端
+                          </a>
+                      </div>
+                  </div>
+              </li>
+              <li class="f-weixin">
+                  <!--微信-->
+                  <div class="u-float-list">
+                      <a href="javascript:;" target="_blank"><i></i><cite>官方微信</cite></a>
+                      <b class="curr-arrow"><s></s></b>
+                  </div>
+                  <div class="activateCon">
+                      <div class="u-activate">
+                          <a href="javascript:;" target="_blank">
+                              <img src="/yungou/images/1yyg-wx.png">关注官方微信
+                          </a>
+                      </div>
+                  </div>
+              </li>
+              <li class="f-feedback">
+                  <!--意见反馈-->
+                  <div class="u-float-list">
+                      <a href="javascript:;" target="_blank"><i></i><cite>意见反馈</cite></a>
+                  </div>
+              </li>
+              <li class="f-back-to">
+                  <!--Top-->
+                  <div class="u-float-list">
+                      <a href="javascript:;"><i></i><cite>置顶</cite></a>
+                  </div>
+              </li>
+          </ul>
+      </div>
+</div>

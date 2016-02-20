@@ -1,0 +1,55 @@
+﻿    <div class="g-logo-top g-logo-width">
+        <a rel="nofollow" href="/" class="transparent-png fl"><img src="images/logo.png"></a>
+        <span class="fr"><a href="/">返回首页</a></span>
+    </div>
+    <div class="g-login-con clrfix" id="g_login" style="background:#5fd2a7 url(images/20150710114222431.jpg) top center no-repeat;">
+        <div class="m-login-screen clrfix">
+            <div id="loadingPicBlock" class="screen-left fl"></div>
+            <div class="screen-right fr clrfix">
+                <div class="login-panel" id="LoginForm">
+                    <dl>
+                        <dt>
+                            <em class="fl">登录</em>
+                            <a id="hylinkRegisterPage" tabindex="7" class="fr orange" href="<?php echo $this->view->baseUrl?>member/passport/register">免费注册<i class="passport-icon"></i></a>
+                        </dt>
+                        <dd>
+                            <div class="register-form-con clrfix">
+                                <ul>
+                                    <li>
+                                        <input id="username" class="iptfocus" type="text" maxlength="100" tabindex="1" autocomplete="off">
+                                        <b class="passport-icon user-name transparent-png"></b>
+                                        <em style="" class="iptem">手机号/邮箱地址</em>
+                                    </li>
+                                    <li>
+                                        <input id="pwd" class="iptfocus" type="password" maxlength="20" tabindex="2" value="">
+                                        <b class="passport-icon login-password transparent-png"></b>
+                                        <em style="" class="iptem">密码</em>
+                                    </li>
+                                </ul>
+                            </div>
+                        </dd>
+                        <dd class="text-alignR">
+                            <a id="hylinkGetPassPage" tabindex="3" class="gray9" href="<?php echo $this->view->baseUrl?>member/passport/findpassword">忘记密码？</a>
+                        </dd>
+                        <dd class="error-message orange" style="display: none;" id="dd_error_msg"></dd>
+                    </dl>
+                    <p><a id="btnSubmitLogin" href="javascript:;" class="z-agreeBtn" tabindex="4">登录</a></p>
+                    <div class="other-login">
+                        <span>使用其它方式快捷登录：</span>
+                        <a id="qq_login_btn" href="javascript:;" class="qq-icon" tabindex="5"><b class="passport-icon transparent-png"></b></a>
+                        <a id="wx_login_btn" href="javascript:;" class="wx-icon" tabindex="6"><b class="passport-icon transparent-png"></b></a>
+                    </div>
+                    <ul id="j-tips-wrap" class="j-tips-wrap j-login-page">
+                    </ul>
+                </div>
+                <div class="wx-login clrfix" id="wxLogin" style="right: -390px;">
+                    <h2 class="gray3">微信登录</h2>
+                    <p id="p_code"><iframe src="https://open.weixin.qq.com/connect/qrconnect?appid=wxe61d43f2e02a5b10&amp;scope=snsapi_login&amp;redirect_uri=https%3A//passport.1yyg.com/qcback.html&amp;state=wx&amp;login_type=jssdk&amp;href=https://skin.1yyg.com/Passport/css/layout.css?date=0617" frameborder="0" scrolling="no" width="300px" height="400px"></iframe></p>
+                    <a id="a_return" href="javascript:;"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/login.js"></script>
+

@@ -1,0 +1,755 @@
+﻿@charset "utf-8";
+	a.z-gray-button {
+	margin-left:104px;
+}
+.g-account-balance {
+	width:990px;
+	margin:0 auto 15px;
+	padding-bottom:15px;
+	border-bottom:1px solid #f0f0f0;
+}
+.g-account-balance dt {
+	font-size:14px;
+}
+.g-account-balance dt span,.g-account-balance dt a {
+	float:left;
+}
+.g-account-balance dt span {
+	padding-right:10px;
+}
+.g-account-balance dt em {
+	font-size:24px;
+}
+.g-account-balance dt a {
+	display:block;
+	width:96px;
+	height:29px;
+	line-height:28px;
+	text-align:center;
+	color:#fff;
+	border-radius:2px;
+	margin-left:16px;
+}
+.g-account-balance a.z-orange-btn {
+	background:#f60;
+}
+.g-account-balance a.z-orange-btn:hover {
+	background:#f40;
+}
+.g-account-balance a.z-blue-btn {
+	background:#2af;
+}
+.g-account-balance a.z-blue-btn:hover {
+	background:#229aff;
+}
+.g-account-balance dd {
+	clear:both;
+	padding-top:5px;
+	padding-left:74px;
+	color:#bbb;
+	overflow:hidden;
+}
+.g-account-balance dd i {
+	margin-left:20px;
+}
+.my-account-con span.u-commodity-pic {
+	width:150px;
+}
+.my-account-con span.u-select-con {
+	margin:0 150px 0 100px;
+}
+.my-account-con span.u-commodity-name {
+	width:250px;
+}
+.my-account-con span.u-operation {
+	text-align:left;
+}
+.my-account-con dd {
+	padding:10px 0;
+}
+.my-account-con dd span {
+	color:#999;
+}
+.my-account-con dd span.u-select-con {
+	color:#666;
+}
+.my-account-con dd span.u-commodity-name {
+	font-size:14px;
+}
+.my-account-con dd span.green {
+	color:#00a800;
+}
+.g-transfer-pop {
+	width:494px;
+	padding:24px 30px 0;
+}
+.g-transfer-pop h3 {
+	font-size:18px;
+	padding-bottom:11px;
+	border-bottom:1px solid #f0f0f0;
+	text-align:center;
+}
+.g-transfer-pop s {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	background-position:-92px -248px;
+	vertical-align:middle;
+	margin-right:6px;
+	position:relative;
+	top:-2px;
+	*top:0;
+}
+.g-transfer-pop span.f-box-tips {
+	display:block;
+	width:454px;
+	height:27px;
+	line-height:27px;
+	border:1px solid #fd9;
+	background:#fffff2;
+	padding-left:8px;
+	margin:19px auto 11px;
+}
+.g-transfer-pop dl {
+	width:464px;
+	margin:0 auto;
+	font-size:14px;
+}
+.g-transfer-pop dt {
+	padding-bottom:11px;
+}
+.g-transfer-pop dt em {
+	font-size:18px;
+	margin-left:-3px;
+}
+.g-transfer-pop dd {
+	width:464px;
+	height:62px;
+}
+.g-transfer-pop label {
+	color:#999;
+	font-size:14px;
+}
+.g-transfer-pop dd a:hover {
+	color:#f60;
+	text-decoration:underline;
+}
+.g-transfer-pop dd label,.g-transfer-pop dd input {
+	float:left;
+}
+.g-transfer-pop dd label,.g-transfer-pop dd span,.g-transfer-pop dd a,.g-transfer-pop dd cite {
+	line-height:36px;
+}
+.g-transfer-pop dd label em {
+	padding-right:28px;
+}
+.g-transfer-pop dd input {
+	width:286px;
+	height:34px;
+	line-height:34px;
+	padding:0 6px;
+	border:1px solid #ddd;
+	border-radius:2px;
+	margin-right:8px;
+	color:#bbb;
+}
+.g-transfer-pop dd span {
+	height:36px;
+}
+.g-transfer-pop dd span a {
+	color:#666;
+	margin-left:3px;
+	text-decoration:underline;
+}
+.g-transfer-pop dd input.z-money {
+	width:134px;
+}
+.g-transfer-pop dd input.z-pwd {
+	width:164px;
+}
+.g-transfer-pop dd input.z-pwd::-webkit-input-placeholder {
+	color:#bbb;
+}
+.g-transfer-pop dd input.z-pwd:-moz-placeholder {
+	color:#bbb;
+}
+.g-transfer-pop dd input.z-pwd::-moz-placeholder {
+	color:#bbb;
+}
+.g-transfer-pop dd input.z-pwd:-ms-input-placeholder {
+	color:#bbb;
+}
+.g-transfer-pop dd p {
+	clear:both;
+	padding-left:72px;
+	padding-top:4px;
+	font-size:12px;
+	display:none;
+}
+.g-transfer-pop dd.f-focus input {
+	border:1px solid #bbb;
+	color:#999;
+}
+.g-confirm-info dd.f-focus .z-pwd {
+	border-right:none;
+}
+.g-transfer-pop dd.f-error-mes input {
+	border:1px solid #f60;
+}
+.g-transfer-pop dd.f-error-mes p {
+	display:block;
+}
+div.pageDialogMain .g-transfer-pop dd.f-error-mes p {
+	padding:4px 0 0 72px;
+	line-height:normal;
+}
+.g-transfer-pop a.z-get-code {
+	display:block;
+	width:114px;
+	height:36px;
+	text-align:center;
+	background:#f60;
+	color:#fff;
+	border-radius:0 2px 2px 0;
+}
+.g-transfer-pop a.z-get-code:hover {
+	background:#f40;
+	color:#fff;
+	text-decoration:none;
+}
+.g-transfer-pop a.z-sending,.g-transfer-pop a.z-sending:hover {
+	width:112px;
+	height:34px;
+	line-height:33px;
+	background:#fbfbfb;
+	color:#bbb;
+	border:1px solid #ddd;
+	cursor:default;
+}
+.g-transfer-pop a.z-submit {
+	clear:both;
+	display:block;
+	width:116px;
+	height:29px;
+	line-height:28px;
+	text-align:center;
+	color:#fff;
+	background:#2af;
+	border-radius:2px;
+	margin:10px 0 0 85px;
+	text-decoration:none;
+	font-size:14px;
+}
+.g-transfer-pop a.z-submit:hover {
+	background:#229aff;
+	color:#fff;
+}
+.g-confirm-info dd {
+	height:42px;
+}
+.g-confirm-info dd input {
+	margin-right:0;
+	border-right:0 none;
+	border-radius:2px 0 0 2px;
+}
+.g-confirm-info dd input.gray3 {
+	color:#333;
+}
+.g-confirm-info dd cite.orange {
+	font-size:18px;
+}
+.g-confirm-info dd cite.gray3 {
+	font-size:16px;
+}
+.g-confirm-info dd cite a {
+	text-decoration:underline;
+}
+.g-confirm-info a.z-submit {
+	margin-left:99px;
+}
+.g-confirm-info dd.f-error-mes {
+	height:62px;
+}
+div.pageDialogMain .g-confirm-info dd.f-error-mes p {
+	padding:4px 0 0 84px;
+}
+.g-obtain-title a.z-return {
+	line-height:38px;
+	font-size:14px;
+	padding-left:17px;
+	position:absolute;
+	top:0;
+	right:29px;
+	overflow:hidden;
+	background-position:-96px -410px;
+}
+.g-obtain-title a.z-return:hover {
+	text-decoration:underline;
+}
+.g-please-select {
+	width:990px;
+	margin:0 auto;
+	border-bottom:1px solid #f0f0f0;
+	padding-bottom:35px;
+	background:;
+}
+.g-please-select h3,.g-select-mode h3 {
+	display:block;
+	padding-bottom:10px;
+	font-size:16px;
+}
+.g-please-select li {
+	float:left;
+	font-size:18px;
+	margin-right:30px;
+	position:relative;
+	display:inline;
+}
+.g-please-select li a,.g-please-select li input {
+	display:block;
+	width:150px;
+	height:34px;
+	line-height:34px;
+	padding:5px 0;
+	text-align:center;
+	border:1px solid #e4e4e4;
+	overflow:hidden;
+}
+.g-please-select li a {
+	color:#666;
+}
+.g-please-select li input {
+	font-size:16px;
+}
+.g-please-select li.f-checked a,.g-please-select li.f-checked input {
+	border:1px solid #f60;
+	color:#f60;
+}
+.g-please-select li.f-checked s {
+	display:block;
+	width:16px;
+	height:16px;
+	background-position:-92px -393px;
+	position:absolute;
+	right:0;
+	bottom:0;
+	*bottom:1px;
+}
+.g-select-mode {
+	width:990px;
+	margin:0 auto;
+	padding-top:30px;
+}
+.m-tab-menu {
+	height:49px;
+	font-size:16px;
+	border-bottom:1px solid #e4e4e4;
+	border-left:1px solid #e4e4e4;
+	position:relative;
+}
+.m-tab-menu li {
+	float:left;
+	height:49px;
+}
+.m-tab-menu li a {
+	display:inline-block;
+	height:48px;
+	line-height:48px;
+	padding:0 65px;
+	color:#666;
+	border-top:1px solid #e4e4e4;
+	border-right:1px solid #e4e4e4;
+}
+.m-tab-menu li.curr a {
+	border-top:2px solid #f60;
+	height:48px;
+	background:#fff;
+	color:#333;
+	overflow:hidden;
+}
+.f-pay-bank {
+	width:988px;
+	border:1px solid #e4e4e4;
+	border-top:0 none;
+}
+.f-pay-bank dl {
+	padding:34px 0 36px;
+}
+.f-pay-bank dd {
+	float:left;
+	width:150px;
+	height:30px;
+	border:1px solid #fff;
+	margin:2px 0 0 40px;
+	padding:7px 0;
+	overflow:hidden;
+	display:inline;
+}
+.f-pay-bank dd.checked {
+	border:1px solid #f60;
+}
+.f-pay-bank dd input {
+	float:left;
+	width:20px;
+	position:relative;
+	top:10px;
+	*top:4px;
+	margin-left:7px;
+	hide-focus:expression(this.hideFocus=true);
+}
+.f-pay-bank dd label {
+	float:left;
+	width:123px;
+	cursor:pointer;
+	hide-focus:expression(this.hideFocus=true);
+}
+.f-pay-bank dd span {
+	background-image:url(../images/bank-logo.gif?v=0818);
+	display:block;
+	background-repeat:no-repeat;
+	overflow:hidden;
+	height:30px;
+	margin:0 auto;
+}
+.f-pay-bank dd span.zh_bank {
+	width:104px;
+	background-position:0 0;
+}
+.f-pay-bank dd span.gh_bank {
+	width:102px;
+	background-position:0 -35px;
+}
+.f-pay-bank dd span.jh_bank {
+	width:104px;
+	background-position:0 -70px;
+}
+.f-pay-bank dd span.nh_bank {
+	width:104px;
+	background-position:0 -105px;
+}
+.f-pay-bank dd span.zg_bank {
+	width:92px;
+	background-position:0 -140px;
+}
+.f-pay-bank dd span.jt_bank {
+	width:110px;
+	background-position:0 -175px;
+}
+.f-pay-bank dd span.hx_bank {
+	width:104px;
+	background-position:0 -210px;
+}
+.f-pay-bank dd span.xy_bank {
+	width:105px;
+	background-position:0 -245px;
+}
+.f-pay-bank dd span.sh_bank {
+	width:98px;
+	background-position:0 -280px;
+}
+.f-pay-bank dd span.ms_bank {
+	width:105px;
+	background-position:0 -315px;
+}
+.f-pay-bank dd span.gf_bank {
+	width:109px;
+	background-position:0 -350px;
+}
+.f-pay-bank dd span.pa_bank {
+	width:104px;
+	background-position:0 -385px;
+}
+.f-pay-bank dd span.pf_bank {
+	width:87px;
+	background-position:0 -420px;
+}
+.f-pay-bank dd span.zx_bank {
+	width:104px;
+	background-position:0 -455px;
+}
+.f-pay-bank dd span.gd_bank {
+	width:106px;
+	background-position:0 -490px;
+}
+.f-pay-bank dd span.nj_bank {
+	width:100px;
+	background-position:0 -525px;
+}
+.f-pay-bank dd span.yz_bank {
+	width:108px;
+	background-position:0 -560px;
+}
+.f-pay-bank dd span.hz_bank {
+	width:106px;
+	background-position:0 -595px;
+}
+.f-pay-bank dd span.lb_bank {
+	width:100px;
+	background-position:0 -630px;
+}
+.f-pay-bank dd span.bj_bank {
+	width:104px;
+	background-position:0 -665px;
+}
+.f-pay-bank dd span.cqls_bank {
+	width:113px;
+	background-position:0 -700px;
+}
+.f-pay-bank dd span.bj2_bank {
+	width:109px;
+	background-position:0 -735px;
+}
+.f-pay-bank dd span.qd_bank {
+	width:104px;
+	background-position:0 -770px;
+}
+.f-pay-bank dd span.cd_bank {
+	width:102px;
+	background-position:0 -805px;
+}
+.f-pay-bank dd span.u-bank-wy {
+	width:96px;
+	background-position:0 -840px;
+}
+.f-pay-bank dd span.u-bank-kq {
+	width:68px;
+	background-position:-8px -875px;
+}
+.f-pay-bank dd span.u-bank-online {
+	width:91px;
+	background-position:0 -910px;
+}
+.f-pay-bank dd span.u-bank-weixin {
+	width:100px;
+	background-position:0 -945px;
+}
+.f-pay-bank dd span.u-bank-cft {
+	width:84px;
+	background-position:0 -980px;
+	margin:0 0 0 13px;
+}
+.f-pay-bank dd span.jd_bank {
+	background-position:8px -1017px;
+}
+.f-pay-bank dd span.u-bank-qqmobile {
+	width:110px;
+	background-position:3px -1058px;
+}
+.f-pay-bank dd span.u-bank-zfb {
+	background-position:8px -1100px;
+}
+.amounts-payable {
+	font-size:16px;
+	padding-top:22px;
+}
+.amounts-payable p {
+	line-height:35px;
+	padding-bottom:10px;
+}
+.amounts-payable b {
+	font-size:20px;
+	margin-left:15px;
+	vertical-align:middle;
+}
+.amounts-payable b em {
+	font-weight:bold;
+}
+.amounts-payable input {
+	display:block;
+	width:158px;
+	height:39px;
+	line-height:39px;
+	text-align:center;
+	background:#2af;
+	color:#fff;
+	border-radius:2px;
+	border:0 none;
+}
+.amounts-payable input:hover {
+	background:#229aff;
+}
+.g-rec-info {
+	text-align:center;
+	font-size:14px;
+	padding-top:40px;
+}
+.g-rec-info a:hover {
+	text-decoration:underline;
+}
+.g-recharge-card {
+	clear:both;
+	width:502px;
+	height:309px;
+	margin:10px auto 30px;
+	border:1px solid #f0f0f0;
+	border-radius:20px;
+	-moz-box-shadow:3px 3px 3px #f7f7f7;
+	-webkit-box-shadow:3px 3px 3px #f7f7f7;
+	box-shadow:3px 3px 3px #f7f7f7;
+}
+.g-recharge-card dl {
+	padding:55px 80px 0;
+}
+.g-recharge-card dd {
+	height:68px;
+}
+.g-recharge-card label,.g-recharge-card input {
+	float:left;
+}
+.g-recharge-card label {
+	font-size:16px;
+	line-height:38px;
+}
+.g-recharge-card input {
+	width:242px;
+	height:26px;
+	line-height:26px;
+	padding:5px 8px;
+	border:1px solid #ddd;
+	border-radius:2px;
+	font-size:14px;
+	color:#bbb;
+}
+.g-recharge-card input.gray3 {
+	color:#333;
+}
+.g-recharge-card a {
+	display:block;
+	width:116px;
+	height:32px;
+	line-height:32px;
+	text-align:center;
+	border-radius:2px;
+	font-size:14px;
+	margin-left:160px;
+	background:#2af;
+	color:#fff;
+}
+.g-recharge-card a:hover {
+	background:#229aff;
+}
+.g-recharge-card dd p {
+	clear:both;
+	font-size:12px;
+	padding-left:81px;
+	padding-top:5px;
+	display:none;
+}
+.g-recharge-card dd p s {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	background-position:-92px -248px;
+	vertical-align:middle;
+	margin-right:6px;
+	position:relative;
+	top:-2px;
+	*top:0;
+}
+.g-recharge-card dd.f-fous input {
+	border:1px solid #bbb;
+}
+.g-recharge-card dd.f-error input {
+	border:1px solid #f60;
+}
+.g-recharge-card dd.f-error p {
+	display:block;
+}
+.g-recharge-card dd.f-key input {
+	color:#333;
+	font-size:16px;
+}
+.g-recharge-card dd.f-amount {
+	height:45px;
+	margin-top:-10px;
+}
+.g-recharge-card dd.f-amount b {
+	font-size:22px;
+	line-height:38px;
+}
+.g-remind-box {
+	width:348px;
+	height:192px;
+	padding:20px 15px 15px;
+}
+.g-remind-box h2 {
+	display:block;
+	margin:0 0 13px 0;
+	padding:0 0 13px 0;
+	border-bottom:1px solid #f0f0f0;
+	text-align:center;
+	font-size:18px;
+}
+div.pageDialogMain .g-remind-box h2 {
+	margin:0 0 13px 0;
+	padding:0 0 13px 0;
+	background:none;
+	text-align:center;
+	font-size:18px;
+}
+.g-remind-box dl {
+	padding-left:40px;
+	font-size:14px;
+}
+.g-remind-box dt s {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	background-position:-92px -248px;
+	vertical-align:middle;
+	margin-right:6px;
+	position:relative;
+	top:-1px;
+	*top:0;
+	margin-left:-20px;
+}
+.g-remind-box dd {
+	color:#bbb;
+	text-align:left;
+	line-height:25px;
+	padding:12px 0;
+}
+.g-remind-box dd a {
+	display:inline-block;
+	width:114px;
+	height:27px;
+	line-height:26px;
+	color:#999;
+	text-align:center;
+	border:1px solid #ddd;
+	border-radius:2px;
+	margin-right:18px;
+}
+.g-remind-box dd a:hover {
+	color:#f60;
+	border:1px solid #f60;
+}
+.g-need-bind {
+	width:408px;
+	height:177px;
+	padding-top:30px;
+	font-size:14px;
+	text-align:center;
+}
+.g-need-bind dt {
+	font-size:18px;
+}
+.g-need-bind dd {
+	display:block;
+	padding:15px 0;
+}
+.g-need-bind dd a {
+	display:inline-block;
+	width:134px;
+	height:33px;
+	line-height:32px;
+	text-align:center;
+	color:#f60;
+	border:1px solid #f60;
+	border-radius:2px;
+	margin-top:10px;
+}
+.g-need-bind dd a:hover {
+	background:#f60;
+	color:#fff;
+}

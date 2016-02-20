@@ -1,0 +1,12 @@
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<div class="sidebar_l clrfix fl">
+    <ul>
+        <li <?php if($this->view->actionName=='membermodify'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/admin/membermodify" title="个人资料">个人资料</a><b></b></li>
+        <li <?php if($this->view->actionName=='userphoto'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/admin/userphoto" title="修改头像">修改头像</a><b></b></li>
+        <li <?php if($this->view->actionName=='address'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/admin/address" title="收货地址">收货地址</a><b></b></li>
+        <li <?php if($this->view->actionName=='index'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/security/index" title="账户安全">账户安全</a><b></b></li>
+        <li <?php if($this->view->actionName=='privacysettings'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/admin/privacysettings" title="隐私设置">隐私设置</a><b></b></li>
+        <li <?php if($this->view->actionName=='noticesettings'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/admin/noticesettings" title="常用设置">常用设置</a><b></b></li>
+    </ul>
+</div>
+<?php echo $this->getContent(); ?>

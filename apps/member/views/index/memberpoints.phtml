@@ -1,0 +1,48 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="memberpoints">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">我的福分</span>
+    </div>
+    <div class="mana-req-wrap">
+        <div class="mana-req-inner" style="padding-top:0;">
+            <div class="fl">
+                <ul class="mana-req-m">
+                    <?php $points = \Webcms\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY1)?>
+                    <li>可用福分 <span class="yu" rmb='<?php echo $points*1.00/100?>'><?php echo $points?></span><i></i></li>
+                    <li>可抵现金&nbsp;&nbsp;<?php echo $points*1.00/100?>元，100福分=1元 ，<a style="color: #2af;" href="<?php echo $this->view->baseUrl?>yungou/help/userexperience" target="_blank" title="如何获得福分">如何获得福分？</a></li>
+                </ul>
+            </div>
+            <div class="money-wrap">
+                <a id="a_applycz" href="javascript:;" class="money-btn in">充值到云购账户</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <?php $this->partial("partials/regionsearch") ?>
+    
+    <div class="f-data-wrap">
+        <div class="data-nav">
+            <span class="time">时间</span>
+            <span class="order">获得/支出</span>
+            <span class="protail">详情</span>
+        </div>
+        <ul id="ul_points" class="data-inner">
+        <?php if(!empty($this->view->logList['datas'])){?>
+        <?php foreach ($this->view->logList['datas'] as $log) {?>
+        <li>
+        <span class="time"><?php echo date('Y.m.d H:i:s',$log['addtime']->sec)?></span>
+        <span class="order add"><em><?php if($log['points']>0){?>+<?php }else{?>-<?php }?><?php echo abs($log['points'])?></em></span>
+        <span class="protail"><?php echo $log['desc']?></span>
+        </li>
+        <?php }?>
+        <?php }?>
+        </ul>
+        <div class="g-pagination" id="g-pagination" style="display:none"></div>
+    </div>
+
+</div>

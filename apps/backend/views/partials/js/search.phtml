@@ -1,0 +1,22 @@
+<script>
+var Search = function () {
+
+    return {
+        //main function to initiate the module
+        init: function () {
+            if (jQuery().datepicker) {
+                $('.date-picker').datepicker();
+            }
+
+            App.initFancybox();
+            
+            $('#btnSearch').click(function (e) {
+                e.preventDefault();
+          	   $('#example').DataTable().draw();    
+            });
+        }
+
+    };
+
+}();
+</script>

@@ -1,0 +1,16 @@
+<div class="sidebar_l clrfix fl">
+    <ul>
+        <li <?php if($this->view->actionName=='index'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/index" title="首页">首页</a><b></b></li>
+        <li <?php if($this->view->actionName=='userbuylist'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/userbuylist" title="云购记录">云购记录</a><b></b></li>
+        <li <?php if($this->view->actionName=='orderlist'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/orderlist" title="获得的商品">获得的商品</a><b></b></li>
+        <li <?php if($this->view->actionName=='postsinglelist'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/postsinglelist" title="晒单管理">晒单管理</a><b></b></li>
+        <li <?php if($this->view->actionName=='collectlist'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/collectlist" title="我的关注">我的关注</a><b></b></li>
+        <li <?php if($this->view->actionName=='userbalance'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/userbalance" title="我的账户">我的账户</a><b></b></li>
+        <li <?php if($this->view->actionName=='myfriends'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/myfriends" title="我的好友">我的好友</a><b></b></li>
+        <!-- <li <?php if($this->view->actionName=='joingroup'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/joingroup" title="云购圈">云购圈</a><b></b></li> -->
+        <li <?php if($this->view->actionName=='invitedlist'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/invitedlist" title="邀请管理">邀请管理</a><b></b></li>
+        <li <?php if($this->view->actionName=='memberpoints'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/memberpoints" title="我的福分">我的福分</a><b></b></li>
+        <li <?php if($this->view->actionName=='usermessage'){?>class="curr z-first"<?php }?>><a href="<?php echo $this->view->baseUrl?>member/index/usermessage" title="消息管理">消息管理</a><b></b></li>
+    </ul>
+</div>
+<?php echo $this->getContent(); ?>

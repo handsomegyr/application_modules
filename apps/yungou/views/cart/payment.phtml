@@ -1,0 +1,134 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/CartList.css" />
+<div class="w1190 clrfix">
+    <!--头部-->
+    <div class="g-special-head">
+        <a href="/" class="f-logo fl transparent-png"></a>
+        <a href="/" title="继续云购" class="f-carryOn fr">继续云购</a>
+    </div>
+
+    <div class="g-main-con clrfix">
+        <div class="m-cart-title gray3"><b>订单信息</b></div>
+
+        <!--商品列表-->
+        <div id="divCartList" class="m-pay-list gray9 clrfix">
+            <dl>
+                <dt>
+                    <span class="f-pay-comm">商品</span>
+                    <span class="f-pay-price">剩余人次</span>
+                    <span class="f-pay-plusLess">云购人次</span>
+                    <span class="f-pay-subtotal">小计</span>
+                </dt>
+                <?php $order_amount = 0.00?>
+                <?php if(!empty($this->view->orderList)){?>
+                <?php foreach ($this->view->orderList as $order_id => $order) {?>
+                <?php $order_amount += $order['order_amount'];?>               
+                <?php if(isset($this->view->orderGoodsList[$order_id])){?>
+                <?php foreach ($this->view->orderGoodsList[$order_id] as $orderGoods) {?>
+                <dd>
+                    <ul>
+                        <li class="f-pay-comm">
+                            <cite class="u-pay-pic">
+                                <a href="javascript:;" target="_blank" title="<?php echo $orderGoods['goods_name']?>">
+                                    <img alt="" src="/upload/goods/1/<?php echo $orderGoods['goods_image']?>">
+                                </a>
+                            </cite>
+                            <cite class="u-pay-name  ">
+                                <a href="javascript:;" target="_blank" title="<?php echo $orderGoods['goods_name']?>">(第<?php echo $orderGoods['goods_period']?>云) <?php echo $orderGoods['goods_name']?></a></cite>
+                        </li>
+                        <li class="f-pay-price"><?php echo $orderGoods['goods_remain_person_time']?></li>
+                        <li class="f-pay-plusLess"><?php echo $orderGoods['goods_num']?>人次</li>
+                        <li class="f-pay-subtotal orange">￥<?php echo number_format($orderGoods['goods_pay_price'],2)?></li>
+                    </ul>
+                </dd>
+                <?php }?>
+                <?php }?>
+                <?php }?>
+                <?php }?>                
+            </dl>
+        </div>
+        <?php $point = empty($this->view->pointInfo)?0:$this->view->pointInfo['current']?>
+        <?php $predeposit = empty($this->view->predepositInfo)?0:$this->view->predepositInfo['current']?>
+        <?php $pay_amount = $order_amount-$point/100-$predeposit?>
+        <input name="hidTotalCount" type="hidden" id="hidTotalCount" value="0">
+        <!--展开按钮-->
+        
+
+        <!--福分与余额-->
+        <div id="divPayWayBox" class="m-pay-Total clrfix">
+            <dl>
+                <dt>
+                    <span class="fl"><a href="/yungou/cart/list" title="返回修改">返回修改</a></span>
+                    <span class="fr">支付总额：<i class="orange">￥<?php echo number_format($order_amount,2)?></i></span>
+                </dt>
+
+                <?php if(empty($predeposit)){?>
+                <dd id="ddBalanceBox" class="f-pay-grayBg" style="background: #f8f8f8;">
+                    <span id="spBalance" class="orange" style="display: none;">-￥<?php echo number_format($predeposit,2)?></span>
+                    <span>使用账户余额支付，您的账户余额 ￥<?php echo number_format($predeposit,2)?></span>
+                    <span><a id="checkBalance" href="javascript:;" class="z-check"></a></span>
+                </dd>
+                <?php }else{?>
+                <dd id="ddBalanceBox" style="background: #f8f8f8;">
+                    <span id="spBalance" class="orange" style="">-￥<?php echo number_format($predeposit,2)?></span>
+                    <span>使用账户余额支付，您的账户余额 ￥<?php echo number_format($predeposit,2)?></span>
+                    <span><a id="checkBalance" href="javascript:;" class="z-check"><b class="z-comms"></b></a></span>
+                </dd>
+                <?php }?>
+            </dl>
+        </div>
+
+        <!--网银-->
+        <div id="divBankBox" class="m-pay-manner" style="">
+            <div class="f-pay-select">
+                <span class="fl" id="spPayTitle">您的账户余额不足，请选择以下方式完成支付</span>
+                <span class="fr">使用网银支付<i id="iBankPay" class="orange">￥<?php echo number_format($pay_amount,2)?></i></span>
+            </div>
+
+            <div class="f-pay-defray f-pay-defray2 clrfix">
+                <p class="fl gray9">支付平台支付</p>
+                <div class="fr f-pay-bank">
+                    <h3>支付平台支付：</h3>
+                    <dl id="dlPayForm" class="clrfix">
+                        <dd>
+                            <input type="radio" name="account" value="zfbpay" id="zfbpay"><label for="zfbpay"><span class="u-bank-zfb"></span></label>
+                        </dd>
+                        <dd>
+                            <input type="radio" name="account" value="Pingan" id="Pingan"><label for="Pingan"><span class="u-bank-weixin"></span></label>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+
+        <input type="hidden" id="hidBalance" value="0.00"><input type="hidden" id="hidCountMoney" value="13.00"><input type="hidden" id="hidPoints" value="10.00"><input type="hidden" id="hidAvailablePoints" value="0"><input type="hidden" id="hidUsePaypwd" value="0"><input type="hidden" id="hidSmallMoney" value="0">
+
+        <!--使用网银支付提交表单-->
+        <!-- <form id="toPayForm" name="toPayForm" action="javascript:;" method="post" target="_blank"> -->
+            <input type="hidden" id="hidPayName" name="payName" value="">
+            <input type="hidden" id="hidPayBank" name="payBank" value="0">
+            <input type="hidden" id="hidUseBalance" name="useBalance" value="">
+            <!-- 不使用福分时，值为0；使用福分时，值为使用福分值 2012.4.28-->
+            <input type="hidden" id="hidIntegral" name="integral" value="0">
+            <!-- 支付SN -->
+            <input type="hidden" id="hidCheckSN" name="checkSN" value="<?php echo $this->view->pay_sn?>">
+            <div class="m-pay-Total clrfix">
+                <div id="divPaypwd" class="f-payment-password clrfix" style="display: none;">
+                    <p>
+                        <input type="password" id="txtPaypwd" value="" maxlength="6" autocomplete="off">
+                        <s style="display: none;"></s>
+                        <em id="emTip">请输入6位支付密码</em>
+                    </p>
+                    <span><a href="http://member.1yyg.com/Security/UserAuth-10.do" target="_blank" class="gray6">忘记支付密码？</a></span>
+                </div>
+                <div class="f-list-accounts fr">
+                    <input id="submitOK" type="submit" name="submit" value="确认支付">
+                </div>
+            </div>
+            <div id="divGetPoint" class="f-cgzf">成功支付即可获得13福分</div>
+        <!-- </form> -->
+    </div>
+</div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/cart.js"></script>

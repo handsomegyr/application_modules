@@ -1,0 +1,8 @@
+<?php $categoryList = \Webcms\Goods\Helpers\GoodsHelper::getCategoryList($this->view->goodsInfo['gc_id_1'],$this->view->goodsInfo['gc_id_2'],$this->view->goodsInfo['gc_id_3'])?>
+<div class="Current_nav">
+    当前位置：<a href="<?php echo $this->view->baseUrl?>">首页</a> <span>&gt;</span> <a href="<?php echo $this->view->baseUrl?>yungou/product/list">所有商品</a> 
+    <?php foreach ($categoryList as $category) {?>
+    <span>&gt;</span> <a href="<?php echo $this->view->baseUrl?>yungou/product/list?i=<?php echo $category['_id']?>"><?php echo $category['name']?></a>
+    <?php }?>
+    <span>&gt;</span> 商品详情 
+</div>

@@ -1,0 +1,44 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="userprivmsg">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul id="ul_menu">
+        <li><a href="<?php echo $this->view->baseUrl?>member/index/usermessage">系统消息</a></li>
+        <li><a href="<?php echo $this->view->baseUrl?>member/index/friendsapply">好友请求</a></li>
+        <li><a href="<?php echo $this->view->baseUrl?>member/index/replycommentsmsg">评论回复消息</a></li>
+        <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/userprivmsg">私信</a></li>
+    </ul>
+    </div>
+
+    <div class="fri-msg-wrap">
+        <ul class="fri-pri-inner" id="ul_primsg">
+          <!-- <li>
+              <a class="h-pic" href="javascript:;" target="_blank">
+                  <img width="50" height="50" src="/Images/UserFace-160-0000.jpg">
+              </a>
+              <div class="info">
+                  <a class="u-name" href="javascript:;" userweb="1010029819">dh*@qq.com</a>
+                  <span class="gray9">对您说：</span>
+                  <span>sdfasdfasdfasdf</span>
+              </div>
+              <div class="time-wrap">
+                  <span class="gray9">6分钟前</span>
+                  <span class="fr">
+                      <a href="<?php echo $this->view->baseUrl?>member/index/userprivmsgdetail">共1条私信</a>
+                      &nbsp;&nbsp;
+                      <a href="<?php echo $this->view->baseUrl?>member/index/userprivmsgdetail">回复</a>
+                  </span>
+              </div>
+              <a class="close-btn" href="javascript:;" senderuserid="9533390"><span></span></a>
+          </li> -->
+      </ul>
+    </div>
+      <div class="fri-page-wrap" style="display:none;">
+          <a class="clear-btn" id="a_clear" style="display: inline;" href="javascript:;">全部清空</a>
+          <div class="fr" id="div_pagination"></div>
+    </div>
+
+</div>

@@ -1,0 +1,54 @@
+﻿// 服务器地址
+139.196.170.93
+root
+1yW1iMfG
+
+// SVN地址帐号密码
+svn://139.196.170.93/
+guoyongrong
+laoguoWeb123w
+
+// mysql数据库
+localhost
+webcms
+webcmsQWS123
+---------------------------
+root
+mQ9j6tvR
+
+// 计划任务 
+
+每个一分钟执行
+/usr/bin/php /home/wwwroot/webcms/public/cli.php goods process 1 &
+/usr/bin/php /home/wwwroot/webcms/public/cli.php orderpay process 1 &
+/usr/bin/php /home/wwwroot/webcms/public/cli.php msg process 1 &
+
+cli地址
+/usr/bin/php /home/wwwroot/webcms/public/cli.php orderpay finishpay 1 &
+/usr/bin/php /home/wwwroot/webcms/public/cli.php goods createnewperiodgoods 1 &
+/usr/bin/php /home/wwwroot/webcms/public/cli.php goods lotterygoods 1 &
+/usr/bin/php /home/wwwroot/webcms/public/cli.php msg sendmsg4lotteryresult 1 &
+
+
+/usr/bin/php /home/wwwroot/webcms/public/cli.php main testgetjobfromqueue newperiodgoods &
+/usr/bin/php /home/wwwroot/webcms/public/cli.php main testgetjobfromqueue lotterygoods &
+/usr/bin/php /home/wwwroot/webcms/public/cli.php main testgetjobfromqueue finishpayorder &
+/usr/bin/php /home/wwwroot/webcms/public/cli.php main testgetjobfromqueue retry &
+
+/usr/bin/php /home/wwwroot/webcms/public/cli.php main testputjobtoqueue testtube &
+
+
+测试地址：http://webcms.didv.cn/
+SVN地址：svn://139.196.170.93/
+
+www.1yyg.com
+http://www.vjugou.com
+https://passport.1yyg.com/login.html
+
+https://passport.1yyg.com/login.html?forward=rego
+https://passport.1yyg.com/register.html?forward=http://www.1yyg.com/
+
+
+http://www.xueshen.net/weixin/483/?utm_source=tuicool&utm_medium=referral
+https://account.meilishuo.com/connect/auth/weixin
+http://yz.q1.com/Article/A12/306.html

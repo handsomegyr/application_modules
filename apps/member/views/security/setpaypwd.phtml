@@ -1,0 +1,65 @@
+﻿<input type="hidden" id="pageID" value="setpaypwd">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title bor-bot">
+        <span class="gray3">支付密码设置</span>
+    </div>
+    <div class="z-content">
+        <div class="person-wrap">
+            <ul class="person-list">
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <div class="info-sign"><i></i>温馨提示：为保证您的账户安全，请验证身份！</div>
+                    </span>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                        <span class="r-side">您当前绑定的邮箱：<b class="blue"><?php echo getHiddenEmail($this->view->memberInfo['email'])?></b></span>
+                    <?php }else{?>
+                        <span class="r-side">您当前绑定的手机：<b class="blue"><?php echo getHiddenMobile($this->view->memberInfo['mobile'])?></b></span>
+                    <?php }?>
+                </li>
+                <li>
+                    <span class="l-side">验证码：</span>
+                    <span class="r-side">
+                        <div class="inp-wrap">
+                            <input id="txtCheckCode" type="text" maxlength="6" class="code-inner inputFocus" value="请输入6位验证码" style="color: rgb(187, 187, 187);">
+                            <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                                <a id="btnGetCode" regesterBy="<?php echo ($this->view->memberInfo['email'])?>" href="javascript:;" class="get-code-btn">点击获取验证码</a>
+                            <?php }else{?>
+                                <a id="btnGetCode" regesterBy="<?php echo ($this->view->memberInfo['mobile'])?>" href="javascript:;" class="get-code-btn">点击获取验证码</a>
+                            <?php }?>
+                        </div>
+                    </span>
+                    <div id="div_tips"></div>
+                </li>
+                <li style="margin-top:30px;display:none;">
+                    <span class="l-side">设置支付密码：</span>
+                    <span class="r-side">
+                        <div class="inp-wrap ">
+                            <input id="txtPwd1" maxlength="6" type="password" class="code-inner inp-long inputFocus" value="请输入6位纯数字支付密码" style="color: rgb(187, 187, 187);">
+                        </div>
+                    </span>
+                    <div id="div_tips1"></div>
+                </li>
+                <li style="margin-top:30px;display:none;">
+                    <span class="l-side">确认支付密码：</span>
+                    <span class="r-side">
+                        <div class="inp-wrap ">
+                            <input id="txtPwd2" maxlength="6" type="password" class="code-inner inp-long" value="" style="color: rgb(187, 187, 187);">
+                        </div>
+                    </span>
+                    <div id="div_tips2"></div>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <a id="btnSubmit" href="javascript:;" class="set-save-btn gray-btn">确定</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <a href="javascript:history.go(-1);" class="return-btn">返回</a>
+</div>

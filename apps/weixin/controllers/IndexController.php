@@ -1,0 +1,744 @@
+<?php
+namespace Webcms\Weixin\Controllers;
+
+use Webcms\Weixin\Models\Source;
+use Webcms\Weixin\Models\Keyword;
+use Webcms\Weixin\Models\Reply;
+use Webcms\Weixin\Models\Application;
+use Webcms\Weixin\Models\User;
+use Webcms\Weixin\Models\NotKeyword;
+use Webcms\Weixin\Models\Menu;
+use Webcms\Weixin\Models\Qrcode;
+use Webcms\Weixin\Models\Scene;
+
+class IndexController extends ControllerBase
+{
+
+    private $_source;
+
+    private $_sourceDatas;
+
+    private $_keyword;
+
+    private $_reply;
+
+    private $_app;
+
+    private $_accessToken;
+
+    private $_user;
+
+    private $_not_keyword;
+
+    private $_menu;
+
+    private $_weixin;
+
+    private $_qrcode;
+
+    private $_scene;
+
+    private $_appConfig;
+
+    public function initialize()
+    {
+        parent::initialize();
+        
+        try {
+            $this->_source = new Source();
+            $this->_keyword = new Keyword();
+            $this->_not_keyword = new NotKeyword();
+            $this->_reply = new Reply();
+            $this->_app = new Application();
+            $this->_user = new User();
+            $this->_menu = new Menu();
+            $this->_qrcode = new Qrcode();
+            $this->_scene = new Scene();
+            $this->_appConfig = $this->_app->getToken();
+            $this->_weixin = new \Weixin\Client();
+            if (! empty($this->_appConfig['access_token'])) {
+                $this->_weixin->setAccessToken($this->_appConfig['access_token']);
+            }
+        } catch (\Exception $e) {
+            if (! in_array($this->router->getActionName(), array(
+                "get-settings",
+                "get-jssdk-info"
+            ))) {
+                var_dump($e);
+            }
+        }
+    }
+
+    public function indexAction()
+    {}
+
+    /**
+     * 处理微信的回调数据
+     *
+     * @return boolean
+     */
+    public function callbackAction()
+    {
+        try {
+            /**
+             * ==================================================================================
+             * ====================================以下逻辑请勿修改===================================
+             * ==================================================================================
+             */
+            $onlyRevieve = false;
+            $__DEBUG__ = isset($_GET['__DEBUG__']) ? trim(strtolower($_GET['__DEBUG__'])) : false;
+            $verifyToken = isset($this->_appConfig['verify_token']) ? $this->_appConfig['verify_token'] : '';
+            if (empty($verifyToken)) {
+                throw new \Exception('application verify_token is null');
+            }
+            
+            // 合法性校验
+            $this->_weixin->verify($verifyToken);
+            
+            if (! $__DEBUG__) {
+                if (! $this->_weixin->checkSignature($verifyToken)) {
+                    $debug = debugVar($_GET, $this->_weixin->getSignature());
+                    throw new \Exception('签名错误' . $debug);
+                }
+            }
+            
+            // 签名正确，将接受到的xml转化为数组数据并记录数据
+            $datas = $this->_source->revieve();
+            $this->_sourceDatas = $datas;
+            $this->_sourceDatas['response'] = 'success';
+            
+            // 调试接口信息
+            if ($__DEBUG__) {
+                $datas = $this->_app->debug($__DEBUG__);
+            }
+            // 开始处理相关的业务逻辑
+            $content = isset($datas['Content']) ? strtolower(trim($datas['Content'])) : '';
+            
+            $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
+            $__TIME_STAMP__ = time();
+            $__SIGN_KEY__ = $this->_app->getSignKey($FromUserName, $this->_appConfig['secretKey'], $__TIME_STAMP__);
+            // Zend_Registry::set('__FROM_USER_NAME__', $FromUserName);
+            // Zend_Registry::set('__TIME_STAMP__', $__TIME_STAMP__);
+            // Zend_Registry::set('__SIGN_KEY__', $__SIGN_KEY__);
+            $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
+            $MsgType = isset($datas['MsgType']) ? trim($datas['MsgType']) : '';
+            $Event = isset($datas['Event']) ? trim($datas['Event']) : '';
+            $EventKey = isset($datas['EventKey']) ? trim($datas['EventKey']) : '';
+            $MediaId = isset($datas['MediaId']) ? trim($datas['MediaId']) : '';
+            $Ticket = isset($datas['Ticket']) ? trim($datas['Ticket']) : '';
+            $MsgId = isset($datas['MsgId']) ? trim($datas['MsgId']) : '';
+            $CreateTime = isset($datas['CreateTime']) ? intval($datas['CreateTime']) : time();
+            
+            // 关于重试的消息排重，有msgid的消息推荐使用msgid排重。事件类型消息推荐使用FromUserName + CreateTime 排重。
+            if (! empty($MsgId)) {
+                $uniqueKey = $MsgId;
+            } else {
+                $uniqueKey = $FromUserName . "-" . $CreateTime;
+            }
+            if (! empty($uniqueKey)) {
+                $objLock = new \iLock(md5($uniqueKey));
+                if ($objLock->lock()) {
+                    echo "success";
+                    return true;
+                }
+            }
+            
+            // 获取微信用户的个人信息
+            if (! empty($this->_appConfig['access_token'])) {
+                $this->_user->setWeixinInstance($this->_weixin);
+                $this->_user->updateUserInfoByAction($FromUserName);
+            }
+            // 设定来源和目标用户的openid
+            $this->_weixin->setFromAndTo($FromUserName, $ToUserName);
+            
+            // 为回复的Model装载weixin对象
+            $this->_reply->setWeixinInstance($this->_weixin);
+            
+            /**
+             * ==================================================================================
+             * ====================================以上逻辑请勿修改===================================
+             * ==================================================================================
+             */
+            
+            // 转化为关键词方式，表示关注
+            if ($MsgType == 'event') { // 接收事件推送
+                if ($Event == 'subscribe') { // 关注事件
+                                             // EventKey 事件KEY值，qrscene_为前缀，后面为二维码的参数值
+                                             
+                    // Ticket 二维码的ticket，可用来换取二维码图片
+                    if (! empty($Ticket) && ! empty($EventKey)) { // 扫描带参数二维码事件 用户未关注时，进行关注后的事件推送
+                                                                  // var_dump($FromUserName, $Event, $EventKey, $Ticket);
+                        $this->_qrcode->record($FromUserName, $Event, $EventKey, $Ticket);
+                        // 不同项目特定的业务逻辑开始
+                        $sence_id = intval(str_ireplace('qrscene_', '', $EventKey));
+                        if ($sence_id > 0) {
+                            $content = "扫描二维码{$sence_id}";
+                        }
+                        // 不同项目特定的业务逻辑结束
+                    }
+                    
+                    // 扫描二维码送优惠券
+                    if (empty($content)) {
+                        $content = '首访回复';
+                    }
+                } elseif ($Event == 'SCAN') { // 扫描带参数二维码事件 用户已关注时的事件推送
+                    $this->_qrcode->record($FromUserName, $Event, $EventKey, $Ticket);
+                    // $onlyRevieve = true;
+                    // EventKey 事件KEY值，是一个32位无符号整数
+                    // Ticket 二维码的ticket，可用来换取二维码图片
+                    // 不同项目特定的业务逻辑开始
+                    $content = "扫描二维码{$EventKey}";
+                    // 不同项目特定的业务逻辑结束
+                } elseif ($Event == 'unsubscribe') { // 取消关注事件
+                                                         // 不同项目特定的业务逻辑开始
+                                                         // 不同项目特定的业务逻辑结束
+                } elseif ($Event == 'LOCATION') { // 上报地理位置事件
+                                                  // Latitude 地理位置纬度
+                                                  // Longitude 地理位置经度
+                                                  // Precision 地理位置精度
+                    $Latitude = isset($datas['Latitude']) ? floatval($datas['Latitude']) : 0;
+                    $Longitude = isset($datas['Longitude']) ? floatval($datas['Longitude']) : 0;
+                    $Precision = isset($datas['Precision']) ? floatval($datas['Precision']) : 0;
+                    $onlyRevieve = true;
+                    // 不同项目特定的业务逻辑开始
+                    // 不同项目特定的业务逻辑结束
+                } elseif ($Event == 'CLICK') { // 自定义菜单事件推送
+                                               // 相对点击事件做特别处理，请在这里，并删除$content = $EventKey;
+                    $content = $EventKey;
+                } elseif ($Event == 'scancode_push') { // 自定义菜单事件推送 -scancode_push：扫码推事件的事件推送
+                                                       // 相对点击事件做特别处理，请在这里，并删除$content = $EventKey;
+                    $content = $EventKey;
+                    /**
+                     * <ScanCodeInfo><ScanType><![CDATA[qrcode]]></ScanType>
+                     * <ScanResult><![CDATA[1]]></ScanResult>
+                     * </ScanCodeInfo>
+                     */
+                    // ScanCodeInfo 扫描信息
+                    // ScanType 扫描类型，一般是qrcode
+                    // ScanResult 扫描结果，即二维码对应的字符串信息
+                    $ScanType = isset($datas['ScanCodeInfo']['ScanType']) ? trim($datas['ScanCodeInfo']['ScanType']) : "";
+                    $ScanResult = isset($datas['ScanCodeInfo']['ScanResult']) ? trim($datas['ScanCodeInfo']['ScanResult']) : "";
+                } elseif ($Event == 'scancode_waitmsg') { // 自定义菜单事件推送 -scancode_waitmsg：扫码推事件且弹出“消息接收中”提示框的事件推送
+                                                          // 相对点击事件做特别处理，请在这里，并删除$content = $EventKey;
+                    $content = $EventKey;
+                    /**
+                     * <ScanCodeInfo><ScanType><![CDATA[qrcode]]></ScanType>
+                     * <ScanResult><![CDATA[1]]></ScanResult>
+                     * </ScanCodeInfo>
+                     */
+                    
+                    // ScanCodeInfo 扫描信息
+                    // ScanType 扫描类型，一般是qrcode
+                    // ScanResult 扫描结果，即二维码对应的字符串信息
+                    $ScanType = isset($datas['ScanCodeInfo']['ScanType']) ? trim($datas['ScanCodeInfo']['ScanType']) : "";
+                    $ScanResult = isset($datas['ScanCodeInfo']['ScanResult']) ? trim($datas['ScanCodeInfo']['ScanResult']) : "";
+                } elseif ($Event == 'pic_sysphoto') { // 自定义菜单事件推送 -pic_sysphoto：弹出系统拍照发图的事件推送
+                                                      // 相对点击事件做特别处理，请在这里，并删除$content = $EventKey;
+                    $content = $EventKey;
+                    
+                    /**
+                     * <SendPicsInfo>
+                     * <Count>1</Count>
+                     * <PicList>
+                     * <item>
+                     * <PicMd5Sum><![CDATA[1b5f7c23b5bf75682a53e7b6d163e185]]></PicMd5Sum>
+                     * </item>
+                     * </PicList>
+                     * </SendPicsInfo>
+                     */
+                    
+                    // SendPicsInfo 发送的图片信息
+                    // Count 发送的图片数量
+                    // PicList 图片列表
+                    // PicMd5Sum 图片的MD5值，开发者若需要，可用于验证接收到图片
+                    $Count = isset($datas['SendPicsInfo']['Count']) ? trim($datas['SendPicsInfo']['Count']) : 0;
+                    $PicList = isset($datas['SendPicsInfo']['PicList']) ? trim($datas['SendPicsInfo']['PicList']) : "";
+                } elseif ($Event == 'pic_photo_or_album') { // 自定义菜单事件推送 -pic_photo_or_album：弹出拍照或者相册发图的事件推送
+                                                            // 相对点击事件做特别处理，请在这里，并删除$content = $EventKey;
+                    $content = $EventKey;
+                    
+                    /**
+                     * <SendPicsInfo>
+                     * <Count>1</Count>
+                     * <PicList>
+                     * <item>
+                     * <PicMd5Sum><![CDATA[1b5f7c23b5bf75682a53e7b6d163e185]]></PicMd5Sum>
+                     * </item>
+                     * </PicList>
+                     * </SendPicsInfo>
+                     */
+                    
+                    // SendPicsInfo 发送的图片信息
+                    // Count 发送的图片数量
+                    // PicList 图片列表
+                    // PicMd5Sum 图片的MD5值，开发者若需要，可用于验证接收到图片
+                    $Count = isset($datas['SendPicsInfo']['Count']) ? trim($datas['SendPicsInfo']['Count']) : 0;
+                    $PicList = isset($datas['SendPicsInfo']['PicList']) ? trim($datas['SendPicsInfo']['PicList']) : "";
+                } elseif ($Event == 'pic_weixin') { // 自定义菜单事件推送 -pic_weixin：弹出微信相册发图器的事件推送
+                                                    // 相对点击事件做特别处理，请在这里，并删除$content = $EventKey;
+                    $content = $EventKey;
+                    
+                    /**
+                     * <SendPicsInfo>
+                     * <Count>1</Count>
+                     * <PicList>
+                     * <item>
+                     * <PicMd5Sum><![CDATA[1b5f7c23b5bf75682a53e7b6d163e185]]></PicMd5Sum>
+                     * </item>
+                     * </PicList>
+                     * </SendPicsInfo>
+                     */
+                    
+                    // SendPicsInfo 发送的图片信息
+                    // Count 发送的图片数量
+                    // PicList 图片列表
+                    // PicMd5Sum 图片的MD5值，开发者若需要，可用于验证接收到图片
+                    $Count = isset($datas['SendPicsInfo']['Count']) ? trim($datas['SendPicsInfo']['Count']) : 0;
+                    $PicList = isset($datas['SendPicsInfo']['PicList']) ? trim($datas['SendPicsInfo']['PicList']) : "";
+                } elseif ($Event == 'location_select') { // 自定义菜单事件推送 -location_select：弹出地理位置选择器的事件推送
+                                                         // 相对点击事件做特别处理，请在这里，并删除$content = $EventKey;
+                    $content = $EventKey;
+                    
+                    /**
+                     * <SendLocationInfo>
+                     * <Location_X><![CDATA[23]]></Location_X>
+                     * <Location_Y><![CDATA[113]]></Location_Y>
+                     * <Scale><![CDATA[15]]></Scale>
+                     * <Label><![CDATA[ 广州市海珠区客村艺苑路 106号]]></Label>
+                     * <Poiname><![CDATA[]]></Poiname>
+                     * </SendLocationInfo>
+                     */
+                    
+                    // SendLocationInfo 发送的位置信息
+                    // Location_X X坐标信息
+                    // Location_Y Y坐标信息
+                    // Scale 精度，可理解为精度或者比例尺、越精细的话 scale越高
+                    // Label 地理位置的字符串信息
+                    // Poiname 朋友圈POI的名字，可能为空
+                    $Location_X = isset($datas['SendLocationInfo']['Location_X']) ? trim($datas['SendLocationInfo']['Location_X']) : 0;
+                    $Location_Y = isset($datas['SendLocationInfo']['Location_Y']) ? trim($datas['SendLocationInfo']['Location_Y']) : 0;
+                    $Scale = isset($datas['SendLocationInfo']['Scale']) ? trim($datas['SendLocationInfo']['Scale']) : 0;
+                    $Label = isset($datas['SendLocationInfo']['Label']) ? trim($datas['SendLocationInfo']['Label']) : "";
+                    $Poiname = isset($datas['SendLocationInfo']['Poiname']) ? trim($datas['SendLocationInfo']['Poiname']) : "";
+                } else {
+                    // 卡券处理
+                    $this->processCard();
+                    $response = "success";
+                }
+            }
+            
+            // 语音逻辑开始
+            if ($MsgType == 'voice') { // 接收普通消息----语音消息 或者接收语音识别结果
+                                       // MediaID 语音消息媒体id，可以调用多媒体文件下载接口拉取该媒体
+                                       // Format 语音格式：amr
+                                       // Recognition 语音识别结果，UTF8编码
+                $Recognition = isset($datas['Recognition']) ? trim($datas['Recognition']) : '';
+                // 不同项目特定的业务逻辑开始
+                // 不同项目特定的业务逻辑结束
+                $content = '默认语音回复';
+            }
+            // 语音逻辑结束
+            
+            // 图片逻辑开始
+            if ($MsgType == 'image') { // 接收普通消息----图片消息
+                                       // PicUrl 图片链接
+                                       // MediaId 图片消息媒体id，可以调用多媒体文件下载接口拉取数据。
+                $PicUrl = isset($datas['PicUrl']) ? trim($datas['PicUrl']) : '';
+                
+                // 使用闭包，提高相应速度
+                $content = '默认图片回复';
+            }
+            // 图片逻辑结束
+            
+            // 不同项目特定的业务逻辑开始
+            if ($MsgType == 'text') { // 接收普通消息----文本消息
+                if ($content == "客服测试") {
+                    echo $this->_weixin->getMsgManager()
+                        ->getReplySender()
+                        ->replyCustomerService();
+                    return false;
+                }
+            }
+            // 不同项目特定的业务逻辑结束
+            
+            // 不同项目特定的业务逻辑开始
+            if ($MsgType == 'video') { // 接收普通消息----视频消息
+                                       // MediaId 视频消息媒体id，可以调用多媒体文件下载接口拉取数据。
+                                       // ThumbMediaId 视频消息缩略图的媒体id，可以调用多媒体文件下载接口拉取数据。
+                $ThumbMediaId = isset($datas['ThumbMediaId']) ? trim($datas['ThumbMediaId']) : '';
+            }
+            // 不同项目特定的业务逻辑结束
+            
+            // 处理地理位置信息开始
+            if ($MsgType == 'location') { // 接收普通消息----地理位置消息
+                                          // Location_X 地理位置维度
+                                          // Location_Y 地理位置经度
+                                          // Scale 地图缩放大小
+                $Location_X = isset($datas['Location_X']) ? trim($datas['Location_X']) : 0;
+                $Location_Y = isset($datas['Location_Y']) ? trim($datas['Location_Y']) : 0;
+                $Scale = isset($datas['Scale']) ? trim($datas['Scale']) : 0;
+            }
+            
+            // 不同项目特定的业务逻辑开始
+            if ($MsgType == 'link') { // 接收普通消息----链接消息
+                                      // Title 消息标题
+                                      // Description 消息描述
+                                      // Url 消息链接
+                $Title = isset($datas['Title']) ? trim($datas['Title']) : '';
+                $Description = isset($datas['Description']) ? trim($datas['Description']) : '';
+                $Url = isset($datas['Url']) ? trim($datas['Url']) : '';
+            }
+            
+            /**
+             * ==================================================================================
+             * ====================================以下逻辑请勿修改===================================
+             * ==================================================================================
+             */
+            if ($onlyRevieve)
+                return false;
+            
+            if ($__DEBUG__) {
+                print_r($content);
+            }
+            
+            if ($content == 'debug') {
+                echo $this->_weixin->getMsgManager()
+                    ->getReplySender()
+                    ->replyText(debugVar($datas));
+                return false;
+            }
+            if (empty($response)) {
+                $response = followUrl($this->anwser($content), array(
+                    'FromUserName' => $FromUserName,
+                    'timestamp' => $__TIME_STAMP__,
+                    'signkey' => $__SIGN_KEY__
+                ));
+            }
+            // 输出响应结果
+            echo $response;
+            
+            // 以下部分执行的操作，不影响执行速度，但是也将无法输出到返回结果中
+            if (! $__DEBUG__) {
+                fastcgi_finish_request();
+            }
+            
+            $this->_sourceDatas['response'] = $response;
+            
+            /**
+             * ==================================================================================
+             * ====================================以上逻辑请勿修改===================================
+             * ==================================================================================
+             */
+            
+            // 将一些执行很慢的逻辑，放在这里执行，提高微信的响应速度开始
+            
+            // 将一些执行很慢的逻辑，放在这里执行，提高微信的响应速度结束
+            
+            return true;
+        } catch (\Exception $e) {
+            // 如果脚本执行中发现异常，则记录返回的异常信息
+            $this->_sourceDatas['response'] = exceptionMsg($e);
+            return false;
+        }
+    }
+
+    /**
+     * 同步菜单选项的Hook
+     */
+    public function syncMenuAction()
+    {
+        try {
+            $menus = $this->_menu->buildMenu();
+            if (! empty($menus)) {
+                var_dump($this->_weixin->getMenuManager()->create($menus));
+            } else {
+                var_dump($this->_weixin->getMenuManager()->delete(array()));
+            }
+        } catch (\Exception $e) {
+            var_dump($e);
+            return false;
+        }
+    }
+
+    /**
+     * 同步个性化菜单选项的Hook
+     */
+    public function syncConditionalMenuAction()
+    {
+        try {
+            $menus = $this->_menu_conditional->buildMenu();
+            if (! empty($menus)) {
+                var_dump($this->_weixin->getMenuManager()->create($menus));
+            } else {
+                var_dump($this->_weixin->getMenuManager()->delete(array()));
+            }
+        } catch (\Exception $e) {
+            var_dump($e);
+            return false;
+        }
+    }
+
+    /**
+     * 创建二维码ticket的Hook
+     */
+    public function createQrcodeAction()
+    {
+        try {
+            $scenes = $this->_scene->getAll();
+            foreach ($scenes as $scene) {
+                if (empty($scene['is_temporary']) && ! empty($scene['is_created'])) { // 如果是永久并且已生成的话
+                    continue;
+                }
+                if (! empty($scene['is_temporary']) && ! empty($scene['is_created']) && ($scene['ticket_time']->sec + $scene['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
+                    continue;
+                }
+                
+                $ticketInfo = $this->_weixin->getQrcodeManager()->create($scene['sence_id'], ! empty($scene['is_temporary']) ? $scene['is_temporary'] : false, ! empty($scene['expire_seconds']) ? $scene['expire_seconds'] : 0);
+                $ticket = urlencode($ticketInfo['ticket']);
+                $ticket = $this->_weixin->getQrcodeManager()->getQrcodeUrl($ticket);
+                $this->_scene->recordTicket($scene, $ticket);
+            }
+            return true;
+        } catch (\Exception $e) {
+            var_dump($e);
+            return false;
+        }
+    }
+
+    /**
+     * 发送模板消息
+     */
+    public function sendTemplateMsgAction()
+    {
+        try {
+            $template_id = "5UWzYiEm8AsW97T9uZbX-zUGporKDGIfDFf-wUi8OD4";
+            $url = "http://www.baidu.com";
+            $topcolor = "#FF0000";
+            $touser = "oFEX-joe9BYUKqluMFux104CxRNE";
+            $data = array();
+            $data['first'] = array(
+                "value" => "您好，您已成功消费。",
+                "color" => "#0A0A0A"
+            );
+            $data['date'] = array(
+                "value" => "10月22日12时37分",
+                "color" => "#0A0A0A"
+            );
+            $data['tradetype'] = array(
+                "value" => "银证转账",
+                "color" => "#0A0A0A"
+            );
+            $data['tradenum'] = array(
+                "value" => "1000.21元",
+                "color" => "#0A0A0A"
+            );
+            $data['traderemain'] = array(
+                "value" => "1000000.19元",
+                "color" => "#0A0A0A"
+            );
+            $data['remark'] = array(
+                "value" => "回复“持仓”即可查看您目前持有资产，回复“投顾”即可查看您专属的投资顾近期的投资建议。",
+                "color" => "#0A0A0A"
+            );
+            
+            $this->_weixin->getMsgManager()
+                ->getTemplateSender()
+                ->send($touser, $template_id, $url, $topcolor, $data);
+            return true;
+        } catch (\Exception $e) {
+            var_dump($e);
+            return false;
+        }
+    }
+
+    /**
+     * 获取所有微信设置信息的接口
+     */
+    public function getSettingsAction()
+    {
+        try {
+            if (empty($this->_appConfig)) {
+                $this->_appConfig = $this->_app->getToken();
+            }
+            if (empty($this->_appConfig)) {
+                echo $this->error("-1", "获取失败");
+                return false;
+            } else {
+                $ret = array();
+                $ret['access_token'] = $this->_appConfig['access_token'];
+                $ret['jsapi_ticket'] = $this->_appConfig['jsapi_ticket'];
+                $ret['expire_time'] = $this->_appConfig['expire_time'];
+                echo $this->result("OK", $ret);
+                return true;
+            }
+        } catch (\Exception $e) {
+            echo $this->error($e->getCode(), $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 获取所有微信wssdk设置信息的接口
+     */
+    public function getJssdkInfoAction()
+    {
+        try {
+            // 如果不是跨域请求的话
+            $jsonpcallback = trim($this->get('jsonpcallback'));
+            if (empty($jsonpcallback)) {
+                $isPost = $this->getRequest()->isPost();
+                if (empty($isPost)) {
+                    echo $this->error("-3", "请求方式不正确");
+                    return false;
+                }
+            }
+            $url = $this->get('url', '');
+            if (empty($url)) {
+                echo $this->error("-1", "参数URL的为空");
+                return false;
+            }
+            $url = urldecode($url);
+            
+            if (empty($this->_appConfig)) {
+                $this->_appConfig = $this->_app->getToken();
+            }
+            if (empty($this->_appConfig) || empty($this->_appConfig['jsapi_ticket'])) {
+                echo $this->error("-2", "jsapi_ticket获取失败");
+                return false;
+            } else {
+                $objJssdk = new \Weixin\Jssdk();
+                $objJssdk->setAppId($this->_appConfig['appid']);
+                $objJssdk->setAppSecret($this->_appConfig['secret']);
+                $objJssdk->setAccessToken($this->_appConfig['access_token']);
+                $rs = $objJssdk->getSignPackage($url, $this->_appConfig['jsapi_ticket']);
+                $rs['access_token'] = $this->_appConfig['access_token'];
+                $rs['jsapi_ticket'] = $this->_appConfig['jsapi_ticket'];
+                $rs['expire_time'] = $this->_appConfig['expire_time'];
+                echo $this->result("OK", $rs);
+                return true;
+            }
+        } catch (\Exception $e) {
+            echo $this->error($e->getCode(), $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 获取微信accesstoken信息的接口
+     */
+    public function getAccessTokenAction()
+    {
+        try {
+            if (empty($this->_appConfig)) {
+                $this->_appConfig = $this->_app->getToken();
+            }
+            if (empty($this->_appConfig)) {
+                echo $this->error("-1", "获取失败");
+                return false;
+            } else {
+                $rs = array();
+                $rs['access_token'] = $this->_appConfig['access_token'];
+                $rs['expire_time'] = $this->_appConfig['access_token_expire']->sec;
+                echo $this->result("OK", $rs);
+                return true;
+            }
+        } catch (\Exception $e) {
+            echo $this->error($e->getCode(), $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 获取微信jsapiticket信息的接口
+     */
+    public function getJsapiTicketAction()
+    {
+        try {
+            if (empty($this->_appConfig)) {
+                $this->_appConfig = $this->_app->getToken();
+            }
+            if (empty($this->_appConfig)) {
+                echo $this->error("-1", "获取失败");
+                return false;
+            } else {
+                $rs = array();
+                $rs['jsapi_ticket'] = $this->_appConfig['jsapi_ticket'];
+                $rs['expire_time'] = $this->_appConfig['jsapi_ticket_expire']->sec;
+                $rs['appid'] = $this->_appConfig['appid'];
+                echo $this->result("OK", $rs);
+                return true;
+            }
+        } catch (\Exception $e) {
+            echo $this->error($e->getCode(), $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 获取微信服务器IP地址的接口
+     */
+    public function getcallbackipAction()
+    {
+        try {
+            if (empty($this->_appConfig)) {
+                $this->_appConfig = $this->_app->getToken();
+            }
+            if (empty($this->_appConfig)) {
+                echo $this->error("-1", "获取失败");
+                return false;
+            } else {
+                $rs = array();
+                $rs = $this->_weixin->getIpManager()->getcallbackip();
+                echo $this->result("OK", $rs);
+                return true;
+            }
+        } catch (\Exception $e) {
+            echo $this->error($e->getCode(), $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 匹配文本并进行自动回复
+     *
+     * @param string $content            
+     * @return boolean
+     */
+    private function anwser($content)
+    {
+        $match = $this->_keyword->matchKeyWord($content);
+        if (empty($match)) {
+            $this->_not_keyword->record($content);
+            $match = $this->_keyword->matchKeyWord('默认回复');
+        }
+        return $this->_reply->answer($match);
+    }
+
+    /**
+     * 卡券的处理
+     *
+     * @param string $content            
+     * @return boolean
+     */
+    private function processCard()
+    {
+        return true;
+    }
+
+    /**
+     * 析构函数
+     */
+    public function __destruct()
+    {
+        if (! empty($this->_sourceDatas)) {
+            if (isset($_SERVER['REQUEST_TIME_FLOAT'])) {
+                $this->_sourceDatas['interval'] = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
+            }
+            $this->_sourceDatas['response_time'] = getCurrentTime();
+            $postStr = file_get_contents('php://input');
+            $this->_sourceDatas['request_xml'] = $postStr;
+            $this->_source->save($this->_sourceDatas);
+        }
+    }
+}
+

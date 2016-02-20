@@ -1,0 +1,45 @@
+    <div class="g-nav">
+	 <div class="w1190">
+	     <div id="divGoodsSort" class="m-menu fl">
+	         <div class="m-menu-all">
+	             <h3><a href="<?php echo $this->view->baseUrl?>yungou/product/list">全部商品分类</a><em></em></h3>
+	         </div>
+	         <?php $categoryTree = \Webcms\Goods\Helpers\GoodsHelper::getCategoryTree()?>
+	         <div id="divSortList" class="m-all-sort">
+	         <?php if(!empty($categoryTree)){?>
+	         <?php foreach ($categoryTree as $category_id => $category) {?>
+	             <dl>
+	                 <dt><a href="<?php echo $this->view->baseUrl?>yungou/product/list?i=<?php echo $category['_id'] ?>"><?php echo $category['name']?></a></dt>
+	                 <?php if(!empty($category['level2'])){?>	                 
+	                 <dd>
+	                 <?php foreach ($category['level2'] as $sub_category_id => $subcategory) {?>
+	                     <a href="<?php echo $this->view->baseUrl?>yungou/product/list?i=<?php echo $category['_id'] ?>"><?php echo $subcategory['name']?></a>	                 
+	                 <?php }?>
+	                 </dd>
+	                 <?php }?>
+	             </dl>
+	         <?php }?>
+	         <?php }?>
+	         </div>
+	     </div>
+	     <div class="nav-main fl">
+	         <ul>
+	             <li class="f-nav-home"><a href="<?php echo $this->view->baseUrl?>">首页</a></li>
+	             <li class="f-nav-lottery"><a href="<?php echo $this->view->baseUrl?>yungou/lottery/index">最新揭晓</a></li>
+	             <li class="f-nav-share"><a href="<?php echo $this->view->baseUrl?>yungou/post/index">晒单分享</a></li>
+	             <li class="f-nav-guide"><a href="<?php echo $this->view->baseUrl?>yungou/help/newbie">新手指南</a></li>
+	         </ul>
+	     </div>
+	     <div id="divHCart" class="nav-cart fr">
+	         <div class="nav-cart-btn">
+	             <a href="<?php echo $this->view->baseUrl?>yungou/cart/list" target="_blank"><i class="f-cart-icon"></i>购物车<span id="spHCart"></span></a>
+	         </div>
+	         <div class="nav-cart-con">
+	             <div class="m-loading-2014"><em></em></div>
+	             <div class="nav-car-cartEmpty"><i></i>您的购物车为空 !</div>
+	             <div class="nav-cart-select"></div>
+	             <div class="nav-cart-pay"></div>
+	         </div>
+	     </div>
+	 </div>
+	</div>

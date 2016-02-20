@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购</title>
+    <base href="<?php echo $this->view->resourceUrl?>" />
+    <link rel="stylesheet" type="text/css" href="css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/CartList.css" />
+</head>
+<body>
+<div class="wrapper">
+    <!--顶部-->
+    <?php $this->partial("partials/header") ?>
+
+    <div class="w1190 clrfix">
+        <!--头部-->
+        <div class="g-special-head">
+            <a href="/" class="f-logo fl transparent-png"></a>
+            <a href="/" title="继续云购" class="f-carryOn fr">继续云购</a>
+        </div>
+
+        <?php if(!empty($this->view->orderPayInfo['failure_count'])){?>
+        <!-- 支付失败 -->
+        <div id="divResult" class="g-main-con g-results-bor clrfix">
+            <div class="g-results-success g-results-failure">
+                <i class="z-arrows">
+                </i>
+                <dl>
+                    <dt>
+                        <b>
+                            支付失败！您下手太慢了！
+                        </b>
+                    </dt>
+                    <dd>
+                        <a href="javascript:;" target="_blank" title="查看云购记录">
+                            查看云购记录
+                        </a>
+                        <a href="/" title="继续云购">
+                            继续云购
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="g-resulst-prompt">
+                <span>
+                    <?php echo $this->view->orderPayInfo['failure_count']?>件商品云购失败
+                </span>
+                <b>
+                </b>
+            </div>
+            <div class="g-resulst-failure">
+                <ul>
+                <?php if(!empty($this->view->orderList)){?>
+                <?php foreach ($this->view->orderList as $order_id => $order) {?>               
+                <?php if(isset($this->view->orderGoodsList[$order_id])){?>
+                <?php foreach ($this->view->orderGoodsList[$order_id] as $orderGoods) {?>
+                <?php if(!empty($orderGoods['is_success'])){continue;}?>
+                    <li>
+                        <span>
+                            <a href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $orderGoods['goods_id']?>" title="(第<?php echo $orderGoods['goods_period']?>云)<?php echo $orderGoods['goods_name']?>">
+                                (第<?php echo $orderGoods['goods_period']?>云)<?php echo $orderGoods['goods_name']?>
+                            </a>
+                        </span>
+                        <cite>
+                            云购失败，支付金额￥<?php echo number_format($orderGoods['goods_pay_price'],2)?>已退回您的云购账户，
+                            <a href="javascript:;" target="_blank">
+                                查看
+                            </a>
+                        </cite>
+                    </li>                
+                <?php }?>
+                <?php }?>
+                <?php }?>
+                <?php }?> 
+                </ul>
+            </div>
+            <div class="g-results-loading" style="display: none;">
+                <span>
+                    正在提交数据，请稍候……
+                </span>
+                <b>
+                </b>
+            </div>
+            <div id="divWx" class="g-wx-banner" style="">
+                <img alt="" src="images/wx-banner.jpg">
+            </div>
+        </div>
+        <?php }else{?>
+        <!-- 支付成功 -->
+        <div id="divResult" class="g-main-con g-results-bor clrfix">
+            <div class="g-results-success">
+                <i class="z-arrows">
+                </i>
+                <dl>
+                    <dt>
+                        <b>
+                            支付成功！请耐心等待揭晓结果！
+                        </b>
+                    </dt>
+                    <dd>
+                        <a href="javascript:;" target="_blank" title="查看云购记录">
+                            查看云购记录
+                        </a>
+                        <a href="javascript:;" title="继续云购">
+                            继续云购
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="g-resulst-prompt">
+                <span>
+                    <?php echo $this->view->orderPayInfo['success_count']?>件商品云购成功
+                </span>
+                <b>
+                </b>
+            </div>
+            <div class="g-results-info clrfix">
+                <dl>
+                    <dt>
+                        <span class="u-results-name">
+                            商品名称
+                        </span>
+                        <span class="u-results-time">
+                            云购时间
+                        </span>
+                        <span class="u-results-visitors">
+                            云购人次
+                        </span>
+                        <span class="u-results-code">
+                        </span>
+                    </dt>
+                    <?php if(!empty($this->view->orderList)){?>
+                    <?php foreach ($this->view->orderList as $order_id => $order) {?>               
+                    <?php if(isset($this->view->orderGoodsList[$order_id])){?>
+                    <?php foreach ($this->view->orderGoodsList[$order_id] as $orderGoods) {?>
+                    <?php if(empty($orderGoods['is_success'])){continue;}?>
+                    <dd>
+                        <span class="u-results-name">
+                            <a href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $orderGoods['goods_id']?>" title="(第<?php echo $orderGoods['goods_period']?>云)<?php echo $orderGoods['goods_name']?>"
+                            target="_blank">
+                                (第<?php echo $orderGoods['goods_period']?>云)<?php echo $orderGoods['goods_name']?>
+                            </a>
+                        </span>
+                        <span class="u-results-time">
+                            <?php echo getMilliTime4Show($orderGoods['purchase_time'])?>
+                        </span>
+                        <span class="u-results-visitors">
+                            <?php echo $orderGoods['goods_num']?>
+                        </span>
+                        <span class="u-results-code">
+                            <em>
+                                <a href="<?php echo $this->view->baseUrl?>member/index/userbuydetail?goods_id=<?php echo $orderGoods['goods_id']?>" target="_blank">
+                                    查看所有云购码
+                                </a>
+                            </em>
+                        </span>
+                    </dd>                                    
+                    <?php }?>
+                    <?php }?>
+                    <?php }?>
+                    <?php }?>
+                </dl>
+            </div>
+            <div class="g-results-loading" style="display: none;">
+                <span>
+                    正在提交数据，请稍候……
+                </span>
+                <b></b>
+            </div>
+            <div id="divWx" class="g-wx-banner" style="">
+                <img alt="" src="images/wx-banner.jpg">
+            </div>
+        </div>
+        <?php }?>
+
+    </div>
+
+    <!--版权-->
+    <?php $this->partial("partials/footer") ?>
+    <script type="text/javascript" src="/dist/js/common.js"></script>
+    <script type="text/javascript" src="/dist/js/cart.js"></script>
+</div>
+</body>
+</html>

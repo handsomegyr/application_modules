@@ -1,0 +1,79 @@
+---------会员-----------
+DELETE FROM errorlog;
+DELETE FROM imember_member;
+DELETE FROM imember_consignee;
+DELETE FROM imember_friend;
+DELETE FROM imember_report;
+DELETE FROM imember_visitor;
+DELETE FROM imember_news;
+
+DELETE FROM iinvitation_invitation;
+DELETE FROM iinvitation_invitationgotdetail;
+DELETE FROM iinvitation_user;
+DELETE FROM iinvitation_rule;
+
+DELETE FROM imessage_msg;
+DELETE FROM imessage_msg_count;
+DELETE FROM imessage_msg_statistics;
+DELETE FROM imessage_replymsg;
+DELETE FROM imessage_sysmsg;
+
+DELETE FROM ipoints_log;
+DELETE FROM ipoints_user;
+
+---------生成新一期商品的测试-----------
+SELECT NAME,price,current_period,max_period,period_goods_id,lottery_code FROM igoods_common WHERE _id='563728bf7f50eab0040003e3'		
+
+SELECT NAME,period,lottery_prize_id,lottery_code,prize_code,total_person_time,purchase_person_time,remain_person_time,complete_percent,restrict_person_time,lottery_time,order_goods_list , is_prized,prize_buyer_id,prize_buyer_name,prize_buyer_register_by, prize_order_goods_id FROM igoods_goods WHERE _id='567655eb887c2210688b45b5'
+
+SELECT * FROM iprize_prize WHERE _id ='567655eb887c2210688b45b6'
+
+SELECT * FROM iprize_code WHERE prize_id = '567655eb887c2210688b45b6'
+
+SELECT * FROM ilottery_rule WHERE prize_id = '567655eb887c2210688b45b6'
+
+
+---------购物部分的测试-----------
+SELECT * FROM igoods_common WHERE NAME LIKE '%Peskoe%'
+
+DELETE FROM ipayment_log;
+DELETE FROM itask_log;
+DELETE FROM igoods_goods;
+DELETE FROM igoods_collect;
+
+DELETE FROM iprize_prize;
+DELETE FROM iprize_code;
+
+DELETE FROM ilottery_rule;
+DELETE FROM ilottery_exchange;
+DELETE FROM ilottery_record;
+
+DELETE FROM iorder_cart;
+DELETE FROM iorder_order;
+DELETE FROM iorder_common;
+DELETE FROM iorder_goods;
+DELETE FROM iorder_log;
+DELETE FROM iorder_pay;
+
+DELETE FROM ipost_post;
+DELETE FROM ipost_reply;
+DELETE FROM ipost_vote;
+
+DELETE FROM imember_news;
+
+UPDATE iorder_statistics SET order_amount =0.00, goods_amount=0.00,rcb_amount=0.00,pd_amount=0.00,points_amount=0.00,shipping_fee=0.00,refund_amount=0.00,pay_amount=0.00,success_count=0,failure_count=0;
+UPDATE igoods_common SET price=2.00,marketprice=2.00, costprice=2.00, current_period = 0,max_period=3,restrict_person_time=0,lottery_code=10000001,period_goods_id='';
+
+//UPDATE igoods_goods SET price=2.00,promotion_price=2.00,marketprice=2.00,period=1,lottery_code = 10000001,total_person_time=2,remain_person_time=2,purchase_person_time =0,complete_percent=0.00,restrict_person_time=0;
+
+
+---------1 加入购物车
+select * from iorder_cart;//确认数据是否存在
+---------2 购物车结算
+select * from iorder_cart;//确认结算字段是否为1
+select * from iorder_order;//确认数据是否存在
+select * from iorder_common;//确认数据是否存在
+select * from iorder_goods;//确认数据是否存在
+---------3 支付
+
+

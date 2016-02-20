@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购</title>
+    <link rel="stylesheet" type="text/css" href="css/sslComm.css" />
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+    <script type="text/javascript" src="../../js/JQuery.js"></script>
+    <script type="text/javascript" src="../../js/public.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="g-logo-top">
+        <a href="/" class="transparent-png fl"><img src="images/logo.png"></a>
+        <span class="fr">想起来了？<a id="hylinkLoginPage" class="blue" href="login.html">立即登录</a></span>
+    </div>
+
+    <div class="g-contentCon clrfix">
+        <div class="m-main clrfix">
+            <h2 class="gray3">找回密码</h2>
+            <div class="register-form-con clrfix" style="padding-top:40px;">
+                <ul>
+                    <li>
+                        <input id="txtUserName" class="iptfocus" type="text" maxlength="100">
+                        <b class="passport-icon user-name transparent-png"></b>
+                        <em style="" class="iptem">手机号/邮箱地址</em>
+                        <span class="orange" style="display: none;"></span>
+                        <s class="passport-icon" style="display: none;"></s>
+                    </li>
+                    <li>
+                        <div>
+                            <input id="txtCode" class="iptfocus" type="text" maxlength="6" style="width:150px;">
+                            <b class="passport-icon verification-code transparent-png"></b>
+                            <em style="" class="iptem">验证码</em>
+                            <a id="btnSend" href="javascript:;" style="
+                                width: 130px;
+                                background: #fbfbfb;
+                                cursor: default;
+                                color: #666;
+                                text-align: center;
+                                border-left: 0 none;
+                                border-radius: 0 2px 2px 0;
+                                float: right;
+                                border: 1px solid #ddd;
+                                height: 40px;
+                                top: 0;
+                                line-height: 40px;
+                                font-size:14px;
+                                cursor: pointer;
+                            ">发送验证码</a> <!-- 重新发送(57) -->
+                        </div>
+                        <span class="orange"></span>
+                    </li>
+                    <li> <!-- class="error-text" -->
+                        <input id="txtPwd" class="iptfocus" type="password" maxlength="20">
+                        <b class="passport-icon login-password transparent-png"></b>
+                        <em style="" class="iptem">设置登录密码</em>
+                        <span class="orange" style="display: none;"></span>
+                        <!-- <span class="orange" style="display: block;"><i class="passport-icon transparent-png"></i>请设置登录密码</span> -->
+                        <s class="passport-icon" style="display: none;"></s>
+                        <span id="pwdStrength" style="display: none;"></span>
+
+                    </li>
+                    <li>
+                        <input id="txtConPwd" class="iptfocus" type="password" maxlength="20">
+                        <b class="passport-icon login-password transparent-png"></b>
+                        <em style="" class="iptem">确认密码</em>
+                        <span class="orange" style="display: none;"></span>
+                        <s class="passport-icon" style="display: none;"></s>
+                    </li>
+                </ul>
+                <ul class="j-tips-wrap" id="j-tips-wrap"></ul>
+            </div>
+            <div class="link-con clrfix">
+                <a id="btnAgreeBtn" href="javascript:;" class="z-agreeBtn">确认</a>
+            </div>
+        </div>
+    </div>
+
+    <!--版权-->
+    <div class="g-copyrightCon clrfix">
+        <div class="g-links">
+            <a target="_blank" href="javascript:;" title="首页">首页</a><s></s>
+            <a target="_blank" href="javascript:;" title="关于云购">关于云购</a><s></s>
+            <a target="_blank" href="javascript:;" title="隐私声明">隐私声明</a><s></s>
+            <a target="_blank" href="javascript:;">合作专区</a><s></s>
+            <a target="_blank" href="javascript:;">友情链接</a><s></s>
+            <a target="_blank" href="javascript:;" title="加入云购">加入云购</a><s></s>
+            <a target="_blank" href="javascript:;" title="联系我们">联系我们</a>
+        </div>
+        <div class="g-copyright">
+            Copyright © 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1
+        </div>
+    </div>
+</div>
+</body>
+</html>

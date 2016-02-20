@@ -1,0 +1,30 @@
+﻿<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<input type="hidden" id="pageID" value="friendsapply">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul id="ul_menu">
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/usermessage">系统消息</a></li>
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/friendsapply">好友请求</a></li>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/replycommentsmsg">评论回复消息</a></li>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/userprivmsg">私信</a></li>
+        </ul>
+    </div>
+
+    <div class="fri-req-wrap">
+        <ul id="ul_friendsapply" class="fri-req-inner">
+            <!-- <li><div class="fl"><a target="_blank" href="http://u.1yyg.com/1010043618" class="h-pic"><img src="http://faceimg.1yyg.com/UserFace/00000000000000000.jpg" width="80" height="80"></a><div class="u-info"><p class="u-name"><a href="http://u.1yyg.com/1010043618">dh*@126.com</a>请求您加为好友</p><span class="level class-icon01"><s></s>云购小将</span><p>51分钟前</p></div></div><div class="u-btn-wrap"><a name="Agree" herf="javascript:;" applyuserid="9609570" applyid="36732409" class="u-btn agree">同意</a><a name="Ignore" herf="javascript:;" applyid="36732409" class="u-btn elide">忽略</a></div>
+            </li> -->
+        </ul>
+    </div>
+
+    <div class="fri-page-wrap" style="display:none;">
+        <div class="u-btn-wrap">
+            <a href="javascript:;" id="a_agree" style="display: inline;" class="u-btn agree">全部同意</a>
+            <a href="javascript:;" id="a_ignore" style="display: inline;" class="u-btn elide">全部忽略</a>
+        </div>
+        <div id="div_pagination" class="fr"></div>
+    </div>
+</div>

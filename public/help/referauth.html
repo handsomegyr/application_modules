@@ -1,0 +1,405 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购</title>
+    <link rel="stylesheet" type="text/css" href="../yungou/css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/invitation.css" />
+    <script type="text/javascript" src="../yungou/js/JQuery.js"></script>
+    <script type="text/javascript" src="../yungou/js/public.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <!--顶部-->
+  <div class="g-toolbar clrfix">
+    <div class="w1190">
+        <ul class="fl">
+            <li class="f-collect">
+                <div class="u-menu-hd">
+                    <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li id="liMobile" class="u-arr">
+                <div class="u-menu-hd transparent-png">
+                    <a href="javascript:;" target="_blank" title="手机云购">手机云购</a>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <p>
+                        <a href="javascript:;" target="_blank">
+                            <img src="../yungou/images/andriod.jpg">
+                            下载客户端
+                        </a>
+                    </p>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+        </ul>
+        <ul id="ulTopRight" class="fr"><li type="nologin"><div class="u-menu-hd"><a href="member/passport/login.html" title="登录">登录</a></div></li><li type="nologin" class="f-gap"><s></s></li><li type="nologin"><div class="u-menu-hd"><a href="member/passport/register.html" title="注册">注册</a></div></li><li class="f-gap"><s></s></li>
+            <li id="liMember" class="u-arr-1yyg" style="">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="我的1元云购">我的1元云购</a>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <span><a href="javascript:;" title="云购记录">云购记录</a></span>
+                    <span><a href="javascript:;" title="获得的商品">获得的商品</a></span>
+                    <span><a href="javascript:;" title="个人设置">个人设置</a></span>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+            <li id="liHome" style="display: none;">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="我的1元云购">我的1元云购</a>
+                </div>
+            </li>
+            <li class="f-gap" style="display: none;"><s></s></li>
+            <li id="liTopUMsg" class="u-arr-news" style="display: none;" show="-1">
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="消息">消息</a>
+                    <h3 style="display: none;"></h3>
+                    <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                </div>
+                <div class="u-select">
+                    <span><a href="javascript:;" title="系统消息">系统消息</a></span>
+                    <span><a href="javascript:;" title="好友请求">好友请求</a></span>
+                    <span><a href="javascript:;" title="好友请求">评论回复</a></span>
+                    <span><a href="javascript:;" title="私信" class="f-msg">私信</a></span>
+                </div>
+            </li>
+            <li class="f-gap" style="display: none;"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="充值">充值</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="帮助">帮助</a>
+                </div>
+            </li>
+            <li class="f-gap"><s></s></li>
+            <li>
+                <div class="u-menu-hd">
+                    <a href="javascript:;" title="投诉">投诉</a>
+                </div>
+            </li>
+            <li class="f-gap" style=""><s></s></li>
+            <li id="lizxkf" class="f-zxkf" style="">
+                <div class="u-menu-hd">
+                    <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+                </div>
+            </li>
+            <li class="f-zxkf" style="display: none;">
+               <div class="u-menu-hd">
+                   <a href="/" title="1元云购首页" class="orange">1元云购首页</a>
+               </div>
+           </li>
+        </ul>
+    </div>
+  </div>
+  <!--头部-->
+  <div class="g-header">
+     <div class="w1190">
+         <div id="topLogoAd" class="logo_1yyg fl">
+             <a href="javascript:;" class="logo transparent-png"></a>
+         </div>
+         <div class="search_cart_wrap fr">
+             <div class="number">
+                 <a href="javascript:;" target="_blank">
+                     <ul id="ulHTotalBuy">
+                         <li class="nobor gray6">累计参与</li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="nobor">,</li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="nobor">,</li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="num"><cite><em>0</em></cite><i></i></li>
+                         <li class="nobor gray6 u-secondary">人次<b><s></s></b></li>
+                     </ul>
+                 </a>
+             </div>
+
+             <div class="search">
+                 <div class="form">
+                     <input id="txtHSearch" type="text" class="inputFocus" value="输入“汽车”试试" />
+                     <span>
+                         <a href="javascript:;" target="_blank" title="苹果">苹果</a>
+                         <a href="javascript:;" target="_blank" title="小米">小米</a>
+                     </span>
+                 </div>
+                 <a id="btnHSearch" href="javascript:;" class="seaIcon"><i></i></a>
+             </div>
+         </div>
+     </div>
+  </div>
+ 
+  <!--导航-->
+  <div class="g-nav">
+     <div class="w1190">
+         <div id="divGoodsSort" class="m-menu fl">
+             <div class="m-menu-all">
+                 <h3><a href="javascript:;">全部商品分类</a><em></em></h3>
+             </div>
+             <div id="divSortList" class="m-all-sort">
+                 <dl>
+                     <dt><a href="javascript:;">手机数码</a></dt>
+                     <dd>
+                         <a href="javascript:;">手机</a>
+                         <a href="javascript:;">数码</a>
+                         <a href="javascript:;">影音</a>
+                         <a href="javascript:;">苹果手机</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt><a href="javascript:;">电脑办公</a></dt>
+                     <dd>
+                         <a href="javascript:;">笔记本</a>
+                         <a href="javascript:;">平板电脑</a>
+                         <a href="javascript:;">外设</a>
+                         <a href="javascript:;">网络</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt>
+                         <a href="javascript:;">家电</a>
+                         <span>/</span>
+                         <a href="javascript:;">汽车</a>
+                     </dt>
+                     <dd>
+                         <a href="javascript:;">大家电</a>
+                         <a href="javascript:;">厨房</a>
+                         <a href="javascript:;">生活</a>
+                         <a href="javascript:;">个护</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt>
+                         <a href="javascript:;">家电</a>
+                         <span>/</span>
+                         <a href="javascript:;">汽车</a>
+                     </dt>
+                     <dd>
+                         <a href="javascript:;">大家电</a>
+                         <a href="javascript:;">厨房</a>
+                         <a href="javascript:;">生活</a>
+                         <a href="javascript:;">个护</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt>
+                         <a href="javascript:;">家电</a>
+                         <span>/</span>
+                         <a href="javascript:;">汽车</a>
+                     </dt>
+                     <dd>
+                         <a href="javascript:;">大家电</a>
+                         <a href="javascript:;">厨房</a>
+                         <a href="javascript:;">生活</a>
+                         <a href="javascript:;">个护</a>
+                     </dd>
+                 </dl>
+                 <dl>
+                     <dt>
+                         <a href="javascript:;">家电</a>
+                         <span>/</span>
+                         <a href="javascript:;">汽车</a>
+                     </dt>
+                     <dd>
+                         <a href="javascript:;">大家电</a>
+                         <a href="javascript:;">厨房</a>
+                         <a href="javascript:;">生活</a>
+                         <a href="javascript:;">个护</a>
+                     </dd>
+                 </dl>
+             </div>
+         </div>
+         <div class="nav-main fl">
+             <ul>
+                 <li class="f-nav-home"><a href="javascript:;">首页</a></li>
+                 <li class="f-nav-lottery"><a href="javascript:;">最新揭晓</a></li>
+                 <li class="f-nav-limit"><span class="nav-new transparent-png"></span><a href="javascript:;">限购专区</a></li>
+                 <li class="f-nav-share"><a href="javascript:;">晒单分享</a></li>
+                 <li class="f-nav-group"><a href="javascript:;">云购圈</a></li>
+                 <li class="f-nav-guide"><a href="javascript:;">新手指南</a></li>
+             </ul>
+         </div>
+         <div id="divHCart" class="nav-cart fr">
+             <div class="nav-cart-btn">
+                 <a href="javascript:;" target="_blank"><i class="f-cart-icon"></i>购物车<span id="spHCart"></span></a>
+             </div>
+             <div class="nav-cart-con">
+                 <div class="m-loading-2014"><em></em></div>
+                 <div class="nav-car-cartEmpty"><i></i>您的购物车为空 !</div>
+                 <div class="nav-cart-select"></div>
+                 <div class="nav-cart-pay"></div>
+             </div>
+         </div>
+     </div>
+  </div>
+
+
+
+    <div class="g-main-con clrfix">
+        <div class="g-inv-ad clrfix">
+            <img alt="" src="images/pic_10.jpg?v=151105">
+            <img alt="" src="images/pic_11.jpg?v=151105">
+            <img alt="" src="images/pic_12.jpg?v=151105">
+        </div>
+        <div class="g-inv-con clrfix">
+
+            <!-- 未登录状态 -->
+            <div class="not-logged-in" style="display:none;">
+                <p class="gray9">立即登录邀请好友获取奖励！ <span>没账号？马上注册立享邀请特权！</span></p><a href="../member/passport/login.html?forward=rego" class="z-login">登 录</a><a href="../member/passport/register.html" class="z-register">注 册</a>
+            </div>
+            <!-- 未登录状态结束 -->
+
+            <!-- 登陆后状态 -->
+            <div class="share-part1 clrfix">
+                <div class="inv-share fl"><p class="gray6">您可以使用以下方式邀请好友，听说成功率更高哦！</p>
+                    <div class="bdsharebuttonbox m-share-icon clrfix bdshare-button-style2-16" data-bd-bind="1448093836497"><a href="javascript:;" data-cmd="sqq" class="z-qq" title="分享到QQ好友"></a><a href="javascript:;" data-cmd="tsina" class="z-sina" title="分享到新浪微博"></a><a href="javascript:;" data-cmd="qzone" class="z-space" title="分享到QQ空间"></a><a href="javascript:;" data-cmd="weixin" class="z-weixin" title="分享到微信"></a><a href="javascript:;" data-cmd="tqq" class="z-qq-weibo" title="分享到腾讯微博"></a></div>
+                </div>
+                <div class="inv-link fr"><p class="gray6">您也可以复制专属邀请链接发送给好友！</p>
+                    <div class="m-link-bor"><textarea rows="3" cols="10" id="copyShareText" class="gray6">1元就能买iPhone 6S，一种很有意思的购物方式，快来看看吧！http://t.1yyg.com/RUCbdfc</textarea><a id="btnCopy" href="javascript:;">复制</a></div>
+                </div>
+            </div>
+            <!-- 登陆后状态结束 -->
+
+            <div class="raiders-part2 clrfix">
+                <p class="gray3 inv-title">赚钱攻略</p>
+                <img alt="" src="images/raiders.gif">
+                <div class="raid-text gray6">
+                    <ul>
+                        <li class="f-step1">登录验证手机<br>
+                            获取您的专属链接</li>
+                        <li>分享您的专属链接<br>
+                            发送给好友</li>
+                        <li>好友成功注册<br>
+                            并消费</li>
+                        <li class="f-step4">获得奖励<br>
+                            50福分+6%现金</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rule-part3 clrfix">
+                <p class="inv-title gray3">相关规则</p>
+                <span>1、每成功邀请一位好友注册并参与云购后，可获得50福分+6%现金提成。在  <a target="_blank" href="/">我的1元云购</a> &gt; <a target="_blank" href="../member/InvitedList.html">邀请管理</a>  可随时查看佣金明细及邀请记录。<br>
+                    2、佣金永久有效，满1元即可充值到1元云购账户，满100元即可申请提现。<br>
+                    3、推荐您将专属邀请链接分享至微博、微信朋友圈、QQ空间等社交平台，也可直接复制邀请链接发送给您的好友。<br>
+                    4、严禁利用非法手段恶意获取佣金，一经查实，将立即冻结账号，扣除所有佣金，清除福分。
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="javascript:;" target="_blank" title="首页">首页</a><s></s>
+                <a href="javascript:;" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="javascript:;" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="javascript:;" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="javascript:;" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1</div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+  
+<!-- 无购物车 -->
+<div id="divRTool" class="g-narrow-con" style="display: block;">
+    <div class="m-narrow-list">
+        <ul>
+            <li class="f-attention">
+              <!--关注-->
+              <div class="u-float-list">
+                  <a href="../member/index.html" target="_blank">
+                      <i></i>
+                      <cite>我的关注</cite>
+                  </a>
+              </div>
+            </li>
+            <li class="f-customer-service">
+              <!--客服-->
+              <div class="u-float-list">
+                  <a id="btnRigQQ2" href="javascript:;" class="u-customer-on"><i></i><cite>在线客服</cite></a><!-- z-customer-off 客服不在线时 -->
+              </div>
+            </li>
+            <li class="f-client">
+              <!--客户端-->
+              <div class="u-float-list">
+                  <a href="javascript:;" target="_blank"><i></i><cite>手机APP</cite></a>
+                  <b class="curr-arrow"><s></s></b>
+              </div>
+              <div class="activateCon">
+                  <div class="u-activate">
+                      <a href="javascript:;" target="_blank">
+                          <img src="../yungou/images/andriod.jpg?v=20141105">
+                          下载客户端
+                      </a>
+                  </div>
+              </div>
+            </li>
+            <li class="f-weixin">
+              <!--微信-->
+              <div class="u-float-list">
+                  <a href="javascript:;" target="_blank"><i></i><cite>官方微信</cite></a>
+                  <b class="curr-arrow"><s></s></b>
+              </div>
+              <div class="activateCon">
+                  <div class="u-activate">
+                      <a href="javascript:;" target="_blank">
+                          <img src="http://skin.1yyg.com/images/1yyg-wx.png?v=20141105">
+                          关注官方微信
+                      </a>
+                  </div>
+              </div>
+            </li>
+            <li class="f-feedback">
+              <!--意见反馈-->
+              <div class="u-float-list">
+                  <a href="htm-suggestion.html" target="_blank"><i></i><cite>意见反馈</cite></a>
+              </div>
+            </li>
+            <li class="f-back-to">
+              <!--Top-->
+              <div class="u-float-list">
+                  <a href="javascript:;"><i></i><cite>置顶</cite></a>
+              </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

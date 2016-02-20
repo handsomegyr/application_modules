@@ -1,0 +1,303 @@
+<link rel="stylesheet" type="text/css" href="css/index.css" />
+<input type="hidden" id="pageID" value="home">
+<style type="text/css">
+    img.lazy{background: url(images/goods_loading.gif) no-repeat center;}
+</style>
+<!--[if lte IE 9]>
+    <script src="js/requestAnimationFrame.js"></script>
+<![endif]-->
+<div class="g-content">
+    <div class="w1190">
+      <div class="home-banner fl">
+          <div id="div_slide" class="slide-scroll">
+                <div class="pic-wrapper bd">
+                    <div class="slide-scroll-con">
+                        <ul id="slideImg">
+                        <?php $bannerList = \Webcms\Site\Helpers\BannerHelper::getList(); ?>
+                        <?php if(!empty($bannerList)){?>
+                        <?php foreach ($bannerList as $banner) {?>
+                            <li><a href="<?php echo $banner['url']?>" target="_blank"><img src="<?php echo \Webcms\Site\Helpers\BannerHelper::getImagePath($this->view->baseUrl,$banner['img'],709,300)?>" width="709" height="300"></a></li>
+                        <?php }?>
+                        <?php }?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="i-ctrl">
+                    <a id="ctrl_prev" href="javascript:;" class="ctrl-prev prev"><s></s></a>
+                    <a id="ctrl_next" href="javascript:;" class="ctrl-next next"><s></s></a>
+                </div>
+                <div class="handle-box hd">
+                    <ul id="handle_box">
+                      <!-- <li><a href="javascript:;" class=""></a></li>
+                      <li><a href="javascript:;" class="hover"></a></li>
+                      <li><a href="javascript:;" class=""></a></li> -->
+                    </ul>
+                </div>
+          </div>
+
+          <!--广告位下方推荐-->
+          <div class="slide-comd">
+          <?php $goodsAdList = \Webcms\Goods\Helpers\GoodsHelper::getAdList(); ?>
+          <?php if(!empty($goodsAdList)){?>
+          <?php foreach ($goodsAdList as $goods_commonid=> $goods) {?>
+            <div class="commodity">
+                <ul>
+                    <li class="comm-info fl">
+                        <span><a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods_commonid?>" target="_blank"><?php echo $goods['name']?></a></span>
+                        <p class="gray">已参与<em class="orange"><?php echo empty($goods['total_person_time'])?0:$goods['total_person_time']?></em>人次</p>
+                    </li>
+                    <li class="comm-pic fr">
+                      <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods_commonid?>" target="_blank">
+                        <cite><img src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],110,100)?>" border="0"  width="100" height="100"></cite>
+                      </a>
+                    </li>
+                </ul>
+            </div>
+          <?php }?>
+          <?php }?>
+          </div>
+      </div>
+      <div class="home-event fr">
+          <div class="what-1yyg">
+              <a id="what_1yyg" href="javascript:void(0);">
+                  <img src="images/index-come.gif" alt="" /></a>
+          </div>
+          <div class="honesty">
+              <ul>
+                  <li><a href="javascript:;" target="_blank" title="诚信网站"><i class="i1"></i>诚信网站</a></li>
+                  <li><a href="javascript:;" target="_blank" rel="nofollow" title="可信网站"><i class="i2"></i>可信网站</a></li>
+                  <li><a href="javascript:;" target="_blank" rel="nofollow" title="电商诚信"><i class="i3"></i>电商诚信</a></li>
+                  <li><a href="javascript:;" target="_blank" rel="nofollow" title="安信宝"><i class="i4"></i>安信宝</a></li>
+                  <li><a href="javascript:;" target="_blank" rel="nofollow" title="监督管理局"><i class="i5"></i>监督管理局</a></li>
+                  <li><a href="javascript:;" target="_blank" rel="nofollow" title="更多"><i class="i6"></i>更多</a></li>
+              </ul>
+          </div>
+          <div class="index_news">
+              <dl>
+                  <dt>新闻公告</dt>
+                  <?php $newsList = \Webcms\Article\Helpers\ArticleHelper::getNewsList(); ?>
+                  <?php if(!empty($newsList)){?>
+                  <?php foreach ($newsList as $news) {?>                            
+                  <dd><b></b><a href="<?php echo $this->view->baseUrl?>yungou/group/news?id=<?php echo $news['_id']?>" target="_blank"><?php echo $news['title']?></a></dd>
+                  <?php }?>
+                  <?php }?>
+              </dl>
+          </div>
+      </div>
+    </div>
+</div>
+
+<div class="g-wrap w1190">
+  <!--最新揭晓-->
+  <div class="g-title">
+      <h3 class="fl"><i></i>最新揭晓<span>截至目前共揭晓商品<em><a id="em_lotcount" href="javascript:;" target="_blank"><?php echo $this->view->raffleCount?></a></em>个</span></h3>
+      <div class="m-other fr">
+          <cite>
+              <a href="javascript:;" target="_blank" title="看看附近都有谁获得了商品？"><em></em>看看附近都有谁获得了商品？</a>
+          </cite>
+      </div>
+  </div>
+  <div class="g-list">
+      <ul id="ul_Lottery">
+        <!-- <li id="1795795" class="current">
+            <dl class="m-in-progress">
+                <dt>
+                    <a href="product/1795795.html" target="_blank" title="小米（MIUI）16000mAh 移动电源">
+                        <img alt="小米（MIUI）16000mAh 移动电源" src="images/data/20141120165235285.jpg">
+                    </a>
+                </dt>
+                <dd class="u-name">
+                    <a href="product/1795795.html" title="(第32650云)小米（MIUI）16000mAh 移动电源">
+                        (第32650云)小米（MIUI）16000mAh 移动电源
+                    </a>
+                </dd>
+                <dd class="gray">
+                    价值：￥139.00
+                </dd>
+                <dd class="u-time" id="dd_time">
+                    <em>揭晓倒计时</em>
+                    <span>
+                        <b>02</b>:<b>51</b>:<b><i>4</i><i>9</i></b>
+                    </span>
+                </dd>
+            </dl>
+            <s class="transparent-png">
+            </s>
+        </li>
+        <li >
+          <dl>
+              <dt>
+                <a href="javascript:;" target="_blank"><img src="images/data/20141223185032565.jpg" /></a>
+              </dt>
+              <dd class="f-gx">
+                  <div class="f-gx-user">
+                      <span>恭喜</span>
+                      <span><a href="javascript:;" target="_blank" class="blue" >Q5就Q我</a></span>
+                      <span>获得</span>
+                  </div>
+              </dd>
+              <dd class="u-name"><a href="javascript:;" target="_blank">(第9852云)苹果（Apple）iPhone 6s Plus 64G版 4G手机</a></dd>
+              <dd class="gray">广东省广州市</dd>
+          </dl>
+          <cite></cite>
+        </li>    -->          
+      </ul>
+  </div>       
+
+  <!--热门推荐-->
+  <div class="g-title">
+      <h3 class="fl"><i></i>热门推荐</h3>
+      <div class="m-other fr">
+          <a href="<?php echo $this->view->baseUrl?>yungou/product/list?r=20" target="_blank" title="更多" class="u-more">更多</a>
+      </div>
+  </div>
+  <div class="g-hot clrfix">
+      <div class="g-hotL fl" id="divHotGoodsList">
+          <!-- 数据开始 -->
+          <?php if(!empty($this->view->hotGoodsList['datas'])){?>
+          <?php foreach ($this->view->hotGoodsList['datas'] as $goods) {?>
+          <div class="g-hotL-list">
+            <div class="g-hotL-con">
+              <ul>
+                <li class="g-hot-pic">
+                  <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank" title="(第<?php echo $goods['period']?>云)&nbsp;<?php echo $goods['name']?>">
+                  <img class="lazy" alt="(第<?php echo $goods['period']?>云)&nbsp;<?php echo $goods['name']?>" src="images/white.gif" data-original="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>"></a>
+                </li>
+                <li class="g-hot-name">
+                  <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank" title="(第<?php echo $goods['period']?>云)&nbsp;<?php echo $goods['name']?>">(第<?php echo $goods['period']?>云)&nbsp;<?php echo $goods['name']?></a></li>
+                  <li class="gray">价值：￥<?php echo number_format($goods['price'],2)?></li>
+                <li class="g-progress">
+                  <dl class="m-progress">
+                    <dt title="已完成<?php echo number_format($goods['complete_percent'],2)?>%"><b style="width:<?php echo number_format($goods['complete_percent'],2)?>%;"></b></dt>
+                    <dd><span class="orange fl"><em><?php echo $goods['purchase_person_time']?></em>已参与</span><span class="gray6 fl"><em><?php echo $goods['total_person_time']?></em>总需人次</span><span class="blue fr"><em><?php echo $goods['remain_person_time']?></em>剩余</span></dd>
+                  </dl>
+                </li>
+                <li><a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" class="u-imm" target="_blank" title="立即1元云购">立即1元云购</a></li>
+              </ul>
+            </div>
+            <div class="u_buyCount" style="top:169px;" codeid="<?php echo $goods['_id']?>"></div>
+          </div>
+          <?php }?>
+          <?php }?>
+          <!-- 数据结束 -->
+      </div>
+      <div class="g-hotR fr">
+          <div class="u-are">正在云购</div>
+          <div class="g-zzyging">
+              <input name="hidBuyID" type="hidden" id="hidBuyID" value="190444501" />
+              <ul id="UserBuyNewList">                           
+                <!-- <li>
+                    <span class="fl">
+                      <a href="javascript:;"><img alt="" src="images/data/00000000000000000.jpg" /><i class="transparent-png"></i></a>
+                    </span>
+                    <p>
+                        <a href="javascript:;" target="_blank" class="blue">13505****79</a><br />
+                        <a href="javascript:;" class="u-ongoing">苹果（Apple）iPhone 6s Plus 16G版 4G手机</a>
+                    </p>
+                </li>  -->               
+              </ul>
+          </div>
+          <div class="u-see100"><a href="javascript:;" target="_blank">查看最新100条记录</a></div>
+      </div>
+  </div>
+
+  <!--即将揭晓-->
+  <div class="g-title m-sort">
+      <h3 class="fl"><i></i>即将揭晓</h3>
+      <div class="fr">
+          <?php $topLevelCategoryList = \Webcms\Goods\Helpers\GoodsHelper::getTopLevelCategoryList();?>
+          <?php if(!empty($topLevelCategoryList)){?>
+          <?php foreach ($topLevelCategoryList as $category) {?>
+          <a href="<?php echo $this->view->baseUrl?>yungou/product/list?i=<?php echo $category['_id'] ?>" target="_blank" title="<?php echo $category['name']?>"><?php echo $category['name']?></a>
+          <?php }?>
+          <?php }?>
+          <a href="<?php echo $this->view->baseUrl?>yungou/product/list" target="_blank" title="全部">全部</a>
+      </div>
+  </div>
+  <div class="announced-soon clrfix" id="divSoonGoodsList">
+      <!-- 数据开始 -->
+      <?php if(!empty($this->view->announcedSoonGoodsList['datas'])){?>
+      <?php foreach ($this->view->announcedSoonGoodsList['datas'] as $idx => $goods) {?>
+      <div class="soon-list-con" idx="<?php echo $idx+1?>">
+        <div class="soon-list">
+          <ul>
+            <li class="g-soon-pic">
+              <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank">
+                <img class="lazy" src="images/white.gif" data-original="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>">
+              </a>
+            </li>
+            <li class="soon-list-name">
+              <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank">(第<?php echo $goods['period']?>云)&nbsp;<?php echo $goods['name']?></a>
+            </li>
+            <li class="gray">价值：￥<?php echo number_format($goods['price'],2)?></li>
+            <li class="g-progress">
+              <dl class="m-progress">
+                <dt title="已完成<?php echo number_format($goods['complete_percent'],2)?>%"><b style="width:<?php echo number_format($goods['complete_percent'],2)?>%;"></b></dt>
+                <dd><span class="orange fl"><em><?php echo $goods['purchase_person_time']?></em>已参与</span><span class="gray6 fl"><em><?php echo $goods['total_person_time']?></em>总需人次</span><span class="blue fr"><em><?php echo $goods['remain_person_time']?></em>剩余</span></dd>
+              </dl>
+            </li>
+            <li>
+              <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank" class="u-now">立即1元云购</a>
+              <a href="javascript:;" class="u-cart" _src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>" codeid="<?php echo $goods['_id']?>" goodsid="<?php echo $goods['goods_commonid']?>"><s></s></a>
+            </li>
+          </ul>
+        </div>
+        <div class="u_buyCount" style="top:200px;" codeid="<?php echo $goods['_id']?>"></div>
+      </div>
+      <?php }?>
+      <?php }?>
+      <!-- 数据结束 -->
+  </div>
+  <div class="check-out"><a href="<?php echo $this->view->baseUrl?>yungou/product/list" target="_blank" title="查看所有商品">查看所有商品</a></div>
+
+  <!--新品上架-->
+  <div class="g-title">
+      <h3 class="fl"><i></i>新品上架</h3>
+      <div class="m-other fr">
+          <a href="<?php echo $this->view->baseUrl?>yungou/product/list?r=50" target="_blank" title="更多" class="u-more">更多</a>
+      </div>
+  </div>
+  <div class="announced-soon clrfix announced-soon-new" id="divNewGoodsList">
+      <!-- 数据开始 -->
+      <?php if(!empty($this->view->newGoodsList['datas'])){?>
+      <?php foreach ($this->view->newGoodsList['datas'] as $idx => $goods) {?>
+      
+      <div class="soon-list-con" idx="<?php echo $idx+1?>">
+        <div class="soon-list">
+          <ul>
+            <li class="g-soon-pic">
+              <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank">
+                <img class="lazy" src="images/white.gif" data-original="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>">
+              </a>
+            </li>
+            <li class="soon-list-name">
+              <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank">(第<?php echo $goods['period']?>云)&nbsp;<?php echo $goods['name']?></a>
+            </li>
+            <li class="gray">价值：￥<?php echo number_format($goods['price'],2)?></li>
+          </ul>
+        </div>
+        <div class="u_buyCount" style="top:210px;"></div>
+      </div>
+      <?php }?>
+      <?php }?>
+      <!-- 数据结束 -->
+  </div>
+
+  <!--晒单分享-->
+  <div class="g-title">
+      <h3 class="fl"><i></i>晒单分享</h3>
+      <div class="m-other fr">
+          <a href="<?php echo $this->view->baseUrl?>yungou/post/index" target="_blank" title="更多" class="u-more">更多</a>
+      </div>
+  </div>
+  <div class="g-single-sun">
+      <div class="singleL fl" id="divPostRec">
+        <dl></dl>
+      </div>
+      <div class="singleR fl">
+          <ul id="ul_PostList"></ul>
+      </div>
+  </div>
+</div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/index.js"></script>

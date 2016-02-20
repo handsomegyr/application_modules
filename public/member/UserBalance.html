@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购--会员中心</title>
+    <link rel="stylesheet" type="text/css" href="../yungou/css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/pageDialog.css" />
+    <link rel="stylesheet" type="text/css" href="css/accounts.css" />
+    <script type="text/javascript" src="../yungou/js/JQuery.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="../yungou/js/public.js"></script>
+    <script type="text/javascript" src="datepicker/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+</head>
+<body>
+<div class="wrapper">
+
+    <!--顶部-->
+    <div class="g-toolbar clrfix">
+        <div class="w1190">
+            <ul class="fl">
+                <li class="f-collect">
+                  <div class="u-menu-hd">
+                      <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li id="liMobile" class="u-arr">
+                  <div class="u-menu-hd transparent-png">
+                      <a href="mobile.html" target="_blank" title="手机云购">手机云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <p>
+                          <a href="mobile.html" target="_blank">
+                              <img src="images/andriod.jpg">
+                              下载客户端
+                          </a>
+                      </p>
+                  </div>
+                </li>
+                <li class="f-gap" style="display:none;"><s></s></li>
+                <li id="liCCTV" style="display:none;">
+                  <a href="javascript:;" target="_blank" class="cctv-icon">
+                      <img src="http://skin.1yyg.com/images/cctv-icon.jpg" alt="央视网" width="80" height="35" class="cctv-icon-img">
+                      <span class="cctv-icon-txt">广告合作伙伴</span>
+                  </a>
+                </li>
+            </ul>
+            <ul id="ulTopRight" class="fr"><li><div class="u-menu-hd u-menu-login"><a href="/" title="dhtnuieeq@qq.com" class="blue"><span class="fl"><img src="http://faceimg.1yyg.com/userface/30/00000000000000000.jpg"><s class="transparent-png"></s></span>dhtnuieeq@qq.com</a><a href="./" title="退出">[退出]</a></div></li><li class="f-gap"><s></s></li>
+                <li id="liMember" class="u-arr-1yyg" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <span><a href="UserBuyList.html" title="云购记录">云购记录</a></span>
+                      <span><a href="OrderList.html" title="获得的商品">获得的商品</a></span>
+                      <span><a href="MemberModify.html" title="个人设置">个人设置</a></span>
+                  </div>
+                </li>
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li id="liHome" style="">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="UserRecharge.html" title="充值">充值</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="help.html" title="帮助">帮助</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="htm-contactus.html" title="投诉">投诉</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+                <li id="lizxkf" class="f-zxkf" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+                  </div>
+                </li>
+                <li class="f-zxkf" style="">
+                 <div class="u-menu-hd">
+                     <a href="/" title="1元云购首页" class="orange">1元云购首页</a>
+                 </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--头部-->
+        
+    <!--导航-->
+    <div class="p-center-nav clrfix">
+        <div class="banner-middle clrfix">
+            <div class="nav-new">
+                <ul>
+                    <li class="curr"><a href="index.html" title="我的1元云购">我的1元云购</a><em class="z-my-1yyg u-personal"></em></li>
+                    <li><a href="MemberModify.html" title="账号设置">账号设置</a><em class="z-account-settings u-personal"></em></li>
+                    <li><a target="_blank" href="javascript:;" title="个人主页">个人主页</a><em class="z-home-page u-personal"></em></li>
+                </ul>
+            </div>
+            <div class="nav-return">
+                <a href="/" class="transparent-png"></a>
+            </div>
+        </div>
+        <div class="banner-right"></div>
+    </div>
+    <!--右侧工具栏-->
+    <div id="divMemberRTool" class="g-narrow-con member-narrow" style="display:block">
+        <div class="m-narrow-list" style="height:232px;">
+            <ul>
+                <li class="f-customer-service" id="li_customer_service"><!--客服-->
+                    <div class="u-float-list">
+                        <a href="javascript:;" class="z-customer-on"><s></s><em class="orange">在<br>线<br>客<br>服</em></a><!-- z-customer-off 客服不在线时 -->
+                    </div>
+                </li>
+                <li class="f-member-cart f-member-cart2"><!--购物车-->
+                    <div class="u-float-list">
+                        <a href="../cartList.html" target="_blank">
+                            <em style="">2</em>
+                            <s class="u-personal"></s>
+                            <cite style="display:none;">购<br>物<br>车</cite>
+                        </a>
+                    </div>
+                </li>
+                <li class="f-feedback"><!--意见反馈-->
+                    <div class="u-float-list">
+                        <a href="htm-suggestion.html" target="_blank"><i></i><cite>意见反馈</cite></a>
+                    </div>
+                </li>
+                <li class="f-back-to" style="display:none;"><!--Top-->
+                    <div class="u-float-list">
+                        <a href="javascript:;"><i></i><cite>置顶</cite></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="p-center-main clrfix">
+        <!--左边导航-->
+        <div class="sidebar_l clrfix fl">
+            <ul>
+                <li><a href="index.html" title="首页">首页</a><b></b></li>
+                <li><a href="UserBuyList.html" title="云购记录">云购记录</a><b></b></li>
+                <li><a href="OrderList.html" title="获得的商品">获得的商品</a><b></b></li>
+                <li><a href="PostSingleList.html" title="晒单管理">晒单管理</a><b></b></li>
+                <li><a href="CollectList.html" title="我的关注">我的关注</a><b></b></li>
+                <li class="curr z-first"><a href="UserBalance.html" title="我的账户">我的账户</a><b></b></li>
+                <li><a href="MyFriends.html" title="我的好友">我的好友</a><b></b></li>
+                <li><a href="JoinGroup.html" title="云购圈">云购圈</a><b></b></li>
+                <li><a href="InvitedList.html" title="邀请管理">邀请管理</a><b></b></li>
+                <li><a href="MemberPoints.html" title="我的福分">我的福分</a><b></b></li>
+                <li><a href="UserMessage.html" title="消息管理">消息管理</a><b></b></li>
+            </ul>
+        </div>
+
+        <div class="sidebar_main clrfix fr">
+            <div class="g-purchase-title">
+                <span class="gray3">我的账户</span>
+            </div>
+            <div class="g-account-balance">
+                <dl>
+                    <dt>
+                        <span class="gray6">账户余额：<em class="orange">￥0.00</em></span>
+                        <a href="UserRecharge.html" class="z-orange-btn">充值</a>
+                        <a id="a_transfer" href="javascript:;" class="z-blue-btn">转账</a>
+                    </dt>
+                    <dd>充值总额：￥1.00
+                        <i>消费总额：￥1.00</i>
+                        <i>转入总额：￥0.00</i>
+                        <i>转出总额：￥0.00</i>
+                    </dd>
+                </dl>
+            </div>
+            <div class="g-screen-state clrfix">
+                <ul id="ul_state" class="a-screen">
+                    <li><a state="0" href="javascript:;" class="z-checked">全部</a></li>
+                    <li><a state="1" href="javascript:;">充值记录</a></li>
+                    <li><a state="2" href="javascript:;">消费记录</a></li>
+                    <li><a state="3" href="javascript:;">转账记录</a></li>
+                </ul>
+            </div>
+            <div class="g-screen-date clrfix">
+                <ul id="ul_region" class="a-screen fl">
+                    <li><a region="3" href="javascript:;">最近1个月</a></li>
+                    <li><a region="4" href="javascript:;" class="z-checked">最近3个月</a></li>
+                </ul>
+                <ul class="m-select fl">
+                    <li class="gray9">
+                        <label>日期</label></li>
+                    <li style="position: relative;">
+                        <input id="dpd1" type="text" maxlength="10" value="2015-10-16">
+                        <b class="u-personal" style="right: 6px;top: 6px;"></b>
+                    </li>
+                    <li><em>-</em></li>
+                    <li style="position: relative;">
+                        <input id="dpd2" type="text" maxlength="10" value="2015-12-16">
+                        <b class="u-personal" style="right: 6px;top: 6px;"></b>
+                    </li>
+                    <li><a id="a_serach" href="javascript:;">确定</a></li>
+                </ul>
+                <script type="text/javascript">
+                    var nowTemp = new Date();
+                    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+                     
+                    var checkin = $('#dpd1').datepicker({
+                        format: 'yyyy-dd-mm',
+                        onRender: function(date) {
+                            return date.valueOf() < now.valueOf() ? 'disabled' : '';
+                        }
+                    }).on('changeDate', function(ev) {
+                      if (ev.date.valueOf() > checkout.date.valueOf()) {
+                        var newDate = new Date(ev.date)
+                        newDate.setDate(newDate.getDate() + 1);
+                        checkout.setValue(newDate);
+                      }
+                      checkin.hide();
+                      $('#dpd2')[0].focus();
+                    }).data('datepicker');
+                    var checkout = $('#dpd2').datepicker({
+                        format: 'yyyy-dd-mm',
+                        onRender: function(date) {
+                            return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+                        }
+                    }).on('changeDate', function(ev) {
+                      checkout.hide();
+                    }).data('datepicker');
+
+                    // $('#dpd1').datepicker({
+                    //     format: 'yyyy-dd-mm'
+                    // });
+                </script>
+            </div>
+            <div class="g-purchase-records my-account-con">
+                <dl id="dl_userbalance">
+                    <dt>
+                        <span class="u-commodity-pic">时间</span>
+                        <span id="span_selectop" class="u-select-con">
+                            <a href="javascript:;" class="gray6">全部类型<s class="u-personal"></s>
+                            </a>
+                            <div class="select-state">
+                                <a state="1" href="javascript:;">充值记录</a>
+                                <a state="2" href="javascript:;">消费记录</a>
+                                <a state="3" href="javascript:;">转账记录</a>
+                            </div>
+                        </span>
+                        <span class="u-commodity-name">金额</span>
+                        <span class="u-operation">备注</span>
+                    </dt><dd><span class="u-commodity-pic">2015-11-07 11:29:30</span><span class="u-select-con">消费</span><span class="u-commodity-name orange">-￥1.00</span><span class="u-operation">云购商品</span></dd><dd><span class="u-commodity-pic">2015-11-07 11:29:29</span><span class="u-select-con">充值</span><span class="u-commodity-name green">+￥1.00</span><span class="u-operation">微信支付</span></dd>
+
+                </dl>
+            </div>
+
+        </div>
+    </div>
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="javascript:;" target="_blank" title="首页">首页</a><s></s>
+                <a href="javascript:;" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="javascript:;" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="javascript:;" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="javascript:;" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1</div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹层开始 -->
+    <link rel="stylesheet" type="text/css" href="../yungou/css/pageDialog.css" /> 
+    <div class="pageDialogBG" id="pageDialogBG"></div>
+    <!-- <div class="pageDialogBorder" id="pageDialogBorder"></div> -->
+    <div class="pageDialog" id="pageDialog">
+        <div class="pageDialogClose" id="pageDialogClose" title="关闭"></div>
+        <div class="pageDialogMain" id="pageDialogMain">
+            <div class="content"></div>
+        </div>
+    </div>
+    <!-- 弹层结束 -->
+
+
+    <!-- 提现弹层 -->
+    <!-- <div class="content"><div class="g-transfer-pop clrfix"><h3 class="gray3">转账</h3><span class="f-box-tips orange"><s class="u-personal"></s>温馨提示：单笔转账金额不能超过200元，24小时内转账次数不能超过5笔。</span><dl><dt class="gray9"><label>账户余额：</label><em class="orange">￥1.00</em></dt><dd class=""><label>转账金额：</label><input id="txtAmount" type="text" value="请输入整数金额" class="z-money" style="color: rgb(187, 187, 187);"><span>元</span><p class="orange"></p></dd><dd><label>收款账号：</label><input id="txtAccount" type="text" value="手机号/邮箱"><p class="orange"></p></dd><dd><label><em>备</em>注：</label><input id="txtRemark" type="text" value="选填" maxlength="20"><p class="orange"></p></dd><dd><label>支付密码：</label><input id="txtPayPwd" type="password" maxlength="6" placeholder="请输入6位支付密码" class="z-pwd"><a href="http://member.1yyg.com/UserAuth-10.do?forward=/UserBalance.do" target="_blank" class="gray9">忘记支付密码？</a><p class="orange"></p></dd></dl><a id="btnNext" href="javascript:;" class="z-submit">提 交</a></div></div> -->
+
+    <!-- 手机验证码 -->
+    <!-- <div class="content"><div id="div_confirm" class="g-transfer-pop g-confirm-info clrfix"><h3 class="gray3">确认转账信息</h3><span class="f-box-tips orange"><s class="u-personal"></s>温馨提示：成功提交后，转账款项将会自动转入对方账户并通知收款人。</span><dl><dd><label>转账金额：</label><cite class="orange">￥1.00</cite></dd><dd><label>收款账号：</label><cite class="gray3">dhtnuieeq@126.com</cite></dd><dd><label><em>备</em>注：</label><span class="gray3">无</span></dd><dd><label>您当前绑定的手机号：</label><cite><i class="blue">15821****14</i><a href="http://member.1yyg.com/UserAuth-40.do?forward=/UserBalance.do" target="_blank" class="gray9 f-mar-left">修改</a></cite></dd><dd><label>短信验证码：</label><input id="txtCode" type="text" value="请输入6位短信验证码" class="z-pwd"><a id="a_getcode" href="javascript:;" maxlength="6" class="z-get-code fl">获取验证码</a><p class="orange"></p></dd></dl><a id="btnSubmit" href="javascript:;" class="z-submit z-gray-button">确认转账</a></div></div> -->
+</div>
+</body>
+</html>

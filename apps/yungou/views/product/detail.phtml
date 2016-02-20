@@ -1,0 +1,214 @@
+<link rel="stylesheet" type="text/css" href="css/GoodsDetail.css" />
+<link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/share_style2_16.css" />
+<input type="hidden" id="pageID" value="productdetail">
+<!--[if lte IE 9]>
+    <script src="js/requestAnimationFrame.js"></script>
+<![endif]-->
+<?php $this->partial("partials/current_nav") ?>  
+<div class="ng-wrap">
+    <div id="divMain" class="ng-main-wrapper">
+        <!--期数-->
+        <?php $this->partial("partials/period_list") ?>
+        
+        <!--商品信息 begin-->
+        <div id="divMainInfo" class="ng-main clearfix">
+            <!--图片展示-->
+            <div class="ng-goods-img">
+                <!-- <div id="middlePicRemark" class="middlePicRemark"></div>
+                <img id="imgGoodsPic" alt="" src="http://goodsimg.1yyg.com/GoodsPic/pic-38-38/20140910144704643.jpg" style="display: none;"> -->
+                <div id="preview" class="ng-middle-box spec-preview">
+                    <span class="jqzoom">
+                        <img style="width:343px;height:343px;" jqimg="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" />
+                    </span>
+                </div>
+                <div class="spec-scroll">
+                    <div class="items">
+                        <ul>
+                        <?php if(!empty($this->view->goodsImageList)){?>
+                        <?php foreach ($this->view->goodsImageList as $idx => $goodsImage) {?>
+                            <li><img bimg="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'])?>" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'])?>" onmousemove="preview(this);"></li>
+                        <?php if($idx>=6)break?>
+                        <?php }?>
+                        <?php }?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ng-share-out">
+                    <a id="a_sc" href="javascript:;" goodsid="<?php echo $this->view->goodsInfo['_id']?>" class="sc"><i class="t-icon sc-icon ng-box-bg"></i>关注</a>
+                    <!-- <a id="a_sc" href="javascript:;" class="sc has-in"><i class="t-icon sc-icon ng-box-bg sc-icon-past"></i>已关注</a> -->
+                    <div class="fx">
+                        <div class="fx-txt">
+                            <i class="t-icon fx-icon ng-box-bg"></i>分享
+                        </div>
+                        <div>
+                            <div class="fx-out-inner">
+                                <div class="bdsharebuttonbox bdshare-button-style2-16" data-bd-bind="1446621845888">
+                                    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                                    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                                    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                                    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                                    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                                </div>
+                                <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--揭晓倒计时-->
+            <div class="ng-goods-detail" >
+                <h2 class="title">
+                    <span class="num">
+                        (第<?php echo $this->view->goodsInfo['period']?>云)
+                    </span>
+                    <?php echo $this->view->goodsInfo['name']?>
+                </h2>
+                <p class="price">
+                    价值：￥<?php echo number_format($this->view->goodsInfo['price'],2)?>
+                </p>
+                <!--倒计时模块-->
+                <div class="time-model clearfix">
+                    <div class="time-view">
+                        <div class="full-tips">
+                            已满员，揭晓结果即将公布
+                        </div>
+                        <ul seconds="<?php echo round($this->view->goodsInfo['prize_time'] - getMilliTime(), 0) ?>" id="ul_lotterytime" class="for-begin clearfix">
+                            <li class="cur">00</li>
+                            <li>:</li>
+                            <li class="cur">00</li>
+                            <li>:</li>
+                            <li class="cur">00</li>
+                        </ul>
+                        <!--正在计算中-->
+                        <div id="div_eveling" style="display: none;" class="jiexiao-end">
+                            <div class="line-wrapper u-progress">
+                                <span class="pgbar">
+                                    <span class="pging"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-view">
+                        <img id="imgFunny" src="images/n9.gif"
+                        border="0" alt="">
+                    </div>
+                </div>
+                <!--如何计算-->
+                <div class="method">
+                    <p class="t">如何计算？</p>
+                    <p>1、取该商品最后购买时间前网站所有商品的最后100条购买时间记录；</p>
+                    <p>2、按时、分、秒、毫秒排列取值之和，除以该商品总参与人次后取余数；</p>
+                    <p>3、余数加上10000001 即为“幸运云购码”；</p>
+                    <p>4、余数是指整数除法中被除数未被除尽部分， 如7÷3 = 2 ......1，1就是余数 。</p>
+                </div>
+                <!--计算过程-->
+                <div class="process">
+                    <p class="t">计算过程</p>
+                    <div class="process-detail clearfix">
+                        <span>(</span>
+                        <div class="process-btn step01">
+                            <div class="tb-cell"><p class="o-num">?</p><p>100条时间<br>取值之和</p></div>
+                        </div>
+                        <span>%</span>
+                        <div class="process-btn step02">
+                            <div class="tb-cell">
+                                <p class="o-num"><?php echo $this->view->goodsInfo['total_person_time']?></p>
+                                <p>总需参与人次</p>
+                            </div>
+                        </div>
+                        <span>) +</span>
+                        <div class="process-btn step03">
+                            <div class="tb-cell">
+                                <p class="o-num"><?php echo $this->view->goodsInfo['lottery_code']?></p>
+                                <p>固定数值</p>
+                            </div>
+                        </div>
+                        <span>=</span>
+                        <div class="process-btn step04">
+                            <div class="tb-cell"><p class="o-num">?</p><p>最终计算结果</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--右侧：云购记录-->
+            <div class="ng-goods-buy">
+               <div class="ng-buy-list">
+                    <div id="div_buynav" class="ng-buy-nav">
+                        <a href="javascript:;" title="最新云购记录" class="ng-fl current">最新云购记录</a>
+                        <a href="javascript:;" title="我的云购记录" class="ng-fr">我的云购记录</a>
+                        <div class="b-line"></div>
+                    </div>
+                    <div id="div_goodsrecord" class="list-wrap">
+                        <div class="my-list">
+                            <ul id="UserBuyNewList" class="list"></ul>
+                        </div>
+                        <a href="javascript:;" style="display: none;" class="select-all">查看全部</a>
+                    </div>
+
+                    <div id="div_myrecord" class="list-wrap" style="display: none;">
+                        <div class="my-record">
+                            <?php if(!empty($_SESSION['member_id'])){?>                            
+                            <?php if(!empty($this->view->lotteryCodeList)){?>
+                            <dl class="clearfix last">
+                                <dt><?php echo $this->view->lastPurchaseTime?></dt>
+                                <?php foreach ($this->view->lotteryCodeList as $lottery_code) {?>
+                                <dd><?php echo $lottery_code?></dd>
+                                <?php }?>
+                            </dl>
+                            <?php }else{?>
+                            <div class="null-mytips-wrapper clearfix"><div class="gth-icon transparent-png"></div><span class="my-text">您还没有参与本云商品哦！</span></div>
+                            <?php }?>
+                            
+                            <?php }else{?>
+                            <!--未登录-->
+                            <div class="no-login-wrapper">
+                                <div class="gth-icon transparent-png"></div>
+                                <p class="ng-see-mycord">请您<a id="a_login" href="javascript:;">登录</a>后查看云购记录！</p>
+                            </div>
+                            <?php }?>
+                        </div>
+                        <a href="javascript:;" style="display: none;" target="_blank" class="select-all">查看全部</a>
+                    </div>
+                </div>
+                
+            </div>
+            <!--清除浮动-->
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <!--中间浮动导航-->
+    <div id="div_menu" class="ng-goods-option" fixed="0">
+        <ul id="ul_menu" class="options-menu">
+            <li class="current"><span>商品详情</span><i class="bor"></i></li>
+            <li class=""><span>所有参与记录</span><i class="bor"></i></li>
+            <li class=""><span>晒单</span><i class="bor"></i></li>
+        </ul>
+        <a id="btnAdd2Card" href="javascript:;" class="op-addcar" style="display: none;">加入购物车<i class="a-icon transparent-png"></i></a>
+    </div>
+
+    <!--商品信息-->
+    <div id="div_desc" class="ng-product-content div-data-box-a">
+        <div class="product-con"><?php echo $this->view->goodsInfo['body']?></div>
+    </div>
+
+    <!--所有参与记录-->
+    <div id="div_allrecord" class="ng-all-record div-data-box-b" style="display:none;">
+        <div class="record">
+            <ul class="record-list"></ul>
+        </div>
+        <div class="g-pagination w1190" id="g-pagination-a" style="display:none;"></div>
+    </div>
+
+    <!--晒单-->
+    <div id="div_postlist" class="ng-share-goods div-data-box-c" style="display:none;">
+        <div class="total" style="display:none;">本商品已有<span class="gray6">0</span>位幸运用户晒单 <em class="f-mar-left">总共</em><span class="orange">0</span>条评论</div>
+        <div class="ng-share-wrapper ng-share-data"></div>
+        <div class="g-pagination" id="g-pagination-b" style="display:none;"></div>
+    </div>
+</div>
+<script type="text/javascript" src="/dist/js/common.js"></script>
+<script type="text/javascript" src="/dist/js/detail.js"></script>

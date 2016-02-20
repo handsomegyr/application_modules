@@ -1,0 +1,28 @@
+{
+    "name": "evaengine/eva-oauth",
+    "description": "EvaOAuth is an abstract interface to setup OAuth client, both support OAuth1.0a / OAuth2.",
+    "license": "BSD-3-Clause",
+    "homepage": "http://avnpc.com/",
+    "authors": [
+        {
+          "name": "AlloVince",
+          "email": "allo.vince@gmail.com",
+          "homepage": "http://avnpc.com"
+        }
+    ],
+    "require": {
+      "php": ">=5.4",
+      "guzzlehttp/guzzle": "~5.2",
+      "doctrine/cache": "~1.4",
+      "monolog/monolog": "~1.13"
+    },
+    "require-dev": {
+      "mockery/mockery": "dev-master",
+      "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+          "Eva\\EvaOAuth\\": "src/EvaOAuth/"
+        }
+    }
+}

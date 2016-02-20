@@ -1,0 +1,61 @@
+<?php
+namespace Webcms\Member\Controllers;
+
+/**
+ * 账号设置
+ *
+ * @author Kan
+ *        
+ */
+class AdminController extends ControllerBase
+{
+
+    public function initialize()
+    {
+        parent::initialize();
+    }
+
+    /**
+     * 个人资料页面
+     */
+    public function membermodifyAction()
+    {
+        // http://webcms.didv.cn/member/admin/membermodify
+    }
+
+    /**
+     * 个人头像页面
+     */
+    public function userphotoAction()
+    {
+        // http://webcms.didv.cn/member/admin/userphoto
+    }
+
+    /**
+     * 收货地址页面
+     */
+    public function addressAction()
+    {
+        // http://webcms.didv.cn/member/admin/address
+        $consigneeList = $this->modelConsignee->getListByMemberId($_SESSION['member_id']);
+        $this->assign('consigneeList', $consigneeList);
+    }
+
+    /**
+     * 隐私设置页面
+     */
+    public function privacysettingsAction()
+    {
+        // http://webcms.didv.cn/member/admin/privacysettings
+    }
+
+    /**
+     * 常用设置页面
+     */
+    public function noticesettingsAction()
+    {
+        // http://webcms.didv.cn/member/admin/noticesettings
+    }
+
+}
+

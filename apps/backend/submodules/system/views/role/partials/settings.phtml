@@ -1,0 +1,101 @@
+									<?php $menu_list = empty($this->view->row['menu_list'])?array():$this->view->row['menu_list'];?>
+                                    <?php $operation_list = empty($this->view->row['operation_list'])?array():$this->view->row['operation_list'];?>
+                                    <?php $privList =  $this->myTag->showPrivilege($menu_list,$operation_list);?>
+                                    
+                                    <?php foreach ($privList as $key => $item) {?>            
+									
+									<!-- BEGIN SAMPLE TABLE PORTLET-->
+                                    <div class="portlet box blue">
+            							<div class="portlet-title">                    
+            								<div class="caption"><i class="icon-cogs"></i><?php echo $key?></div>
+                                        </div>
+                                        <div class="portlet-body no-more-tables">
+                                            <table class="table-bordered table-striped table-condensed cf">
+                                                <?php foreach ($item['values'] as $priv) {?>
+                                                <tr>
+                                                    <td width="18%">
+                                                        <label class="checkbox">
+            											<input name="chkGroup" type="checkbox" value="checkbox" onclick="check('<?php echo $priv["priv_list"];?>',this);" /> <?php echo $priv['name'];?>
+            											</label>
+                                                        </td>
+                                                    <td>
+                                                    <?php foreach ($priv['priv'] as $priv_list => $list) {?>
+                                                       <div style="width:20%;float:left;">
+                                                            <label class="checkbox" for="<?php echo $priv_list;?>">
+                                                            <input name="<?php echo $item['field']?>[]" type="checkbox"  value="<?php echo $priv_list;?>" id="<?php echo $priv_list;?>" <?php if($list['cando'] == 1){?>  checked  <?php }?> onclick="checkrelevance('<?php echo $list['relevance'];?>', '<?php echo $priv_list;?>')" title="<?php echo $list['relevance'];?>"/>
+                                                            <?php echo $list['name'];?>
+                                                            </label>
+                                                        </div>
+                                                    <?php }?>
+                                                    </td>
+                                                </tr>
+                                                <?php }?>
+                                            </table>
+                                        </div>
+                                    </div>
+            						<!-- END SAMPLE TABLE PORTLET-->                    						
+                                    <?php }?>
+                                    <input type="checkbox" name="checkall" value="checkbox" onclick="checkAll(this.form, this);" class="checkbox" />全选&nbsp;&nbsp;&nbsp;&nbsp;
+<script>
+function checkAll(frm, checkbox)
+{
+	console.info(frm);
+	for (i = 0; i < frm.elements.length; i++)
+	{
+		<?php if(!empty($privList)){?>
+		<?php foreach ($privList as $key => $item) {?>
+		if (frm.elements[i].name == '<?php echo $item['field']?>[]' || frm.elements[i].name == 'chkGroup')
+		{
+			frm.elements[i].checked  = checkbox.checked;
+			jQuery.uniform.update(frm.elements[i]);
+		}
+		<?php }?>
+		<?php }?>
+	}
+}
+
+function check(list, obj)
+{
+	var frm = obj.form;
+	
+	for (i = 0; i < frm.elements.length; i++)
+	{
+		<?php if(!empty($privList)){?>
+		<?php foreach ($privList as $key => $item) {?>
+		if (frm.elements[i].name == "<?php echo $item['field']?>[]")
+		{
+			var regx = new RegExp(frm.elements[i].value + "(?!_)", "i");
+			if (list.search(regx) > -1) {
+				frm.elements[i].checked  = obj.checked ;
+				jQuery.uniform.update(frm.elements[i]);
+			}
+		}
+		<?php }?>
+		<?php }?>
+	}
+}
+
+function checkrelevance(relevance, priv_list)
+{
+	if(document.getElementById(priv_list).checked  && relevance != '')
+	{
+		document.getElementById(relevance).checked =true;
+		jQuery.uniform.update(document.getElementById(relevance));
+	}
+	else
+	{
+		var ts=document.getElementsByTagName("input");
+	
+		for (var i=0; i<ts.length;i++)
+		{
+			var text=ts[i].getAttribute("title");
+		
+			if( text == priv_list) 
+			{
+				document.getElementById(ts[i].value).checked  = false;
+				jQuery.uniform.update(document.getElementById(ts[i].value));
+			}
+		}
+	}
+}
+</script>

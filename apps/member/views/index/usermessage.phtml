@@ -1,0 +1,31 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="usermessage">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul id="ul_menu">
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/usermessage">系统消息</a></li>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/friendsapply">好友请求</a></li>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/replycommentsmsg">评论回复消息</a></li>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/userprivmsg">私信</a></li>
+        </ul>
+    </div>
+
+    <!-- 有数据 -->
+    <div class="fri-msg-wrap">
+        <ul class="fri-msg-inner fri-msg-other" id="ul_sysmsg">
+          <li><span class="u-info"></ul>
+    </div>
+    <div class="fri-page-wrap" style="display:none;">
+        <a class="clear-btn" id="a_clear" style="display: inline;margin-top:0px;" href="javascript:;">全部清空</a>
+        <div class="fr" id="div_pagination"></div>
+    </div>
+
+
+    <!-- 无数据 -->
+    <div class="fri-req-wrap" style="display:none;">
+        <ul id="ul_sysmsg" class="fri-msg-inner fri-msg-other"><div class="null-retips-wrapper"><div class="gth-icon transparent-png"></div><span>您还没有系统消息哦！</span></div></ul>
+    </div>
+</div>

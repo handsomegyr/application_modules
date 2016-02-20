@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>倒计时</title>
+    <script type="text/javascript" src="../JS/JQuery.js"></script>
+</head>
+<body>
+<div id="timeDemoA"></div>
+<div id="timeDemoB"></div>
+<script type="text/javascript">
+    CountdownFun('#timeDemoA','5',function(){
+        alert(1);
+    });
+    CountdownFun('#timeDemoB','2',function(){
+        alert(0);
+    });
+    function CountdownFun(id,closeTime,callback){
+        $(id).each(function () {
+            var displayTime;
+            function showTime(){
+                var day = Math.floor(closeTime / (1000 * 60 * 60 * 24));
+                var hour = Math.floor(closeTime / (3600)) - (day * 24);
+                var minute = Math.floor(closeTime / (60)) - (day * 24 * 60) - (hour * 60);
+                var second = Math.floor(closeTime) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+                closeTime -= 0.01;
+                if( closeTime<=0 ){
+                    clearInterval(displayTime);
+                    $(id).html('00:00:00');
+                    callback();
+                    return;
+                }
+                var hm = closeTime.toFixed(2).split(".")[1];            
+                var html = (minute<=9 ? "0"+minute : minute)+':'+(second<=9 ? "0"+second : second)+':'+hm;
+                $(id).html(html);
+            }
+            showTime();
+            displayTime = setInterval(function(){
+                showTime();
+            }, 10);
+        });
+    }
+</script>
+</body>
+</html>

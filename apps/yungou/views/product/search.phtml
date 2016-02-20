@@ -1,0 +1,98 @@
+﻿<link rel="stylesheet" type="text/css" href="css/GoodsList.css" />    
+<div class="g-main-con clrfix">
+    <div class="w1190">
+        <div class="g_list_Curtit w1190"><h1 class="fl">商品搜索－"<?php echo $this->view->q?>"</h1><span class="po_p" id="spTotalCount"></span></div>
+
+        <!--排序-->
+        <div class="m-filterForm clrfix">
+            <div class="f-list-sorts fl">
+                <ul>
+                    <?php
+                        $params=array();
+                        if(!empty($this->view->q)){
+                            $params['q'] = $this->view->q;
+                        }
+                    ?>
+                    <li class="<?php if($this->view->r==10 && empty($this->view->tag)){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/product/search?<?php echo http_build_query(array_merge($params,array('r'=>10))); ?>">即将揭晓</a></li>
+                    <li class="<?php if($this->view->r==20 && empty($this->view->tag)){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/product/search?<?php echo http_build_query(array_merge($params,array('r'=>20))); ?>">人气</a></li>
+                    <li class="<?php if($this->view->r==40 && empty($this->view->tag)){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/product/search?<?php echo http_build_query(array_merge($params,array('r'=>40))); ?>">剩余人次</a></li>
+                    <li class="<?php if($this->view->r==50 && empty($this->view->tag)){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/product/search?<?php echo http_build_query(array_merge($params,array('r'=>50))); ?>">最新</a></li>
+                    <?php if($this->view->r==30){?>
+                    <li class="<?php if($this->view->r==30 && empty($this->view->tag)){?>current<?php }?>m-value" style="display: list-item;"><a href="<?php echo $this->view->baseUrl?>yungou/product/search?<?php echo http_build_query(array_merge($params,array('r'=>31))); ?>">价值<s></s></a></li>
+                    <?php }else{?>
+                    <li class="<?php if($this->view->r==31 && empty($this->view->tag)){?>current<?php }?>m-value m-value-default" style="display: none;"><a href="<?php echo $this->view->baseUrl?>yungou/product/search?<?php echo http_build_query(array_merge($params,array('r'=>30))); ?>">价值<s></s></a></li>
+                    <?php }?>
+                    <li class="<?php if($this->view->tag==10){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/product/search?<?php echo http_build_query(array_merge($params,array('tag'=>10))); ?>">限购</a></li>
+                </ul>
+            </div>
+            <div id="divTopPageInfo" class="f-list-sortsR fr">
+              <p class="Fl">共<em class="orange"><?php echo $this->view->pager['record_count']?></em>件商品<b><?php echo $this->view->pager['page']?></b>/<?php echo $this->view->pager['page_count']?></p>
+              <div class="u-list-btn fl">
+                <a href="<?php if($this->view->pager['page_prev']){ echo $this->view->pager['page_prev']; }else{?>javascript:;<?php }?>" class="u-btn-gray" title="上一页"><span class="f-tran f-tran-prev">&lt;</span>上一页</a>
+                <a href="<?php if($this->view->pager['page_next']){ echo $this->view->pager['page_next']; }else{?>javascript:;<?php }?>">下一页<span class="f-tran f-tran-next">&gt;</span></a>
+              </div>
+            </div>
+        </div>
+
+        <!--加载-->
+        <div id="divLoadingLine" class="g-loading-2014 w1190" style="display: none;"><i></i></div>
+
+        <!--列表-->
+        <div id="ulGoodsList" class="announced-soon clrfix">
+          <!-- 数据开始 -->
+          <?php if(!empty($this->view->goodsList['datas'])){?>
+          <?php foreach ($this->view->goodsList['datas'] as $idx => $goods) {?>
+          
+          <div class="soon-list-con">
+            <div class="soon-list">
+              <ul>
+                <li class="g-soon-pic">
+                  <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank"><img name="goodsImg" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>"></a>
+                </li>
+                <li class="soon-list-name">
+                  <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank">(第<?php echo $goods['period']?>云)&nbsp;<?php echo $goods['name']?></a>
+                </li>
+                <li class="gray6">价值：￥<?php echo number_format($goods['price'],2)?></li>
+                <li class="g-progress">
+                  <dl class="m-progress">
+                    <dt title="已完成<?php echo number_format($goods['complete_percent'],2)?>%"><b style="width:142px;"></b></dt>
+                    <dd><span class="orange fl"><em><?php echo $goods['purchase_person_time']?></em>已参与</span><span class="gray6 fl"><em><?php echo $goods['total_person_time']?></em>总需人次</span><span class="blue fr"><em><?php echo $goods['remain_person_time']?></em>剩余</span></dd>
+                  </dl>
+                </li>
+                <li name="buyBox" limitbuy="0">
+                  <a href="javascript:;" goodsid="<?php echo $goods['_id']?>" class="u-now">立即1元云购</a><a href="javascript:;" goodsid="<?php echo $goods['_id']?>" class="u-cart"><s></s></a>
+                </li>
+              </ul>
+              <div class="f-add-attention" style="display:none;">
+                <span>关注</span><a href="javascript:;" class="ng-box-bg transparent-png"></a>
+              </div>
+            </div>
+          </div>
+          <?php }?>
+          <?php }?>
+          <!-- 数据结束 -->
+        </div>
+
+        <!--分页-->
+        <div id="divPageNav">
+          <div class="g-pagination w1190">          
+            <span <?php if(empty($this->view->pager['page_prev'])){?>class="f-noClick"<?php }?>><a title="上一页" href="<?php if($this->view->pager['page_prev']){ echo $this->view->pager['page_prev']; }else{?>javascript:;<?php }?>"><i class="f-tran f-tran-prev">&lt;</i>上一页</a></span>
+            <?php if($this->view->pager['page_first']){?><span><a href="<?php echo $this->view->pager['page_first'];?>">1</a></span><span>…</span><?php }?>
+            <?php if($this->view->pager['page_count'] != 1){?>
+            <?php foreach ($this->view->pager['page_number'] as $key => $item) {?>
+            <?php if($this->view->pager['page'] == $key){?>
+            <span class="current"><a><?php echo $key;?></a></span>
+            <?php }else{?>
+            <span><a href="<?php echo $item;?>"><?php echo $key;?></a></span>
+            <?php }?>
+            <?php }?>
+            <?php }?>
+            <?php if($this->view->pager['page_last']){?><span>…</span><span><a href="<?php echo $this->view->pager['page_last'];?>"><?php echo $this->view->pager['page_count']?></a></span><?php }?>
+            <span><a href="<?php if($this->view->pager['page_next']){ echo $this->view->pager['page_next']; }else{?>javascript:;<?php }?>">下一页<i class="f-tran f-tran-next">&gt;</i></a></span>
+            <span class="f-mar-left">共<em><?php echo $this->view->pager['page_count']?></em>页，去第</span>
+            <span><input type="text" value="<?php echo $this->view->pager['page']?>">页</span>
+            <span class="f-mar-left"><a id="btnGotoPage" href="javascript:;" title="确定">确定</a></span>
+          </div>
+        </div>    
+    </div>
+</div>

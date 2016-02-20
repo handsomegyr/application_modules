@@ -1,0 +1,28 @@
+DELETE FROM imember_member;
+DELETE FROM imember_consignee;
+DELETE FROM imember_friend;
+DELETE FROM imember_report;
+DELETE FROM imember_visitor;
+DELETE FROM imember_news;
+
+DELETE FROM iinvitation_invitation;
+DELETE FROM iinvitation_invitationgotdetail;
+DELETE FROM iinvitation_user;
+DELETE FROM iinvitation_rule;
+
+DELETE FROM imessage_msg;
+DELETE FROM imessage_msg_count;
+DELETE FROM imessage_msg_statistics;
+DELETE FROM imessage_replymsg;
+DELETE FROM imessage_sysmsg;
+
+DELETE FROM ipoints_log;
+DELETE FROM ipoints_user;
+
+----------------------------------------------
+SELECT * FROM imember_member;
+SELECT * FROM iinvitation_user;
+SELECT * FROM iinvitation_invitation;
+SELECT * FROM imessage_msg_count;
+SELECT * FROM ipoints_user;
+SELECT * FROM ipoints_log;

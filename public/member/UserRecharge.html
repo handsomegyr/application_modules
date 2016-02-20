@@ -1,0 +1,393 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购--会员中心</title>
+    <link rel="stylesheet" type="text/css" href="../yungou/css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/pageDialog.css" />
+    <link rel="stylesheet" type="text/css" href="css/accounts.css" />
+    <script type="text/javascript" src="../yungou/js/JQuery.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="../yungou/js/public.js"></script>
+    <script type="text/javascript" src="datepicker/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+</head>
+<body>
+<div class="wrapper">
+
+    <!--顶部-->
+    <div class="g-toolbar clrfix">
+        <div class="w1190">
+            <ul class="fl">
+                <li class="f-collect">
+                  <div class="u-menu-hd">
+                      <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li id="liMobile" class="u-arr">
+                  <div class="u-menu-hd transparent-png">
+                      <a href="mobile.html" target="_blank" title="手机云购">手机云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <p>
+                          <a href="mobile.html" target="_blank">
+                              <img src="images/andriod.jpg">
+                              下载客户端
+                          </a>
+                      </p>
+                  </div>
+                </li>
+                <li class="f-gap" style="display:none;"><s></s></li>
+                <li id="liCCTV" style="display:none;">
+                  <a href="javascript:;" target="_blank" class="cctv-icon">
+                      <img src="http://skin.1yyg.com/images/cctv-icon.jpg" alt="央视网" width="80" height="35" class="cctv-icon-img">
+                      <span class="cctv-icon-txt">广告合作伙伴</span>
+                  </a>
+                </li>
+            </ul>
+            <ul id="ulTopRight" class="fr"><li><div class="u-menu-hd u-menu-login"><a href="/" title="dhtnuieeq@qq.com" class="blue"><span class="fl"><img src="http://faceimg.1yyg.com/userface/30/00000000000000000.jpg"><s class="transparent-png"></s></span>dhtnuieeq@qq.com</a><a href="./" title="退出">[退出]</a></div></li><li class="f-gap"><s></s></li>
+                <li id="liMember" class="u-arr-1yyg" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <span><a href="UserBuyList.html" title="云购记录">云购记录</a></span>
+                      <span><a href="OrderList.html" title="获得的商品">获得的商品</a></span>
+                      <span><a href="MemberModify.html" title="个人设置">个人设置</a></span>
+                  </div>
+                </li>
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li id="liHome" style="">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="UserRecharge.html" title="充值">充值</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="help.html" title="帮助">帮助</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="htm-contactus.html" title="投诉">投诉</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+                <li id="lizxkf" class="f-zxkf" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+                  </div>
+                </li>
+                <li class="f-zxkf" style="">
+                 <div class="u-menu-hd">
+                     <a href="/" title="1元云购首页" class="orange">1元云购首页</a>
+                 </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--头部-->
+        
+    <!--导航-->
+    <div class="p-center-nav clrfix">
+        <div class="banner-middle clrfix">
+            <div class="nav-new">
+                <ul>
+                    <li class="curr"><a href="index.html" title="我的1元云购">我的1元云购</a><em class="z-my-1yyg u-personal"></em></li>
+                    <li><a href="MemberModify.html" title="账号设置">账号设置</a><em class="z-account-settings u-personal"></em></li>
+                    <li><a target="_blank" href="javascript:;" title="个人主页">个人主页</a><em class="z-home-page u-personal"></em></li>
+                </ul>
+            </div>
+            <div class="nav-return">
+                <a href="/" class="transparent-png"></a>
+            </div>
+        </div>
+        <div class="banner-right"></div>
+    </div>
+    <!--右侧工具栏-->
+    <div id="divMemberRTool" class="g-narrow-con member-narrow" style="display:block">
+        <div class="m-narrow-list" style="height:232px;">
+            <ul>
+                <li class="f-customer-service" id="li_customer_service"><!--客服-->
+                    <div class="u-float-list">
+                        <a href="javascript:;" class="z-customer-on"><s></s><em class="orange">在<br>线<br>客<br>服</em></a><!-- z-customer-off 客服不在线时 -->
+                    </div>
+                </li>
+                <li class="f-member-cart f-member-cart2"><!--购物车-->
+                    <div class="u-float-list">
+                        <a href="../cartList.html" target="_blank">
+                            <em style="">2</em>
+                            <s class="u-personal"></s>
+                            <cite style="display:none;">购<br>物<br>车</cite>
+                        </a>
+                    </div>
+                </li>
+                <li class="f-feedback"><!--意见反馈-->
+                    <div class="u-float-list">
+                        <a href="htm-suggestion.html" target="_blank"><i></i><cite>意见反馈</cite></a>
+                    </div>
+                </li>
+                <li class="f-back-to" style="display:none;"><!--Top-->
+                    <div class="u-float-list">
+                        <a href="javascript:;"><i></i><cite>置顶</cite></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="p-center-main clrfix">
+        <!--左边导航-->
+        <div class="sidebar_l clrfix fl">
+            <ul>
+                <li><a href="index.html" title="首页">首页</a><b></b></li>
+                <li><a href="UserBuyList.html" title="云购记录">云购记录</a><b></b></li>
+                <li><a href="OrderList.html" title="获得的商品">获得的商品</a><b></b></li>
+                <li><a href="PostSingleList.html" title="晒单管理">晒单管理</a><b></b></li>
+                <li><a href="CollectList.html" title="我的关注">我的关注</a><b></b></li>
+                <li class="curr z-first"><a href="UserBalance.html" title="我的账户">我的账户</a><b></b></li>
+                <li><a href="MyFriends.html" title="我的好友">我的好友</a><b></b></li>
+                <li><a href="JoinGroup.html" title="云购圈">云购圈</a><b></b></li>
+                <li><a href="InvitedList.html" title="邀请管理">邀请管理</a><b></b></li>
+                <li><a href="MemberPoints.html" title="我的福分">我的福分</a><b></b></li>
+                <li><a href="UserMessage.html" title="消息管理">消息管理</a><b></b></li>
+            </ul>
+        </div>
+
+        <div class="sidebar_main clrfix fr">
+            <div class="g-obtain-title clrfix">
+                <ul>
+                    <li class="curr"><a href="UserRecharge.html">网银充值</a></li>
+                    <li><a href="CardRecharge.html">充值卡充值</a></li>
+                </ul>
+                <a href="UserBalance.html" class="z-return blue u-personal">返回我的账户</a>
+            </div>
+
+            <div class="g-please-select clrfix">
+                <h3 class="gray6">请选择充值金额</h3>
+                <ul id="ulMoneyList">
+                    <li class="f-checked" money="50"><a href="javascript:;">￥50.00</a><s class="u-personal"></s></li>
+                    <li money="100"><a href="javascript:;">￥100.00</a><s class="u-personal"></s></li>
+                    <li money="200"><a href="javascript:;">￥200.00</a><s class="u-personal"></s></li>
+                    <li money="500"><a href="javascript:;">￥500.00</a><s class="u-personal"></s></li>
+                    <li money="0">
+                        <input id="txtOtherMoney" type="text" placeholder="输入金额" class="gray9" maxlength="7" onpaste="return false;" onkeypress="if(event.keyCode<48 || event.keyCode>57)event.returnValue=false;">
+                        <s class="u-personal"></s>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="g-select-mode">
+                <h3 class="gray6">请选择支付方式</h3>
+                <div class="m-tab-menu">
+                    <ul id="ul_menu">
+                        <li class="curr"><a href="javascript:;">支付平台</a></li>
+                        <li><a href="javascript:;">储蓄卡</a></li>
+                        <li><a href="javascript:;">信用卡</a></li>
+                    </ul>
+                </div>
+                <div class="f-pay-bank" id="div_platform">
+                    <dl class="clrfix">
+                        <dd class="checked">
+                            <input type="radio" value="jdpay" name="account" id="jdpay" checked="checked"><label for="jdpay"><span class="jd_bank"></span></label>
+                        </dd>
+                        <dd>
+                            <input type="radio" value="Chinabank" name="account" id="Chinabank"><label for="Chinabank"><span class="u-bank-wy"></span></label>
+                        </dd>
+                        <dd>
+                            <input type="radio" value="Swift" name="account" id="Pingan"><label for="Pingan"><span class="u-bank-weixin"></span></label>
+                        </dd>
+                        <dd>
+                            <input type="radio" value="SwiftQ" name="account" id="SwiftQ"><label for="SwiftQ"><span class="u-bank-qqmobile"></span></label>
+                        </dd>
+                        <dd>
+                            <input type="radio" value="QuickMoney" name="account" id="QuickMoney"><label for="QuickMoney"><span class="u-bank-kq"></span></label>
+                        </dd>
+                        <dd>
+                            <input type="radio" value="Unionpay" name="account" id="Unionpay"><label for="Unionpay"><span class="u-bank-online"></span></label>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="f-pay-bank" style="display: none;" id="div_savings">
+                    <dl class="clrfix">
+                        <!-- 1. 招商、工商、建行、农行 -->
+                        <dd>
+                            <input type="radio" value="3080" name="account" id="bankType3080">
+                            <label for="bankType3080"><span class="zh_bank"></span></label>
+                        </dd>
+                        <dd>
+                            <input type="radio" value="1025" name="account" id="bankType1025">
+                            <label for="bankType1025"><span class="gh_bank"></span></label>
+                        </dd>
+                        <dd>
+                            <input type="radio" value="105" name="account" id="bankType105">
+                            <label for="bankType105"><span class="jh_bank"></span></label>
+                        </dd>
+                        <dd>
+                            <input type="radio" value="103" name="account" id="bankType103">
+                            <label for="bankType103"><span class="nh_bank"></span></label>
+                        </dd>
+
+                        <!-- 2. 中行、交通、华夏、兴业 -->
+                        <dd>
+                            <input type="radio" value="104" name="account" id="bankType104"><label for="bankType104"><span class="zg_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="301" name="account" id="bankType301"><label for="bankType301"><span class="jt_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="311" name="account" id="bankType311"><label for="bankType311"><span class="hx_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="309" name="account" id="bankType309"><label for="bankType309"><span class="xy_bank"></span></label></dd>
+
+                        <!-- 3. 上海、民生、广发、平安 -->
+                        <dd>
+                            <input type="radio" value="326" name="account" id="bankType326"><label for="bankType326"><span class="sh_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="305" name="account" id="bankType305"><label for="bankType305"><span class="ms_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="3061" name="account" id="bankType3061"><label for="bankType3061"><span class="gf_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="307" name="account" id="bankType307"><label for="bankType307"><span class="pa_bank"></span></label></dd>
+
+                        <!-- 4. 浦发、中信、光大、南京  -->
+                        <dd>
+                            <input type="radio" value="314" name="account" id="bankType314"><label for="bankType314"><span class="pf_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="313" name="account" id="bankType313"><label for="bankType313"><span class="zx_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="312" name="account" id="bankType312"><label for="bankType312"><span class="gd_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="316" name="account" id="bankType316"><label for="bankType316"><span class="nj_bank"></span></label></dd>
+
+                        <!-- 5. 邮政、杭州、宁波、北京  -->
+                        <dd>
+                            <input type="radio" value="3230" name="account" id="bankType3230"><label for="bankType3230"><span class="yz_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="324" name="account" id="bankType324"><label for="bankType324"><span class="hz_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="302" name="account" id="bankType302"><label for="bankType302"><span class="lb_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="310" name="account" id="bankType310"><label for="bankType310"><span class="bj_bank"></span></label></dd>
+
+                        <!-- 6. 重庆农商、北京农商、青岛、成都  -->
+                        <dd>
+                            <input type="radio" value="342" name="account" id="bankType342"><label for="bankType342"><span class="cqls_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="335" name="account" id="bankType335"><label for="bankType335"><span class="bj2_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="3341" name="account" id="bankType3341"><label for="bankType3341"><span class="qd_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="336" name="account" id="bankType336"><label for="bankType336"><span class="cd_bank"></span></label></dd>
+                    </dl>
+                </div>
+                <div class="f-pay-bank" style="display: none;" id="div_credit">
+                    <dl class="clrfix">
+                        <!-- 1. 招商、工商、建行、中行 -->
+                        <dd>
+                            <input type="radio" value="308" name="account" id="bankType308"><label for="bankType308"><span class="zh_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="1027" name="account" id="bankType1027"><label for="bankType1027"><span class="gh_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="1054" name="account" id="bankType1054"><label for="bankType1054"><span class="jh_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="106" name="account" id="bankType106"><label for="bankType106"><span class="zg_bank"></span></label></dd>
+
+                        <!-- 2. 华夏、民生、光大、邮政 -->
+                        <dd>
+                            <input type="radio" value="3112" name="account" id="bankType3112"><label for="bankType3112"><span class="hx_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="3051" name="account" id="bankType3051"><label for="bankType3051"><span class="ms_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="3121" name="account" id="bankType3121"><label for="bankType3121"><span class="gd_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="3231" name="account" id="bankType3231"><label for="bankType3231"><span class="yz_bank"></span></label></dd>
+
+                        <!-- 3. 杭州、宁波、上海、兴业 -->
+                        <dd>
+                            <input type="radio" value="3241" name="account" id="bankType3241"><label for="bankType3241"><span class="hz_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="303" name="account" id="bankType303"><label for="bankType303"><span class="lb_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="3261" name="account" id="bankType3261"><label for="bankType3261"><span class="sh_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="3091" name="account" id="bankType3091"><label for="bankType3091"><span class="xy_bank"></span></label></dd>
+
+                        <!-- 4. 广发、平安、浦发、青岛 -->
+                        <dd>
+                            <input type="radio" value="306" name="account" id="bankType306"><label for="bankType306"><span class="gf_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="3071" name="account" id="bankType3071"><label for="bankType3071"><span class="pa_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="3141" name="account" id="bankType3141"><label for="bankType3141"><span class="pf_bank"></span></label></dd>
+                        <dd>
+                            <input type="radio" value="334" name="account" id="bankType334"><label for="bankType334"><span class="qd_bank"></span></label></dd>
+                    </dl>
+                </div>
+                <div class="amounts-payable clrfix">
+                    <p>应付金额<b class="orange">￥<em id="b_money">50</em>.00</b></p>
+                    <form id="toPayForm" name="toPayForm" action="/" method="post" target="_blank">
+                        <!-- <input type="hidden" id="hidPayName" name="payName" value="jdpay"> -->
+                        <input type="hidden" id="hidPayBank" name="payBank" value="0">
+                        <input type="hidden" id="hidMoney" name="money" value="50">
+                        <input id="submit_ok" type="submit" name="submit" value="确认充值" title="确认充值">
+                    </form>
+
+                </div>
+                <div id="payAltBox" style="display: none;">
+                    <div class="g-remind-box clrfix">
+                        <h2 class="gray3">充值提醒</h2>
+                        <dl>
+                            <dt class="orange"><s class="u-personal"></s>请您在新开的页面上完成支付！</dt>
+                            <dd>付款完成之前，请不要关闭本窗口！<br>
+                                完成付款后根据您的个人情况完成此操作！</dd>
+                            <dd>
+                                <a href="javascript:;" class="look" id="btnToRecharge" title="查看充值记录">查看充值记录 </a>
+                                <a href="javascript:;" class="look" id="btnReSelect" title="重选支付方式">重选支付方式</a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="javascript:;" target="_blank" title="首页">首页</a><s></s>
+                <a href="javascript:;" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="javascript:;" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="javascript:;" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="javascript:;" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1</div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

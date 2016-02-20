@@ -1,0 +1,58 @@
+﻿<input type="hidden" id="pageID" value="security">
+<input type="hidden" id="subpage" value="emailchecking">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title bor-bot">
+        <span class="gray3">新邮箱验证</span>
+    </div>
+    <div class="z-content">
+        <!--输入新邮箱验证-->
+        <div class="person-wrap" id="divSend">
+            <ul class="person-list">
+                <li>
+                    <span class="l-side">输入新邮箱验证：</span>
+                    <span class="r-side">
+                        <div class="inp-wrap ">
+                            <input id="txtEmail" maxlength="20" type="text" class="code-inner inp-long" value="请输入新邮箱号" style="color: rgb(187, 187, 187);">
+                        </div>
+                    </span>
+                    <div id="div_tips1"></div>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <a id="butSubmit" href="javascript:;" class="set-save-btn">确定</a>
+                    </span>
+                   
+                </li>
+            </ul>
+        </div>
+        <!--发送状态-->
+        <div class="person-wrap" id="divChecking" style="display:none;">
+            <ul class="person-list">
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">验证码已发送至邮箱：<b class="blue" id="b_account">15823232323@qq.com</b>
+                        <a href="javascript:;" class="change">更换</a>
+                    </span>
+                </li>
+                <li>
+                    <span class="l-side">验证码：</span>
+                    <span class="r-side">
+                        <div class="inp-wrap ">
+                            <input id="txtEmailSN" maxlength="12" type="text" class="code-inner" value="请输入6位验证码" style="color: rgb(187, 187, 187);">
+                            <a id="btnSendSN" href="javascript:;" class="get-code-btn current">重新发送(113)</a>
+                        </div>
+                    </span>
+                    <div id="div_tips2"></div>
+                </li>
+                <li>
+                    <span class="l-side"></span>
+                    <span class="r-side">
+                        <a id="butSaveSubmit" href="javascript:;" class="set-save-btn">确定</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <a href="javascript:history.go(-1);" class="return-btn">返回</a>
+</div>

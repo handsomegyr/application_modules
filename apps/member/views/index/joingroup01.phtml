@@ -1,0 +1,51 @@
+﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
+<link rel="stylesheet" type="text/css" href="css/member_x.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
+<input type="hidden" id="pageID" value="">
+<div class="sidebar_main clrfix fr">
+    <div class="g-obtain-title clrfix">
+        <ul id="ul_menu">
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/joingroup">加入的圈子</a></li>
+            <li class="curr"><a href="<?php echo $this->view->baseUrl?>member/index/joingroup01">发表的话题</a></li>
+            <li><a href="<?php echo $this->view->baseUrl?>member/index/joingroup02">回复的话题</a></li>
+        </ul>
+    </div>
+    <div id="div_publishtopic" style="display: block;" class="fri-req-wrap">
+        <div class="report-wrap">
+            <div class="report-menu" style="display: block;">
+                <span class="r-title-t">话题</span>
+                <span class="r-qz-t">所属圈子</span>
+                <span class="r-time-t">时间</span>
+                <span class="r-person-t">回复/人气</span>
+                <span class="r-option-t">操作</span>
+            </div>
+            <!-- 无数据 -->
+            <ul class="report-list" style="display: none;">
+              <div class="null-retips-wrapper"><div class="gth-icon transparent-png"></div><span>您还没有发表话题哦！</span></div>
+            </ul>
+            <!-- 有数据 -->
+            <ul class="report-list">
+                <li>
+                    <div class="r-title">
+                        <a href="javascript:;" target="_blank" title="到底能不能中奖">到底能不能中奖</a>
+                    </div>
+                    <div class="r-qz">
+                        <a href="javascript:;" target="_blank">活动专区</a>
+                    </div>
+                    <div class="r-time">
+                        3分钟前
+                    </div>
+                    <div class="r-person">
+                        1/3
+                    </div>
+                    <div class="r-option">
+                        <a href="javascript:;" target="_blank">编辑</a>
+                        &nbsp;&nbsp;
+                        <a href="javascript:;" name="delete" groupid="3" topicid="12366">删除</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

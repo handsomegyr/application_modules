@@ -1,0 +1,233 @@
+﻿<input type="hidden" id="pageID" value="privacysettings">
+<div class="sidebar_main clrfix fr">
+    <div class="g-purchase-title">
+        <span class="gray3">隐私设置</span>
+    </div>
+    <div class="z-content">
+        <div class="mine-set-wrap">
+            <!--私信-->
+            <div class="inner-info start">
+                <div class="t-side">
+                    <span>私信</span>
+                </div>
+                <div class="i-side" id="MsgVal">
+                    <p class="gray9">谁可以给您发私信</p>
+                    <p>
+                        <label for="MsgFriend" value="1" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['msgSet']==1){?>current<?php }?>">
+                            <i></i>仅限好友
+                        </label>
+                        <span class="gray9">(只有你们是好友关系才能给您发私信)</span>
+                        <input value="1" name="letter" type="radio" id="MsgFriend" <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['msgSet']==1){?>checked="checked"<?php }?>>
+                    </p>
+                    <p>
+                        <label for="MsgNone" value="2"  class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['msgSet']==2){?>current<?php }?>">
+                            <i></i>禁止任何人给我发私信
+                        </label>
+                        <input value="2" name="letter" type="radio" id="MsgNone" <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['msgSet']==2){?>checked="checked"<?php }?>>
+                    </p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--地理位置-->
+            <div class="inner-info">
+                <div class="t-side">
+                    <span>地理位置</span>
+                </div>
+                <div class="i-side" id="AreaVal">
+                    <p class="gray9">设置是否允许查看我的家乡</p>
+                    <p>
+                        <label for="AreaShow" value="0" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['areaSet']==0){?>current<?php }?>">
+                            <i></i>允许
+                        </label>
+                        <input value="0" name="area" type="radio" id="AreaShow" <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['areaSet']==0){?>checked="checked"<?php }?>>
+                    </p>
+                    <p>
+                        <label for="AreaNoShow" value="1" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['areaSet']==1){?>current<?php }?>">
+                            <i></i>禁止
+                        </label>
+                        <input value="1" name="area" type="radio" id="AreaNoShow" <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['areaSet']==1){?>checked="checked"<?php }?>>
+                    </p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--好友搜索-->
+            <div class="inner-info">
+                <div class="t-side">
+                    <span>好友搜索</span>
+                </div>
+                <div class="i-side" id="SearchVal">
+                    <p class="gray9">设置是否允许让其它会员搜索到您</p>
+                    <p>
+                        <label for="Search"  value="0" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['searchSet']==0){?>current<?php }?>">
+                            <i></i>允许
+                        </label>
+                        <input value="0" name="search" type="radio" id="Search" <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['searchSet']==0){?>checked="checked"<?php }?>>
+                    </p>
+                    <p>
+                        <label for="NoSearch" value="1" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['searchSet']==1){?>current<?php }?>">
+                            <i></i>禁止
+                        </label>
+                        <input value="1" name="search" type="radio" id="NoSearch" <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['searchSet']==1){?>checked="checked"<?php }?>>
+                    </p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--个人主页-云购记录-->
+            <div class="inner-info">
+                <div class="t-side">
+                    <span>个人主页-云购记录</span>
+                </div>
+                <div class="i-side" id="BuyVal">
+                    <p class="gray9">设置是否允许让其它会员看到您的云购记录(仅限PC版、触屏版中生效)</p>
+                    <p>
+                        <label for="buyAll" class="<?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['buySet']==0){?>current<?php }?> label">
+                            <i></i>所有人可见
+                        </label>
+                        <input value="0" name="buy" type="radio" id="buyAll">
+                        <span class="follow" style="<?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['buySet']!=0){?>display:none;<?php }?>">
+                            <label for="buyShowAll" f="All" value="0" <?php if(empty($this->view->memberInfo['privacy']['buyShowNum'])){?>class="current"<?php }?>>
+                                <i></i>全部显示
+                            </label>
+                            <label for="buyShowOnly" f="Only" value="1" <?php if(!empty($this->view->memberInfo['privacy']['buyShowNum'])){?>class="current"<?php }?>>
+                                <i></i>显示
+                            </label>
+                            <input type="text" class="inp" id="buyShowOnlyVal" disabled="disabled" maxlength="4" value="<?php if(!empty($this->view->memberInfo['privacy']['buyShowNum'])){ echo $this->view->memberInfo['privacy']['buyShowNum']; }?>">条
+                            <input value="0" name="buyShow0" type="radio" id="buyShowAll" checked="checked">
+                            <input value="0" name="buyShow0" type="radio" id="buyShowOnly">
+                        </span>
+                    </p>
+
+                    <p>
+                        <label for="buyFriend" class="<?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['buySet']==1){?>current<?php }?> label">
+                            <i></i>好友可见
+                        </label>
+                        <input value="1" name="buy" type="radio" id="buyFriend">
+                        <span class="follow" style="<?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['buySet']!=1){?>display:none<?php }?>">
+                            <label for="buyFriendAll" f="All" value="2" <?php if(empty($this->view->memberInfo['privacy']['buyShowNum'])){?>class="current"<?php }?>>
+                                <i></i>全部显示
+                            </label>
+                            <label for="buyFriendOnly" f="Only" value="3" <?php if(!empty($this->view->memberInfo['privacy']['buyShowNum'])){?>class="current"<?php }?>>
+                                <i></i>显示
+                            </label>
+                            <input type="text" class="inp" id="buyFriendOnlyVal" disabled="disabled" maxlength="4" value="<?php if(!empty($this->view->memberInfo['privacy']['buyShowNum'])){ echo $this->view->memberInfo['privacy']['buyShowNum']; }?>">条
+                            <input value="0" name="buyShow1" type="radio" id="buyFriendAll" checked="checked">
+                            <input value="0" name="buyShow1" type="radio" id="buyFriendOnly">
+                        </span>
+                    </p>
+
+                    <p>
+                        <label for="buyMe" value="4" class="<?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['buySet']==2){?>current<?php }?> label">
+                            <i></i>仅自己可见
+                        </label>
+                        <input value="2" name="buy" type="radio" id="buyMe">
+                    </p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--个人主页-获得的商品-->
+            <div class="inner-info">
+                <div class="t-side">
+                    <span>个人主页-获得的商品</span>
+                </div>
+                <div class="i-side" id="rafShowVal">
+                    <p class="gray9">设置是否允许让其它会员看到您获得的商品(仅限PC版、触屏版中生效)</p>
+                    <p>
+                        <label for="rafAll" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['rafSet']==0){?>current<?php }?>">
+                            <i></i>所有人可见
+                        </label>
+                        <input value="0" name="raff" type="radio" id="rafAll">
+                        <span class="follow" style="<?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['rafSet']!=0){?>display:none<?php }?>">
+                            <label for="rafShowAll" value="0" f="All" <?php if(empty($this->view->memberInfo['privacy']['rafShowNum'])){?>class="current"<?php }?>>
+                                <i></i>全部显示
+                            </label>
+                            <label for="rafShowOnly" value="1" f="Only" <?php if(!empty($this->view->memberInfo['privacy']['rafShowNum'])){?>class="current"<?php }?>>
+                                <i></i>显示
+                            </label>
+                            <input type="text" class="inp" disabled="disabled" id="rafShowOnlyVal" maxlength="4" value="<?php if(!empty($this->view->memberInfo['privacy']['rafShowNum'])){ echo $this->view->memberInfo['privacy']['rafShowNum']; }?>">条
+                            <input value="0" name="rafShow0" type="radio" id="rafShowAll" checked="checked">
+                            <input value="0" name="rafShow0" type="radio" id="rafShowOnly">
+                        </span>
+                    </p>
+
+                    <p>
+                        <label for="rafFriend" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['rafSet']==1){?>current<?php }?>">
+                            <i></i>好友可见
+                        </label>
+                        <input value="1" name="raff" type="radio" id="rafFriend">
+                        <span class="follow" style="<?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['rafSet']!=1){?>display:none<?php }?>">
+                            <label for="rafFriendAll" value="2" f="All" <?php if(empty($this->view->memberInfo['privacy']['rafShowNum'])){?>class="current"<?php }?>>
+                                <i></i>全部显示
+                            </label>
+                            <label for="rafFriendOnly" f="Only" value="3" <?php if(!empty($this->view->memberInfo['privacy']['rafShowNum'])){?>class="current"<?php }?>>
+                                <i></i>显示
+                            </label>
+                            <input type="text" class="inp" disabled="disabled" id="rafFriendOnlyVal" maxlength="4" value="<?php if(!empty($this->view->memberInfo['privacy']['rafShowNum'])){ echo $this->view->memberInfo['privacy']['rafShowNum']; }?>">条
+                            <input value="0" name="rafShow1" type="radio" id="rafFriendAll" checked="checked">
+                            <input value="0" name="rafShow1" type="radio" id="rafFriendOnly">
+                        </span>
+                    </p>
+
+                    <p>
+                        <label for="rafMe" value="4" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['rafSet']==2){?>current<?php }?>">
+                            <i></i>仅自己可见
+                        </label>
+                        <input value="2" name="raff" type="radio" id="rafMe">
+                    </p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--个人主页-晒单-->
+            <div class="inner-info">
+                <div class="t-side">
+                    <span>个人主页-晒单</span>
+                </div>
+                <div class="i-side" id="postShowVal">
+                    <p class="gray9">设置是否允许让其它会员看到您的晒单(仅限PC版、触屏版中生效)</p>
+                    <p>
+                        <label for="postAll" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['postSet']==0){?>current<?php }?>">
+                            <i></i>所有人可见
+                        </label>
+                        <input value="0" name="post" type="radio" id="postAll">
+                        <span class="follow" style="<?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['postSet']!=0){?>display:none<?php }?>">
+                            <label for="postShowAll" value="0" f="All" <?php if(empty($this->view->memberInfo['privacy']['postShowNum'])){?>class="current"<?php }?>>
+                                <i></i>全部显示
+                            </label>
+                            <label for="postShowOnly"  value="1" f="Only" <?php if(!empty($this->view->memberInfo['privacy']['postShowNum'])){?>class="current"<?php }?>>
+                                <i></i>显示
+                            </label>
+                            <input type="text" class="inp" disabled="disabled" id="postShowOnlyVal" maxlength="4" value="<?php if(!empty($this->view->memberInfo['privacy']['postShowNum'])){ echo $this->view->memberInfo['privacy']['postShowNum']; }?>">条
+                            <input value="0" name="postShow0" type="radio" id="postShowAll" checked="checked">
+                            <input value="0" name="postShow0" type="radio" id="postShowOnly">
+                        </span>
+                    </p>
+
+                    <p>
+                        <label for="postFriend" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['postSet']==1){?>current<?php }?>">
+                            <i></i>好友可见
+                        </label>
+                        <input value="1" name="post" type="radio" id="postFriend">
+                        <span class="follow" style="<?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['postSet']!=1){?>display:none<?php }?>">
+                            <label for="postFriendAll" value="2" f="All" <?php if(empty($this->view->memberInfo['privacy']['postShowNum'])){?>class="current"<?php }?>>
+                                <i></i>全部显示
+                            </label>
+                            <label for="postFriendOnly" value="3" f="Only" <?php if(!empty($this->view->memberInfo['privacy']['postShowNum'])){?>class="current"<?php }?>>
+                                <i></i>显示
+                            </label>
+                            <input type="text" class="inp" disabled="disabled" id="postFriendOnlyVal" maxlength="4" value="<?php if(!empty($this->view->memberInfo['privacy']['postShowNum'])){ echo $this->view->memberInfo['privacy']['postShowNum']; }?>">条
+                            <input value="0" name="postShow1" type="radio" id="postFriendAll" checked="checked">
+                            <input value="0" name="postShow1" type="radio" id="postFriendOnly">
+                        </span>
+                    </p>
+                    <p>
+                        <label for="postMe" value="4" class="label <?php if(!empty($this->view->memberInfo['privacy']) && $this->view->memberInfo['privacy']['postSet']==2){?>current<?php }?>">
+                            <i></i>仅自己可见
+                        </label>
+                        <input value="2" name="post" type="radio" id="postMe">
+                    </p>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <a id="btnSaveSettings" href="javascript:;" class="set-save-btn">保存</a>
+    </div>
+</div>

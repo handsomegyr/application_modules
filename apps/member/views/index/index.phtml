@@ -1,0 +1,338 @@
+<link rel="stylesheet" type="text/css" href="css/home.css" />
+<link rel="stylesheet" type="text/css" href="../yungou/css/share_style2_16.css" /> 
+<input type="hidden" id="pageID" value="memberingdex">
+<div class="sidebar_m clrfix fl">
+	<div class="g-information clrfix">
+		<div class="m-info-up clrfix">
+			<div class="info-up-left ">
+
+				<div class="head-portrait fl">
+					<a id="a_UserPhoto" href="<?php echo $this->view->baseUrl?>member/admin/userphoto" target="_blank">
+					<img src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>">
+					<b class="u-personal"></b></a>
+					<p>
+						<cite>修改头像</cite><em></em>
+					</p>
+				</div>
+
+				<dl class="fl">
+					<dt class="gray3">
+						<?php echo getDayPeriod()?>好！
+						<?php if(empty($this->view->memberInfo['nickname'])){?>
+						<a href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->memberInfo['_id']?>" target="_blank"><cite><?php echo \Webcms\Member\Helpers\MemberHelper::getRegisterName($this->view->memberInfo)?></cite><em class="gray9"></em></a>
+						<?php }else{?>
+						<a href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->memberInfo['_id']?>" target="_blank"><cite><?php echo $this->view->memberInfo['nickname']?></cite><em class="gray9">(<?php echo \Webcms\Member\Helpers\MemberHelper::getRegisterName($this->view->memberInfo)?>)</em></a>
+						<?php }?>
+					</dt>
+					<dd class="gray9">
+					<?php $exp = \Webcms\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY2)?>
+					<?php $gradeInfo= \Webcms\Member\Helpers\MemberGradeHelper::getGradeInfo($exp)?>
+						<span class="class-icon<?php echo str_pad($gradeInfo['current']['level'], 2, '0', STR_PAD_LEFT)?>"><s></s><?php echo $gradeInfo['current']['name']?></span>(还差<?php echo $gradeInfo['next']['exp_from']-$exp?>经验值即可升级到<?php echo $gradeInfo['next']['name']?>)<a
+							href="<?php echo $this->view->baseUrl?>yungou/help/userexperience" target="_blank">查看等级介绍</a>
+					</dd>
+				</dl>
+			</div>
+			<div class="info-up-right fr">
+				<ul>
+					<li class="z-news">
+						<a href="<?php echo $this->view->baseUrl?>member/index/usermessage" class="u-personal"><b class="u-personal"></b>消息<?php if(!empty($this->view->msgCount)){?><em><?php echo $this->view->msgCount?></em><?php }?></a>
+					</li>
+					<?php if(empty($this->view->memberInfo['email_bind'])){?>
+					<li class="z-not-bound">
+					<a href="<?php echo $this->view->baseUrl?>member/security/index" class="u-personal"><b class="u-personal"></b>未绑定</a>
+					</li>
+					<?php }else{?>
+					<li class="z-binding">
+					<a href="<?php echo $this->view->baseUrl?>member/security/index" class="u-personal"><b class="u-personal"></b>已绑定</a>
+					</li>
+					<?php }?>
+					
+					<?php if(empty($this->view->memberInfo['mobile_bind'])){?>
+					<li class="z-not-bound">
+					<a href="<?php echo $this->view->baseUrl?>member/security/index" class="u-personal"><b class="u-personal"></b>未绑定</a>
+					</li>
+					<?php }else{?>
+					<li class="z-binding">
+					<a href="<?php echo $this->view->baseUrl?>member/security/index" class="u-personal"><b class="u-personal"></b>已绑定</a>
+					</li>
+					<?php }?>
+				</ul>
+			</div>
+		</div>
+		<div class="m-info-down clrfix">
+			<div class="info-down-l fl">
+			<?php $predeposit = \Webcms\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY3)?>
+				<span class="fl gray9"> <b class="orange">￥<?php echo number_format($predeposit,2)?></b> 可用余额
+				</span>
+				<p class="fl">
+					<a href="<?php echo $this->view->baseUrl?>member/index/userrecharge" title="充值" class="z-recharge-btn">充值</a>
+				</p>
+			</div>
+			<div id="div_stat" class="info-down-r fr" style="">
+				<ul>
+					<li class="z-dividing-line"><s></s></li>
+					<?php $points = \Webcms\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY1)?>
+					<li><a
+						href="<?php echo $this->view->baseUrl?>member/index/memberpoints"><em><?php echo $points?></em>可用福分</a></li>
+					<li class="z-dividing-line z-ends-line"><s></s></li>
+					<li class="z-fatal-frame"><a id="a_drq"
+						href="<?php echo $this->view->baseUrl?>member/index/orderlist"><em><?php echo $this->view->confirmNum4Wait?></em>待确认</a></li>
+					<li class="z-dividing-line"><s></s></li>
+					<li class="z-fatal-frame"><a id="a_dfh"
+						href="<?php echo $this->view->baseUrl?>member/index/orderlist"><em><?php echo $this->view->deliveryNum4Wait?></em>待发货</a></li>
+					<li class="z-dividing-line"><s></s></li>
+					<li class="z-fatal-frame"><a id="a_dsh"
+						href="<?php echo $this->view->baseUrl?>member/index/orderlist"><em><?php echo $this->view->receiveNum4Wait?></em>待收货</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!--提示信息列表-->
+	<?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2 && empty($this->view->memberInfo['email_bind'])){?>
+	<div class="g-operation clrfix">
+		<div class="m-modify-single m-verification clrfix">
+			<p class="orange"><b class="u-personal u-phone-icon"></b>您还未验证手机哦，请及时验证！</p>
+			<a href="<?php echo $this->view->baseUrl?>member/security/index" class="z-operation-btn">立即验证</a><a class="z-operation-close u-personal"></a>
+		</div>
+	</div>
+	<?php }elseif($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY1 && empty($this->view->memberInfo['mobile_bind'])){?>
+	<div class="g-operation clrfix">
+		<div class="m-modify-single m-verification clrfix">
+			<p class="orange"><b class="u-personal u-phone-icon"></b>您还未验证邮箱哦，请及时验证！</p>
+			<a href="<?php echo $this->view->baseUrl?>member/security/index" class="z-operation-btn">立即验证</a> <a class="z-operation-close u-personal"></a>
+		</div>
+	</div>
+	<?php }?>
+	<?php if(!empty($this->view->orderInfo)){?>
+	<!--获得的商品列表-->
+	<div class="g-acquired-goods g-common-control clrfix">
+        <div class="m-getGood-title clrfix">
+            <a href="<?php echo $this->view->baseUrl?>member/index/orderlist" class="gray9">全部<em class="f-tran">&gt;</em></a><b id="b_getgoodstitle" class="gray3">获得的商品</b>
+        </div>
+        <ul>
+            <li onclick="window.open('<?php echo $this->view->baseUrl?>member/index/orderdetail?orderno=<?php echo $this->view->orderInfo['order_no'] ?>')" class="f-congratulations bor-top">
+                <span class="fl"><a href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $this->view->orderInfo['goods_id'] ?>">
+                    <img alt="" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->orderInfo['goods_image'],70,70)?>"></a></span>
+                <dl class="fl">
+                    <dt>恭喜您获得 <a href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $this->view->orderInfo['goods_id'] ?>" class="orange" title="<?php echo $this->view->orderInfo['goods_name'] ?>">(第<?php echo $this->view->orderInfo['goods_period'] ?>云)<?php echo $this->view->orderInfo['goods_name'] ?></a></dt>
+                    <dd>价值：￥<?php echo number_format($this->view->orderInfo['goods_price'],2) ?></dd>
+                    <dd>幸运云购码：<?php echo $this->view->orderInfo['prize_code'] ?></dd>
+                </dl>
+                <?php if($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE1){?>
+                <a href="javascript:;" class="z-perfect-btn">完善收货地址</a>
+                <?php }?>
+            </li>
+        </ul>
+    </div>
+    <?php }?>
+	<!--云购记录列表-->
+	<div id="g_buys_records" class="g-buys-records g-common-control clrfix" style="display: none;">
+		<div class="m-getGood-title clrfix">
+			<a href="<?php echo $this->view->baseUrl?>member/index/userbuylist" class="gray9">全部<em class="f-tran">&gt;</em></a><b class="gray3">云购记录</b>
+		</div>
+		<div class="m-comm-scroll">
+			<!-- 暂无数据 -->
+			<div class="null-data" style="display: none;">
+				<b class="gth-icon"></b>您还没有参与云购？ 梦想与您只有1元的距离！<br>
+				<a href="/" class="blue" target="_blank">去云购</a>
+			</div>
+			<!-- 有数据 -->
+			<a href="javascript:;" class="z-prev" style="display: none;"> <i class="u-personal"></i><span></span></a>
+			<a href="javascript:;" class="z-next" style="display: none;"> <i class="u-personal"></i><span></span></a>
+			<div class="commodity-list clrfix">
+				<div id="div_UserBuyList">
+					<!-- <div class="productsCon">
+						<div class="proList">
+							<ul>
+								<li class="list-pic"><a target="_blank" href="javascript:;"><img src=""></a></li>
+								<li class="list-name"><a target="_blank" href="javascript:;"> (第1847云)苹果（Apple）iPhone 5S 16G版 3G手机 电信版 </a></li>
+								<li class="list-over"><a href="javascript:;"> 正在揭晓 </a></li>
+							</ul>
+						</div>
+					</div> -->
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!--关注列表-->
+	<div class="g-my-attention g-common-control clrfix" style="display: none;">
+		<div class="m-getGood-title clrfix">
+			<a href="<?php echo $this->view->baseUrl?>member/index/collectlist" class="gray9">全部<em class="f-tran">&gt;</em></a><b class="gray3">我的关注</b>
+		</div>
+		<div class="m-comm-scroll">
+			<!-- <div class="loading-2015"><em></em></div> -->
+			<!-- <a href="javascript:;" class="z-prev" style="display: none;"><i class="u-personal"></i><span></span></a>
+			<a href="javascript:;" class="z-next" style="display: none;"><i class="u-personal"></i><span></span></a> -->
+			<div class="commodity-list">
+				<div id="div_AttentionList" style="position: absolute;left:0;">
+					<!-- <div class="productsCon">
+					    <div class="proList">
+					        <ul>
+					            <li class="list-pic"><a target="_blank" href="javascript:;"><img src=".jpg"></a></li>
+					            <li class="list-name" style="display: block;"><a target="_blank" href="javascript:;">瑞兹德比纳 陈酿干红葡萄酒 750ml x 3瓶 红酒套装</a></li>
+					            <li style="display: none;" class="g-progress"><dl class="m-progress"><dt><b style="width:24.087725150100066px;"></b></dt></dl></li>
+					            <li style="display: none;" class="list-ing" codeid="2275908"><a href="javascript:;">加入购物车</a></li>
+					            <li class="list-ing" style="display: list-item;"><a href="javascript:;">第<em class="orange">215</em>云进行中…</a></li>
+					        </ul>
+					    </div>
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--最新晒单列表-->
+	<div class="g-common-control clrfix" style="">
+		<div class="m-getGood-title clrfix">
+			<b id="b_posttitle" class="gray3">云友最新晒单</b>
+		</div>
+		<div id="div_PostList" class="single-part clrfix">
+			<!-- <div class="m-single">
+				<div class="single-list">
+					<ul>
+						<li class="sig-pic"><a target="_blank" href="javascript:;"><img src=".jpg"></a></li>
+						<li class="sig-title"><a target="_blank" href="javascript:;"> <b>中了！中了！！！ </b></a></li>
+						<li class="sig-text">非常感谢云购！两元钱中了个电饭锅！！在我投入几百块后中的价值最高的一份！！感谢运气…</li>
+						<li>昨天 19:37</li>
+						<li class="sig-xmjdh">
+							<a href="javascript:;"><cite class="fl"><img src=".jpg"><s></s></cite> <em class="fl"> 18606****75 </em></a>
+							<b class="curr-arrow"><s class="u-personal"></s></b>
+						</li>
+					</ul>
+				</div>
+			</div> -->
+		</div>
+
+		<div class="m-see-more clrfix">想要看更多？去<a href="<?php echo $this->view->baseUrl?>yungou/post/index" target="_blank" class="orange">晒单分享</a>看看</div>
+
+	</div>
+</div>
+
+<!--右侧-->
+<div class="sidebar_r clrfix fr">
+	<div class="g-my-cart g-sid-title">
+		<h3 class="gray3">
+			<b>购物车</b>
+		</h3>
+
+		<div id="divCart">
+			<p>您的购物车为空！<a href="/" target="_blank" class="blue">立即去云购&gt;&gt;</a></p>
+		</div>
+	</div>
+    
+    <?php if(false){?>
+	<!-- 未绑定 -->
+	<div class="g-invitation g-sid-title">
+		<h3 class="gray3">
+			<b>邀请有奖</b>
+		</h3>
+		<span>邀请好友并消费即可获得<em class="orange">50福分</em></span>
+		<p class="gray3">验证手机号立即生成专属邀请链接</p>
+		<a href="<?php echo $this->view->baseUrl?>member/security/userauth40" class="z-immediate-binding">立即验证</a>
+	</div>
+    <?php }else{?>
+	<!-- 已经绑定 -->
+	<div class="g-invitation g-sid-title">
+		<h3 class="gray3">
+			<b>邀请有奖</b>
+		</h3>
+		<span>邀请好友并消费即可获得<em class="orange">50福分</em></span>
+		<textarea id="txtInfo" rows="3" cols="10" class="gray6">1元就能买iPhone 6S，一种很有意思的购物方式，快来看看吧！<?php echo $this->view->webUrl?>yungou/index/index?invited_id=<?php echo $this->view->invitationInfo['_id']?></textarea>
+		<div class="fx-out-inner">
+			<a id="btnCopy" href="javascript:;" class="z-copy-share fr" onClick="oCopy()">复制分享</a>
+			<div class="bdsharebuttonbox">
+				<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+				<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+				<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+				<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+				<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+			</div>
+			<script>
+				window._bd_share_config = {
+					common : {
+						bdText : '1元就能买iPhone 6S，一种很有意思的购物方式，快来看看吧！',	
+						bdDesc : '1元就能买iPhone 6S，一种很有意思的购物方式，快来看看吧！',	
+						bdUrl : "<?php echo $this->view->webUrl?>yungou/index/index?invited_id=<?php echo $this->view->invitationInfo['_id']?>", 	
+						bdPic : 'http://webcms.didv.cn/upload/member/avatar/UserFace-160-0000.jpg'
+					},
+					share : [{
+						"bdSize" : 16
+					}]
+				}
+				with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+			</script>
+		</div>
+	</div>
+    <?php }?>
+
+	<div class="g-dynamic g-sid-title">
+		<h3 class="gray3">
+			<b id="b_dynamictitle">好友动态</b>
+		</h3>
+
+		<?php if(empty($this->view->newsList)){?>
+			<div class="m-dynamic-none">
+				<b class="gth-icon transparent-png"></b> 您的好友都去哪儿了？
+			</div>
+
+		<?php }else{?>
+
+			<div class="m-dynamic-list clrfix">
+	            <ul id="ul_friendmsg">
+	            <?php foreach ($this->view->newsList as $news) {?>
+	            	<li>
+	                    <p class="fl"><a href="javascript:;" target="_blank"> <img src=".jpg"><i class="u-personal"></i></a></p>
+	                    <cite class="fl">
+	                        <span><a href="javascript:;" target="_blank" class="blue"><?php echo getBuyerName($news['user_name'], $news['user_register_by'])?></a></span>
+	                        <?php echo date('Y-m-d H:i',$news['msg_time']->sec)?><br>
+	                        <?php if($news['action'] == \Webcms\Member\Models\News::ACTION1){ ?>
+	                                                云购了<a href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $news['content_id']?>" target="_blank" class="tit-con blue"><?php echo $news['memo']['name']?></a>
+	                        <?php }elseif($news['action'] == \Webcms\Member\Models\News::ACTION2){?>
+	                                                晒单了<a href="<?php echo $this->view->baseUrl?>yungou/post/detail?id=<?php echo $news['content_id']?>" target="_blank" class="tit-con blue"><?php echo $news['memo']['title']?></a>
+	                        <?php }?>
+	                    </cite>
+	                </li>
+	            <?php }?>
+	            </ul>
+	        </div>
+        <?php }?>
+
+	</div>
+
+	<div class="g-QR-code g-sid-title">
+		<h3 class="gray3">
+			<b>下载手机APP</b>
+		</h3>
+		<div class="clrfix">
+			<span class="fl"><a href="<?php echo $this->view->baseUrl?>member/index/mobile.html" target="_blank"> <img src="/Images/app.jpg"></a></span>
+			<p class="fl gray6">
+				参与云购随心所欲！ <a href="<?php echo $this->view->baseUrl?>member/index/mobile.html" target="_blank">立即下载</a>
+			</p>
+		</div>
+		<s class="u-personal"></s>
+	</div>
+
+	<div class="g-QR-code g-sid-title">
+		<h3 class="gray3">
+			<b>关注官方微信</b>
+		</h3>
+		<div class="clrfix">
+			<span class="fl"><a href="<?php echo $this->view->baseUrl?>member/index/microchannel.html" target="_blank"> <img src="/Images/wx.jpg"></a></span>
+			<p class="fl gray6">
+				扫一扫<br> 享受更多微信专享服务
+			</p>
+		</div>
+		<em class="u-personal"></em>
+	</div>
+	<div class="g-service-hotline g-sid-title">
+		<h3 class="gray3">
+			<b>服务热线</b>
+		</h3>
+		<?php $siteSettings=\Webcms\Site\Helpers\SiteHelper::getSettings();?>
+		<p class="orange">
+			<?php echo $siteSettings['tel400']?><i>（工作时间：09:00-21:00）</i>
+		</p>
+		<a id="a_service" href="javascript:;" class=""><b
+			class="u-personal"></b>在线客服</a> <em class="u-personal"></em>
+	</div>
+</div>

@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云购--会员中心</title>
+    <link rel="stylesheet" type="text/css" href="../yungou/css/header.css" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/member_x.css" />
+    <script type="text/javascript" src="../yungou/js/JQuery.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="../yungou/js/public.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <!--顶部-->
+    <div class="g-toolbar clrfix">
+        <div class="w1190">
+            <ul class="fl">
+                <li class="f-collect">
+                  <div class="u-menu-hd">
+                      <a id="btnTFavorite" href="javascript:;" title="收藏">收藏</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li id="liMobile" class="u-arr">
+                  <div class="u-menu-hd transparent-png">
+                      <a href="mobile.html" target="_blank" title="手机云购">手机云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <p>
+                          <a href="mobile.html" target="_blank">
+                              <img src="images/andriod.jpg">
+                              下载客户端
+                          </a>
+                      </p>
+                  </div>
+                </li>
+                <li class="f-gap" style="display:none;"><s></s></li>
+                <li id="liCCTV" style="display:none;">
+                  <a href="javascript:;" target="_blank" class="cctv-icon">
+                      <img src="http://skin.1yyg.com/images/cctv-icon.jpg" alt="央视网" width="80" height="35" class="cctv-icon-img">
+                      <span class="cctv-icon-txt">广告合作伙伴</span>
+                  </a>
+                </li>
+            </ul>
+            <ul id="ulTopRight" class="fr"><li><div class="u-menu-hd u-menu-login"><a href="/" title="dhtnuieeq@qq.com" class="blue"><span class="fl"><img src="http://faceimg.1yyg.com/userface/30/00000000000000000.jpg"><s class="transparent-png"></s></span>dhtnuieeq@qq.com</a><a href="./" title="退出">[退出]</a></div></li><li class="f-gap"><s></s></li>
+                <li id="liMember" class="u-arr-1yyg" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                      <div class="f-top-arrow"><cite>◆</cite><b>◆</b></div>
+                  </div>
+                  <div class="u-select">
+                      <span><a href="UserBuyList.html" title="云购记录">云购记录</a></span>
+                      <span><a href="OrderList.html" title="获得的商品">获得的商品</a></span>
+                      <span><a href="MemberModify.html" title="个人设置">个人设置</a></span>
+                  </div>
+                </li>
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li id="liHome" style="">
+                  <div class="u-menu-hd">
+                      <a href="/" title="我的1元云购">我的1元云购</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+
+                <li class="f-gap" style="display: none;"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="UserRecharge.html" title="充值">充值</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="help.html" title="帮助">帮助</a>
+                  </div>
+                </li>
+                <li class="f-gap"><s></s></li>
+                <li>
+                  <div class="u-menu-hd">
+                      <a href="htm-contactus.html" title="投诉">投诉</a>
+                  </div>
+                </li>
+                <li class="f-gap" style=""><s></s></li>
+                <li id="lizxkf" class="f-zxkf" style="display: none;">
+                  <div class="u-menu-hd">
+                      <a id="btnTopQQ" href="javascript:;" title="在线客服" class="u-service u-service-on"><i></i>在线客服</a>
+                  </div>
+                </li>
+                <li class="f-zxkf" style="">
+                 <div class="u-menu-hd">
+                     <a href="/" title="1元云购首页" class="orange">1元云购首页</a>
+                 </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--头部-->
+        
+    <!--导航-->
+    <div class="p-center-nav clrfix">
+        <div class="banner-middle clrfix">
+            <div class="nav-new">
+                <ul>
+                    <li><a href="index.html" title="我的1元云购">我的1元云购</a><em class="z-my-1yyg u-personal"></em></li>
+                    <li class="curr"><a href="MemberModify.html" title="账号设置">账号设置</a><em class="z-account-settings u-personal"></em></li>
+                    <li><a target="_blank" href="javascript:;" title="个人主页">个人主页</a><em class="z-home-page u-personal"></em></li>
+                </ul>
+            </div>
+            <div class="nav-return">
+                <a href="/" class="transparent-png"></a>
+            </div>
+        </div>
+        <div class="banner-right"></div>
+    </div>
+    <!--右侧工具栏-->
+    <div id="divMemberRTool" class="g-narrow-con member-narrow" style="display:block">
+        <div class="m-narrow-list" style="height:232px;">
+            <ul>
+                <li class="f-customer-service" id="li_customer_service"><!--客服-->
+                    <div class="u-float-list">
+                        <a href="javascript:;" class="z-customer-on"><s></s><em class="orange">在<br>线<br>客<br>服</em></a><!-- z-customer-off 客服不在线时 -->
+                    </div>
+                </li>
+                <li class="f-member-cart f-member-cart2"><!--购物车-->
+                    <div class="u-float-list">
+                        <a href="../cartList.html" target="_blank">
+                            <em style="">2</em>
+                            <s class="u-personal"></s>
+                            <cite style="display:none;">购<br>物<br>车</cite>
+                        </a>
+                    </div>
+                </li>
+                <li class="f-feedback"><!--意见反馈-->
+                    <div class="u-float-list">
+                        <a href="htm-suggestion.html" target="_blank"><i></i><cite>意见反馈</cite></a>
+                    </div>
+                </li>
+                <li class="f-back-to" style="display:none;"><!--Top-->
+                    <div class="u-float-list">
+                        <a href="javascript:;"><i></i><cite>置顶</cite></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="p-center-main clrfix">
+        <!--左边导航-->
+        <div class="sidebar_l clrfix fl">
+            <ul>
+                <li><a href="MemberModify.html" title="个人资料">个人资料</a><b></b></li>
+                <li><a href="UserPhoto.html" title="修改头像">修改头像</a><b></b></li>
+                <li><a href="Address.html" title="收货地址">收货地址</a><b></b></li>
+                <li><a href="SecurityIndex.html" title="账户安全">账户安全</a><b></b></li>
+                <li><a href="PrivacySettings.html" title="隐私设置">隐私设置</a><b></b></li>
+                <li class="curr z-first"><a href="NoticeSettings.html" title="常用设置">常用设置</a><b></b></li>
+                    
+               </ul>
+        </div>
+        <div class="sidebar_main clrfix fr">
+            <div class="g-purchase-title">
+                <span class="gray3">常用设置</span>
+            </div>
+            <div class="z-content">
+                <div class="always">
+                    <span class="gray9 set">设置接受参与云购未获得商品的提醒通知</span>
+                    <div class="lab-wrap" id="ckSysMsg">
+                        <label for="win">
+                            <div class="lab"><i class="right-icon transparent-png"></i></div>
+                            <div>接受系统消息</div>
+                            <input type="hidden" value="0"> <!-- val值 0是未选择 1是选择 -->
+                        </label>
+                    </div>
+                    <div class="lab-wrap" id="ckWxMail">
+                        <label for="mail">
+                            <div class="lab current"><i class="right-icon transparent-png"></i></div>
+                            <div>接受微信或邮件消息</div>
+                            <input type="hidden" value="1"> <!-- val值 0是未选择 1是选择 -->
+                        </label>
+                    </div>
+                </div>
+                <a id="btnSave" href="javascript:;" class="always-save">保存</a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--版权-->
+    <div class="g-copyrightCon">
+        <div class="w1190">
+            <div class="g-links">
+                <a href="javascript:;" target="_blank" title="首页">首页</a><s></s>
+                <a href="javascript:;" target="_blank" title="关于云购">关于云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="隐私声明">隐私声明</a><s></s>
+                <a href="javascript:;" target="_blank" title="合作专区">合作专区</a><s></s>
+                <a href="javascript:;" target="_blank" title="友情链接">友情链接</a><s></s>
+                <a href="javascript:;" target="_blank" title="加入云购">加入云购</a><s></s>
+                <a href="javascript:;" target="_blank" title="联系我们">联系我们</a>
+            </div>
+            <div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有 1yyg.com 粤ICP备09213115号-1</div>
+            <div class="g-authentication">
+                <a href="javascript:;" target="_blank" class="fi_ectrustchina"></a>
+                <a href="javascript:;" target="_blank" class="fi_315online"></a>
+                <a href="javascript:;" target="_blank" class="fi_qh"></a>
+                <a href="javascript:;" target="_blank" class="fi_cnnic"></a>
+                <a href="javascript:;" target="_blank" class="fi_anxibao"></a>
+                <a href="javascript:;" target="_blank" class="fi_pingan"></a>
+                <a href="javascript:;" target="_blank" class="fi_yangshi"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
