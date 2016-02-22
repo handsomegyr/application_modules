@@ -7,6 +7,8 @@
     </div>
     <div class="g-buyCon clrfix">
         <h3 class="gray3">云购记录详情</h3>
+
+
         <div class="m-mer-info clrfix">
             <ul>
             <?php 
@@ -21,6 +23,8 @@
                         <img src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl,$goods['image'])?>">
                     </a>
                 </li>
+
+                <!-- 已经揭晓 -->
                 <li class="other-winner">
                     <p>
                         <a class="gray3" target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $goods['_id']?>">
@@ -33,15 +37,48 @@
                     <span>
                         您已参与<i class="orange"><?php echo $total_buy_num?></i>人次</span>获得者：
                     <a href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $goods['prize_buyer_id']?>" target="_blank" class="blue">
-            <?php echo getBuyerName($goods['prize_buyer_name'], $goods['prize_buyer_register_by'])?>
+                        <?php echo getBuyerName($goods['prize_buyer_name'], $goods['prize_buyer_register_by'])?>
                     </a>
                     <br>幸运云购码：<?php echo $goods['prize_code']?><br>揭晓时间：<?php echo getMilliTime4Show($goods['prize_time'])?>
                 </li>
+
+                <!-- 正在揭晓 -->
+                <li>
+                    <p><a class="gray3" target="_blank" href="http://www.1yyg.com/product/2268125.html">(第7740云)苹果（Apple）iPad Air 2 9.7英寸平板电脑 16G WiFi版</a></p>
+                    <cite>价值：￥3488.00</cite><a target="_blank" href="http://www.1yyg.com/product/2268125.html" class="z-announcedIng">正在揭晓…</a><span>您已参与<i class="orange">1</i>人次</span>
+                </li>
+
+                <!-- 还未结束正在进行 -->
+                <li>
+                    <p><a class="gray3" target="_blank" href="http://www.1yyg.com/product/2710789.html">(第10341云)苹果（Apple）iPad Air 2 9.7英寸平板电脑 16G WiFi版</a></p>
+                    <cite>价值：￥3488.00</cite>
+                    <div class="g-progress">
+                        <dl class="m-progress">
+                            <dt title="完成48.51%"><b style="width: 137px;"></b></dt>
+                            <dd>
+                                <span class="orange fl"><em>1692</em>已参与</span>
+                                <span class="gray6 fl"><em>3488</em>总需人次</span>
+                                <span class="blue fr"><em>1796</em>剩余</span>
+                            </dd>
+                        </dl>
+                    </div>
+                    <span>您已参与<i class="orange">1</i>人次</span>
+                </li>
+
+
             </ul>
+
+            <!-- 还未结束正在进行 -->
+            <div class="pos-buttons">
+                <a href="javascript:;" codeid="2710789" class="z-add-btn">追加云购</a>
+                <a href="javascript:;" goodsid="21976" goodsname="苹果（Apple）iPad Air 2 9.7英寸平板电脑 16G WiFi版" goodspic="20141024155736176.jpg" class="z-share-btn">一键分享</a>
+            </div>
+
         </div>
+
+        <!-- 已经揭晓 -->
         <div class="m-buy-num clrfix">
             <dl>
-                
                 <dt class="gray6">本云商品您总共参与<i class="orange"><?php echo $total_buy_num?></i>人次<em class="f-mar-left">拥有<i class="orange"><?php echo $total_lottery_code_num?></i>个云购码</em></dt>
                 <?php if(!empty($buyList)){?>
                 <?php foreach ($buyList as $item) {?>
@@ -50,5 +87,8 @@
                 <?php }?>
             </dl>
         </div>
+
+
+
     </div>
 </div>

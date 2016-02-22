@@ -105,4 +105,7 @@ class MsgTask extends \Phalcon\CLI\Task
             } catch (\Exception $e) {}
         }
     }
+    
+    
+    
 }

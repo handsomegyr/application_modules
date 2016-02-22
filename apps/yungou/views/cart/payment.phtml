@@ -49,10 +49,7 @@
         </div>
         <?php $point = empty($this->view->pointInfo)?0:$this->view->pointInfo['current']?>
         <?php $predeposit = empty($this->view->predepositInfo)?0:$this->view->predepositInfo['current']?>
-        <?php $pay_amount = $order_amount-$point/100-$predeposit?>
-        <input name="hidTotalCount" type="hidden" id="hidTotalCount" value="0">
-        <!--展开按钮-->
-        
+        <?php $pay_amount = $order_amount-$point/100-$predeposit?>      
 
         <!--福分与余额-->
         <div id="divPayWayBox" class="m-pay-Total clrfix">
@@ -79,7 +76,7 @@
         </div>
 
         <!--网银-->
-        <div id="divBankBox" class="m-pay-manner" style="">
+        <div id="divBankBox" class="m-pay-manner" style="display:none;">
             <div class="f-pay-select">
                 <span class="fl" id="spPayTitle">您的账户余额不足，请选择以下方式完成支付</span>
                 <span class="fr">使用网银支付<i id="iBankPay" class="orange">￥<?php echo number_format($pay_amount,2)?></i></span>
@@ -90,11 +87,11 @@
                 <div class="fr f-pay-bank">
                     <h3>支付平台支付：</h3>
                     <dl id="dlPayForm" class="clrfix">
-                        <dd>
+                        <dd class="checked">
                             <input type="radio" name="account" value="zfbpay" id="zfbpay"><label for="zfbpay"><span class="u-bank-zfb"></span></label>
                         </dd>
                         <dd>
-                            <input type="radio" name="account" value="Pingan" id="Pingan"><label for="Pingan"><span class="u-bank-weixin"></span></label>
+                            <input type="radio" name="account" value="weixin" id="weixin"><label for="weixin"><span class="u-bank-weixin"></span></label>
                         </dd>
                     </dl>
                 </div>
@@ -102,32 +99,28 @@
 
         </div>
 
-        <input type="hidden" id="hidBalance" value="0.00"><input type="hidden" id="hidCountMoney" value="13.00"><input type="hidden" id="hidPoints" value="10.00"><input type="hidden" id="hidAvailablePoints" value="0"><input type="hidden" id="hidUsePaypwd" value="0"><input type="hidden" id="hidSmallMoney" value="0">
+        <input type="hidden" id="hidPredeposit" value="<?php echo number_format($predeposit,2)?>">  <!-- 账户余额 -->
+        <input type="hidden" id="hidOrderamount" value="<?php echo number_format($order_amount,2)?>"> <!-- 需要支付余额 -->
+        <input type="hidden" id="hidPassword" value=""> <!-- 余额支付是否需要输入支付密码 --> 
 
         <!--使用网银支付提交表单-->
-        <!-- <form id="toPayForm" name="toPayForm" action="javascript:;" method="post" target="_blank"> -->
-            <input type="hidden" id="hidPayName" name="payName" value="">
-            <input type="hidden" id="hidPayBank" name="payBank" value="0">
-            <input type="hidden" id="hidUseBalance" name="useBalance" value="">
-            <!-- 不使用福分时，值为0；使用福分时，值为使用福分值 2012.4.28-->
-            <input type="hidden" id="hidIntegral" name="integral" value="0">
-            <!-- 支付SN -->
-            <input type="hidden" id="hidCheckSN" name="checkSN" value="<?php echo $this->view->pay_sn?>">
-            <div class="m-pay-Total clrfix">
-                <div id="divPaypwd" class="f-payment-password clrfix" style="display: none;">
-                    <p>
-                        <input type="password" id="txtPaypwd" value="" maxlength="6" autocomplete="off">
-                        <s style="display: none;"></s>
-                        <em id="emTip">请输入6位支付密码</em>
-                    </p>
-                    <span><a href="http://member.1yyg.com/Security/UserAuth-10.do" target="_blank" class="gray6">忘记支付密码？</a></span>
-                </div>
-                <div class="f-list-accounts fr">
-                    <input id="submitOK" type="submit" name="submit" value="确认支付">
-                </div>
+        <!-- 支付SN -->
+        <input type="hidden" id="hidCheckSN" name="checkSN" value="<?php echo $this->view->pay_sn?>">
+        <input type="hidden" id="hidPayName" name="payName" value="zfbpay">
+        <div class="m-pay-Total clrfix">
+            <div id="divPaypwd" class="f-payment-password clrfix" style="display: none;">
+                <p>
+                    <input type="password" id="txtPaypwd" class="iptfocus" value="" maxlength="6" autocomplete="off">
+                    <s style="display:none;" class="tips_txt_Wrong"></s>
+                    <em id="emTip" class="iptem">请输入6位支付密码</em>
+                </p>
+                <span><a href="javascript:;" target="_blank" class="gray6">忘记支付密码？</a></span>
             </div>
-            <div id="divGetPoint" class="f-cgzf">成功支付即可获得13福分</div>
-        <!-- </form> -->
+            <div class="f-list-accounts fr">
+                <input id="submitOK" type="submit" name="submit" value="确认支付">
+            </div>
+        </div>
+        <div id="divGetPoint" class="f-cgzf">成功支付即可获得13福分</div>
     </div>
 </div>
 <script type="text/javascript" src="/dist/js/common.js"></script>

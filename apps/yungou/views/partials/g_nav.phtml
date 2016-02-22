@@ -11,7 +11,7 @@
 	             <dl>
 	                 <dt><a href="<?php echo $this->view->baseUrl?>yungou/product/list?i=<?php echo $category['_id'] ?>"><?php echo $category['name']?></a></dt>
 	                 <?php if(!empty($category['level2'])){?>	                 
-	                 <dd>
+	                 <dd style="height: 30px;overflow: hidden;">
 	                 <?php foreach ($category['level2'] as $sub_category_id => $subcategory) {?>
 	                     <a href="<?php echo $this->view->baseUrl?>yungou/product/list?i=<?php echo $category['_id'] ?>"><?php echo $subcategory['name']?></a>	                 
 	                 <?php }?>
