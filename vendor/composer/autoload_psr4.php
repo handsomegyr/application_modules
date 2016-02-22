@@ -11,6 +11,7 @@ return array(
     'Respect\\Validation\\' => array($vendorDir . '/respect/validation/library'),
     'RedLock\\' => array($vendorDir . '/ronnylt/redlock-php/src'),
     'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
+    'Qiniu\\' => array($vendorDir . '/qiniu/php-sdk/src/Qiniu'),
     'Pheanstalk\\' => array($vendorDir . '/pda/pheanstalk/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'GuzzleHttp\\Stream\\' => array($vendorDir . '/guzzlehttp/streams/src'),

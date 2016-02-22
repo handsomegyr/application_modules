@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2c584b5d66db089334eacdb27d07e90b",
-    "content-hash": "9e1cc8baf6cedc9aabb8963fa667cc4c",
+    "hash": "dca8c6343c634f1c345cd7c96a950a1e",
+    "content-hash": "205a7b41430eb5d1efedce63c3e88e22",
     "packages": [
         {
             "name": "dapphp/securimage",
@@ -733,7 +733,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icatholic/weixin/zipball/208b589e5fb0cf143cdc572ba41ac0814b877b6f",
+                "url": "https://api.github.com/repos/icatholic/weixin/zipball/03ad6c7afcd7dbd0737c5c203aca650f6065b60c",
                 "reference": "7450e7c5f44c92fea047007af57a160d77c13594",
                 "shasum": ""
             },
@@ -1765,6 +1765,57 @@
                 "psr-3"
             ],
             "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "qiniu/php-sdk",
+            "version": "v7.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/qiniu/php-sdk.git",
+                "reference": "50e3375a7044d5f94de9570ce5966c1b6174bda3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/50e3375a7044d5f94de9570ce5966c1b6174bda3",
+                "reference": "50e3375a7044d5f94de9570ce5966c1b6174bda3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Qiniu\\": "src/Qiniu"
+                },
+                "files": [
+                    "src/Qiniu/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Qiniu",
+                    "email": "sdk@qiniu.com",
+                    "homepage": "http://www.qiniu.com"
+                }
+            ],
+            "description": "Qiniu Resource (Cloud) Storage SDK for PHP",
+            "homepage": "http://developer.qiniu.com/",
+            "keywords": [
+                "cloud",
+                "qiniu",
+                "sdk",
+                "storage"
+            ],
+            "time": "2016-01-11 13:20:52"
         },
         {
             "name": "react/promise",
