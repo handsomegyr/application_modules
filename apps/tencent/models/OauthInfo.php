@@ -21,6 +21,6 @@ class OauthInfo extends \Webcms\Common\Models\Tencent\OauthInfo
             ));
         }
         
-        return myMongoId($check['_id']);
+        return ($check['_id']);
     }
 }

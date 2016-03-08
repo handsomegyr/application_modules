@@ -118,6 +118,10 @@ function registerAutoloaders()
             'Webcms\Common\Models\Mongodb\Task' => APP_PATH . 'apps/common/models/task/mongodb/',
             'Webcms\Common\Models\Task' => APP_PATH . 'apps/common/models/task/',
             
+            'Webcms\Common\Models\Mysql\Vote' => APP_PATH . 'apps/common/models/vote/mysql/',
+            'Webcms\Common\Models\Mongodb\Vote' => APP_PATH . 'apps/common/models/vote/mongodb/',
+            'Webcms\Common\Models\Vote' => APP_PATH . 'apps/common/models/vote/',
+            
             'Webcms\Common\Controllers' => APP_PATH . 'apps/common/controllers/',
             
             'Webcms\Weixin\Models' => APP_PATH . 'apps/weixin/models/',
@@ -140,6 +144,7 @@ function registerAutoloaders()
             'Webcms\Task\Models' => APP_PATH . 'apps/task/models/',
             'Webcms\Sms\Models' => APP_PATH . 'apps/sms/models/',
             'Webcms\Mail\Models' => APP_PATH . 'apps/mail/models/',
+            'Webcms\Vote\Models' => APP_PATH . 'apps/vote/models/',
             
             'Webcms\Lottery\Services' => APP_PATH . 'apps/lottery/services/',
             'Webcms\Order\Services' => APP_PATH . '/apps/order/services/',
@@ -159,8 +164,7 @@ function registerAutoloaders()
             'Webcms\Task\Helpers' => APP_PATH . 'apps/task/views/helpers/',
             
             'Webcms\Common\Plugins' => APP_PATH . 'apps/common/plugins/'
-        )
-        );
+        ));
     
     /**
      * We're a registering a set of directories taken from the configuration file
@@ -480,6 +484,12 @@ function registerServices($di)
             
             $router->add("/admin/task/:controller/:action", array(
                 'module' => 'admin/task',
+                'controller' => 1,
+                'action' => 2
+            ));
+            
+            $router->add("/admin/vote/:controller/:action", array(
+                'module' => 'admin/vote',
                 'controller' => 1,
                 'action' => 2
             ));

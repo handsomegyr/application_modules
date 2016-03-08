@@ -210,7 +210,7 @@ class SnsController extends ControllerBase
                 $response = $httpClient->get('https://graph.facebook.com/me');
                 
                 // 记录授权ID
-                $umaId = $this->_model->record(myMongoId($this->_appConfig['_id']), $accessToken);
+                $umaId = $this->_model->record(($this->_appConfig['_id']), $accessToken);
                 
                 if (! empty($accessToken['remoteToken'])) {
                     $userInfo = array();

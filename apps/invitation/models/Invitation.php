@@ -169,7 +169,7 @@ class Invitation extends \Webcms\Common\Models\Invitation\Invitation
         
         // 查找当前用户的锁
         $lock = $this->findOne(array(
-            '_id' => myMongoId($invitationId)
+            '_id' => ($invitationId)
         ));
         if ($lock == null) {
             throw new \Exception("未初始化锁");
@@ -215,7 +215,7 @@ class Invitation extends \Webcms\Common\Models\Invitation\Invitation
             return;
         }
         return $this->update(array(
-            '_id' => myMongoId($invitationId)
+            '_id' => ($invitationId)
         ), array(
             '$set' => array(
                 'lock' => false,
@@ -232,7 +232,7 @@ class Invitation extends \Webcms\Common\Models\Invitation\Invitation
     public function expire($invitationId)
     {
         return $this->update(array(
-            '_id' => myMongoId($invitationId),
+            '_id' => ($invitationId),
             'expire' => array(
                 '$lte' => getCurrentTime()
             )
@@ -412,7 +412,7 @@ class Invitation extends \Webcms\Common\Models\Invitation\Invitation
     public function updateWeixinUserInfo($invitationId, $user_name, $user_headimgurl = "")
     {
         return $this->update(array(
-            '_id' => myMongoId($invitationId)
+            '_id' => ($invitationId)
         ), array(
             '$set' => array(
                 'user_name' => $user_name,

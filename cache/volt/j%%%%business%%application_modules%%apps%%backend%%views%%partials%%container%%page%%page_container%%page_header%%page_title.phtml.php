@@ -1,0 +1,17 @@
+<?php
+$title = "管理中心";
+$smalltitle = "";
+if ($this->view->controllerName == "menu") {
+    $smalltitle = "菜单管理";
+}elseif ($this->view->controllerName == "role") {
+    $smalltitle = "角色管理";
+}elseif ($this->view->controllerName == "index") {
+    $smalltitle = "";
+} 
+?>
+
+                            <h3 class="page-title">
+                            
+							<?php echo $title?> <?php if(!empty($smalltitle)){?><small><?php echo $smalltitle?></small><?php }?>
+
+                            </h3>

@@ -87,6 +87,10 @@ $application->registerModules(array(
         'className' => 'Webcms\Backend\Freight\Module',
         'path' => APP_PATH . 'apps/backend/submodules/freight/Module.php'
     ),
+    'admin/vote' => array(
+        'className' => 'Webcms\Backend\Vote\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/vote/Module.php'
+    ),
     'admin/task' => array(
         'className' => 'Webcms\Backend\Task\Module',
         'path' => APP_PATH . 'apps/backend/submodules/task/Module.php'
@@ -182,5 +186,9 @@ $application->registerModules(array(
     'sms' => array(
         'className' => 'Webcms\Sms\Module',
         'path' => APP_PATH . 'apps/sms/Module.php'
+    ),
+    'vote' => array(
+        'className' => 'Webcms\Vote\Module',
+        'path' => APP_PATH . 'apps/vote/Module.php'
     )
 ));

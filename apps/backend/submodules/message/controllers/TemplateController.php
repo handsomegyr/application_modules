@@ -86,7 +86,7 @@ class TemplateController extends \Webcms\Backend\Controllers\FormController
         $schemas['content'] = array(
             'name' => '模板内容',
             'data' => array(
-                'type' => 'string',
+                'type' => 'html',
                 'length' => 1000
             ),
             'validation' => array(

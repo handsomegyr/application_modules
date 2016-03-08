@@ -1,0 +1,120 @@
+<?php 
+    $is_show = false;
+    foreach ($this->view->schemas as $key => $field){
+       if(!empty($field['search']['is_show'])){
+           $is_show =true;
+       } 
+    }
+?>
+<?php if($is_show){?>
+
+						<!-- BEGIN Portlet PORTLET-->
+
+						<div class="portlet box grey">
+
+							<div class="portlet-title">
+
+								<div class="caption"><i class="icon-reorder"></i>检索</div>
+
+								<div class="tools">
+
+									<a href="javascript:;" class="collapse"></a>
+
+								</div>
+
+							</div>
+
+							<div class="portlet-body">
+
+								<div class="scroller2" data-always-visible="0" data-rail-visible="0">
+
+									<div class="row-fluid search-forms search-default">									
+									
+										<form action="#">
+                                            <?php foreach ($this->view->schemas as $key => $field) {?>
+                                            <?php if(empty($field['search']['is_show'])){continue;}?>
+																						
+											<div class="clearfix margin-bottom-10">
+
+												<label><?php echo $field['name']?></label>
+												
+                                                <?php if(!empty($field['search']['input_type']) && $field['search']['input_type'] =='select'){?>
+    											<?php $defaultValues=empty($field['search']['defaultValues'])?array():$field['search']['defaultValues']?>
+    											<select class="span12 m-wrap" name="search_<?php echo $key?>" id="search_<?php echo $key?>" data-placeholder="">    
+    												<option value="">请选择...</option>    
+    												<?php 
+    												if(empty($field['search']['cascade'])){
+                                                        $items = is_callable($field['search']['items'])?$field['search']['items']():$field['search']['items'];
+                                                    }else{
+                                                        $cascade=$field['search']['cascade'];
+                                                        $items = is_callable($field['search']['items'])?$field['search']['items']():$field['search']['items'];
+                                                    }
+                                                    foreach ($items as $value=> $name) {?>												
+    												<option value="<?php echo $value?>" <?php if(in_array($value,$defaultValues)){?>selected<?php }?>><?php echo $name?></option>
+                                                    <?php }?>
+    											</select>
+    											<?php }elseif(!empty($field['search']['input_type']) && $field['search']['input_type'] =='datetimepicker'){?>
+    											<?php if(!empty($field['search']['condition_type']) && $field['search']['condition_type'] == 'period'){?>
+    											<div class="input-append date form_datetime" data-date="">
+
+    												<input class="m-wrap" size="16" type="text" name="search_<?php echo $key?>_from" id="search_<?php echo $key?>_from" value="">
+    
+    												<span class="add-on"><i class="icon-remove"></i></span>
+    
+    												<span class="add-on"><i class="icon-calendar"></i></span>
+    
+    											</div>
+        										~
+        										<div class="input-append date form_datetime" data-date="">
+
+    												<input class="m-wrap" size="16" type="text" name="search_<?php echo $key?>_to" id="search_<?php echo $key?>_to" value="">
+    
+    												<span class="add-on"><i class="icon-remove"></i></span>
+    
+    												<span class="add-on"><i class="icon-calendar"></i></span>
+    
+    											</div>
+    											<?php }?>
+    											<?php }elseif(!empty($field['search']['input_type']) && $field['search']['input_type'] =='number'){?>
+    											<?php if(!empty($field['search']['condition_type']) && $field['search']['condition_type'] == 'period'){?>
+    											<div class="input-append ">
+
+    												<input class="m-wrap" size="16" type="text" name="search_<?php echo $key?>_from" id="search_<?php echo $key?>_from" value="">
+    
+    
+    											</div>
+        										~
+        										<div class="input-append ">
+
+    												<input class="m-wrap" size="16" type="text" name="search_<?php echo $key?>_to" id="search_<?php echo $key?>_to" value="">
+    
+    											</div>
+    											<?php }?>
+                                                <?php }else{?>
+												<div class="input-icon left">
+
+													<i class="icon-map-marker"></i>
+
+													<input class="m-wrap span12" name="search_<?php echo $key?>" id="search_<?php echo $key?>" type="text" placeholder="<?php echo isset($field['search']['placeholder'])?$field['search']['placeholder']:''?>">
+
+												</div>
+												<?php }?>
+
+											</div>
+											<?php }?>
+											<button id="btnSearch" class="btn blue btn-block">SEARCH <i class="m-icon-swapright m-icon-white"></i></button>
+										</form>
+
+									</div>
+
+								
+									
+								</div>
+
+							</div>
+
+						</div>
+
+						<!-- END Portlet PORTLET-->
+                        <?php $this->partial("partials/js/search") ?>	
+<?php }?>								

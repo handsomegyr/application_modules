@@ -105,7 +105,7 @@ class User extends \Webcms\Common\Models\Invitation\User
         
         // 查找当前用户的锁
         $lock = $this->findOne(array(
-            '_id' => myMongoId($id)
+            '_id' => ($id)
         ));
         if ($lock == null) {
             throw new \Exception("未初始化锁");
@@ -151,7 +151,7 @@ class User extends \Webcms\Common\Models\Invitation\User
             return;
         }
         return $this->update(array(
-            '_id' => myMongoId($id)
+            '_id' => ($id)
         ), array(
             '$set' => array(
                 'lock' => false,
@@ -168,7 +168,7 @@ class User extends \Webcms\Common\Models\Invitation\User
     public function expire($id)
     {
         return $this->update(array(
-            '_id' => myMongoId($id),
+            '_id' => ($id),
             'expire' => array(
                 '$lte' => getCurrentTime()
             )

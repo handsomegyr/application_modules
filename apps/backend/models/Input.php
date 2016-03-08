@@ -192,7 +192,7 @@ class Input extends \stdClass
                     if (isset($this->$key) && $is_update) {
                         $data[$key] = trim($this->$key);
                     } else {
-                        $data[$key] = isset($field['data']['defaultValue']) ? $field['data']['defaultValue'] : array();
+                        $data[$key] = isset($field['data']['defaultValue']) ? $field['data']['defaultValue'] : '';
                     }
                 } elseif ($field['data']['type'] == "file") {
                     unset($data[$key]);

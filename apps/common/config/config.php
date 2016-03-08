@@ -2,7 +2,7 @@
 return new \Phalcon\Config(array(
     'database' => array(
         'adapter' => 'Mysql',
-        'host' => 'localhost',
+        'host' => '139.196.170.93',
         'username' => 'webcms',
         'password' => 'webcmsQWS123',
         'dbname' => 'webcms',
@@ -18,7 +18,7 @@ return new \Phalcon\Config(array(
     // ),
     'databasefrom' => array(
         'adapter' => 'Mysql',
-        'host' => 'localhost',
+        'host' => '139.196.170.93',
         'username' => 'webcms',
         'password' => 'webcmsQWS123',
         'dbname' => 'shopnc',

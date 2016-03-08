@@ -29,7 +29,7 @@ class CategoryController extends \Webcms\Backend\Controllers\FormController
                 'length' => 1
             ),
             'validation' => array(
-                'required' => 1
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -49,7 +49,7 @@ class CategoryController extends \Webcms\Backend\Controllers\FormController
                 'length' => 30
             ),
             'validation' => array(
-                'required' => 1
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
