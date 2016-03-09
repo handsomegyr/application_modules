@@ -4,6 +4,26 @@ namespace Webcms\Vote\Models;
 class Limit extends \Webcms\Common\Models\Vote\Limit
 {
 
+    private $_log = null;
+
+    /**
+     * 获取投票日志实体对象
+     *
+     * @return Log
+     */
+    public function getLogModel()
+    {
+        if (empty($this->_log)) {
+            throw new \Exception('没有设定中奖对象');
+        }
+        return $this->_log;
+    }
+
+    public function setLogModel(Log $log)
+    {
+        $this->_log = $log;
+    }
+
     private $limits = array();
 
     /**
@@ -79,7 +99,7 @@ class Limit extends \Webcms\Common\Models\Vote\Limit
         }
         // 检查
         if (! empty($this->limits)) {
-            $modelLog = new Vote_Model_Log();
+            $modelLog = $this->getLogModel();
             foreach ($this->limits as $limit) {
                 $activity = empty($limit['activity']) ? NULL : $limit['activity'];
                 $subject = empty($limit['subject']) ? NULL : $limit['subject'];

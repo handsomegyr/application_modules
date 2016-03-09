@@ -2,6 +2,7 @@
 namespace Webcms\Common\Models\Mysql;
 
 use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Resultset\Simple as Resultset;
 
 class Base extends Model
 {
@@ -48,10 +49,18 @@ class Base extends Model
 
     public function reorganize(array $data)
     {
-        $data['_id'] = $this->getMongoId4Query($data['_id']);
-        $data['__CREATE_TIME__'] = $this->changeToMongoDate($data['__CREATE_TIME__']);
-        $data['__MODIFY_TIME__'] = $this->changeToMongoDate($data['__MODIFY_TIME__']);
-        $data['__REMOVED__'] = $this->changeToBoolean($data['__REMOVED__']);
+        if (isset($data['_id'])) {
+            $data['_id'] = $this->getMongoId4Query($data['_id']);
+        }
+        if (isset($data['__CREATE_TIME__'])) {
+            $data['__CREATE_TIME__'] = $this->changeToMongoDate($data['__CREATE_TIME__']);
+        }
+        if (isset($data['__MODIFY_TIME__'])) {
+            $data['__MODIFY_TIME__'] = $this->changeToMongoDate($data['__MODIFY_TIME__']);
+        }
+        if (isset($data['__REMOVED__'])) {
+            $data['__REMOVED__'] = $this->changeToBoolean($data['__REMOVED__']);
+        }
         if (isset($data['memo'])) {
             $data['memo'] = $this->changeToArray($data['memo']);
         }
@@ -133,6 +142,34 @@ class Base extends Model
         if (! empty($ret)) {
             foreach ($ret as $key => $item) {
                 $list[$key] = $this->reorganize($item->toArray());
+            }
+        }
+        return $list;
+    }
+
+    public function distinct($field, array $query)
+    {
+        if (empty($field)) {
+            throw new \Exception('请指定字段$field', - 999);
+        }
+        $conditions = $this->getConditions($query);
+        if (empty($conditions)) {
+            $conditions = array();
+            $conditions['conditions'] = '1=1';
+            $conditions['bind'] = array();
+        }
+        if ($this->isPhql) {
+            $className = get_class($this);
+        } else {
+            $className = $this->getSource();
+        }
+        $phql = "select DISTINCT {$field} FROM {$className} WHERE {$conditions['conditions']}";
+        $ret = $this->executeQuery($phql, $conditions['bind'], true);
+        $list = array();
+        if (! empty($ret)) {
+            foreach ($ret as $key => $item) {
+                $data = $this->reorganize($item->toArray());
+                $list[] = $data[$field];
             }
         }
         return $list;
@@ -599,7 +636,7 @@ class Base extends Model
         }
     }
 
-    protected function executeQuery($phql, array $data)
+    protected function executeQuery($phql, array $data, $isQuery = false)
     {
         if (! $this->isPhql) {
             try {
@@ -613,7 +650,11 @@ class Base extends Model
                 }
                 $di = $this->getDI();
                 $db = $di['db'];
-                $result = $db->execute($phql, $data);
+                if (empty($isQuery)) {
+                    $result = $db->execute($phql, $data);
+                } else {
+                    $result = new Resultset(null, $this, $db->query($phql));
+                }
                 return $result;
             } catch (\Exception $e) {
                 throw $e;
@@ -626,13 +667,14 @@ class Base extends Model
                 die('OK');
             }
             $result = $this->modelsManager->executeQuery($phql, $data);
-            
-            if ($result->success() == false) {
-                $msgList = array();
-                foreach ($result->getMessages() as $message) {
-                    $msgList[] = $message->getMessage();
+            if (empty($isQuery)) {
+                if ($result->success() == false) {
+                    $msgList = array();
+                    foreach ($result->getMessages() as $message) {
+                        $msgList[] = $message->getMessage();
+                    }
+                    throw new \Exception(implode(",", $msgList), - 999);
                 }
-                throw new \Exception(implode(",", $msgList), - 999);
             }
             return $result;
         }

@@ -87,6 +87,11 @@ class Base
         return $this->getModel()->getAll($query, $sort, $fields);
     }
 
+    public function distinct($field, array $query)
+    {
+        return $this->getModel()->distinct($field, $query);
+    }
+
     /**
      * 查询某个表合计信息的数据
      *

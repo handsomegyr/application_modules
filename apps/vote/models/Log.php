@@ -65,19 +65,31 @@ class Log extends \Webcms\Common\Models\Vote\Log
         $query = array();
         
         if (! empty($judgeBy) && ! empty($judgeBy['identity'])) {
-            $query['identity'] = array(
-                '$in' => $judgeBy['identity']
-            );
+            if (is_array($judgeBy['identity'])) {
+                $query['identity'] = array(
+                    '$in' => $judgeBy['identity']
+                );
+            } else {
+                $query['identity'] = $judgeBy['identity'];
+            }
         }
         if (! empty($judgeBy) && ! empty($judgeBy['ip'])) {
-            $query['ip'] = array(
-                '$in' => $judgeBy['ip']
-            );
+            if (is_array($judgeBy['ip'])) {
+                $query['ip'] = array(
+                    '$in' => $judgeBy['ip']
+                );
+            } else {
+                $query['ip'] = $judgeBy['ip'];
+            }
         }
         if (! empty($judgeBy) && ! empty($judgeBy['session_id'])) {
-            $query['session_id'] = array(
-                '$in' => $judgeBy['session_id']
-            );
+            if (is_array($judgeBy['session_id'])) {
+                $query['session_id'] = array(
+                    '$in' => $judgeBy['session_id']
+                );
+            } else {
+                $query['session_id'] = $judgeBy['session_id'];
+            }
         }
         if (! empty($activitys)) {
             $query['activity'] = array(
@@ -108,60 +120,19 @@ class Log extends \Webcms\Common\Models\Vote\Log
         
         $isVoted = false;
         if (! empty($cacheInfo) && ! empty($cacheInfo['isCache']) && ! empty($cacheInfo['cacheKey'])) {
-            $cache = Zend_Registry::get('cache');
+            $cache = $this->getDI()->get("cache");
             $cacheKey = md5($cacheInfo['cacheKey'] . 'num' . $num . "_condition_" . md5(serialize($query)));
-            $isVoted = $cache->load($cacheKey);
+            $isVoted = $cache->get($cacheKey);
         }
         if (empty($isVoted)) {
             $count = $this->count($query);
             $isVoted = ($count > ($num - 1));
             if ($isVoted) {
                 if (! empty($cacheInfo) && ! empty($cacheInfo['isCache']) && ! empty($cacheInfo['cacheKey'])) {
-                    $cache->save($isVoted, $cacheKey, array(), empty($cacheInfo['expire_time']) ? null : $cacheInfo['expire_time']);
+                    $cache->save($cacheKey, $isVoted, empty($cacheInfo['expire_time']) ? null : $cacheInfo['expire_time']);
                 }
             }
         }
         return $isVoted;
-    }
-
-    /**
-     * 获取列表
-     *
-     * @param number $page            
-     * @param number $limit            
-     * @param array $otherConditon            
-     * @param array $sort            
-     * @param array $cacheInfo            
-     * @return array
-     */
-    public function getList($page = 1, $limit = 10, array $otherConditon = array(), array $sort = null, array $cacheInfo = array('isCache'=>false,'cacheKey'=>null,'expire_time'=>null))
-    {
-        if (empty($sort)) {
-            $sort = $this->getDefaultSort(- 1);
-        }
-        $condition = array();
-        if (! empty($otherConditon)) {
-            $condition = array_merge($condition, $otherConditon);
-        }
-        $list = array();
-        
-        if (! empty($cacheInfo) && ! empty($cacheInfo['isCache']) && ! empty($cacheInfo['cacheKey'])) {
-            $cache = Zend_Registry::get('cache');
-            $cacheKey = md5($cacheInfo['cacheKey'] . 'page' . $page . 'limit' . $limit . "_condition_" . md5(serialize($condition)) . "_sort_" . md5(serialize($sort)));
-            $list = $cache->load($cacheKey);
-        }
-        
-        if (empty($list)) {
-            $list = $this->find($condition, $sort, ($page - 1) * $limit, $limit);
-        }
-        
-        if (! empty($cacheInfo) && ! empty($cacheInfo['isCache']) && ! empty($cacheInfo['cacheKey'])) {
-            $cache->save($list, $cacheKey, array(), empty($cacheInfo['expire_time']) ? null : $cacheInfo['expire_time']);
-        }
-        
-        return array(
-            'condition' => $condition,
-            'list' => $list
-        );
     }
 }

@@ -116,47 +116,6 @@ class Item extends \Webcms\Common\Models\Vote\Item
     }
 
     /**
-     * 获取列表
-     *
-     * @param number $page            
-     * @param number $limit            
-     * @param array $otherConditon            
-     * @param array $sort            
-     * @param array $cacheInfo            
-     * @return array
-     */
-    public function getList($page = 1, $limit = 10, array $otherConditon = array(), array $sort = null, array $cacheInfo = array('isCache'=>false,'cacheKey'=>null,'expire_time'=>null))
-    {
-        if (empty($sort)) {
-            $sort = $this->getDefaultSort(- 1);
-        }
-        $condition = $this->getQuery();
-        if (! empty($otherConditon)) {
-            $condition = array_merge($condition, $otherConditon);
-        }
-        $list = array();
-        
-        if (! empty($cacheInfo) && ! empty($cacheInfo['isCache']) && ! empty($cacheInfo['cacheKey'])) {
-            $cache = Zend_Registry::get('cache');
-            $cacheKey = md5($cacheInfo['cacheKey'] . 'page' . $page . 'limit' . $limit . "_condition_" . md5(serialize($condition)) . "_sort_" . md5(serialize($sort)));
-            $list = $cache->load($cacheKey);
-        }
-        
-        if (empty($list)) {
-            $list = $this->find($condition, $sort, ($page - 1) * $limit, $limit);
-        }
-        
-        if (! empty($cacheInfo) && ! empty($cacheInfo['isCache']) && ! empty($cacheInfo['cacheKey'])) {
-            $cache->save($list, $cacheKey, array(), empty($cacheInfo['expire_time']) ? null : $cacheInfo['expire_time']);
-        }
-        
-        return array(
-            'condition' => $condition,
-            'list' => $list
-        );
-    }
-
-    /**
      * 我的排名
      *
      * @param array $myInfo            

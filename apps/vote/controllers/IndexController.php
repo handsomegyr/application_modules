@@ -4,8 +4,26 @@ namespace Webcms\Vote\Controllers;
 class IndexController extends ControllerBase
 {
 
+    private $modelSubject;
+
+    private $modelItem;
+
+    private $modelLog;
+
+    private $modelLimit;
+
+    private $modelPeriod;
+
+    private $modelRankPeriod;
+
     public function initialize()
     {
+        $this->modelSubject = new \Webcms\Vote\Models\Subject();
+        $this->modelItem = new \Webcms\Vote\Models\Item();
+        $this->modelLog = new \Webcms\Vote\Models\Log();
+        $this->modelLimit = new \Webcms\Vote\Models\Limit();
+        $this->modelPeriod = new \Webcms\Vote\Models\Period();
+        $this->modelRankPeriod = new \Webcms\Vote\Models\RankPeriod();
         parent::initialize();
         $this->view->disable();
     }
@@ -15,32 +33,19 @@ class IndexController extends ControllerBase
      */
     public function indexAction()
     {
-        $num = 0;
-        $limit = 3;
-        do {
-            $num ++;
-            echo 'num:' . $num . '<br/>';
-            if ($num >= $limit) { // 如果到达上限的时候
-                break;
-            }
-        } while (1);
-        die('aaaaaaaaaaaa');
+        // http://phalconm4local/vote/index/index
+        
         // 获取某活动下的所有投票主题
-        $activityId = "53d091d64a9619e6538b459e";
-        $modelSubject = new Vote_Model_Subject();
-        $subjectList = $modelSubject->getListByActivityId($activityId);
-        // echo json_encode($subjectList);
-        // die;
+        $activityId = YUNGOU_ACTIVITY_ID;
+        $subjectList = $this->modelSubject->getListByActivityId($activityId);
         
         // 根据主题获取该主题下的所有投票选项
-        $modelItem = new Vote_Model_Item();
         $itemList = array();
         foreach ($subjectList as $subject) {
             $subjectId = ($subject['_id']);
-            $itemList[$subjectId] = $modelItem->getListBySubjectId($subjectId);
+            $itemList[$subjectId] = $this->modelItem->getListBySubjectId($subjectId);
         }
-        echo json_encode($itemList);
-        die();
+        echo var_dump($subjectList, $itemList);
     }
 
     /**
@@ -48,17 +53,11 @@ class IndexController extends ControllerBase
      */
     public function voteAction()
     {
-        $modelActivity = new Vote_Model_Activity();
-        $modelSubject = new Vote_Model_Subject();
-        $modelItem = new Vote_Model_Item();
-        $modelLog = new Vote_Model_Log();
-        $modelLimit = new Vote_Model_Limit();
-        $this->getHelper('viewRenderer')->setNoRender(true);
-        
+        // http://phalconm4local/vote/index/vote?FromUserName=xxxx
         try {
-            $activityId = $this->get("activityId", '');
-            $subjectId = $this->get("subjectId", '');
-            $itemId = $this->get("itemId", '');
+            $activityId = $this->get("activityId", YUNGOU_ACTIVITY_ID);
+            $subjectId = $this->get("subjectId", '56de9e0a7f50ea8411000029');
+            $itemId = $this->get("itemId", '56dea0517f50ea3812000029');
             $FromUserName = trim($this->get('FromUserName', ''));
             if (empty($FromUserName)) {
                 echo ($this->error(- 1, "微信ID不能为空"));
@@ -76,26 +75,25 @@ class IndexController extends ControllerBase
                 echo ($this->error(- 4, "选项ID不能为空"));
                 return false;
             }
-            $activityInfo = $modelActivity->getInfoById($activityId);
-            if (empty($activityInfo)) {
-                echo ($this->error(- 5, "活动ID无效"));
-                return false;
-            }
-            $subjectInfo = $modelSubject->getInfoById($subjectId);
+            
+            $subjectInfo = $this->modelSubject->getInfoById($subjectId);
             if (empty($subjectInfo)) {
                 echo ($this->error(- 6, "主题ID无效"));
                 return false;
             }
             
-            $itemInfo = $modelItem->getInfoById($itemId);
+            $itemInfo = $this->modelItem->getInfoById($itemId);
             if (empty($itemInfo)) {
                 echo ($this->error(- 7, "投票选项ID无效"));
                 return false;
             }
             
             // 限制检查
-            $isPassed = $modelLimit->checkLimit($activityId, $subjectId, $itemId, $FromUserName, 1, array(
+            $this->modelLimit->setLogModel($this->modelLog);
+            $isPassed = $this->modelLimit->checkLimit($activityId, $subjectId, $itemId, $FromUserName, 1, array(
                 $activityId
+            ), array(
+                $subjectId
             ));
             if (! $isPassed) { // 未通过
                 echo ($this->error(- 8, "无法再次投票"));
@@ -103,39 +101,32 @@ class IndexController extends ControllerBase
             }
             
             // 增加投票log
-            $modelLog->log($activityId, $subjectId, $itemId, $FromUserName);
-            $modelItem->incVoteCount($itemId);
-            $modelSubject->incVoteCount($subjectId);
-            $modelActivity->incVoteCount($activityId);
+            $this->modelLog->log($activityId, $subjectId, $itemId, $FromUserName);
+            $this->modelItem->incVoteCount($itemId);
+            $this->modelSubject->incVoteCount($subjectId);
             
             // 发送成功
             echo ($this->result("OK"));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo ($this->error($e->getCode(), $e->getMessage()));
             return false;
         }
-        
-        die('OK');
     }
 
     /**
      * 同步每期排行帮信息
      */
-    public function syncRankPeroidAction()
+    public function syncrankperoidAction()
     {
+        // http://phalconm4local/vote/index/syncrankperoid
         try {
             set_time_limit(0);
-            // 54225fcf4896191d3b8b484f
-            $subject_id = $this->get('subject_id', "");
+            $subject_id = $this->get('subject_id', "56de9e0a7f50ea8411000029");
+            $limit = $this->get('limit', 20);
             if (empty($subject_id)) {
-                echo "请设置一个投票主题";
+                echo ($this->error(- 3, "主题ID不能为空"));
                 return false;
             }
-            $limit = $this->get('limit', 20);
-            
-            $modelItem = new Vote_Model_Item();
-            $modelPeriod = new Vote_Model_Period();
-            $modelRankPeriod = new Vote_Model_RankPeriod();
             
             $num = 0;
             $isPeriodGot = 0;
@@ -143,31 +134,31 @@ class IndexController extends ControllerBase
             $list = array();
             
             do {
-                $rankNameList = $modelRankPeriod->distinct("name", array());
-                
+                // $this->modelRankPeriod->setDebug(true);
+                // $this->modelRankPeriod->setPhql(true);
+                $rankNameList = $this->modelRankPeriod->distinct("name", array());
                 $sort = array(
                     'vote_count' => - 1
                 );
-                $otherConditon = array();
-                $otherConditon['subjects'] = $subject_id;
+                $otherConditon = $this->modelItem->getQuery();
+                $otherConditon['subject_id'] = $subject_id;
                 $otherConditon['name'] = array(
                     '$nin' => $rankNameList
                 );
                 $otherConditon['rank_period'] = 0;
-                $ret = $modelItem->getList(1, 200, $otherConditon, $sort);
-                
-                if (! empty($ret['list']['datas'])) {
+                $ret = $this->modelItem->find($otherConditon, $sort, 0, 200);
+                if (! empty($ret['datas'])) {
                     if (empty($isPeriodGot)) {
-                        $period = $modelPeriod->getLatestPeriod($subject_id);
+                        $period = $this->modelPeriod->getLatestPeriod($subject_id);
                         $isPeriodGot = 1;
                     }
-                    foreach ($ret['list']['datas'] as $item) {
+                    foreach ($ret['datas'] as $item) {
                         if (! in_array($item['name'], $nameList)) {
                             $nameList[] = $item['name'];
                             $num ++;
-                            $modelRankPeriod->create($subject_id, $period, $item['name'], $item['desc'], $item['subjects'], $item['vote_count'], $item['show_order'], $item['memo']);
+                            $this->modelRankPeriod->create($subject_id, $period, $item['name'], $item['desc'], $item['vote_count'], $item['show_order'], $item['memo']);
                             // $modelItem->updateRankPeriod(($item['_id']), $period);
-                            $modelItem->updateRankPeriodByName($item['name'], $period);
+                            $this->modelItem->updateRankPeriodByName($item['name'], $period);
                         }
                         if ($num >= $limit) { // 如果到达上限的时候
                             break;
@@ -180,9 +171,10 @@ class IndexController extends ControllerBase
                     break;
                 }
             } while (1);
-            return true;
-        } catch (Exception $e) {
-            var_dump($e);
+            // 发送成功
+            echo ($this->result("OK"));
+        } catch (\Exception $e) {
+            echo ($this->error($e->getCode(), $e->getMessage()));
             return false;
         }
     }
