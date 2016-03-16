@@ -95,6 +95,10 @@ $application->registerModules(array(
         'className' => 'Webcms\Backend\Task\Module',
         'path' => APP_PATH . 'apps/backend/submodules/task/Module.php'
     ),
+    'admin/weixinredpack' => array(
+        'className' => 'Webcms\Backend\Weixinredpack\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/weixinredpack/Module.php'
+    ),
     'weixin' => array(
         'className' => 'Webcms\Weixin\Module',
         'path' => APP_PATH . 'apps/weixin/Module.php'
@@ -190,5 +194,9 @@ $application->registerModules(array(
     'vote' => array(
         'className' => 'Webcms\Vote\Module',
         'path' => APP_PATH . 'apps/vote/Module.php'
+    ),
+    'weixinredpack' => array(
+        'className' => 'Webcms\Weixinredpack\Module',
+        'path' => APP_PATH . 'apps/weixinredpack/Module.php'
     )
 ));
