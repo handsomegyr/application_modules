@@ -25,21 +25,6 @@ class GotLog extends \Webcms\Common\Models\Weixinredpack\GotLog
     }
 
     /**
-     * 根据ID获取信息
-     *
-     * @param string $id            
-     * @return array
-     */
-    public function getInfoById($id)
-    {
-        $query = array(
-            '_id' => myMongoId($id)
-        );
-        $info = $this->findOne($query);
-        return $info;
-    }
-
-    /**
      * 记录数据
      *
      * @param string $mch_billno            
@@ -50,12 +35,15 @@ class GotLog extends \Webcms\Common\Models\Weixinredpack\GotLog
      * @param array $activity_id            
      * @param array $customer            
      * @param string $redpack_id            
-     * @param string $total_num            
-     * @param string $total_amount            
+     * @param number $total_num            
+     * @param number $total_amount            
+     * @param boolean $isNeedSendRedpack            
      * @param boolean $isOK            
+     * @param number $try_count            
+     * @param boolean $is_reissue            
      * @param string $memo            
      */
-    public function record($mch_billno, $user_id, $re_openid, $re_nickname, $re_headimgurl, $client_ip, $activity_id, $customer, $redpack_id, $total_num, $total_amount, $isOK = false, array $memo = array())
+    public function record($mch_billno, $re_openid, $re_nickname, $re_headimgurl, $client_ip, $activity_id, $customer, $redpack_id, $total_num, $total_amount, $isNeedSendRedpack, $isOK = false, $try_count = 0, $is_reissue = false, array $memo = array())
     {
         if (empty($memo)) {
             $memo = array(
@@ -64,7 +52,6 @@ class GotLog extends \Webcms\Common\Models\Weixinredpack\GotLog
         }
         return $this->insert(array(
             'mch_billno' => $mch_billno,
-            'user_id' => $user_id,
             're_openid' => $re_openid,
             're_nickname' => $re_nickname,
             're_headimgurl' => $re_headimgurl,
@@ -76,6 +63,9 @@ class GotLog extends \Webcms\Common\Models\Weixinredpack\GotLog
             'total_amount' => intval($total_amount),
             'got_time' => getCurrentTime(),
             'isOK' => $isOK,
+            'try_count' => $try_count,
+            'is_reissue' => $is_reissue,
+            'isNeedSendRedpack' => $isNeedSendRedpack,
             'memo' => $memo
         ));
     }
@@ -92,13 +82,12 @@ class GotLog extends \Webcms\Common\Models\Weixinredpack\GotLog
     {
         $data = array();
         $data['isOK'] = $isOK;
-        if (empty($memo)) {
-            $memo = array();
+        if (! empty($memo)) {
+            $data["memo"] = $memo;
         }
-        foreach ($memo as $key => $value) {
-            $data["memo.{$key}"] = $value;
+        if (! empty($errorLog)) {
+            $data["error_logs"] = $errorLog;
         }
-        
         $options = array();
         $options['query'] = array(
             '_id' => $logInfo['_id']
@@ -106,22 +95,6 @@ class GotLog extends \Webcms\Common\Models\Weixinredpack\GotLog
         $options['update'] = array(
             '$set' => $data
         );
-        if (! empty($errorLog)) {
-            $options['update']['$push'] = array(
-                'error_logs' => array(
-                    '$each' => array(
-                        array(
-                            'errorLog' => $errorLog,
-                            'time' => time()
-                        )
-                    ),
-                    '$sort' => array(
-                        'time' => 1
-                    ),
-                    '$slice' => - 1000
-                )
-            );
-        }
         
         $options['new'] = true; // 返回更新之后的值
         $rst = $this->findAndModify($options);
@@ -190,57 +163,17 @@ class GotLog extends \Webcms\Common\Models\Weixinredpack\GotLog
         return $this->findOne($query);
     }
 
-    /**
-     * 根据UserID获取红包数量
-     *
-     * @param string $user_id            
-     * @param string $activity            
-     * @param string $customer            
-     * @param string $redpack            
-     * @return number
-     */
-    public function getRedpackCountByUserId($user_id, $activity, $customer, $redpack, $start_time, $end_time)
-    {
-        $query = array(
-            'user_id' => $user_id,
-            'activity' => $activity,
-            'customer' => $customer,
-            'redpack' => $redpack
-        );
-        if (! empty($start_time)) {
-            $query['got_time']['$gte'] = getCurrentTime($start_time);
-        }
-        
-        if (! empty($end_time)) {
-            $query['got_time']['$lte'] = getCurrentTime($end_time);
-        }
-        
-        return $this->count($query);
-    }
-
     public function incTryCount($_id, $trycount = 1, array $errorLog = array())
     {
         $query = array();
-        $query['_id'] = myMongoId($_id);
-        $data = array();
-        $data['memo.try_count'] = $trycount;
-        $updateData = array(
-            '$inc' => $data
+        $query['_id'] = ($_id);
+        $updateData = array();
+        $updateData['$inc'] = array(
+            'try_count' => $trycount
         );
         if (! empty($errorLog)) {
-            $updateData['$push'] = array(
-                'error_logs' => array(
-                    '$each' => array(
-                        array(
-                            'errorLog' => $errorLog,
-                            'time' => time()
-                        )
-                    ),
-                    '$sort' => array(
-                        'time' => 1
-                    ),
-                    '$slice' => - 1000
-                )
+            $updateData['$set'] = array(
+                'error_logs' => $errorLog
             );
         }
         $this->update($query, $updateData);

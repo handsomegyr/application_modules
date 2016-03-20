@@ -24,21 +24,6 @@ class Customer extends \Webcms\Common\Models\Weixinredpack\Customer
     }
 
     /**
-     * 根据ID获取信息
-     *
-     * @param string $id            
-     * @return array
-     */
-    public function getInfoById($id)
-    {
-        $query = array(
-            '_id' => myMongoId($id)
-        );
-        $info = $this->findOne($query);
-        return $info;
-    }
-
-    /**
      * 更新客户的总使用金额
      *
      * @param string $customer_id            
@@ -49,7 +34,7 @@ class Customer extends \Webcms\Common\Models\Weixinredpack\Customer
         $total_amount = intval($total_amount);
         $options = array();
         $options['query'] = array(
-            '_id' => myMongoId($customer_id),
+            '_id' => ($customer_id),
             'remain_amount' => array(
                 '$gte' => $total_amount
             )
@@ -78,7 +63,6 @@ class Customer extends \Webcms\Common\Models\Weixinredpack\Customer
      */
     public function getRemainAmount(array $customerInfo)
     {
-        // return ($customerInfo['total_amount'] - $customerInfo['used_amount']);
         return intval($customerInfo['remain_amount']);
     }
 }

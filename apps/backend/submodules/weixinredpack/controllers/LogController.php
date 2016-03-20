@@ -120,7 +120,7 @@ class LogController extends \Webcms\Backend\Controllers\FormController
         );
         
         $schemas['re_headimgurl'] = array(
-            'name' => '用户ID',
+            'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
                 'length' => '300'
@@ -173,7 +173,8 @@ class LogController extends \Webcms\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelActivity->getAll();
                 }
             ),
@@ -200,7 +201,8 @@ class LogController extends \Webcms\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelCustomer->getAll();
                 }
             ),
@@ -225,7 +227,8 @@ class LogController extends \Webcms\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelRedpack->getAll();
                 }
             ),
@@ -326,6 +329,75 @@ class LogController extends \Webcms\Backend\Controllers\FormController
             )
         );
         
+        $schemas['try_count'] = array(
+            'name' => '重试次数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['is_reissue'] = array(
+            'name' => '是否补发',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => '1'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => 1,
+                'ajax' => 'toggleisshow'
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['isNeedSendRedpack'] = array(
+            'name' => '是否正式发送',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => '1'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => 1,
+                'ajax' => 'toggleisshow'
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
         $schemas['error_logs'] = array(
             'name' => '错误日志记录',
             'data' => array(
@@ -391,7 +463,6 @@ class LogController extends \Webcms\Backend\Controllers\FormController
     {
         $customerList = $this->modelCustomer->getAll();
         $redpackList = $this->modelRedpack->getAll();
-        $activityList = $this->modelActivity->getAll();
         $activityList = $this->modelActivity->getAll();
         foreach ($list['data'] as &$item) {
             $item['activity_name'] = $activityList[$item['activity']];

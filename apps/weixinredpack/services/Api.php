@@ -12,8 +12,6 @@ class Api
 
     private $_gotLog;
 
-    private $_user;
-
     private $_rule;
 
     private $_limit;
@@ -26,21 +24,17 @@ class Api
 
     private $_isInstance = false;
 
-    public $_accessTokenServerUrl = '';
-
     private $lockBag = array();
     
     // 是否需要发送微信红包,默认是不发送
     public $isNeedSendRedpack = false;
 
-    public function __construct($rtnMsgType = 'json', $accessTokenServerUrl = '')
+    public function __construct($rtnMsgType = 'json')
     {
-        $this->_accessTokenServerUrl = $accessTokenServerUrl;
         $this->_rtnMsgType = $rtnMsgType;
         $this->_activity = new \Webcms\System\Models\Activity();
         $this->_redpack = new \Webcms\Weixinredpack\Models\Redpack();
         $this->_gotLog = new \Webcms\Weixinredpack\Models\GotLog();
-        $this->_user = new \Webcms\Weixinredpack\Models\User();
         $this->_rule = new \Webcms\Weixinredpack\Models\Rule();
         $this->_customer = new \Webcms\Weixinredpack\Models\Customer();
         $this->_limit = new \Webcms\Weixinredpack\Models\Limit();
@@ -111,17 +105,14 @@ class Api
             $this->_isInstance = true;
             
             // 锁定防止高并发
-            
             $lockKey = "sendRedpack_a{$activity_id}_c{$customer_id}_u{$re_openid}";
-            // $lockKey = "sendRedpack_a{$activity_id}";
-            $objLock = new \iLock($lockKey);
+            // $objLock = new \iLock($lockKey);
             // 不能随便设置过期时间,只能设置成脚本执行时间
             // 如果过期时间设置的过小的话,上个请求的写数据库操作还未完成,但是锁已经过期,所以另一个请求可以进来了,
             // 这样在判断限制条件的时候,由于数据库的写操作还未完成,获取不到数据,通过了检查.导致出现了多发红包的记录
-            // $objLock->setExpire(30);
-            if ($objLock->lock()) {
-                return $this->error(- 99, "处于锁定状态，请稍后尝试");
-            }
+            // if ($objLock->lock()) {
+            // return $this->error(- 99, "处于锁定状态，请稍后尝试");
+            // }
             
             // 检查活动信息
             $activityInfo = $this->_activity->getInfoById($activity_id);
@@ -150,23 +141,9 @@ class Api
                 return $this->error(- 8, "该红包不存在");
             }
             
-            // 检索并记录用户信息
-            $userInfo = $this->_user->record($re_openid, $info);
-            if ($userInfo == false) {
-                return $this->error(- 9, "创建用户信息失败");
-            }
-            $user_id = myMongoId($userInfo['_id']);
-            
-            // // 用户上加锁,锁定防止高并发
-            // if ($this->_user->lock($user_id)) {
-            // return $this->error(- 99, "用户ID:{$user_id}的微信用户{$re_openid}处于锁定状态，请稍后尝试");
-            // }
-            // $this->lockBag[] = $user_id;
-            
             // 检查微信红包获取情况和红包获得限制条件的关系
-            $this->_limit->setUserModel($this->_user);
             $this->_limit->setLogModel($this->_gotLog);
-            $limit = $this->_limit->checkLimit($activity_id, $customer_id, $redpack_id, $user_id);
+            $limit = $this->_limit->checkLimit($activity_id, $customer_id, $redpack_id, $re_openid);
             if ($limit == false) {
                 return $this->error(- 10, "你未满足获取红包的条件");
             }
@@ -179,8 +156,9 @@ class Api
             
             // 获取最新的订单号
             // 商户订单号（每个必须唯一）组成： mch_id+yyyymmdd+10 位一天内 不重复
+            $weixinPaySettings = $this->getWeixinPaySettings();
             $rand = mt_rand(0, 9999999999);
-            $mch_billno = $customerInfo["mch_id"] . date('Ymd') . str_pad($rand, 10, '0', STR_PAD_LEFT);
+            $mch_billno = $weixinPaySettings["mch_id"] . date('Ymd') . str_pad($rand, 10, '0', STR_PAD_LEFT);
             $client_ip = empty($defaultInfo['client_ip']) ? getIp() : $defaultInfo['client_ip']; // '203.166.161.25';
             $total_num = $rule['personal_can_get_num'];
             
@@ -226,13 +204,12 @@ class Api
                 'logo_imgurl' => $logo_imgurl,
                 'share_content' => $share_content,
                 'share_url' => $share_url,
-                'share_imgurl' => $share_imgurl,
-                'try_count' => 0, // 尝试次数,
-                'is_reissue' => false, // 是否有资格补发红包,
-                'isNeedSendRedpack' => $this->isNeedSendRedpack
+                'share_imgurl' => $share_imgurl
             ); // 是否需要发送微信红包,默认是不发送
             
-            $logInfo = $this->_gotLog->record($mch_billno, $user_id, $re_openid, $info['re_nickname'], $info['re_headimgurl'], $client_ip, $activity_id, $customer_id, $redpack_id, $total_num, $total_amount, $isOK, $logMemo);
+            $try_count = 0; // 尝试次数,
+            $is_reissue = false; // 是否有资格补发红包
+            $logInfo = $this->_gotLog->record($mch_billno, $re_openid, $info['re_nickname'], $info['re_headimgurl'], $client_ip, $activity_id, $customer_id, $redpack_id, $total_num, $total_amount, $this->isNeedSendRedpack, $isOK, $try_count, $is_reissue, $logMemo);
             try {
                 // 更新该规则的剩余数量和金额
                 $this->_rule->updateRemain($rule, $total_amount, $total_num);
@@ -240,7 +217,7 @@ class Api
                 $this->_customer->incUsedAmount($customer_id, $total_amount);
                 // 通过以上2步骤的话,说明他是有资格领取微信红包的,事后可以补发
                 $logInfoUpdateData = array(
-                    'memo.is_reissue' => true
+                    'is_reissue' => true
                 );
                 $this->_gotLog->update(array(
                     '_id' => $logInfo['_id']
@@ -248,9 +225,7 @@ class Api
                     '$set' => $logInfoUpdateData
                 ));
                 // 调用微信红包发送接口
-                $ret = $this->sendWeixinRedpack($customerInfo, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl, $share_content, $share_url, $share_imgurl);
-                // 记录微信红包的用户信息
-                $this->_user->recordRedpackLog($user_id, $activity_id, $customer_id, $redpack_id, $re_openid, $info['re_nickname'], $info['re_headimgurl'], $total_num, $total_amount, $mch_billno, myMongoId($logInfo['_id']), $logInfo['got_time']->sec);
+                $ret = $this->sendWeixinRedpack($weixinPaySettings, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl, $share_content, $share_url, $share_imgurl);
                 
                 // 处理结果
                 $isOK = true;
@@ -266,7 +241,7 @@ class Api
                 $errorLog = $ret;
             }
             // 更新LOG信息
-            $memo = array_merge($ret, $info);
+            $memo = array_merge($ret, $logInfo);
             $logInfo = $this->_gotLog->updateIsOK($logInfo, $isOK, $errorLog, $memo);
             
             if ($isOK) {
@@ -337,20 +312,19 @@ class Api
      * @param string $share_url            
      * @param string $share_imgurl            
      */
-    private function sendWeixinRedpack($customerInfo, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl = "", $share_content = "", $share_url = "", $share_imgurl = "")
+    private function sendWeixinRedpack($weixinPaySettings, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl = "", $share_content = "", $share_url = "", $share_imgurl = "")
     {
         // 获取accesstoken
-        $accessTokenArr = $this->getAccessTokenInfo();
-        $accessToken = $accessTokenArr['access_token'];
+        $accessToken = $weixinPaySettings['access_token'];
         
-        $appid = $customerInfo["wxappid"];
-        $secret = $customerInfo["wxsecret"];
-        $mchid = $customerInfo["mch_id"]; // "1220225801";
-        $sub_mch_id = empty($customerInfo["sub_mch_id"]) ? '' : $customerInfo["sub_mch_id"];
-        $key = $customerInfo["key"]; // "NG4HWVH26C733KWK6F98J8CK4BN3D2R7";
+        $appid = $weixinPaySettings["appid"];
+        $secret = $weixinPaySettings["secret"];
+        $mchid = $weixinPaySettings["mch_id"]; // "1220225801";
+        $sub_mch_id = empty($weixinPaySettings["sub_mch_id"]) ? '' : $weixinPaySettings["sub_mch_id"];
+        $key = $weixinPaySettings["key"]; // "NG4HWVH26C733KWK6F98J8CK4BN3D2R7";
         $sysTempDir = sys_get_temp_dir() . '/';
-        // $fileName = APPLICATION_PATH . "/../cache/" . myMongoId($customerInfo['_id']) . "_cert.pem";
-        $fileName = $sysTempDir . myMongoId($customerInfo['_id']) . "_cert.pem";
+        // $fileName = APPLICATION_PATH . "/../cache/" . myMongoId($weixinPaySettings['_id']) . "_cert.pem";
+        $fileName = $sysTempDir . ($weixinPaySettings['_id']) . "_cert.pem";
         if (file_exists($fileName)) {
             $cert = $fileName;
         } else {
@@ -360,12 +334,12 @@ class Api
             // )
             // ));
             $ctx = null;
-            $content = file_get_contents($customerInfo["cert"], 0, $ctx);
+            $content = file_get_contents($weixinPaySettings["cert"], 0, $ctx);
             file_put_contents($fileName, $content);
         }
         $cert = $fileName;
-        // $fileName = APPLICATION_PATH . "/../cache/" . myMongoId($customerInfo['_id']) . "_key.pem";
-        $fileName = $sysTempDir . myMongoId($customerInfo['_id']) . "_key.pem";
+        // $fileName = APPLICATION_PATH . "/../cache/" . myMongoId($weixinPaySettings['_id']) . "_key.pem";
+        $fileName = $sysTempDir . myMongoId($weixinPaySettings['_id']) . "_key.pem";
         if (file_exists($fileName)) {
             $certKey = $fileName;
         } else {
@@ -375,7 +349,7 @@ class Api
             // )
             // ));
             $ctx2 = null;
-            $content = file_get_contents($customerInfo["certKey"], 0, $ctx2);
+            $content = file_get_contents($weixinPaySettings["certKey"], 0, $ctx2);
             file_put_contents($fileName, $content);
         }
         $certKey = $fileName;
@@ -435,18 +409,16 @@ class Api
         return $ret;
     }
 
+    private function getWeixinPaySettings()
+    {
+        return $this->_weixin->getToken();
+    }
+
     /**
      * 析构函数
      */
     public function __destruct()
-    {
-        if (! empty($this->lockBag)) {
-            $user_id = $this->lockBag[0];
-            // unlock
-            // 释放锁定
-            $this->_user->unlock($user_id);
-        }
-    }
+    {}
 
     /**
      * 以5分钟运行一次计划任务,补发红包
@@ -462,17 +434,17 @@ class Api
         $preTime = time() - 2 * 60; // 2分钟之前的记录
         $query = array(
             'isOK' => false,
-            'memo.is_reissue' => true,
+            'is_reissue' => true,
             'got_time' => array(
                 '$lte' => getCurrentTime($preTime)
             ),
-            'memo.try_count' => array(
+            'try_count' => array(
                 '$lte' => 2
             )
         );
         
         $list = $this->_gotLog->find($query, array(
-            'memo.try_count' => 1,
+            'try_count' => 1,
             'got_time' => 1,
             '_id' => 1
         ), 0, 49);
@@ -483,7 +455,6 @@ class Api
                 $ret = array();
                 $logId = myMongoId($logInfo['_id']);
                 try {
-                    $user_id = $logInfo['user_id'];
                     $activity_id = $logInfo['activity'];
                     $customer_id = $logInfo['customer'];
                     $redpack_id = $logInfo['redpack'];
@@ -520,9 +491,8 @@ class Api
                     }
                     
                     // 调用微信红包发送接口
-                    $ret = $this->sendWeixinRedpack($customerInfo, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl, $share_content, $share_url, $share_imgurl);
-                    // 记录微信红包的用户信息
-                    $this->_user->recordRedpackLog($user_id, $activity_id, $customer_id, $redpack_id, $re_openid, $re_nickname, $re_headimgurl, $total_num, $total_amount, $mch_billno, myMongoId($logInfo['_id']), $logInfo['got_time']->sec);
+                    $weixinPaySettings = $this->getWeixinPaySettings();
+                    $ret = $this->sendWeixinRedpack($weixinPaySettings, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl, $share_content, $share_url, $share_imgurl);
                     
                     // 处理结果
                     $isOK = true;

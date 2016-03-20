@@ -20,11 +20,11 @@ class IndexController extends ControllerBase
      */
     public function getAction()
     {
-        // http://magic.gtrgogogo.com/lottery/index/get?activity_id=565d5aaa7f50ea081300002d&FromUserName=guoyongrong
+        // http://magic.gtrgogogo.com/lottery/index/get?activity_id=565d5aaa7f50ea081300002d&user_id=guoyongrong
         try {
             $activity_id = isset($_GET['activity_id']) ? trim($_GET['activity_id']) : '';
             $identity_id = trim($_GET['user_id']);
-            $source = \Webcms\Lottery\Models\Identity::SOURCE_WEIXIN;
+            $source = "weixin";
             
             $modelApi = new \Webcms\Lottery\Services\Api();
             $identityInfo = array(

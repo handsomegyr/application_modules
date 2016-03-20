@@ -24,21 +24,6 @@ class Redpack extends \Webcms\Common\Models\Weixinredpack\Redpack
     }
 
     /**
-     * 根据ID获取信息
-     *
-     * @param string $id            
-     * @return array
-     */
-    public function getInfoById($id)
-    {
-        $query = array(
-            '_id' => myMongoId($id)
-        );
-        $info = $this->findOne($query);
-        return $info;
-    }
-
-    /**
      * 根据code获取信息
      *
      * @param string $code            
