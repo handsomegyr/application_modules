@@ -314,61 +314,6 @@ class Api
      */
     private function sendWeixinRedpack($weixinPaySettings, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl = "", $share_content = "", $share_url = "", $share_imgurl = "")
     {
-        // 获取accesstoken
-        $accessToken = $weixinPaySettings['access_token'];
-        
-        $appid = $weixinPaySettings["appid"];
-        $secret = $weixinPaySettings["secret"];
-        $mchid = $weixinPaySettings["mch_id"]; // "1220225801";
-        $sub_mch_id = empty($weixinPaySettings["sub_mch_id"]) ? '' : $weixinPaySettings["sub_mch_id"];
-        $key = $weixinPaySettings["key"]; // "NG4HWVH26C733KWK6F98J8CK4BN3D2R7";
-        $sysTempDir = sys_get_temp_dir() . '/';
-        // $fileName = APPLICATION_PATH . "/../cache/" . myMongoId($weixinPaySettings['_id']) . "_cert.pem";
-        $fileName = $sysTempDir . ($weixinPaySettings['_id']) . "_cert.pem";
-        if (file_exists($fileName)) {
-            $cert = $fileName;
-        } else {
-            // $ctx = stream_context_create(array(
-            // 'http' => array(
-            // 'timeout' => 10
-            // )
-            // ));
-            $ctx = null;
-            $content = file_get_contents($weixinPaySettings["cert"], 0, $ctx);
-            file_put_contents($fileName, $content);
-        }
-        $cert = $fileName;
-        // $fileName = APPLICATION_PATH . "/../cache/" . myMongoId($weixinPaySettings['_id']) . "_key.pem";
-        $fileName = $sysTempDir . myMongoId($weixinPaySettings['_id']) . "_key.pem";
-        if (file_exists($fileName)) {
-            $certKey = $fileName;
-        } else {
-            // $ctx2 = stream_context_create(array(
-            // 'http' => array(
-            // 'timeout' => 10
-            // )
-            // ));
-            $ctx2 = null;
-            $content = file_get_contents($weixinPaySettings["certKey"], 0, $ctx2);
-            file_put_contents($fileName, $content);
-        }
-        $certKey = $fileName;
-        
-        // $cert = APPLICATION_PATH . "/../cert/weixinpay337/apiclient_cert.pem";
-        
-        // $certKey = APPLICATION_PATH . "/../cert/weixinpay337/apiclient_key.pem";
-        
-        $objWeixinPay = new \Weixin\Pay337();
-        $objWeixinPay->setAppId($appid);
-        $objWeixinPay->setAppSecret($secret);
-        $objWeixinPay->setAccessToken($accessToken);
-        $objWeixinPay->setMchid($mchid);
-        $objWeixinPay->setSubMchId($sub_mch_id);
-        $objWeixinPay->setKey($key);
-        $objWeixinPay->setCert($cert);
-        $objWeixinPay->setCertKey($certKey);
-        $nonce_str = \Weixin\Helpers::createNonceStr(32);
-        // $mch_billno = $mchid . date("Ymd") . $mch_billno; // mch_id+yyyymmdd+10
         /**
          * $nick_name = "国泰广告-nname";
          * $send_name = "国泰广告-sname";
@@ -389,6 +334,61 @@ class Api
          * $share_imgurl = "http://mmbiz.qpic.cn/mmbiz/iaAQwicknkictTEYUBmw9dkEn1qInaDiay9vndVdksyF1FVNcc0RrwO8ias2xwCfwcX4RLSdq8KPxF1SOW3yckvMibpg/0";
          */
         if ($this->isNeedSendRedpack) {
+            // 获取accesstoken
+            $accessToken = $weixinPaySettings['access_token'];
+            
+            $appid = $weixinPaySettings["appid"];
+            $secret = $weixinPaySettings["secret"];
+            $mchid = $weixinPaySettings["mch_id"]; // "1220225801";
+            $sub_mch_id = empty($weixinPaySettings["sub_mch_id"]) ? '' : $weixinPaySettings["sub_mch_id"];
+            $key = $weixinPaySettings["key"]; // "NG4HWVH26C733KWK6F98J8CK4BN3D2R7";
+            
+            $sysTempDir = sys_get_temp_dir() . '/';
+            // $fileName = APPLICATION_PATH . "/../cache/" . myMongoId($weixinPaySettings['_id']) . "_cert.pem";
+            $fileName = $sysTempDir . ($weixinPaySettings['_id']) . "_cert.pem";
+            if (file_exists($fileName)) {
+                $cert = $fileName;
+            } else {
+                // $ctx = stream_context_create(array(
+                // 'http' => array(
+                // 'timeout' => 10
+                // )
+                // ));
+                $ctx = null;
+                $content = file_get_contents($weixinPaySettings["cert"], 0, $ctx);
+                file_put_contents($fileName, $content);
+            }
+            $cert = $fileName;
+            // $fileName = APPLICATION_PATH . "/../cache/" . myMongoId($weixinPaySettings['_id']) . "_key.pem";
+            $fileName = $sysTempDir . myMongoId($weixinPaySettings['_id']) . "_key.pem";
+            if (file_exists($fileName)) {
+                $certKey = $fileName;
+            } else {
+                // $ctx2 = stream_context_create(array(
+                // 'http' => array(
+                // 'timeout' => 10
+                // )
+                // ));
+                $ctx2 = null;
+                $content = file_get_contents($weixinPaySettings["certKey"], 0, $ctx2);
+                file_put_contents($fileName, $content);
+            }
+            $certKey = $fileName;
+            
+            // $cert = APPLICATION_PATH . "/../cert/weixinpay337/apiclient_cert.pem";
+            
+            // $certKey = APPLICATION_PATH . "/../cert/weixinpay337/apiclient_key.pem";
+            
+            $objWeixinPay = new \Weixin\Pay337();
+            $objWeixinPay->setAppId($appid);
+            $objWeixinPay->setAppSecret($secret);
+            $objWeixinPay->setAccessToken($accessToken);
+            $objWeixinPay->setMchid($mchid);
+            $objWeixinPay->setSubMchId($sub_mch_id);
+            $objWeixinPay->setKey($key);
+            $objWeixinPay->setCert($cert);
+            $objWeixinPay->setCertKey($certKey);
+            $nonce_str = \Weixin\Helpers::createNonceStr(32);
             $ret = $objWeixinPay->sendredpack($nonce_str, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl, $share_content, $share_url, $share_imgurl);
         } else {
             // sleep(1);
@@ -401,8 +401,6 @@ class Api
                 'err_code' => '0',
                 'err_code_des' => 'SUCCESS',
                 'mch_billno' => $mch_billno,
-                'mch_id' => $mchid,
-                'wxappid' => $appid,
                 're_openid' => $re_openid
             );
         }
