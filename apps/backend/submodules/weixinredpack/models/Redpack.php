@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\WeixinRedpack;
+namespace Webcms\Backend\Models\Weixinredpack;
 
-class Redpack extends \Webcms\Common\Models\WeixinRedpack\Redpack
+class Redpack extends \Webcms\Common\Models\Weixinredpack\Redpack
 {
     
     use \Webcms\Backend\Models\Base;

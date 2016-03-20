@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\WeixinRedpack;
+namespace Webcms\Backend\Models\Weixinredpack;
 
-class Customer extends \Webcms\Common\Models\WeixinRedpack\Customer
+class Customer extends \Webcms\Common\Models\Weixinredpack\Customer
 {
     
     use \Webcms\Backend\Models\Base;

@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\WeixinRedpack;
+namespace Webcms\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\WeixinRedpack\GotLog;
+use Webcms\Backend\Models\Weixinredpack\GotLog;
 use Webcms\Backend\Models\System\Activity;
-use Webcms\Backend\Models\WeixinRedpack\Redpack;
-use Webcms\Backend\Models\WeixinRedpack\Customer;
+use Webcms\Backend\Models\Weixinredpack\Redpack;
+use Webcms\Backend\Models\Weixinredpack\Customer;
 
 /**
- * @title({name="抽奖日志管理"})
+ * @title({name="红包领取日志管理"})
  *
- * @name 抽奖日志管理
+ * @name 红包领取日志管理
  */
 class LogController extends \Webcms\Backend\Controllers\FormController
 {
@@ -379,7 +379,7 @@ class LogController extends \Webcms\Backend\Controllers\FormController
 
     protected function getName()
     {
-        return '抽奖日志';
+        return '红包领取日志';
     }
 
     protected function getModel()
@@ -389,11 +389,15 @@ class LogController extends \Webcms\Backend\Controllers\FormController
 
     protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
     {
+        $customerList = $this->modelCustomer->getAll();
+        $redpackList = $this->modelRedpack->getAll();
         $activityList = $this->modelActivity->getAll();
-        $sourceList = $this->modelSource->getAll();
+        $activityList = $this->modelActivity->getAll();
         foreach ($list['data'] as &$item) {
             $item['activity_name'] = $activityList[$item['activity']];
-            $item['source_name'] = $sourceList[$item['source']];
+            $item['customer_name'] = $customerList[$item['customer']];
+            $item['redpack_name'] = $redpackList[$item['redpack']];
+            $item['got_time'] = date("Y-m-d H:i:s", $item['got_time']->sec);
         }
         return $list;
     }

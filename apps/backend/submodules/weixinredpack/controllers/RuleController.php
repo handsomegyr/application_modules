@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Backend\Controllers\WeixinRedpack;
+namespace Webcms\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\WeixinRedpack\Rule;
-use Webcms\Backend\Models\WeixinRedpack\Customer;
-use Webcms\Backend\Models\WeixinRedpack\Redpack;
+use Webcms\Backend\Models\Weixinredpack\Rule;
+use Webcms\Backend\Models\Weixinredpack\Customer;
+use Webcms\Backend\Models\Weixinredpack\Redpack;
 use Webcms\Backend\Models\System\Activity;
 
 /**
@@ -47,7 +47,8 @@ class RuleController extends \Webcms\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelActivity->getAll();
                 }
             ),
@@ -74,7 +75,8 @@ class RuleController extends \Webcms\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelCustomer->getAll();
                 }
             ),
@@ -99,7 +101,8 @@ class RuleController extends \Webcms\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelRedpack->getAll();
                 }
             ),
@@ -469,11 +472,13 @@ class RuleController extends \Webcms\Backend\Controllers\FormController
 
     protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
     {
-        $prizeList = $this->modelPrize->getAll();
+        $customerList = $this->modelCustomer->getAll();
+        $redpackList = $this->modelRedpack->getAll();
         $activityList = $this->modelActivity->getAll();
         foreach ($list['data'] as &$item) {
-            $item['activity_name'] = $activityList[$item['activity_id']];
-            $item['prize_name'] = $prizeList[$item['prize_id']];
+            $item['activity_name'] = $activityList[$item['activity']];
+            $item['customer_name'] = $customerList[$item['customer']];
+            $item['redpack_name'] = $redpackList[$item['redpack']];
             $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
             $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
         }

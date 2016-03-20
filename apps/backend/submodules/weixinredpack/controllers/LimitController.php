@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Backend\Controllers\WeixinRedpack;
+namespace Webcms\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\WeixinRedpack\Limit;
-use Webcms\Backend\Models\WeixinRedpack\Redpack;
-use Webcms\Backend\Models\WeixinRedpack\Customer;
+use Webcms\Backend\Models\Weixinredpack\Limit;
+use Webcms\Backend\Models\Weixinredpack\Redpack;
+use Webcms\Backend\Models\Weixinredpack\Customer;
 use Webcms\Backend\Models\System\Activity;
 
 /**
@@ -199,8 +199,8 @@ class LimitController extends \Webcms\Backend\Controllers\FormController
         $redpackList = $this->modelRedpack->getAll();
         $activityList = $this->modelActivity->getAll();
         foreach ($list['data'] as &$item) {
-            $item['activity_name'] = $activityList[$item['activity_id']];
-            $item['customer_name'] = $redpackList[$item['customer']];
+            $item['activity_name'] = $activityList[$item['activity']];
+            $item['customer_name'] = $customerList[$item['customer']];
             $item['redpack_name'] = $redpackList[$item['redpack']];
             $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
             $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);

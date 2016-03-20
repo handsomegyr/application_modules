@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Controllers\WeixinRedpack;
+namespace Webcms\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\WeixinRedpack\Customer;
+use Webcms\Backend\Models\Weixinredpack\Customer;
 
 /**
  * @title({name="客户管理"})

@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Backend\WeixinRedpack;
+namespace Webcms\Backend\Weixinredpack;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -29,8 +29,8 @@ class Module
             'Webcms\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
             'Webcms\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
-            'Webcms\Backend\Models\WeixinRedpack' => __DIR__ . '/models/',
-            'Webcms\Backend\Controllers\WeixinRedpack' => __DIR__ . '/controllers/'
+            'Webcms\Backend\Models\Weixinredpack' => __DIR__ . '/models/',
+            'Webcms\Backend\Controllers\Weixinredpack' => __DIR__ . '/controllers/'
         ));
         
         $loader->register();
@@ -64,7 +64,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Backend\Controllers\WeixinRedpack");
+            $dispatcher->setDefaultNamespace("Webcms\Backend\Controllers\Weixinredpack");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);
