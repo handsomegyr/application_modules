@@ -1,5 +1,5 @@
 <?php
-namespace App\Member\Helpers;
+namespace App\Member\Views\Helpers;
 
 use App\Member\Models\Member;
 use App\Member\Models\Consignee;

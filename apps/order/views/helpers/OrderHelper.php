@@ -1,5 +1,5 @@
 <?php
-namespace App\Order\Helpers;
+namespace App\Order\Views\Helpers;
 
 use App\Order\Models\Log;
 use App\Order\Models\Goods;

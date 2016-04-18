@@ -19,7 +19,7 @@ class Module
             'App\Goods\Controllers' => __DIR__ . '/controllers/',
             'App\Goods\Models' => __DIR__ . '/models/',
             'App\Goods\Service' => __DIR__ . '/service/',
-            'App\Goods\Helpers' => __DIR__ . '/views/helpers/'
+            'App\Goods\Views\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }

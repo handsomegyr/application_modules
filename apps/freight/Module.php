@@ -18,7 +18,7 @@ class Module
         $loader->registerNamespaces(array(
             'App\Freight\Controllers' => __DIR__ . '/controllers/',
             'App\Freight\Models' => __DIR__ . '/models/',
-            'App\Freight\Helpers' => __DIR__ . '/views/helpers/'
+            'App\Freight\Views\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }

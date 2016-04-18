@@ -1,5 +1,5 @@
 <?php
-namespace App\Site\Helpers;
+namespace App\Site\Views\Helpers;
 
 use App\Site\Models\Site;
 

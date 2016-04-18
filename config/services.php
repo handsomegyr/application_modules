@@ -158,16 +158,16 @@ function registerAutoloaders()
             'App\Payment\Services' => APP_PATH . '/apps/payment/services/',
             'App\Weixinredpack\Services' => APP_PATH . '/apps/weixinredpack/services/',
             
-            'App\Points\Helpers' => APP_PATH . 'apps/points/views/helpers/',
-            'App\Goods\Helpers' => APP_PATH . 'apps/goods/views/helpers/',
-            'App\System\Helpers' => APP_PATH . 'apps/system/views/helpers/',
-            'App\Member\Helpers' => APP_PATH . 'apps/member/views/helpers/',
-            'App\Order\Helpers' => APP_PATH . 'apps/order/views/helpers/',
-            'App\Site\Helpers' => APP_PATH . 'apps/site/views/helpers/',
-            'App\Post\Helpers' => APP_PATH . 'apps/post/views/helpers/',
-            'App\Article\Helpers' => APP_PATH . 'apps/article/views/helpers/',
-            'App\Freight\Helpers' => APP_PATH . 'apps/freight/views/helpers/',
-            'App\Task\Helpers' => APP_PATH . 'apps/task/views/helpers/',
+            'App\Points\Views\Helpers' => APP_PATH . 'apps/points/views/helpers/',
+            'App\Goods\Views\Helpers' => APP_PATH . 'apps/goods/views/helpers/',
+            'App\System\Views\Helpers' => APP_PATH . 'apps/system/views/helpers/',
+            'App\Member\Views\Helpers' => APP_PATH . 'apps/member/views/helpers/',
+            'App\Order\Views\Helpers' => APP_PATH . 'apps/order/views/helpers/',
+            'App\Site\Views\Helpers' => APP_PATH . 'apps/site/views/helpers/',
+            'App\Post\Views\Helpers' => APP_PATH . 'apps/post/views/helpers/',
+            'App\Article\Views\Helpers' => APP_PATH . 'apps/article/views/helpers/',
+            'App\Freight\Views\Helpers' => APP_PATH . 'apps/freight/views/helpers/',
+            'App\Task\Views\Helpers' => APP_PATH . 'apps/task/views/helpers/',
             
             'App\Common\Plugins' => APP_PATH . 'apps/common/plugins/'
         ));

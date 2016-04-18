@@ -1,5 +1,5 @@
 <?php
-namespace App\Goods\Helpers;
+namespace App\Goods\Views\Helpers;
 
 use App\Goods\Models\Category;
 use App\Goods\Models\Brand;

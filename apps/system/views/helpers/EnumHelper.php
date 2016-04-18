@@ -1,5 +1,5 @@
 <?php
-namespace App\System\Helpers;
+namespace App\System\Views\Helpers;
 
 use App\System\Models\Enum;
 

@@ -1,5 +1,5 @@
 <?php
-namespace App\Post\Helpers;
+namespace App\Post\Views\Helpers;
 
 use App\Post\Models\Post;
 

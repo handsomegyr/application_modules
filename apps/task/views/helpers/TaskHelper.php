@@ -1,5 +1,5 @@
 <?php
-namespace App\Task\Helpers;
+namespace App\Task\Views\Helpers;
 
 class TaskHelper extends \Phalcon\Tag
 {

@@ -18,7 +18,7 @@ class Module
         $loader->registerNamespaces(array(
             'App\Task\Controllers' => __DIR__ . '/controllers/',
             'App\Task\Models' => __DIR__ . '/models/',
-            'App\Task\Helpers' => __DIR__ . '/views/helpers/'
+            'App\Task\Views\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }
