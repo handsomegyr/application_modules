@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Task\Controllers;
 
-use App\Backend\Models\Task\Log;
+use App\Backend\Submodules\Task\Models\Log;
 
 /**
  * @title({name="任务日志管理"})

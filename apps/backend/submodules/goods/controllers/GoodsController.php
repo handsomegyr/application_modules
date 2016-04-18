@@ -1,12 +1,12 @@
 <?php
 namespace App\Backend\Submodules\Goods\Controllers;
 
-use App\Backend\Models\Goods\Type;
-use App\Backend\Models\Goods\Category;
-use App\Backend\Models\Goods\Brand;
-use App\Backend\Models\Goods\GoodsCommon;
-use App\Backend\Models\Goods\Goods;
-use App\Backend\Models\Store\Store;
+use App\Backend\Submodules\Goods\Models\Type;
+use App\Backend\Submodules\Goods\Models\Category;
+use App\Backend\Submodules\Goods\Models\Brand;
+use App\Backend\Submodules\Goods\Models\GoodsCommon;
+use App\Backend\Submodules\Goods\Models\Goods;
+use App\Backend\Submodules\Store\Models\Store;
 
 /**
  * @title({name="商品SKU管理"})

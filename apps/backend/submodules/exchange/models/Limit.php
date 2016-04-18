@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Exchange;
+namespace App\Backend\Submodules\Exchange\Models;
 
 class Limit extends \App\Common\Models\Exchange\Limit
 {

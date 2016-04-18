@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Models\Weixin\MenuType;
+use App\Backend\Submodules\Weixin\Models\MenuType;
 
 /**
  * @title({name="微信菜单类型管理"})

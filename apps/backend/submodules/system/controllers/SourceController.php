@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\System\Controllers;
 
-use App\Backend\Models\System\Source;
+use App\Backend\Submodules\System\Models\Source;
 
 /**
  * @title({name="访问来源管理"})

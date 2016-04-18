@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Models\Weixin\Page;
+use App\Backend\Submodules\Weixin\Models\Page;
 
 /**
  * @title({name="微信自定义页面管理"})

@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Points\Controllers;
 
-use App\Backend\Models\Points\Rule;
-use App\Backend\Models\Points\Category;
+use App\Backend\Submodules\Points\Models\Rule;
+use App\Backend\Submodules\Points\Models\Category;
 
 /**
  * @title({name="积分规则管理"})

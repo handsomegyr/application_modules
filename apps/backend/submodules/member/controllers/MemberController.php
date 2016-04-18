@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Member\Controllers;
 
-use App\Backend\Models\Member\Member;
+use App\Backend\Submodules\Member\Models\Member;
 
 /**
  * @title({name="会员管理"})

@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Vote\Controllers;
 
-use App\Backend\Models\Vote\Category;
+use App\Backend\Submodules\Vote\Models\Category;
 
 /**
  * @title({name="投票类型管理"})

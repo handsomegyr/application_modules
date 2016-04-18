@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Member;
+namespace App\Backend\Submodules\Member\Models;
 
 class News extends \App\Common\Models\Member\News
 {

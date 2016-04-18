@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Vote\Controllers;
 
-use App\Backend\Models\Vote\Item;
-use App\Backend\Models\Vote\Subject;
+use App\Backend\Submodules\Vote\Models\Item;
+use App\Backend\Submodules\Vote\Models\Subject;
 
 /**
  * @title({name="投票选项管理"})

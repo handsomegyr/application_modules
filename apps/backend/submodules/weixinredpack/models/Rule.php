@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Weixinredpack;
+namespace App\Backend\Submodules\Weixinredpack\Models;
 
 class Rule extends \App\Common\Models\Weixinredpack\Rule
 {

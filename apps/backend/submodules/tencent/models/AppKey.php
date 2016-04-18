@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Tencent;
+namespace App\Backend\Submodules\Tencent\Models;
 
 class AppKey extends \App\Common\Models\Tencent\AppKey
 {

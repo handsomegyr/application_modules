@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Member\Controllers;
 
-use App\Backend\Models\Member\Report;
+use App\Backend\Submodules\Member\Models\Report;
 
 /**
  * @title({name="举报管理"})

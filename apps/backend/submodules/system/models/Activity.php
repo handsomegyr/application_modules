@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\System;
+namespace App\Backend\Submodules\System\Models;
 
 class Activity extends \App\Common\Models\System\Activity
 {

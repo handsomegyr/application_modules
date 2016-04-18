@@ -1,11 +1,11 @@
 <?php
 namespace App\Backend\Submodules\Vote\Controllers;
 
-use App\Backend\Models\Vote\Limit;
-use App\Backend\Models\Vote\Subject;
-use App\Backend\Models\Vote\Item;
-use App\Backend\Models\Vote\LimitCategory;
-use App\Backend\Models\System\Activity;
+use App\Backend\Submodules\Vote\Models\Limit;
+use App\Backend\Submodules\Vote\Models\Subject;
+use App\Backend\Submodules\Vote\Models\Item;
+use App\Backend\Submodules\Vote\Models\LimitCategory;
+use App\Backend\Submodules\System\Models\Activity;
 
 /**
  * @title({name="投票限制管理"})

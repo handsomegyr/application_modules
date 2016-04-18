@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\System\Controllers;
 
-use App\Backend\Models\System\Activity;
+use App\Backend\Submodules\System\Models\Activity;
 
 /**
  * @title({name="活动管理"})

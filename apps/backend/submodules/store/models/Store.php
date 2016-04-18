@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Store;
+namespace App\Backend\Submodules\Store\Models;
 
 class Store extends \App\Common\Models\Store\Store
 {

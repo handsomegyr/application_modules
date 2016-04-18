@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Vote;
+namespace App\Backend\Submodules\Vote\Models;
 
 class Subject extends \App\Common\Models\Vote\Subject
 {

@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Points;
+namespace App\Backend\Submodules\Points\Models;
 
 class Log extends \App\Common\Models\Points\Log
 {

@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Message\Controllers;
 
-use App\Backend\Models\Message\SysMsg;
+use App\Backend\Submodules\Message\Models\SysMsg;
 
 /**
  * @title({name="系统消息管理"})

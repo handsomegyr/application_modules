@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Order;
+namespace App\Backend\Submodules\Order\Models;
 
 class Goods extends \App\Common\Models\Order\Goods
 {

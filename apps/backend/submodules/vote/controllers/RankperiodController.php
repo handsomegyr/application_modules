@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Vote\Controllers;
 
-use App\Backend\Models\Vote\RankPeriod;
-use App\Backend\Models\Vote\Subject;
+use App\Backend\Submodules\Vote\Models\RankPeriod;
+use App\Backend\Submodules\Vote\Models\Subject;
 
 /**
  * @title({name="投票每期排行管理"})

@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Goods\Controllers;
 
-use App\Backend\Models\Goods\Category;
-use App\Backend\Models\Goods\Spec;
+use App\Backend\Submodules\Goods\Models\Category;
+use App\Backend\Submodules\Goods\Models\Spec;
 
 /**
  * @title({name="商品规格管理"})

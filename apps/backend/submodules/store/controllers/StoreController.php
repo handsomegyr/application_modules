@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Store\Controllers;
 
-use App\Backend\Models\Store\Store;
+use App\Backend\Submodules\Store\Models\Store;
 
 /**
  * @title({name="店铺管理"})

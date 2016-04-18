@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Goods\Controllers;
 
-use App\Backend\Models\Goods\Category;
-use App\Backend\Models\Goods\Attribute;
-use App\Backend\Models\Goods\Type;
+use App\Backend\Submodules\Goods\Models\Category;
+use App\Backend\Submodules\Goods\Models\Attribute;
+use App\Backend\Submodules\Goods\Models\Type;
 
 /**
  * @title({name="商品属性管理"})

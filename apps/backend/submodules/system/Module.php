@@ -27,7 +27,7 @@ class Module
             'App\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
-            'App\Backend\Models\System' => __DIR__ . '/models/',
+            'App\Backend\Submodules\System\Models' => __DIR__ . '/models/',
             'App\Backend\Submodules\System\Controllers' => __DIR__ . '/controllers/'
         ));
         

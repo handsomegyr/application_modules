@@ -1,10 +1,10 @@
 <?php
 namespace App\Backend\Submodules\Vote\Controllers;
 
-use App\Backend\Models\Vote\Log;
-use App\Backend\Models\Vote\Subject;
-use App\Backend\Models\Vote\Item;
-use App\Backend\Models\System\Activity;
+use App\Backend\Submodules\Vote\Models\Log;
+use App\Backend\Submodules\Vote\Models\Subject;
+use App\Backend\Submodules\Vote\Models\Item;
+use App\Backend\Submodules\System\Models\Activity;
 
 /**
  * @title({name="投票日志管理"})

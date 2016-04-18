@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Models\Weixin\ReplyType;
-use App\Backend\Models\Weixin\Reply;
-use App\Backend\Models\Weixin\Keyword;
+use App\Backend\Submodules\Weixin\Models\ReplyType;
+use App\Backend\Submodules\Weixin\Models\Reply;
+use App\Backend\Submodules\Weixin\Models\Keyword;
 
 /**
  * @title({name="微信关键词管理"})

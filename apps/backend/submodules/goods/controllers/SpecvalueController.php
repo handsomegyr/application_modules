@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Goods\Controllers;
 
-use App\Backend\Models\Goods\Category;
-use App\Backend\Models\Goods\Spec;
-use App\Backend\Models\Goods\SpecValue;
+use App\Backend\Submodules\Goods\Models\Category;
+use App\Backend\Submodules\Goods\Models\Spec;
+use App\Backend\Submodules\Goods\Models\SpecValue;
 
 /**
  * @title({name="商品规格值管理"})

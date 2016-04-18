@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Member\Controllers;
 
-use App\Backend\Models\Member\Grade;
+use App\Backend\Submodules\Member\Models\Grade;
 
 /**
  * @title({name="会员等级管理"})

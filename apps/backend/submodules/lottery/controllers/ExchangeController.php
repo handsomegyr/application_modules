@@ -1,10 +1,10 @@
 <?php
 namespace App\Backend\Submodules\Lottery\Controllers;
 
-use App\Backend\Models\Lottery\Exchange;
-use App\Backend\Models\Prize\Prize;
-use App\Backend\Models\System\Activity;
-use App\Backend\Models\System\Source;
+use App\Backend\Submodules\Lottery\Models\Exchange;
+use App\Backend\Submodules\Prize\Models\Prize;
+use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\System\Models\Source;
 
 /**
  * @title({name="抽奖中奖管理"})

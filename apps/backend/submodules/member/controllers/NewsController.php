@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Member\Controllers;
 
-use App\Backend\Models\Member\News;
+use App\Backend\Submodules\Member\Models\News;
 
 /**
  * @title({name="动态管理"})

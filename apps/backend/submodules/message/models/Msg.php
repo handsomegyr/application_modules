@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Message;
+namespace App\Backend\Submodules\Message\Models;
 
 class Msg extends \App\Common\Models\Message\Msg
 {

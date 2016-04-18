@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Member;
+namespace App\Backend\Submodules\Member\Models;
 
 class Consignee extends \App\Common\Models\Member\Consignee
 {

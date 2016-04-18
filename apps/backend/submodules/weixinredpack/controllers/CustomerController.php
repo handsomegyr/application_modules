@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixinredpack\Controllers;
 
-use App\Backend\Models\Weixinredpack\Customer;
+use App\Backend\Submodules\Weixinredpack\Models\Customer;
 
 /**
  * @title({name="客户管理"})

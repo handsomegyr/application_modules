@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Weixin;
+namespace App\Backend\Submodules\Weixin\Models;
 
 class SubscribeUser extends \App\Common\Models\Weixin\SubscribeUser
 {

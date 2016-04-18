@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Article\Controllers;
 
-use App\Backend\Models\Article\Article;
-use App\Backend\Models\Article\Category;
+use App\Backend\Submodules\Article\Models\Article;
+use App\Backend\Submodules\Article\Models\Category;
 
 /**
  * @title({name="文章管理"})

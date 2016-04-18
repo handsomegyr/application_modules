@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Points;
+namespace App\Backend\Submodules\Points\Models;
 
 class User extends \App\Common\Models\Points\User
 {    

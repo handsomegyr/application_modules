@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Mail;
+namespace App\Backend\Submodules\Mail\Models;
 
 class Settings extends \App\Common\Models\Mail\Settings
 {

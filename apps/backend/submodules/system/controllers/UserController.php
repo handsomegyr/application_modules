@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\System\Controllers;
 
-use App\Backend\Models\System\User;
-use App\Backend\Models\System\Role;
+use App\Backend\Submodules\System\Models\User;
+use App\Backend\Submodules\System\Models\Role;
 
 /**
  * @title({name="用户管理"})

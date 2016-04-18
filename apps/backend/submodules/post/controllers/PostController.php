@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Post\Controllers;
 
-use App\Backend\Models\Post\Post;
+use App\Backend\Submodules\Post\Models\Post;
 
 /**
  * @title({name="晒单管理"})

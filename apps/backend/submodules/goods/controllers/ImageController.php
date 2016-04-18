@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Goods\Controllers;
 
-use App\Backend\Models\Goods\GoodsCommon;
-use App\Backend\Models\Goods\SpecValue;
-use App\Backend\Models\Goods\Images;
+use App\Backend\Submodules\Goods\Models\GoodsCommon;
+use App\Backend\Submodules\Goods\Models\SpecValue;
+use App\Backend\Submodules\Goods\Models\Images;
 
 /**
  * @title({name="商品图片管理"})

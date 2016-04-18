@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Mail\Controllers;
 
-use App\Backend\Models\Mail\Settings;
+use App\Backend\Submodules\Mail\Models\Settings;
 
 /**
  * @title({name="邮件设置管理"})

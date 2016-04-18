@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Models\Weixin\Scene;
+use App\Backend\Submodules\Weixin\Models\Scene;
 
 /**
  * @title({name="微信二维码场景管理"})

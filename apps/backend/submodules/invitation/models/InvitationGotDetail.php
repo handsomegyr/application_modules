@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Invitation;
+namespace App\Backend\Submodules\Invitation\Models;
 
 class InvitationGotDetail extends \App\Common\Models\Invitation\InvitationGotDetail
 {

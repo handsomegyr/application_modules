@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixinredpack\Controllers;
 
-use App\Backend\Models\Weixinredpack\Redpack;
+use App\Backend\Submodules\Weixinredpack\Models\Redpack;
 
 /**
  * @title({name="红包管理"})

@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Article;
+namespace App\Backend\Submodules\Article\Models;
 
 use App\Backend\Models\Input;
 

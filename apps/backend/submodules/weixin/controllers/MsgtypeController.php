@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Models\Weixin\MsgType;
+use App\Backend\Submodules\Weixin\Models\MsgType;
 
 /**
  * @title({name="微信消息类型管理"})

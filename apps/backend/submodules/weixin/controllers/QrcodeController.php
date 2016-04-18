@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Models\Weixin\Qrcode;
+use App\Backend\Submodules\Weixin\Models\Qrcode;
 
 /**
  * @title({name="微信二维码推广场景管理"})

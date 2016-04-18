@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Tencent;
+namespace App\Backend\Submodules\Tencent\Models;
 
 class Application extends \App\Common\Models\Tencent\Application
 {

@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Task;
+namespace App\Backend\Submodules\Task\Models;
 
 class Log extends \App\Common\Models\Task\Log
 {

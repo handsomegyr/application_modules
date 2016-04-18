@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Exchange\Controllers;
 
-use App\Backend\Models\Exchange\Limit;
-use App\Backend\Models\Prize\Prize;
+use App\Backend\Submodules\Exchange\Models\Limit;
+use App\Backend\Submodules\Prize\Models\Prize;
 
 /**
  * @title({name="兑换限制管理"})

@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Payment;
+namespace App\Backend\Submodules\Payment\Models;
 
 class Payment extends \App\Common\Models\Payment\Payment
 {

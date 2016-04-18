@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Models\Weixin\Gender;
+use App\Backend\Submodules\Weixin\Models\Gender;
 
 /**
  * @title({name="微信性别管理"})

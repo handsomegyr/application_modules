@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Freight\Controllers;
 
-use App\Backend\Models\Freight\Express;
+use App\Backend\Submodules\Freight\Models\Express;
 
 /**
  * @title({name="快递公司管理"})

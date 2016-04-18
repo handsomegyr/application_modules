@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Exchange;
+namespace App\Backend\Submodules\Exchange\Models;
 
 class Rule extends \App\Common\Models\Exchange\Rule
 {

@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\System\Controllers;
 
-use App\Backend\Models\System\Enum;
+use App\Backend\Submodules\System\Models\Enum;
 
 /**
  * @title({name="枚举管理"})

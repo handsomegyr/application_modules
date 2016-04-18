@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Prize\Controllers;
 
-use App\Backend\Models\Prize\Code;
-use App\Backend\Models\Prize\Prize;
-use App\Backend\Models\System\Activity;
+use App\Backend\Submodules\Prize\Models\Code;
+use App\Backend\Submodules\Prize\Models\Prize;
+use App\Backend\Submodules\System\Models\Activity;
 
 /**
  * @title({name="奖品券码管理"})

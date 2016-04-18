@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Invitation\Controllers;
 
-use App\Backend\Models\Invitation\InvitationGotDetail;
-use App\Backend\Models\System\Activity;
+use App\Backend\Submodules\Invitation\Models\InvitationGotDetail;
+use App\Backend\Submodules\System\Models\Activity;
 
 /**
  * @title({name="邀请领取管理"})

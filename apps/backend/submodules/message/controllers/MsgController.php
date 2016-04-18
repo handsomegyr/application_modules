@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Message\Controllers;
 
-use App\Backend\Models\Message\Msg;
+use App\Backend\Submodules\Message\Models\Msg;
 
 /**
  * @title({name="私信管理"})

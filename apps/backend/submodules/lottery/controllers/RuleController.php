@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Lottery\Controllers;
 
-use App\Backend\Models\Lottery\Rule;
-use App\Backend\Models\Prize\Prize;
-use App\Backend\Models\System\Activity;
+use App\Backend\Submodules\Lottery\Models\Rule;
+use App\Backend\Submodules\Prize\Models\Prize;
+use App\Backend\Submodules\System\Models\Activity;
 
 /**
  * @title({name="抽奖概率管理"})

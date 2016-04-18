@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Exchange\Controllers;
 
-use App\Backend\Models\Exchange\Log;
+use App\Backend\Submodules\Exchange\Models\Log;
 
 /**
  * @title({name="兑换日志管理"})

@@ -21,15 +21,15 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'App\Backend\Models\System' => APP_PATH . 'apps/backend/submodules/system/models/',
-            'App\Backend\Models\Prize' => APP_PATH . 'apps/backend/submodules/prize/models/',
+            'App\Backend\Submodules\System\Models' => APP_PATH . 'apps/backend/submodules/system/models/',
+            'App\Backend\Submodules\Prize\Models' => APP_PATH . 'apps/backend/submodules/prize/models/',
             
             'App\Backend\Models' => APP_PATH . 'apps/backend/models/',
             'App\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
             'App\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
-            'App\Backend\Models\Weixinredpack' => __DIR__ . '/models/',
+            'App\Backend\Submodules\Weixinredpack\Models' => __DIR__ . '/models/',
             'App\Backend\Submodules\Weixinredpack\Controllers' => __DIR__ . '/controllers/'
         ));
         

@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Message\Controllers;
 
-use App\Backend\Models\Message\Template;
+use App\Backend\Submodules\Message\Models\Template;
 
 /**
  * @title({name="消息模版管理"})

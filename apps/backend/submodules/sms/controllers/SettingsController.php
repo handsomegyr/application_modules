@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Sms\Controllers;
 
-use App\Backend\Models\Sms\Settings;
+use App\Backend\Submodules\Sms\Models\Settings;
 
 /**
  * @title({name="短信设置管理"})

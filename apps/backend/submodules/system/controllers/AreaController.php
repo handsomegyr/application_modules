@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\System\Controllers;
 
-use App\Backend\Models\System\Area;
+use App\Backend\Submodules\System\Models\Area;
 
 /**
  * @title({name="全国行政区划管理"})

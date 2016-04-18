@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Weixinredpack;
+namespace App\Backend\Submodules\Weixinredpack\Models;
 
 class Customer extends \App\Common\Models\Weixinredpack\Customer
 {

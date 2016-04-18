@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Goods\Controllers;
 
-use App\Backend\Models\Goods\Ad;
-use App\Backend\Models\Goods\GoodsCommon;
+use App\Backend\Submodules\Goods\Models\Ad;
+use App\Backend\Submodules\Goods\Models\GoodsCommon;
 
 /**
  * @title({name="商品广告位管理"})

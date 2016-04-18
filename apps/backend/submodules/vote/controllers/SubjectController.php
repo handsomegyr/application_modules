@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Vote\Controllers;
 
-use App\Backend\Models\Vote\Subject;
-use App\Backend\Models\Vote\Category;
-use App\Backend\Models\System\Activity;
+use App\Backend\Submodules\Vote\Models\Subject;
+use App\Backend\Submodules\Vote\Models\Category;
+use App\Backend\Submodules\System\Models\Activity;
 
 /**
  * @title({name="投票主题管理"})

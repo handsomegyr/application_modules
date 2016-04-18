@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Lottery;
+namespace App\Backend\Submodules\Lottery\Models;
 
 class Record extends \App\Common\Models\Lottery\Record
 {

@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Models\Weixin\Callbackurls;
+use App\Backend\Submodules\Weixin\Models\Callbackurls;
 
 /**
  * @title({name="微信回调地址安全域名管理"})

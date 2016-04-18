@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Goods\Controllers;
 
-use App\Backend\Models\Goods\GoodsCommon;
-use App\Backend\Models\Goods\Fcode;
+use App\Backend\Submodules\Goods\Models\GoodsCommon;
+use App\Backend\Submodules\Goods\Models\Fcode;
 
 /**
  * @title({name="商品F码管理"})

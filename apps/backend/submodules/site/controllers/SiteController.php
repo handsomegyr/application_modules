@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Site\Controllers;
 
-use App\Backend\Models\Site\Site;
+use App\Backend\Submodules\Site\Models\Site;
 
 /**
  * @title({name="网站设置管理"})

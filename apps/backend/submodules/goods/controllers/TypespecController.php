@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Goods\Controllers;
 
-use App\Backend\Models\Goods\Spec;
-use App\Backend\Models\Goods\Type;
-use App\Backend\Models\Goods\TypeSpec;
+use App\Backend\Submodules\Goods\Models\Spec;
+use App\Backend\Submodules\Goods\Models\Type;
+use App\Backend\Submodules\Goods\Models\TypeSpec;
 
 /**
  * @title({name="商品类型规格管理"})

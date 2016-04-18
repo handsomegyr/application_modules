@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Points\Controllers;
 
-use App\Backend\Models\Points\Log;
-use App\Backend\Models\Points\Category;
+use App\Backend\Submodules\Points\Models\Log;
+use App\Backend\Submodules\Points\Models\Category;
 
 /**
  * @title({name="积分日志管理"})

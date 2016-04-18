@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Order\Controllers;
 
-use App\Backend\Models\Order\Goods;
+use App\Backend\Submodules\Order\Models\Goods;
 
 /**
  * @title({name="订单商品管理"})

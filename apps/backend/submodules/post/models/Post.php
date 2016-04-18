@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Post;
+namespace App\Backend\Submodules\Post\Models;
 
 class Post extends \App\Common\Models\Post\Post
 {

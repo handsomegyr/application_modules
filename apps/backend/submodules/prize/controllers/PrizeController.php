@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Prize\Controllers;
 
-use App\Backend\Models\Prize\Prize;
-use App\Backend\Models\Prize\Category;
+use App\Backend\Submodules\Prize\Models\Prize;
+use App\Backend\Submodules\Prize\Models\Category;
 
 /**
  * @title({name="奖品管理"})

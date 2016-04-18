@@ -21,7 +21,7 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(            
-            'App\Backend\Models\System' => __DIR__ . '/submodules/system/models/',
+            'App\Backend\Submodules\System\Models' => __DIR__ . '/submodules/system/models/',
             'App\Backend\Models' => __DIR__ . '/models/',
             'App\Backend\Controllers' => __DIR__ . '/controllers/',
             'App\Backend\Tags' => __DIR__ . '/tags/',

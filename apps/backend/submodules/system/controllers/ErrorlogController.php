@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\System\Controllers;
 
-use App\Backend\Models\System\ErrorLog;
+use App\Backend\Submodules\System\Models\ErrorLog;
 
 /**
  * @title({name="错误信息管理"})

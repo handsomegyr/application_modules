@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Points;
+namespace App\Backend\Submodules\Points\Models;
 
 class Rule extends \App\Common\Models\Points\Rule
 {

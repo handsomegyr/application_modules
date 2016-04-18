@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Weixinredpack\Controllers;
 
-use App\Backend\Models\Weixinredpack\Reissue;
+use App\Backend\Submodules\Weixinredpack\Models\Reissue;
 
 /**
  * @title({name="补发日志管理"})

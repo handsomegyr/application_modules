@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Freight;
+namespace App\Backend\Submodules\Freight\Models;
 
 class Express extends \App\Common\Models\Freight\Express
 {

@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Site;
+namespace App\Backend\Submodules\Site\Models;
 
 class Site extends \App\Common\Models\Site\Site
 {

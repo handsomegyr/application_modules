@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Exchange\Controllers;
 
-use App\Backend\Models\Exchange\Rule;
-use App\Backend\Models\Prize\Prize;
-use App\Backend\Models\Points\Category;
+use App\Backend\Submodules\Exchange\Models\Rule;
+use App\Backend\Submodules\Prize\Models\Prize;
+use App\Backend\Submodules\Points\Models\Category;
 
 /**
  * @title({name="兑换规则管理"})

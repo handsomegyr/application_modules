@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Prize\Controllers;
 
-use App\Backend\Models\Prize\Category;
+use App\Backend\Submodules\Prize\Models\Category;
 
 /**
  * @title({name="邀请管理"})

@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Tencent\Controllers;
 
-use App\Backend\Models\Tencent\AppKey;
+use App\Backend\Submodules\Tencent\Models\AppKey;
 
 /**
  * @title({name="腾讯-应用密码管理"})

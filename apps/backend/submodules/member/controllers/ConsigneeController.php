@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Member\Controllers;
 
-use App\Backend\Models\Member\Consignee;
+use App\Backend\Submodules\Member\Models\Consignee;
 use App\System\Models\Area;
 
 /**

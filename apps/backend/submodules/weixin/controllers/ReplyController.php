@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Models\Weixin\ReplyType;
-use App\Backend\Models\Weixin\Reply;
+use App\Backend\Submodules\Weixin\Models\ReplyType;
+use App\Backend\Submodules\Weixin\Models\Reply;
 
 /**
  * @title({name="微信回复管理"})

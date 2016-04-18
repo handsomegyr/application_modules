@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Vote\Controllers;
 
-use App\Backend\Models\Vote\LimitCategory;
+use App\Backend\Submodules\Vote\Models\LimitCategory;
 
 /**
  * @title({name="投票限制类别管理"})

@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\System;
+namespace App\Backend\Submodules\System\Models;
 
 class User extends \App\Common\Models\System\User
 {

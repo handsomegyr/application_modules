@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Article;
+namespace App\Backend\Submodules\Article\Models;
 
 class Article extends \App\Common\Models\Article\Article
 {

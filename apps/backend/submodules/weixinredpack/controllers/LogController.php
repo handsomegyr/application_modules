@@ -1,10 +1,10 @@
 <?php
 namespace App\Backend\Submodules\Weixinredpack\Controllers;
 
-use App\Backend\Models\Weixinredpack\GotLog;
-use App\Backend\Models\System\Activity;
-use App\Backend\Models\Weixinredpack\Redpack;
-use App\Backend\Models\Weixinredpack\Customer;
+use App\Backend\Submodules\Weixinredpack\Models\GotLog;
+use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\Weixinredpack\Models\Redpack;
+use App\Backend\Submodules\Weixinredpack\Models\Customer;
 
 /**
  * @title({name="红包领取日志管理"})

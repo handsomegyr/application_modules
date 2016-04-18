@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\System\Controllers;
 
-use App\Backend\Models\System\Menu;
+use App\Backend\Submodules\System\Models\Menu;
 
 /**
  * @title({name="菜单管理"})

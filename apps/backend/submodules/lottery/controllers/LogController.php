@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Lottery\Controllers;
 
-use App\Backend\Models\Lottery\Record;
-use App\Backend\Models\System\Activity;
-use App\Backend\Models\System\Source;
+use App\Backend\Submodules\Lottery\Models\Record;
+use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\System\Models\Source;
 
 /**
  * @title({name="抽奖日志管理"})

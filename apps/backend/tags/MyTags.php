@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Tags;
 
-use App\Backend\Models\System\Menu;
+use App\Backend\Submodules\System\Models\Menu;
 
 class MyTags extends \Phalcon\Tag
 {

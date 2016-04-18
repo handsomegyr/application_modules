@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Models\Sms;
+namespace App\Backend\Submodules\Sms\Models;
 
 class Settings extends \App\Common\Models\Sms\Settings
 {

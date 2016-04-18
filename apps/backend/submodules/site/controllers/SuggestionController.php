@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Site\Controllers;
 
-use App\Backend\Models\Site\Suggestion;
+use App\Backend\Submodules\Site\Models\Suggestion;
 
 /**
  * @title({name="网站投诉与建议管理"})

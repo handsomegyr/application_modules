@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Order\Controllers;
 
-use App\Backend\Models\Order\Statistics;
+use App\Backend\Submodules\Order\Models\Statistics;
 
 /**
  * @title({name="订单统计管理"})

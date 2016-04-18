@@ -1,9 +1,9 @@
 <?php
 namespace App\Backend\Submodules\Goods\Controllers;
 
-use App\Backend\Models\Goods\Brand;
-use App\Backend\Models\Goods\Type;
-use App\Backend\Models\Goods\TypeBrand;
+use App\Backend\Submodules\Goods\Models\Brand;
+use App\Backend\Submodules\Goods\Models\Type;
+use App\Backend\Submodules\Goods\Models\TypeBrand;
 
 /**
  * @title({name="商品类型品牌管理"})

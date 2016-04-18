@@ -1,8 +1,8 @@
 <?php
 namespace App\Backend\Submodules\Tencent\Controllers;
 
-use App\Backend\Models\Tencent\AppKey;
-use App\Backend\Models\Tencent\Application;
+use App\Backend\Submodules\Tencent\Models\AppKey;
+use App\Backend\Submodules\Tencent\Models\Application;
 
 /**
  * @title({name="腾讯-应用设置管理"})

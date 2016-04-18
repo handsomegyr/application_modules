@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Order\Controllers;
 
-use App\Backend\Models\Order\Pay;
+use App\Backend\Submodules\Order\Models\Pay;
 
 /**
  * @title({name="订单支付管理"})

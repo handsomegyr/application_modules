@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Payment\Controllers;
 
-use App\Backend\Models\Payment\Payment;
+use App\Backend\Submodules\Payment\Models\Payment;
 
 /**
  * @title({name="支付方式管理"})

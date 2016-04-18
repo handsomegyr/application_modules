@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Submodules\Site\Controllers;
 
-use App\Backend\Models\Site\Banner;
+use App\Backend\Submodules\Site\Models\Banner;
 
 /**
  * @title({name="网站Banner管理"})
