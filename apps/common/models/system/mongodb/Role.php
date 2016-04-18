@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mongodb\System;
+namespace App\Common\Models\System\Mongodb;
 
 use App\Common\Models\Mongodb\Base;
 
