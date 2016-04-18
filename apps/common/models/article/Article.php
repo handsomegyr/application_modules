@@ -8,6 +8,6 @@ class Article extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Article\Article());
+        $this->setModel(new \App\Common\Models\Article\Mysql\Article());
     }
 }

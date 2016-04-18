@@ -106,7 +106,7 @@ function registerAutoloaders()
             'App\Common\Models\Mongodb\Site' => APP_PATH . 'apps/common/models/site/mongodb/',
             'App\Common\Models\Site' => APP_PATH . 'apps/common/models/site/',
             
-            'App\Common\Models\Mysql\Article' => APP_PATH . 'apps/common/models/article/mysql/',
+            'App\Common\Models\Article\Mysql' => APP_PATH . 'apps/common/models/article/mysql/',
             'App\Common\Models\Mongodb\Article' => APP_PATH . 'apps/common/models/article/mongodb/',
             'App\Common\Models\Article' => APP_PATH . 'apps/common/models/article/',
             

@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Article;
+namespace App\Common\Models\Article\Mysql;
 
 use App\Common\Models\Mysql\Base;
 
