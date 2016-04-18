@@ -8,6 +8,6 @@ class Reply extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixin\Reply());
+        $this->setModel(new \App\Common\Models\Weixin\Mysql\Reply());
     }
 }

@@ -8,6 +8,6 @@ class Customer extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixinredpack\Customer());
+        $this->setModel(new \App\Common\Models\Weixinredpack\Mysql\Customer());
     }
 }

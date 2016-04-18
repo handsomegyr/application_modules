@@ -8,6 +8,6 @@ class SpecValue extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\SpecValue());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\SpecValue());
     }
 }

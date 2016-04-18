@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Tencent;
+namespace App\Common\Models\Tencent\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

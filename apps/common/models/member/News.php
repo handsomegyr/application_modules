@@ -22,6 +22,6 @@ class News extends Base
     
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Member\News());
+        $this->setModel(new \App\Common\Models\Member\Mysql\News());
     }
 }

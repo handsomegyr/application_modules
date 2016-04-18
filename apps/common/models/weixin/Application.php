@@ -8,6 +8,6 @@ class Application extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixin\Application());
+        $this->setModel(new \App\Common\Models\Weixin\Mysql\Application());
     }
 }

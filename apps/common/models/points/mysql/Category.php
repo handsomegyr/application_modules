@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Points;
+namespace App\Common\Models\Points\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

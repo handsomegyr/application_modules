@@ -8,6 +8,6 @@ class LimitCategory extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Vote\LimitCategory());
+        $this->setModel(new \App\Common\Models\Vote\Mysql\LimitCategory());
     }
 }

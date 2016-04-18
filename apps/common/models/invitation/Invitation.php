@@ -8,6 +8,6 @@ class Invitation extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Invitation\Invitation());
+        $this->setModel(new \App\Common\Models\Invitation\Mysql\Invitation());
     }
 }

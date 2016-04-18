@@ -8,6 +8,6 @@ class Payment extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Payment\Payment());
+        $this->setModel(new \App\Common\Models\Payment\Mysql\Payment());
     }
 }

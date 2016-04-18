@@ -8,6 +8,6 @@ class Code extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Prize\Code());
+        $this->setModel(new \App\Common\Models\Prize\Mysql\Code());
     }
 }

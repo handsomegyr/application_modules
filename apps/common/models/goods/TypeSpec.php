@@ -8,6 +8,6 @@ class TypeSpec extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\TypeSpec());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\TypeSpec());
     }
 }

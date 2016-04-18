@@ -8,6 +8,6 @@ class Item extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Vote\Item());
+        $this->setModel(new \App\Common\Models\Vote\Mysql\Item());
     }
 }

@@ -8,6 +8,6 @@ class RankPeriod extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Vote\RankPeriod());
+        $this->setModel(new \App\Common\Models\Vote\Mysql\RankPeriod());
     }
 }

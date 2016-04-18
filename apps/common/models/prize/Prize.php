@@ -8,6 +8,6 @@ class Prize extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Prize\Prize());
+        $this->setModel(new \App\Common\Models\Prize\Mysql\Prize());
     }
 }

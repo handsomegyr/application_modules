@@ -8,6 +8,6 @@ class ErrorLog extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\System\ErrorLog());
+        $this->setModel(new \App\Common\Models\System\Mysql\ErrorLog());
     }
 }

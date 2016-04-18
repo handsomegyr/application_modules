@@ -8,6 +8,6 @@ class Spec extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\Spec());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\Spec());
     }
 }

@@ -8,6 +8,6 @@ class NotKeyword extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixin\NotKeyword());
+        $this->setModel(new \App\Common\Models\Weixin\Mysql\NotKeyword());
     }
 }

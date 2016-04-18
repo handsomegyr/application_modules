@@ -8,6 +8,6 @@ class Visitor extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Member\Visitor());
+        $this->setModel(new \App\Common\Models\Member\Mysql\Visitor());
     }
 }

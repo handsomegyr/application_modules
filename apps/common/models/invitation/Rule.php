@@ -8,6 +8,6 @@ class Rule extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Invitation\Rule());
+        $this->setModel(new \App\Common\Models\Invitation\Mysql\Rule());
     }
 }

@@ -8,6 +8,6 @@ class Limit extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Lottery\Limit());
+        $this->setModel(new \App\Common\Models\Lottery\Mysql\Limit());
     }
 }

@@ -8,6 +8,6 @@ class Consignee extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Member\Consignee());
+        $this->setModel(new \App\Common\Models\Member\Mysql\Consignee());
     }
 }

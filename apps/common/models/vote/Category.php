@@ -8,6 +8,6 @@ class Category extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Vote\Category());
+        $this->setModel(new \App\Common\Models\Vote\Mysql\Category());
     }
 }

@@ -30,79 +30,79 @@ function registerAutoloaders()
             'App\Common\Models\Mongodb' => APP_PATH . 'apps/common/models/base/mongodb/',
             'App\Common\Models\Mysql' => APP_PATH . 'apps/common/models/base/mysql/',
             
-            'App\Common\Models\Mysql\Goods' => APP_PATH . 'apps/common/models/goods/mysql/',
+            'App\Common\Models\Goods\Mysql' => APP_PATH . 'apps/common/models/goods/mysql/',
             'App\Common\Models\Mongodb\Goods' => APP_PATH . 'apps/common/models/goods/mongodb/',
             'App\Common\Models\Goods' => APP_PATH . 'apps/common/models/goods/',
             
-            'App\Common\Models\Mysql\Lottery' => APP_PATH . 'apps/common/models/lottery/mysql/',
+            'App\Common\Models\Lottery\Mysql' => APP_PATH . 'apps/common/models/lottery/mysql/',
             'App\Common\Models\Mongodb\Lottery' => APP_PATH . 'apps/common/models/lottery/mongodb/',
             'App\Common\Models\Lottery' => APP_PATH . 'apps/common/models/lottery/',
             
-            'App\Common\Models\Mysql\Mail' => APP_PATH . 'apps/common/models/mail/mysql/',
+            'App\Common\Models\Mail\Mysql' => APP_PATH . 'apps/common/models/mail/mysql/',
             'App\Common\Models\Mongodb\Mail' => APP_PATH . 'apps/common/models/mail/mongodb/',
             'App\Common\Models\Mail' => APP_PATH . 'apps/common/models/mail/',
             
-            'App\Common\Models\Mysql\Message' => APP_PATH . 'apps/common/models/message/mysql/',
+            'App\Common\Models\Message\Mysql' => APP_PATH . 'apps/common/models/message/mysql/',
             'App\Common\Models\Mongodb\Message' => APP_PATH . 'apps/common/models/message/mongodb/',
             'App\Common\Models\Message' => APP_PATH . 'apps/common/models/message/',
             
-            'App\Common\Models\Mysql\Payment' => APP_PATH . 'apps/common/models/payment/mysql/',
+            'App\Common\Models\Payment\Mysql' => APP_PATH . 'apps/common/models/payment/mysql/',
             'App\Common\Models\Mongodb\Payment' => APP_PATH . 'apps/common/models/payment/mongodb/',
             'App\Common\Models\Payment' => APP_PATH . 'apps/common/models/payment/',
             
-            'App\Common\Models\Mysql\Points' => APP_PATH . 'apps/common/models/points/mysql/',
+            'App\Common\Models\Points\Mysql' => APP_PATH . 'apps/common/models/points/mysql/',
             'App\Common\Models\Mongodb\Points' => APP_PATH . 'apps/common/models/points/mongodb/',
             'App\Common\Models\Points' => APP_PATH . 'apps/common/models/points/',
             
-            'App\Common\Models\Mysql\Sms' => APP_PATH . 'apps/common/models/sms/mysql/',
+            'App\Common\Models\Sms\Mysql' => APP_PATH . 'apps/common/models/sms/mysql/',
             'App\Common\Models\Mongodb\Sms' => APP_PATH . 'apps/common/models/sms/mongodb/',
             'App\Common\Models\Sms' => APP_PATH . 'apps/common/models/sms/',
             
-            'App\Common\Models\Mysql\System' => APP_PATH . 'apps/common/models/system/mysql/',
+            'App\Common\Models\System\Mysql' => APP_PATH . 'apps/common/models/system/mysql/',
             'App\Common\Models\Mongodb\System' => APP_PATH . 'apps/common/models/system/mongodb/',
             'App\Common\Models\System' => APP_PATH . 'apps/common/models/system/',
             
-            'App\Common\Models\Mysql\Tencent' => APP_PATH . 'apps/common/models/tencent/mysql/',
+            'App\Common\Models\Tencent\Mysql' => APP_PATH . 'apps/common/models/tencent/mysql/',
             'App\Common\Models\Mongodb\Tencent' => APP_PATH . 'apps/common/models/tencent/mongodb/',
             'App\Common\Models\Tencent' => APP_PATH . 'apps/common/models/tencent/',
             
-            'App\Common\Models\Mysql\Weixin' => APP_PATH . 'apps/common/models/weixin/mysql/',
+            'App\Common\Models\Weixin\Mysql' => APP_PATH . 'apps/common/models/weixin/mysql/',
             'App\Common\Models\Mongodb\Weixin' => APP_PATH . 'apps/common/models/weixin/mongodb/',
             'App\Common\Models\Weixin' => APP_PATH . 'apps/common/models/weixin/',
             
-            'App\Common\Models\Mysql\Member' => APP_PATH . 'apps/common/models/member/mysql/',
+            'App\Common\Models\Member\Mysql' => APP_PATH . 'apps/common/models/member/mysql/',
             'App\Common\Models\Mongodb\Member' => APP_PATH . 'apps/common/models/member/mongodb/',
             'App\Common\Models\Member' => APP_PATH . 'apps/common/models/member/',
             
-            'App\Common\Models\Mysql\Order' => APP_PATH . 'apps/common/models/order/mysql/',
+            'App\Common\Models\Order\Mysql' => APP_PATH . 'apps/common/models/order/mysql/',
             'App\Common\Models\Mongodb\Order' => APP_PATH . 'apps/common/models/order/mongodb/',
             'App\Common\Models\Order' => APP_PATH . 'apps/common/models/order/',
             
-            'App\Common\Models\Mysql\Store' => APP_PATH . 'apps/common/models/store/mysql/',
+            'App\Common\Models\Store\Mysql' => APP_PATH . 'apps/common/models/store/mysql/',
             'App\Common\Models\Mongodb\Store' => APP_PATH . 'apps/common/models/store/mongodb/',
             'App\Common\Models\Store' => APP_PATH . 'apps/common/models/store/',
             
-            'App\Common\Models\Mysql\System' => APP_PATH . 'apps/common/models/system/mysql/',
+            'App\Common\Models\System\Mysql' => APP_PATH . 'apps/common/models/system/mysql/',
             'App\Common\Models\Mongodb\System' => APP_PATH . 'apps/common/models/system/mongodb/',
             'App\Common\Models\System' => APP_PATH . 'apps/common/models/system/',
             
-            'App\Common\Models\Mysql\Message' => APP_PATH . 'apps/common/models/message/mysql/',
+            'App\Common\Models\Message\Mysql' => APP_PATH . 'apps/common/models/message/mysql/',
             'App\Common\Models\Mongodb\Message' => APP_PATH . 'apps/common/models/message/mongodb/',
             'App\Common\Models\Message' => APP_PATH . 'apps/common/models/message/',
             
-            'App\Common\Models\Mysql\Prize' => APP_PATH . 'apps/common/models/prize/mysql/',
+            'App\Common\Models\Prize\Mysql' => APP_PATH . 'apps/common/models/prize/mysql/',
             'App\Common\Models\Mongodb\Prize' => APP_PATH . 'apps/common/models/prize/mongodb/',
             'App\Common\Models\Prize' => APP_PATH . 'apps/common/models/prize/',
             
-            'App\Common\Models\Mysql\Invitation' => APP_PATH . 'apps/common/models/invitation/mysql/',
+            'App\Common\Models\Invitation\Mysql' => APP_PATH . 'apps/common/models/invitation/mysql/',
             'App\Common\Models\Mongodb\Invitation' => APP_PATH . 'apps/common/models/invitation/mongodb/',
             'App\Common\Models\Invitation' => APP_PATH . 'apps/common/models/invitation/',
             
-            'App\Common\Models\Mysql\Post' => APP_PATH . 'apps/common/models/post/mysql/',
+            'App\Common\Models\Post\Mysql' => APP_PATH . 'apps/common/models/post/mysql/',
             'App\Common\Models\Mongodb\Post' => APP_PATH . 'apps/common/models/post/mongodb/',
             'App\Common\Models\Post' => APP_PATH . 'apps/common/models/post/',
             
-            'App\Common\Models\Mysql\Site' => APP_PATH . 'apps/common/models/site/mysql/',
+            'App\Common\Models\Site\Mysql' => APP_PATH . 'apps/common/models/site/mysql/',
             'App\Common\Models\Mongodb\Site' => APP_PATH . 'apps/common/models/site/mongodb/',
             'App\Common\Models\Site' => APP_PATH . 'apps/common/models/site/',
             
@@ -110,19 +110,19 @@ function registerAutoloaders()
             'App\Common\Models\Mongodb\Article' => APP_PATH . 'apps/common/models/article/mongodb/',
             'App\Common\Models\Article' => APP_PATH . 'apps/common/models/article/',
             
-            'App\Common\Models\Mysql\Freight' => APP_PATH . 'apps/common/models/freight/mysql/',
+            'App\Common\Models\Freight\Mysql' => APP_PATH . 'apps/common/models/freight/mysql/',
             'App\Common\Models\Mongodb\Freight' => APP_PATH . 'apps/common/models/freight/mongodb/',
             'App\Common\Models\Freight' => APP_PATH . 'apps/common/models/freight/',
             
-            'App\Common\Models\Mysql\Task' => APP_PATH . 'apps/common/models/task/mysql/',
+            'App\Common\Models\Task\Mysql' => APP_PATH . 'apps/common/models/task/mysql/',
             'App\Common\Models\Mongodb\Task' => APP_PATH . 'apps/common/models/task/mongodb/',
             'App\Common\Models\Task' => APP_PATH . 'apps/common/models/task/',
             
-            'App\Common\Models\Mysql\Vote' => APP_PATH . 'apps/common/models/vote/mysql/',
+            'App\Common\Models\Vote\Mysql' => APP_PATH . 'apps/common/models/vote/mysql/',
             'App\Common\Models\Mongodb\Vote' => APP_PATH . 'apps/common/models/vote/mongodb/',
             'App\Common\Models\Vote' => APP_PATH . 'apps/common/models/vote/',
             
-            'App\Common\Models\Mysql\Weixinredpack' => APP_PATH . 'apps/common/models/weixinredpack/mysql/',
+            'App\Common\Models\Weixinredpack\Mysql' => APP_PATH . 'apps/common/models/weixinredpack/mysql/',
             'App\Common\Models\Mongodb\Weixinredpack' => APP_PATH . 'apps/common/models/weixinredpack/mongodb/',
             'App\Common\Models\Weixinredpack' => APP_PATH . 'apps/common/models/weixinredpack/',
             

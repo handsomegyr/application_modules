@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Weixin;
+namespace App\Common\Models\Weixin\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

@@ -32,7 +32,7 @@ class Post extends Base
     const STATE2 = 2; // 审核通过
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Post\Post());
+        $this->setModel(new \App\Common\Models\Post\Mysql\Post());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

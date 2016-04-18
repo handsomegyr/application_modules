@@ -8,6 +8,6 @@ class Browse extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\Browse());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\Browse());
     }
 }

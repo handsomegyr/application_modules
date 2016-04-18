@@ -40,7 +40,7 @@ class GoodsCommon extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\GoodsCommon());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\GoodsCommon());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

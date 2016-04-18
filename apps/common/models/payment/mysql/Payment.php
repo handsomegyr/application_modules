@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Payment;
+namespace App\Common\Models\Payment\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

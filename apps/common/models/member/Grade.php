@@ -8,6 +8,6 @@ class Grade extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Member\Grade());
+        $this->setModel(new \App\Common\Models\Member\Mysql\Grade());
     }
 }

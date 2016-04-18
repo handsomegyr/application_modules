@@ -8,6 +8,6 @@ class MsgCount extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Message\MsgCount());
+        $this->setModel(new \App\Common\Models\Message\Mysql\MsgCount());
     }
 }

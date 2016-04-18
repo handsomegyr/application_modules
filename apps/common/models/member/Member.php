@@ -53,7 +53,7 @@ class Member extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Member\Member());
+        $this->setModel(new \App\Common\Models\Member\Mysql\Member());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

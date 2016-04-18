@@ -8,6 +8,6 @@ class Redpack extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixinredpack\Redpack());
+        $this->setModel(new \App\Common\Models\Weixinredpack\Mysql\Redpack());
     }
 }

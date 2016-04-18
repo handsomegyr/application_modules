@@ -8,7 +8,7 @@ class Site extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Site\Site());
+        $this->setModel(new \App\Common\Models\Site\Mysql\Site());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

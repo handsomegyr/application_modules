@@ -8,6 +8,6 @@ class Limit extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Vote\Limit());
+        $this->setModel(new \App\Common\Models\Vote\Mysql\Limit());
     }
 }

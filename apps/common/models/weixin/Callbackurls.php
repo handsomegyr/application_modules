@@ -8,6 +8,6 @@ class Callbackurls extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixin\Callbackurls());
+        $this->setModel(new \App\Common\Models\Weixin\Mysql\Callbackurls());
     }
 }

@@ -8,6 +8,6 @@ class MsgStatistics extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Message\MsgStatistics());
+        $this->setModel(new \App\Common\Models\Message\Mysql\MsgStatistics());
     }
 }

@@ -8,7 +8,7 @@ class Images extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\Images());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\Images());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

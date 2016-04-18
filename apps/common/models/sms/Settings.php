@@ -8,6 +8,6 @@ class Settings extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Sms\Settings());
+        $this->setModel(new \App\Common\Models\Sms\Mysql\Settings());
     }
 }

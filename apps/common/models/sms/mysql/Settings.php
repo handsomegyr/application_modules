@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Sms;
+namespace App\Common\Models\Sms\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

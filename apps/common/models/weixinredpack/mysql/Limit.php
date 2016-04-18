@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Weixinredpack;
+namespace App\Common\Models\Weixinredpack\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

@@ -65,7 +65,7 @@ class Goods extends Base
     const VERIFY10 = 10; // 等待审核
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\Goods());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\Goods());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

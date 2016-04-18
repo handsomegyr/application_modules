@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Lottery;
+namespace App\Common\Models\Lottery\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

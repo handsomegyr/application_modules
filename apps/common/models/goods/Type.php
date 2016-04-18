@@ -8,6 +8,6 @@ class Type extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\Type());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\Type());
     }
 }

@@ -8,6 +8,6 @@ class Log extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Points\Log());
+        $this->setModel(new \App\Common\Models\Points\Mysql\Log());
     }
 }

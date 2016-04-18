@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Common\Models\Mysql\Vote;
+namespace App\Common\Models\Vote\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

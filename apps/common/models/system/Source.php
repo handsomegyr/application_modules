@@ -8,6 +8,6 @@ class Source extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\System\Source());
+        $this->setModel(new \App\Common\Models\System\Mysql\Source());
     }
 }

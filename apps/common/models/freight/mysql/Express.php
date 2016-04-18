@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Freight;
+namespace App\Common\Models\Freight\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

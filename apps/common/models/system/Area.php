@@ -8,6 +8,6 @@ class Area extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\System\Area());
+        $this->setModel(new \App\Common\Models\System\Mysql\Area());
     }
 }

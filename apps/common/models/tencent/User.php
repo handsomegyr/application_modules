@@ -8,6 +8,6 @@ class User extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Tencent\User());
+        $this->setModel(new \App\Common\Models\Tencent\Mysql\User());
     }
 }

@@ -8,6 +8,6 @@ class Fcode extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\Fcode());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\Fcode());
     }
 }

@@ -8,6 +8,6 @@ class AppKey extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Tencent\AppKey());
+        $this->setModel(new \App\Common\Models\Tencent\Mysql\AppKey());
     }
 }

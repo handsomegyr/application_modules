@@ -8,6 +8,6 @@ class Activity extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\System\Activity());
+        $this->setModel(new \App\Common\Models\System\Mysql\Activity());
     }
 }

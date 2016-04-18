@@ -28,6 +28,6 @@ class Report extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Member\Report());
+        $this->setModel(new \App\Common\Models\Member\Mysql\Report());
     }
 }

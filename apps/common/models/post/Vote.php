@@ -8,6 +8,6 @@ class Vote extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Post\Vote());
+        $this->setModel(new \App\Common\Models\Post\Mysql\Vote());
     }
 }

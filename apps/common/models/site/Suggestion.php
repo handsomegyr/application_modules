@@ -8,6 +8,6 @@ class Suggestion extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Site\Suggestion());
+        $this->setModel(new \App\Common\Models\Site\Mysql\Suggestion());
     }
 }

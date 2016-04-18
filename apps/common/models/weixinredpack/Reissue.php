@@ -8,6 +8,6 @@ class Reissue extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixinredpack\Reissue());
+        $this->setModel(new \App\Common\Models\Weixinredpack\Mysql\Reissue());
     }
 }

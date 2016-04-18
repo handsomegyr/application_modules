@@ -8,6 +8,6 @@ class Keyword extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixin\Keyword());
+        $this->setModel(new \App\Common\Models\Weixin\Mysql\Keyword());
     }
 }

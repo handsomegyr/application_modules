@@ -8,6 +8,6 @@ class Exchange extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Lottery\Exchange());
+        $this->setModel(new \App\Common\Models\Lottery\Mysql\Exchange());
     }
 }

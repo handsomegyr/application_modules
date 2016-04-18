@@ -8,6 +8,6 @@ class Record extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Lottery\Record());
+        $this->setModel(new \App\Common\Models\Lottery\Mysql\Record());
     }
 }

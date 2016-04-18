@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Order;
+namespace App\Common\Models\Order\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

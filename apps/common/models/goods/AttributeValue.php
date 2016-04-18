@@ -8,6 +8,6 @@ class AttributeValue extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\AttributeValue());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\AttributeValue());
     }
 }

@@ -8,6 +8,6 @@ class Template extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Message\Template());
+        $this->setModel(new \App\Common\Models\Message\Mysql\Template());
     }
 }

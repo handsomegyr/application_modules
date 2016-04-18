@@ -28,7 +28,7 @@ $loader->registerNamespaces(array(
     'App\Common\Models' => APP_PATH . 'apps/common/models/base/',
     'App\Common\Models\Mongodb' => APP_PATH . 'apps/common/models/base/mongodb/',
     'App\Common\Models\Mysql' => APP_PATH . 'apps/common/models/base/mysql/',
-    'App\Common\Models\Mysql\Weixin' => APP_PATH . 'apps/common/models/weixin/mysql/',
+    'App\Common\Models\Weixin\Mysql' => APP_PATH . 'apps/common/models/weixin/mysql/',
     'App\Common\Models\Mongodb\Weixin' => APP_PATH . 'apps/common/models/weixin/mongodb/',
     'App\Weixin\Models' => APP_PATH . 'apps/weixin/models/',
     'App\Lottery\Models' => APP_PATH . 'apps/lottery/models/'

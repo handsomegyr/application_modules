@@ -8,6 +8,6 @@ class ScriptTracking extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixin\ScriptTracking());
+        $this->setModel(new \App\Common\Models\Weixin\Mysql\ScriptTracking());
     }
 }

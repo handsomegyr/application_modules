@@ -8,6 +8,6 @@ class Friend extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Member\Friend());
+        $this->setModel(new \App\Common\Models\Member\Mysql\Friend());
     }
 }

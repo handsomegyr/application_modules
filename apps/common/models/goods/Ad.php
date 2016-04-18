@@ -8,6 +8,6 @@ class Ad extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\Ad());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\Ad());
     }
 }

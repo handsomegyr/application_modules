@@ -8,6 +8,6 @@ class OrderCommon extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Order\OrderCommon());
+        $this->setModel(new \App\Common\Models\Order\Mysql\OrderCommon());
     }
 }

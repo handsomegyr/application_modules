@@ -8,6 +8,6 @@ class User extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\System\User());
+        $this->setModel(new \App\Common\Models\System\Mysql\User());
     }
 }

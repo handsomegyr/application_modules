@@ -12,6 +12,6 @@ class Log extends Base
     const ROLE_ADMIN = 'admin'; // 管理员
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Order\Log());
+        $this->setModel(new \App\Common\Models\Order\Mysql\Log());
     }
 }

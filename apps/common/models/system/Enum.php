@@ -8,6 +8,6 @@ class Enum extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\System\Enum());
+        $this->setModel(new \App\Common\Models\System\Mysql\Enum());
     }
 }

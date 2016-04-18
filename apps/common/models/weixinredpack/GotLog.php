@@ -8,6 +8,6 @@ class GotLog extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixinredpack\GotLog());
+        $this->setModel(new \App\Common\Models\Weixinredpack\Mysql\GotLog());
     }
 }

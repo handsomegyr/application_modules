@@ -8,6 +8,6 @@ class ReplyType extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixin\ReplyType());
+        $this->setModel(new \App\Common\Models\Weixin\Mysql\ReplyType());
     }
 }

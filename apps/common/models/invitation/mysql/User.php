@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Invitation;
+namespace App\Common\Models\Invitation\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

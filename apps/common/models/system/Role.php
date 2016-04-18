@@ -8,6 +8,6 @@ class Role extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\System\Role());
+        $this->setModel(new \App\Common\Models\System\Mysql\Role());
     }
 }

@@ -68,6 +68,6 @@ class Goods extends Base
     const ORDER_STATE11 = 11; // 已取消
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Order\Goods());
+        $this->setModel(new \App\Common\Models\Order\Mysql\Goods());
     }
 }

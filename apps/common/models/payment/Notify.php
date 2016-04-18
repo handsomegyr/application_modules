@@ -8,6 +8,6 @@ class Notify extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Payment\Notify());
+        $this->setModel(new \App\Common\Models\Payment\Mysql\Notify());
     }
 }

@@ -8,6 +8,6 @@ class Settings extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Mail\Settings());
+        $this->setModel(new \App\Common\Models\Mail\Mysql\Settings());
     }
 }

@@ -8,6 +8,6 @@ class ReplyMsg extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Message\ReplyMsg());
+        $this->setModel(new \App\Common\Models\Message\Mysql\ReplyMsg());
     }
 }

@@ -8,6 +8,6 @@ class Subject extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Vote\Subject());
+        $this->setModel(new \App\Common\Models\Vote\Mysql\Subject());
     }
 }

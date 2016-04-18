@@ -8,6 +8,6 @@ class CategoryTag extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\CategoryTag());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\CategoryTag());
     }
 }

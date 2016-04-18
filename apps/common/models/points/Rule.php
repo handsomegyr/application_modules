@@ -8,6 +8,6 @@ class Rule extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Points\Rule());
+        $this->setModel(new \App\Common\Models\Points\Mysql\Rule());
     }
 }

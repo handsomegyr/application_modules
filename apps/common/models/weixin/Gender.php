@@ -8,6 +8,6 @@ class Gender extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixin\Gender());
+        $this->setModel(new \App\Common\Models\Weixin\Mysql\Gender());
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql\Task;
+namespace App\Common\Models\Task\Mysql;
 
 use App\Common\Models\Mysql\Base;
 

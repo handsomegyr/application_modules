@@ -8,7 +8,7 @@ class Brand extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\Brand());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\Brand());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

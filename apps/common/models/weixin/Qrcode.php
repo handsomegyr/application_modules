@@ -11,6 +11,6 @@ class Qrcode extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Weixin\Qrcode());
+        $this->setModel(new \App\Common\Models\Weixin\Mysql\Qrcode());
     }
 }

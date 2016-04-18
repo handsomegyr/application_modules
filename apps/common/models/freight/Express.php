@@ -8,6 +8,6 @@ class Express extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Freight\Express());
+        $this->setModel(new \App\Common\Models\Freight\Mysql\Express());
     }
 }

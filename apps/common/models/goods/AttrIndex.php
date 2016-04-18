@@ -8,6 +8,6 @@ class AttrIndex extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Goods\AttrIndex());
+        $this->setModel(new \App\Common\Models\Goods\Mysql\AttrIndex());
     }
 }

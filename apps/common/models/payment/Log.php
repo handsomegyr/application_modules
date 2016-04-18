@@ -12,6 +12,6 @@ class Log extends Base
     const TYPE3 = 3; // 转账
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Payment\Log());
+        $this->setModel(new \App\Common\Models\Payment\Mysql\Log());
     }
 }

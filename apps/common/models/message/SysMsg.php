@@ -8,6 +8,6 @@ class SysMsg extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Message\SysMsg());
+        $this->setModel(new \App\Common\Models\Message\Mysql\SysMsg());
     }
 }
