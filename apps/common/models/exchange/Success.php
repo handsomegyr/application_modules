@@ -8,6 +8,6 @@ class Success extends Base
 
     function __construct()
     {
-        $this->setModel(new \App\Common\Models\Mysql\Exchange\Success());
+        $this->setModel(new \App\Common\Models\Exchange\Mysql\Success());
     }
 }
