@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Post;
+namespace App\Backend\Submodules\Post\Controllers;
 
 use App\Backend\Models\Post\Post;
 

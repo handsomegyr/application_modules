@@ -29,7 +29,7 @@ class Module
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
             'App\Backend\Models\Task' => __DIR__ . '/models/',
-            'App\Backend\Controllers\Task' => __DIR__ . '/controllers/'
+            'App\Backend\Submodules\Task\Controllers' => __DIR__ . '/controllers/'
         ));
         
         $loader->register();
@@ -63,7 +63,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("App\Backend\Controllers\Task");
+            $dispatcher->setDefaultNamespace("App\Backend\Submodules\Task\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);

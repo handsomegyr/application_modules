@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Invitation;
+namespace App\Backend\Submodules\Invitation\Controllers;
 
 use App\Backend\Models\Invitation\Rule;
 use App\Backend\Models\System\Activity;

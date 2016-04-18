@@ -29,7 +29,7 @@ class Module
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
             'App\Backend\Models\Payment' => __DIR__ . '/models/',
-            'App\Backend\Controllers\Payment' => __DIR__ . '/controllers/'
+            'App\Backend\Submodules\Payment\Controllers' => __DIR__ . '/controllers/'
         ));
         
         $loader->register();
@@ -63,7 +63,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("App\Backend\Controllers\Payment");
+            $dispatcher->setDefaultNamespace("App\Backend\Submodules\Payment\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);

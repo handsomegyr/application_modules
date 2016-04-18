@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Store;
+namespace App\Backend\Submodules\Store\Controllers;
 
 use App\Backend\Models\Store\Store;
 

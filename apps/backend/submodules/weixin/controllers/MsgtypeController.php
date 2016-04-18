@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Weixin;
+namespace App\Backend\Submodules\Weixin\Controllers;
 
 use App\Backend\Models\Weixin\MsgType;
 

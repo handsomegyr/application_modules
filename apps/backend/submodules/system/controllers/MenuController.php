@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\System;
+namespace App\Backend\Submodules\System\Controllers;
 
 use App\Backend\Models\System\Menu;
 

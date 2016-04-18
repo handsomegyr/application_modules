@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Weixinredpack;
+namespace App\Backend\Submodules\Weixinredpack\Controllers;
 
 use App\Backend\Models\Weixinredpack\Redpack;
 

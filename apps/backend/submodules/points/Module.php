@@ -31,7 +31,7 @@ class Module
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
             'App\Backend\Models\Points' => __DIR__ . '/models/',
-            'App\Backend\Controllers\Points' => __DIR__ . '/controllers/'
+            'App\Backend\Submodules\Points\Controllers' => __DIR__ . '/controllers/'
         ));
         
         $loader->register();
@@ -65,7 +65,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("App\Backend\Controllers\Points");
+            $dispatcher->setDefaultNamespace("App\Backend\Submodules\Points\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);

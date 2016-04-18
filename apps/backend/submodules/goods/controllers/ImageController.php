@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Goods;
+namespace App\Backend\Submodules\Goods\Controllers;
 
 use App\Backend\Models\Goods\GoodsCommon;
 use App\Backend\Models\Goods\SpecValue;

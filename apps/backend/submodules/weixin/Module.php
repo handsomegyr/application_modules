@@ -32,7 +32,7 @@ class Module
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
             'App\Backend\Models\Weixin' => __DIR__ . '/models/',
-            'App\Backend\Controllers\Weixin' => __DIR__ . '/controllers/'
+            'App\Backend\Submodules\Weixin\Controllers' => __DIR__ . '/controllers/'
         ));
         
         $loader->register();
@@ -66,7 +66,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("App\Backend\Controllers\Weixin");
+            $dispatcher->setDefaultNamespace("App\Backend\Submodules\Weixin\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);

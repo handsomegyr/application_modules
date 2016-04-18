@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Exchange;
+namespace App\Backend\Submodules\Exchange\Controllers;
 
 use App\Backend\Models\Exchange\Limit;
 use App\Backend\Models\Prize\Prize;

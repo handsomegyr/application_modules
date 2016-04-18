@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Task;
+namespace App\Backend\Submodules\Task\Controllers;
 
 use App\Backend\Models\Task\Log;
 

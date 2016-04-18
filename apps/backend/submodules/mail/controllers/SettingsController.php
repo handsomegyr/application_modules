@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Mail;
+namespace App\Backend\Submodules\Mail\Controllers;
 
 use App\Backend\Models\Mail\Settings;
 

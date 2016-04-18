@@ -30,7 +30,7 @@ class Module
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
             'App\Backend\Models\Order' => __DIR__ . '/models/',
-            'App\Backend\Controllers\Order' => __DIR__ . '/controllers/'
+            'App\Backend\Submodules\Order\Controllers' => __DIR__ . '/controllers/'
         ));
         
         $loader->register();
@@ -64,7 +64,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("App\Backend\Controllers\Order");
+            $dispatcher->setDefaultNamespace("App\Backend\Submodules\Order\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);

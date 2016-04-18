@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Freight;
+namespace App\Backend\Submodules\Freight\Controllers;
 
 use App\Backend\Models\Freight\Express;
 

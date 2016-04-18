@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Message;
+namespace App\Backend\Submodules\Message\Controllers;
 
 use App\Backend\Models\Message\SysMsg;
 

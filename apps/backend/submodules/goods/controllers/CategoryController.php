@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Goods;
+namespace App\Backend\Submodules\Goods\Controllers;
 
 use App\Backend\Models\Goods\Category;
 use App\Backend\Models\Goods\Type;

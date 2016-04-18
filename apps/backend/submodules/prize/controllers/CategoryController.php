@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Prize;
+namespace App\Backend\Submodules\Prize\Controllers;
 
 use App\Backend\Models\Prize\Category;
 

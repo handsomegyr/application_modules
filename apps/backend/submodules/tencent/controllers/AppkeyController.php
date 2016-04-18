@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Tencent;
+namespace App\Backend\Submodules\Tencent\Controllers;
 
 use App\Backend\Models\Tencent\AppKey;
 

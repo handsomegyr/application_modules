@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Lottery;
+namespace App\Backend\Submodules\Lottery\Controllers;
 
 use App\Backend\Models\Lottery\Exchange;
 use App\Backend\Models\Prize\Prize;

@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Order;
+namespace App\Backend\Submodules\Order\Controllers;
 
 use App\Backend\Models\Order\Pay;
 

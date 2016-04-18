@@ -103,7 +103,7 @@ class MyTags extends \Phalcon\Tag
                 $c = self::methodToRouter($c);
                 $c = strtolower($c);
                 
-                // if($class == 'App\Backend\Controllers\Weixin\ReplyTypeController'){
+                // if($class == 'App\Backend\Submodules\Weixin\Controllers\ReplyTypeController'){
                 // die($c);
                 // }
                 

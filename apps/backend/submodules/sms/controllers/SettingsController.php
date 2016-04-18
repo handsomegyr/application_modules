@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Sms;
+namespace App\Backend\Submodules\Sms\Controllers;
 
 use App\Backend\Models\Sms\Settings;
 

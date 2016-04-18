@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Vote;
+namespace App\Backend\Submodules\Vote\Controllers;
 
 use App\Backend\Models\Vote\LimitCategory;
 

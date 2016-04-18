@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Site;
+namespace App\Backend\Submodules\Site\Controllers;
 
 use App\Backend\Models\Site\Suggestion;
 

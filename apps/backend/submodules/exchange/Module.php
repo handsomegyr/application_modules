@@ -31,7 +31,7 @@ class Module
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
             'App\Backend\Models\Exchange' => __DIR__ . '/models/',
-            'App\Backend\Controllers\Exchange' => __DIR__ . '/controllers/'
+            'App\Backend\Submodules\Exchange\Controllers' => __DIR__ . '/controllers/'
         ));
         
         $loader->register();
@@ -65,7 +65,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("App\Backend\Controllers\Exchange");
+            $dispatcher->setDefaultNamespace("App\Backend\Submodules\Exchange\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);

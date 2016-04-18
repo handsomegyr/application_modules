@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Points;
+namespace App\Backend\Submodules\Points\Controllers;
 
 use App\Backend\Models\Points\Log;
 use App\Backend\Models\Points\Category;

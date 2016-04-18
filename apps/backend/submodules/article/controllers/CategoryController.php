@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Controllers\Article;
+namespace App\Backend\Submodules\Article\Controllers;
 
 use App\Backend\Models\Article\Category;
 
