@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Payment;
+namespace App\Common\Models\Payment;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Notify extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Payment\Notify());
+        $this->setModel(new \App\Common\Models\Mysql\Payment\Notify());
     }
 }

@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Weixin\Controllers;
+namespace App\Weixin\Controllers;
 
-use Webcms\Weixin\Models\User;
-use Webcms\Weixin\Models\Application;
-use Webcms\Weixin\Models\ScriptTracking;
-use Webcms\Weixin\Models\Callbackurls;
+use App\Weixin\Models\User;
+use App\Weixin\Models\Application;
+use App\Weixin\Models\ScriptTracking;
+use App\Weixin\Models\Callbackurls;
 
 class SnsController extends ControllerBase
 {

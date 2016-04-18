@@ -25,13 +25,13 @@ $loader->registerDirs(array(
 ));
 
 $loader->registerNamespaces(array(
-    'Webcms\Common\Models' => APP_PATH . 'apps/common/models/base/',
-    'Webcms\Common\Models\Mongodb' => APP_PATH . 'apps/common/models/base/mongodb/',
-    'Webcms\Common\Models\Mysql' => APP_PATH . 'apps/common/models/base/mysql/',
-    'Webcms\Common\Models\Mysql\Weixin' => APP_PATH . 'apps/common/models/weixin/mysql/',
-    'Webcms\Common\Models\Mongodb\Weixin' => APP_PATH . 'apps/common/models/weixin/mongodb/',
-    'Webcms\Weixin\Models' => APP_PATH . 'apps/weixin/models/',
-    'Webcms\Lottery\Models' => APP_PATH . 'apps/lottery/models/'
+    'App\Common\Models' => APP_PATH . 'apps/common/models/base/',
+    'App\Common\Models\Mongodb' => APP_PATH . 'apps/common/models/base/mongodb/',
+    'App\Common\Models\Mysql' => APP_PATH . 'apps/common/models/base/mysql/',
+    'App\Common\Models\Mysql\Weixin' => APP_PATH . 'apps/common/models/weixin/mysql/',
+    'App\Common\Models\Mongodb\Weixin' => APP_PATH . 'apps/common/models/weixin/mongodb/',
+    'App\Weixin\Models' => APP_PATH . 'apps/weixin/models/',
+    'App\Lottery\Models' => APP_PATH . 'apps/lottery/models/'
 ));
 
 $loader->register();

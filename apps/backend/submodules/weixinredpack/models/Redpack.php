@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Weixinredpack;
+namespace App\Backend\Models\Weixinredpack;
 
-class Redpack extends \Webcms\Common\Models\Weixinredpack\Redpack
+class Redpack extends \App\Common\Models\Weixinredpack\Redpack
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取所有列表

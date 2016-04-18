@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Service\Controllers;
+namespace App\Service\Controllers;
 
 class VcodeController extends ControllerBase
 {
@@ -14,9 +14,9 @@ class VcodeController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->messageTemplate = new \Webcms\Message\Models\Template();
-        $this->mailSettings = new \Webcms\Mail\Models\Settings();
-        $this->smsSettings = new \Webcms\Sms\Models\Settings();
+        $this->messageTemplate = new \App\Message\Models\Template();
+        $this->mailSettings = new \App\Mail\Models\Settings();
+        $this->smsSettings = new \App\Sms\Models\Settings();
     }
 
     /**

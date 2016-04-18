@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Points;
+namespace App\Common\Models\Points;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Category extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Points\Category());
+        $this->setModel(new \App\Common\Models\Mysql\Points\Category());
     }
 }

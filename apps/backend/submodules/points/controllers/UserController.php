@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Points;
+namespace App\Backend\Controllers\Points;
 
-use Webcms\Backend\Models\Points\Category;
-use Webcms\Backend\Models\Points\User;
+use App\Backend\Models\Points\Category;
+use App\Backend\Models\Points\User;
 
 /**
  * @title({name="积分用户管理"})
  *
  * @name 积分用户管理
  */
-class UserController extends \Webcms\Backend\Controllers\FormController
+class UserController extends \App\Backend\Controllers\FormController
 {
 
     private $modelUser;
@@ -271,7 +271,7 @@ class UserController extends \Webcms\Backend\Controllers\FormController
         return $this->modelUser;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $categoryList = $this->modelCategory->getAll();
         foreach ($list['data'] as &$item) {

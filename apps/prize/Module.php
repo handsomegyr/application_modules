@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Prize;
+namespace App\Prize;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Prize\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Prize\Services' => __DIR__ . '/services/',
-            'Webcms\Prize\Models' => __DIR__ . '/models/'
+            'App\Prize\Controllers' => __DIR__ . '/controllers/',
+            'App\Prize\Services' => __DIR__ . '/services/',
+            'App\Prize\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -40,7 +40,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Prize\Controllers");
+            $dispatcher->setDefaultNamespace("App\Prize\Controllers");
             return $dispatcher;
         });
         

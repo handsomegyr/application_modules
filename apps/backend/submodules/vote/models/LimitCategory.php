@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Vote;
+namespace App\Backend\Models\Vote;
 
-class LimitCategory extends \Webcms\Common\Models\Vote\LimitCategory
+class LimitCategory extends \App\Common\Models\Vote\LimitCategory
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 
     /**
      * 获取所有列表

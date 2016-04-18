@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Vote;
+namespace App\Backend\Models\Vote;
 
-class Period extends \Webcms\Common\Models\Vote\Period
+class Period extends \App\Common\Models\Vote\Period
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

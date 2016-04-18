@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Message\Models;
+namespace App\Message\Models;
 
-class ReplyMsg extends \Webcms\Common\Models\Message\ReplyMsg
+class ReplyMsg extends \App\Common\Models\Message\ReplyMsg
 {
 
     public function getDefaultSort()

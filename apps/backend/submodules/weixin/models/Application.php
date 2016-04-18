@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class Application extends \Webcms\Common\Models\Weixin\Application
+class Application extends \App\Common\Models\Weixin\Application
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

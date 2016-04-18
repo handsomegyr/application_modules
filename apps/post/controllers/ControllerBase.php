@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Post\Controllers;
+namespace App\Post\Controllers;
 
-class ControllerBase extends \Webcms\Common\Controllers\ControllerBase
+class ControllerBase extends \App\Common\Controllers\ControllerBase
 {
 
     protected function initialize()

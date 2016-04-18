@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\System\Models;
+namespace App\System\Models;
 
-class Area extends \Webcms\Common\Models\System\Area
+class Area extends \App\Common\Models\System\Area
 {
 
     /**

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Payment\Controllers;
+namespace App\Payment\Controllers;
 
-class ControllerBase extends \Webcms\Common\Controllers\ControllerBase
+class ControllerBase extends \App\Common\Controllers\ControllerBase
 {
 
     protected function initialize()

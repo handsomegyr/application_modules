@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Tencent\Models;
+namespace App\Tencent\Models;
 
-class User extends \Webcms\Common\Models\Tencent\User
+class User extends \App\Common\Models\Tencent\User
 {
 
     /**

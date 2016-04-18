@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Vote;
+namespace App\Backend\Controllers\Vote;
 
-use Webcms\Backend\Models\Vote\Item;
-use Webcms\Backend\Models\Vote\Subject;
+use App\Backend\Models\Vote\Item;
+use App\Backend\Models\Vote\Subject;
 
 /**
  * @title({name="投票选项管理"})
  *
  * @name 投票选项管理
  */
-class ItemController extends \Webcms\Backend\Controllers\FormController
+class ItemController extends \App\Backend\Controllers\FormController
 {
 
     private $modelItem;
@@ -218,7 +218,7 @@ class ItemController extends \Webcms\Backend\Controllers\FormController
         return $this->modelItem;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $subjectList = $this->modelSubject->getAll();
         foreach ($list['data'] as &$item) {

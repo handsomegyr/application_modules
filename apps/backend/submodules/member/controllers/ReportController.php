@@ -1,17 +1,17 @@
 <?php
-namespace Webcms\Backend\Controllers\Member;
+namespace App\Backend\Controllers\Member;
 
-use Webcms\Backend\Models\Member\Report;
+use App\Backend\Models\Member\Report;
 
 /**
  * @title({name="举报管理"})
  *
  * @name 举报管理
  */
-class ReportController extends \Webcms\Backend\Controllers\FormController
+class ReportController extends \App\Backend\Controllers\FormController
 {
 
-    private $typeDatas = \Webcms\Member\Models\Report::TYPEDATAS;
+    private $typeDatas = \App\Member\Models\Report::TYPEDATAS;
 
     private $modelReport;
 
@@ -145,7 +145,7 @@ class ReportController extends \Webcms\Backend\Controllers\FormController
         return $this->modelReport;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['type'] = $this->typeDatas[$item['type']]['name'];

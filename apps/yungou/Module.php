@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Yungou;
+namespace App\Yungou;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Yungou\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Yungou\Services' => __DIR__ . '/services/',
-            'Webcms\Yungou\Models' => __DIR__ . '/models/'
+            'App\Yungou\Controllers' => __DIR__ . '/controllers/',
+            'App\Yungou\Services' => __DIR__ . '/services/',
+            'App\Yungou\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -39,7 +39,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Yungou\Controllers");
+            $dispatcher->setDefaultNamespace("App\Yungou\Controllers");
             return $dispatcher;
         });
         

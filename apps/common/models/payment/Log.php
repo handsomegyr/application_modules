@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Payment;
+namespace App\Common\Models\Payment;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Log extends Base
 {
@@ -12,6 +12,6 @@ class Log extends Base
     const TYPE3 = 3; // 转账
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Payment\Log());
+        $this->setModel(new \App\Common\Models\Mysql\Payment\Log());
     }
 }

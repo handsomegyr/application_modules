@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mongodb\System;
+namespace App\Common\Models\Mongodb\System;
 
-use Webcms\Common\Models\Mongodb\Base;
+use App\Common\Models\Mongodb\Base;
 
 class Role extends Base
 {

@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Weixinredpack;
+namespace App\Common\Models\Weixinredpack;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Reissue extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Weixinredpack\Reissue());
+        $this->setModel(new \App\Common\Models\Mysql\Weixinredpack\Reissue());
     }
 }

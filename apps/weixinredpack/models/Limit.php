@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixinredpack\Models;
+namespace App\Weixinredpack\Models;
 
-class Limit extends \Webcms\Common\Models\Weixinredpack\Limit
+class Limit extends \App\Common\Models\Weixinredpack\Limit
 {
 
     private $_limits = null;

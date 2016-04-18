@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\System;
+namespace App\Backend\Controllers\System;
 
-use Webcms\Backend\Models\System\User;
-use Webcms\Backend\Models\System\Role;
+use App\Backend\Models\System\User;
+use App\Backend\Models\System\Role;
 
 /**
  * @title({name="用户管理"})
  *
  * @name 用户管理
  */
-class UserController extends \Webcms\Backend\Controllers\FormController
+class UserController extends \App\Backend\Controllers\FormController
 {
 
     private $modelUser = NULL;
@@ -171,7 +171,7 @@ class UserController extends \Webcms\Backend\Controllers\FormController
         return $this->modelUser;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $roleList = $this->modelRole->getAll();
         foreach ($list['data'] as &$item) {

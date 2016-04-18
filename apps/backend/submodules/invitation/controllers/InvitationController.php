@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Invitation;
+namespace App\Backend\Controllers\Invitation;
 
-use Webcms\Backend\Models\Invitation\Invitation;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Invitation\Invitation;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="邀请管理"})
  *
  * @name 邀请管理
  */
-class InvitationController extends \Webcms\Backend\Controllers\FormController
+class InvitationController extends \App\Backend\Controllers\FormController
 {
 
     private $modelInvitation;
@@ -378,7 +378,7 @@ class InvitationController extends \Webcms\Backend\Controllers\FormController
         return $this->modelInvitation;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $activityList = $this->modelActivity->getAll();
         foreach ($list['data'] as &$item) {

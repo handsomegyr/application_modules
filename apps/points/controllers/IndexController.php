@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Points\Controllers;
+namespace App\Points\Controllers;
 
 /**
  * 积分服务
@@ -16,7 +16,7 @@ class IndexController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelUser = new \Webcms\Points\Models\User();
+        $this->modelUser = new \App\Points\Models\User();
     }
 
     public function indexAction()

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
-class ScriptTracking extends \Webcms\Common\Models\Weixin\ScriptTracking
+class ScriptTracking extends \App\Common\Models\Weixin\ScriptTracking
 {
 
     /**

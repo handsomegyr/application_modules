@@ -1,17 +1,17 @@
 <?php
-namespace Webcms\Backend\Controllers\Member;
+namespace App\Backend\Controllers\Member;
 
-use Webcms\Backend\Models\Member\Member;
+use App\Backend\Models\Member\Member;
 
 /**
  * @title({name="会员管理"})
  *
  * @name 会员管理
  */
-class MemberController extends \Webcms\Backend\Controllers\FormController
+class MemberController extends \App\Backend\Controllers\FormController
 {
 
-    private $registerbyDatas = \Webcms\Common\Models\Member\Member::REGISTERBYDATAS;
+    private $registerbyDatas = \App\Common\Models\Member\Member::REGISTERBYDATAS;
 
     private $modelMember;
 

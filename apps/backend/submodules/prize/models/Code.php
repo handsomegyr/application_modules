@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Prize;
+namespace App\Backend\Models\Prize;
 
-class Code extends \Webcms\Common\Models\Prize\Code
+class Code extends \App\Common\Models\Prize\Code
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

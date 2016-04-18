@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\System;
+namespace App\Backend\System;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Events\Manager as EventsManager;
-use Webcms\Backend\Tags\MyTags;
-use Webcms\Backend\Plugins\SecurityPlugin;
-use Webcms\Backend\Plugins\NotFoundPlugin;
+use App\Backend\Tags\MyTags;
+use App\Backend\Plugins\SecurityPlugin;
+use App\Backend\Plugins\NotFoundPlugin;
 
 class Module
 {
@@ -22,13 +22,13 @@ class Module
         
         $loader->registerNamespaces(array(
             
-            'Webcms\Backend\Models' => APP_PATH . 'apps/backend/models/',
-            'Webcms\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
-            'Webcms\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
-            'Webcms\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
+            'App\Backend\Models' => APP_PATH . 'apps/backend/models/',
+            'App\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
+            'App\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
+            'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
-            'Webcms\Backend\Models\System' => __DIR__ . '/models/',
-            'Webcms\Backend\Controllers\System' => __DIR__ . '/controllers/'
+            'App\Backend\Models\System' => __DIR__ . '/models/',
+            'App\Backend\Controllers\System' => __DIR__ . '/controllers/'
         ));
         
         $loader->register();
@@ -62,7 +62,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Backend\Controllers\System");
+            $dispatcher->setDefaultNamespace("App\Backend\Controllers\System");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);

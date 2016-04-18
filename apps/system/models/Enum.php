@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\System\Models;
+namespace App\System\Models;
 
-class Enum extends \Webcms\Common\Models\System\Enum
+class Enum extends \App\Common\Models\System\Enum
 {
 
     /**

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Site\Models;
+namespace App\Site\Models;
 
-class Suggestion extends \Webcms\Common\Models\Site\Suggestion
+class Suggestion extends \App\Common\Models\Site\Suggestion
 {
 
     public function log($theme, $name, $telephone, $email, $content)

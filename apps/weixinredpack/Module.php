@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Weixinredpack;
+namespace App\Weixinredpack;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Weixinredpack\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Weixinredpack\Services' => __DIR__ . '/services/',
-            'Webcms\Weixinredpack\Models' => __DIR__ . '/models/'
+            'App\Weixinredpack\Controllers' => __DIR__ . '/controllers/',
+            'App\Weixinredpack\Services' => __DIR__ . '/services/',
+            'App\Weixinredpack\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -39,7 +39,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Weixinredpack\Controllers");
+            $dispatcher->setDefaultNamespace("App\Weixinredpack\Controllers");
             return $dispatcher;
         });
         

@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Vote;
+namespace App\Backend\Controllers\Vote;
 
-use Webcms\Backend\Models\Vote\Category;
+use App\Backend\Models\Vote\Category;
 
 /**
  * @title({name="投票类型管理"})
  *
  * @name 投票类型管理
  */
-class CategoryController extends \Webcms\Backend\Controllers\FormController
+class CategoryController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCategory;

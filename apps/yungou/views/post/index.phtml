@@ -50,7 +50,7 @@
                         <a href="<?php echo $this->view->baseUrl?>yungou/post/index?<?php echo $urlParams ?>" class="<?php if(empty($this->view->i)){?>hover<?php }?>">
                             全部分类
                         </a>
-                        <?php $topLevelCategoryList = \Webcms\Goods\Helpers\GoodsHelper::getTopLevelCategoryList();?>
+                        <?php $topLevelCategoryList = \App\Goods\Helpers\GoodsHelper::getTopLevelCategoryList();?>
                         <?php if(!empty($topLevelCategoryList)){?>
                         <?php foreach ($topLevelCategoryList as $category) {?>
                         <?php
@@ -84,7 +84,7 @@
                         $pic = $pics[0];
                         ?>
                             <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/post/detail?id=<?php echo $post['_id']?>">
-                                <img src="<?php echo \Webcms\Post\Helpers\PostHelper::getPostImage($this->view->baseUrl, $pic)?>"
+                                <img src="<?php echo \App\Post\Helpers\PostHelper::getPostImage($this->view->baseUrl, $pic)?>"
                                 border="0" alt="">
                             </a>
                         </li>
@@ -105,7 +105,7 @@
                             <span class="xmjdh_left">
                                 <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $post['buyer_id']?>">
                                     <cite class="fl">
-                                        <img src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl, $post['goods_info']['prize_buyer_avatar'])?>">
+                                        <img src="<?php echo \App\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl, $post['goods_info']['prize_buyer_avatar'])?>">
                                         <s class="transparent-png"></s>
                                     </cite>
                                     <em class="fl"><?php echo getBuyerName($post['goods_info']['prize_buyer_name'],$post['goods_info']['prize_buyer_register_by'])?></em>

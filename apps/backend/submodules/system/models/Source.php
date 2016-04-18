@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Backend\Models\System;
+namespace App\Backend\Models\System;
 
-class Source extends \Webcms\Common\Models\System\Source
+class Source extends \App\Common\Models\System\Source
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取全部来源类型

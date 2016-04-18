@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Member\Helpers;
+namespace App\Member\Helpers;
 
-use Webcms\Member\Models\Member;
-use Webcms\Member\Models\Consignee;
+use App\Member\Models\Member;
+use App\Member\Models\Consignee;
 
 class MemberHelper extends \Phalcon\Tag
 {

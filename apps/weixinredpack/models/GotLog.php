@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixinredpack\Models;
+namespace App\Weixinredpack\Models;
 
-class GotLog extends \Webcms\Common\Models\Weixinredpack\GotLog
+class GotLog extends \App\Common\Models\Weixinredpack\GotLog
 {
 
     /**

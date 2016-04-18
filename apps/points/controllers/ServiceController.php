@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Points\Controllers;
+namespace App\Points\Controllers;
 
 /**
  * 积分服务
@@ -20,9 +20,9 @@ class ServiceController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelPointUser = new \Webcms\Points\Models\User();
-        $this->modelPointLog = new \Webcms\Points\Models\Log();
-        $this->modelMember = new \Webcms\Member\Models\Member();
+        $this->modelPointUser = new \App\Points\Models\User();
+        $this->modelPointLog = new \App\Points\Models\Log();
+        $this->modelMember = new \App\Member\Models\Member();
     }
 
     /**

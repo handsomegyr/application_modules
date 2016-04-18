@@ -27,7 +27,7 @@
                             <li class="f-cart-comm">
                                 <cite><a isvalid="1" type="check" href="javascript:;" class="z-check" goodsid="<?php echo $cart['goods_id']?>"><b class="z-comms"></b></a></cite>
                                 <cite class="u-cart-pic"><a href="javascript:;" target="_blank" title="<?php echo $cart['goods_name']?>">
-                                    <img alt="" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl,$cart['goods_image'],70,70)?>"></a>
+                                    <img alt="" src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl,$cart['goods_image'],70,70)?>"></a>
                                 </cite>
                                 <cite class="u-cart-name">
                                     
@@ -81,7 +81,7 @@
             <div class="f-recomm-list" codeid="<?php echo $goods['_id']?>">
                 <dl>
                     <dt><a href="javascript:;" title="<?php echo $goods['name']?>">
-                        <img src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>"></a></dt>
+                        <img src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>"></a></dt>
                     <dd class="u-recomm-name"><a href="javascript:;" title="<?php echo $goods['name']?>"><?php echo $goods['name']?></a></dd>
                     <dd class="gray9">剩余<em><?php echo $goods['remain_person_time']?></em>人次</dd>
                 </dl>

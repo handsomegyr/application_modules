@@ -1,17 +1,17 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixinredpack;
+namespace App\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\Weixinredpack\Limit;
-use Webcms\Backend\Models\Weixinredpack\Redpack;
-use Webcms\Backend\Models\Weixinredpack\Customer;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Weixinredpack\Limit;
+use App\Backend\Models\Weixinredpack\Redpack;
+use App\Backend\Models\Weixinredpack\Customer;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="红包限制管理"})
  *
  * @name 红包限制管理
  */
-class LimitController extends \Webcms\Backend\Controllers\FormController
+class LimitController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLimit;
@@ -193,7 +193,7 @@ class LimitController extends \Webcms\Backend\Controllers\FormController
         return $this->modelLimit;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $customerList = $this->modelCustomer->getAll();
         $redpackList = $this->modelRedpack->getAll();

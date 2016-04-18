@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Vote\Models;
+namespace App\Vote\Models;
 
-class Limit extends \Webcms\Common\Models\Vote\Limit
+class Limit extends \App\Common\Models\Vote\Limit
 {
 
     private $_log = null;

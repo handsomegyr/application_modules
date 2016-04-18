@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Member;
+namespace App\Common\Models\Member;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Member extends Base
 {
@@ -53,7 +53,7 @@ class Member extends Base
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Member\Member());
+        $this->setModel(new \App\Common\Models\Mysql\Member\Member());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

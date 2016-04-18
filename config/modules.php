@@ -4,199 +4,199 @@
  */
 $application->registerModules(array(
     'admin' => array(
-        'className' => 'Webcms\Backend\Module',
+        'className' => 'App\Backend\Module',
         'path' => APP_PATH . 'apps/backend/Module.php'
     ),
     'admin/prize' => array(
-        'className' => 'Webcms\Backend\Prize\Module',
+        'className' => 'App\Backend\Prize\Module',
         'path' => APP_PATH . 'apps/backend/submodules/prize/Module.php'
     ),
     'admin/exchange' => array(
-        'className' => 'Webcms\Backend\Exchange\Module',
+        'className' => 'App\Backend\Exchange\Module',
         'path' => APP_PATH . 'apps/backend/submodules/exchange/Module.php'
     ),
     'admin/weixin' => array(
-        'className' => 'Webcms\Backend\Weixin\Module',
+        'className' => 'App\Backend\Weixin\Module',
         'path' => APP_PATH . 'apps/backend/submodules/weixin/Module.php'
     ),
     'admin/lottery' => array(
-        'className' => 'Webcms\Backend\Lottery\Module',
+        'className' => 'App\Backend\Lottery\Module',
         'path' => APP_PATH . 'apps/backend/submodules/lottery/Module.php'
     ),
     'admin/system' => array(
-        'className' => 'Webcms\Backend\System\Module',
+        'className' => 'App\Backend\System\Module',
         'path' => APP_PATH . 'apps/backend/submodules/system/Module.php'
     ),
     'admin/goods' => array(
-        'className' => 'Webcms\Backend\Goods\Module',
+        'className' => 'App\Backend\Goods\Module',
         'path' => APP_PATH . 'apps/backend/submodules/goods/Module.php'
     ),
     'admin/tencent' => array(
-        'className' => 'Webcms\Backend\Tencent\Module',
+        'className' => 'App\Backend\Tencent\Module',
         'path' => APP_PATH . 'apps/backend/submodules/tencent/Module.php'
     ),
     'admin/mail' => array(
-        'className' => 'Webcms\Backend\Mail\Module',
+        'className' => 'App\Backend\Mail\Module',
         'path' => APP_PATH . 'apps/backend/submodules/mail/Module.php'
     ),
     'admin/sms' => array(
-        'className' => 'Webcms\Backend\Sms\Module',
+        'className' => 'App\Backend\Sms\Module',
         'path' => APP_PATH . 'apps/backend/submodules/sms/Module.php'
     ),
     'admin/message' => array(
-        'className' => 'Webcms\Backend\Message\Module',
+        'className' => 'App\Backend\Message\Module',
         'path' => APP_PATH . 'apps/backend/submodules/message/Module.php'
     ),
     'admin/payment' => array(
-        'className' => 'Webcms\Backend\Payment\Module',
+        'className' => 'App\Backend\Payment\Module',
         'path' => APP_PATH . 'apps/backend/submodules/payment/Module.php'
     ),
     'admin/member' => array(
-        'className' => 'Webcms\Backend\Member\Module',
+        'className' => 'App\Backend\Member\Module',
         'path' => APP_PATH . 'apps/backend/submodules/member/Module.php'
     ),
     'admin/points' => array(
-        'className' => 'Webcms\Backend\Points\Module',
+        'className' => 'App\Backend\Points\Module',
         'path' => APP_PATH . 'apps/backend/submodules/points/Module.php'
     ),
     'admin/invitation' => array(
-        'className' => 'Webcms\Backend\Invitation\Module',
+        'className' => 'App\Backend\Invitation\Module',
         'path' => APP_PATH . 'apps/backend/submodules/invitation/Module.php'
     ),
     'admin/store' => array(
-        'className' => 'Webcms\Backend\Store\Module',
+        'className' => 'App\Backend\Store\Module',
         'path' => APP_PATH . 'apps/backend/submodules/store/Module.php'
     ),
     'admin/site' => array(
-        'className' => 'Webcms\Backend\Site\Module',
+        'className' => 'App\Backend\Site\Module',
         'path' => APP_PATH . 'apps/backend/submodules/site/Module.php'
     ),
     'admin/post' => array(
-        'className' => 'Webcms\Backend\Post\Module',
+        'className' => 'App\Backend\Post\Module',
         'path' => APP_PATH . 'apps/backend/submodules/post/Module.php'
     ),
     'admin/order' => array(
-        'className' => 'Webcms\Backend\Order\Module',
+        'className' => 'App\Backend\Order\Module',
         'path' => APP_PATH . 'apps/backend/submodules/order/Module.php'
     ),
     'admin/article' => array(
-        'className' => 'Webcms\Backend\Article\Module',
+        'className' => 'App\Backend\Article\Module',
         'path' => APP_PATH . 'apps/backend/submodules/article/Module.php'
     ),
     'admin/freight' => array(
-        'className' => 'Webcms\Backend\Freight\Module',
+        'className' => 'App\Backend\Freight\Module',
         'path' => APP_PATH . 'apps/backend/submodules/freight/Module.php'
     ),
     'admin/vote' => array(
-        'className' => 'Webcms\Backend\Vote\Module',
+        'className' => 'App\Backend\Vote\Module',
         'path' => APP_PATH . 'apps/backend/submodules/vote/Module.php'
     ),
     'admin/task' => array(
-        'className' => 'Webcms\Backend\Task\Module',
+        'className' => 'App\Backend\Task\Module',
         'path' => APP_PATH . 'apps/backend/submodules/task/Module.php'
     ),
     'admin/weixinredpack' => array(
-        'className' => 'Webcms\Backend\Weixinredpack\Module',
+        'className' => 'App\Backend\Weixinredpack\Module',
         'path' => APP_PATH . 'apps/backend/submodules/weixinredpack/Module.php'
     ),
     'weixin' => array(
-        'className' => 'Webcms\Weixin\Module',
+        'className' => 'App\Weixin\Module',
         'path' => APP_PATH . 'apps/weixin/Module.php'
     ),
     'exchange' => array(
-        'className' => 'Webcms\Exchange\Module',
+        'className' => 'App\Exchange\Module',
         'path' => APP_PATH . 'apps/exchange/Module.php'
     ),
     'prize' => array(
-        'className' => 'Webcms\Prize\Module',
+        'className' => 'App\Prize\Module',
         'path' => APP_PATH . 'apps/prize/Module.php'
     ),
     'system' => array(
-        'className' => 'Webcms\System\Module',
+        'className' => 'App\System\Module',
         'path' => APP_PATH . 'apps/system/Module.php'
     ),
     'invitation' => array(
-        'className' => 'Webcms\Invitation\Module',
+        'className' => 'App\Invitation\Module',
         'path' => APP_PATH . 'apps/invitation/Module.php'
     ),
     'payment' => array(
-        'className' => 'Webcms\Payment\Module',
+        'className' => 'App\Payment\Module',
         'path' => APP_PATH . 'apps/payment/Module.php'
     ),
     'lottery' => array(
-        'className' => 'Webcms\Lottery\Module',
+        'className' => 'App\Lottery\Module',
         'path' => APP_PATH . 'apps/lottery/Module.php'
     ),
     'service' => array(
-        'className' => 'Webcms\Service\Module',
+        'className' => 'App\Service\Module',
         'path' => APP_PATH . 'apps/service/Module.php'
     ),
     'points' => array(
-        'className' => 'Webcms\Points\Module',
+        'className' => 'App\Points\Module',
         'path' => APP_PATH . 'apps/points/Module.php'
     ),
     'tencent' => array(
-        'className' => 'Webcms\Tencent\Module',
+        'className' => 'App\Tencent\Module',
         'path' => APP_PATH . 'apps/tencent/Module.php'
     ),
     'order' => array(
-        'className' => 'Webcms\Order\Module',
+        'className' => 'App\Order\Module',
         'path' => APP_PATH . 'apps/order/Module.php'
     ),
     'member' => array(
-        'className' => 'Webcms\Member\Module',
+        'className' => 'App\Member\Module',
         'path' => APP_PATH . 'apps/member/Module.php'
     ),
     'goods' => array(
-        'className' => 'Webcms\Goods\Module',
+        'className' => 'App\Goods\Module',
         'path' => APP_PATH . 'apps/goods/Module.php'
     ),
     'store' => array(
-        'className' => 'Webcms\Store\Module',
+        'className' => 'App\Store\Module',
         'path' => APP_PATH . 'apps/store/Module.php'
     ),
     'site' => array(
-        'className' => 'Webcms\Site\Module',
+        'className' => 'App\Site\Module',
         'path' => APP_PATH . 'apps/site/Module.php'
     ),
     'message' => array(
-        'className' => 'Webcms\Message\Module',
+        'className' => 'App\Message\Module',
         'path' => APP_PATH . 'apps/message/Module.php'
     ),
     'post' => array(
-        'className' => 'Webcms\Post\Module',
+        'className' => 'App\Post\Module',
         'path' => APP_PATH . 'apps/post/Module.php'
     ),
     'article' => array(
-        'className' => 'Webcms\Article\Module',
+        'className' => 'App\Article\Module',
         'path' => APP_PATH . 'apps/article/Module.php'
     ),
     'freight' => array(
-        'className' => 'Webcms\Freight\Module',
+        'className' => 'App\Freight\Module',
         'path' => APP_PATH . 'apps/freight/Module.php'
     ),
     'task' => array(
-        'className' => 'Webcms\Task\Module',
+        'className' => 'App\Task\Module',
         'path' => APP_PATH . 'apps/task/Module.php'
     ),
     'yungou' => array(
-        'className' => 'Webcms\Yungou\Module',
+        'className' => 'App\Yungou\Module',
         'path' => APP_PATH . 'apps/yungou/Module.php'
     ),
     'mail' => array(
-        'className' => 'Webcms\Mail\Module',
+        'className' => 'App\Mail\Module',
         'path' => APP_PATH . 'apps/mail/Module.php'
     ),
     'sms' => array(
-        'className' => 'Webcms\Sms\Module',
+        'className' => 'App\Sms\Module',
         'path' => APP_PATH . 'apps/sms/Module.php'
     ),
     'vote' => array(
-        'className' => 'Webcms\Vote\Module',
+        'className' => 'App\Vote\Module',
         'path' => APP_PATH . 'apps/vote/Module.php'
     ),
     'weixinredpack' => array(
-        'className' => 'Webcms\Weixinredpack\Module',
+        'className' => 'App\Weixinredpack\Module',
         'path' => APP_PATH . 'apps/weixinredpack/Module.php'
     )
 ));

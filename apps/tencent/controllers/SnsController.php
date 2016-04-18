@@ -1,11 +1,11 @@
 <?php
-namespace Webcms\Tencent\Controllers;
+namespace App\Tencent\Controllers;
 
 use Eva\EvaOAuth\Service;
-use Webcms\Tencent\Models\User;
-use Webcms\Tencent\Models\OauthInfo;
-use Webcms\Tencent\Models\Application;
-use Webcms\Tencent\Models\AppKey;
+use App\Tencent\Models\User;
+use App\Tencent\Models\OauthInfo;
+use App\Tencent\Models\Application;
+use App\Tencent\Models\AppKey;
 use Respect\Validation\Validator as v;
 
 class SnsController extends ControllerBase

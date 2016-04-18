@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Common\Controllers;
+namespace App\Common\Controllers;
 
 class CampaignController extends ControllerBase
 {

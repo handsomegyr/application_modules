@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Invitation\Models;
+namespace App\Invitation\Models;
 
-class Invitation extends \Webcms\Common\Models\Invitation\Invitation
+class Invitation extends \App\Common\Models\Invitation\Invitation
 {
 
     private $isExclusive = true;

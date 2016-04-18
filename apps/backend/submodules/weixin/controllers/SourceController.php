@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\Source;
+use App\Backend\Models\Weixin\Source;
 
 /**
  * @title({name="微信原始数据管理"})
  *
  * @name 微信原始数据管理
  */
-class SourceController extends \Webcms\Backend\Controllers\FormController
+class SourceController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSource;
@@ -640,7 +640,7 @@ class SourceController extends \Webcms\Backend\Controllers\FormController
         return $this->modelSource;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['response_time'] = ! empty($item['response_time']) ? date("Y-m-d H:i:s", $item['response_time']->sec) : "--";

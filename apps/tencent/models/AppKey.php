@@ -1,6 +1,6 @@
 <?php
-namespace Webcms\Tencent\Models;
+namespace App\Tencent\Models;
 
-class AppKey extends \Webcms\Common\Models\Tencent\AppKey
+class AppKey extends \App\Common\Models\Tencent\AppKey
 {
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Vote\Controllers;
+namespace App\Vote\Controllers;
 
 class IndexController extends ControllerBase
 {
@@ -18,12 +18,12 @@ class IndexController extends ControllerBase
 
     public function initialize()
     {
-        $this->modelSubject = new \Webcms\Vote\Models\Subject();
-        $this->modelItem = new \Webcms\Vote\Models\Item();
-        $this->modelLog = new \Webcms\Vote\Models\Log();
-        $this->modelLimit = new \Webcms\Vote\Models\Limit();
-        $this->modelPeriod = new \Webcms\Vote\Models\Period();
-        $this->modelRankPeriod = new \Webcms\Vote\Models\RankPeriod();
+        $this->modelSubject = new \App\Vote\Models\Subject();
+        $this->modelItem = new \App\Vote\Models\Item();
+        $this->modelLog = new \App\Vote\Models\Log();
+        $this->modelLimit = new \App\Vote\Models\Limit();
+        $this->modelPeriod = new \App\Vote\Models\Period();
+        $this->modelRankPeriod = new \App\Vote\Models\RankPeriod();
         parent::initialize();
         $this->view->disable();
     }

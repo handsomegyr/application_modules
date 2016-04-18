@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\System;
+namespace App\Backend\Controllers\System;
 
-use Webcms\Backend\Models\System\Menu;
+use App\Backend\Models\System\Menu;
 
 /**
  * @title({name="菜单管理"})
  *
  * @name 菜单管理
  */
-class MenuController extends \Webcms\Backend\Controllers\FormController
+class MenuController extends \App\Backend\Controllers\FormController
 {
 
     private $modelMenu;
@@ -222,7 +222,7 @@ class MenuController extends \Webcms\Backend\Controllers\FormController
         return $this->modelMenu;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];
@@ -230,13 +230,13 @@ class MenuController extends \Webcms\Backend\Controllers\FormController
         return $list;
     }
 
-    protected function validate4Insert(\Webcms\Backend\Models\Input $input, $row)
+    protected function validate4Insert(\App\Backend\Models\Input $input, $row)
     {
         // do other validation
         $this->getModel()->checkName($input->id, $input->pid, $input->name);
     }
 
-    protected function validate4Update(\Webcms\Backend\Models\Input $input, $row)
+    protected function validate4Update(\App\Backend\Models\Input $input, $row)
     {
         // do other validation
         $this->getModel()->checkName($input->id, $input->pid, $input->name);
@@ -247,7 +247,7 @@ class MenuController extends \Webcms\Backend\Controllers\FormController
         }
     }
 
-    protected function validate4Delete(\Webcms\Backend\Models\Input $input, $row)
+    protected function validate4Delete(\App\Backend\Models\Input $input, $row)
     {
         // do other validation
         /* 还有子菜单，不能删除 */

@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Member\Controllers;
+namespace App\Member\Controllers;
 
 use Respect\Validation\Validator as v;
 
-class ControllerBase extends \Webcms\Common\Controllers\ControllerBase
+class ControllerBase extends \App\Common\Controllers\ControllerBase
 {
 
     protected $memberInfo;
@@ -27,10 +27,10 @@ class ControllerBase extends \Webcms\Common\Controllers\ControllerBase
     {
         parent::initialize();
         
-        $this->modelConsignee = new \Webcms\Member\Models\Consignee();
-        $this->modelPointsUser = new \Webcms\Points\Models\User();
-        $this->modelPointsRule = new \Webcms\Points\Models\Rule();
-        $this->modelMember = new \Webcms\Member\Models\Member();
+        $this->modelConsignee = new \App\Member\Models\Consignee();
+        $this->modelPointsUser = new \App\Points\Models\User();
+        $this->modelPointsRule = new \App\Points\Models\Rule();
+        $this->modelMember = new \App\Member\Models\Member();
         
         $this->errors = $this->getDI()->get('errors');
         $this->view->setVar("resourceUrl", "/member/");

@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class Keyword extends \Webcms\Common\Models\Weixin\Keyword
+class Keyword extends \App\Common\Models\Weixin\Keyword
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

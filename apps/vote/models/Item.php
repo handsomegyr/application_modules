@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Vote\Models;
+namespace App\Vote\Models;
 
-class Item extends \Webcms\Common\Models\Vote\Item
+class Item extends \App\Common\Models\Vote\Item
 {
 
     /**

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Article\Helpers;
+namespace App\Article\Helpers;
 
-use Webcms\Article\Models\Article;
+use App\Article\Models\Article;
 
 class ArticleHelper extends \Phalcon\Tag
 {

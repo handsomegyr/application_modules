@@ -14,7 +14,7 @@
           <span class="f-tran f-tran-prev f-tran-next">&gt;</span>所有商品
           <?php }else{?>
           <?php 
-          $categoryList = \Webcms\Goods\Helpers\GoodsHelper::getCategoryList($this->view->i);
+          $categoryList = \App\Goods\Helpers\GoodsHelper::getCategoryList($this->view->i);
           $categoryInfo = empty($categoryList)?array():$categoryList[0];
           ?>        
           <span class="f-tran f-tran-prev f-tran-next">&gt;</span><a href="<?php echo $this->view->baseUrl?>yungou/product/list" title="所有商品">所有商品</a>
@@ -31,7 +31,7 @@
                 <div class="m-fication">
                     <ul>
                         <li class="<?php if(empty($this->view->i)){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/product/list">全部分类</a></li>
-                        <?php $topLevelCategoryList = \Webcms\Goods\Helpers\GoodsHelper::getTopLevelCategoryList();?>
+                        <?php $topLevelCategoryList = \App\Goods\Helpers\GoodsHelper::getTopLevelCategoryList();?>
                         <?php if(!empty($topLevelCategoryList)){?>
                         <?php foreach ($topLevelCategoryList as $category) {?>                            
                         <li class="<?php if(!empty($this->view->i) && $this->view->i == $category['_id'] ){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/product/list?i=<?php echo $category['_id'] ?>"><?php echo $category['name']?></a></li>
@@ -53,7 +53,7 @@
                         }
                         ?>
                         <li class="<?php if(empty($this->view->b)){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/product/list">全部</a></li>
-                        <?php $brandList = \Webcms\Goods\Helpers\GoodsHelper::getBrandList();?>
+                        <?php $brandList = \App\Goods\Helpers\GoodsHelper::getBrandList();?>
                         <?php if(!empty($brandList)){?>
                         <?php foreach ($brandList as $brand) {?>
                         <li class="<?php if(!empty($this->view->b) && $this->view->b == $brand['_id'] ){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/product/list?<?php echo http_build_query(array_merge($params,array('b'=>$brand['_id']))); ?>"><?php echo $brand['name']?></a></li>
@@ -112,7 +112,7 @@
               <ul>
                 <li class="g-soon-pic">
                   <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank">
-                    <img class="lazy goodsImg" src="images/white.gif" data-original="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>">
+                    <img class="lazy goodsImg" src="images/white.gif" data-original="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>">
                   </a>
                 </li>
                 <li class="soon-list-name">
@@ -127,7 +127,7 @@
                 </li>
                 <li name="buyBox" limitbuy="0">
                   <a href="javascript:;" class="u-now" goodsid="<?php echo $goods['_id']?>">立即1元云购</a>
-                  <a href="javascript:;" class="u-cart" goodsid="<?php echo $goods['_id']?>" _src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>"><s></s></a>
+                  <a href="javascript:;" class="u-cart" goodsid="<?php echo $goods['_id']?>" _src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>"><s></s></a>
                 </li>
               </ul>
               <div class="f-add-attention" style="display:none;">

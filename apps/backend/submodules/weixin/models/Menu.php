@@ -1,12 +1,12 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-use Webcms\Backend\Models\Input;
+use App\Backend\Models\Input;
 
-class Menu extends \Webcms\Common\Models\Weixin\Menu
+class Menu extends \App\Common\Models\Weixin\Menu
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 构建菜单

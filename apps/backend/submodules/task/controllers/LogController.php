@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Task;
+namespace App\Backend\Controllers\Task;
 
-use Webcms\Backend\Models\Task\Log;
+use App\Backend\Models\Task\Log;
 
 /**
  * @title({name="任务日志管理"})
  *
  * @name 任务日志管理
  */
-class LogController extends \Webcms\Backend\Controllers\FormController
+class LogController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLog;

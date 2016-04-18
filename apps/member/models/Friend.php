@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Member\Models;
+namespace App\Member\Models;
 
-class Friend extends \Webcms\Common\Models\Member\Friend
+class Friend extends \App\Common\Models\Member\Friend
 {
 
     const STATE0 = 0; // 申请中
@@ -179,11 +179,11 @@ class Friend extends \Webcms\Common\Models\Member\Friend
         $otherConditions = array();
         $query1 = array();
         $query1['to_user_id'] = $my;
-        $query1['state'] = \Webcms\Member\Models\Friend::STATE1;
+        $query1['state'] = \App\Member\Models\Friend::STATE1;
         
         $query2 = array();
         $query2['from_user_id'] = $my;
-        $query2['state'] = \Webcms\Member\Models\Friend::STATE1;
+        $query2['state'] = \App\Member\Models\Friend::STATE1;
         
         $otherConditions = array(
             '__QUERY_OR__' => array(

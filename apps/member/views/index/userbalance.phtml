@@ -10,7 +10,7 @@
     <div class="g-account-balance">
         <dl>
             <dt>
-                <?php $predeposit = \Webcms\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY3)?>
+                <?php $predeposit = \App\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY3)?>
                 <span class="gray6">账户余额：<em class="orange">￥<?php echo number_format($predeposit,2)?></em></span>
                 <a href="<?php echo $this->view->baseUrl?>member/index/userrecharge" class="z-orange-btn">充值</a>
             </dt>

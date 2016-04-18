@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Payment;
+namespace App\Backend\Models\Payment;
 
-class Payment extends \Webcms\Common\Models\Payment\Payment
+class Payment extends \App\Common\Models\Payment\Payment
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

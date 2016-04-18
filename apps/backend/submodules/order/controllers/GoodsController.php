@@ -1,27 +1,27 @@
 <?php
-namespace Webcms\Backend\Controllers\Order;
+namespace App\Backend\Controllers\Order;
 
-use Webcms\Backend\Models\Order\Goods;
+use App\Backend\Models\Order\Goods;
 
 /**
  * @title({name="订单商品管理"})
  *
  * @name 订单商品管理
  */
-class GoodsController extends \Webcms\Backend\Controllers\FormController
+class GoodsController extends \App\Backend\Controllers\FormController
 {
 
-    private $saleStateDatas = \Webcms\Order\Models\Goods::SALESTATEDATAS;
+    private $saleStateDatas = \App\Order\Models\Goods::SALESTATEDATAS;
 
-    private $orderStateDatas = \Webcms\Order\Models\Goods::ORDERSTATEDATAS;
+    private $orderStateDatas = \App\Order\Models\Goods::ORDERSTATEDATAS;
 
     private $modelOrderGoods = NULL;
 
     public function initialize()
     {
         $this->modelOrderGoods = new Goods();
-        $this->modelGoods = new \Webcms\Common\Models\Goods\Goods();
-        $this->modelMember = new \Webcms\Common\Models\Member\Member();
+        $this->modelGoods = new \App\Common\Models\Goods\Goods();
+        $this->modelMember = new \App\Common\Models\Member\Member();
         parent::initialize();
     }
 
@@ -53,7 +53,7 @@ class GoodsController extends \Webcms\Backend\Controllers\FormController
             if (empty($orderGoodsInfo)) {
                 throw new \Exception('id不正确');
             }
-            if ($orderGoodsInfo['order_state'] != \Webcms\Common\Models\Order\Goods::ORDER_STATE2) { // 待发货
+            if ($orderGoodsInfo['order_state'] != \App\Common\Models\Order\Goods::ORDER_STATE2) { // 待发货
                 throw new \Exception('该订单不是待发货的订单');
             }
             $this->doDeliveryOrder($orderGoodsInfo['order_no'], $express_no, $delivery_sn);
@@ -822,7 +822,7 @@ class GoodsController extends \Webcms\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'defaultValues' => array(
-                    \Webcms\Order\Models\Goods::ORDER_STATE1
+                    \App\Order\Models\Goods::ORDER_STATE1
                 ),
                 'items' => function ()
                 {
@@ -893,7 +893,7 @@ class GoodsController extends \Webcms\Backend\Controllers\FormController
         return $this->modelOrderGoods;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         // $goodsList = $this->modelGoodsCommon->getAll();
         foreach ($list['data'] as &$item) {
@@ -904,7 +904,7 @@ class GoodsController extends \Webcms\Backend\Controllers\FormController
             $item['prize_time'] = getMilliTime4Show($item['prize_time']);
             $item['lottery_code'] = "云购码:{$item['lottery_code']}<br/>幸运码:{$item['prize_code']}<br/>揭晓时间:{$item['prize_time']}<br/>云购次数:{$item['purchase_num']}<br/>购买时间:{$item['purchase_time']}<br/>退回次数:{$item['refund_num']}";
             $item['state'] = $this->saleStateDatas[strval($item['state'])]['name'];
-            if ($item['order_state'] == \Webcms\Common\Models\Order\Goods::ORDER_STATE2) { // 待发货
+            if ($item['order_state'] == \App\Common\Models\Order\Goods::ORDER_STATE2) { // 待发货
                 $item['order_state'] = $this->orderStateDatas[strval($item['order_state'])]['name'];
                 // $item['order_state'] = $item['order_state'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要进行发货吗？\', \'deliveryorder\')" class="halflings-icon user white"><i></i> 发货</a>';
                 // $item['order_state'] = $item['order_state'] . '<br/><a href="javascript:;" class="btn blue delivery_btn" order_id="'. $item['_id'] .'" >发货</a>';//data-toggle="modal" href="#responsive"

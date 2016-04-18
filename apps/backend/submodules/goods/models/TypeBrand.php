@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Goods;
+namespace App\Backend\Models\Goods;
 
-class TypeBrand extends \Webcms\Common\Models\Goods\TypeBrand
+class TypeBrand extends \App\Common\Models\Goods\TypeBrand
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 
     /**
      * 默认排序

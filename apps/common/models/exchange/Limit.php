@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Exchange;
+namespace App\Common\Models\Exchange;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Limit extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Exchange\Limit());
+        $this->setModel(new \App\Common\Models\Mysql\Exchange\Limit());
     }
 }

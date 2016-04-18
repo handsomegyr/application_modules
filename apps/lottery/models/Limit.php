@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Lottery\Models;
+namespace App\Lottery\Models;
 
-class Limit extends \Webcms\Common\Models\Lottery\Limit
+class Limit extends \App\Common\Models\Lottery\Limit
 {
 
     private $_limits = null;

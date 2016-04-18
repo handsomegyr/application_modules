@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\System;
+namespace App\Backend\Controllers\System;
 
-use Webcms\Backend\Models\System\Area;
+use App\Backend\Models\System\Area;
 
 /**
  * @title({name="全国行政区划管理"})
  *
  * @name 全国行政区划管理
  */
-class AreaController extends \Webcms\Backend\Controllers\FormController
+class AreaController extends \App\Backend\Controllers\FormController
 {
 
     private $modelArea;
@@ -133,7 +133,7 @@ class AreaController extends \Webcms\Backend\Controllers\FormController
         return $this->modelArea;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];

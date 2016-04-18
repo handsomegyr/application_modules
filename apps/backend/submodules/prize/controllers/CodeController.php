@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Prize;
+namespace App\Backend\Controllers\Prize;
 
-use Webcms\Backend\Models\Prize\Code;
-use Webcms\Backend\Models\Prize\Prize;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Prize\Code;
+use App\Backend\Models\Prize\Prize;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="奖品券码管理"})
  *
  * @name 奖品券码管理
  */
-class CodeController extends \Webcms\Backend\Controllers\FormController
+class CodeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCode;
@@ -207,7 +207,7 @@ class CodeController extends \Webcms\Backend\Controllers\FormController
         return $this->modelCode;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $prizeList = $this->modelPrize->getAll();
         $activityList = $this->modelActivity->getAll();

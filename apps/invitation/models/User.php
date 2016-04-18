@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Invitation\Models;
+namespace App\Invitation\Models;
 
-class User extends \Webcms\Common\Models\Invitation\User
+class User extends \App\Common\Models\Invitation\User
 {
 
     private $isExclusive = false;

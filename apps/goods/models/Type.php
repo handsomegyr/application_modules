@@ -1,6 +1,6 @@
 <?php
-namespace Webcms\Goods\Models;
+namespace App\Goods\Models;
 
-class Type extends \Webcms\Common\Models\Goods\Type
+class Type extends \App\Common\Models\Goods\Type
 {
 }

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Prize\Models;
+namespace App\Prize\Models;
 
-class Code extends \Webcms\Common\Models\Prize\Code
+class Code extends \App\Common\Models\Prize\Code
 {
 
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Exchange;
+namespace App\Exchange;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Exchange\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Exchange\Services' => __DIR__ . '/services/',
-            'Webcms\Exchange\Models' => __DIR__ . '/models/'
+            'App\Exchange\Controllers' => __DIR__ . '/controllers/',
+            'App\Exchange\Services' => __DIR__ . '/services/',
+            'App\Exchange\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -40,7 +40,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Exchange\Controllers");
+            $dispatcher->setDefaultNamespace("App\Exchange\Controllers");
             return $dispatcher;
         });
         

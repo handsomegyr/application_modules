@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Goods;
+namespace App\Backend\Models\Goods;
 
-class GoodsCommon extends \Webcms\Common\Models\Goods\GoodsCommon
+class GoodsCommon extends \App\Common\Models\Goods\GoodsCommon
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取所有属性列表

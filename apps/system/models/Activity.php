@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\System\Models;
+namespace App\System\Models;
 
-class Activity extends \Webcms\Common\Models\System\Activity
+class Activity extends \App\Common\Models\System\Activity
 {
 
     /**

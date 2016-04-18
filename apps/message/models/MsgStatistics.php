@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Message\Models;
+namespace App\Message\Models;
 
-class MsgStatistics extends \Webcms\Common\Models\Message\MsgStatistics
+class MsgStatistics extends \App\Common\Models\Message\MsgStatistics
 {
 
     public function log($user1_id, $user2_id, $content)

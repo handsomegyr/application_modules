@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Freight\Controllers;
+namespace App\Freight\Controllers;
 
-class ControllerBase extends \Webcms\Common\Controllers\ControllerBase
+class ControllerBase extends \App\Common\Controllers\ControllerBase
 {
 
     protected function initialize()

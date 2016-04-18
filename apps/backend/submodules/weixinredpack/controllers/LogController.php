@@ -1,17 +1,17 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixinredpack;
+namespace App\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\Weixinredpack\GotLog;
-use Webcms\Backend\Models\System\Activity;
-use Webcms\Backend\Models\Weixinredpack\Redpack;
-use Webcms\Backend\Models\Weixinredpack\Customer;
+use App\Backend\Models\Weixinredpack\GotLog;
+use App\Backend\Models\System\Activity;
+use App\Backend\Models\Weixinredpack\Redpack;
+use App\Backend\Models\Weixinredpack\Customer;
 
 /**
  * @title({name="红包领取日志管理"})
  *
  * @name 红包领取日志管理
  */
-class LogController extends \Webcms\Backend\Controllers\FormController
+class LogController extends \App\Backend\Controllers\FormController
 {
 
     private $modelGotLog;
@@ -459,7 +459,7 @@ class LogController extends \Webcms\Backend\Controllers\FormController
         return $this->modelGotLog;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $customerList = $this->modelCustomer->getAll();
         $redpackList = $this->modelRedpack->getAll();

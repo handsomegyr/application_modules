@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Message;
+namespace App\Common\Models\Message;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class ReplyMsg extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Message\ReplyMsg());
+        $this->setModel(new \App\Common\Models\Mysql\Message\ReplyMsg());
     }
 }

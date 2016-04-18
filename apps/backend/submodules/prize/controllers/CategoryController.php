@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Prize;
+namespace App\Backend\Controllers\Prize;
 
-use Webcms\Backend\Models\Prize\Category;
+use App\Backend\Models\Prize\Category;
 
 /**
  * @title({name="邀请管理"})
  *
  * @name 邀请管理
  */
-class CategoryController extends \Webcms\Backend\Controllers\FormController
+class CategoryController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCategory;

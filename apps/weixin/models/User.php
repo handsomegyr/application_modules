@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
 use Weixin\Client;
 
-class User extends \Webcms\Common\Models\Weixin\User
+class User extends \App\Common\Models\Weixin\User
 {
 
     private $_weixin;

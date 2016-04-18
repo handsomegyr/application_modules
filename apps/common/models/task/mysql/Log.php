@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Task;
+namespace App\Common\Models\Mysql\Task;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Log extends Base
 {

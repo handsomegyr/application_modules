@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Yungou\Controllers;
+namespace App\Yungou\Controllers;
 
 /**
  * 云购
@@ -19,8 +19,8 @@ class PostController extends ControllerBase
     {
         parent::initialize();
         $this->view->setLayout('index');
-        $this->modelPost = new \Webcms\Post\Models\Post();
-        $this->modelVote = new \Webcms\Post\Models\Vote();
+        $this->modelPost = new \App\Post\Models\Post();
+        $this->modelVote = new \App\Post\Models\Vote();
     }
 
     /**
@@ -38,7 +38,7 @@ class PostController extends ControllerBase
         
         // 检索条件
         $query = $this->getQuery($i, $r);
-        $query['state'] = \Webcms\Post\Models\Post::STATE2;
+        $query['state'] = \App\Post\Models\Post::STATE2;
         // 排序
         $sort = $this->getSort($r);
         
@@ -75,7 +75,7 @@ class PostController extends ControllerBase
             return;
         }
         
-        if ($postInfo['state'] != \Webcms\Post\Models\Post::STATE2) {
+        if ($postInfo['state'] != \App\Post\Models\Post::STATE2) {
             $this->goToError();
             return;
         }

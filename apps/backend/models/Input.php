@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Backend\Models;
+namespace App\Backend\Models;
 
 class Input extends \stdClass
 {

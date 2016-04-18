@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Site;
+namespace App\Common\Models\Site;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Suggestion extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Site\Suggestion());
+        $this->setModel(new \App\Common\Models\Mysql\Site\Suggestion());
     }
 }

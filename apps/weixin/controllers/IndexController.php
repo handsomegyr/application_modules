@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Weixin\Controllers;
+namespace App\Weixin\Controllers;
 
-use Webcms\Weixin\Models\Source;
-use Webcms\Weixin\Models\Keyword;
-use Webcms\Weixin\Models\Reply;
-use Webcms\Weixin\Models\Application;
-use Webcms\Weixin\Models\User;
-use Webcms\Weixin\Models\NotKeyword;
-use Webcms\Weixin\Models\Menu;
-use Webcms\Weixin\Models\Qrcode;
-use Webcms\Weixin\Models\Scene;
+use App\Weixin\Models\Source;
+use App\Weixin\Models\Keyword;
+use App\Weixin\Models\Reply;
+use App\Weixin\Models\Application;
+use App\Weixin\Models\User;
+use App\Weixin\Models\NotKeyword;
+use App\Weixin\Models\Menu;
+use App\Weixin\Models\Qrcode;
+use App\Weixin\Models\Scene;
 
 class IndexController extends ControllerBase
 {

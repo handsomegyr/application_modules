@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Backend\Models\System;
+namespace App\Backend\Models\System;
 
-class Role extends \Webcms\Common\Models\System\Role
+class Role extends \App\Common\Models\System\Role
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     public function checkName($id, $name)
     {

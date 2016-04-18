@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Service\Controllers;
+namespace App\Service\Controllers;
 
 use \Phalcon\Db\Column;
 use \Phalcon\Db\Index;

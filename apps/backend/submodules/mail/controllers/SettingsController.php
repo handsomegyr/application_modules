@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Mail;
+namespace App\Backend\Controllers\Mail;
 
-use Webcms\Backend\Models\Mail\Settings;
+use App\Backend\Models\Mail\Settings;
 
 /**
  * @title({name="邮件设置管理"})
  *
  * @name 邮件设置管理
  */
-class SettingsController extends \Webcms\Backend\Controllers\FormController
+class SettingsController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSettings;

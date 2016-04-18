@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Freight;
+namespace App\Common\Models\Freight;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Express extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Freight\Express());
+        $this->setModel(new \App\Common\Models\Mysql\Freight\Express());
     }
 }

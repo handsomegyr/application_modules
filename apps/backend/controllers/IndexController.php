@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Controllers;
+namespace App\Backend\Controllers;
 
-use Webcms\Backend\Models\User;
-use Webcms\Backend\Models\Input;
+use App\Backend\Models\User;
+use App\Backend\Models\Input;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 
@@ -11,7 +11,7 @@ use Phalcon\Validation\Validator\PresenceOf;
  *
  * @name 管理中心
  */
-class IndexController extends \Webcms\Backend\Controllers\ControllerBase
+class IndexController extends \App\Backend\Controllers\ControllerBase
 {
 
     protected $formName = "Dashboard";

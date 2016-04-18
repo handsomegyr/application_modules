@@ -1,6 +1,6 @@
 <?php
-namespace Webcms\Vote\Models;
+namespace App\Vote\Models;
 
-class Category extends \Webcms\Common\Models\Vote\Category
+class Category extends \App\Common\Models\Vote\Category
 {
 }

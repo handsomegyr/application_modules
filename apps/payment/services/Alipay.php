@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Payment\Services;
+namespace App\Payment\Services;
 
-use Webcms\Payment\Models\Payment;
+use App\Payment\Models\Payment;
 
 class Alipay
 {

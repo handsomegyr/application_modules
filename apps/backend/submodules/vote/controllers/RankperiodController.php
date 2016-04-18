@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Vote;
+namespace App\Backend\Controllers\Vote;
 
-use Webcms\Backend\Models\Vote\RankPeriod;
-use Webcms\Backend\Models\Vote\Subject;
+use App\Backend\Models\Vote\RankPeriod;
+use App\Backend\Models\Vote\Subject;
 
 /**
  * @title({name="投票每期排行管理"})
  *
  * @name 投票每期排行管理
  */
-class RankperiodController extends \Webcms\Backend\Controllers\FormController
+class RankperiodController extends \App\Backend\Controllers\FormController
 {
 
     private $modelRankPeriod;
@@ -195,7 +195,7 @@ class RankperiodController extends \Webcms\Backend\Controllers\FormController
         return $this->modelRankPeriod;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $subjectList = $this->modelSubject->getAll();
         foreach ($list['data'] as &$item) {

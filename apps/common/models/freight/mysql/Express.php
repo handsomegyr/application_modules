@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Freight;
+namespace App\Common\Models\Mysql\Freight;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Express extends Base
 {

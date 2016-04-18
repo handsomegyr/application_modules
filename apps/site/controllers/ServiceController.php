@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Site\Controllers;
+namespace App\Site\Controllers;
 
 /**
  * 网站的服务
@@ -16,7 +16,7 @@ class ServiceController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelSuggestion = new \Webcms\Site\Models\Suggestion();
+        $this->modelSuggestion = new \App\Site\Models\Suggestion();
     }
 
     /**

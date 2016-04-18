@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Type;
-use Webcms\Backend\Models\Goods\Category;
-use Webcms\Backend\Models\Goods\CategoryTag;
+use App\Backend\Models\Goods\Type;
+use App\Backend\Models\Goods\Category;
+use App\Backend\Models\Goods\CategoryTag;
 
 /**
  * @title({name="商品分类TAG管理"})
  *
  * @name 商品分类TAG管理
  */
-class CategorytagController extends \Webcms\Backend\Controllers\FormController
+class CategorytagController extends \App\Backend\Controllers\FormController
 {
 
     private $modelType;

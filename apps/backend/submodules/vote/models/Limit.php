@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Vote;
+namespace App\Backend\Models\Vote;
 
-class Limit extends \Webcms\Common\Models\Vote\Limit
+class Limit extends \App\Common\Models\Vote\Limit
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

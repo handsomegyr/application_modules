@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Site;
+namespace App\Backend\Models\Site;
 
-class Site extends \Webcms\Common\Models\Site\Site
+class Site extends \App\Common\Models\Site\Site
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

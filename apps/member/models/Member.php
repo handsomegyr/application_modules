@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Member\Models;
+namespace App\Member\Models;
 
-class Member extends \Webcms\Common\Models\Member\Member
+class Member extends \App\Common\Models\Member\Member
 {
 
     /**
@@ -380,17 +380,17 @@ class Member extends \Webcms\Common\Models\Member\Member
      */
     public function getRegisterName(array $memberInfo, $isHidden = false)
     {
-        if ($memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY1) {
+        if ($memberInfo['register_by'] == \App\Member\Models\Member::REGISTERBY1) {
             $registerName = $memberInfo['mobile'];
             if ($isHidden) {
                 $registerName = getHiddenMobile($registerName);
             }
-        } elseif ($memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2) {
+        } elseif ($memberInfo['register_by'] == \App\Member\Models\Member::REGISTERBY2) {
             $registerName = $memberInfo['email'];
             if ($isHidden) {
                 $registerName = getHiddenEmail($registerName);
             }
-        } elseif ($memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY3) {
+        } elseif ($memberInfo['register_by'] == \App\Member\Models\Member::REGISTERBY3) {
             $registerName = $memberInfo['name'];
         }
         return $registerName;

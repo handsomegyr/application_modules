@@ -1,17 +1,17 @@
 <?php
-namespace Webcms\Backend\Controllers\Lottery;
+namespace App\Backend\Controllers\Lottery;
 
-use Webcms\Backend\Models\Lottery\Exchange;
-use Webcms\Backend\Models\Prize\Prize;
-use Webcms\Backend\Models\System\Activity;
-use Webcms\Backend\Models\System\Source;
+use App\Backend\Models\Lottery\Exchange;
+use App\Backend\Models\Prize\Prize;
+use App\Backend\Models\System\Activity;
+use App\Backend\Models\System\Source;
 
 /**
  * @title({name="抽奖中奖管理"})
  *
  * @name 抽奖中奖管理
  */
-class ExchangeController extends \Webcms\Backend\Controllers\FormController
+class ExchangeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelExchange;
@@ -448,7 +448,7 @@ class ExchangeController extends \Webcms\Backend\Controllers\FormController
         return $this->modelExchange;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $prizeList = $this->modelPrize->getAll();
         $activityList = $this->modelActivity->getAll();

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Order\Models;
+namespace App\Order\Models;
 
-class Order extends \Webcms\Common\Models\Order\Order
+class Order extends \App\Common\Models\Order\Order
 {
 
     /**

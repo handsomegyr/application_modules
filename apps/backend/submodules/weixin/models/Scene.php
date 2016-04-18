@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
 /**
  * 微信二维码场景管理
@@ -7,10 +7,10 @@ namespace Webcms\Backend\Models\Weixin;
  * @author young
  *        
  */
-class Scene extends \Webcms\Common\Models\Weixin\Scene
+class Scene extends \App\Common\Models\Weixin\Scene
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     public function getAll()
     {

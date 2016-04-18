@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Exchange;
+namespace App\Backend\Models\Exchange;
 
-class Log extends \Webcms\Common\Models\Exchange\Log
+class Log extends \App\Common\Models\Exchange\Log
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

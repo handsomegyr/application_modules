@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Exchange;
+namespace App\Backend\Controllers\Exchange;
 
-use Webcms\Backend\Models\Exchange\Rule;
-use Webcms\Backend\Models\Prize\Prize;
-use Webcms\Backend\Models\Points\Category;
+use App\Backend\Models\Exchange\Rule;
+use App\Backend\Models\Prize\Prize;
+use App\Backend\Models\Points\Category;
 
 /**
  * @title({name="兑换规则管理"})
  *
  * @name 兑换规则管理
  */
-class RuleController extends \Webcms\Backend\Controllers\FormController
+class RuleController extends \App\Backend\Controllers\FormController
 {
 
     private $modelRule;
@@ -224,7 +224,7 @@ class RuleController extends \Webcms\Backend\Controllers\FormController
         return $this->modelRule;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $categoryList = $this->modelCategory->getAll();
         $prizeList = $this->modelPrize->getAll();

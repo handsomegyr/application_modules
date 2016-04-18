@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Common\Models\Mongodb;
+namespace App\Common\Models\Mongodb;
 
 class Base extends \iWebsitePluginMongo
 {

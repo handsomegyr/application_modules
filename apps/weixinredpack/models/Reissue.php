@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixinredpack\Models;
+namespace App\Weixinredpack\Models;
 
-class Reissue extends \Webcms\Common\Models\Weixinredpack\Reissue
+class Reissue extends \App\Common\Models\Weixinredpack\Reissue
 {
 
     /**

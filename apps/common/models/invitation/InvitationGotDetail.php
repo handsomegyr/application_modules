@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Invitation;
+namespace App\Common\Models\Invitation;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class InvitationGotDetail extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Invitation\InvitationGotDetail());
+        $this->setModel(new \App\Common\Models\Mysql\Invitation\InvitationGotDetail());
     }
 }

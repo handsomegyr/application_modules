@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Points;
+namespace App\Backend\Controllers\Points;
 
-use Webcms\Backend\Models\Points\Category;
+use App\Backend\Models\Points\Category;
 
 /**
  * @title({name="积分分类管理"})
  *
  * @name 积分分类管理
  */
-class CategoryController extends \Webcms\Backend\Controllers\FormController
+class CategoryController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCategory;

@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Exchange;
+namespace App\Backend\Controllers\Exchange;
 
-use Webcms\Backend\Models\Exchange\Log;
+use App\Backend\Models\Exchange\Log;
 
 /**
  * @title({name="兑换日志管理"})
  *
  * @name 兑换日志管理
  */
-class LogController extends \Webcms\Backend\Controllers\FormController
+class LogController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLog;

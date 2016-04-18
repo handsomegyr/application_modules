@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Vote\Models;
+namespace App\Vote\Models;
 
-class RankPeriod extends \Webcms\Common\Models\Vote\RankPeriod
+class RankPeriod extends \App\Common\Models\Vote\RankPeriod
 {
 
     protected $name = 'iVote_rank_period';

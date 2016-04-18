@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\MsgType;
+use App\Backend\Models\Weixin\MsgType;
 
 /**
  * @title({name="微信消息类型管理"})
  *
  * @name 微信消息类型管理
  */
-class MsgTypeController extends \Webcms\Backend\Controllers\FormController
+class MsgTypeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelMsgType;

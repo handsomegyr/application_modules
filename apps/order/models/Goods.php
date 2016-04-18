@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Order\Models;
+namespace App\Order\Models;
 
-class Goods extends \Webcms\Common\Models\Order\Goods
+class Goods extends \App\Common\Models\Order\Goods
 {
 
     /**
@@ -404,11 +404,11 @@ class Goods extends \Webcms\Common\Models\Order\Goods
         );
         // 0全部 1 进行中 3 已揭晓 4已退购
         if ($state == 1) {
-            $query['state'] = \Webcms\Order\Models\Goods::STATE1;
+            $query['state'] = \App\Order\Models\Goods::STATE1;
         } elseif ($state == 3) {
-            $query['state'] = \Webcms\Order\Models\Goods::STATE3;
+            $query['state'] = \App\Order\Models\Goods::STATE3;
         } elseif ($state == 4) {
-            $query['state'] = \Webcms\Order\Models\Goods::STATE4;
+            $query['state'] = \App\Order\Models\Goods::STATE4;
         }
         if (! empty($beginTime)) {
             $query['purchase_time']['$gte'] = $beginTime;
@@ -437,17 +437,17 @@ class Goods extends \Webcms\Common\Models\Order\Goods
             )
         );
         $query['order_state'] = array(
-            '$gt' => \Webcms\Order\Models\Goods::ORDER_STATE0
+            '$gt' => \App\Order\Models\Goods::ORDER_STATE0
         );
         // 0全部 1待确认地址 2待发货 3待收货 4待晒单
         if ($orderState == 1) {
-            $query['order_state'] = \Webcms\Order\Models\Goods::ORDER_STATE1;
+            $query['order_state'] = \App\Order\Models\Goods::ORDER_STATE1;
         } elseif ($orderState == 2) {
-            $query['order_state'] = \Webcms\Order\Models\Goods::ORDER_STATE2;
+            $query['order_state'] = \App\Order\Models\Goods::ORDER_STATE2;
         } elseif ($orderState == 3) {
-            $query['order_state'] = \Webcms\Order\Models\Goods::ORDER_STATE3;
+            $query['order_state'] = \App\Order\Models\Goods::ORDER_STATE3;
         } elseif ($orderState == 4) {
-            $query['order_state'] = \Webcms\Order\Models\Goods::ORDER_STATE4;
+            $query['order_state'] = \App\Order\Models\Goods::ORDER_STATE4;
         }
         if (! empty($beginTime)) {
             $query['purchase_time']['$gte'] = $beginTime;
@@ -479,7 +479,7 @@ class Goods extends \Webcms\Common\Models\Order\Goods
         );
         $query['prize_time']['$lte'] = getMilliTime();
         // 0全部 1 进行中 3 已揭晓 4已退购
-        $query['state'] = \Webcms\Order\Models\Goods::STATE3;
+        $query['state'] = \App\Order\Models\Goods::STATE3;
         if (! empty($otherConditions)) {
             $query = array_merge($otherConditions, $query);
         }

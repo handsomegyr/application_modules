@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Weixinredpack\Services;
+namespace App\Weixinredpack\Services;
 
 class Api
 {
@@ -32,14 +32,14 @@ class Api
     public function __construct($rtnMsgType = 'json')
     {
         $this->_rtnMsgType = $rtnMsgType;
-        $this->_activity = new \Webcms\System\Models\Activity();
-        $this->_redpack = new \Webcms\Weixinredpack\Models\Redpack();
-        $this->_gotLog = new \Webcms\Weixinredpack\Models\GotLog();
-        $this->_rule = new \Webcms\Weixinredpack\Models\Rule();
-        $this->_customer = new \Webcms\Weixinredpack\Models\Customer();
-        $this->_limit = new \Webcms\Weixinredpack\Models\Limit();
-        $this->_weixin = new \Webcms\Weixin\Models\Application();
-        $this->_reissue = new \Webcms\Weixinredpack\Models\Reissue();
+        $this->_activity = new \App\System\Models\Activity();
+        $this->_redpack = new \App\Weixinredpack\Models\Redpack();
+        $this->_gotLog = new \App\Weixinredpack\Models\GotLog();
+        $this->_rule = new \App\Weixinredpack\Models\Rule();
+        $this->_customer = new \App\Weixinredpack\Models\Customer();
+        $this->_limit = new \App\Weixinredpack\Models\Limit();
+        $this->_weixin = new \App\Weixin\Models\Application();
+        $this->_reissue = new \App\Weixinredpack\Models\Reissue();
     }
 
     /**

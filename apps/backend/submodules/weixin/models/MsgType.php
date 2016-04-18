@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class MsgType extends \Webcms\Common\Models\Weixin\MsgType
+class MsgType extends \App\Common\Models\Weixin\MsgType
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取全部回复类型

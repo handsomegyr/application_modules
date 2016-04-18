@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Member\Controllers;
+namespace App\Member\Controllers;
 
 /**
  * 账户安全

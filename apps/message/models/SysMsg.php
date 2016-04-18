@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Message\Models;
+namespace App\Message\Models;
 
-class SysMsg extends \Webcms\Common\Models\Message\SysMsg
+class SysMsg extends \App\Common\Models\Message\SysMsg
 {
 
     public function log($to_user_id, $content)

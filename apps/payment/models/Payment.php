@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Payment\Models;
+namespace App\Payment\Models;
 
-class Payment extends \Webcms\Common\Models\Payment\Payment
+class Payment extends \App\Common\Models\Payment\Payment
 {
 
     public function getAlipayConfig()

@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Vote;
+namespace App\Backend\Models\Vote;
 
-class Log extends \Webcms\Common\Models\Vote\Log
+class Log extends \App\Common\Models\Vote\Log
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

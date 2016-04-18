@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Common\Plugins;
+namespace App\Common\Plugins;
 
 use Phalcon\Events\Event;
 use Phalcon\Mvc\User\Plugin;

@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Goods\Services;
+namespace App\Goods\Services;
 
 class Goods
 {
@@ -28,18 +28,18 @@ class Goods
 
     public function __construct()
     {
-        $this->modelPost = new \Webcms\Post\Models\Post();
-        $this->modelMember = new \Webcms\Member\Models\Member();
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelGoodsCommon = new \Webcms\Goods\Models\GoodsCommon();
-        $this->modelPrize = new \Webcms\Prize\Models\Prize();
-        $this->modelPrizeCode = new \Webcms\Prize\Models\Code();
-        $this->modelLotteryRule = new \Webcms\Lottery\Models\Rule();
-        $this->modelOrder = new \Webcms\Order\Models\Order();
-        $this->modelOrderLog = new \Webcms\Order\Models\Log();
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
-        $this->modelGoodsCollect = new \Webcms\Goods\Models\Collect();
-        $this->modelTaskLog = new \Webcms\Task\Models\Log();
+        $this->modelPost = new \App\Post\Models\Post();
+        $this->modelMember = new \App\Member\Models\Member();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelGoodsCommon = new \App\Goods\Models\GoodsCommon();
+        $this->modelPrize = new \App\Prize\Models\Prize();
+        $this->modelPrizeCode = new \App\Prize\Models\Code();
+        $this->modelLotteryRule = new \App\Lottery\Models\Rule();
+        $this->modelOrder = new \App\Order\Models\Order();
+        $this->modelOrderLog = new \App\Order\Models\Log();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
+        $this->modelGoodsCollect = new \App\Goods\Models\Collect();
+        $this->modelTaskLog = new \App\Task\Models\Log();
     }
 
     /**
@@ -183,7 +183,7 @@ class Goods
                     '_id' => $goods_id,
                     'remain_person_time' => 0,
                     'sale_state' => array(
-                        '$lt' => \Webcms\Goods\Models\Goods::SALE_STATE3
+                        '$lt' => \App\Goods\Models\Goods::SALE_STATE3
                     ),
                     '__FOR_UPDATE__' => true
                 ));
@@ -198,7 +198,7 @@ class Goods
                     throw new \Exception('商品还未满员', - 4);
                 }
                 
-                if ($goodsInfo['sale_state'] == \Webcms\Goods\Models\Goods::SALE_STATE3) {
+                if ($goodsInfo['sale_state'] == \App\Goods\Models\Goods::SALE_STATE3) {
                     throw new \Exception('商品已揭晓', - 5);
                 }
                 // 如何计算？
@@ -224,7 +224,7 @@ class Goods
                 // 获取中奖的订单商品记录
                 $orderGoodsInfo = $this->modelOrderGoods->getInfoByGoodsIdAndLotteryCode($goodsInfo['_id'], $prize_code);
                 $order_no = getNewId();
-                $order_state = \Webcms\Order\Models\Goods::ORDER_STATE1;
+                $order_state = \App\Order\Models\Goods::ORDER_STATE1;
                 $orderGoodsInfo['order_no'] = $order_no;
                 $orderGoodsInfo['order_state'] = $order_state;
                 
@@ -234,7 +234,7 @@ class Goods
                 // 更新购买用户的获取商品的数量
                 $this->modelMember->incPrizedNum($orderGoodsInfo['buyer_id']);
                 // 记录订单日志记录
-                $this->modelOrderLog->log($order_no, \Webcms\Order\Models\Goods::ORDER_STATE1, "恭喜您云购成功，请尽快填写收货地址，以便我们为您配送！", \Webcms\Order\Models\Log::ROLE_SYSTEM, YUNGOU_SITE_ID, '云购系统');
+                $this->modelOrderLog->log($order_no, \App\Order\Models\Goods::ORDER_STATE1, "恭喜您云购成功，请尽快填写收货地址，以便我们为您配送！", \App\Order\Models\Log::ROLE_SYSTEM, YUNGOU_SITE_ID, '云购系统');
                 
                 // 更新该商品的中奖码信息
                 $prize_time = getMilliTime() + 3 * 60; // 3分钟后揭晓

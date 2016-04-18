@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Lottery;
+namespace App\Common\Models\Lottery;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Exchange extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Lottery\Exchange());
+        $this->setModel(new \App\Common\Models\Mysql\Lottery\Exchange());
     }
 }

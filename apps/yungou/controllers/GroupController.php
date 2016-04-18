@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Yungou\Controllers;
+namespace App\Yungou\Controllers;
 
 /**
  * 云购
@@ -17,7 +17,7 @@ class GroupController extends ControllerBase
     {
         parent::initialize();
         $this->view->setLayout('index');
-        $this->modelArticle = new \Webcms\Article\Models\Article();
+        $this->modelArticle = new \App\Article\Models\Article();
     }
 
     /**

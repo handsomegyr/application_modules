@@ -1,12 +1,12 @@
 <?php
-namespace Webcms\Backend\Controllers;
+namespace App\Backend\Controllers;
 
 /**
  * @title({name="错误中心"})
  *
  * @name 错误中心
  */
-class ErrorController extends \Webcms\Backend\Controllers\ControllerBase
+class ErrorController extends \App\Backend\Controllers\ControllerBase
 {
 
     public function initialize()

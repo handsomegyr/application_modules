@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Weixinredpack\Controllers;
+namespace App\Weixinredpack\Controllers;
 
 class IndexController extends ControllerBase
 {
@@ -8,7 +8,7 @@ class IndexController extends ControllerBase
 
     public function initialize()
     {
-        $this->servicesApi = new \Webcms\Weixinredpack\Services\Api('nojson');
+        $this->servicesApi = new \App\Weixinredpack\Services\Api('nojson');
         parent::initialize();
         $this->view->disable();
     }

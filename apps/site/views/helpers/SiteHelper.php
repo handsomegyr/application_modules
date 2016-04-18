@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Site\Helpers;
+namespace App\Site\Helpers;
 
-use Webcms\Site\Models\Site;
+use App\Site\Models\Site;
 
 class SiteHelper extends \Phalcon\Tag
 {

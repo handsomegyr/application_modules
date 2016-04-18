@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Lottery\Controllers;
+namespace App\Lottery\Controllers;
 
 class IndexController extends ControllerBase
 {
@@ -26,7 +26,7 @@ class IndexController extends ControllerBase
             $identity_id = trim($_GET['user_id']);
             $source = "weixin";
             
-            $modelApi = new \Webcms\Lottery\Services\Api();
+            $modelApi = new \App\Lottery\Services\Api();
             $identityInfo = array(
                 'nickname' => '郭永荣'
             );

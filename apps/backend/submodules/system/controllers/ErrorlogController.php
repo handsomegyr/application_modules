@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\System;
+namespace App\Backend\Controllers\System;
 
-use Webcms\Backend\Models\System\ErrorLog;
+use App\Backend\Models\System\ErrorLog;
 
 /**
  * @title({name="错误信息管理"})
  *
  * @name 错误信息管理
  */
-class ErrorlogController extends \Webcms\Backend\Controllers\FormController
+class ErrorlogController extends \App\Backend\Controllers\FormController
 {
 
     private $modelErrorLog;

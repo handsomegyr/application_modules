@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Yungou\Controllers;
+namespace App\Yungou\Controllers;
 
 /**
  * 云购
@@ -16,7 +16,7 @@ class HelpController extends ControllerBase
     {
         parent::initialize();
         $this->view->setLayout('index');
-        $this->modelInvitation = new \Webcms\Invitation\Models\Invitation();
+        $this->modelInvitation = new \App\Invitation\Models\Invitation();
         $this->modelInvitation->setIsExclusive(false);
     }
 

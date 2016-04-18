@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\System;
+namespace App\Backend\Controllers\System;
 
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="活动管理"})
  *
  * @name 活动管理
  */
-class ActivityController extends \Webcms\Backend\Controllers\FormController
+class ActivityController extends \App\Backend\Controllers\FormController
 {
 
     private $modelActivity;
@@ -126,7 +126,7 @@ class ActivityController extends \Webcms\Backend\Controllers\FormController
         return $this->modelActivity;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);

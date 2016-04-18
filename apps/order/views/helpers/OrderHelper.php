@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Order\Helpers;
+namespace App\Order\Helpers;
 
-use Webcms\Order\Models\Log;
-use Webcms\Order\Models\Goods;
+use App\Order\Models\Log;
+use App\Order\Models\Goods;
 
 class OrderHelper extends \Phalcon\Tag
 {

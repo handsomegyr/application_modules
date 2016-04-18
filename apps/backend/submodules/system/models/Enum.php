@@ -1,11 +1,11 @@
 <?php
-namespace Webcms\Backend\Models\System;
+namespace App\Backend\Models\System;
 
-use Webcms\Backend\Models\Input;
+use App\Backend\Models\Input;
 
-class Enum extends \Webcms\Common\Models\System\Enum
+class Enum extends \App\Common\Models\System\Enum
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 默认排序

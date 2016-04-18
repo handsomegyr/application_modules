@@ -17,13 +17,13 @@
         <div class="m-single-contents clrfix">
             <div class="single-left clrfix fl">
                 <span>
-                     <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $this->view->goodsInfo['_id']?>"><img src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>"></a>
+                     <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $this->view->goodsInfo['_id']?>"><img src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>"></a>
                 </span>
                 <i>
                     <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $this->view->goodsInfo['_id']?>" class="gray6">(第<?php echo $this->view->goodsInfo['period']?>云)<?php echo $this->view->goodsInfo['name']?></a>
                 </i>
             </div>
-            <?php if($this->view->postInfo['state'] == \Webcms\Post\Models\Post::STATE_NONE){?>
+            <?php if($this->view->postInfo['state'] == \App\Post\Models\Post::STATE_NONE){?>
             <!-- 晒单 -->
             <div class="single-right clrfix fl">
                 <dl>
@@ -74,7 +74,7 @@
                                 <?php $pics =  explode(',', $this->view->postInfo['pic'])?>
                                 <?php foreach ($pics as $pic) {?>
                                 <li>
-                                    <img src="<?php echo \Webcms\Post\Helpers\PostHelper::getPostImage($this->view->baseUrl, $pic)?>">
+                                    <img src="<?php echo \App\Post\Helpers\PostHelper::getPostImage($this->view->baseUrl, $pic)?>">
                                     <!-- <cite><s class="u-personal"></s><b></b></cite> -->
                                 </li>
                                 <?php }?>

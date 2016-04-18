@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Weixinredpack;
+namespace App\Backend\Models\Weixinredpack;
 
-class Reissue extends \Webcms\Common\Models\Weixinredpack\Reissue
+class Reissue extends \App\Common\Models\Weixinredpack\Reissue
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

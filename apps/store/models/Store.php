@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Store\Models;
+namespace App\Store\Models;
 
-class Store extends \Webcms\Common\Models\Store\Store
+class Store extends \App\Common\Models\Store\Store
 {
     
     // 店铺状态，0关闭，1开启，2审核中

@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Prize;
+namespace App\Backend\Controllers\Prize;
 
-use Webcms\Backend\Models\Prize\Prize;
-use Webcms\Backend\Models\Prize\Category;
+use App\Backend\Models\Prize\Prize;
+use App\Backend\Models\Prize\Category;
 
 /**
  * @title({name="奖品管理"})
  *
  * @name 奖品管理
  */
-class PrizeController extends \Webcms\Backend\Controllers\FormController
+class PrizeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelPrize;
@@ -216,7 +216,7 @@ class PrizeController extends \Webcms\Backend\Controllers\FormController
         return $this->modelPrize;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $categoryList = $this->modelCategory->getAll();
         foreach ($list['data'] as &$item) {

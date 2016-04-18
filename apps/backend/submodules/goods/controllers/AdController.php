@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Ad;
-use Webcms\Backend\Models\Goods\GoodsCommon;
+use App\Backend\Models\Goods\Ad;
+use App\Backend\Models\Goods\GoodsCommon;
 
 /**
  * @title({name="商品广告位管理"})
  *
  * @name 商品广告位管理
  */
-class AdController extends \Webcms\Backend\Controllers\FormController
+class AdController extends \App\Backend\Controllers\FormController
 {
 
     private $modelGoodsAd;
@@ -161,7 +161,7 @@ class AdController extends \Webcms\Backend\Controllers\FormController
         return $this->modelGoodsAd;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);

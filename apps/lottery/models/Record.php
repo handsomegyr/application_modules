@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Lottery\Models;
+namespace App\Lottery\Models;
 
-class Record extends \Webcms\Common\Models\Lottery\Record
+class Record extends \App\Common\Models\Lottery\Record
 {
 
     public function record($activity_id, $user_id, $source, $result_id, $result_msg)

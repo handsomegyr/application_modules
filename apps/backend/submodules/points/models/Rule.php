@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Points;
+namespace App\Backend\Models\Points;
 
-class Rule extends \Webcms\Common\Models\Points\Rule
+class Rule extends \App\Common\Models\Points\Rule
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

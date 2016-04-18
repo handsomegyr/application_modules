@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Member\Models;
+namespace App\Member\Models;
 
-class Visitor extends \Webcms\Common\Models\Member\Visitor
+class Visitor extends \App\Common\Models\Member\Visitor
 {
 
     /**

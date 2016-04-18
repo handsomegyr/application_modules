@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Payment\Controllers;
+namespace App\Payment\Controllers;
 
 /**
  * 关于支付的各种其他服务
@@ -16,7 +16,7 @@ class ServiceController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelLog = new \Webcms\Payment\Models\Log();
+        $this->modelLog = new \App\Payment\Models\Log();
     }
 
     /**
@@ -67,7 +67,7 @@ class ServiceController extends ControllerBase
                         // "logTime":"2015-12-20 21:36:51",
                         // "logType":"2"
                         $datas[] = array(
-                            'logMoney' => ($item['type'] == \Webcms\Payment\Models\Log::TYPE2) ? - $item['money'] : $item['money'],
+                            'logMoney' => ($item['type'] == \App\Payment\Models\Log::TYPE2) ? - $item['money'] : $item['money'],
                             'logTime' => date('Y-m-d H:i:s', $item['logTime']->sec),
                             'typeName' => $item['desc'],
                             'logType' => $item['type']

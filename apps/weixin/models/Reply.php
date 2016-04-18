@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
 use Weixin\Client;
 
-class Reply extends \Webcms\Common\Models\Weixin\Reply
+class Reply extends \App\Common\Models\Weixin\Reply
 {
 
     private $_weixin;

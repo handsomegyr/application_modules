@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Category;
-use Webcms\Backend\Models\Goods\Spec;
-use Webcms\Backend\Models\Goods\SpecValue;
+use App\Backend\Models\Goods\Category;
+use App\Backend\Models\Goods\Spec;
+use App\Backend\Models\Goods\SpecValue;
 
 /**
  * @title({name="商品规格值管理"})
  *
  * @name 商品规格值管理
  */
-class SpecvalueController extends \Webcms\Backend\Controllers\FormController
+class SpecvalueController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCategory;

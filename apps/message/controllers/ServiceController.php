@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Message\Controllers;
+namespace App\Message\Controllers;
 
 class ServiceController extends ControllerBase
 {
@@ -22,13 +22,13 @@ class ServiceController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelMemberFriend = new \Webcms\Member\Models\Friend();
-        $this->modelMember = new \Webcms\Member\Models\Member();
-        $this->modelMsg = new \Webcms\Message\Models\Msg();
-        $this->modelSysMsg = new \Webcms\Message\Models\SysMsg();
-        $this->modelReplyMsg = new \Webcms\Message\Models\ReplyMsg();
-        $this->modelMsgStatistics = new \Webcms\Message\Models\MsgStatistics();
-        $this->modelMsgCount = new \Webcms\Message\Models\MsgCount();
+        $this->modelMemberFriend = new \App\Member\Models\Friend();
+        $this->modelMember = new \App\Member\Models\Member();
+        $this->modelMsg = new \App\Message\Models\Msg();
+        $this->modelSysMsg = new \App\Message\Models\SysMsg();
+        $this->modelReplyMsg = new \App\Message\Models\ReplyMsg();
+        $this->modelMsgStatistics = new \App\Message\Models\MsgStatistics();
+        $this->modelMsgCount = new \App\Message\Models\MsgCount();
     }
 
     /**

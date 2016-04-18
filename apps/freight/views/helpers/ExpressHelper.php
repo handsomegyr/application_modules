@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Freight\Helpers;
+namespace App\Freight\Helpers;
 
 class ExpressHelper extends \Phalcon\Tag
 {

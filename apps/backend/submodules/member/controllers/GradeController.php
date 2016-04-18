@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Member;
+namespace App\Backend\Controllers\Member;
 
-use Webcms\Backend\Models\Member\Grade;
+use App\Backend\Models\Member\Grade;
 
 /**
  * @title({name="会员等级管理"})
  *
  * @name 会员等级管理
  */
-class GradeController extends \Webcms\Backend\Controllers\FormController
+class GradeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelGrade;

@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Category;
-use Webcms\Backend\Models\Goods\Brand;
+use App\Backend\Models\Goods\Category;
+use App\Backend\Models\Goods\Brand;
 
 /**
  * @title({name="商品品牌管理"})
  *
  * @name 商品品牌管理
  */
-class BrandController extends \Webcms\Backend\Controllers\FormController
+class BrandController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCategory;

@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Yungou\Controllers;
+namespace App\Yungou\Controllers;
 
 /**
  * 云购
@@ -25,11 +25,11 @@ class ProductController extends ControllerBase
     {
         parent::initialize();
         $this->view->setLayout('index');
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelGoodsCategory = new \Webcms\Goods\Models\Category();
-        $this->modelGoodsImages = new \Webcms\Goods\Models\Images();
-        $this->modelGoodsCommon = new \Webcms\Goods\Models\GoodsCommon();
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelGoodsCategory = new \App\Goods\Models\Category();
+        $this->modelGoodsImages = new \App\Goods\Models\Images();
+        $this->modelGoodsCommon = new \App\Goods\Models\GoodsCommon();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
     }
 
     /**
@@ -67,7 +67,7 @@ class ProductController extends ControllerBase
         ), array(), array());
         $this->assign('goodsImageList', $goodsImageList);
         
-        if ($goodsInfo['sale_state'] == \Webcms\Goods\Models\Goods::SALE_STATE1) {} else {
+        if ($goodsInfo['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1) {} else {
             // 即将揭晓
             $announcedSoonGoodsList = $this->modelGoods->getAnnouncedSoonList(1, 4);
             $this->assign('announcedSoonGoodsList', $announcedSoonGoodsList);
@@ -174,14 +174,14 @@ class ProductController extends ControllerBase
         }
         
         // 检查是否在进行中的时候,跳转到商品页面
-        if ($goodsInfo['sale_state'] == \Webcms\Goods\Models\Goods::SALE_STATE1) {
+        if ($goodsInfo['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1) {
             $url = $this->url->get("yungou/product/index?id={$goodsInfo['goods_commonid']}");
             $this->_redirect($url);
             exit();
         }
         
         // 检查是否已经已揭晓并且揭晓时间已到的时候,跳转到lottery页面
-        if ($goodsInfo['sale_state'] == \Webcms\Goods\Models\Goods::SALE_STATE3 && $goodsInfo['prize_time'] <= getMilliTime()) {
+        if ($goodsInfo['sale_state'] == \App\Goods\Models\Goods::SALE_STATE3 && $goodsInfo['prize_time'] <= getMilliTime()) {
             $url = $this->url->get("yungou/lottery/detail?id={$goods_id}");
             $this->_redirect($url);
             exit();
@@ -269,7 +269,7 @@ class ProductController extends ControllerBase
             );
         }
         // 进行中的商品
-        $query['sale_state'] == \Webcms\Goods\Models\Goods::SALE_STATE1;
+        $query['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1;
         
         return $query;
     }

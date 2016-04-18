@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Weixinredpack;
+namespace App\Backend\Models\Weixinredpack;
 
-class Rule extends \Webcms\Common\Models\Weixinredpack\Rule
+class Rule extends \App\Common\Models\Weixinredpack\Rule
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

@@ -12,7 +12,7 @@ class MsgTask extends \Phalcon\CLI\Task
      */
     public function processAction(array $params)
     {
-        $modelOrderGoods = new \Webcms\Order\Models\Goods();
+        $modelOrderGoods = new \App\Order\Models\Goods();
         
         $pheanstalk = $this->getDI()->get('pheanstalk');
         
@@ -44,12 +44,12 @@ class MsgTask extends \Phalcon\CLI\Task
      */
     public function sendmsg4lotteryresultAction(array $params)
     {
-        $modelTemplate = new \Webcms\Message\Models\Template();
-        $modelMailSettings = new \Webcms\Mail\Models\Settings();
-        $modelSmsSettings = new \Webcms\Sms\Models\Settings();
-        $modelSysMsg = new \Webcms\Message\Models\SysMsg();
-        $modelMember = new \Webcms\Member\Models\Member();
-        $modelOrderGoods = new \Webcms\Order\Models\Goods();
+        $modelTemplate = new \App\Message\Models\Template();
+        $modelMailSettings = new \App\Mail\Models\Settings();
+        $modelSmsSettings = new \App\Sms\Models\Settings();
+        $modelSysMsg = new \App\Message\Models\SysMsg();
+        $modelMember = new \App\Member\Models\Member();
+        $modelOrderGoods = new \App\Order\Models\Goods();
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $pheanstalk->watch('sendmsg4lotteryresult')->ignore('default');
         

@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Order;
+namespace App\Backend\Controllers\Order;
 
-use Webcms\Backend\Models\Order\Statistics;
+use App\Backend\Models\Order\Statistics;
 
 /**
  * @title({name="订单统计管理"})
  *
  * @name 订单统计管理
  */
-class StatisticsController extends \Webcms\Backend\Controllers\FormController
+class StatisticsController extends \App\Backend\Controllers\FormController
 {
 
     private $modelStatistics = NULL;

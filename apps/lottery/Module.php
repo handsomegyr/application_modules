@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Lottery;
+namespace App\Lottery;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Lottery\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Lottery\Services' => __DIR__ . '/services/',
-            'Webcms\Lottery\Models' => __DIR__ . '/models/'
+            'App\Lottery\Controllers' => __DIR__ . '/controllers/',
+            'App\Lottery\Services' => __DIR__ . '/services/',
+            'App\Lottery\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -40,7 +40,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Lottery\Controllers");
+            $dispatcher->setDefaultNamespace("App\Lottery\Controllers");
             return $dispatcher;
         });
         

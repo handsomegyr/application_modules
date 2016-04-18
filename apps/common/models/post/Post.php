@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Post;
+namespace App\Common\Models\Post;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Post extends Base
 {
@@ -32,7 +32,7 @@ class Post extends Base
     const STATE2 = 2; // 审核通过
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Post\Post());
+        $this->setModel(new \App\Common\Models\Mysql\Post\Post());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

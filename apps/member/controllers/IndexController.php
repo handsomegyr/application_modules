@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Member\Controllers;
+namespace App\Member\Controllers;
 
 use Phalcon\Mvc\View;
 
@@ -35,17 +35,17 @@ class IndexController extends ControllerBase
     public function initialize()
     {
         parent::initialize();
-        $this->modelMemberFriend = new \Webcms\Member\Models\Friend();
-        $this->modelMemberNews = new \Webcms\Member\Models\News();
-        $this->modelPost = new \Webcms\Post\Models\Post();
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelOrderLog = new \Webcms\Order\Models\Log();
+        $this->modelMemberFriend = new \App\Member\Models\Friend();
+        $this->modelMemberNews = new \App\Member\Models\News();
+        $this->modelPost = new \App\Post\Models\Post();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelOrderLog = new \App\Order\Models\Log();
         
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
-        $this->modelMsgStatistics = new \Webcms\Message\Models\MsgStatistics();
-        $this->modelMsgCount = new \Webcms\Message\Models\MsgCount();
-        $this->modelPayLog = new \Webcms\Payment\Models\Log();
-        $this->modelInvitation = new \Webcms\Invitation\Models\Invitation();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
+        $this->modelMsgStatistics = new \App\Message\Models\MsgStatistics();
+        $this->modelMsgCount = new \App\Message\Models\MsgCount();
+        $this->modelPayLog = new \App\Payment\Models\Log();
+        $this->modelInvitation = new \App\Invitation\Models\Invitation();
         $this->modelInvitation->setIsExclusive(false);
     }
 
@@ -64,19 +64,19 @@ class IndexController extends ControllerBase
         // 待确认
         // 1待确认地址 2待发货 3待收货 4待晒单
         $otherConditions = array();
-        $otherConditions['order_state'] = \Webcms\Order\Models\Goods::ORDER_STATE1;
+        $otherConditions['order_state'] = \App\Order\Models\Goods::ORDER_STATE1;
         $confirmNum4Wait = $this->modelOrderGoods->getOrderCountByBuyerId($_SESSION['member_id'], $otherConditions);
         $this->assign('confirmNum4Wait', $confirmNum4Wait);
         
         // 待发货
         $otherConditions = array();
-        $otherConditions['order_state'] = \Webcms\Order\Models\Goods::ORDER_STATE2;
+        $otherConditions['order_state'] = \App\Order\Models\Goods::ORDER_STATE2;
         $deliveryNum4Wait = $this->modelOrderGoods->getOrderCountByBuyerId($_SESSION['member_id'], $otherConditions);
         $this->assign('deliveryNum4Wait', $deliveryNum4Wait);
         
         // 待收货
         $otherConditions = array();
-        $otherConditions['order_state'] = \Webcms\Order\Models\Goods::ORDER_STATE3;
+        $otherConditions['order_state'] = \App\Order\Models\Goods::ORDER_STATE3;
         $receiveNum4Wait = $this->modelOrderGoods->getOrderCountByBuyerId($_SESSION['member_id'], $otherConditions);
         $this->assign('receiveNum4Wait', $receiveNum4Wait);
         
@@ -197,7 +197,7 @@ class IndexController extends ControllerBase
             die('error');
         }
         $this->assign('postInfo', $postInfo);
-        if ($postInfo['state'] == \Webcms\Post\Models\Post::STATE2) {
+        if ($postInfo['state'] == \App\Post\Models\Post::STATE2) {
             die('error');
         }
     }
@@ -224,7 +224,7 @@ class IndexController extends ControllerBase
             die('error');
         }
         $this->assign('postInfo', $postInfo);
-        if ($postInfo['state'] == \Webcms\Post\Models\Post::STATE2) {
+        if ($postInfo['state'] == \App\Post\Models\Post::STATE2) {
             die('error');
         }
     }
@@ -244,16 +244,16 @@ class IndexController extends ControllerBase
     {
         // http://webcms.didv.cn/member/index/userbalance
         // 充值总额：￥1.00 消费总额：￥1.00 转入总额：￥0.00 转出总额：￥0.00
-        $summaryMoney4Type1 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \Webcms\Payment\Models\Log::TYPE1);
+        $summaryMoney4Type1 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE1);
         $this->assign('summaryMoney4Type1', $summaryMoney4Type1);
         
-        $summaryMoney4Type2 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \Webcms\Payment\Models\Log::TYPE2);
+        $summaryMoney4Type2 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE2);
         $this->assign('summaryMoney4Type2', $summaryMoney4Type2);
         
-        $summaryMoney4Type3 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \Webcms\Payment\Models\Log::TYPE3);
+        $summaryMoney4Type3 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE3);
         $this->assign('summaryMoney4Type3', $summaryMoney4Type3);
         
-        // $summaryMoney4Type4 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \Webcms\Payment\Models\Log::TYPE4);
+        // $summaryMoney4Type4 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE4);
         // $this->assign('summaryMoney4Type4', $summaryMoney4Type4);
     }
 

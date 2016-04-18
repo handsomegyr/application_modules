@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Task;
+namespace App\Backend\Models\Task;
 
-class Log extends \Webcms\Common\Models\Task\Log
+class Log extends \App\Common\Models\Task\Log
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

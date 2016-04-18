@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Vote;
+namespace App\Backend\Controllers\Vote;
 
-use Webcms\Backend\Models\Vote\Period;
-use Webcms\Backend\Models\Vote\Subject;
+use App\Backend\Models\Vote\Period;
+use App\Backend\Models\Vote\Subject;
 
 /**
  * @title({name="投票排行期管理"})
  *
  * @name 投票排行期管理
  */
-class PeriodController extends \Webcms\Backend\Controllers\FormController
+class PeriodController extends \App\Backend\Controllers\FormController
 {
 
     private $modelPeriod;
@@ -88,7 +88,7 @@ class PeriodController extends \Webcms\Backend\Controllers\FormController
         return $this->modelPeriod;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $subjectList = $this->modelSubject->getAll();
         foreach ($list['data'] as &$item) {

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models;
+namespace App\Backend\Models;
 
-use Webcms\Backend\Models\Input;
+use App\Backend\Models\Input;
 
 trait Base
 {

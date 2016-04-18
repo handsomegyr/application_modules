@@ -1,6 +1,6 @@
 <?php
-namespace Webcms\Goods\Models;
+namespace App\Goods\Models;
 
-class Attribute extends \Webcms\Common\Models\Goods\Attribute
+class Attribute extends \App\Common\Models\Goods\Attribute
 {
 }

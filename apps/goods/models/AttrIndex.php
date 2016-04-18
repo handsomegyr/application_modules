@@ -1,6 +1,6 @@
 <?php
-namespace Webcms\Goods\Models;
+namespace App\Goods\Models;
 
-class AttrIndex extends \Webcms\Common\Models\Goods\AttrIndex
+class AttrIndex extends \App\Common\Models\Goods\AttrIndex
 {
 }

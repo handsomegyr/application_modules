@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixinredpack;
+namespace App\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\Weixinredpack\Customer;
+use App\Backend\Models\Weixinredpack\Customer;
 
 /**
  * @title({name="客户管理"})
  *
  * @name 客户管理
  */
-class CustomerController extends \Webcms\Backend\Controllers\FormController
+class CustomerController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCustomer;

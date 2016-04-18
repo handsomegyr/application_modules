@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Prize;
+namespace App\Common\Models\Prize;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Code extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Prize\Code());
+        $this->setModel(new \App\Common\Models\Mysql\Prize\Code());
     }
 }

@@ -1,18 +1,18 @@
 <?php
-namespace Webcms\Backend\Controllers\Vote;
+namespace App\Backend\Controllers\Vote;
 
-use Webcms\Backend\Models\Vote\Limit;
-use Webcms\Backend\Models\Vote\Subject;
-use Webcms\Backend\Models\Vote\Item;
-use Webcms\Backend\Models\Vote\LimitCategory;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Vote\Limit;
+use App\Backend\Models\Vote\Subject;
+use App\Backend\Models\Vote\Item;
+use App\Backend\Models\Vote\LimitCategory;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="投票限制管理"})
  *
  * @name 投票限制管理
  */
-class LimitController extends \Webcms\Backend\Controllers\FormController
+class LimitController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLimit;
@@ -223,7 +223,7 @@ class LimitController extends \Webcms\Backend\Controllers\FormController
         return $this->modelLimit;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $categoryList = $this->modelLimitCategory->getAll();
         $subjectList = $this->modelSubject->getAll();

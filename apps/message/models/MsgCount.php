@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Message\Models;
+namespace App\Message\Models;
 
-class MsgCount extends \Webcms\Common\Models\Message\MsgCount
+class MsgCount extends \App\Common\Models\Message\MsgCount
 {
 
     public function log($msg_user_id)

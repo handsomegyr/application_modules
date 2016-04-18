@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Goods;
+namespace App\Common\Models\Mysql\Goods;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Category extends Base
 {

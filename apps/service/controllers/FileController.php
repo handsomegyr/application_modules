@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Service\Controllers;
+namespace App\Service\Controllers;
 
 class FileController extends ControllerBase
 {

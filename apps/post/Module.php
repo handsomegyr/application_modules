@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Post;
+namespace App\Post;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Post\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Post\Models' => __DIR__ . '/models/',
-            'Webcms\Post\Helpers' => __DIR__ . '/views/helpers/'
+            'App\Post\Controllers' => __DIR__ . '/controllers/',
+            'App\Post\Models' => __DIR__ . '/models/',
+            'App\Post\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }
@@ -39,7 +39,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Post\Controllers");
+            $dispatcher->setDefaultNamespace("App\Post\Controllers");
             return $dispatcher;
         });
         

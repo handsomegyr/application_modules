@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Exchange\Services;
+namespace App\Exchange\Services;
 
 class Api
 {
@@ -20,12 +20,12 @@ class Api
 
     public function __construct()
     {
-        $this->modelRule = new \Webcms\Exchange\Models\Rule();
-        $this->modelLog = new \Webcms\Exchange\Models\Log();
-        $this->modelSuccess = new \Webcms\Exchange\Models\Success();
-        $this->modelLimit = new \Webcms\Exchange\Models\Limit();
-        $this->modelPrize = new \Webcms\Prize\Models\Prize();
-        $this->modelCode = new \Webcms\Prize\Models\Code();
+        $this->modelRule = new \App\Exchange\Models\Rule();
+        $this->modelLog = new \App\Exchange\Models\Log();
+        $this->modelSuccess = new \App\Exchange\Models\Success();
+        $this->modelLimit = new \App\Exchange\Models\Limit();
+        $this->modelPrize = new \App\Prize\Models\Prize();
+        $this->modelCode = new \App\Prize\Models\Code();
     }
 
     /**

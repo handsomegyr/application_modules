@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Article\Models;
+namespace App\Article\Models;
 
-class Article extends \Webcms\Common\Models\Article\Article
+class Article extends \App\Common\Models\Article\Article
 {
 
     /**

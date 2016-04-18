@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\Scene;
+use App\Backend\Models\Weixin\Scene;
 
 /**
  * @title({name="微信二维码场景管理"})
  *
  * @name 微信二维码场景管理
  */
-class SceneController extends \Webcms\Backend\Controllers\FormController
+class SceneController extends \App\Backend\Controllers\FormController
 {
 
     private $modelScene;
@@ -231,7 +231,7 @@ class SceneController extends \Webcms\Backend\Controllers\FormController
         return $this->modelScene;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['ticket_time'] = ! empty($item['ticket_time']) ? date("Y-m-d H:i:s", $item['ticket_time']->sec) : "--";

@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class Gender extends \Webcms\Common\Models\Weixin\Gender
+class Gender extends \App\Common\Models\Weixin\Gender
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 默认排序

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Site\Models;
+namespace App\Site\Models;
 
-class Banner extends \Webcms\Common\Models\Site\Banner
+class Banner extends \App\Common\Models\Site\Banner
 {
 
     /**

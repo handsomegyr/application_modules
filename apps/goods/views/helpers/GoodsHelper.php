@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Goods\Helpers;
+namespace App\Goods\Helpers;
 
-use Webcms\Goods\Models\Category;
-use Webcms\Goods\Models\Brand;
-use Webcms\Goods\Models\Goods;
+use App\Goods\Models\Category;
+use App\Goods\Models\Brand;
+use App\Goods\Models\Goods;
 
 class GoodsHelper extends \Phalcon\Tag
 {
@@ -104,9 +104,9 @@ class GoodsHelper extends \Phalcon\Tag
      */
     static public function getAdList()
     {
-        $modelGoods = new \Webcms\Goods\Models\Goods();
-        $modelGoodsAd = new \Webcms\Goods\Models\Ad();
-        $modelGoodsCommon = new \Webcms\Goods\Models\GoodsCommon();
+        $modelGoods = new \App\Goods\Models\Goods();
+        $modelGoodsAd = new \App\Goods\Models\Ad();
+        $modelGoodsCommon = new \App\Goods\Models\GoodsCommon();
         $goodsId4Ad = $modelGoodsAd->getGoodsIdList();
         $goodsAdList = array();
         if (! empty($goodsId4Ad)) {
@@ -136,7 +136,7 @@ class GoodsHelper extends \Phalcon\Tag
      */
     static public function isOver(array $goodInfo)
     {
-        return ($goodInfo['current_period'] == $goodInfo['max_period'] && $goodInfo['sale_state'] == \Webcms\Goods\Models\Goods::SALE_STATE3);
+        return ($goodInfo['current_period'] == $goodInfo['max_period'] && $goodInfo['sale_state'] == \App\Goods\Models\Goods::SALE_STATE3);
     }
 
     static public function getCategoryList($id1 = '', $id2 = '', $id3 = '')

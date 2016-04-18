@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Member;
+namespace App\Common\Models\Member;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Consignee extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Member\Consignee());
+        $this->setModel(new \App\Common\Models\Mysql\Member\Consignee());
     }
 }

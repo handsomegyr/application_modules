@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixinredpack;
+namespace App\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\Weixinredpack\Redpack;
+use App\Backend\Models\Weixinredpack\Redpack;
 
 /**
  * @title({name="红包管理"})
  *
  * @name 红包管理
  */
-class RedpackController extends \Webcms\Backend\Controllers\FormController
+class RedpackController extends \App\Backend\Controllers\FormController
 {
 
     private $modelRedpack;

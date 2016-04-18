@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Points;
+namespace App\Backend\Controllers\Points;
 
-use Webcms\Backend\Models\Points\Rule;
-use Webcms\Backend\Models\Points\Category;
+use App\Backend\Models\Points\Rule;
+use App\Backend\Models\Points\Category;
 
 /**
  * @title({name="积分规则管理"})
  *
  * @name 积分规则管理
  */
-class RuleController extends \Webcms\Backend\Controllers\FormController
+class RuleController extends \App\Backend\Controllers\FormController
 {
 
     private $modelRule;
@@ -162,7 +162,7 @@ class RuleController extends \Webcms\Backend\Controllers\FormController
         return $this->modelRule;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $categoryList = $this->modelCategory->getAll();
         foreach ($list['data'] as &$item) {

@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Goods;
+namespace App\Backend\Models\Goods;
 
-class AttributeValue extends \Webcms\Common\Models\Goods\AttributeValue
+class AttributeValue extends \App\Common\Models\Goods\AttributeValue
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 
     /**
      * 默认排序

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Points\Helpers;
+namespace App\Points\Helpers;
 
-use Webcms\Points\Models\Category;
+use App\Points\Models\Category;
 
 class PointsCategoryHelper extends \Phalcon\Tag
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Prize\Controllers;
+namespace App\Prize\Controllers;
 
 class IndexController extends ControllerBase
 {

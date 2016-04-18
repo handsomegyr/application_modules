@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Lottery;
+namespace App\Backend\Models\Lottery;
 
-class Record extends \Webcms\Common\Models\Lottery\Record
+class Record extends \App\Common\Models\Lottery\Record
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

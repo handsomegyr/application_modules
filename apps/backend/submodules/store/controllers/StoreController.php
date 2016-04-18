@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Store;
+namespace App\Backend\Controllers\Store;
 
-use Webcms\Backend\Models\Store\Store;
+use App\Backend\Models\Store\Store;
 
 /**
  * @title({name="店铺管理"})
  *
  * @name 店铺管理
  */
-class StoreController extends \Webcms\Backend\Controllers\FormController
+class StoreController extends \App\Backend\Controllers\FormController
 {
 
     private $modelStore;

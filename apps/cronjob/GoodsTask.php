@@ -12,7 +12,7 @@ class GoodsTask extends \Phalcon\CLI\Task
      */
     public function processAction(array $params)
     {
-        $modelGoods = new \Webcms\Goods\Models\Goods();
+        $modelGoods = new \App\Goods\Models\Goods();
         
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $cache = $this->getDI()->get("cache");
@@ -62,7 +62,7 @@ class GoodsTask extends \Phalcon\CLI\Task
      */
     public function createnewperiodgoodsAction(array $params)
     {
-        $serviceGoods = new \Webcms\Goods\Services\Goods();
+        $serviceGoods = new \App\Goods\Services\Goods();
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $pheanstalk->watch('newperiodgoods')->ignore('default');
         $cache = $this->getDI()->get("cache");
@@ -109,7 +109,7 @@ class GoodsTask extends \Phalcon\CLI\Task
      */
     public function lotterygoodsAction(array $params)
     {
-        $serviceGoods = new \Webcms\Goods\Services\Goods();
+        $serviceGoods = new \App\Goods\Services\Goods();
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $pheanstalk->watch('lotterygoods')->ignore('default');
         $cache = $this->getDI()->get("cache");

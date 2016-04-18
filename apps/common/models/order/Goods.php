@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Order;
+namespace App\Common\Models\Order;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Goods extends Base
 {
@@ -68,6 +68,6 @@ class Goods extends Base
     const ORDER_STATE11 = 11; // 已取消
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Order\Goods());
+        $this->setModel(new \App\Common\Models\Mysql\Order\Goods());
     }
 }

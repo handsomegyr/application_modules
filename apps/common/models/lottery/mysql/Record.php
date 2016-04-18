@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Lottery;
+namespace App\Common\Models\Mysql\Lottery;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Record extends Base
 {

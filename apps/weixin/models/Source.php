@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
-class Source extends \Webcms\Common\Models\Weixin\Source
+class Source extends \App\Common\Models\Weixin\Source
 {
 
     /**

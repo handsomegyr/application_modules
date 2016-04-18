@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Site;
+namespace App\Backend\Controllers\Site;
 
-use Webcms\Backend\Models\Site\Banner;
+use App\Backend\Models\Site\Banner;
 
 /**
  * @title({name="网站Banner管理"})
  *
  * @name 网站Banner管理
  */
-class BannerController extends \Webcms\Backend\Controllers\FormController
+class BannerController extends \App\Backend\Controllers\FormController
 {
 
     private $modelBanner;
@@ -174,7 +174,7 @@ class BannerController extends \Webcms\Backend\Controllers\FormController
         return $this->modelBanner;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);

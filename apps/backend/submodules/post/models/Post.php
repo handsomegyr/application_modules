@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Post;
+namespace App\Backend\Models\Post;
 
-class Post extends \Webcms\Common\Models\Post\Post
+class Post extends \App\Common\Models\Post\Post
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

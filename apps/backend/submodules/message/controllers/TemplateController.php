@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Message;
+namespace App\Backend\Controllers\Message;
 
-use Webcms\Backend\Models\Message\Template;
+use App\Backend\Models\Message\Template;
 
 /**
  * @title({name="消息模版管理"})
  *
  * @name 消息模版管理
  */
-class TemplateController extends \Webcms\Backend\Controllers\FormController
+class TemplateController extends \App\Backend\Controllers\FormController
 {
 
     private $modelTemplate;

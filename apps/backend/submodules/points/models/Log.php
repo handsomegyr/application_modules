@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Points;
+namespace App\Backend\Models\Points;
 
-class Log extends \Webcms\Common\Models\Points\Log
+class Log extends \App\Common\Models\Points\Log
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

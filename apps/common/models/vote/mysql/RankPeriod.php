@@ -1,8 +1,8 @@
 <?php
 
-namespace Webcms\Common\Models\Mysql\Vote;
+namespace App\Common\Models\Mysql\Vote;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class RankPeriod extends Base
 {

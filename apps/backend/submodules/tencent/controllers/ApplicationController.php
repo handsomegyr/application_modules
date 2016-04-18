@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Tencent;
+namespace App\Backend\Controllers\Tencent;
 
-use Webcms\Backend\Models\Tencent\AppKey;
-use Webcms\Backend\Models\Tencent\Application;
+use App\Backend\Models\Tencent\AppKey;
+use App\Backend\Models\Tencent\Application;
 
 /**
  * @title({name="腾讯-应用设置管理"})
  *
  * @name 腾讯-应用设置管理
  */
-class ApplicationController extends \Webcms\Backend\Controllers\FormController
+class ApplicationController extends \App\Backend\Controllers\FormController
 {
 
     private $modelAppKey;
@@ -101,7 +101,7 @@ class ApplicationController extends \Webcms\Backend\Controllers\FormController
         return $this->modelApplication;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $appKeyList = $this->modelAppKey->getAll();
         foreach ($list['data'] as &$item) {

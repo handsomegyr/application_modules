@@ -13,14 +13,14 @@
             <ul>
             <?php 
             $goods = $this->view->goodsInfo;
-            $ret = \Webcms\Order\Helpers\OrderHelper::getUserBuyList($_SESSION['member_id'], $goods['_id']);
+            $ret = \App\Order\Helpers\OrderHelper::getUserBuyList($_SESSION['member_id'], $goods['_id']);
             $buyList = $ret['buyList'];
             $total_buy_num = $ret['total_buy_num'];
             $total_lottery_code_num = $ret['total_lottery_code_num'];            
             ?>
                 <li class="mer-pic">
                     <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>">
-                        <img src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl,$goods['image'])?>">
+                        <img src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl,$goods['image'])?>">
                     </a>
                 </li>
 

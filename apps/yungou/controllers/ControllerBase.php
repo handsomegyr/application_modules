@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Yungou\Controllers;
+namespace App\Yungou\Controllers;
 use Phalcon\Mvc\View;
 
-class ControllerBase extends \Webcms\Common\Controllers\ControllerBase
+class ControllerBase extends \App\Common\Controllers\ControllerBase
 {
 
     protected $modelMember = null;
@@ -11,7 +11,7 @@ class ControllerBase extends \Webcms\Common\Controllers\ControllerBase
     {
         parent::initialize();
         $this->view->setVar("resourceUrl", "/yungou/");
-        $this->modelMember = new \Webcms\Member\Models\Member();
+        $this->modelMember = new \App\Member\Models\Member();
         if (! empty($_SESSION['member_id'])) {
             $memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             $this->assign('memberInfo', $memberInfo);

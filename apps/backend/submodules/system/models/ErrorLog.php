@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\System;
+namespace App\Backend\Models\System;
 
-class ErrorLog extends \Webcms\Common\Models\System\ErrorLog
+class ErrorLog extends \App\Common\Models\System\ErrorLog
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

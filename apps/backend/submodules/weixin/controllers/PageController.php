@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\Page;
+use App\Backend\Models\Weixin\Page;
 
 /**
  * @title({name="微信自定义页面管理"})
  *
  * @name 微信自定义页面管理
  */
-class PageController extends \Webcms\Backend\Controllers\FormController
+class PageController extends \App\Backend\Controllers\FormController
 {
 
     private $modelPage;

@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Goods;
+namespace App\Backend\Models\Goods;
 
-class Ad extends \Webcms\Common\Models\Goods\Ad
+class Ad extends \App\Common\Models\Goods\Ad
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 
     /**
      * 默认排序

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Exchange;
+namespace App\Backend\Models\Exchange;
 
-class Rule extends \Webcms\Common\Models\Exchange\Rule
+class Rule extends \App\Common\Models\Exchange\Rule
 {
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\System\Helpers;
+namespace App\System\Helpers;
 
-use Webcms\System\Models\Enum;
+use App\System\Models\Enum;
 
 class EnumHelper extends \Phalcon\Tag
 {

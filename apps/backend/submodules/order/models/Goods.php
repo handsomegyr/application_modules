@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Order;
+namespace App\Backend\Models\Order;
 
-class Goods extends \Webcms\Common\Models\Order\Goods
+class Goods extends \App\Common\Models\Order\Goods
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

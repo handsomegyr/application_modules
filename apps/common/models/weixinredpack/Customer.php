@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Weixinredpack;
+namespace App\Common\Models\Weixinredpack;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Customer extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Weixinredpack\Customer());
+        $this->setModel(new \App\Common\Models\Mysql\Weixinredpack\Customer());
     }
 }

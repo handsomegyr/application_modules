@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Invitation\Controllers;
+namespace App\Invitation\Controllers;
 
-class ControllerBase extends \Webcms\Common\Controllers\CampaignController
+class ControllerBase extends \App\Common\Controllers\CampaignController
 {
 
     protected function initialize()

@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class SubscribeUser extends \Webcms\Common\Models\Weixin\SubscribeUser
+class SubscribeUser extends \App\Common\Models\Weixin\SubscribeUser
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

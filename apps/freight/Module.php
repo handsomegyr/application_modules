@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Freight;
+namespace App\Freight;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Freight\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Freight\Models' => __DIR__ . '/models/',
-            'Webcms\Freight\Helpers' => __DIR__ . '/views/helpers/'
+            'App\Freight\Controllers' => __DIR__ . '/controllers/',
+            'App\Freight\Models' => __DIR__ . '/models/',
+            'App\Freight\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }
@@ -39,7 +39,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Freight\Controllers");
+            $dispatcher->setDefaultNamespace("App\Freight\Controllers");
             return $dispatcher;
         });
         

@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Site;
+namespace App\Backend\Models\Site;
 
-class Banner extends \Webcms\Common\Models\Site\Banner
+class Banner extends \App\Common\Models\Site\Banner
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixinredpack\Models;
+namespace App\Weixinredpack\Models;
 
-class Redpack extends \Webcms\Common\Models\Weixinredpack\Redpack
+class Redpack extends \App\Common\Models\Weixinredpack\Redpack
 {
     /**
      * 默认排序

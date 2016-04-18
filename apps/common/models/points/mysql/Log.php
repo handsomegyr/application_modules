@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Points;
+namespace App\Common\Models\Mysql\Points;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Log extends Base
 {

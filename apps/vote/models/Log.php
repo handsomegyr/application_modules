@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Vote\Models;
+namespace App\Vote\Models;
 
-class Log extends \Webcms\Common\Models\Vote\Log
+class Log extends \App\Common\Models\Vote\Log
 {
 
     /**

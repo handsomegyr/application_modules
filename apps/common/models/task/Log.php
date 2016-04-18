@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Task;
+namespace App\Common\Models\Task;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Log extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Task\Log());
+        $this->setModel(new \App\Common\Models\Mysql\Task\Log());
     }
 }

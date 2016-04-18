@@ -1,11 +1,11 @@
 <?php
-namespace Webcms\Backend\Models\System;
+namespace App\Backend\Models\System;
 
-use Webcms\Backend\Models\Input;
+use App\Backend\Models\Input;
 
-class Area extends \Webcms\Common\Models\System\Area
+class Area extends \App\Common\Models\System\Area
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 默认排序

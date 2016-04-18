@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Tencent;
+namespace App\Backend\Models\Tencent;
 
-class AppKey extends \Webcms\Common\Models\Tencent\AppKey
+class AppKey extends \App\Common\Models\Tencent\AppKey
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 
     /**
      * 获取所有列表

@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\Application;
+use App\Backend\Models\Weixin\Application;
 
 /**
  * @title({name="微信应用管理"})
  *
  * @name 微信应用管理
  */
-class ApplicationController extends \Webcms\Backend\Controllers\FormController
+class ApplicationController extends \App\Backend\Controllers\FormController
 {
 
     private $modelApplication;
@@ -365,7 +365,7 @@ class ApplicationController extends \Webcms\Backend\Controllers\FormController
         return $this->modelApplication;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['access_token_expire'] = ! empty($item['access_token_expire']) ? date("Y-m-d H:i:s", $item['access_token_expire']->sec) : "--";

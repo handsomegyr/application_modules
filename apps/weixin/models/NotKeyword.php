@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
-class NotKeyword extends \Webcms\Common\Models\Weixin\NotKeyword
+class NotKeyword extends \App\Common\Models\Weixin\NotKeyword
 {
 
     public function record($msg)

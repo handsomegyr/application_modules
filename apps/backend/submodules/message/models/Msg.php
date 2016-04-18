@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Message;
+namespace App\Backend\Models\Message;
 
-class Msg extends \Webcms\Common\Models\Message\Msg
+class Msg extends \App\Common\Models\Message\Msg
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

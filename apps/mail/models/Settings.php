@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Mail\Models;
+namespace App\Mail\Models;
 
-class Settings extends \Webcms\Common\Models\Mail\Settings
+class Settings extends \App\Common\Models\Mail\Settings
 {
 
     /**

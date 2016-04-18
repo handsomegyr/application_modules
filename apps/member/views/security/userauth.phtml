@@ -15,7 +15,7 @@
                 </li>
                 <li>
                     <span class="l-side"></span>
-                    <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                    <?php if($this->view->memberInfo['register_by'] == \App\Member\Models\Member::REGISTERBY2){?>
                         <span class="r-side">您当前绑定的邮箱：<b class="blue"><?php echo getHiddenEmail($this->view->memberInfo['email'])?></b></span>
                     <?php }else{?>
                         <span class="r-side">您当前绑定的手机：<b class="blue"><?php echo getHiddenMobile($this->view->memberInfo['mobile'])?></b></span>
@@ -26,7 +26,7 @@
                     <span class="r-side">
                         <div class="inp-wrap">
                             <input id="txtCheckCode" type="text" maxlength="6" class="code-inner inputFocus" value="请输入6位验证码" style="color: rgb(187, 187, 187);">
-                            <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                            <?php if($this->view->memberInfo['register_by'] == \App\Member\Models\Member::REGISTERBY2){?>
                                 <a id="btnGetCode" regesterBy="<?php echo ($this->view->memberInfo['email'])?>" href="javascript:;" class="get-code-btn">点击获取验证码</a>
                             <?php }else{?>
                                 <a id="btnGetCode" regesterBy="<?php echo ($this->view->memberInfo['mobile'])?>" href="javascript:;" class="get-code-btn">点击获取验证码</a>
@@ -47,7 +47,7 @@
         <div class="person-wrap" id="BindingSend" style="display:none;">
             <ul class="person-list">
                 <li style="padding-bottom:20px;">
-                    <?php if($this->view->memberInfo['register_by'] == \Webcms\Member\Models\Member::REGISTERBY2){?>
+                    <?php if($this->view->memberInfo['register_by'] == \App\Member\Models\Member::REGISTERBY2){?>
                         <span class="l-side">输入手机号：</span>
                         <span class="r-side">
                             <div class="inp-wrap ">

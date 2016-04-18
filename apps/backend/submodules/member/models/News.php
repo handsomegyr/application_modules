@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Member;
+namespace App\Backend\Models\Member;
 
-class News extends \Webcms\Common\Models\Member\News
+class News extends \App\Common\Models\Member\News
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

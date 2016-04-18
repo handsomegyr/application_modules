@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Post;
+namespace App\Common\Models\Post;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Reply extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Post\Reply());
+        $this->setModel(new \App\Common\Models\Mysql\Post\Reply());
     }
 }

@@ -1,17 +1,17 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixinredpack;
+namespace App\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\Weixinredpack\Rule;
-use Webcms\Backend\Models\Weixinredpack\Customer;
-use Webcms\Backend\Models\Weixinredpack\Redpack;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Weixinredpack\Rule;
+use App\Backend\Models\Weixinredpack\Customer;
+use App\Backend\Models\Weixinredpack\Redpack;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="红包发放规则管理"})
  *
  * @name 红包发放规则管理
  */
-class RuleController extends \Webcms\Backend\Controllers\FormController
+class RuleController extends \App\Backend\Controllers\FormController
 {
 
     private $modelRule;
@@ -470,7 +470,7 @@ class RuleController extends \Webcms\Backend\Controllers\FormController
         return $this->modelRule;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $customerList = $this->modelCustomer->getAll();
         $redpackList = $this->modelRedpack->getAll();

@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\Callbackurls;
+use App\Backend\Models\Weixin\Callbackurls;
 
 /**
  * @title({name="微信回调地址安全域名管理"})
  *
  * @name 微信回调地址安全域名管理
  */
-class CallbackurlsController extends \Webcms\Backend\Controllers\FormController
+class CallbackurlsController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCallbackurls;

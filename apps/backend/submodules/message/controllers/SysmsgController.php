@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Message;
+namespace App\Backend\Controllers\Message;
 
-use Webcms\Backend\Models\Message\SysMsg;
+use App\Backend\Models\Message\SysMsg;
 
 /**
  * @title({name="系统消息管理"})
  *
  * @name 系统消息管理
  */
-class SysmsgController extends \Webcms\Backend\Controllers\FormController
+class SysmsgController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSysMsg;
@@ -123,7 +123,7 @@ class SysmsgController extends \Webcms\Backend\Controllers\FormController
         return $this->modelSysMsg;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['msg_time'] = date('Y-m-d H:i:s', $item['msg_time']->sec);

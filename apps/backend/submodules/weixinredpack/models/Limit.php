@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Weixinredpack;
+namespace App\Backend\Models\Weixinredpack;
 
-class Limit extends \Webcms\Common\Models\Weixinredpack\Limit
+class Limit extends \App\Common\Models\Weixinredpack\Limit
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

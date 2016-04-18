@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Member\Helpers;
+namespace App\Member\Helpers;
 
-use Webcms\Member\Models\Grade;
+use App\Member\Models\Grade;
 
 class MemberGradeHelper extends \Phalcon\Tag
 {

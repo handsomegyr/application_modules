@@ -1,22 +1,22 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Type;
-use Webcms\Backend\Models\Goods\Category;
-use Webcms\Backend\Models\Goods\Brand;
-use Webcms\Backend\Models\Goods\GoodsCommon;
+use App\Backend\Models\Goods\Type;
+use App\Backend\Models\Goods\Category;
+use App\Backend\Models\Goods\Brand;
+use App\Backend\Models\Goods\GoodsCommon;
 
 /**
  * @title({name="商品公共内容管理"})
  *
  * @name 商品公共内容管理
  */
-class GoodscommonController extends \Webcms\Backend\Controllers\FormController
+class GoodscommonController extends \App\Backend\Controllers\FormController
 {
 
-    private $stateDatas = \Webcms\Goods\Models\GoodsCommon::STATEDATAS;
+    private $stateDatas = \App\Goods\Models\GoodsCommon::STATEDATAS;
 
-    private $verifyDatas = \Webcms\Goods\Models\GoodsCommon::VERIFYDATAS;
+    private $verifyDatas = \App\Goods\Models\GoodsCommon::VERIFYDATAS;
 
     private $modelType;
 
@@ -1429,7 +1429,7 @@ class GoodscommonController extends \Webcms\Backend\Controllers\FormController
         return $this->modelGoodsCommon;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         // $typeList = $this->modelType->getAll();
         // $brandList = $this->modelBrand->getAll();

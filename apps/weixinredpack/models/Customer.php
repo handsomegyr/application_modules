@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixinredpack\Models;
+namespace App\Weixinredpack\Models;
 
-class Customer extends \Webcms\Common\Models\Weixinredpack\Customer
+class Customer extends \App\Common\Models\Weixinredpack\Customer
 {    
     /**
      * 默认排序

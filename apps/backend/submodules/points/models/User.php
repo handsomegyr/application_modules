@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Points;
+namespace App\Backend\Models\Points;
 
-class User extends \Webcms\Common\Models\Points\User
+class User extends \App\Common\Models\Points\User
 {    
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

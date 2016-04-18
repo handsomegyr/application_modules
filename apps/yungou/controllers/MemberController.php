@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Yungou\Controllers;
+namespace App\Yungou\Controllers;
 
 /**
  * 云购
@@ -17,8 +17,8 @@ class MemberController extends ControllerBase
     public function initialize()
     {
         parent::initialize();
-        $this->modelMemberVisitor = new \Webcms\Member\Models\Visitor();
-        $this->modelPointsUser = new \Webcms\Points\Models\User();
+        $this->modelMemberVisitor = new \App\Member\Models\Visitor();
+        $this->modelPointsUser = new \App\Points\Models\User();
     }
 
     /**

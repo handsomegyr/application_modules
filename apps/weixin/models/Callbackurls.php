@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
-class Callbackurls extends \Webcms\Common\Models\Weixin\Callbackurls
+class Callbackurls extends \App\Common\Models\Weixin\Callbackurls
 {
 
     protected $name = 'iWeixin_callbackurls';

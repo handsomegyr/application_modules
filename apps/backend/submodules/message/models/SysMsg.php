@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Message;
+namespace App\Backend\Models\Message;
 
-class SysMsg extends \Webcms\Common\Models\Message\SysMsg
+class SysMsg extends \App\Common\Models\Message\SysMsg
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Common\Models\Goods;
+namespace App\Common\Models\Goods;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Images extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Goods\Images());
+        $this->setModel(new \App\Common\Models\Mysql\Goods\Images());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

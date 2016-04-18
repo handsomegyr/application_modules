@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\System;
+namespace App\Common\Models\Mysql\System;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class ErrorLog extends Base
 {

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Tencent\Models;
+namespace App\Tencent\Models;
 
-class Application extends \Webcms\Common\Models\Tencent\Application
+class Application extends \App\Common\Models\Tencent\Application
 {
 
     public function getSignKey($user_id, $secretKey, $timestamp = 0)

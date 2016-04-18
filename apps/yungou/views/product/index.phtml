@@ -19,11 +19,11 @@
                 <img id="imgGoodsPic" alt="" src="http://goodsimg.1yyg.com/GoodsPic/pic-38-38/20140910144704643.jpg" style="display: none;"> -->
                 <div id="preview" class="ng-middle-box spec-preview">
                     <span class="jqzoom">
-                        <?php if(\Webcms\Goods\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>
+                        <?php if(\App\Goods\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>
                         <!-- 已结束需要显示内容 -->
                         <div class="product-end">本商品已结束</div>
                         <?php }?>
-                        <img style="width:343px;height:343px;" jqimg="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'],343,343)?>" />
+                        <img style="width:343px;height:343px;" jqimg="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'],343,343)?>" />
                     </span>
                 </div>
                 <div class="spec-scroll">
@@ -31,7 +31,7 @@
                         <ul>
                         <?php if(!empty($this->view->goodsImageList)){?>
                         <?php foreach ($this->view->goodsImageList as $idx => $goodsImage) {?>
-                            <li><img bimg="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'])?>" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'],56,56)?>" onmousemove="preview(this);"></li>
+                            <li><img bimg="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'])?>" src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'],56,56)?>" onmousemove="preview(this);"></li>
                         <?php if($idx>=6)break?>
                         <?php }?>
                         <?php }?>
@@ -63,7 +63,7 @@
             
             <!--正在进行中-->
             <div class="ng-goods-detail ng-goods-detail-height" style="display:block;">
-                <?php if(!\Webcms\Goods\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>
+                <?php if(!\App\Goods\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>
                 <!-- 正在进行内容 -->
                 <h2 class="o-title"><span class="num">
                     (第<?php echo $this->view->goodsInfo['period']?>云)</span><?php echo $this->view->goodsInfo['name']?><span class="o-info"><?php echo $this->view->goodsInfo['jingle']?></span>
@@ -103,7 +103,7 @@
                 </div>
                 <div id="divBuy" class="consume-wrapper clearfix">
                     <a goodsid="<?php echo $this->view->goodsInfo['_id']?>" href="javascript:;" class="consume-now">立即1元云购</a>
-                    <a goodsid="<?php echo $this->view->goodsInfo['_id']?>" href="javascript:;" _src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" class="consume-addcar">加入购物车</a>
+                    <a goodsid="<?php echo $this->view->goodsInfo['_id']?>" href="javascript:;" _src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" class="consume-addcar">加入购物车</a>
                 </div>
                 <?php }else{?>
 
@@ -159,7 +159,7 @@
             <!--右侧：云购记录-->
             <div class="ng-goods-buy">    
 
-                <?php if(!\Webcms\Goods\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>       
+                <?php if(!\App\Goods\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>       
                 <!--进行中状态-->
                 <div class="ng-buy-list">
                     <div id="div_buynav" class="ng-buy-nav">
@@ -178,7 +178,7 @@
                         <div class="my-record">
                             <?php if(!empty($_SESSION['member_id'])){?>
                             <?php 
-                                $ret=\Webcms\Order\Helpers\OrderHelper::getUserBuyList($_SESSION['member_id'], $this->view->goodsInfo['_id']);
+                                $ret=\App\Order\Helpers\OrderHelper::getUserBuyList($_SESSION['member_id'], $this->view->goodsInfo['_id']);
                                 $lotteryCodeList =$ret['lotteryCodeList']; 
                                 $lastPurchaseTime =$ret['lastPurchaseTime'];
                             ?>
@@ -217,7 +217,7 @@
                         <div class="ng-buy-select">
                             <div class="img-wrapper">
                                 <a rel="nofollow" href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" title="<?php echo $goods['name']?>">
-                                    <img alt="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>" width="82" height="82"></a>
+                                    <img alt="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>" width="82" height="82"></a>
                             </div>
                             <div class="info-select">
                                 <p class="p-name"><a rel="nofollow" href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" title="<?php echo $goods['name']?>"><?php echo $goods['name']?></a></p>

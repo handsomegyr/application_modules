@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Lottery;
+namespace App\Backend\Controllers\Lottery;
 
-use Webcms\Backend\Models\Lottery\Rule;
-use Webcms\Backend\Models\Prize\Prize;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Lottery\Rule;
+use App\Backend\Models\Prize\Prize;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="抽奖概率管理"})
  *
  * @name 抽奖概率管理
  */
-class RuleController extends \Webcms\Backend\Controllers\FormController
+class RuleController extends \App\Backend\Controllers\FormController
 {
 
     private $modelRule;
@@ -186,7 +186,7 @@ class RuleController extends \Webcms\Backend\Controllers\FormController
         return $this->modelRule;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $prizeList = $this->modelPrize->getAll();
         $activityList = $this->modelActivity->getAll();

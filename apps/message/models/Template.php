@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Message\Models;
+namespace App\Message\Models;
 
-class Template extends \Webcms\Common\Models\Message\Template
+class Template extends \App\Common\Models\Message\Template
 {
 
     public function getInfoByCode($code)

@@ -8,7 +8,7 @@
             <div class="pic-side">
                 <div class="pic-wrap">
                     <a href="<?php echo $this->view->baseUrl?>member/admin/userphoto" class="h-pic">
-                    <img src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>" width="120" height="120">
+                    <img src="<?php echo \App\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>" width="120" height="120">
                     </a><a href="<?php echo $this->view->baseUrl?>member/admin/userphoto" class="h-txt">修改头像</a>
                 </div>
                 
@@ -46,7 +46,7 @@
                     <li>
                         <span class="label">性　　别：</span>
                         <div class="sex-list">
-                            <?php $sexList = \Webcms\System\Helpers\EnumHelper::getSexList()?>
+                            <?php $sexList = \App\System\Helpers\EnumHelper::getSexList()?>
                             <?php foreach ($sexList as $key => $value) {?>
                             <div class="box" value="<?php echo $key?>">
                                 <div class="box-check">
@@ -127,7 +127,7 @@
                                             <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
                                             <!-- <a href="javascript:;" class="gray6 select-xiala">数据库值<s class="u-personal"></s></a> -->
                                             <div class="select-state" style="width: 126px;">
-                                            <?php $constellationList = \Webcms\System\Helpers\EnumHelper::getConstellationList()?>
+                                            <?php $constellationList = \App\System\Helpers\EnumHelper::getConstellationList()?>
                                             <?php foreach ($constellationList as $key => $value) {?>
                                                 <a href="javascript:;" value="<?php echo $key?>"><?php echo $value?></a>
                                             <?php }?>
@@ -160,7 +160,7 @@
                                             <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
                                             <!-- <a href="javascript:;" class="gray6 select-xiala" provinceid="">数据库值<s class="u-personal"></s></a> -->
                                             <div class="select-state">
-                                            <?php $provinceList = \Webcms\System\Helpers\AreaHelper::getProvinceList()?>
+                                            <?php $provinceList = \App\System\Helpers\AreaHelper::getProvinceList()?>
                                             <?php foreach ($provinceList as $key => $value) {?>
                                                 <a href="javascript:;" value="<?php echo $key?>"><?php echo $value?></a>
                                             <?php }?>
@@ -250,7 +250,7 @@
                                         <span id="selMonthIncome" class="u-select-con" value="">
                                             <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
                                             <div class="select-state" style="width: 126px;">
-                                            <?php $monthlyIncomeList = \Webcms\System\Helpers\EnumHelper::getMonthlyIncomeList()?>
+                                            <?php $monthlyIncomeList = \App\System\Helpers\EnumHelper::getMonthlyIncomeList()?>
                                             <?php foreach ($monthlyIncomeList as $key => $value) {?>
                                                 <a href="javascript:;" value="<?php echo $key?>"><?php echo $value?></a>
                                             <?php }?>    

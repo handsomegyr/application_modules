@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Payment;
+namespace App\Common\Models\Mysql\Payment;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Payment extends Base
 {

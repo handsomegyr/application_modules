@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Mail;
+namespace App\Backend\Models\Mail;
 
-class Settings extends \Webcms\Common\Models\Mail\Settings
+class Settings extends \App\Common\Models\Mail\Settings
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

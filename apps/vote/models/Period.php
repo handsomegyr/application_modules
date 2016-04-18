@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Vote\Models;
+namespace App\Vote\Models;
 
-class Period extends \Webcms\Common\Models\Vote\Period
+class Period extends \App\Common\Models\Vote\Period
 {
 
     /**

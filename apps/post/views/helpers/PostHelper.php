@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Post\Helpers;
+namespace App\Post\Helpers;
 
-use Webcms\Post\Models\Post;
+use App\Post\Models\Post;
 
 class PostHelper extends \Phalcon\Tag
 {

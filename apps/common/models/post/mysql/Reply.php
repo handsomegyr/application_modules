@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Post;
+namespace App\Common\Models\Mysql\Post;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Reply extends Base
 {

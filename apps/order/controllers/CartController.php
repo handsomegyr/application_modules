@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Order\Controllers;
+namespace App\Order\Controllers;
 
 /**
  * 购物车服务
@@ -36,17 +36,17 @@ class CartController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelOrderCart = new \Webcms\Order\Models\Cart();
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelOrder = new \Webcms\Order\Models\Order();
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
-        $this->modelOrderCommon = new \Webcms\Order\Models\OrderCommon();
-        $this->modelOrderPay = new \Webcms\Order\Models\Pay();
-        $this->modelStore = new \Webcms\Store\Models\Store();
-        $this->modelMember = new \Webcms\Member\Models\Member();
-        $this->modelMemberConsignee = new \Webcms\Member\Models\Consignee();
+        $this->modelOrderCart = new \App\Order\Models\Cart();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelOrder = new \App\Order\Models\Order();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
+        $this->modelOrderCommon = new \App\Order\Models\OrderCommon();
+        $this->modelOrderPay = new \App\Order\Models\Pay();
+        $this->modelStore = new \App\Store\Models\Store();
+        $this->modelMember = new \App\Member\Models\Member();
+        $this->modelMemberConsignee = new \App\Member\Models\Consignee();
         
-        $this->serviceCart = new \Webcms\Order\Services\Cart();
+        $this->serviceCart = new \App\Order\Services\Cart();
     }
 
     /**

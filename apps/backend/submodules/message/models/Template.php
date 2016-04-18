@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Message;
+namespace App\Backend\Models\Message;
 
-class Template extends \Webcms\Common\Models\Message\Template
+class Template extends \App\Common\Models\Message\Template
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

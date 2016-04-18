@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Goods;
+namespace App\Backend\Models\Goods;
 
-class Images extends \Webcms\Common\Models\Goods\Images
+class Images extends \App\Common\Models\Goods\Images
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

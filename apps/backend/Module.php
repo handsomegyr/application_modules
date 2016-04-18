@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend;
+namespace App\Backend;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Events\Manager as EventsManager;
-use Webcms\Backend\Tags\MyTags;
-use Webcms\Backend\Plugins\SecurityPlugin;
-use Webcms\Backend\Plugins\NotFoundPlugin;
+use App\Backend\Tags\MyTags;
+use App\Backend\Plugins\SecurityPlugin;
+use App\Backend\Plugins\NotFoundPlugin;
 
 class Module
 {
@@ -21,11 +21,11 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(            
-            'Webcms\Backend\Models\System' => __DIR__ . '/submodules/system/models/',
-            'Webcms\Backend\Models' => __DIR__ . '/models/',
-            'Webcms\Backend\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Backend\Tags' => __DIR__ . '/tags/',
-            'Webcms\Backend\Plugins' => __DIR__ . '/plugins/'
+            'App\Backend\Models\System' => __DIR__ . '/submodules/system/models/',
+            'App\Backend\Models' => __DIR__ . '/models/',
+            'App\Backend\Controllers' => __DIR__ . '/controllers/',
+            'App\Backend\Tags' => __DIR__ . '/tags/',
+            'App\Backend\Plugins' => __DIR__ . '/plugins/'
         ));
         
         $loader->register();
@@ -59,7 +59,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Backend\Controllers");
+            $dispatcher->setDefaultNamespace("App\Backend\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             

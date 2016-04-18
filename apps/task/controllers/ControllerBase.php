@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Task\Controllers;
+namespace App\Task\Controllers;
 
-class ControllerBase extends \Webcms\Common\Controllers\ControllerBase
+class ControllerBase extends \App\Common\Controllers\ControllerBase
 {
 
     protected function initialize()

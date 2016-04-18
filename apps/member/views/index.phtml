@@ -1,4 +1,4 @@
-<?php $siteSettings=\Webcms\Site\Helpers\SiteHelper::getSettings();?>
+<?php $siteSettings=\App\Site\Helpers\SiteHelper::getSettings();?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +44,7 @@
                 </li>
             </ul>
             <?php                
-                $loginName = \Webcms\Member\Helpers\MemberHelper::getLoginName($this->view->memberInfo);
+                $loginName = \App\Member\Helpers\MemberHelper::getLoginName($this->view->memberInfo);
             ?>
             <ul id="ulTopRight" class="fr"><li><div class="u-menu-hd u-menu-login"><a href="<?php echo $this->view->baseUrl?>member/index/index" title="<?php echo $loginName?>" class="blue"><span class="fl"><img src="/Images/UserFace-25-0000.jpg"><s class="transparent-png"></s></span><?php echo $loginName?></a><a href="<?php echo $this->view->baseUrl?>member/passport/logout" title="退出">[退出]</a></div></li><li class="f-gap"><s></s></li>
                 <li id="liMember" class="u-arr-1yyg" style="display: none;">

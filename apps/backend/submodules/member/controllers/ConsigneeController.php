@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Member;
+namespace App\Backend\Controllers\Member;
 
-use Webcms\Backend\Models\Member\Consignee;
-use Webcms\System\Models\Area;
+use App\Backend\Models\Member\Consignee;
+use App\System\Models\Area;
 
 /**
  * @title({name="收货人管理"})
  *
  * @name 收货人管理
  */
-class ConsigneeController extends \Webcms\Backend\Controllers\FormController
+class ConsigneeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelConsignee;

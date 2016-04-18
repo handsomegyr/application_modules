@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Yungou\Controllers;
+namespace App\Yungou\Controllers;
 
 /**
  * 购物,下单,支付
@@ -26,12 +26,12 @@ class CartController extends ControllerBase
     {
         parent::initialize();
         
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelOrder = new \Webcms\Order\Models\Order();
-        $this->modelOrderPay = new \Webcms\Order\Models\Pay();
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
-        $this->modelPointsUser = new \Webcms\Points\Models\User();
-        $this->serviceCart = new \Webcms\Order\Services\Cart();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelOrder = new \App\Order\Models\Order();
+        $this->modelOrderPay = new \App\Order\Models\Pay();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
+        $this->modelPointsUser = new \App\Points\Models\User();
+        $this->serviceCart = new \App\Order\Services\Cart();
     }
 
     /**

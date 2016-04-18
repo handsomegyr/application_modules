@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Freight;
+namespace App\Backend\Controllers\Freight;
 
-use Webcms\Backend\Models\Freight\Express;
+use App\Backend\Models\Freight\Express;
 
 /**
  * @title({name="快递公司管理"})
  *
  * @name 快递公司管理
  */
-class ExpressController extends \Webcms\Backend\Controllers\FormController
+class ExpressController extends \App\Backend\Controllers\FormController
 {
 
     private $modelExpress;

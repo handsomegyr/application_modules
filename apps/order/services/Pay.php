@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Order\Services;
+namespace App\Order\Services;
 
 class Pay
 {
@@ -34,21 +34,21 @@ class Pay
 
     function __construct()
     {
-        $this->modelMemberNews = new \Webcms\Member\Models\News();
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelMember = new \Webcms\Member\Models\Member();
-        $this->modelOrder = new \Webcms\Order\Models\Order();
-        $this->modelOrderPay = new \Webcms\Order\Models\Pay();
-        $this->modelOrderStatistics = new \Webcms\Order\Models\Statistics();
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
-        $this->modelPointsUser = new \Webcms\Points\Models\User();
-        $this->modelInvitation = new \Webcms\Invitation\Models\Invitation();
+        $this->modelMemberNews = new \App\Member\Models\News();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelMember = new \App\Member\Models\Member();
+        $this->modelOrder = new \App\Order\Models\Order();
+        $this->modelOrderPay = new \App\Order\Models\Pay();
+        $this->modelOrderStatistics = new \App\Order\Models\Statistics();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
+        $this->modelPointsUser = new \App\Points\Models\User();
+        $this->modelInvitation = new \App\Invitation\Models\Invitation();
         $this->modelInvitation->setIsExclusive(false);
-        $this->modelInvitationGotDetail = new \Webcms\Invitation\Models\InvitationGotDetail();
-        $this->serviceLottery = new \Webcms\Lottery\Services\Api();
-        $this->modelPointsRule = new \Webcms\Points\Models\Rule();
-        $this->modelPayLog = new \Webcms\Payment\Models\Log();
-        $this->modelTaskLog = new \Webcms\Task\Models\Log();
+        $this->modelInvitationGotDetail = new \App\Invitation\Models\InvitationGotDetail();
+        $this->serviceLottery = new \App\Lottery\Services\Api();
+        $this->modelPointsRule = new \App\Points\Models\Rule();
+        $this->modelPayLog = new \App\Payment\Models\Log();
+        $this->modelTaskLog = new \App\Task\Models\Log();
     }
 
     /**
@@ -71,7 +71,7 @@ class Pay
                 // lock
                 $orderPayInfo = $this->modelOrderPay->findOne(array(
                     '_id' => $out_trade_no,
-                    'api_pay_state' => \Webcms\Order\Models\Pay::STATE1,
+                    'api_pay_state' => \App\Order\Models\Pay::STATE1,
                     'process_state' => false,
                     '__FOR_UPDATE__' => true
                 ));
@@ -99,7 +99,7 @@ class Pay
                         $this->modelPointsUser->addOrReduce(POINTS_CATEGORY3, $buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $out_trade_no, $orderPayInfo['__CREATE_TIME__'], $pay_amount, "预付款充值", "支付金额￥{$pay_amount}已充值到您的云购账户");
                         
                         // 增加支付日志记录
-                        $this->modelPayLog->recordLog($buyerInfo['buyer_id'], \Webcms\Payment\Models\Log::TYPE1, $pay_amount, '预付款充值', $orderPayInfo);
+                        $this->modelPayLog->recordLog($buyerInfo['buyer_id'], \App\Payment\Models\Log::TYPE1, $pay_amount, '预付款充值', $orderPayInfo);
                         
                         // 更新支付订单的信息
                         $this->modelOrderPay->incSuccessAndFailureCount($orderPayInfo['_id'], 1, 0);
@@ -124,7 +124,7 @@ class Pay
                         $order_ids = array_keys($orderList);
                         $this->modelOrder->updatePaymentCode($order_ids, $payment_code);
                         // 更新订单的支付状态等信息
-                        $this->modelOrder->updateOrderState($order_ids, \Webcms\Order\Models\Order::ORDER_STATE_PAY);
+                        $this->modelOrder->updateOrderState($order_ids, \App\Order\Models\Order::ORDER_STATE_PAY);
                         
                         // 如果支付完成的话，计算成功和失败个数
                         $failure_count = 0; // 失败个数
@@ -213,7 +213,7 @@ class Pay
                                 $this->modelOrderGoods->updateIsSuccess($goodsInfo['_id'], true, $lottery_code, $failure_num);
                                 
                                 // 记录会员动态
-                                $this->modelMemberNews->log($buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $buyerInfo['buyer_register_by'], \Webcms\Member\Models\News::ACTION1, $goodsInfo['_id'], $goodsInfo);
+                                $this->modelMemberNews->log($buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $buyerInfo['buyer_register_by'], \App\Member\Models\News::ACTION1, $goodsInfo['_id'], $goodsInfo);
                                 // 如果成功购买次数大于0
                                 if ($lottery_code_num > 0) {
                                     // 增加会员的积分
@@ -229,7 +229,7 @@ class Pay
                                     $this->modelPointsUser->addOrReduce(POINTS_CATEGORY2, $buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $exchangeInfo['_id'], null, $pointsRuleInfo['points'] * $double * $lottery_code_num, $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                                     
                                     // 增加支付日志记录
-                                    $this->modelPayLog->recordLog($buyerInfo['buyer_id'], \Webcms\Payment\Models\Log::TYPE2, $lottery_code_num, '云购商品', $goodsInfo);
+                                    $this->modelPayLog->recordLog($buyerInfo['buyer_id'], \App\Payment\Models\Log::TYPE2, $lottery_code_num, '云购商品', $goodsInfo);
                                 }
                             }
                         }

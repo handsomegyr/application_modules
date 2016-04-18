@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\System;
+namespace App\Backend\Controllers\System;
 
-use Webcms\Backend\Models\System\Role;
+use App\Backend\Models\System\Role;
 
 /**
  * @title({name="用户角色管理"})
  *
  * @name 用户角色管理
  */
-class RoleController extends \Webcms\Backend\Controllers\FormController
+class RoleController extends \App\Backend\Controllers\FormController
 {
     private $modelRole;
     
@@ -142,21 +142,21 @@ class RoleController extends \Webcms\Backend\Controllers\FormController
         return $this->modelRole;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {}
         return $list;
     }
 
-    protected function validate4Insert(\Webcms\Backend\Models\Input $input, $row)
+    protected function validate4Insert(\App\Backend\Models\Input $input, $row)
     {
         // do other validation
         $this->getModel()->checkName($input->id, $input->name);
     }
 
-    protected function validate4Update(\Webcms\Backend\Models\Input $input, $row)
+    protected function validate4Update(\App\Backend\Models\Input $input, $row)
     {}
 
-    protected function validate4Delete(\Webcms\Backend\Models\Input $input, $row)
+    protected function validate4Delete(\App\Backend\Models\Input $input, $row)
     {}
 }

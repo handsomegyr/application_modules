@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Site;
+namespace App\Backend\Controllers\Site;
 
-use Webcms\Backend\Models\Site\Site;
+use App\Backend\Models\Site\Site;
 
 /**
  * @title({name="网站设置管理"})
  *
  * @name 网站设置管理
  */
-class SiteController extends \Webcms\Backend\Controllers\FormController
+class SiteController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSite = NULL;

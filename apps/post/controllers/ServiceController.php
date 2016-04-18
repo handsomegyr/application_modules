@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Post\Controllers;
+namespace App\Post\Controllers;
 
 class ServiceController extends ControllerBase
 {
@@ -30,17 +30,17 @@ class ServiceController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelMemberNews = new \Webcms\Member\Models\News();
-        $this->modelMember = new \Webcms\Member\Models\Member();
-        $this->modelReply = new \Webcms\Post\Models\Reply();
-        $this->modelVote = new \Webcms\Post\Models\Vote();
-        $this->modelPost = new \Webcms\Post\Models\Post();
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelPointsUser = new \Webcms\Points\Models\User();
-        $this->modelMemberGrade = new \Webcms\Member\Models\Grade();
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
-        $this->modelReplyMsg = new \Webcms\Message\Models\ReplyMsg();
-        $this->modelMsgCount = new \Webcms\Message\Models\MsgCount();
+        $this->modelMemberNews = new \App\Member\Models\News();
+        $this->modelMember = new \App\Member\Models\Member();
+        $this->modelReply = new \App\Post\Models\Reply();
+        $this->modelVote = new \App\Post\Models\Vote();
+        $this->modelPost = new \App\Post\Models\Post();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelPointsUser = new \App\Points\Models\User();
+        $this->modelMemberGrade = new \App\Member\Models\Grade();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
+        $this->modelReplyMsg = new \App\Message\Models\ReplyMsg();
+        $this->modelMsgCount = new \App\Message\Models\MsgCount();
     }
 
     /**
@@ -62,7 +62,7 @@ class ServiceController extends ControllerBase
             $ret['datas'] = array();
             
             $otherConditions = array();
-            $otherConditions['state'] = \Webcms\Post\Models\Post::STATE2;
+            $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
@@ -135,7 +135,7 @@ class ServiceController extends ControllerBase
             
             $otherConditions = array();
             $otherConditions['goods_commonid'] = $goodsInfo['goods_commonid'];
-            $otherConditions['state'] = \Webcms\Post\Models\Post::STATE2;
+            $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
@@ -206,7 +206,7 @@ class ServiceController extends ControllerBase
                 '$ne' => $postid
             );
             $otherConditions['buyer_id'] = $postInfo['buyer_id'];
-            $otherConditions['state'] = \Webcms\Post\Models\Post::STATE2;
+            $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
@@ -274,19 +274,19 @@ class ServiceController extends ControllerBase
             
             if ($state == 1) {
                 // 已晒单
-                $otherConditions['state'] = \Webcms\Post\Models\Post::STATE2;
+                $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             } elseif ($state == 2) {
                 // 未晒单
-                $otherConditions['state'] = \Webcms\Post\Models\Post::STATE_NONE;
+                $otherConditions['state'] = \App\Post\Models\Post::STATE_NONE;
             } elseif ($state == 3) {
                 // 待审核
-                $otherConditions['state'] = \Webcms\Post\Models\Post::STATE0;
+                $otherConditions['state'] = \App\Post\Models\Post::STATE0;
             } elseif ($state == 4) {
                 // 未通过
-                $otherConditions['state'] = \Webcms\Post\Models\Post::STATE1;
+                $otherConditions['state'] = \App\Post\Models\Post::STATE1;
             } elseif ($state == 5) {
                 // 审核通过
-                $otherConditions['state'] = \Webcms\Post\Models\Post::STATE2;
+                $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             }
             
             $list = $this->modelPost->getPageListByBuyerId($_SESSION['member_id'], $page, $limit, $otherConditions);
@@ -365,7 +365,7 @@ class ServiceController extends ControllerBase
             $ret['datas'] = array();
             
             $otherConditions = array();
-            $otherConditions['state'] = \Webcms\Post\Models\Post::STATE2;
+            $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
@@ -443,7 +443,7 @@ class ServiceController extends ControllerBase
                 return false;
             }
             
-            if ($postInfo['state'] == \Webcms\Post\Models\Post::STATE2) {
+            if ($postInfo['state'] == \App\Post\Models\Post::STATE2) {
                 echo ($this->error('-3', '该记录已审核通过，无法在修改'));
                 return false;
             }
@@ -738,7 +738,7 @@ class ServiceController extends ControllerBase
             
             $ret['datas'] = array();
             $otherConditions = array();
-            $otherConditions['state'] = \Webcms\Post\Models\Post::STATE2;
+            $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
@@ -832,7 +832,7 @@ class ServiceController extends ControllerBase
                 echo ($this->error(- 4, '晒单信息不存在'));
                 return false;
             }
-            if ($postInfo['state'] == \Webcms\Post\Models\Post::STATE2) {
+            if ($postInfo['state'] == \App\Post\Models\Post::STATE2) {
                 echo ($this->error(- 5, '晒单已审核通过'));
                 return false;
             }
@@ -840,7 +840,7 @@ class ServiceController extends ControllerBase
             $this->modelPost->pass($post_id, $point, $is_recommend, $user_id, $user_name);
             
             // 记录会员动态
-            $this->modelMemberNews->log($postInfo['goods_info']['prize_buyer_id'], $postInfo['goods_info']['prize_buyer_name'], $postInfo['goods_info']['prize_buyer_avatar'], $postInfo['goods_info']['prize_buyer_register_by'], \Webcms\Member\Models\News::ACTION2, $postInfo['_id'], $postInfo);
+            $this->modelMemberNews->log($postInfo['goods_info']['prize_buyer_id'], $postInfo['goods_info']['prize_buyer_name'], $postInfo['goods_info']['prize_buyer_avatar'], $postInfo['goods_info']['prize_buyer_register_by'], \App\Member\Models\News::ACTION2, $postInfo['_id'], $postInfo);
             
             // 订单的状态改成已完成
             $this->modelOrderGoods->finishOrder($postInfo['order_no']);
@@ -895,7 +895,7 @@ class ServiceController extends ControllerBase
                 echo ($this->error(- 4, '晒单信息不存在'));
                 return false;
             }
-            if ($postInfo['state'] == \Webcms\Post\Models\Post::STATE2) {
+            if ($postInfo['state'] == \App\Post\Models\Post::STATE2) {
                 echo ($this->error(- 5, '晒单已审核通过'));
                 return false;
             }

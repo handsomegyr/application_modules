@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Exchange\Models;
+namespace App\Exchange\Models;
 
-class Rule extends \Webcms\Common\Models\Exchange\Rule
+class Rule extends \App\Common\Models\Exchange\Rule
 {
 
     public function getDefaultSort()

@@ -21,7 +21,7 @@
 
 <script>
 <?php 
-$modelCategory = new \Webcms\Backend\Models\Goods\Category();
+$modelCategory = new \App\Backend\Models\Goods\Category();
 $categoryList= $modelCategory->getList4Tree('',1);
 ?>
 function Category() {

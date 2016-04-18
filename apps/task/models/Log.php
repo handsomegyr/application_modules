@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Task\Models;
+namespace App\Task\Models;
 
-class Log extends \Webcms\Common\Models\Task\Log
+class Log extends \App\Common\Models\Task\Log
 {
 
     /**

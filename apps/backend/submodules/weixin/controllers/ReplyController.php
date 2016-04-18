@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\ReplyType;
-use Webcms\Backend\Models\Weixin\Reply;
+use App\Backend\Models\Weixin\ReplyType;
+use App\Backend\Models\Weixin\Reply;
 
 /**
  * @title({name="微信回复管理"})
  *
  * @name 微信回复管理
  */
-class ReplyController extends \Webcms\Backend\Controllers\FormController
+class ReplyController extends \App\Backend\Controllers\FormController
 {
 
     private $modelReplyType;
@@ -360,7 +360,7 @@ class ReplyController extends \Webcms\Backend\Controllers\FormController
         return $this->modelReply;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $replyTypeList = $this->modelReplyType->getAll();
         foreach ($list['data'] as &$item) {

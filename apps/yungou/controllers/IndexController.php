@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Yungou\Controllers;
+namespace App\Yungou\Controllers;
 
 /**
  * 云购
@@ -29,14 +29,14 @@ class IndexController extends ControllerBase
     public function initialize()
     {
         parent::initialize();
-        $this->modelSite = new \Webcms\Site\Models\Site();
-        $this->modelBanner = new \Webcms\Site\Models\Banner();
-        $this->modelGoodsAd = new \Webcms\Goods\Models\Ad();
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelGoodsCommon = new \Webcms\Goods\Models\GoodsCommon();
-        $this->modelGoodsBrand = new \Webcms\Goods\Models\Brand();
-        $this->modelGoodsCategory = new \Webcms\Goods\Models\Category();
-        $this->modelGoodsImages = new \Webcms\Goods\Models\Images();
+        $this->modelSite = new \App\Site\Models\Site();
+        $this->modelBanner = new \App\Site\Models\Banner();
+        $this->modelGoodsAd = new \App\Goods\Models\Ad();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelGoodsCommon = new \App\Goods\Models\GoodsCommon();
+        $this->modelGoodsBrand = new \App\Goods\Models\Brand();
+        $this->modelGoodsCategory = new \App\Goods\Models\Category();
+        $this->modelGoodsImages = new \App\Goods\Models\Images();
     }
 
     /**

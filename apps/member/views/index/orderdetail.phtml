@@ -1,4 +1,4 @@
-﻿<?php $siteSettings=\Webcms\Site\Helpers\SiteHelper::getSettings();?>
+﻿<?php $siteSettings=\App\Site\Helpers\SiteHelper::getSettings();?>
 <link rel="stylesheet" type="text/css" href="css/member_q.css" />
 <link rel="stylesheet" type="text/css" href="css/pageDialog.css" />
 <link rel="stylesheet" type="text/css" href="/yungou/css/share_style2_16.css" />
@@ -15,10 +15,10 @@
             <ul>
                 <!--订单导航步骤-->
                 <li class="z-old"><span class="f-hdsp"><i class="u-personal"></i>获得商品</span><s class="u-personal"></s></li>
-                <li class="<?php if($this->view->orderInfo['order_state'] > \Webcms\Order\Models\Goods::ORDER_STATE1){?>z-old<?php }else{?><?php if($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE1){?>z-cur<?php }?><?php }?>"><span><i class="u-personal"></i>确认收货地址</span><s class="u-personal"></s><em class="u-personal"></em></li>
-                <li class="<?php if($this->view->orderInfo['order_state'] > \Webcms\Order\Models\Goods::ORDER_STATE2){?>z-old<?php }else{?><?php if($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE2){?>z-cur<?php }?><?php }?>"><span><i class="u-personal"></i>商家发货</span><s class="u-personal"></s></li>
-                <li class="<?php if($this->view->orderInfo['order_state'] > \Webcms\Order\Models\Goods::ORDER_STATE3){?>z-old<?php }else{?><?php if($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE3){?>z-cur<?php }?><?php }?>"><span><i class="u-personal"></i>确认收货</span><s class="u-personal"></s></li>
-                <li class="f-sdnjl <?php if($this->view->orderInfo['order_state'] > \Webcms\Order\Models\Goods::ORDER_STATE4){?>z-old<?php }else{?><?php if($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE4){?>z-cur<?php }?><?php }?>"><span class="f-sdnjl"><i class="u-personal"></i>晒单拿奖励</span><s class="u-personal"></s></li>
+                <li class="<?php if($this->view->orderInfo['order_state'] > \App\Order\Models\Goods::ORDER_STATE1){?>z-old<?php }else{?><?php if($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE1){?>z-cur<?php }?><?php }?>"><span><i class="u-personal"></i>确认收货地址</span><s class="u-personal"></s><em class="u-personal"></em></li>
+                <li class="<?php if($this->view->orderInfo['order_state'] > \App\Order\Models\Goods::ORDER_STATE2){?>z-old<?php }else{?><?php if($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE2){?>z-cur<?php }?><?php }?>"><span><i class="u-personal"></i>商家发货</span><s class="u-personal"></s></li>
+                <li class="<?php if($this->view->orderInfo['order_state'] > \App\Order\Models\Goods::ORDER_STATE3){?>z-old<?php }else{?><?php if($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE3){?>z-cur<?php }?><?php }?>"><span><i class="u-personal"></i>确认收货</span><s class="u-personal"></s></li>
+                <li class="f-sdnjl <?php if($this->view->orderInfo['order_state'] > \App\Order\Models\Goods::ORDER_STATE4){?>z-old<?php }else{?><?php if($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE4){?>z-cur<?php }?><?php }?>"><span class="f-sdnjl"><i class="u-personal"></i>晒单拿奖励</span><s class="u-personal"></s></li>
             </ul>
         </div>
 
@@ -26,22 +26,22 @@
         <div class="m-statusCon clrfix">
             <!--订单状态及提示-->
             <div class="cur-status gray9">
-                <?php if($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE1){?>
+                <?php if($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE1){?>
                     <!-- 状态一  待确认地址-->
                     <p><b>当前状态：等待提交收货地址</b></p>客服工作时间为（周一至周日 09:00-21:00），在此期间您可以致电 <?php echo $siteSettings['tel400']?> 客服热线随时咨询订单相关信息。 
-                <?php }elseif($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE2){?>
+                <?php }elseif($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE2){?>
                     <!-- 状态二 确认地址后 -->
                     <p><b>当前状态：等待商家发货</b></p>已收到您填写的配送地址信息，我们会尽快处理，请您耐心等候！<br>客服工作时间为（周一至周日 09:00-21:00），在此期间您可以致电 <?php echo $siteSettings['tel400']?> 客服热线随时咨询发货信息。
-                <?php }elseif($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE3){?>
+                <?php }elseif($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE3){?>
                     <!-- 状态三 已经发货 -->
                     <p><b>当前状态：商家已发货，等待收货</b></p>客服工作时间为（周一至周日 09:00-21:00），在此期间您可以致电 <?php echo $siteSettings['tel400']?> 客服热线随时咨询订单物流信息。<br>
                     <a id="btnConfirmReceipt" href="javascript:;">确认收货</a>
-                <?php }elseif($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE4){?>
+                <?php }elseif($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE4){?>
                     <!-- 状态四 确认收货-->
-                    <?php if(empty($this->view->postInfo) || $this->view->postInfo['state'] == \Webcms\Post\Models\Post::STATE_NONE ){?>
+                    <?php if(empty($this->view->postInfo) || $this->view->postInfo['state'] == \App\Post\Models\Post::STATE_NONE ){?>
                     <p><b>当前状态：等待晒单</b></p><span>您可通过晒单获得相应福分奖励哦。<br>客服工作时间为（周一至周日 09:00-21:00），在此期间您可以致电 <?php echo $siteSettings['tel400']?> 客服热线随时咨询晒单相关信息。</span><br>
                     <a href="<?php echo $this->view->baseUrl?>member/index/postsingleadd?goods_id=<?php echo $this->view->orderInfo['goods_id']?>">立即晒单</a> 
-                    <?php }elseif($this->view->postInfo['state'] != \Webcms\Post\Models\Post::STATE2){?>
+                    <?php }elseif($this->view->postInfo['state'] != \App\Post\Models\Post::STATE2){?>
                     <p><b>当前状态：等待审核</b></p><span>您可通过晒单获得相应福分奖励哦。<br>客服工作时间为（周一至周日 09:00-21:00），在此期间您可以致电 <?php echo $siteSettings['tel400']?> 客服热线随时咨询晒单相关信息。</span><br>
                     <a href="<?php echo $this->view->baseUrl?>member/index/postsingleedit?goods_id=<?php echo $this->view->orderInfo['goods_id']?>">编辑晒单</a> 
                     <?php }else{}?>
@@ -49,18 +49,18 @@
             </div>
 
 
-            <?php if($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE1){?>
+            <?php if($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE1){?>
                 <!--收货地址列表(待确认收货)-->
                 <div class="f-addList clrfix">
                     <cite class="gray3">请您确认收货地址</cite>
                     <ul id="ul_addrlist">
                         <?php 
-                            $consigneeList = \Webcms\Member\Helpers\MemberHelper::getConsigneeList($this->view->orderInfo['buyer_id']);
+                            $consigneeList = \App\Member\Helpers\MemberHelper::getConsigneeList($this->view->orderInfo['buyer_id']);
                             foreach ($consigneeList as $id => $consignee) {
                         ?>
-                        <li id="<?php echo $id?>" class="<?php if(!empty($consignee['is_default'])){?>z-che<?php }?>" name="<?php echo $consignee['name']?>" tel="<?php echo $consignee['mobile']?>" address="<?php echo \Webcms\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>" code="" provinceID="<?php echo $consignee['province']?>" cityID="<?php echo $consignee['city']?>" districtID="<?php echo $consignee['district']?>">
+                        <li id="<?php echo $id?>" class="<?php if(!empty($consignee['is_default'])){?>z-che<?php }?>" name="<?php echo $consignee['name']?>" tel="<?php echo $consignee['mobile']?>" address="<?php echo \App\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>" code="" provinceID="<?php echo $consignee['province']?>" cityID="<?php echo $consignee['city']?>" districtID="<?php echo $consignee['district']?>">
                             <p><span><?php echo $consignee['name']?></span><?php echo $consignee['mobile']?></p>
-                            <i><?php echo \Webcms\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?></i><a href="javascript:;" class="z-alter" id="<?php echo $id?>">修改</a><s class="u-personal"></s>
+                            <i><?php echo \App\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?></i><a href="javascript:;" class="z-alter" id="<?php echo $id?>">修改</a><s class="u-personal"></s>
                         </li>
                         <?php }?>
                         <li class="new-address"><a href="javascript:;"><b class="u-personal"></b><em>使用新地址</em></a></li>
@@ -76,15 +76,15 @@
                         <li class="info-btn"><a id="btnSubmit" href="javascript:;">确认提交</a></li>
                     </ul>
                 </div>
-            <?php }elseif($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE2){?>
+            <?php }elseif($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE2){?>
                 <!--物流信息及收货人信息-->
                 <div class="delivery-mes gray6">  
                     <?php $consignee = $this->view->orderInfo['consignee_info'];?>                  
-                    <p><span>配送信息：</span><i><?php echo $consignee['name']?></i><i><?php echo $consignee['mobile']?></i><?php echo \Webcms\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>，<?php echo $consignee['zipcode']?></p>
+                    <p><span>配送信息：</span><i><?php echo $consignee['name']?></i><i><?php echo $consignee['mobile']?></i><?php echo \App\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>，<?php echo $consignee['zipcode']?></p>
                     <p><span><em>备</em>注：</span>工作日配送</p>
                     <div id="div_delivery" class="logistics-info-wrap"></div>
                 </div>
-            <?php }elseif($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE3 || $this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE4 ){?>
+            <?php }elseif($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE3 || $this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE4 ){?>
                 <!--物流信息及收货人信息-->
                 <div class="delivery-mes gray6">
                     <?php 
@@ -96,10 +96,10 @@
                         <a href="http://www.sto.cn" target="_blank" class="orange"><?php echo $deliveryInfo['name']?></a>&nbsp;&nbsp;&nbsp;
                         <span class="orange"><i><?php echo $deliveryInfo['delivery_sn']?></i></span>
                     </p>
-                    <p><span>配送信息：</span><i><?php echo $consignee['name']?></i><i><?php echo $consignee['mobile']?></i><?php echo \Webcms\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>，<?php echo $consignee['zipcode']?></p>
+                    <p><span>配送信息：</span><i><?php echo $consignee['name']?></i><i><?php echo $consignee['mobile']?></i><?php echo \App\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>，<?php echo $consignee['zipcode']?></p>
                     <p><span><em>备</em>注：</span>工作日配送</p>
                 </div>
-            <?php }elseif($this->view->orderInfo['order_state'] == \Webcms\Order\Models\Goods::ORDER_STATE10){?>
+            <?php }elseif($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE10){?>
                 <!--晒单后-->
                 <div class="cur-status gray9">
                     <p><b>当前状态：晒单审核已通过</b></p><span>您的晒单审核通过，已获得相应福分奖励啦。<br>客服工作时间为（周一至周日 09:00-21:00），在此期间您可以致电 <?php echo $siteSettings['tel400']?> 客服热线随时咨询晒单相关信息。</span>
@@ -112,7 +112,7 @@
               <ul>
               <?php if(!empty($this->view->logList)){?>
               <?php foreach ($this->view->logList as $logInfo) {?>
-                  <li><span><?php echo date('Y-m-d H:i:s',$logInfo['log_time']->sec)?></span><span class="ope-text"><?php echo $logInfo['msg']?></span><span class="gray9"><?php echo \Webcms\Order\Helpers\OrderHelper::getLogName($logInfo)?></span></li>
+                  <li><span><?php echo date('Y-m-d H:i:s',$logInfo['log_time']->sec)?></span><span class="ope-text"><?php echo $logInfo['msg']?></span><span class="gray9"><?php echo \App\Order\Helpers\OrderHelper::getLogName($logInfo)?></span></li>
               <?php }?>
               <?php }?>
               </ul>
@@ -135,7 +135,7 @@
                   <li class="f-com-name">
                       <span>
                           <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $this->view->orderInfo['goods_commonid']?>">
-                              <img src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->orderInfo['goods_image'])?>">
+                              <img src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->orderInfo['goods_image'])?>">
                           </a>
                       </span>
                       <p class="gray9">
@@ -178,7 +178,7 @@
                         <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
                         <div class="select-state" style="display: none;">
                             <?php
-                            $provinceList = \Webcms\System\Helpers\AreaHelper::getProvinceList();
+                            $provinceList = \App\System\Helpers\AreaHelper::getProvinceList();
                             foreach ($provinceList as $code => $name) {
                             ?>
                             <a href="javascript:;" value="<?php echo $code?>"><?php echo $name?></a>

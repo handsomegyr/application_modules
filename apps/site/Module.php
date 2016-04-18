@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Site;
+namespace App\Site;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Site\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Site\Models' => __DIR__ . '/models/',
-            'Webcms\Site\Helpers' => __DIR__ . '/views/helpers/'
+            'App\Site\Controllers' => __DIR__ . '/controllers/',
+            'App\Site\Models' => __DIR__ . '/models/',
+            'App\Site\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }
@@ -39,7 +39,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Site\Controllers");
+            $dispatcher->setDefaultNamespace("App\Site\Controllers");
             return $dispatcher;
         });
         

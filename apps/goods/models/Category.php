@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Goods\Models;
+namespace App\Goods\Models;
 
-class Category extends \Webcms\Common\Models\Goods\Category
+class Category extends \App\Common\Models\Goods\Category
 {
 
     /**

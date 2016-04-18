@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\System\Controllers;
+namespace App\System\Controllers;
 
-use Webcms\System\Models\Area;
+use App\System\Models\Area;
 
 /**
  * 地区服务

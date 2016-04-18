@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Exchange;
+namespace App\Backend\Controllers\Exchange;
 
-use Webcms\Backend\Models\Exchange\Success;
-use Webcms\Backend\Models\Prize\Prize;
+use App\Backend\Models\Exchange\Success;
+use App\Backend\Models\Prize\Prize;
 
 /**
  * @title({name="兑换成功记录管理"})
  *
  * @name 兑换成功记录管理
  */
-class SuccessController extends \Webcms\Backend\Controllers\FormController
+class SuccessController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSuccess;
@@ -481,7 +481,7 @@ class SuccessController extends \Webcms\Backend\Controllers\FormController
         return $this->modelSuccess;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $prizeList = $this->modelPrize->getAll();
         foreach ($list['data'] as &$item) {

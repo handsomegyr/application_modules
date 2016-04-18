@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Member\Models;
+namespace App\Member\Models;
 
-class Consignee extends \Webcms\Common\Models\Member\Consignee
+class Consignee extends \App\Common\Models\Member\Consignee
 {
 
     public function getDefaultSort()

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\System\Models;
+namespace App\System\Models;
 
-class Source extends \Webcms\Common\Models\System\Source
+class Source extends \App\Common\Models\System\Source
 {
 
     /**

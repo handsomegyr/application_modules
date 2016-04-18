@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Service\Controllers;
+namespace App\Service\Controllers;
 
-use Webcms\Message\Models\Template;
-use Webcms\Sms\Models\Settings;
+use App\Message\Models\Template;
+use App\Sms\Models\Settings;
 
 class SmsController extends ControllerBase
 {

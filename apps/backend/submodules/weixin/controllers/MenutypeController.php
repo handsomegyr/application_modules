@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\MenuType;
+use App\Backend\Models\Weixin\MenuType;
 
 /**
  * @title({name="微信菜单类型管理"})
  *
  * @name 微信菜单类型管理
  */
-class MenuTypeController extends \Webcms\Backend\Controllers\FormController
+class MenuTypeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelMenuType;

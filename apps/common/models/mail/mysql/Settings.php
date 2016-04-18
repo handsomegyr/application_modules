@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Mail;
+namespace App\Common\Models\Mysql\Mail;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Settings extends Base
 {

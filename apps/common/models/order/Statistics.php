@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Order;
+namespace App\Common\Models\Order;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Statistics extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Order\Statistics());
+        $this->setModel(new \App\Common\Models\Mysql\Order\Statistics());
     }
 }

@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Category;
-use Webcms\Backend\Models\Goods\Type;
+use App\Backend\Models\Goods\Category;
+use App\Backend\Models\Goods\Type;
 
 /**
  * @title({name="商品分类管理"})
  *
  * @name 商品分类管理
  */
-class CategoryController extends \Webcms\Backend\Controllers\FormController
+class CategoryController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCategory;
@@ -256,7 +256,7 @@ class CategoryController extends \Webcms\Backend\Controllers\FormController
         return $this->modelCategory;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];

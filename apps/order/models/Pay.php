@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Order\Models;
+namespace App\Order\Models;
 
-class Pay extends \Webcms\Common\Models\Order\Pay
+class Pay extends \App\Common\Models\Order\Pay
 {
 
     const STATE0 = 0; // 0默认未支付

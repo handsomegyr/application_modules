@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Lottery\Models;
+namespace App\Lottery\Models;
 
-class Rule extends \Webcms\Common\Models\Lottery\Rule
+class Rule extends \App\Common\Models\Lottery\Rule
 {
 
     private $_rules = null;

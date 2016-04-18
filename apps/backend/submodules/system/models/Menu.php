@@ -1,11 +1,11 @@
 <?php
-namespace Webcms\Backend\Models\System;
+namespace App\Backend\Models\System;
 
-use Webcms\Backend\Models\Input;
+use App\Backend\Models\Input;
 
-class Menu extends \Webcms\Common\Models\System\Menu
+class Menu extends \App\Common\Models\System\Menu
 {
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 
     /**
      * 默认排序

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Tags;
+namespace App\Backend\Tags;
 
-use Webcms\Backend\Models\System\Menu;
+use App\Backend\Models\System\Menu;
 
 class MyTags extends \Phalcon\Tag
 {
@@ -96,14 +96,14 @@ class MyTags extends \Phalcon\Tag
         
         foreach (get_declared_classes() as $class) {
             
-            if (is_subclass_of($class, 'Webcms\Backend\Controllers\ControllerBase') && substr($class, - 10) == 'Controller') {
+            if (is_subclass_of($class, 'App\Backend\Controllers\ControllerBase') && substr($class, - 10) == 'Controller') {
                 
-                $c = str_ireplace("Webcms\\Backend\\Controllers\\", 'Admin_', $class);
+                $c = str_ireplace("App\\Backend\\Controllers\\", 'Admin_', $class);
                 $c = substr($c, 0, strpos($c, "Controller"));
                 $c = self::methodToRouter($c);
                 $c = strtolower($c);
                 
-                // if($class == 'Webcms\Backend\Controllers\Weixin\ReplyTypeController'){
+                // if($class == 'App\Backend\Controllers\Weixin\ReplyTypeController'){
                 // die($c);
                 // }
                 

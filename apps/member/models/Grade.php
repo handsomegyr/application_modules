@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Member\Models;
+namespace App\Member\Models;
 
-class Grade extends \Webcms\Common\Models\Member\Grade
+class Grade extends \App\Common\Models\Member\Grade
 {
 
     /**

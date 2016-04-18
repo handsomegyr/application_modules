@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Sms;
+namespace App\Sms;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Sms\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Sms\Models' => __DIR__ . '/models/',
-            'Webcms\Sms\Helpers' => __DIR__ . '/views/helpers/'
+            'App\Sms\Controllers' => __DIR__ . '/controllers/',
+            'App\Sms\Models' => __DIR__ . '/models/',
+            'App\Sms\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }
@@ -39,7 +39,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Sms\Controllers");
+            $dispatcher->setDefaultNamespace("App\Sms\Controllers");
             return $dispatcher;
         });
         

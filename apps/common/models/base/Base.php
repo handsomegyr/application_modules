@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Common\Models;
+namespace App\Common\Models;
 
 class Base
 {

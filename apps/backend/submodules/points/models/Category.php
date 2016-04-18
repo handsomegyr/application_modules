@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Backend\Models\Points;
+namespace App\Backend\Models\Points;
 
-class Category extends \Webcms\Common\Models\Points\Category
+class Category extends \App\Common\Models\Points\Category
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取所有列表

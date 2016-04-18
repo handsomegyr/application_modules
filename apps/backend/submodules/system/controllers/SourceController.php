@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\System;
+namespace App\Backend\Controllers\System;
 
-use Webcms\Backend\Models\System\Source;
+use App\Backend\Models\System\Source;
 
 /**
  * @title({name="访问来源管理"})
  *
  * @name 访问来源管理
  */
-class SourceController extends \Webcms\Backend\Controllers\FormController
+class SourceController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSource;

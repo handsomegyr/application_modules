@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Goods;
+namespace App\Backend\Models\Goods;
 
-class Attribute extends \Webcms\Common\Models\Goods\Attribute
+class Attribute extends \App\Common\Models\Goods\Attribute
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 默认排序

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixinredpack\Models;
+namespace App\Weixinredpack\Models;
 
-class Rule extends \Webcms\Common\Models\Weixinredpack\Rule
+class Rule extends \App\Common\Models\Weixinredpack\Rule
 {
     private $_rules = null;
 

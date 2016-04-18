@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class Callbackurls extends \Webcms\Common\Models\Weixin\Callbackurls
+class Callbackurls extends \App\Common\Models\Weixin\Callbackurls
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

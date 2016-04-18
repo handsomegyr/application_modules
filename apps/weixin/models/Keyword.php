@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
-class Keyword extends \Webcms\Common\Models\Weixin\Keyword
+class Keyword extends \App\Common\Models\Weixin\Keyword
 {
 
     /**

@@ -1,6 +1,6 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
-class Page extends \Webcms\Common\Models\Weixin\Page
+class Page extends \App\Common\Models\Weixin\Page
 {
 }

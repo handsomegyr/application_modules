@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Member\Controllers;
+namespace App\Member\Controllers;
 
 use Phalcon\Mvc\View;
 

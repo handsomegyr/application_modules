@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Points\Helpers;
+namespace App\Points\Helpers;
 
-use Webcms\Points\Models\User;
+use App\Points\Models\User;
 
 class PointsUserHelper extends \Phalcon\Tag
 {

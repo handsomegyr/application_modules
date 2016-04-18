@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Message;
+namespace App\Common\Models\Message;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class MsgCount extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Message\MsgCount());
+        $this->setModel(new \App\Common\Models\Mysql\Message\MsgCount());
     }
 }

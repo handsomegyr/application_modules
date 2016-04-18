@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Weixinredpack;
+namespace App\Common\Models\Mysql\Weixinredpack;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class GotLog extends Base
 {

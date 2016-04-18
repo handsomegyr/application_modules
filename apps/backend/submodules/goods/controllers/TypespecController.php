@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Spec;
-use Webcms\Backend\Models\Goods\Type;
-use Webcms\Backend\Models\Goods\TypeSpec;
+use App\Backend\Models\Goods\Spec;
+use App\Backend\Models\Goods\Type;
+use App\Backend\Models\Goods\TypeSpec;
 
 /**
  * @title({name="商品类型规格管理"})
  *
  * @name 商品类型规格管理
  */
-class TypespecController extends \Webcms\Backend\Controllers\FormController
+class TypespecController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSpec;
@@ -91,7 +91,7 @@ class TypespecController extends \Webcms\Backend\Controllers\FormController
         return $this->modelTypeSpec;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $typeList = $this->modelType->getAll();
         $specList = $this->modelSpec->getAll();

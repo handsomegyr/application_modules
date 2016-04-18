@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixin\Controllers;
+namespace App\Weixin\Controllers;
 
-class ControllerBase extends \Webcms\Common\Controllers\ControllerBase
+class ControllerBase extends \App\Common\Controllers\ControllerBase
 {
 
     protected function initialize()

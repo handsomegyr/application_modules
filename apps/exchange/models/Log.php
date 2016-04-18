@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Exchange\Models;
+namespace App\Exchange\Models;
 
-class Log extends \Webcms\Common\Models\Exchange\Log
+class Log extends \App\Common\Models\Exchange\Log
 {
 
     public function addLog($result_code, $result_msg, $user_id, $prize_id, $rule_id, $quantity, $score, $success_id = '', array $memo = array())

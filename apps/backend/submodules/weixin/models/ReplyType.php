@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class ReplyType extends \Webcms\Common\Models\Weixin\ReplyType
+class ReplyType extends \App\Common\Models\Weixin\ReplyType
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 
     /**
      * 默认排序

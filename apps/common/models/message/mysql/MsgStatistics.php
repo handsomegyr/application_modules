@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Message;
+namespace App\Common\Models\Mysql\Message;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class MsgStatistics extends Base
 {

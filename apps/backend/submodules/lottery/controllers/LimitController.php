@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Lottery;
+namespace App\Backend\Controllers\Lottery;
 
-use Webcms\Backend\Models\Lottery\Limit;
-use Webcms\Backend\Models\Prize\Prize;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Lottery\Limit;
+use App\Backend\Models\Prize\Prize;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="抽奖限制管理"})
  *
  * @name 抽奖限制管理
  */
-class LimitController extends \Webcms\Backend\Controllers\FormController
+class LimitController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLimit;
@@ -166,7 +166,7 @@ class LimitController extends \Webcms\Backend\Controllers\FormController
         return $this->modelLimit;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $prizeList = $this->modelPrize->getAll();
         $activityList = $this->modelActivity->getAll();

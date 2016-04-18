@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Lottery;
+namespace App\Backend\Controllers\Lottery;
 
-use Webcms\Backend\Models\Lottery\Record;
-use Webcms\Backend\Models\System\Activity;
-use Webcms\Backend\Models\System\Source;
+use App\Backend\Models\Lottery\Record;
+use App\Backend\Models\System\Activity;
+use App\Backend\Models\System\Source;
 
 /**
  * @title({name="抽奖日志管理"})
  *
  * @name 抽奖日志管理
  */
-class LogController extends \Webcms\Backend\Controllers\FormController
+class LogController extends \App\Backend\Controllers\FormController
 {
 
     private $modelRecord;
@@ -157,7 +157,7 @@ class LogController extends \Webcms\Backend\Controllers\FormController
         return $this->modelRecord;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $activityList = $this->modelActivity->getAll();
         $sourceList = $this->modelSource->getAll();

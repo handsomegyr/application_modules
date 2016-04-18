@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Backend\Models\System;
+namespace App\Backend\Models\System;
 
-class Activity extends \Webcms\Common\Models\System\Activity
+class Activity extends \App\Common\Models\System\Activity
 {
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 
     /**
      * 获取所有活动列表

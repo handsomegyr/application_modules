@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Tencent;
+namespace App\Backend\Models\Tencent;
 
-class Application extends \Webcms\Common\Models\Tencent\Application
+class Application extends \App\Common\Models\Tencent\Application
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

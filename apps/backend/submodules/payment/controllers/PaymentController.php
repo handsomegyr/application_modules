@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Payment;
+namespace App\Backend\Controllers\Payment;
 
-use Webcms\Backend\Models\Payment\Payment;
+use App\Backend\Models\Payment\Payment;
 
 /**
  * @title({name="支付方式管理"})
  *
  * @name 支付方式管理
  */
-class PaymentController extends \Webcms\Backend\Controllers\FormController
+class PaymentController extends \App\Backend\Controllers\FormController
 {
 
     private $modelPayment;
@@ -118,7 +118,7 @@ class PaymentController extends \Webcms\Backend\Controllers\FormController
         return $this->modelPayment;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['config'] = json_encode($item['config']);

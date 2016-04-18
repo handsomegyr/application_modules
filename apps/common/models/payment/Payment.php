@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Payment;
+namespace App\Common\Models\Payment;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Payment extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Payment\Payment());
+        $this->setModel(new \App\Common\Models\Mysql\Payment\Payment());
     }
 }

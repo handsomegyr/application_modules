@@ -1,12 +1,12 @@
 <?php
-namespace Webcms\Backend\Models\Article;
+namespace App\Backend\Models\Article;
 
-use Webcms\Backend\Models\Input;
+use App\Backend\Models\Input;
 
-class Category extends \Webcms\Common\Models\Article\Category
+class Category extends \App\Common\Models\Article\Category
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 
     /**
      * 默认排序

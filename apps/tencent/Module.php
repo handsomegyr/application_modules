@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Tencent;
+namespace App\Tencent;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,8 +16,8 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Tencent\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Tencent\Models' => __DIR__ . '/models/'
+            'App\Tencent\Controllers' => __DIR__ . '/controllers/',
+            'App\Tencent\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -38,7 +38,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Tencent\Controllers");
+            $dispatcher->setDefaultNamespace("App\Tencent\Controllers");
             return $dispatcher;
         });
         

@@ -1,11 +1,11 @@
 <?php
-namespace Webcms\Invitation;
+namespace App\Invitation;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Events\Manager as EventsManager;
-use Webcms\Common\Plugins\WeixinPlugin;
+use App\Common\Plugins\WeixinPlugin;
 
 class Module
 {
@@ -18,9 +18,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Invitation\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Invitation\Services' => __DIR__ . '/services/',
-            'Webcms\Invitation\Models' => __DIR__ . '/models/'
+            'App\Invitation\Controllers' => __DIR__ . '/controllers/',
+            'App\Invitation\Services' => __DIR__ . '/services/',
+            'App\Invitation\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -45,7 +45,7 @@ class Module
             $eventsManager->attach('dispatch:beforeDispatch', new WeixinPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Invitation\Controllers");
+            $dispatcher->setDefaultNamespace("App\Invitation\Controllers");
             $dispatcher->setEventsManager($eventsManager);
             
             return $dispatcher;

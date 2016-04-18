@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Post\Models;
+namespace App\Post\Models;
 
-class Reply extends \Webcms\Common\Models\Post\Reply
+class Reply extends \App\Common\Models\Post\Reply
 {
 
     public function getDefaultSort()

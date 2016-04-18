@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Exchange;
+namespace App\Backend\Models\Exchange;
 
-class Limit extends \Webcms\Common\Models\Exchange\Limit
+class Limit extends \App\Common\Models\Exchange\Limit
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

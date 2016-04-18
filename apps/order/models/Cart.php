@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Order\Models;
+namespace App\Order\Models;
 
-class Cart extends \Webcms\Common\Models\Order\Cart
+class Cart extends \App\Common\Models\Order\Cart
 {
 
     /**

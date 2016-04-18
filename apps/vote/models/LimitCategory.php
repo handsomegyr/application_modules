@@ -1,6 +1,6 @@
 <?php
-namespace Webcms\Vote\Models;
+namespace App\Vote\Models;
 
-class LimitCategory extends \Webcms\Common\Models\Vote\LimitCategory
+class LimitCategory extends \App\Common\Models\Vote\LimitCategory
 {
 }

@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class ScriptTracking extends \Webcms\Common\Models\Weixin\ScriptTracking
+class ScriptTracking extends \App\Common\Models\Weixin\ScriptTracking
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

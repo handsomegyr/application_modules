@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Service\Controllers;
+namespace App\Service\Controllers;
 
-use Webcms\Message\Models\Template;
-use Webcms\Mail\Models\Settings;
+use App\Message\Models\Template;
+use App\Mail\Models\Settings;
 
 class MailController extends ControllerBase
 {

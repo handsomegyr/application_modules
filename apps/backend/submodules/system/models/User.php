@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\System;
+namespace App\Backend\Models\System;
 
-class User extends \Webcms\Common\Models\System\User
+class User extends \App\Common\Models\System\User
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

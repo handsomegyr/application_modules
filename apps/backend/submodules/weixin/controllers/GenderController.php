@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\Gender;
+use App\Backend\Models\Weixin\Gender;
 
 /**
  * @title({name="微信性别管理"})
  *
  * @name 微信性别管理
  */
-class GenderController extends \Webcms\Backend\Controllers\FormController
+class GenderController extends \App\Backend\Controllers\FormController
 {
 
     private $modelGender;

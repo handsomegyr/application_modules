@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Site;
+namespace App\Common\Models\Mysql\Site;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Site extends Base
 {

@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Weixin;
+namespace App\Common\Models\Weixin;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Page extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Weixin\Page());
+        $this->setModel(new \App\Common\Models\Mysql\Weixin\Page());
     }
 }

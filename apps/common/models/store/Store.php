@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Store;
+namespace App\Common\Models\Store;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Store extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Store\Store());
+        $this->setModel(new \App\Common\Models\Mysql\Store\Store());
     }
 }

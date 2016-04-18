@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Order\Controllers;
+namespace App\Order\Controllers;
 
 /**
  * 关于订单的各种其他服务
@@ -30,14 +30,14 @@ class ServiceController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelPost = new \Webcms\Post\Models\Post();
-        $this->modelMember = new \Webcms\Member\Models\Member();
-        $this->modelMemberFriend = new \Webcms\Member\Models\Friend();
-        $this->modelMemberConsignee = new \Webcms\Member\Models\Consignee();
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelOrderLog = new \Webcms\Order\Models\Log();
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
-        $this->modelOrderStatistics = new \Webcms\Order\Models\Statistics();
+        $this->modelPost = new \App\Post\Models\Post();
+        $this->modelMember = new \App\Member\Models\Member();
+        $this->modelMemberFriend = new \App\Member\Models\Friend();
+        $this->modelMemberConsignee = new \App\Member\Models\Consignee();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelOrderLog = new \App\Order\Models\Log();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
+        $this->modelOrderStatistics = new \App\Order\Models\Statistics();
     }
 
     /**
@@ -390,7 +390,7 @@ class ServiceController extends ControllerBase
                     $list = $this->modelOrderGoods->getUserWinList($userID, $page, $limit);
                 } elseif ($type == 2) {
                     // 2 晒单
-                    $list = $this->modelOrderGoods->getUserWinList($userID, $page, $limit, \Webcms\Order\Models\Goods::ORDER_STATE10);
+                    $list = $this->modelOrderGoods->getUserWinList($userID, $page, $limit, \App\Order\Models\Goods::ORDER_STATE10);
                 }
                 
                 $ret['total'] = $list['total'];
@@ -420,7 +420,7 @@ class ServiceController extends ControllerBase
                         // "buyID":"322265804"
                         
                         $codeSales = $item['goods_total_person_time'];
-                        if ($item['state'] == \Webcms\Order\Models\Goods::STATE1) {
+                        if ($item['state'] == \App\Order\Models\Goods::STATE1) {
                             $goodsInfo = $this->modelGoods->getInfoById($item['goods_id']);
                             $codeSales = $goodsInfo['purchase_person_time'];
                         }
@@ -748,7 +748,7 @@ class ServiceController extends ControllerBase
                 return false;
             }
             
-            if ($orderInfo['order_state'] != \Webcms\Order\Models\Goods::ORDER_STATE1) {
+            if ($orderInfo['order_state'] != \App\Order\Models\Goods::ORDER_STATE1) {
                 echo ($this->error(- 5, '订单已完善了收货地址'));
                 return false;
             }
@@ -762,7 +762,7 @@ class ServiceController extends ControllerBase
             $this->modelOrderGoods->confirmOrderConsignee($order_no, $message, $consigneeInfo);
             
             // 记录订单日志记录
-            $this->modelOrderLog->log($order_no, \Webcms\Order\Models\Goods::ORDER_STATE2, "会员已填写配送地址信息，等待商城发货！", \Webcms\Order\Models\Log::ROLE_BUYER, $_SESSION['member_id'], $_SESSION['member_name']);
+            $this->modelOrderLog->log($order_no, \App\Order\Models\Goods::ORDER_STATE2, "会员已填写配送地址信息，等待商城发货！", \App\Order\Models\Log::ROLE_BUYER, $_SESSION['member_id'], $_SESSION['member_name']);
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -799,7 +799,7 @@ class ServiceController extends ControllerBase
                 echo ($this->error(- 4, '订单信息不存在'));
                 return false;
             }
-            if ($orderInfo['order_state'] != \Webcms\Order\Models\Goods::ORDER_STATE2) {
+            if ($orderInfo['order_state'] != \App\Order\Models\Goods::ORDER_STATE2) {
                 echo ($this->error(- 5, '订单已发货'));
                 return false;
             }
@@ -812,7 +812,7 @@ class ServiceController extends ControllerBase
             $this->modelOrderGoods->deliveryOrder($order_no, $deliveryInfo);
             
             // 记录订单日志记录
-            $this->modelOrderLog->log($order_no, \Webcms\Order\Models\Goods::ORDER_STATE2, "您的配送信息已确认。将由【{$deliveryInfo['name']}】配送,快递单号【{$deliveryInfo['delivery_sn']}】", \Webcms\Order\Models\Log::ROLE_ADMIN, $user_id, $user_name);
+            $this->modelOrderLog->log($order_no, \App\Order\Models\Goods::ORDER_STATE2, "您的配送信息已确认。将由【{$deliveryInfo['name']}】配送,快递单号【{$deliveryInfo['delivery_sn']}】", \App\Order\Models\Log::ROLE_ADMIN, $user_id, $user_name);
             
             echo ($this->result("OK"));
             return true;
@@ -847,7 +847,7 @@ class ServiceController extends ControllerBase
                 echo ($this->error(- 7, '订单信息不存在'));
                 return false;
             }
-            if ($orderInfo['order_state'] != \Webcms\Order\Models\Goods::ORDER_STATE3) {
+            if ($orderInfo['order_state'] != \App\Order\Models\Goods::ORDER_STATE3) {
                 echo ($this->error(- 5, '订单还没有发货'));
                 return false;
             }
@@ -855,7 +855,7 @@ class ServiceController extends ControllerBase
             // 确认收货
             $this->modelOrderGoods->confirmOrderReceive($order_no);
             // 记录订单日志记录
-            $this->modelOrderLog->log($order_no, \Webcms\Order\Models\Goods::ORDER_STATE3, "已成功提交确认收货！", \Webcms\Order\Models\Log::ROLE_BUYER, $_SESSION['member_id'], $_SESSION['member_name']);
+            $this->modelOrderLog->log($order_no, \App\Order\Models\Goods::ORDER_STATE3, "已成功提交确认收货！", \App\Order\Models\Log::ROLE_BUYER, $_SESSION['member_id'], $_SESSION['member_name']);
             // 生成一个晒单记录
             $goodsInfo = $this->modelGoods->getInfoById($orderInfo['goods_id']);
             $postInfo = $this->modelPost->create($_SESSION['member_id'], $goodsInfo);

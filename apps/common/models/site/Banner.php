@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Common\Models\Site;
+namespace App\Common\Models\Site;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Banner extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Site\Banner());
+        $this->setModel(new \App\Common\Models\Mysql\Site\Banner());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

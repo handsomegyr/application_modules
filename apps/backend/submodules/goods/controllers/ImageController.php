@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\GoodsCommon;
-use Webcms\Backend\Models\Goods\SpecValue;
-use Webcms\Backend\Models\Goods\Images;
+use App\Backend\Models\Goods\GoodsCommon;
+use App\Backend\Models\Goods\SpecValue;
+use App\Backend\Models\Goods\Images;
 
 /**
  * @title({name="商品图片管理"})
  *
  * @name 商品图片管理
  */
-class ImageController extends \Webcms\Backend\Controllers\FormController
+class ImageController extends \App\Backend\Controllers\FormController
 {
 
     private $modelGoodsCommon;
@@ -182,7 +182,7 @@ class ImageController extends \Webcms\Backend\Controllers\FormController
         return $this->modelImages;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $goodsList = $this->modelGoodsCommon->getAll();
         foreach ($list['data'] as &$item) {

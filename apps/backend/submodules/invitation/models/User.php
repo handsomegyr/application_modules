@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Models\Invitation;
+namespace App\Backend\Models\Invitation;
 
-class User extends \Webcms\Common\Models\Invitation\User
+class User extends \App\Common\Models\Invitation\User
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 }

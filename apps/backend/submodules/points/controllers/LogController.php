@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Points;
+namespace App\Backend\Controllers\Points;
 
-use Webcms\Backend\Models\Points\Log;
-use Webcms\Backend\Models\Points\Category;
+use App\Backend\Models\Points\Log;
+use App\Backend\Models\Points\Category;
 
 /**
  * @title({name="积分日志管理"})
  *
  * @name 积分日志管理
  */
-class LogController extends \Webcms\Backend\Controllers\FormController
+class LogController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLog;
@@ -248,7 +248,7 @@ class LogController extends \Webcms\Backend\Controllers\FormController
         return $this->modelLog;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $categoryList = $this->modelCategory->getAll();
         foreach ($list['data'] as &$item) {

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Goods\Models;
+namespace App\Goods\Models;
 
-class Browse extends \Webcms\Common\Models\Goods\Brand
+class Browse extends \App\Common\Models\Goods\Brand
 {
 
     /**

@@ -1,26 +1,26 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Type;
-use Webcms\Backend\Models\Goods\Category;
-use Webcms\Backend\Models\Goods\Brand;
-use Webcms\Backend\Models\Goods\GoodsCommon;
-use Webcms\Backend\Models\Goods\Goods;
-use Webcms\Backend\Models\Store\Store;
+use App\Backend\Models\Goods\Type;
+use App\Backend\Models\Goods\Category;
+use App\Backend\Models\Goods\Brand;
+use App\Backend\Models\Goods\GoodsCommon;
+use App\Backend\Models\Goods\Goods;
+use App\Backend\Models\Store\Store;
 
 /**
  * @title({name="商品SKU管理"})
  *
  * @name 商品SKU管理
  */
-class GoodsController extends \Webcms\Backend\Controllers\FormController
+class GoodsController extends \App\Backend\Controllers\FormController
 {
 
-    private $stateDatas = \Webcms\Goods\Models\Goods::STATEDATAS;
+    private $stateDatas = \App\Goods\Models\Goods::STATEDATAS;
 
-    private $verifyDatas = \Webcms\Goods\Models\Goods::VERIFYDATAS;
+    private $verifyDatas = \App\Goods\Models\Goods::VERIFYDATAS;
 
-    private $saleStateDatas = \Webcms\Goods\Models\Goods::SALESTATEDATAS;
+    private $saleStateDatas = \App\Goods\Models\Goods::SALESTATEDATAS;
 
     private $modelType;
 
@@ -1343,7 +1343,7 @@ class GoodsController extends \Webcms\Backend\Controllers\FormController
         return $this->modelGoods;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         // $goodsList = $this->modelGoodsCommon->getAll();
         foreach ($list['data'] as &$item) {
@@ -1354,7 +1354,7 @@ class GoodsController extends \Webcms\Backend\Controllers\FormController
             $item['price'] = number_format($item['price'], 2);
             $item['state'] = $this->stateDatas[$item['state']]['name'];
             $item['verify'] = $this->verifyDatas[$item['verify']]['name'];
-            if ($item['sale_state'] == \Webcms\Common\Models\Goods\Goods::SALE_STATE2) {
+            if ($item['sale_state'] == \App\Common\Models\Goods\Goods::SALE_STATE2) {
                 $item['sale_state'] = $this->saleStateDatas[$item['sale_state']]['name'];
                 $item['sale_state'] = $item['sale_state'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要进行抽奖吗？\', \'lottery\')" class="halflings-icon user white"><i></i> 抽奖</a>';
             } else {

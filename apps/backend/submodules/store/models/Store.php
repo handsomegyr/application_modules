@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Backend\Models\Store;
+namespace App\Backend\Models\Store;
 
-class Store extends \Webcms\Common\Models\Store\Store
+class Store extends \App\Common\Models\Store\Store
 {
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取所有列表

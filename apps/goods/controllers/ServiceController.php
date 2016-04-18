@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Goods\Controllers;
+namespace App\Goods\Controllers;
 
 class ServiceController extends ControllerBase
 {
@@ -30,18 +30,18 @@ class ServiceController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelPost = new \Webcms\Post\Models\Post();
-        $this->modelMember = new \Webcms\Member\Models\Member();
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelGoodsCommon = new \Webcms\Goods\Models\GoodsCommon();
-        $this->modelPrize = new \Webcms\Prize\Models\Prize();
-        $this->modelPrizeCode = new \Webcms\Prize\Models\Code();
-        $this->modelLotteryRule = new \Webcms\Lottery\Models\Rule();
-        $this->modelOrder = new \Webcms\Order\Models\Order();
-        $this->modelOrderLog = new \Webcms\Order\Models\Log();
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
-        $this->modelGoodsCollect = new \Webcms\Goods\Models\Collect();
-        $this->serviceGoods = new \Webcms\Goods\Services\Goods();
+        $this->modelPost = new \App\Post\Models\Post();
+        $this->modelMember = new \App\Member\Models\Member();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelGoodsCommon = new \App\Goods\Models\GoodsCommon();
+        $this->modelPrize = new \App\Prize\Models\Prize();
+        $this->modelPrizeCode = new \App\Prize\Models\Code();
+        $this->modelLotteryRule = new \App\Lottery\Models\Rule();
+        $this->modelOrder = new \App\Order\Models\Order();
+        $this->modelOrderLog = new \App\Order\Models\Log();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
+        $this->modelGoodsCollect = new \App\Goods\Models\Collect();
+        $this->serviceGoods = new \App\Goods\Services\Goods();
     }
 
     /**

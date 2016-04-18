@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Goods;
+namespace App\Backend\Models\Goods;
 
-class AttrIndex extends \Webcms\Common\Models\Goods\AttrIndex
+class AttrIndex extends \App\Common\Models\Goods\AttrIndex
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

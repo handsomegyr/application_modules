@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
-class Application extends \Webcms\Common\Models\Weixin\Application
+class Application extends \App\Common\Models\Weixin\Application
 {
 
     private $_params = array();

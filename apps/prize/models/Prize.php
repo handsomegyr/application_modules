@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Prize\Models;
+namespace App\Prize\Models;
 
-class Prize extends \Webcms\Common\Models\Prize\Prize
+class Prize extends \App\Common\Models\Prize\Prize
 {
 
     public function getInfoByCode($prizeCode)

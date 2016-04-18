@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Exchange;
+namespace App\Backend\Controllers\Exchange;
 
-use Webcms\Backend\Models\Exchange\Limit;
-use Webcms\Backend\Models\Prize\Prize;
+use App\Backend\Models\Exchange\Limit;
+use App\Backend\Models\Prize\Prize;
 
 /**
  * @title({name="兑换限制管理"})
  *
  * @name 兑换限制管理
  */
-class LimitController extends \Webcms\Backend\Controllers\FormController
+class LimitController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLimit;
@@ -133,7 +133,7 @@ class LimitController extends \Webcms\Backend\Controllers\FormController
         return $this->modelLimit;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $prizeList = $this->modelPrize->getAll();
         foreach ($list['data'] as &$item) {

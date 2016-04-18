@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\SubscribeUser;
+use App\Backend\Models\Weixin\SubscribeUser;
 
 /**
  * @title({name="微信关注用户管理"})
  *
  * @name 微信关注用户管理
  */
-class SubscribeUserController extends \Webcms\Backend\Controllers\FormController
+class SubscribeUserController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSubscribeUser;

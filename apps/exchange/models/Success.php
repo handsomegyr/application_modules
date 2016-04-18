@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Exchange\Models;
+namespace App\Exchange\Models;
 
-class Success extends \Webcms\Common\Models\Exchange\Success
+class Success extends \App\Common\Models\Exchange\Success
 {
 
     /**

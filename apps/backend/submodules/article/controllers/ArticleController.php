@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Article;
+namespace App\Backend\Controllers\Article;
 
-use Webcms\Backend\Models\Article\Article;
-use Webcms\Backend\Models\Article\Category;
+use App\Backend\Models\Article\Article;
+use App\Backend\Models\Article\Category;
 
 /**
  * @title({name="文章管理"})
  *
  * @name 文章管理
  */
-class ArticleController extends \Webcms\Backend\Controllers\FormController
+class ArticleController extends \App\Backend\Controllers\FormController
 {
 
     private $modelCategory;
@@ -201,7 +201,7 @@ class ArticleController extends \Webcms\Backend\Controllers\FormController
         return $this->modelArticle;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $categoryList = $this->modelCategory->getAll();
         foreach ($list['data'] as &$item) {

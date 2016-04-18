@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Tencent\Models;
+namespace App\Tencent\Models;
 
-class ScriptTracking extends \Webcms\Common\Models\Tencent\ScriptTracking
+class ScriptTracking extends \App\Common\Models\Tencent\ScriptTracking
 {
 
     /**

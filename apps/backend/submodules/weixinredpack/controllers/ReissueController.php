@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixinredpack;
+namespace App\Backend\Controllers\Weixinredpack;
 
-use Webcms\Backend\Models\Weixinredpack\Reissue;
+use App\Backend\Models\Weixinredpack\Reissue;
 
 /**
  * @title({name="补发日志管理"})
  *
  * @name 补发日志管理
  */
-class ReissueController extends \Webcms\Backend\Controllers\FormController
+class ReissueController extends \App\Backend\Controllers\FormController
 {
 
     private $modelReissue;

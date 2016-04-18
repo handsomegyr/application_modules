@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Order\Services;
+namespace App\Order\Services;
 
 class Cart
 {
@@ -12,9 +12,9 @@ class Cart
 
     function __construct()
     {
-        $this->modelGoods = new \Webcms\Goods\Models\Goods();
-        $this->modelGoodsCommon = new \Webcms\Goods\Models\GoodsCommon();
-        $this->modelOrderCart = new \Webcms\Order\Models\Cart();
+        $this->modelGoods = new \App\Goods\Models\Goods();
+        $this->modelGoodsCommon = new \App\Goods\Models\GoodsCommon();
+        $this->modelOrderCart = new \App\Order\Models\Cart();
     }
 
     /**
@@ -184,21 +184,21 @@ class Cart
             return $ret;
         }
         
-        if ($goodsInfo['state'] != \Webcms\Common\Models\Goods\Goods::STATE1 || $goodsInfo['verify'] != \Webcms\Common\Models\Goods\Goods::VERIFY1) {
+        if ($goodsInfo['state'] != \App\Common\Models\Goods\Goods::STATE1 || $goodsInfo['verify'] != \App\Common\Models\Goods\Goods::VERIFY1) {
             $ret['error_code'] = - 3;
             $ret['error_msg'] = '该商品已失效';
             return $ret;
         }
         
         // 本期的商品也不在进行中
-        if ($goodsInfo['sale_state'] != \Webcms\Common\Models\Goods\Goods::SALE_STATE1) {
+        if ($goodsInfo['sale_state'] != \App\Common\Models\Goods\Goods::SALE_STATE1) {
             // 获取下一期的商品
             $goodsCommonInfo = $this->modelGoodsCommon->getInfoById($goodsInfo['goods_commonid']);
             if ($goodsCommonInfo['period_goods_id'] != $goodsInfo['goods_id']) {
                 $goodsInfo = $this->modelGoods->getInfoById($goodsCommonInfo['period_goods_id']);
             }
             // 下一期的商品也不在进行中
-            if ($goodsInfo['sale_state'] != \Webcms\Common\Models\Goods\Goods::SALE_STATE1) {
+            if ($goodsInfo['sale_state'] != \App\Common\Models\Goods\Goods::SALE_STATE1) {
                 $ret['error_code'] = - 4;
                 $ret['error_msg'] = '该商品已失效';
                 return $ret;

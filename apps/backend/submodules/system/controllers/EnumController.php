@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\System;
+namespace App\Backend\Controllers\System;
 
-use Webcms\Backend\Models\System\Enum;
+use App\Backend\Models\System\Enum;
 
 /**
  * @title({name="枚举管理"})
  *
  * @name 枚举管理
  */
-class EnumController extends \Webcms\Backend\Controllers\FormController
+class EnumController extends \App\Backend\Controllers\FormController
 {
 
     private $modelEnum;
@@ -158,7 +158,7 @@ class EnumController extends \Webcms\Backend\Controllers\FormController
         return $this->modelEnum;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];

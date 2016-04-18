@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Backend\Plugins;
+namespace App\Backend\Plugins;
 
 use Phalcon\Acl;
 use Phalcon\Acl\Role;
@@ -8,7 +8,7 @@ use Phalcon\Events\Event;
 use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
-use Webcms\Backend\Models\User;
+use App\Backend\Models\User;
 
 /**
  * SecurityPlugin

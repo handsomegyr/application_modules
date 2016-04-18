@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Lottery\Services;
+namespace App\Lottery\Services;
 
 class Api
 {
@@ -28,14 +28,14 @@ class Api
 
     public function __construct()
     {
-        $this->_activity = new \Webcms\System\Models\Activity();
-        $this->_code = new \Webcms\Prize\Models\Code();
-        $this->_exchange = new \Webcms\Lottery\Models\Exchange();
-        $this->_limit = new \Webcms\Lottery\Models\Limit();
-        $this->_prize = new \Webcms\Prize\Models\Prize();
-        $this->_record = new \Webcms\Lottery\Models\Record();
-        $this->_rule = new \Webcms\Lottery\Models\Rule();
-        $this->_source = new \Webcms\System\Models\Source();
+        $this->_activity = new \App\System\Models\Activity();
+        $this->_code = new \App\Prize\Models\Code();
+        $this->_exchange = new \App\Lottery\Models\Exchange();
+        $this->_limit = new \App\Lottery\Models\Limit();
+        $this->_prize = new \App\Prize\Models\Prize();
+        $this->_record = new \App\Lottery\Models\Record();
+        $this->_rule = new \App\Lottery\Models\Rule();
+        $this->_source = new \App\System\Models\Source();
     }
 
     /**

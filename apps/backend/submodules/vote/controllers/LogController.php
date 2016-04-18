@@ -1,17 +1,17 @@
 <?php
-namespace Webcms\Backend\Controllers\Vote;
+namespace App\Backend\Controllers\Vote;
 
-use Webcms\Backend\Models\Vote\Log;
-use Webcms\Backend\Models\Vote\Subject;
-use Webcms\Backend\Models\Vote\Item;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Vote\Log;
+use App\Backend\Models\Vote\Subject;
+use App\Backend\Models\Vote\Item;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="投票日志管理"})
  *
  * @name 投票日志管理
  */
-class LogController extends \Webcms\Backend\Controllers\FormController
+class LogController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLog;
@@ -255,7 +255,7 @@ class LogController extends \Webcms\Backend\Controllers\FormController
         return $this->modelLog;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $subjectList = $this->modelSubject->getAll();
         $activityList = $this->modelActivity->getAll();

@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Vote;
+namespace App\Backend\Models\Vote;
 
-class Subject extends \Webcms\Common\Models\Vote\Subject
+class Subject extends \App\Common\Models\Vote\Subject
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取所有列表

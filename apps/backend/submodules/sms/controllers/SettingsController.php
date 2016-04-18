@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Sms;
+namespace App\Backend\Controllers\Sms;
 
-use Webcms\Backend\Models\Sms\Settings;
+use App\Backend\Models\Sms\Settings;
 
 /**
  * @title({name="短信设置管理"})
  *
  * @name 短信设置管理
  */
-class SettingsController extends \Webcms\Backend\Controllers\FormController
+class SettingsController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSettings;

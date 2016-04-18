@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Exchange\Models;
+namespace App\Exchange\Models;
 
-class Limit extends \Webcms\Common\Models\Exchange\Limit
+class Limit extends \App\Common\Models\Exchange\Limit
 {
 
     private $_limits = null;

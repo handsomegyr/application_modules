@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\System\Models;
+namespace App\System\Models;
 
-class ErrorLog extends \Webcms\Common\Models\System\ErrorLog
+class ErrorLog extends \App\Common\Models\System\ErrorLog
 {
 
     /**

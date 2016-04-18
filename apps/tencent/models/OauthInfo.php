@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Tencent\Models;
+namespace App\Tencent\Models;
 
-class OauthInfo extends \Webcms\Common\Models\Tencent\OauthInfo
+class OauthInfo extends \App\Common\Models\Tencent\OauthInfo
 {
 
     public function record($applicationId, $token)

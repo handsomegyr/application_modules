@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\NotKeyword;
+use App\Backend\Models\Weixin\NotKeyword;
 
 /**
  * @title({name="微信非关键词管理"})
  *
  * @name 微信非关键词管理
  */
-class NotKeywordController extends \Webcms\Backend\Controllers\FormController
+class NotKeywordController extends \App\Backend\Controllers\FormController
 {
 
     private $modelNotKeyword;

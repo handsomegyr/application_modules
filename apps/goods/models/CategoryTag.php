@@ -1,6 +1,6 @@
 <?php
-namespace Webcms\Goods\Models;
+namespace App\Goods\Models;
 
-class CategoryTag extends \Webcms\Common\Models\Goods\CategoryTag
+class CategoryTag extends \App\Common\Models\Goods\CategoryTag
 {
 }

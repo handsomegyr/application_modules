@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Goods;
+namespace App\Backend\Models\Goods;
 
-class Fcode extends \Webcms\Common\Models\Goods\Fcode
+class Fcode extends \App\Common\Models\Goods\Fcode
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

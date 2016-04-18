@@ -13,7 +13,7 @@ class WeixinredpackTask extends \Phalcon\CLI\Task
         try {
             set_time_limit(0);
             // 补发红包
-            $modelService = new \Webcms\Weixinredpack\Services\Api();
+            $modelService = new \App\Weixinredpack\Services\Api();
             $modelService->isNeedSendRedpack = true;
             $ret = $modelService->cron();
             $errorList = $ret['errorList'];

@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Backend\Points;
+namespace App\Backend\Points;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -7,9 +7,9 @@ use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Events\Manager as EventsManager;
-use Webcms\Backend\Tags\MyTags;
-use Webcms\Backend\Plugins\SecurityPlugin;
-use Webcms\Backend\Plugins\NotFoundPlugin;
+use App\Backend\Tags\MyTags;
+use App\Backend\Plugins\SecurityPlugin;
+use App\Backend\Plugins\NotFoundPlugin;
 use Phalcon\Mvc\Url;
 
 class Module
@@ -23,15 +23,15 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Backend\Models\System' => APP_PATH . 'apps/backend/submodules/system/models/',
+            'App\Backend\Models\System' => APP_PATH . 'apps/backend/submodules/system/models/',
             
-            'Webcms\Backend\Models' => APP_PATH . 'apps/backend/models/',
-            'Webcms\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
-            'Webcms\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
-            'Webcms\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
+            'App\Backend\Models' => APP_PATH . 'apps/backend/models/',
+            'App\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
+            'App\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
+            'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
             
-            'Webcms\Backend\Models\Points' => __DIR__ . '/models/',
-            'Webcms\Backend\Controllers\Points' => __DIR__ . '/controllers/'
+            'App\Backend\Models\Points' => __DIR__ . '/models/',
+            'App\Backend\Controllers\Points' => __DIR__ . '/controllers/'
         ));
         
         $loader->register();
@@ -65,7 +65,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Backend\Controllers\Points");
+            $dispatcher->setDefaultNamespace("App\Backend\Controllers\Points");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);

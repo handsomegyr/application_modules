@@ -10,7 +10,7 @@
             <!--图片展示-->
             <div class="ng-result-img">
                 <div class="result-img-wrapper">
-                        <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $this->view->goodsInfo['goods_commonid']?>" title="<?php echo $this->view->goodsInfo['name']?>"><img width="242" height="242" alt="<?php echo $this->view->goodsInfo['name']?>" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'],242,242)?>"></a>
+                        <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $this->view->goodsInfo['goods_commonid']?>" title="<?php echo $this->view->goodsInfo['name']?>"><img width="242" height="242" alt="<?php echo $this->view->goodsInfo['name']?>" src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'],242,242)?>"></a>
                 </div>
                 <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $this->view->goodsInfo['goods_commonid']?>" class="result-more">查看商品详情</a>
             </div>
@@ -31,7 +31,7 @@
                             <p>揭晓时间：<span><?php echo getMilliTime4Show($this->view->goodsInfo['prize_time'])?></span></p>
                             <p>云购时间：<span><?php echo getMilliTime4Show($this->view->goodsInfo['prize_buyer_purchase_time'])?></span></p>
                             <div class="result-head-pic">
-                                <div class="rh-wrap"><img width="110" height="110" src="<?php echo \Webcms\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl, $this->view->goodsInfo['prize_buyer_avatar'])?>"></div><a rel="nofollow" href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->goodsInfo['prize_buyer_id']?>" target="_blank" title="<?php echo getBuyerName($this->view->goodsInfo['prize_buyer_name'],$this->view->goodsInfo['prize_buyer_register_by'])?>" class="ng-result-head transparent-png"><span class="name">获得者</span></a>
+                                <div class="rh-wrap"><img width="110" height="110" src="<?php echo \App\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl, $this->view->goodsInfo['prize_buyer_avatar'])?>"></div><a rel="nofollow" href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->goodsInfo['prize_buyer_id']?>" target="_blank" title="<?php echo getBuyerName($this->view->goodsInfo['prize_buyer_name'],$this->view->goodsInfo['prize_buyer_register_by'])?>" class="ng-result-head transparent-png"><span class="name">获得者</span></a>
                             </div>
                         </div>
                         <div class="result-con-code">
@@ -52,7 +52,7 @@
             <!--查看分期-->
             <div class="ng-result-select">
                 <ul class="r-select">
-                    <?php $nextAndPrevPeriod = \Webcms\Goods\Helpers\GoodsHelper::getNextAndPrevPeriod($this->view->goodsInfo)?>
+                    <?php $nextAndPrevPeriod = \App\Goods\Helpers\GoodsHelper::getNextAndPrevPeriod($this->view->goodsInfo)?>
                     <li>
                     <?php if(!empty($nextAndPrevPeriod['next'])){?>
                          <a href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $nextAndPrevPeriod['next']?>"><i class="ng-result-bg up transparent-png"></i><span></span></a>

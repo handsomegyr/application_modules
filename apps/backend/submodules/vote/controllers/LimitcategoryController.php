@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Vote;
+namespace App\Backend\Controllers\Vote;
 
-use Webcms\Backend\Models\Vote\LimitCategory;
+use App\Backend\Models\Vote\LimitCategory;
 
 /**
  * @title({name="投票限制类别管理"})
  *
  * @name 投票限制类别管理
  */
-class LimitcategoryController extends \Webcms\Backend\Controllers\FormController
+class LimitcategoryController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLimitCategory;

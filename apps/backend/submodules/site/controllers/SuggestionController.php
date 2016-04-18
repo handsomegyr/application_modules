@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Site;
+namespace App\Backend\Controllers\Site;
 
-use Webcms\Backend\Models\Site\Suggestion;
+use App\Backend\Models\Site\Suggestion;
 
 /**
  * @title({name="网站投诉与建议管理"})
  *
  * @name 网站投诉与建议管理
  */
-class SuggestionController extends \Webcms\Backend\Controllers\FormController
+class SuggestionController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSuggestion;
@@ -162,7 +162,7 @@ class SuggestionController extends \Webcms\Backend\Controllers\FormController
         return $this->modelSuggestion;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             $item['log_time'] = date("Y-m-d H:i:s", $item['log_time']->sec);

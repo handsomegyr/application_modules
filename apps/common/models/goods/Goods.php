@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Goods;
+namespace App\Common\Models\Goods;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Goods extends Base
 {
@@ -65,7 +65,7 @@ class Goods extends Base
     const VERIFY10 = 10; // 等待审核
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Goods\Goods());
+        $this->setModel(new \App\Common\Models\Mysql\Goods\Goods());
     }
 
     public function getImagePath($baseUrl, $image, $x = 0, $y = 0)

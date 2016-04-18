@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Weixinredpack;
+namespace App\Backend\Models\Weixinredpack;
 
-class Customer extends \Webcms\Common\Models\Weixinredpack\Customer
+class Customer extends \App\Common\Models\Weixinredpack\Customer
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取所有列表

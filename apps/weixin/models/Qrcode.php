@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
 /**
  * 记录微信二维码扫描状况
  */
-class Qrcode extends \Webcms\Common\Models\Weixin\Qrcode
+class Qrcode extends \App\Common\Models\Weixin\Qrcode
 {
 
     public function record($openid, $event, $eventKey, $ticket)

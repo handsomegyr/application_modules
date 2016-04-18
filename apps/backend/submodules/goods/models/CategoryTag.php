@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Goods;
+namespace App\Backend\Models\Goods;
 
-class CategoryTag extends \Webcms\Common\Models\Goods\CategoryTag
+class CategoryTag extends \App\Common\Models\Goods\CategoryTag
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

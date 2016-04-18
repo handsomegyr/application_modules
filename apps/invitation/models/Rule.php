@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Invitation\Models;
+namespace App\Invitation\Models;
 
-class Rule extends \Webcms\Common\Models\Invitation\Rule
+class Rule extends \App\Common\Models\Invitation\Rule
 {
 
     private $_rules = null;

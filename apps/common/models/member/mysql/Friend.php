@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Member;
+namespace App\Common\Models\Mysql\Member;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Friend extends Base
 {

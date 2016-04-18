@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Backend\Models\Prize;
+namespace App\Backend\Models\Prize;
 
-class Prize extends \Webcms\Common\Models\Prize\Prize
+class Prize extends \App\Common\Models\Prize\Prize
 {
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
     
     /**
      * 获取所有列表

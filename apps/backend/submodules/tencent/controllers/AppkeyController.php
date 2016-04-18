@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Tencent;
+namespace App\Backend\Controllers\Tencent;
 
-use Webcms\Backend\Models\Tencent\AppKey;
+use App\Backend\Models\Tencent\AppKey;
 
 /**
  * @title({name="腾讯-应用密码管理"})
  *
  * @name 腾讯-应用密码管理
  */
-class AppKeyController extends \Webcms\Backend\Controllers\FormController
+class AppKeyController extends \App\Backend\Controllers\FormController
 {
 
     private $modelAppKey;
@@ -97,7 +97,7 @@ class AppKeyController extends \Webcms\Backend\Controllers\FormController
         return $this->modelAppKey;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             // $item['access_token_expire'] = ! empty($item['access_token_expire']) ? date("Y-m-d H:i:s", $item['access_token_expire']->sec) : "--";

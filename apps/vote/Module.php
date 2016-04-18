@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Vote;
+namespace App\Vote;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,8 +16,8 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Vote\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Vote\Models' => __DIR__ . '/models/'
+            'App\Vote\Controllers' => __DIR__ . '/controllers/',
+            'App\Vote\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -38,7 +38,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Vote\Controllers");
+            $dispatcher->setDefaultNamespace("App\Vote\Controllers");
             return $dispatcher;
         });
         

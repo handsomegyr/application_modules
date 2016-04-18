@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Weixin;
+namespace App\Common\Models\Mysql\Weixin;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class MsgType extends Base
 {

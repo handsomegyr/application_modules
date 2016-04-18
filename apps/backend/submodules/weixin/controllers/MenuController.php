@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\MenuType;
-use Webcms\Backend\Models\Weixin\Menu;
+use App\Backend\Models\Weixin\MenuType;
+use App\Backend\Models\Weixin\Menu;
 
 /**
  * @title({name="微信自定义菜单管理"})
  *
  * @name 微信自定义菜单管理
  */
-class MenuController extends \Webcms\Backend\Controllers\FormController
+class MenuController extends \App\Backend\Controllers\FormController
 {
 
     private $modelMenuType;
@@ -179,7 +179,7 @@ class MenuController extends \Webcms\Backend\Controllers\FormController
         return $this->modelMenu;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $menuTypeList = $this->modelMenuType->getAll();
         foreach ($list['data'] as &$item) {

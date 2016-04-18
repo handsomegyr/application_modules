@@ -11,8 +11,8 @@ class RetryTask extends \Phalcon\CLI\Task
      */
     public function processAction(array $params)
     {
-        $serviceGoods = new \Webcms\Goods\Services\Goods();
-        $serviceGoods = new \Webcms\Order\Services\Pay();
+        $serviceGoods = new \App\Goods\Services\Goods();
+        $serviceGoods = new \App\Order\Services\Pay();
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $pheanstalk->watch('retry')->ignore('default');
         

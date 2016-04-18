@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Payment;
+namespace App\Payment;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Payment\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Payment\Models' => __DIR__ . '/models/',
-            'Webcms\Payment\Services' => __DIR__ . '/services/'
+            'App\Payment\Controllers' => __DIR__ . '/controllers/',
+            'App\Payment\Models' => __DIR__ . '/models/',
+            'App\Payment\Services' => __DIR__ . '/services/'
         ));
         $loader->register();
     }
@@ -39,7 +39,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Payment\Controllers");
+            $dispatcher->setDefaultNamespace("App\Payment\Controllers");
             return $dispatcher;
         });
         

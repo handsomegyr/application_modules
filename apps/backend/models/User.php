@@ -1,9 +1,9 @@
 <?php
-namespace Webcms\Backend\Models;
+namespace App\Backend\Models;
 
-use Webcms\Common\Models\System\Role;
+use App\Common\Models\System\Role;
 
-class User extends \Webcms\Common\Models\System\User
+class User extends \App\Common\Models\System\User
 {
 
     /**

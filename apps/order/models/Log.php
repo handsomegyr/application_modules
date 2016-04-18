@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Order\Models;
+namespace App\Order\Models;
 
-class Log extends \Webcms\Common\Models\Order\Log
+class Log extends \App\Common\Models\Order\Log
 {
 
     /**
@@ -42,9 +42,9 @@ class Log extends \Webcms\Common\Models\Order\Log
 
     public function getLogName(array $logInfo)
     {
-        if ($logInfo['role'] == \Webcms\Order\Models\Log::ROLE_BUYER) {
+        if ($logInfo['role'] == \App\Order\Models\Log::ROLE_BUYER) {
             return '会员本人';
-        } elseif ($logInfo['role'] == \Webcms\Order\Models\Log::ROLE_SYSTEM) {
+        } elseif ($logInfo['role'] == \App\Order\Models\Log::ROLE_SYSTEM) {
             return '云购系统';
         } else {
             return $logInfo['user_name'];

@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\Qrcode;
+use App\Backend\Models\Weixin\Qrcode;
 
 /**
  * @title({name="微信二维码推广场景管理"})
  *
  * @name 微信二维码推广场景管理
  */
-class QrcodeController extends \Webcms\Backend\Controllers\FormController
+class QrcodeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelQrcode;

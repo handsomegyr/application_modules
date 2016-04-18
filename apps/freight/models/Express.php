@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Freight\Models;
+namespace App\Freight\Models;
 
-class Express extends \Webcms\Common\Models\Freight\Express
+class Express extends \App\Common\Models\Freight\Express
 {
 
     /**

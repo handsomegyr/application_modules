@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Message;
+namespace App\Backend\Controllers\Message;
 
-use Webcms\Backend\Models\Message\Msg;
+use App\Backend\Models\Message\Msg;
 
 /**
  * @title({name="私信管理"})
  *
  * @name 私信管理
  */
-class MsgController extends \Webcms\Backend\Controllers\FormController
+class MsgController extends \App\Backend\Controllers\FormController
 {
 
     private $modelMsg;

@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Vote;
+namespace App\Backend\Controllers\Vote;
 
-use Webcms\Backend\Models\Vote\Subject;
-use Webcms\Backend\Models\Vote\Category;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Vote\Subject;
+use App\Backend\Models\Vote\Category;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="投票主题管理"})
  *
  * @name 投票主题管理
  */
-class SubjectController extends \Webcms\Backend\Controllers\FormController
+class SubjectController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSubject;
@@ -271,7 +271,7 @@ class SubjectController extends \Webcms\Backend\Controllers\FormController
         return $this->modelSubject;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $activityList = $this->modelActivity->getAll();
         $categoryList = $this->modelCategory->getAll();

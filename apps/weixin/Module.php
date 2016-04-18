@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Weixin;
+namespace App\Weixin;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,8 +16,8 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Weixin\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Weixin\Models' => __DIR__ . '/models/'
+            'App\Weixin\Controllers' => __DIR__ . '/controllers/',
+            'App\Weixin\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -39,7 +39,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Weixin\Controllers");
+            $dispatcher->setDefaultNamespace("App\Weixin\Controllers");
             return $dispatcher;
         });
         

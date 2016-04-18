@@ -1,14 +1,14 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\ScriptTracking;
+use App\Backend\Models\Weixin\ScriptTracking;
 
 /**
  * @title({name="微信执行时间跟踪统计管理"})
  *
  * @name 微信执行时间跟踪统计管理
  */
-class ScriptTrackingController extends \Webcms\Backend\Controllers\FormController
+class ScriptTrackingController extends \App\Backend\Controllers\FormController
 {
 
     private $modelScriptTracking;

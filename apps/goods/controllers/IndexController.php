@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Goods\Controllers;
+namespace App\Goods\Controllers;
 
 class IndexController extends ControllerBase
 {

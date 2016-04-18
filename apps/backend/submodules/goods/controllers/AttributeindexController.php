@@ -1,20 +1,20 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Goods;
-use Webcms\Backend\Models\Goods\GoodsCommon;
-use Webcms\Backend\Models\Goods\Category;
-use Webcms\Backend\Models\Goods\Type;
-use Webcms\Backend\Models\Goods\Attribute;
-use Webcms\Backend\Models\Goods\AttributeValue;
-use Webcms\Backend\Models\Goods\AttrIndex;
+use App\Backend\Models\Goods\Goods;
+use App\Backend\Models\Goods\GoodsCommon;
+use App\Backend\Models\Goods\Category;
+use App\Backend\Models\Goods\Type;
+use App\Backend\Models\Goods\Attribute;
+use App\Backend\Models\Goods\AttributeValue;
+use App\Backend\Models\Goods\AttrIndex;
 
 /**
  * @title({name="商品属性对应管理"})
  *
  * @name 商品属性对应管理
  */
-class AttributeindexController extends \Webcms\Backend\Controllers\FormController
+class AttributeindexController extends \App\Backend\Controllers\FormController
 {
 
     private $modelGoods;
@@ -204,7 +204,7 @@ class AttributeindexController extends \Webcms\Backend\Controllers\FormControlle
         return $this->modelAttrIndex;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $skuList = $this->modelGoods->getAll();
         $goodsList = $this->modelGoodsCommon->getAll();

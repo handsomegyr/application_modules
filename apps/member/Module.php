@@ -1,12 +1,12 @@
 <?php
-namespace Webcms\Member;
+namespace App\Member;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Events\Manager as EventsManager;
-use Webcms\Common\Plugins\WeixinPlugin;
-use Webcms\Common\Plugins\TencentPlugin;
+use App\Common\Plugins\WeixinPlugin;
+use App\Common\Plugins\TencentPlugin;
 
 class Module
 {
@@ -19,9 +19,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Member\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Member\Models' => __DIR__ . '/models/',
-            'Webcms\Member\Services' => __DIR__ . '/services/'
+            'App\Member\Controllers' => __DIR__ . '/controllers/',
+            'App\Member\Models' => __DIR__ . '/models/',
+            'App\Member\Services' => __DIR__ . '/services/'
         ));
         $loader->register();
     }
@@ -52,7 +52,7 @@ class Module
             $eventsManager->attach('dispatch:beforeDispatch', new TencentPlugin());
             
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Member\Controllers");
+            $dispatcher->setDefaultNamespace("App\Member\Controllers");
             $dispatcher->setEventsManager($eventsManager);
             return $dispatcher;
         });

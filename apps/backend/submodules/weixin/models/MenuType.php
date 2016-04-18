@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class MenuType extends \Webcms\Common\Models\Weixin\MenuType
+class MenuType extends \App\Common\Models\Weixin\MenuType
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取全部回复类型

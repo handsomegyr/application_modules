@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Points;
+namespace App\Points;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,8 +16,8 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Points\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Points\Models' => __DIR__ . '/models/'
+            'App\Points\Controllers' => __DIR__ . '/controllers/',
+            'App\Points\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -38,7 +38,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Points\Controllers");
+            $dispatcher->setDefaultNamespace("App\Points\Controllers");
             return $dispatcher;
         });
         

@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Order\Controllers;
+namespace App\Order\Controllers;
 
 /**
  * 微信支付服务
@@ -32,9 +32,9 @@ class WeixinpayController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelOrderPay = new \Webcms\Order\Models\Pay();
-        $this->modelPaymentNotify = new \Webcms\Payment\Models\Notify();
-        $this->serviceWeixinpay = new \Webcms\Payment\Services\Weixinpay();
+        $this->modelOrderPay = new \App\Order\Models\Pay();
+        $this->modelPaymentNotify = new \App\Payment\Models\Notify();
+        $this->serviceWeixinpay = new \App\Payment\Services\Weixinpay();
     }
 
     /**
@@ -75,7 +75,7 @@ class WeixinpayController extends ControllerBase
         }
         
         // 进行支付处理
-        if ($orderPayInfo['api_pay_state'] == \Webcms\Order\Models\Pay::STATE0) {
+        if ($orderPayInfo['api_pay_state'] == \App\Order\Models\Pay::STATE0) {
             $this->modelOrderPay->changeToPaid($out_trade_no);
         }
         

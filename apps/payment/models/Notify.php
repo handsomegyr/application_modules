@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Payment\Models;
+namespace App\Payment\Models;
 
-class Notify extends \Webcms\Common\Models\Payment\Notify
+class Notify extends \App\Common\Models\Payment\Notify
 {
 
     /**

@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Weixin;
+namespace App\Backend\Controllers\Weixin;
 
-use Webcms\Backend\Models\Weixin\User;
-use Webcms\Backend\Models\Weixin\Gender;
+use App\Backend\Models\Weixin\User;
+use App\Backend\Models\Weixin\Gender;
 
 /**
  * @title({name="微信用户管理"})
  *
  * @name 微信用户管理
  */
-class UserController extends \Webcms\Backend\Controllers\FormController
+class UserController extends \App\Backend\Controllers\FormController
 {
 
     private $modelGender;
@@ -278,7 +278,7 @@ class UserController extends \Webcms\Backend\Controllers\FormController
         return $this->modelUser;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $genderList = $this->modelGender->getAll();
         foreach ($list['data'] as &$item) {

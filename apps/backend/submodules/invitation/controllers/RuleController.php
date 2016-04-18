@@ -1,15 +1,15 @@
 <?php
-namespace Webcms\Backend\Controllers\Invitation;
+namespace App\Backend\Controllers\Invitation;
 
-use Webcms\Backend\Models\Invitation\Rule;
-use Webcms\Backend\Models\System\Activity;
+use App\Backend\Models\Invitation\Rule;
+use App\Backend\Models\System\Activity;
 
 /**
  * @title({name="邀请规则管理"})
  *
  * @name 邀请规则管理
  */
-class RuleController extends \Webcms\Backend\Controllers\FormController
+class RuleController extends \App\Backend\Controllers\FormController
 {
 
     private $modelRule;
@@ -156,7 +156,7 @@ class RuleController extends \Webcms\Backend\Controllers\FormController
         return $this->modelRule;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $activityList = $this->modelActivity->getAll();
         foreach ($list['data'] as &$item) {

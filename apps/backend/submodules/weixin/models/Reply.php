@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Weixin;
+namespace App\Backend\Models\Weixin;
 
-class Reply extends \Webcms\Common\Models\Weixin\Reply
+class Reply extends \App\Common\Models\Weixin\Reply
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 获取全部回复类型

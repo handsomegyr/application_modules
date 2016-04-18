@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Weixin\Models;
+namespace App\Weixin\Models;
 
-class Menu extends \Webcms\Common\Models\Weixin\Menu
+class Menu extends \App\Common\Models\Weixin\Menu
 {
 
     private $_weixin;

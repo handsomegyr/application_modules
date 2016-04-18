@@ -1828,11 +1828,11 @@ function getHiddenEmail($email)
 
 function getBuyerName($name, $register_by)
 {
-    if ($register_by == \Webcms\Member\Models\Member::REGISTERBY1 && isValidMobile($name)) {
+    if ($register_by == \App\Member\Models\Member::REGISTERBY1 && isValidMobile($name)) {
         return getHiddenMobile($name);
-    } elseif ($register_by == \Webcms\Member\Models\Member::REGISTERBY2 && isValidEmail($name)) {
+    } elseif ($register_by == \App\Member\Models\Member::REGISTERBY2 && isValidEmail($name)) {
         return getHiddenEmail($name);
-    } elseif ($register_by == \Webcms\Member\Models\Member::REGISTERBY3) {
+    } elseif ($register_by == \App\Member\Models\Member::REGISTERBY3) {
         return ($name);
     } else {
         return ($name);

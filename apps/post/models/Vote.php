@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Post\Models;
+namespace App\Post\Models;
 
-class Vote extends \Webcms\Common\Models\Post\Vote
+class Vote extends \App\Common\Models\Post\Vote
 {
 
     public function getDefaultSort()

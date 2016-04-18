@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Common\Controllers;
+namespace App\Common\Controllers;
 
 use Respect\Validation\Validator as v;
 use Phalcon\Mvc\Controller;

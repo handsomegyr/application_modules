@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Mysql\Exchange;
+namespace App\Common\Models\Mysql\Exchange;
 
-use Webcms\Common\Models\Mysql\Base;
+use App\Common\Models\Mysql\Base;
 
 class Success extends Base
 {

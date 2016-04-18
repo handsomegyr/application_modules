@@ -1,13 +1,13 @@
 <?php
-namespace Webcms\Common\Models\Goods;
+namespace App\Common\Models\Goods;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Collect extends Base
 {
 
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Goods\Collect());
+        $this->setModel(new \App\Common\Models\Mysql\Goods\Collect());
     }
 }

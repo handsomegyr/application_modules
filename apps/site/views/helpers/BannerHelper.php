@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Site\Helpers;
+namespace App\Site\Helpers;
 
-use Webcms\Site\Models\Banner;
+use App\Site\Models\Banner;
 
 class BannerHelper extends \Phalcon\Tag
 {

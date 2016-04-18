@@ -1,17 +1,17 @@
 <?php
-namespace Webcms\Backend\Controllers\Post;
+namespace App\Backend\Controllers\Post;
 
-use Webcms\Backend\Models\Post\Post;
+use App\Backend\Models\Post\Post;
 
 /**
  * @title({name="晒单管理"})
  *
  * @name 晒单管理
  */
-class PostController extends \Webcms\Backend\Controllers\FormController
+class PostController extends \App\Backend\Controllers\FormController
 {
 
-    private $stateDatas = \Webcms\Common\Models\Post\Post::STATEDATAS;
+    private $stateDatas = \App\Common\Models\Post\Post::STATEDATAS;
 
     private $modelPost;
 
@@ -185,7 +185,7 @@ class PostController extends \Webcms\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'defaultValues' => array(
-                    \Webcms\Common\Models\Post\Post::STATE0
+                    \App\Common\Models\Post\Post::STATE0
                 ),
                 'items' => function ()
                 {
@@ -517,10 +517,10 @@ class PostController extends \Webcms\Backend\Controllers\FormController
         return $this->modelPost;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
-            if ($item['state'] != \Webcms\Common\Models\Post\Post::STATE_NONE) {
+            if ($item['state'] != \App\Common\Models\Post\Post::STATE_NONE) {
                 $item['post_time'] = date('Y-m-d H:i:s', $item['post_time']->sec);
             } else {
                 $item['post_time'] = "";
@@ -528,7 +528,7 @@ class PostController extends \Webcms\Backend\Controllers\FormController
             $picArr = explode(',', $item['pic']);
             $item['pic'] = $picArr[0];
             
-            if ($item['state'] > \Webcms\Common\Models\Post\Post::STATE0) {
+            if ($item['state'] > \App\Common\Models\Post\Post::STATE0) {
                 $item['verify_time'] = date('Y-m-d H:i:s', $item['verify_time']->sec);
             } else {
                 $item['verify_time'] = "";
@@ -541,7 +541,7 @@ class PostController extends \Webcms\Backend\Controllers\FormController
             $prize_time = getMilliTime4Show($goods_info['prize_time']);
             $item['goods_info'] = "云购码:{$goods_info['lottery_code']}<br/>幸运码:{$goods_info['prize_code']}<br/>揭晓时间:{$prize_time}<br/>云购次数:{$goods_info['prize_buyer_purchase_num']}<br/>购买时间:{$purchase_time}";
             
-            if ($item['state'] != \Webcms\Common\Models\Post\Post::STATE2) { // 已通过
+            if ($item['state'] != \App\Common\Models\Post\Post::STATE2) { // 已通过
                 $item['state'] = $this->stateDatas[strval($item['state'])]['name'];
                 // $item['state'] = $item['state'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要审核通过吗？\', \'pass\')" class="halflings-icon user white"><i></i> 通过</a>';
                 // $item['state'] = $item['state'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要审核未通过吗？\', \'unpass\')" class="halflings-icon user white"><i></i> 不通过</a>';

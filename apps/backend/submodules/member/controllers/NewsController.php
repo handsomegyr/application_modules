@@ -1,19 +1,19 @@
 <?php
-namespace Webcms\Backend\Controllers\Member;
+namespace App\Backend\Controllers\Member;
 
-use Webcms\Backend\Models\Member\News;
+use App\Backend\Models\Member\News;
 
 /**
  * @title({name="动态管理"})
  *
  * @name 动态管理
  */
-class NewsController extends \Webcms\Backend\Controllers\FormController
+class NewsController extends \App\Backend\Controllers\FormController
 {
 
-    private $registerbyDatas = \Webcms\Common\Models\Member\Member::REGISTERBYDATAS;
+    private $registerbyDatas = \App\Common\Models\Member\Member::REGISTERBYDATAS;
 
-    private $actionDatas = \Webcms\Member\Models\News::ACTIONDATAS;
+    private $actionDatas = \App\Member\Models\News::ACTIONDATAS;
 
     private $modelNews;
 
@@ -211,7 +211,7 @@ class NewsController extends \Webcms\Backend\Controllers\FormController
         return $this->modelNews;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
             // $item['user_name'] = getBuyerName($item['user_name'], $item['user_register_by']);

@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Payment\Models;
+namespace App\Payment\Models;
 
-class Log extends \Webcms\Common\Models\Payment\Log
+class Log extends \App\Common\Models\Payment\Log
 {
 
     /**

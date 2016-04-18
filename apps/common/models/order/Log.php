@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Common\Models\Order;
+namespace App\Common\Models\Order;
 
-use Webcms\Common\Models\Base;
+use App\Common\Models\Base;
 
 class Log extends Base
 {
@@ -12,6 +12,6 @@ class Log extends Base
     const ROLE_ADMIN = 'admin'; // 管理员
     function __construct()
     {
-        $this->setModel(new \Webcms\Common\Models\Mysql\Order\Log());
+        $this->setModel(new \App\Common\Models\Mysql\Order\Log());
     }
 }

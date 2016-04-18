@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Backend\Controllers;
+namespace App\Backend\Controllers;
 
-use Webcms\Backend\Models\Input;
+use App\Backend\Models\Input;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength;
@@ -12,7 +12,7 @@ use Phalcon\Validation\Validator\Between;
  *
  * @name 表管理
  */
-class FormController extends \Webcms\Backend\Controllers\ControllerBase
+class FormController extends \App\Backend\Controllers\ControllerBase
 {
 
     protected function getName()
@@ -650,7 +650,7 @@ class FormController extends \Webcms\Backend\Controllers\ControllerBase
         }
     }
 
-    protected function getList(\Webcms\Backend\Models\Input $input)
+    protected function getList(\App\Backend\Models\Input $input)
     {
         $list = $this->getModel()->getList($input);
         $this->view->setVar('list', $list['data']);
@@ -666,7 +666,7 @@ class FormController extends \Webcms\Backend\Controllers\ControllerBase
         return null;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         // foreach ($list['data'] as &$item) {
         // $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];
@@ -674,18 +674,18 @@ class FormController extends \Webcms\Backend\Controllers\ControllerBase
         return $list;
     }
 
-    protected function validate4Insert(\Webcms\Backend\Models\Input $input, $row)
+    protected function validate4Insert(\App\Backend\Models\Input $input, $row)
     {
         // do other validation
         // $this->getModel()->checkName($input->id, $input->pid, $input->name);
     }
 
-    protected function insert(\Webcms\Backend\Models\Input $input, $row)
+    protected function insert(\App\Backend\Models\Input $input, $row)
     {
         $this->getModel()->processInsertOrUpdate($input, $row);
     }
 
-    protected function validate4Update(\Webcms\Backend\Models\Input $input, $row)
+    protected function validate4Update(\App\Backend\Models\Input $input, $row)
     {
         // do other validation
         // $this->getModel()->checkName($input->id, $input->pid, $input->name);
@@ -696,19 +696,19 @@ class FormController extends \Webcms\Backend\Controllers\ControllerBase
         // }
     }
 
-    protected function update(\Webcms\Backend\Models\Input $input, $row)
+    protected function update(\App\Backend\Models\Input $input, $row)
     {
         $this->getModel()->processInsertOrUpdate($input, $row);
     }
 
-    protected function validate4Delete(\Webcms\Backend\Models\Input $input, $row)
+    protected function validate4Delete(\App\Backend\Models\Input $input, $row)
     {
         // do other validation
         /* 还有子菜单，不能删除 */
         // $this->getModel()->checkIsLeaf($input->id);
     }
 
-    protected function delete(\Webcms\Backend\Models\Input $input, $row)
+    protected function delete(\App\Backend\Models\Input $input, $row)
     {
         $this->getModel()->remove(array(
             '_id' => $input->id

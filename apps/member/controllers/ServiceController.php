@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Member\Controllers;
+namespace App\Member\Controllers;
 
 use Imagine\Image\Box;
 use Imagine\Image\Point;
@@ -37,18 +37,18 @@ class ServiceController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelMemberReport = new \Webcms\Member\Models\Report();
-        $this->modelMemberVisitor = new \Webcms\Member\Models\Visitor();
-        $this->modelMemberFriend = new \Webcms\Member\Models\Friend();
-        $this->modelMemberGrade = new \Webcms\Member\Models\Grade();
-        $this->modelInvitation = new \Webcms\Invitation\Models\Invitation();
+        $this->modelMemberReport = new \App\Member\Models\Report();
+        $this->modelMemberVisitor = new \App\Member\Models\Visitor();
+        $this->modelMemberFriend = new \App\Member\Models\Friend();
+        $this->modelMemberGrade = new \App\Member\Models\Grade();
+        $this->modelInvitation = new \App\Invitation\Models\Invitation();
         $this->modelInvitation->setIsExclusive(false);
-        $this->modelInvitationGotDetail = new \Webcms\Invitation\Models\InvitationGotDetail();
-        $this->modelInvitationUser = new \Webcms\Invitation\Models\User();
+        $this->modelInvitationGotDetail = new \App\Invitation\Models\InvitationGotDetail();
+        $this->modelInvitationUser = new \App\Invitation\Models\User();
         $this->modelInvitationUser->setIsExclusive(false);
-        $this->modelSysMsg = new \Webcms\Message\Models\SysMsg();
-        $this->modelMsgCount = new \Webcms\Message\Models\MsgCount();
-        $this->serviceCart = new \Webcms\Order\Services\Cart();
+        $this->modelSysMsg = new \App\Message\Models\SysMsg();
+        $this->modelMsgCount = new \App\Message\Models\MsgCount();
+        $this->serviceCart = new \App\Order\Services\Cart();
     }
 
     /**
@@ -1349,7 +1349,7 @@ class ServiceController extends ControllerBase
             if (! empty($_SESSION['member_id'])) {
                 $query1['to_user_id'] = $_SESSION['member_id']; // '56757a39887c22034a8b4596';
             }
-            $query1['state'] = \Webcms\Member\Models\Friend::STATE1;
+            $query1['state'] = \App\Member\Models\Friend::STATE1;
             if (! empty($key)) {
                 $query1['__OR__'] = array(
                     'from_user_mobile' => $key,
@@ -1364,7 +1364,7 @@ class ServiceController extends ControllerBase
             if (! empty($_SESSION['member_id'])) {
                 $query2['from_user_id'] = $_SESSION['member_id']; // '56761153887c22184e8b45b5'; // ;
             }
-            $query2['state'] = \Webcms\Member\Models\Friend::STATE1;
+            $query2['state'] = \App\Member\Models\Friend::STATE1;
             if (! empty($key)) {
                 $query2['__OR__'] = array(
                     'to_user_mobile' => $key,

@@ -1,10 +1,10 @@
 <?php
-namespace Webcms\Backend\Models\Freight;
+namespace App\Backend\Models\Freight;
 
-class Express extends \Webcms\Common\Models\Freight\Express
+class Express extends \App\Common\Models\Freight\Express
 {
     
-    use \Webcms\Backend\Models\Base;
+    use \App\Backend\Models\Base;
 
     /**
      * 默认排序

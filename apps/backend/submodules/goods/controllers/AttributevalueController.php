@@ -1,16 +1,16 @@
 <?php
-namespace Webcms\Backend\Controllers\Goods;
+namespace App\Backend\Controllers\Goods;
 
-use Webcms\Backend\Models\Goods\Type;
-use Webcms\Backend\Models\Goods\Attribute;
-use Webcms\Backend\Models\Goods\AttributeValue;
+use App\Backend\Models\Goods\Type;
+use App\Backend\Models\Goods\Attribute;
+use App\Backend\Models\Goods\AttributeValue;
 
 /**
  * @title({name="商品属性值表管理"})
  *
  * @name 商品属性值表管理
  */
-class AttributevalueController extends \Webcms\Backend\Controllers\FormController
+class AttributevalueController extends \App\Backend\Controllers\FormController
 {
 
     private $modelType;
@@ -132,7 +132,7 @@ class AttributevalueController extends \Webcms\Backend\Controllers\FormControlle
         return $this->modelAttributeValue;
     }
 
-    protected function getList4Show(\Webcms\Backend\Models\Input $input, array $list)
+    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $typeList = $this->modelType->getAll();
         $attrList = $this->modelAttribute->getAll();

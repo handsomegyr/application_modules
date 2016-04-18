@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Points\Models;
+namespace App\Points\Models;
 
-class Category extends \Webcms\Common\Models\Points\Category
+class Category extends \App\Common\Models\Points\Category
 {
 
     /**

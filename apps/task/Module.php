@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Task;
+namespace App\Task;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,9 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'Webcms\Task\Controllers' => __DIR__ . '/controllers/',
-            'Webcms\Task\Models' => __DIR__ . '/models/',
-            'Webcms\Task\Helpers' => __DIR__ . '/views/helpers/'
+            'App\Task\Controllers' => __DIR__ . '/controllers/',
+            'App\Task\Models' => __DIR__ . '/models/',
+            'App\Task\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }
@@ -39,7 +39,7 @@ class Module
         $di->set('dispatcher', function ()
         {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("Webcms\Task\Controllers");
+            $dispatcher->setDefaultNamespace("App\Task\Controllers");
             return $dispatcher;
         });
         

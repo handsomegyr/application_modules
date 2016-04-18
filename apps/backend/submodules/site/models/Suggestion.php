@@ -1,8 +1,8 @@
 <?php
-namespace Webcms\Backend\Models\Site;
+namespace App\Backend\Models\Site;
 
-class Suggestion extends \Webcms\Common\Models\Site\Suggestion
+class Suggestion extends \App\Common\Models\Site\Suggestion
 {
     
-    use\Webcms\Backend\Models\Base;
+    use\App\Backend\Models\Base;
 }

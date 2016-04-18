@@ -47,7 +47,7 @@
             <div class="soon-list">
               <ul>
                 <li class="g-soon-pic">
-                  <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank"><img name="goodsImg" src="<?php echo \Webcms\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>"></a>
+                  <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank"><img name="goodsImg" src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>"></a>
                 </li>
                 <li class="soon-list-name">
                   <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank">(第<?php echo $goods['period']?>云)&nbsp;<?php echo $goods['name']?></a>

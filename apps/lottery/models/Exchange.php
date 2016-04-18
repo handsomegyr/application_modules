@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Lottery\Models;
+namespace App\Lottery\Models;
 
-class Exchange extends \Webcms\Common\Models\Lottery\Exchange
+class Exchange extends \App\Common\Models\Lottery\Exchange
 {
 
     private $_exchanges = null;

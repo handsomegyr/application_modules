@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\Payment\Services;
+namespace App\Payment\Services;
 
-use Webcms\Payment\Models\Payment;
+use App\Payment\Models\Payment;
 
 class Weixinpay
 {
@@ -15,7 +15,7 @@ class Weixinpay
     function __construct()
     {
         $this->modelPayment = new Payment();
-        $this->modelWeixinApplication = new \Webcms\Weixin\Models\Application();
+        $this->modelWeixinApplication = new \App\Weixin\Models\Application();
         $this->_config = $this->modelPayment->getWeixinpayConfig();
     }
 

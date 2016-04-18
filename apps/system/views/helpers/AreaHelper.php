@@ -1,7 +1,7 @@
 <?php
-namespace Webcms\System\Helpers;
+namespace App\System\Helpers;
 
-use Webcms\System\Models\Area;
+use App\System\Models\Area;
 
 class AreaHelper extends \Phalcon\Tag
 {

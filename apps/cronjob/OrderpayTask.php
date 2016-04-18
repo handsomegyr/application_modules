@@ -12,7 +12,7 @@ class OrderpayTask extends \Phalcon\CLI\Task
      */
     public function processAction(array $params)
     {
-        $modelOrderPay = new \Webcms\Order\Models\Pay();
+        $modelOrderPay = new \App\Order\Models\Pay();
         $cache = $this->getDI()->get("cache");
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $pheanstalk->useTube('finishpayorder');
@@ -50,7 +50,7 @@ class OrderpayTask extends \Phalcon\CLI\Task
      */
     public function finishpayAction(array $params)
     {
-        $servicePay = new \Webcms\Order\Services\Pay();
+        $servicePay = new \App\Order\Services\Pay();
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $pheanstalk->watch('finishpayorder')->ignore('default');
         $cache = $this->getDI()->get("cache");

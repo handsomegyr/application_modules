@@ -1,5 +1,5 @@
 <?php
-namespace Webcms\Order\Controllers;
+namespace App\Order\Controllers;
 
 /**
  * 支付服务
@@ -33,16 +33,16 @@ class PayController extends ControllerBase
         parent::initialize();
         $this->view->disable();
         
-        $this->modelMember = new \Webcms\Member\Models\Member();
-        $this->modelOrder = new \Webcms\Order\Models\Order();
-        $this->modelOrderPay = new \Webcms\Order\Models\Pay();
-        $this->modelOrderStatistics = new \Webcms\Order\Models\Statistics();
-        $this->modelOrderGoods = new \Webcms\Order\Models\Goods();
-        $this->modelPointsUser = new \Webcms\Points\Models\User();
-        $this->servicePay = new \Webcms\Order\Services\Pay();
-        $this->servicePayment4Alipay = new \Webcms\Payment\Services\Alipay();
-        $this->servicePayment4Weixinpay = new \Webcms\Payment\Services\Weixinpay();
-        $this->servicePay = new \Webcms\Order\Services\Pay();
+        $this->modelMember = new \App\Member\Models\Member();
+        $this->modelOrder = new \App\Order\Models\Order();
+        $this->modelOrderPay = new \App\Order\Models\Pay();
+        $this->modelOrderStatistics = new \App\Order\Models\Statistics();
+        $this->modelOrderGoods = new \App\Order\Models\Goods();
+        $this->modelPointsUser = new \App\Points\Models\User();
+        $this->servicePay = new \App\Order\Services\Pay();
+        $this->servicePayment4Alipay = new \App\Payment\Services\Alipay();
+        $this->servicePayment4Weixinpay = new \App\Payment\Services\Weixinpay();
+        $this->servicePay = new \App\Order\Services\Pay();
     }
 
     /**
@@ -150,7 +150,7 @@ class PayController extends ControllerBase
             $total_fee = $orderPayInfo['pay_amount'];
             $pay_url = "";
             // 如果未支付完成的话
-            if ($orderPayInfo['api_pay_state'] != \Webcms\Order\Models\Pay::STATE1) {
+            if ($orderPayInfo['api_pay_state'] != \App\Order\Models\Pay::STATE1) {
                 $pay_state = false;
                 // 如果是微信支付的时候
                 if ($payment_code == 'weixin') {
@@ -246,7 +246,7 @@ class PayController extends ControllerBase
             }
             
             // 检查是否已支付
-            if ($orderPayInfo['api_pay_state'] != \Webcms\Order\Models\Pay::STATE1) {
+            if ($orderPayInfo['api_pay_state'] != \App\Order\Models\Pay::STATE1) {
                 echo ($this->error(- 3, '该支付订单还未支付'));
                 return false;
             }
