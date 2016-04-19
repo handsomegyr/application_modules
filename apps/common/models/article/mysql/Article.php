@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Article\Mysql;
 
-use App\Common\Models\Mysql\Base;
+use App\Common\Models\Base\Mysql\Base;
 
 class Article extends Base
 {

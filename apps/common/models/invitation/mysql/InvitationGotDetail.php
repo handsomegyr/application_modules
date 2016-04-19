@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Invitation\Mysql;
 
-use App\Common\Models\Mysql\Base;
+use App\Common\Models\Base\Mysql\Base;
 
 class InvitationGotDetail extends Base
 {

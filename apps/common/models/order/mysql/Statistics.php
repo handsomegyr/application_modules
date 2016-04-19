@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Order\Mysql;
 
-use App\Common\Models\Mysql\Base;
+use App\Common\Models\Base\Mysql\Base;
 
 class Statistics extends Base
 {

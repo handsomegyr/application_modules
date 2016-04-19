@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models;
+namespace App\Common\Models\Base;
 
 trait BaseTrait
 {

@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Payment\Mysql;
 
-use App\Common\Models\Mysql\Base;
+use App\Common\Models\Base\Mysql\Base;
 
 class Payment extends Base
 {

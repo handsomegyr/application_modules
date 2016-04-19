@@ -1,5 +1,5 @@
 <?php
-namespace App\Common\Models\Mysql;
+namespace App\Common\Models\Base\Mysql;
 
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Resultset\Simple as Resultset;

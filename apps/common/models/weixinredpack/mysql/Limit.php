@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Weixinredpack\Mysql;
 
-use App\Common\Models\Mysql\Base;
+use App\Common\Models\Base\Mysql\Base;
 
 class Limit extends Base
 {

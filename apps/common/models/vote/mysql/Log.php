@@ -2,7 +2,7 @@
 
 namespace App\Common\Models\Vote\Mysql;
 
-use App\Common\Models\Mysql\Base;
+use App\Common\Models\Base\Mysql\Base;
 
 class Log extends Base
 {

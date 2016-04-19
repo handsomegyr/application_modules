@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Goods\Mysql;
 
-use App\Common\Models\Mysql\Base;
+use App\Common\Models\Base\Mysql\Base;
 
 class Combo extends Base
 {
