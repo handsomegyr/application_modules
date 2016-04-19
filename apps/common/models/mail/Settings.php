@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Mail;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 class Settings extends Base
 {

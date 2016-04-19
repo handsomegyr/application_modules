@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Exchange;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 class Limit extends Base
 {

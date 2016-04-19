@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Weixin;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 /**
  * 微信二维码场景管理

@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Invitation;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 class InvitationGotDetail extends Base
 {

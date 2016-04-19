@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Points;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 class User extends Base
 {

@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Site;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 class Site extends Base
 {

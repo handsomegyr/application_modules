@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Order;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 class Pay extends Base
 {

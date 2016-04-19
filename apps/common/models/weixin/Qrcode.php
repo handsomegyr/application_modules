@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Weixin;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 /**
  * 记录微信二维码扫描状况

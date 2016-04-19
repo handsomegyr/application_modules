@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Payment;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 class Log extends Base
 {

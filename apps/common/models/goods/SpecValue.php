@@ -1,7 +1,7 @@
 <?php
 namespace App\Common\Models\Goods;
 
-use App\Common\Models\Base;
+use App\Common\Models\Base\Base;
 
 class SpecValue extends Base
 {
