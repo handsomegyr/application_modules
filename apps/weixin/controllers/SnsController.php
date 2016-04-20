@@ -131,9 +131,9 @@ class SnsController extends ControllerBase
                 exit();
             } else {
                 
-                $moduleName = $this->getRequest()->getModuleName();
-                $controllerName = $this->getRequest()->getControllerName();
-                $actionName = $this->getRequest()->getActionName();
+                $moduleName = 'weixin';
+                $controllerName = 'sns';
+                $actionName = 'callback';
                 
                 $redirectUri = 'http://';
                 $redirectUri .= $_SERVER["HTTP_HOST"];
@@ -207,7 +207,7 @@ class SnsController extends ControllerBase
                     }
                     $_SESSION['iWeixin']['accessToken'] = $arrAccessToken;
                     
-                    $path = $this->_config['global']['path'];
+                    $path = '/';
                     setcookie('__OPENID__', $arrAccessToken['openid'], time() + 30 * 24 * 3600, $path);
                     if (! empty($arrAccessToken['nickname'])) {
                         setcookie('nickname', $arrAccessToken['nickname'], time() + 30 * 24 * 3600, $path);

@@ -27,7 +27,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         $schemas['_id']['search']['is_show'] = false;
         
         $schemas['weixin_id'] = array(
-            'name' => '微信系统编号',
+            'name' => '原始ID',
             'data' => array(
                 'type' => 'string',
                 'length' => '20'
@@ -48,7 +48,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['weixin_name'] = array(
-            'name' => '微信名称',
+            'name' => '名称',
             'data' => array(
                 'type' => 'string',
                 'length' => '30'
@@ -69,7 +69,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['appid'] = array(
-            'name' => '第三方用户唯一凭证',
+            'name' => '应用ID',
             'data' => array(
                 'type' => 'string',
                 'length' => '20'
@@ -90,7 +90,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['secret'] = array(
-            'name' => '第三方用户唯一凭证密钥',
+            'name' => '应用密钥',
             'data' => array(
                 'type' => 'string',
                 'length' => '45'
@@ -111,7 +111,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['verify_token'] = array(
-            'name' => '开发模式对接Token',
+            'name' => 'Token(令牌)',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -152,8 +152,71 @@ class ApplicationController extends \App\Backend\Controllers\FormController
             )
         );
         
+        $schemas['mch_id'] = array(
+            'name' => '商户ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => '50'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['sub_mch_id'] = array(
+            'name' => '子商户号',
+            'data' => array(
+                'type' => 'string',
+                'length' => '50'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['key'] = array(
+            'name' => '商户支付密钥',
+            'data' => array(
+                'type' => 'string',
+                'length' => '50'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
         $schemas['is_advanced'] = array(
-            'name' => '是否开启高级功能',
+            'name' => '高级功能？',
             'data' => array(
                 'type' => 'boolean',
                 'length' => '1',
@@ -201,7 +264,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['is_weixin_card'] = array(
-            'name' => '是否开启级微信卡券功能',
+            'name' => '卡券功能？',
             'data' => array(
                 'type' => 'boolean',
                 'length' => '1',
@@ -225,17 +288,17 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['access_token'] = array(
-            'name' => 'access_token',
+            'name' => 'ACCESS TOKEN',
             'data' => array(
                 'type' => 'string',
-                'length' => '110'
+                'length' => '255'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -246,18 +309,18 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['access_token_expire'] = array(
-            'name' => 'access_token过期时间',
+            'name' => 'ACCESS TOKEN过期时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => '19',
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -268,17 +331,17 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['jsapi_ticket'] = array(
-            'name' => '微信JS的临时票据',
+            'name' => 'JS临时票据',
             'data' => array(
                 'type' => 'string',
-                'length' => '110'
+                'length' => '255'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -289,18 +352,18 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['jsapi_ticket_expire'] = array(
-            'name' => '微信JS过期时间',
+            'name' => 'JS过期时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => '19',
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -311,17 +374,17 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['wx_card_api_ticket'] = array(
-            'name' => '微信卡券的临时票据',
+            'name' => '卡券临时票据',
             'data' => array(
                 'type' => 'string',
-                'length' => '110'
+                'length' => '255'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -332,18 +395,18 @@ class ApplicationController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['wx_card_api_ticket_expire'] = array(
-            'name' => '微信卡券的过期时间',
+            'name' => '卡券过期时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => '19',
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false

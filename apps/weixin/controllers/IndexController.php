@@ -70,7 +70,9 @@ class IndexController extends ControllerBase
     }
 
     public function indexAction()
-    {}
+    {
+        die('index');
+    }
 
     /**
      * 处理微信的回调数据

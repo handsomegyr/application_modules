@@ -107,7 +107,6 @@ class Application extends \App\Common\Models\Weixin\Application
                     $lockKey = cacheKey(__FILE__, __CLASS__, __METHOD__, __LINE__);
                     $objLock = new \iLock($lockKey);
                     if (! $objLock->lock()) {
-                        
                         // 获取jsapi_ticket
                         $objJssdk = new \Weixin\Jssdk();
                         $objJssdk->setAppId($token['appid']);

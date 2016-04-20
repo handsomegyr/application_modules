@@ -99,8 +99,6 @@ class User extends \App\Common\Models\Weixin\User
                 'openid' => $openid
             ), array(
                 '$set' => $userInfo
-            ), array(
-                'upsert' => true
             ));
         } else {
             return $this->insert($userInfo);
