@@ -24,6 +24,17 @@ return new \Phalcon\Config(array(
         'dbname' => 'shopnc',
         'charset' => 'utf8'
     ),
+    'weixin' => array(
+        "appid" => 'wxe735383666834fc9',
+        "get_accesstoken_url" => "http://weixinoauth.umaman.com/weixin/index/get-access-token",
+        'openid4developer' => 'on8S7uINhQNNenv2AUE7ytD18eNs'
+    ),
+    'memcached' => array(
+        "host" => '127.0.0.1',
+        "port" => 11211,
+        "weight" => 1,
+        "prefix_key" => 'webcms'
+    ),
     'errors' => array(
         'none' => array(
             'error_code' => 0,

@@ -192,21 +192,24 @@ function registerServices($di)
      * Read configuration
      */
     $config = include APP_PATH . "apps/common/config/config.php";
-    $di->set('config', function () use($config) {
+    $di->set('config', function () use($config)
+    {
         return $config;
     });
     
     /**
      * Setting up the view component
      */
-    $di['errors'] = function () use($config) {
+    $di['errors'] = function () use($config)
+    {
         return $config['errors'];
     };
     
     /**
      * Database connection is created based in the parameters defined in the configuration file
      */
-    $di['db'] = function () use($config) {
+    $di['db'] = function () use($config)
+    {
         $connection = new DbAdapter(array(
             "host" => $config->database->host,
             "username" => $config->database->username,
@@ -216,7 +219,8 @@ function registerServices($di)
         ));
         // $connection->execute("SET NAMES 'utf8';");
         $eventsManager = new EventsManager();
-        $eventsManager->attach('db', function ($event, $conn) {
+        $eventsManager->attach('db', function ($event, $conn)
+        {
             // echo $conn->getSQLStatement() . '<br />';
         });
         $connection->setEventsManager($eventsManager);
@@ -226,7 +230,8 @@ function registerServices($di)
     /**
      * Database connection is created based in the parameters defined in the configuration file
      */
-    $di['dbfrom'] = function () use($config) {
+    $di['dbfrom'] = function () use($config)
+    {
         $connection = new DbAdapter(array(
             "host" => $config->databasefrom->host,
             "username" => $config->databasefrom->username,
@@ -238,14 +243,16 @@ function registerServices($di)
         return $connection;
     };
     
-    $di->setShared('transactions', function () {
+    $di->setShared('transactions', function ()
+    {
         return new TransactionManager();
     });
     
     /**
      * Register a database component
      */
-    $di->set('databases', function () {
+    $di->set('databases', function ()
+    {
         $default = new \iDatabase('54602cae489619970f8b4b58', 'guoyongrong0123456789', '54602cde4896197a0e8b4c5a');
         return array(
             "default" => $default
@@ -255,7 +262,8 @@ function registerServices($di)
     /**
      * Setting up the pheanstalk queue component
      */
-    $di['pheanstalk'] = function () use($config) {
+    $di['pheanstalk'] = function () use($config)
+    {
         $pheanstalk = new Pheanstalk('127.0.0.1');
         return $pheanstalk;
     };
@@ -263,7 +271,11 @@ function registerServices($di)
     /**
      * Setting up the cache component
      */
-    $di['cache'] = function () use($config) {
+    /**
+     * Setting up the cache component
+     */
+    $di['cache'] = function () use($config)
+    {
         // Cache the files for 2 days using a Data frontend
         $frontCache = new FrontData(array(
             "lifetime" => 172800
@@ -280,14 +292,14 @@ function registerServices($di)
         $cache = new Libmemcached($frontCache, array(
             'servers' => array(
                 array(
-                    'host' => '127.0.0.1',
-                    'port' => 11211,
-                    'weight' => 1
+                    'host' => $config['memcached']['host'],
+                    'port' => $config['memcached']['port'],
+                    'weight' => $config['memcached']['weight']
                 )
             ),
             'client' => array(
                 Memcached::OPT_HASH => Memcached::HASH_MD5,
-                Memcached::OPT_PREFIX_KEY => 'webcms.'
+                Memcached::OPT_PREFIX_KEY => $config['memcached']['prefix_key'] . '.'
             )
         ));
         return $cache;
@@ -296,11 +308,13 @@ function registerServices($di)
     /**
      * Setting up the memcached component
      */
-    $di['memcached'] = function () use($config) {
+    $di['memcached'] = function () use($config)
+    {
         $objMemcached = new \Memcached();
         $parameters = array();
         $memcacheConfig = array();
-        $_SERVER['ICC_MEMCACHED_SERVER'] = "127.0.0.1:11211";
+        $_SERVER['ICC_MEMCACHED_SERVER'] = "{$config['memcached']['host']}:{$config['memcached']['port']}";
+        // $_SERVER['ICC_MEMCACHED_SERVER'] = "860449636f404316.m.cnhzaliqshpub001.ocs.aliyuncs.com:11211";
         if (! empty($_SERVER['ICC_MEMCACHED_SERVER'])) {
             $memcacheServers = explode(',', $_SERVER['ICC_MEMCACHED_SERVER']);
             if (is_array($memcacheServers) && ! empty($memcacheServers)) {
@@ -333,7 +347,8 @@ function registerServices($di)
     /**
      * Setting up the redis component
      */
-    $di['redis'] = function () use($config) {
+    $di['redis'] = function () use($config)
+    {
         if (! empty($_SERVER['ICC_REDIS_MASTERS'])) {
             $redisServers = explode(',', $_SERVER['ICC_REDIS_MASTERS']);
             $parameters = array();
@@ -357,7 +372,8 @@ function registerServices($di)
         /**
          * Registering a router
          */
-        $di['router'] = function () {
+        $di['router'] = function ()
+        {
             $router = new Router();
             
             $router->setDefaultModule("yungou");
@@ -517,7 +533,8 @@ function registerServices($di)
         /**
          * The URL component is used to generate all kind of urls in the application
          */
-        $di['url'] = function () {
+        $di['url'] = function ()
+        {
             $url = new UrlResolver();
             $url->setBaseUri('/');
             return $url;
