@@ -96,7 +96,8 @@ class Pay
                     case 'predeposit':
                         // 预付款充值
                         // 增加预付款
-                        $this->modelPointsUser->addOrReduce(POINTS_CATEGORY3, $buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $out_trade_no, $orderPayInfo['__CREATE_TIME__'], $pay_amount, "预付款充值", "支付金额￥{$pay_amount}已充值到您的云购账户");
+                        $pay_amount_yuan = $pay_amount/100;
+                        $this->modelPointsUser->addOrReduce(POINTS_CATEGORY3, $buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $out_trade_no, $orderPayInfo['__CREATE_TIME__'], $pay_amount, "预付款充值", "支付金额￥{$pay_amount_yuan}已充值到您的云购账户");
                         
                         // 增加支付日志记录
                         $this->modelPayLog->recordLog($buyerInfo['buyer_id'], \App\Payment\Models\Log::TYPE1, $pay_amount, '预付款充值', $orderPayInfo);
@@ -235,11 +236,12 @@ class Pay
                         }
                         
                         // 退回的金额
-                        $pay_amount = $success_count * 1.00;
+                        $pay_amount = $success_count * 100;
                         if ($total_amount - $pay_amount > 0) {
                             $failure_amount = $total_amount - $pay_amount;
+                            $failure_amount_yuan = $failure_amount_yuan / 100;
                             // 退回支付金额至预付款中
-                            $this->modelPointsUser->addOrReduce(POINTS_CATEGORY3, $orderPayInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], getNewId(), $orderPayInfo['__CREATE_TIME__'], $failure_amount, "支付", "云购失败，支付金额￥{$failure_amount}已退回到您的云购账户");
+                            $this->modelPointsUser->addOrReduce(POINTS_CATEGORY3, $orderPayInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], getNewId(), $orderPayInfo['__CREATE_TIME__'], $failure_amount, "支付", "云购失败，支付金额￥{$failure_amount_yuan}已退回到您的云购账户");
                         }
                         
                         // 更新支付订单的信息

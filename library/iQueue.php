@@ -29,8 +29,10 @@ class iQueue
             $jobData = $job->getData();
             $jobData = unserialize($jobData);
             $pheanstalk->delete($job);
+        } else {
+            $jobData = false;
         }
-        return $job;
+        return $jobData;
     }
 
     public static function enqueue4OrderPay(array $data)
@@ -40,7 +42,7 @@ class iQueue
 
     public static function dequeue4OrderPay()
     {
-        return self::enqueue('finishpayorder');
+        return self::dequeue('finishpayorder');
     }
 
     public static function enqueue4NewPeriodGoods(array $data)
@@ -50,7 +52,7 @@ class iQueue
 
     public static function dequeue4NewPeriodGoods()
     {
-        return self::enqueue('newperiodgoods');
+        return self::dequeue('newperiodgoods');
     }
 
     public static function enqueue4LotteryGoods(array $data)
@@ -60,6 +62,6 @@ class iQueue
 
     public static function dequeue4LotteryGoods()
     {
-        return self::enqueue('lotterygoods');
+        return self::dequeue('lotterygoods');
     }
 }

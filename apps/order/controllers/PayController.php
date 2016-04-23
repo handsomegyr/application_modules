@@ -121,7 +121,7 @@ class PayController extends ControllerBase
                     echo ($this->error(- 6, '预存款金额不够'));
                     return false;
                 }
-                if (($predepositInfo['current'] < 1)) {
+                if (($predepositInfo['current'] < 100)) {
                     echo ($this->error(- 6, '预存款金额不够'));
                     return false;
                 }

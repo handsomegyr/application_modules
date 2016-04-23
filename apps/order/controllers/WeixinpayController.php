@@ -83,6 +83,9 @@ class WeixinpayController extends ControllerBase
         $this->modelPaymentNotify->recordLog($out_trade_no, $GLOBALS['HTTP_RAW_POST_DATA']);
         
         // 后续的操作由队列处理
+        \iQueue::enqueue4OrderPay(array(
+            'out_trade_no' => $out_trade_no
+        ));
         return true;
     }
 }

@@ -25,7 +25,7 @@
 		        <li class="f-gap" style=""><s></s></li>
 		    </ul>
 		    <ul id="ulTopRight" class="fr">
-                <?php if(!empty($_SESSION['member_id'])){?>
+                <?php if(!empty($_SESSION['member_id']) && !empty($this->view->memberInfo)){?>
                 <?php                
                     $loginName = \App\Member\Views\Helpers\MemberHelper::getLoginName($this->view->memberInfo);
                 ?>
