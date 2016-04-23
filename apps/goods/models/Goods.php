@@ -124,7 +124,7 @@ class Goods extends \App\Common\Models\Goods\Goods
         
         $datas['period'] = $period;
         $datas['lottery_code'] = $goodsCommonInfo['lottery_code'];
-        $datas['total_person_time'] = intval($goodsCommonInfo['price']);
+        $datas['total_person_time'] = intval($goodsCommonInfo['price'] / 100);
         $datas['purchase_person_time'] = 0;
         $datas['remain_person_time'] = $datas['total_person_time'] - $datas['purchase_person_time'];
         $datas['complete_percent'] = round($datas['purchase_person_time'] * 100.00 / $datas['total_person_time'], 2);

@@ -34,7 +34,7 @@ class Cart extends \App\Common\Models\Order\Cart
         $data['goods_commonid'] = $goodsInfo['goods_commonid'];
         $data['goods_id'] = $goodsInfo['_id'];
         $data['goods_name'] = $goodsInfo['name'];
-        $data['goods_price'] = 1.00;
+        $data['goods_price'] = 100;
         $data['goods_num'] = $goodsInfo['goods_num'];
         $data['goods_image'] = $goodsInfo['image'];
         $data['bl_id'] = isset($goodsInfo['bl_id']) ? $goodsInfo['bl_id'] : '';

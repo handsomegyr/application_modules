@@ -145,14 +145,14 @@ class GoodsController extends \App\Backend\Controllers\FormController
         $schemas['price'] = array(
             'name' => '价格',
             'data' => array(
-                'type' => 'decimal',
+                'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'number',
                 'is_show' => true
             ),
             'list' => array(
@@ -676,14 +676,14 @@ class GoodsController extends \App\Backend\Controllers\FormController
         $schemas['promotion_price'] = array(
             'name' => '促销价格',
             'data' => array(
-                'type' => 'decimal',
+                'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'number',
                 'is_show' => false
             ),
             'list' => array(
@@ -717,14 +717,14 @@ class GoodsController extends \App\Backend\Controllers\FormController
         $schemas['marketprice'] = array(
             'name' => '市场价',
             'data' => array(
-                'type' => 'decimal',
+                'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'number',
                 'is_show' => false
             ),
             'list' => array(

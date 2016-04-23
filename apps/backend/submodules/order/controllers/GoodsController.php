@@ -111,14 +111,14 @@ class GoodsController extends \App\Backend\Controllers\FormController
         $schemas['goods_price'] = array(
             'name' => '单价',
             'data' => array(
-                'type' => 'decimal',
+                'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'number',
                 'is_show' => false
             ),
             'list' => array(
@@ -175,14 +175,14 @@ class GoodsController extends \App\Backend\Controllers\FormController
         $schemas['goods_pay_price'] = array(
             'name' => 'goods_pay_price',
             'data' => array(
-                'type' => 'decimal',
+                'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'number',
                 'is_show' => false
             ),
             'list' => array(

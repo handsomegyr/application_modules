@@ -165,14 +165,14 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
         $schemas['price'] = array(
             'name' => '价格',
             'data' => array(
-                'type' => 'decimal',
+                'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'number',
                 'is_show' => true
             ),
             'list' => array(
@@ -890,14 +890,14 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
         $schemas['marketprice'] = array(
             'name' => '市场价',
             'data' => array(
-                'type' => 'decimal',
+                'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'number',
                 'is_show' => true
             ),
             'list' => array(
@@ -910,14 +910,14 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
         $schemas['costprice'] = array(
             'name' => '成本价',
             'data' => array(
-                'type' => 'decimal',
+                'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'number',
                 'is_show' => true
             ),
             'list' => array(
