@@ -98,9 +98,13 @@ class Weixinpay
         return call_user_func($callback, $notifyData);
     }
 
+    /**
+     *
+     * @return \Weixin\Pay337
+     */
     private function getWeixinPayApi()
     {
-        $tokenInfo = $this->modelWeixinApplication->getToken(true);
+        $tokenInfo = $this->modelWeixinApplication->getTokenByAppid($this->_config['appId']);
         $weixinApi = new \Weixin\Pay337();
         $weixinApi->setAccessToken($tokenInfo['access_token']);
         $weixinApi->setAppId($this->_config['appId']);

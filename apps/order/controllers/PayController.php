@@ -51,7 +51,7 @@ class PayController extends ControllerBase
     public function createAction()
     {
         try {
-            // http://webcms.didv.cn/order/pay/create?pay_sn=567e1fd8887c22034a8b45a3&integral=0&predeposit=1&payway=weixin&pay_pwd=xxxx
+            // http://www.jizigou.com/order/pay/create?pay_sn=567e1fd8887c22034a8b45a3&integral=0&predeposit=1&payway=weixin&pay_pwd=xxxx
             // 订单支付单号
             $pay_sn = trim($this->get('pay_sn', ''));
             // 是否使用福分
@@ -152,16 +152,16 @@ class PayController extends ControllerBase
             // 如果未支付完成的话
             if ($orderPayInfo['api_pay_state'] != \App\Order\Models\Pay::STATE1) {
                 $pay_state = false;
+                $scheme = $this->getRequest()->getScheme();
                 // 如果是微信支付的时候
                 if ($payment_code == 'weixin') {
-                    $pay_url = 'yungou/cart/weixinpay';
-                    if (false) {
+                    $pay_url = "{$scheme}://{$_SERVER['HTTP_HOST']}/yungou/cart/weixinpay?id={$out_trade_no}";
+                    if (true) {
                         $body = "一元云购";
                         $attach = "";
                         $time_start = date("YmdHis", $orderPayInfo['__CREATE_TIME__']->sec);
                         $time_expire = date("YmdHis", $orderPayInfo['__CREATE_TIME__']->sec + 3600 * 2);
                         $goods_tag = "";
-                        $scheme = $this->getRequest()->getScheme();
                         $notify_url = "{$scheme}://{$_SERVER['HTTP_HOST']}/order/weixinpay/goods";
                         $product_id = $orderPayInfo['pay_sn'];
                         $openid = "";
@@ -191,6 +191,10 @@ class PayController extends ControllerBase
                 // $this->servicePay->finishPay($out_trade_no);
             }
             
+            $key = $this->getCacheKey4Payresult($out_trade_no);
+            $cache = $this->getDI()->get("cache");
+            $cache->save($key, $orderPayInfo, 60 * 1); // 1分钟
+            
             echo ($this->result("OK", array(
                 'out_trade_no' => $out_trade_no,
                 'pay_state' => false,
@@ -205,10 +209,124 @@ class PayController extends ControllerBase
         }
     }
 
+    /**
+     * 预付款充值的接口
+     */
+    public function rechargeAction()
+    {
+        try {
+            // http://www.jizigou.com/order/pay/recharge?predeposit=10&payway=weixin&pay_pwd=xxx
+            // 预付款
+            $predeposit = intval($this->get('predeposit', '0'));
+            // 支付方式
+            $payment_code = $payway = ($this->get('payway', ''));
+            // 支付密码
+            // $pay_pwd = ($this->get('pay_pwd', ''));
+            if ($predeposit <= 0) {
+                echo ($this->error(- 3, '预付款金额不正确'));
+                return false;
+            }
+            
+            // 买家信息
+            $buyer_id = $_SESSION['member_id'];
+            if (empty($buyer_id)) {
+                echo ($this->error(- 1, '购买者为空'));
+                return false;
+            }
+            // 获取会员信息
+            $buyerInfo = $this->modelMember->getInfoById($buyer_id);
+            if (empty($buyerInfo)) {
+                echo ($this->error(- 2, '购买者不存在'));
+                return false;
+            }
+            
+            // // 判断是否需要支付密码
+            // $isPaypwdOk = $this->modelMember->checkPaypwd($buyerInfo, $pay_pwd, $predeposit);
+            // if (empty($isPaypwdOk)) {
+            // echo ($this->error(- 4, '支付密码为空或不正确'));
+            // return false;
+            // }
+            
+            $buyerInfo['buyer_id'] = $buyerInfo['_id'];
+            $buyerInfo['buyer_name'] = $this->modelMember->getRegisterName($buyerInfo);
+            $buyerInfo['buyer_email'] = $buyerInfo['email'];
+            $buyerInfo['buyer_mobile'] = $buyerInfo['mobile'];
+            $buyerInfo['buyer_avatar'] = $buyerInfo['avatar'];
+            $buyerInfo['buyer_register_by'] = $buyerInfo['register_by'];
+            
+            // 生成订单支付记录
+            $pay_sn = $this->modelOrderPay->makePaySn();
+            $order_amount = $goods_amount = $predeposit;
+            $orderPayInfo = $this->modelOrderPay->create($pay_sn, $buyerInfo, $payment_code, $order_amount, $goods_amount, 0, 0, 0, 0, 0, false, false, 'predeposit');
+            if (empty($orderPayInfo)) {
+                throw new \Exception('支付订单生成失败', - 5);
+            }
+            $out_trade_no = $orderPayInfo['_id'];
+            $total_fee = $orderPayInfo['pay_amount'];
+            $pay_url = "";
+            // 如果未支付完成的话
+            if ($orderPayInfo['api_pay_state'] != \App\Order\Models\Pay::STATE1) {
+                $pay_state = false;
+                $scheme = $this->getRequest()->getScheme();
+                // 如果是微信支付的时候
+                if ($payment_code == 'weixin') {
+                    $pay_url = "{$scheme}://{$_SERVER['HTTP_HOST']}/yungou/cart/weixinpay?id={$out_trade_no}";
+                    if (false) {
+                        $body = "一元云购";
+                        $attach = "";
+                        $time_start = date("YmdHis", $orderPayInfo['__CREATE_TIME__']->sec);
+                        $time_expire = date("YmdHis", $orderPayInfo['__CREATE_TIME__']->sec + 3600 * 2);
+                        $goods_tag = "";
+                        $notify_url = "{$scheme}://{$_SERVER['HTTP_HOST']}/order/weixinpay/predeposit";
+                        $product_id = $orderPayInfo['pay_sn'];
+                        $openid = "";
+                        $unifiedorderInfo = $this->servicePayment4Weixinpay->nativePay($out_trade_no, $body, $attach, $total_fee, $time_start, $time_expire, $goods_tag, $notify_url, $openid, $product_id);
+                    } else {
+                        $out_trade_no = $orderPayInfo['_id'];
+                        $unifiedorderInfo = array(
+                            'prepay_id' => 'xxxxxxxx',
+                            'code_url' => 'http://www.baidu.com/'
+                        );
+                    }
+                    // 记录微信统一下单接口的结果
+                    $this->modelOrderPay->recordWeixinUnifiedorderInfo($orderPayInfo['_id'], $unifiedorderInfo);
+                } elseif ($payment_code == 'alipay') {
+                    $subject = "一元云购";
+                    $show_url = "";
+                    $body = "一元云购";
+                    $scheme = $this->getRequest()->getScheme();
+                    $notify_url = "{$scheme}://{$_SERVER['HTTP_HOST']}/order/weixinpay/goods";
+                    $return_url = "{$scheme}://{$_SERVER['HTTP_HOST']}/order/weixinpay/goods";
+                    $pay_url = $this->servicePayment4Alipay->directPay($out_trade_no, $subject, $total_fee, $body, $show_url, $notify_url, $return_url);
+                }
+            } else {
+                $pay_state = true;
+                // 如果支付完成的话，支付处理
+                // 将该支付单号入队列处理???
+                // $this->servicePay->finishPay($out_trade_no);
+            }
+            
+            $key = $this->getCacheKey4Payresult($out_trade_no);
+            $cache = $this->getDI()->get("cache");
+            $cache->save($key, $orderPayInfo, 60 * 1); // 1分钟
+            
+            echo ($this->result("OK", array(
+                'out_trade_no' => $out_trade_no,
+                'pay_state' => false,
+                'pay_url' => $pay_url
+            )));
+            
+            return true;
+        } catch (\Exception $e) {
+            echo ($this->error($e->getCode(), $e->getMessage()));
+            return false;
+        }
+    }
+
     public function finishAction()
     {
         try {
-            // http://webcms.didv.cn/order/pay/finish?out_trade_no=56c18084887c224f7b8b4577
+            // http://www.jizigou.com/order/pay/finish?out_trade_no=56c18084887c224f7b8b4577
             // 订单支付单号
             $out_trade_no = trim($this->get('out_trade_no', ''));
             $ret = $this->servicePay->finishPay($out_trade_no);
@@ -230,7 +348,7 @@ class PayController extends ControllerBase
     public function getpayresultAction()
     {
         try {
-            // http://webcms.didv.cn/order/pay/getpayresult?id=56640956887c22014a8b457c
+            // http://www.jizigou.com/order/pay/getpayresult?id=56640956887c22014a8b457c
             // 支付id
             $id = trim($this->get('id', ''));
             
@@ -239,12 +357,18 @@ class PayController extends ControllerBase
                 return false;
             }
             
-            $orderPayInfo = $this->modelOrderPay->getInfoById($id);
+            $key = $this->getCacheKey4Payresult($id);
+            $cache = $this->getDI()->get("cache");
+            $orderPayInfo = $cache->get($key);
             if (empty($orderPayInfo)) {
-                echo ($this->error(- 2, '支付ID不正确'));
-                return false;
+                $orderPayInfo = $this->modelOrderPay->getInfoById($id);
+                if (empty($orderPayInfo)) {
+                    echo ($this->error(- 2, '支付ID不正确'));
+                    return false;
+                }
+                
+                $cache->save($key, $orderPayInfo, 60 * 1); // 1分钟
             }
-            
             // 检查是否已支付
             if ($orderPayInfo['api_pay_state'] != \App\Order\Models\Pay::STATE1) {
                 echo ($this->error(- 3, '该支付订单还未支付'));
@@ -256,13 +380,18 @@ class PayController extends ControllerBase
                 echo ($this->error(- 4, '该支付订单还未处理完成'));
                 return false;
             }
-            
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
             echo ($this->error($e->getCode(), $e->getMessage()));
             return false;
         }
+    }
+
+    private function getCacheKey4Payresult($id)
+    {
+        $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $id);
+        return $key;
     }
 }
 

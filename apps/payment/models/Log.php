@@ -55,12 +55,12 @@ class Log extends \App\Common\Models\Payment\Log
             $otherConditions['type'] = $type;
         }
         if (! empty($beginTime)) {
-            $otherConditions['log_time']['$gte'] = getCurrentTime(strtotime($beginTime));
+            $otherConditions['log_time']['$gte'] = getCurrentTime($beginTime);
         }
         if (! empty($endTime)) {
-            $otherConditions['log_time']['$lte'] = getCurrentTime(strtotime($endTime));
+            $otherConditions['log_time']['$lte'] = getCurrentTime($endTime);
         }
-        $list = $this->modelLog->getPageList($page, $limit, $otherConditions);
+        $list = $this->getPageList($page, $limit, $otherConditions);
         return $list;
     }
 
