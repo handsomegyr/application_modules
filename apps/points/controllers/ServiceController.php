@@ -183,7 +183,7 @@ class ServiceController extends ControllerBase
     {
         try {
             $this->modelPointUser->begin();
-            // lock            
+            // lock
             $pointUserInfo = $this->modelPointUser->findOne(array(
                 'user_id' => $memberInfo['_id'],
                 'category' => intval(POINTS_CATEGORY1),
@@ -192,13 +192,13 @@ class ServiceController extends ControllerBase
             $memo = array();
             
             $register_name = $this->modelMember->getRegisterName($memberInfo);
-             
+            
             $uniqueId = getNewId();
             // 福分账户减
             $points = predeposit * 100;
             $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $memberInfo['_id'], $register_name, $memberInfo['avatar'], $uniqueId, 0, - $points, "提取", "已提取{$points}福分");
             // 预付款账户增加
-            $this->modelPointsUser->addOrReduce(POINTS_CATEGORY3, $memberInfo['_id'], $register_name, $memberInfo['avatar'], $uniqueId, 0, predeposit, "充值", "已充值￥{$predeposit}已到您的云购账户");
+            $this->modelPointsUser->addOrReduce(POINTS_CATEGORY3, $memberInfo['_id'], $register_name, $memberInfo['avatar'], $uniqueId, 0, predeposit * 100, "充值", "已充值￥{$predeposit}已到您的云购账户");
             
             $this->modelPointUser->commit();
         } catch (\Exception $e) {
