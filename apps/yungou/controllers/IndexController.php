@@ -44,7 +44,7 @@ class IndexController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://webcms.didv.cn/yungou/index/index
+        // http://www.jizigou.com/yungou/index/index
         // 邀请ID
         $invited_id = $this->get('invited_id', '');
         if (! empty($invited_id)) {
@@ -67,13 +67,13 @@ class IndexController extends ControllerBase
     
     public function historybuyrecordsAction()
     {
-        // http://webcms.didv.cn/yungou/index/historybuyrecords
+        // http://www.jizigou.com/yungou/index/historybuyrecords
         
     }
 
     public function newestbuyrecordsAction()
     {
-        // http://webcms.didv.cn/yungou/index/newestbuyrecords
+        // http://www.jizigou.com/yungou/index/newestbuyrecords
         
     }
 
@@ -82,7 +82,7 @@ class IndexController extends ControllerBase
      */
     public function limitbuyAction()
     {
-        // http://webcms.didv.cn/yungou/index/index
+        // http://www.jizigou.com/yungou/index/index
     }
 }
 

@@ -35,7 +35,7 @@ class ServiceController extends ControllerBase
     {
         // http://member.1yyg.com/JPData?action=getUserPointsDetailList&FIdx=1&EIdx=10&region=4&beginTime=&endTime=&isCount=1&fun=jsonp1451610431999&_=1451610432530
         // jsonp1451610431999({"code":0,"str":{"totalCount":13,"listItems":[{"logTime":"2015.12.27 00:30:01","logPointNum":"3","logDescript":"2015-12-25评论获得福分"},{"logTime":"2015.12.26 00:30:03","logPointNum":"9","logDescript":"2015-12-24评论获得福分"},{"logTime":"2015.12.23 00:30:01","logPointNum":"3","logDescript":"2015-12-21评论获得福分"},{"logTime":"2015.12.20 21:36:51","logPointNum":"1","logDescript":"云购商品编码(2542873)支付1元获得福分"},{"logTime":"2015.12.20 21:36:24","logPointNum":"2","logDescript":"云购商品编码(2509590)支付2元获得福分"},{"logTime":"2015.12.20 21:32:20","logPointNum":"1","logDescript":"云购商品编码(2450928)支付1元获得福分"},{"logTime":"2015.12.20 21:19:00","logPointNum":"1","logDescript":"云购商品编码(2542665)支付1元获得福分"},{"logTime":"2015.12.20 21:19:00","logPointNum":"2","logDescript":"云购商品编码(2509588)支付2元获得福分"},{"logTime":"2015.11.27 23:50:25","logPointNum":"1","logDescript":"云购商品编码(2162400)支付1元获得福分"},{"logTime":"2015.11.19 10:30:28","logPointNum":"1","logDescript":"云购商品编码(1992345)支付1元获得福分"}]}})
-        // http://webcms.didv.cn/points/service/getuserpointsdetaillist?beginTime=2015-12-01&endTime=2015-12-01&page=1&limit=10
+        // http://www.jizigou.com/points/service/getuserpointsdetaillist?beginTime=2015-12-01&endTime=2015-12-01&page=1&limit=10
         try {
             $beginTime = $this->get('beginTime', '');
             if (empty($beginTime)) {
@@ -97,7 +97,7 @@ class ServiceController extends ControllerBase
      */
     public function rechargepredepositAction()
     {
-        // http://webcms.didv.cn/points/service/rechargepredeposit?predeposit=10
+        // http://www.jizigou.com/points/service/rechargepredeposit?predeposit=10
         try {
             $predeposit = intval($this->get('predeposit', '0'));
             if (empty($predeposit)) {
@@ -145,7 +145,7 @@ class ServiceController extends ControllerBase
      */
     public function getmembercentercommissionlistAction()
     {
-        // http://webcms.didv.cn/points/service/getmembercentercommissionlist?beginTime=2015-12-01&endTime=2015-12-01&page=1&limit=10
+        // http://www.jizigou.com/points/service/getmembercentercommissionlist?beginTime=2015-12-01&endTime=2015-12-01&page=1&limit=10
         try {
             $beginTime = $this->get('beginTime', '');
             if (empty($beginTime)) {

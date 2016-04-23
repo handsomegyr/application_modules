@@ -25,7 +25,7 @@ class ServiceController extends ControllerBase
      */
     public function suggestAction()
     {
-        // http://webcms.didv.cn/site/service/suggest?theme=投诉与建议&name=中国&telephone=&email=115454322@qq.com&content=反馈内容反馈内容反馈内容反馈内容反馈内容反馈内容&captcha=xx
+        // http://www.jizigou.com/site/service/suggest?theme=投诉与建议&name=中国&telephone=&email=115454322@qq.com&content=反馈内容反馈内容反馈内容反馈内容反馈内容反馈内容&captcha=xx
         try {
             $theme = urldecode($this->get('theme', ''));
             $name = urldecode($this->get('name', ''));

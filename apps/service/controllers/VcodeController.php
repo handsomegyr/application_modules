@@ -24,7 +24,7 @@ class VcodeController extends ControllerBase
      */
     public function sendcodeemailAction()
     {
-        // http://webcms.didv.cn/service/vcode/sendcodeemail?userEmail=handsomegyr@hotmail.com
+        // http://www.jizigou.com/service/vcode/sendcodeemail?userEmail=handsomegyr@hotmail.com
         try {
             $userEmail = $this->get('userEmail', '');
             if (empty($userEmail)) {
@@ -92,7 +92,7 @@ class VcodeController extends ControllerBase
      */
     public function sendcodesmsAction()
     {
-        // http://webcms.didv.cn/service/vcode/sendcodesms?mobile=13564100096&captcha=xxx
+        // http://www.jizigou.com/service/vcode/sendcodesms?mobile=13564100096&captcha=xxx
         try {
             $mobile = $this->get('mobile', '');
             if (empty($mobile)) {
@@ -165,7 +165,7 @@ class VcodeController extends ControllerBase
      */
     public function verifyemailsnAction()
     {
-        // http://webcms.didv.cn/service/vcode/verifyemailsn?userEmail=handsomegyr@hotmail.com&sn=434343
+        // http://www.jizigou.com/service/vcode/verifyemailsn?userEmail=handsomegyr@hotmail.com&sn=434343
         try {
             $sn = $this->get('sn', '');
             $userEmail = $this->get('userEmail', '');
@@ -189,7 +189,7 @@ class VcodeController extends ControllerBase
      */
     public function verifymobilesnAction()
     {
-        // http://webcms.didv.cn/service/vcode/verifymobilesn?sn=xxxx&mobile=xxxx
+        // http://www.jizigou.com/service/vcode/verifymobilesn?sn=xxxx&mobile=xxxx
         try {
             $sn = $this->get('sn', '');
             $mobile = $this->get('mobile', '');

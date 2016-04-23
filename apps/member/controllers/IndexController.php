@@ -54,7 +54,7 @@ class IndexController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://webcms.didv.cn/member/index/index
+        // http://www.jizigou.com/member/index/index
         // 消息数
         $msgCountInfo = $this->modelMsgCount->getInfoByUserId($_SESSION['member_id']);
         $this->assign('msgCount', $msgCountInfo['sysMsgCount'] + $msgCountInfo['privMsgCount'] + $msgCountInfo['friendMsgCount'] + $msgCountInfo['replyMsgCount']);
@@ -103,7 +103,7 @@ class IndexController extends ControllerBase
      */
     public function userrechargeAction()
     {
-        // http://webcms.didv.cn/member/index/userrecharge
+        // http://www.jizigou.com/member/index/userrecharge
     }
 
     /**
@@ -111,7 +111,7 @@ class IndexController extends ControllerBase
      */
     public function cardrechargeAction()
     {
-        // http://webcms.didv.cn/member/index/cardrecharge
+        // http://www.jizigou.com/member/index/cardrecharge
     }
 
     /**
@@ -119,7 +119,7 @@ class IndexController extends ControllerBase
      */
     public function userbuylistAction()
     {
-        // http://webcms.didv.cn/member/index/userbuylist
+        // http://www.jizigou.com/member/index/userbuylist
     }
 
     /**
@@ -127,7 +127,7 @@ class IndexController extends ControllerBase
      */
     public function userbuydetailAction()
     {
-        // http://webcms.didv.cn/member/index/userbuydetail?goods_id=xxx
+        // http://www.jizigou.com/member/index/userbuydetail?goods_id=xxx
         $this->view->disableLevel(View::LEVEL_LAYOUT);
         $goods_id = $this->get('goods_id', '');
         if (empty($goods_id)) {
@@ -142,7 +142,7 @@ class IndexController extends ControllerBase
      */
     public function orderlistAction()
     {
-        // http://webcms.didv.cn/member/index/orderlist
+        // http://www.jizigou.com/member/index/orderlist
     }
 
     /**
@@ -150,7 +150,7 @@ class IndexController extends ControllerBase
      */
     public function orderdetailAction()
     {
-        // http://webcms.didv.cn/member/index/orderdetail?orderno=xxxx
+        // http://www.jizigou.com/member/index/orderdetail?orderno=xxxx
         $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
         $orderno = $this->get('orderno', '');
         if (empty($orderno)) {
@@ -172,7 +172,7 @@ class IndexController extends ControllerBase
      */
     public function postsinglelistAction()
     {
-        // http://webcms.didv.cn/member/index/postsinglelist
+        // http://www.jizigou.com/member/index/postsinglelist
     }
 
     /**
@@ -180,7 +180,7 @@ class IndexController extends ControllerBase
      */
     public function postsingleaddAction()
     {
-        // http://webcms.didv.cn/member/index/postsingleadd?goods_id=xxx
+        // http://www.jizigou.com/member/index/postsingleadd?goods_id=xxx
         $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
         $goods_id = $this->get('goods_id', '');
         if (empty($goods_id)) {
@@ -207,7 +207,7 @@ class IndexController extends ControllerBase
      */
     public function postsingleeditAction()
     {
-        // http://webcms.didv.cn/member/index/postsingleedit?goods_id=xxx
+        // http://www.jizigou.com/member/index/postsingleedit?goods_id=xxx
         $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
         $goods_id = $this->get('goods_id', '');
         if (empty($goods_id)) {
@@ -234,7 +234,7 @@ class IndexController extends ControllerBase
      */
     public function collectlistAction()
     {
-        // http://webcms.didv.cn/member/index/collectlist
+        // http://www.jizigou.com/member/index/collectlist
     }
 
     /**
@@ -242,7 +242,7 @@ class IndexController extends ControllerBase
      */
     public function userbalanceAction()
     {
-        // http://webcms.didv.cn/member/index/userbalance
+        // http://www.jizigou.com/member/index/userbalance
         // 充值总额：￥1.00 消费总额：￥1.00 转入总额：￥0.00 转出总额：￥0.00
         $summaryMoney4Type1 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE1);
         $this->assign('summaryMoney4Type1', $summaryMoney4Type1);
@@ -262,7 +262,7 @@ class IndexController extends ControllerBase
      */
     public function myfriendsAction()
     {
-        // http://webcms.didv.cn/member/index/myfriends
+        // http://www.jizigou.com/member/index/myfriends
     }
 
     /**
@@ -270,7 +270,7 @@ class IndexController extends ControllerBase
      */
     public function searchfriendsAction()
     {
-        // http://webcms.didv.cn/member/index/searchfriends
+        // http://www.jizigou.com/member/index/searchfriends
     }
 
     /**
@@ -278,7 +278,7 @@ class IndexController extends ControllerBase
      */
     public function joingroupAction()
     {
-        // http://webcms.didv.cn/member/index/joingroup
+        // http://www.jizigou.com/member/index/joingroup
     }
 
     /**
@@ -286,7 +286,7 @@ class IndexController extends ControllerBase
      */
     public function joingroup01Action()
     {
-        // http://webcms.didv.cn/member/index/joingroup01
+        // http://www.jizigou.com/member/index/joingroup01
     }
 
     /**
@@ -294,7 +294,7 @@ class IndexController extends ControllerBase
      */
     public function joingroup02Action()
     {
-        // http://webcms.didv.cn/member/index/joingroup02
+        // http://www.jizigou.com/member/index/joingroup02
     }
 
     /**
@@ -302,7 +302,7 @@ class IndexController extends ControllerBase
      */
     public function invitedlistAction()
     {
-        // http://webcms.didv.cn/member/index/invitedlist
+        // http://www.jizigou.com/member/index/invitedlist
         $myInvitationInfo = $this->modelInvitation->getInfoByUserId($_SESSION['member_id'], YUNGOU_ACTIVITY_ID);
         $this->assign('invitationInfo', $myInvitationInfo);
         // 成功邀请 0 位会员注册，已有 0 位会员参与云购，您通过邀请获得奖励：0 福分
@@ -313,7 +313,7 @@ class IndexController extends ControllerBase
      */
     public function commissionqueryAction()
     {
-        // http://webcms.didv.cn/member/index/commissionquery
+        // http://www.jizigou.com/member/index/commissionquery
     }
 
     /**
@@ -321,7 +321,7 @@ class IndexController extends ControllerBase
      */
     public function memberpointsAction()
     {
-        // http://webcms.didv.cn/member/index/memberpoints
+        // http://www.jizigou.com/member/index/memberpoints
     }
 
     /**
@@ -329,7 +329,7 @@ class IndexController extends ControllerBase
      */
     public function usermessageAction()
     {
-        // http://webcms.didv.cn/member/index/usermessage
+        // http://www.jizigou.com/member/index/usermessage
         // 更新已读
         $this->modelMsgCount->clearSysMsgCount($_SESSION['member_id']);
     }
@@ -339,7 +339,7 @@ class IndexController extends ControllerBase
      */
     public function friendsapplyAction()
     {
-        // http://webcms.didv.cn/member/index/friendsapply
+        // http://www.jizigou.com/member/index/friendsapply
         // 更新已读
         $this->modelMsgCount->clearFriendMsgCount($_SESSION['member_id']);
     }
@@ -349,7 +349,7 @@ class IndexController extends ControllerBase
      */
     public function replycommentsmsgAction()
     {
-        // http://webcms.didv.cn/member/index/replycommentsmsg
+        // http://www.jizigou.com/member/index/replycommentsmsg
         // 更新已读
         $this->modelMsgCount->clearReplyMsgCount($_SESSION['member_id']);
     }
@@ -359,7 +359,7 @@ class IndexController extends ControllerBase
      */
     public function userprivmsgAction()
     {
-        // http://webcms.didv.cn/member/index/userprivmsg
+        // http://www.jizigou.com/member/index/userprivmsg
         // 更新已读
         $this->modelMsgCount->clearPrivateMsgCount($_SESSION['member_id']);
     }
@@ -369,7 +369,7 @@ class IndexController extends ControllerBase
      */
     public function userprivmsgdetailAction()
     {
-        // http://webcms.didv.cn/member/index/userprivmsgdetail?senderUserID=xxx
+        // http://www.jizigou.com/member/index/userprivmsgdetail?senderUserID=xxx
         $user_id = $this->get('senderUserID', '');
         $this->assign('user_id', $user_id);
         

@@ -24,7 +24,7 @@ class MailController extends ControllerBase
      */
     public function sendbytemplateAction()
     {
-        // http://webcms.didv.cn/service/mail/sendbytemplate?email=handsomegyr@126.com&code=validate_mobile&contents=eyJzaXRlIjoiXHU1YmI2XHU1YjlkXHU3ZjUxXHU3YWQ5IiwidmNvZGUiOiI0NTY3In0=
+        // http://www.jizigou.com/service/mail/sendbytemplate?email=handsomegyr@126.com&code=validate_mobile&contents=eyJzaXRlIjoiXHU1YmI2XHU1YjlkXHU3ZjUxXHU3YWQ5IiwidmNvZGUiOiI0NTY3In0=
         try {
             $email = $this->get('email', '');
             $code = $this->get('code', '');

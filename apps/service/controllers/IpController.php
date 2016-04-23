@@ -13,7 +13,7 @@ class IpController extends ControllerBase
     public function convertAction()
     {
         try {
-            // http://webcms.didv.cn/service/ip/convert?ip=124.113.229.91
+            // http://www.jizigou.com/service/ip/convert?ip=124.113.229.91
             $ip = $this->get('ip', '');
             $address = convertIp($ip);
             echo ($this->result("OK", $address));

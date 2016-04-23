@@ -1370,7 +1370,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
         $param = array(
             'goods_id' => $goods_id
         );
-        $ret = doPost("http://webcms.didv.cn/goods/service/lottery", $param);
+        $ret = doPost("http://www.jizigou.com/goods/service/lottery", $param);
         $ret = (string) $ret;
         if (! empty($ret)) {
             if (isJson($ret)) {

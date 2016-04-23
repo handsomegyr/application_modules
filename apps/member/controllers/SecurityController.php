@@ -20,7 +20,7 @@ class SecurityController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://webcms.didv.cn/member/security/index
+        // http://www.jizigou.com/member/security/index
     }
 
     /**
@@ -28,7 +28,7 @@ class SecurityController extends ControllerBase
      */
     public function updatepasswordAction()
     {
-        // http://webcms.didv.cn/member/security/updatepassword
+        // http://www.jizigou.com/member/security/updatepassword
     }
 
     /**
@@ -36,7 +36,7 @@ class SecurityController extends ControllerBase
      */
     public function setpaypwdAction()
     {
-        // http://webcms.didv.cn/member/security/setpaypwd
+        // http://www.jizigou.com/member/security/setpaypwd
     }
 
     /**
@@ -44,7 +44,7 @@ class SecurityController extends ControllerBase
      */
     public function setsmallmoneyAction()
     {
-        // http://webcms.didv.cn/member/security/setsmallmoney
+        // http://www.jizigou.com/member/security/setsmallmoney
     }
 
     /**
@@ -52,7 +52,7 @@ class SecurityController extends ControllerBase
      */
     public function userauthAction()
     {
-        // http://webcms.didv.cn/member/security/userauth
+        // http://www.jizigou.com/member/security/userauth
     }
 
     /**
@@ -60,7 +60,7 @@ class SecurityController extends ControllerBase
      */
     public function userauth10Action()
     {
-        // http://webcms.didv.cn/member/security/userauth10
+        // http://www.jizigou.com/member/security/userauth10
     }
 
     /**
@@ -68,7 +68,7 @@ class SecurityController extends ControllerBase
      */
     public function userauth40Action()
     {
-        // http://webcms.didv.cn/member/security/userauth40
+        // http://www.jizigou.com/member/security/userauth40
     }
 
     /**
@@ -76,7 +76,7 @@ class SecurityController extends ControllerBase
      */
     public function userauth50Action()
     {
-        // http://webcms.didv.cn/member/security/userauth50
+        // http://www.jizigou.com/member/security/userauth50
     }
 }
 

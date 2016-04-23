@@ -990,7 +990,7 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/areaparentcode
         // http://phalconm:10080/service/database/areaparentcode
-        // http://webcms.didv.cn/service/database/areaparentcode
+        // http://www.jizigou.com/service/database/areaparentcode
         
         // 从源表中获取数据
         $result = $this->connectionTo->query('SELECT * FROM area order by level desc,code asc', null);

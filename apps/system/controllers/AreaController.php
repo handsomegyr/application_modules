@@ -26,7 +26,7 @@ class AreaController extends ControllerBase
      */
     public function getprovincesAction()
     {
-        // http://webcms.didv.cn/service/area/getprovinces
+        // http://www.jizigou.com/service/area/getprovinces
         try {
             // 获取省列表
             $list = $this->modelArea->getProvinces();
@@ -45,7 +45,7 @@ class AreaController extends ControllerBase
      */
     public function getcitysAction()
     {
-        // http://webcms.didv.cn/service/area/getcitys?province=110000
+        // http://www.jizigou.com/service/area/getcitys?province=110000
         try {
             $province = $this->get('province', '');
             // 获取省列表
@@ -65,7 +65,7 @@ class AreaController extends ControllerBase
      */
     public function getDistrictsAction()
     {
-        // http://webcms.didv.cn/service/area/getdistricts?city=130900
+        // http://www.jizigou.com/service/area/getdistricts?city=130900
         try {
             $city = $this->get('city', '');
             // 获取省列表

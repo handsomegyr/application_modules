@@ -20,7 +20,7 @@ class AdminController extends ControllerBase
      */
     public function membermodifyAction()
     {
-        // http://webcms.didv.cn/member/admin/membermodify
+        // http://www.jizigou.com/member/admin/membermodify
     }
 
     /**
@@ -28,7 +28,7 @@ class AdminController extends ControllerBase
      */
     public function userphotoAction()
     {
-        // http://webcms.didv.cn/member/admin/userphoto
+        // http://www.jizigou.com/member/admin/userphoto
     }
 
     /**
@@ -36,7 +36,7 @@ class AdminController extends ControllerBase
      */
     public function addressAction()
     {
-        // http://webcms.didv.cn/member/admin/address
+        // http://www.jizigou.com/member/admin/address
         $consigneeList = $this->modelConsignee->getListByMemberId($_SESSION['member_id']);
         $this->assign('consigneeList', $consigneeList);
     }
@@ -46,7 +46,7 @@ class AdminController extends ControllerBase
      */
     public function privacysettingsAction()
     {
-        // http://webcms.didv.cn/member/admin/privacysettings
+        // http://www.jizigou.com/member/admin/privacysettings
     }
 
     /**
@@ -54,7 +54,7 @@ class AdminController extends ControllerBase
      */
     public function noticesettingsAction()
     {
-        // http://webcms.didv.cn/member/admin/noticesettings
+        // http://www.jizigou.com/member/admin/noticesettings
     }
 
 }

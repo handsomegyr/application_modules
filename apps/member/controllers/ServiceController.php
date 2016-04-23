@@ -56,7 +56,7 @@ class ServiceController extends ControllerBase
      */
     public function checknameAction()
     {
-        // http://webcms.didv.cn/member/service/checkname?username=xxx
+        // http://www.jizigou.com/member/service/checkname?username=xxx
         try {
             $username = $this->get('username', '');
             
@@ -86,7 +86,7 @@ class ServiceController extends ControllerBase
      */
     public function checkemailAction()
     {
-        // http://webcms.didv.cn/member/service/checkemail?email=xxx
+        // http://www.jizigou.com/member/service/checkemail?email=xxx
         try {
             $email = $this->get('email', '');
             
@@ -117,7 +117,7 @@ class ServiceController extends ControllerBase
      */
     public function checkmobileAction()
     {
-        // http://webcms.didv.cn/member/service/checkmobile?mobile=1356410096
+        // http://www.jizigou.com/member/service/checkmobile?mobile=1356410096
         try {
             $mobile = $this->get('mobile', '');
             
@@ -151,7 +151,7 @@ class ServiceController extends ControllerBase
      */
     public function logininfoAction()
     {
-        // http://webcms.didv.cn/member/service/logininfo
+        // http://www.jizigou.com/member/service/logininfo
         try {
             if (! empty($_SESSION['member_id'])) {
                 $memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
@@ -185,7 +185,7 @@ class ServiceController extends ControllerBase
      */
     public function userloginAction()
     {
-        // http://webcms.didv.cn/member/service/userlogin?username=xxx&mobile=xxx&password=xxx&email=xxx
+        // http://www.jizigou.com/member/service/userlogin?username=xxx&mobile=xxx&password=xxx&email=xxx
         try {
             $this->is_need_check_captcha = false;
             $username = $this->get('username', '');
@@ -309,7 +309,7 @@ class ServiceController extends ControllerBase
      */
     public function saveregisterAction()
     {
-        // http://webcms.didv.cn/member/service/saveregister?username=xxx&mobile=xxx&password=xxx&password_confirm=xxx&email=xxx&vcode=xxx
+        // http://www.jizigou.com/member/service/saveregister?username=xxx&mobile=xxx&password=xxx&password_confirm=xxx&email=xxx&vcode=xxx
         try {
             $username = $this->get('username', '');
             $mobile = $this->get('mobile', '');
@@ -428,7 +428,7 @@ class ServiceController extends ControllerBase
      */
     public function sendfindpwdsmsAction()
     {
-        // http://webcms.didv.cn/member/service/sendfindpwdsms?mobile=xxx&email=xxx&hash=xxx
+        // http://www.jizigou.com/member/service/sendfindpwdsms?mobile=xxx&email=xxx&hash=xxx
         try {
             $mobile = $this->get('mobile', '');
             $email = $this->get('email', '');
@@ -522,7 +522,7 @@ class ServiceController extends ControllerBase
      */
     public function checkloginAction()
     {
-        // http://webcms.didv.cn/member/service/checklogin
+        // http://www.jizigou.com/member/service/checklogin
         try {
             if (! empty($_SESSION['member_id'])) {
                 $memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
@@ -550,7 +550,7 @@ class ServiceController extends ControllerBase
      */
     public function updateuserpwdAction()
     {
-        // http://webcms.didv.cn/member/service/updateuserpwd?userOldPwd=xxx&userNewPwd=xxx
+        // http://www.jizigou.com/member/service/updateuserpwd?userOldPwd=xxx&userNewPwd=xxx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -604,7 +604,7 @@ class ServiceController extends ControllerBase
      */
     public function bindmobileAction()
     {
-        // http://webcms.didv.cn/member/service/bindmobile?mobile=xxx&vcode=xx
+        // http://www.jizigou.com/member/service/bindmobile?mobile=xxx&vcode=xx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -656,7 +656,7 @@ class ServiceController extends ControllerBase
      */
     public function updatepaypwdAction()
     {
-        // http://webcms.didv.cn/member/service/updatepaypwd?paypwd=xxx&key=xx&vcode=xxx
+        // http://www.jizigou.com/member/service/updatepaypwd?paypwd=xxx&key=xx&vcode=xxx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -695,7 +695,7 @@ class ServiceController extends ControllerBase
      */
     public function bindemailAction()
     {
-        // http://webcms.didv.cn/member/service/bindemail?email=xxx&vcode=xxx
+        // http://www.jizigou.com/member/service/bindemail?email=xxx&vcode=xxx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -747,7 +747,7 @@ class ServiceController extends ControllerBase
      */
     public function setsmallmoneyAction()
     {
-        // http://webcms.didv.cn/member/service/setsmallmoney?money=500&is_open=1&vcode=xx&key=xxx
+        // http://www.jizigou.com/member/service/setsmallmoney?money=500&is_open=1&vcode=xx&key=xxx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -790,7 +790,7 @@ class ServiceController extends ControllerBase
      */
     public function setlogintipAction()
     {
-        // http://webcms.didv.cn/member/service/setlogintip?is_open=1
+        // http://www.jizigou.com/member/service/setlogintip?is_open=1
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -822,7 +822,7 @@ class ServiceController extends ControllerBase
      */
     public function updateusertoAction()
     {
-        // http://webcms.didv.cn/member/service/updateuserto?nickname=xxx&tel_mobile=xxx&sex=xxx&birthday=xxx&constellation=xxx&location=xxx&hometown=xxx&qq=xxx&monthly_income=xxx&signature=xxx
+        // http://www.jizigou.com/member/service/updateuserto?nickname=xxx&tel_mobile=xxx&sex=xxx&birthday=xxx&constellation=xxx&location=xxx&hometown=xxx&qq=xxx&monthly_income=xxx&signature=xxx
         try {
             $nickname = $this->get('nickname', ''); // 昵称
             $tel_mobile = $this->get('tel_mobile', ''); // 备用电话
@@ -973,7 +973,7 @@ class ServiceController extends ControllerBase
      */
     public function uploadphotoAction()
     {
-        // http://webcms.didv.cn/member/service/uploadphoto?avatar=xxx&x=xxx&y=xxx&width=xxx&height=xxx
+        // http://www.jizigou.com/member/service/uploadphoto?avatar=xxx&x=xxx&y=xxx&width=xxx&height=xxx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1024,7 +1024,7 @@ class ServiceController extends ControllerBase
      */
     public function saveaddressAction()
     {
-        // http://webcms.didv.cn/member/service/saveaddress?id=xxx&name=xxx&province=xxx&city=xxx&district=xxx&address=xxx&zipcode=xxx&telephone=xxx&mobile=xxx&is_default=xxx
+        // http://www.jizigou.com/member/service/saveaddress?id=xxx&name=xxx&province=xxx&city=xxx&district=xxx&address=xxx&zipcode=xxx&telephone=xxx&mobile=xxx&is_default=xxx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1078,7 +1078,7 @@ class ServiceController extends ControllerBase
      */
     public function setmembercontactdefaultAction()
     {
-        // http://webcms.didv.cn/member/service/setmembercontactdefault?id=xxx
+        // http://www.jizigou.com/member/service/setmembercontactdefault?id=xxx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1118,7 +1118,7 @@ class ServiceController extends ControllerBase
      */
     public function deleteaddressAction()
     {
-        // http://webcms.didv.cn/member/service/deleteaddress?id=xxx
+        // http://www.jizigou.com/member/service/deleteaddress?id=xxx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1159,7 +1159,7 @@ class ServiceController extends ControllerBase
      */
     public function membercenterupdateprivsetAction()
     {
-        // http://webcms.didv.cn/member/service/membercenterupdateprivset?msgSet=1&areaSet=1&searchSet=1&buySet=1&rafSet=1&postSet=1&buyShowNum=1&rafShowNum=1&postShowNum=1
+        // http://www.jizigou.com/member/service/membercenterupdateprivset?msgSet=1&areaSet=1&searchSet=1&buySet=1&rafSet=1&postSet=1&buyShowNum=1&rafShowNum=1&postShowNum=1
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1194,7 +1194,7 @@ class ServiceController extends ControllerBase
      */
     public function membercenternoticesetAction()
     {
-        // http://webcms.didv.cn/member/service/membercenternoticeset?sysMsgSet=0&wxMailSet=0
+        // http://www.jizigou.com/member/service/membercenternoticeset?sysMsgSet=0&wxMailSet=0
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1227,7 +1227,7 @@ class ServiceController extends ControllerBase
      */
     public function getmembersearchfriendsAction()
     {
-        // http://webcms.didv.cn/member/service/getmembersearchfriends?type=0&key=13564100096
+        // http://www.jizigou.com/member/service/getmembersearchfriends?type=0&key=13564100096
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1333,7 +1333,7 @@ class ServiceController extends ControllerBase
      */
     public function getmemberfriendsAction()
     {
-        // http://webcms.didv.cn/member/service/getmemberfriends?page=1&limit=9&key=云购技
+        // http://www.jizigou.com/member/service/getmemberfriends?page=1&limit=9&key=云购技
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1450,7 +1450,7 @@ class ServiceController extends ControllerBase
      */
     public function insertuserfriendapplyAction()
     {
-        // http://webcms.didv.cn/member/service/insertuserfriendapply?userID=xxx
+        // http://www.jizigou.com/member/service/insertuserfriendapply?userID=xxx
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1499,7 +1499,7 @@ class ServiceController extends ControllerBase
     public function agreeuserfriendAction()
     {
         // http://member.1yyg.com/JPData?action=agreeUserFriend&applyID=0&fun=jsonp1451047046690&_=1451047055444
-        // http://webcms.didv.cn/member/service/agreeuserfriend?applyID=36969458
+        // http://www.jizigou.com/member/service/agreeuserfriend?applyID=36969458
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1544,7 +1544,7 @@ class ServiceController extends ControllerBase
     {
         // http://member.1yyg.com/JPData?action=ignoreUserFriend&applyID=37301058&fun=jsonp1451046553987&_=1451046593893
         // http://member.1yyg.com/JPData?action=ignoreUserFriend&applyID=0&fun=jsonp1451046733341&_=1451046741989
-        // http://webcms.didv.cn/member/service/ignoreuserfriend?applyID=37233515
+        // http://www.jizigou.com/member/service/ignoreuserfriend?applyID=37233515
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1572,7 +1572,7 @@ class ServiceController extends ControllerBase
     {
         // http://u.1yyg.com/JPData?action=checkUserFriend&userID=9563477&fun=jsonp1452090079360&_=1452090079671
         // jsonp1452090079360({'code':2})
-        // http://webcms.didv.cn/member/service/checkuserfriend?userID=10605005
+        // http://www.jizigou.com/member/service/checkuserfriend?userID=10605005
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1607,7 +1607,7 @@ class ServiceController extends ControllerBase
      */
     public function getmemberfriendsapplyAction()
     {
-        // http://webcms.didv.cn/member/service/getmemberfriendsapply?page=1&limit=5
+        // http://www.jizigou.com/member/service/getmemberfriendsapply?page=1&limit=5
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1687,7 +1687,7 @@ class ServiceController extends ControllerBase
     public function deleteuserfriendAction()
     {
         // http://member.1yyg.com/JPData?action=deleteUserFriend&friendID=10605005&fun=jsonp1451046481245&_=1451046496646
-        // http://webcms.didv.cn/member/service/deleteuserfriend?friendID=10605005
+        // http://www.jizigou.com/member/service/deleteuserfriend?friendID=10605005
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1720,7 +1720,7 @@ class ServiceController extends ControllerBase
     {
         // http://u.1yyg.com/JPData?action=getRecentVisitors&userId=1011789946&fun=jsonp1452090079361&_=1452090079726
         // jsonp1450879058083({"code":0,"str":[{"userWeb":"1010381532","userPhoto":"20151106195125381.jpg","userName":"郭永荣","userBirthAreaName":"","browserTime":"16分钟前","birthAreaNameState":" hidden","gradeLevel":"01"}]})
-        // http://webcms.didv.cn/member/service/getrecentvisitors?userId=1011789946
+        // http://www.jizigou.com/member/service/getrecentvisitors?userId=1011789946
         try {
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '5'));
@@ -1801,7 +1801,7 @@ class ServiceController extends ControllerBase
     {
         // http://u.1yyg.com/JPData?action=applyFriend&userWeb=1001851285&fun=jsonp1452173191831&_=1452173921792
         // jsonp1452173191831({'code':1})
-        // http://webcms.didv.cn/member/service/applyfriend?userWeb=1001851285
+        // http://www.jizigou.com/member/service/applyfriend?userWeb=1001851285
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1851,7 +1851,7 @@ class ServiceController extends ControllerBase
     {
         // http://u.1yyg.com/JPData?action=insertReportUser&&type=4&userWeb=1011468555&content=%u6635%u79F0%u7684%u540D%u5B57%u4E0D%u597D%uFF0C%u5E26%u6709%u810F%u5B57&fun=jsonp1452265301622&_=1452265354451
         // jsonp1452265301622({"code":0})
-        // http://webcms.didv.cn/member/service/insertreportuser?type=4&userWeb=1011468555&content=%u6635%u79F0%u7684%u540D%u5B57%u4E0D%u597D%uFF0C%u5E26%u6709%u810F%u5B57
+        // http://www.jizigou.com/member/service/insertreportuser?type=4&userWeb=1011468555&content=%u6635%u79F0%u7684%u540D%u5B57%u4E0D%u597D%uFF0C%u5E26%u6709%u810F%u5B57
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1905,7 +1905,7 @@ class ServiceController extends ControllerBase
     {
         // http://member.1yyg.com/JPData?action=getInvitedMemberInfoList&FIdx=1&EIdx=10&isCount=1&fun=jsonp1451610337872&_=1451610338286
         // jsonp1451610337872({"code":0,"str":{"totalCount":1,"buyCount":0,"listItems":[{"userName":"18917****57","regTime":"2015.12.17 23:50:38","state":"0","userWeb":"1011789946","userPhoto":"00000000000000000.jpg","userCode":"1011789946"}]}})
-        // http://webcms.didv.cn/member/service/getinvitedmemberinfolist?page=1&limit=10
+        // http://www.jizigou.com/member/service/getinvitedmemberinfolist?page=1&limit=10
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -1968,7 +1968,7 @@ class ServiceController extends ControllerBase
      */
     public function resetpwdAction()
     {
-        // http://webcms.didv.cn/member/service/resetpwd?vcode=xxx&mobile=xxx&email=xxx&password=xxx&password_confirm=xxx
+        // http://www.jizigou.com/member/service/resetpwd?vcode=xxx&mobile=xxx&email=xxx&password=xxx&password_confirm=xxx
         try {
             $username = $this->get('username', '');
             $mobile = $this->get('mobile', '');
@@ -2077,7 +2077,7 @@ class ServiceController extends ControllerBase
     {
         // https://passport.1yyg.com/JPData?action=qcbindaccount&account=13564100096&pwd=vcvcvcvcvcvcvcvcv&token=EF8YhZ3E.IreswjLpooYM59qxLyWSqopw4LPjdQAfe4j2mE7y9tmTtJJp3TB0AYZqamcGPxJmCTEQPccWst6YtKK33HdQvZgObKwduVde6iUuPLJuL1oTT7DeGiEvW5Qx2y26AU.u75KuVymoMKJmA==&fun=jsonp1453468901120&_=1453468922071
         // jsonp1453468901120({"state":1, "num":-1})
-        // http://webcms.didv.cn/member/service/qcbindaccount?username=xxx&mobile=xxx&password=xxx&email=xxx&password_confirm=xxx&vcode=xxx
+        // http://www.jizigou.com/member/service/qcbindaccount?username=xxx&mobile=xxx&password=xxx&email=xxx&password_confirm=xxx&vcode=xxx
         try {
             $username = $this->get('username', '');
             $mobile = $this->get('mobile', '');

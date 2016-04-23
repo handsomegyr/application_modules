@@ -1452,7 +1452,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
         $param = array(
             'goods_commonid' => $goods_commonid
         );
-        $ret = doPost("http://webcms.didv.cn/goods/service/createnewperiod", $param);
+        $ret = doPost("http://www.jizigou.com/goods/service/createnewperiod", $param);
         $ret = (string) $ret;
         if (! empty($ret)) {
             if (isJson($ret)) {

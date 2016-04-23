@@ -39,7 +39,7 @@ class CartController extends ControllerBase
      */
     public function listAction()
     {
-        // http://webcms.didv.cn/yungou/cart/list
+        // http://www.jizigou.com/yungou/cart/list
         $buyer_id = empty($_SESSION['member_id']) ? '' : $_SESSION['member_id'];
         $cart = $this->serviceCart->getCartByBuyerId($buyer_id);
         $totalAmount = 0.00;
@@ -77,7 +77,7 @@ class CartController extends ControllerBase
      */
     public function paymentAction()
     {
-        // http://webcms.didv.cn/yungou/cart/payment?pay_sn=xxx
+        // http://www.jizigou.com/yungou/cart/payment?pay_sn=xxx
         $pay_sn = $this->get('pay_sn', '');
         if (empty($pay_sn)) {
             die('错误');
@@ -120,7 +120,7 @@ class CartController extends ControllerBase
      */
     public function weixinpayAction()
     {
-        // http://webcms.didv.cn/yungou/cart/weixinpay?id=xxx
+        // http://www.jizigou.com/yungou/cart/weixinpay?id=xxx
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
         $id = $this->get('id', '');
         if (! empty($id)) {
@@ -137,7 +137,7 @@ class CartController extends ControllerBase
      */
     public function shopokAction()
     {
-        // http://webcms.didv.cn/yungou/cart/shopok?id=xxxx
+        // http://www.jizigou.com/yungou/cart/shopok?id=xxxx
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
         $id = $this->get('id', '');
         if (! empty($id)) {

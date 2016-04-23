@@ -21,7 +21,7 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
-        // http://webcms.didv.cn/points/index/index
+        // http://www.jizigou.com/points/index/index
         $member_id = '56468b9c887c22f35e8b4571';
         $member_name = '郭永荣';
         $headimgurl = '';

@@ -25,7 +25,7 @@ class PassportController extends ControllerBase
      */
     public function loginAction()
     {
-        // http://webcms.didv.cn/member/passport/login
+        // http://www.jizigou.com/member/passport/login
         $account = $this->get('account'); // 手机号或邮箱地址
         $this->assign('account', $account);
     }
@@ -36,7 +36,7 @@ class PassportController extends ControllerBase
      */
     public function logoutAction()
     {
-        // http://webcms.didv.cn/member/passport/logout
+        // http://www.jizigou.com/member/passport/logout
         // 清理COOKIE
         $this->modelMember->clearCookies();
         $url = $this->getUrl("login");
@@ -52,7 +52,7 @@ class PassportController extends ControllerBase
      */
     public function registerAction()
     {
-        // http://webcms.didv.cn/member/passport/register
+        // http://www.jizigou.com/member/passport/register
     }
 
     /**
@@ -60,7 +60,7 @@ class PassportController extends ControllerBase
      */
     public function registercheckAction()
     {
-        // http://webcms.didv.cn/member/passport/registercheck
+        // http://www.jizigou.com/member/passport/registercheck
         $isLogin = $this->modelMember->checkloginMember();
         if (empty($isLogin)) {
             $url = $this->getUrl("register");
@@ -75,7 +75,7 @@ class PassportController extends ControllerBase
      */
     public function findpasswordAction()
     {
-        // http://webcms.didv.cn/member/passport/findpassword
+        // http://www.jizigou.com/member/passport/findpassword
     }
 
     
@@ -85,7 +85,7 @@ class PassportController extends ControllerBase
      */
     public function findcheckAction()
     {
-        // http://webcms.didv.cn/member/passport/findcheck
+        // http://www.jizigou.com/member/passport/findcheck
     }
 
     /**
@@ -93,7 +93,7 @@ class PassportController extends ControllerBase
      */
     public function findresetsuccessAction()
     {
-        // http://webcms.didv.cn/member/passport/findresetsuccess
+        // http://www.jizigou.com/member/passport/findresetsuccess
     }
     
     /**
@@ -101,7 +101,7 @@ class PassportController extends ControllerBase
      */
     public function qcbindAction()
     {
-        // http://webcms.didv.cn/member/passport/qcbind
+        // http://www.jizigou.com/member/passport/qcbind
         //$this->view->setRenderLevel(View::LEVEL_ACTION);
     }
 }
