@@ -118,7 +118,7 @@
                 <li class="soon-list-name">
                   <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank">(第<?php echo $goods['period']?>云)&nbsp;<?php echo $goods['name']?></a>
                 </li>
-                <li class="gray6">价值：￥<?php echo number_format($goods['price'],2)?></li>
+                <li class="gray6">价值：￥<?php echo showPrice($goods['price'],2)?></li>
                 <li class="g-progress">
                   <dl class="m-progress">
                     <dt title="已完成<?php echo number_format($goods['complete_percent'],2)?>%"><b style="width:<?php echo number_format($goods['complete_percent'],2)?>%"></b></dt>

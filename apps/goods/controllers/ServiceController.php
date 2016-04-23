@@ -155,7 +155,7 @@ class ServiceController extends ControllerBase
                     $data['goodsSName'] = $goodsInfo['name'];
                     $data['goodsPic'] = $this->modelGoods->getImagePath($this->baseUrl, $goodsInfo['image']);
                     $data['codeID'] = $goodsInfo['_id'];
-                    $data['codePrice'] = number_format($goodsInfo['price'], 2);
+                    $data['codePrice'] = showPrice($goodsInfo['price'], 2);
                     $data['codeQuantity'] = $goodsInfo['total_person_time'];
                     $data['codeSales'] = $goodsInfo['purchase_person_time'];
                     $data['codePeriod'] = $goodsInfo['period'];
@@ -218,7 +218,7 @@ class ServiceController extends ControllerBase
                     $data['goodsTag'] = 0;
                     $data['goodsRecDesc'] = "";
                     $data['codeID'] = $goodsInfo['_id'];
-                    $data['codePrice'] = number_format($goodsInfo['price'], 2);
+                    $data['codePrice'] = showPrice($goodsInfo['price'], 2);
                     $data['codeQuantity'] = $goodsInfo['total_person_time'];
                     $data['codeSales'] = $goodsInfo['purchase_person_time'];
                     $data['codePeriod'] = $goodsInfo['period'];
@@ -279,7 +279,7 @@ class ServiceController extends ControllerBase
                 $ret['codeRNO'] = $goodsInfo['prize_code'];
                 $ret['codeRTime'] = getMilliTime4Show($goodsInfo['prize_time']);
                 $ret['buyTime'] = getMilliTime4Show($goodsInfo['prize_buyer_purchase_time']);
-                $ret['price'] = number_format($goodsInfo['price'], 2);
+                $ret['price'] = showPrice($goodsInfo['price'], 2);
                 $ret['buyCount'] = $goodsInfo['purchase_person_time'];
                 $ret['userName'] = getBuyerName($goodsInfo['prize_buyer_name'], $goodsInfo['prize_buyer_register_by']);
                 $ret['userNC'] = getBuyerName($goodsInfo['prize_buyer_name'], $goodsInfo['prize_buyer_register_by']);
@@ -345,7 +345,7 @@ class ServiceController extends ControllerBase
                     // die('xxx' . $goodsInfo['prize_time'] . 'time:' . $time);
                     $data['seconds'] = round($goodsInfo['prize_time'] - $time, 0);
                     $data['codeID'] = $goodsInfo['_id'];
-                    $data['price'] = number_format($goodsInfo['price'], 2);
+                    $data['price'] = showPrice($goodsInfo['price'], 2);
                     $data['period'] = $goodsInfo['period'];
                     $data['codeQuantity'] = $goodsInfo['total_person_time'];
                     $data['codeSales'] = $goodsInfo['purchase_person_time'];
@@ -526,7 +526,7 @@ class ServiceController extends ControllerBase
                     $data['goodsPic'] = $this->modelGoods->getImagePath($this->baseUrl, $goodsInfo['image']);
                     $data['goodsName'] = $goodsInfo['name'];
                     $data['codePeriod'] = $goodsInfo['period'];
-                    $data['codePrice'] = number_format($goodsInfo['price'], 2);
+                    $data['codePrice'] = showPrice($goodsInfo['price'], 2);
                     $data['raffTime'] = getMilliTime4Show($goodsInfo['prize_time']);
                     $data['seconds'] = round($time - $goodsInfo['prize_time'], 0);
                     

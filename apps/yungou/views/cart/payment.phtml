@@ -38,7 +38,7 @@
                         </li>
                         <li class="f-pay-price"><?php echo $orderGoods['goods_remain_person_time']?></li>
                         <li class="f-pay-plusLess"><?php echo $orderGoods['goods_num']?>人次</li>
-                        <li class="f-pay-subtotal orange">￥<?php echo number_format($orderGoods['goods_pay_price'],2)?></li>
+                        <li class="f-pay-subtotal orange">￥<?php echo showPrice($orderGoods['goods_pay_price'],2)?></li>
                     </ul>
                 </dd>
                 <?php }?>
@@ -56,19 +56,19 @@
             <dl>
                 <dt>
                     <span class="fl"><a href="/yungou/cart/list" title="返回修改">返回修改</a></span>
-                    <span class="fr">支付总额：<i class="orange">￥<?php echo number_format($order_amount,2)?></i></span>
+                    <span class="fr">支付总额：<i class="orange">￥<?php echo showPrice($order_amount,2)?></i></span>
                 </dt>
 
                 <?php if(empty($predeposit)){?>
                 <dd id="ddBalanceBox" class="f-pay-grayBg" style="background: #f8f8f8;">
-                    <span id="spBalance" class="orange" style="display: none;">-￥<?php echo number_format($predeposit,2)?></span>
-                    <span>使用账户余额支付，您的账户余额 ￥<?php echo number_format($predeposit,2)?></span>
+                    <span id="spBalance" class="orange" style="display: none;">-￥<?php echo showPrice($predeposit,2)?></span>
+                    <span>使用账户余额支付，您的账户余额 ￥<?php echo showPrice($predeposit,2)?></span>
                     <span><a id="checkBalance" href="javascript:;" class="z-check"></a></span>
                 </dd>
                 <?php }else{?>
                 <dd id="ddBalanceBox" style="background: #f8f8f8;">
-                    <span id="spBalance" class="orange" style="">-￥<?php echo number_format($predeposit,2)?></span>
-                    <span>使用账户余额支付，您的账户余额 ￥<?php echo number_format($predeposit,2)?></span>
+                    <span id="spBalance" class="orange" style="">-￥<?php echo showPrice($predeposit,2)?></span>
+                    <span>使用账户余额支付，您的账户余额 ￥<?php echo showPrice($predeposit,2)?></span>
                     <span><a id="checkBalance" href="javascript:;" class="z-check"><b class="z-comms"></b></a></span>
                 </dd>
                 <?php }?>
@@ -79,7 +79,7 @@
         <div id="divBankBox" class="m-pay-manner" style="display:none;">
             <div class="f-pay-select">
                 <span class="fl" id="spPayTitle">您的账户余额不足，请选择以下方式完成支付</span>
-                <span class="fr">使用网银支付<i id="iBankPay" class="orange">￥<?php echo number_format($pay_amount,2)?></i></span>
+                <span class="fr">使用网银支付<i id="iBankPay" class="orange">￥<?php echo showPrice($pay_amount,2)?></i></span>
             </div>
 
             <div class="f-pay-defray f-pay-defray2 clrfix">
@@ -99,8 +99,8 @@
 
         </div>
 
-        <input type="hidden" id="hidPredeposit" value="<?php echo number_format($predeposit,2)?>">  <!-- 账户余额 -->
-        <input type="hidden" id="hidOrderamount" value="<?php echo number_format($order_amount,2)?>"> <!-- 需要支付余额 -->
+        <input type="hidden" id="hidPredeposit" value="<?php echo showPrice($predeposit,2)?>">  <!-- 账户余额 -->
+        <input type="hidden" id="hidOrderamount" value="<?php echo showPrice($order_amount,2)?>"> <!-- 需要支付余额 -->
         <input type="hidden" id="hidPassword" value=""> <!-- 余额支付是否需要输入支付密码 --> 
 
         <!--使用网银支付提交表单-->

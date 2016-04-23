@@ -17,7 +17,7 @@
                 <a rel="nofollow" href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $this->view->postInfo['goods_id']?>" target="_blank">
                 <img src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->postInfo['goods_info']['image'])?>"></a></dt><dd class="comm-name "><p>
                 <a href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $this->view->postInfo['goods_id']?>" target="_blank">(第<?php echo $this->view->postInfo['goods_info']['period']?>云)<?php echo $this->view->postInfo['goods_info']['name']?></a></p></dd>
-                <dd class="gray9">商品价值：￥<?php echo number_format($this->view->postInfo['goods_info']['price'],2)?></dd></dl><span class="publicly-get transparent-png"></span></div>
+                <dd class="gray9">商品价值：￥<?php echo showPrice($this->view->postInfo['goods_info']['price'],2)?></dd></dl><span class="publicly-get transparent-png"></span></div>
                 
                 <!--他的其他晒单-->
                 <div class="other-single">
@@ -71,7 +71,7 @@
                                         (第<?php echo $this->view->postInfo['goods_info']['period']?>云)<?php echo $this->view->postInfo['goods_info']['name']?>
                                     </a>
                                 </p>
-                                商品价值：￥<?php echo number_format($this->view->postInfo['goods_info']['price'],2)?>
+                                商品价值：￥<?php echo showPrice($this->view->postInfo['goods_info']['price'],2)?>
                             </li>
                         </ul>
                         <span class="publicly-get transparent-png"></span>

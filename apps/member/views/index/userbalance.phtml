@@ -11,12 +11,12 @@
         <dl>
             <dt>
                 <?php $predeposit = \App\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY3)?>
-                <span class="gray6">账户余额：<em class="orange">￥<?php echo number_format($predeposit,2)?></em></span>
+                <span class="gray6">账户余额：<em class="orange">￥<?php echo showPrice($predeposit,2)?></em></span>
                 <a href="<?php echo $this->view->baseUrl?>member/index/userrecharge" class="z-orange-btn">充值</a>
             </dt>
-            <dd>充值总额：￥<?php echo number_format($this->view->summaryMoney4Type1,2)?>
-                <i>消费总额：￥<?php echo number_format($this->view->summaryMoney4Type2,2)?></i>
-                <i>转入总额：￥<?php echo number_format($this->view->summaryMoney4Type3,2)?></i>
+            <dd>充值总额：￥<?php echo showPrice($this->view->summaryMoney4Type1,2)?>
+                <i>消费总额：￥<?php echo showPrice($this->view->summaryMoney4Type2,2)?></i>
+                <i>转入总额：￥<?php echo showPrice($this->view->summaryMoney4Type3,2)?></i>
                 <i>转出总额：￥0.00</i>
             </dd>
         </dl>

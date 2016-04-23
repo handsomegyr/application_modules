@@ -39,7 +39,7 @@
                 <div class="wx_hd">
                     <div class="wx_hd_img icon_wx"></div>
                 </div>
-                <div class="wx_money"><span>￥</span><?php echo empty($this->view->orderPayInfo['pay_amount'])?0.00:number_format($this->view->orderPayInfo['pay_amount'],2)?></div>
+                <div class="wx_money"><span>￥</span><?php echo empty($this->view->orderPayInfo['pay_amount'])?0.00:showPrice($this->view->orderPayInfo['pay_amount'],2)?></div>
                 <!--支付订单号-->
                 <div class="wx_pay">
                     <p><span class="wx_left">支付订单号</span><span class="wx_right"><?php echo $this->view->orderPayInfo['_id']?></span></p>

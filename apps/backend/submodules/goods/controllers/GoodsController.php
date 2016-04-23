@@ -1351,7 +1351,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             $item['period'] = "云:{$item['period']}<br/>云购买基数:{$item['lottery_code']}<br/>云购奖品:{$item['lottery_prize_id']}";
             $item['total_person_time'] = "总需人次:{$item['total_person_time']}<br/>参与人次:{$item['purchase_person_time']}<br/>剩余人次:{$item['remain_person_time']}<br/>限购次数:{$item['restrict_person_time']}<br/>完成度:{$item['complete_percent']}%";
             $item['prize_code'] = "中奖码:{$item['prize_code']}<br/>中奖时间:{$item['prize_time']}<br/>中奖用户:{$item['prize_buyer_id']}-{$item['prize_buyer_name']}<br/>中奖订单商品ID:{$item['prize_order_goods_id']}"; // <br/>订单商品列表:{$item['order_goods_list']}
-            $item['price'] = number_format($item['price'], 2);
+            $item['price'] = showPrice($item['price'], 2);
             $item['state'] = $this->stateDatas[$item['state']]['name'];
             $item['verify'] = $this->verifyDatas[$item['verify']]['name'];
             if ($item['sale_state'] == \App\Common\Models\Goods\Goods::SALE_STATE2) {

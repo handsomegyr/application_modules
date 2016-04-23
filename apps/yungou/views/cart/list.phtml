@@ -34,7 +34,7 @@
                                     <span>
                                         <a href="javascript:;" target="_blank" title="<?php echo $cart['goods_name']?>">(第<?php echo $cart['period']?>云) <?php echo $cart['goods_name']?></a>
                                     </span>
-                                    价值：￥<?php echo number_format($cart['goods_price'],2)?>
+                                    价值：￥<?php echo showPrice($cart['goods_price'],2)?>
                                 </cite>
                             </li>
                             <li class="f-cart-price"><?php echo $cart['remain_person_time']?></li>
@@ -45,7 +45,7 @@
                                     <a href="javascript:;" class="z-arrows z-plus"></a>
                                 </span>
                             </li>
-                            <li class="f-cart-subtotal orange">￥<?php echo number_format($cart['goods_num']*1.00,2)?></li>
+                            <li class="f-cart-subtotal orange">￥<?php echo showPrice($cart['goods_num']*100,2)?></li>
                             
                             <li class="f-cart-operate fr"><a href="javascript:;" type="delete" class="z-comms cart_delete" title="删除"></a></li>
                         </ul>
@@ -60,7 +60,7 @@
                     <span><a id="btnDelete" href="javascript:;" title="删除">删除</a></span>
                     
                 </p>
-                <cite class="fr">金额总计：<i class="orange" id="iTotalMoney">￥<?php echo number_format($this->view->totalAmount,2)?></i></cite>
+                <cite class="fr">金额总计：<i class="orange" id="iTotalMoney">￥<?php echo showPrice($this->view->totalAmount,2)?></i></cite>
                 <div class="f-list-accounts">
                     <a href="/" title="返回继续云购" class="f-list-return">返回继续云购</a>
                     <a id="btnGoPay" href="javascript:;" title="去结算" class="f-list-jiesuan">去结算</a>

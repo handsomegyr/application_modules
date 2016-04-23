@@ -1437,7 +1437,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
         foreach ($list['data'] as &$item) {
             // $item['type_id'] = isset($typeList[$item['type_id']]) ? $typeList[$item['type_id']] : "--";
             $item['current_period'] = "云:{$item['current_period']}<br/>云购买基数:{$item['lottery_code']}<br/>当期商品:{$item['period_goods_id']}<br/>限购人次:{$item['restrict_person_time']}";
-            $item['price'] = number_format($item['price'], 2);
+            $item['price'] = showPrice($item['price'], 2);
             $item['state'] = $this->stateDatas[$item['state']]['name'];
             $item['verify'] = $this->verifyDatas[$item['verify']]['name'];
             $item['max_period'] = $item['max_period'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要生成新一期的商品记录吗？\', \'newperiod\')" class="halflings-icon user white"><i></i> 新期商品生成</a>';

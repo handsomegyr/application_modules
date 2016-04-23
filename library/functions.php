@@ -1893,3 +1893,9 @@ function is_date($str)
     
     return FALSE;
 }
+
+function showPrice($number, $decimals = null)
+{
+    return number_format($number / 100, $decimals);
+}
+

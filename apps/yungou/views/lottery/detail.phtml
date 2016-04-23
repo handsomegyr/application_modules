@@ -19,7 +19,7 @@
                 <div class="result-con-wrapper">
                     <h2 class="title"><span class="num">(第<?php echo $this->view->goodsInfo['period']?>云)</span><?php echo $this->view->goodsInfo['name']?></h2>
                     <p class="price">
-                        价值：￥<?php echo number_format($this->view->goodsInfo['price'],2)?>
+                        价值：￥<?php echo showPrice($this->view->goodsInfo['price'],2)?>
                     </p>
                     
                     <div class="result-main">

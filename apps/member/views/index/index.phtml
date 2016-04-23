@@ -62,7 +62,7 @@
 		<div class="m-info-down clrfix">
 			<div class="info-down-l fl">
 			<?php $predeposit = \App\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY3)?>
-				<span class="fl gray9"> <b class="orange">￥<?php echo number_format($predeposit,2)?></b> 可用余额
+				<span class="fl gray9"> <b class="orange">￥<?php echo showPrice($predeposit,2)?></b> 可用余额
 				</span>
 				<p class="fl">
 					<a href="<?php echo $this->view->baseUrl?>member/index/userrecharge" title="充值" class="z-recharge-btn">充值</a>
@@ -115,7 +115,7 @@
                     <img alt="" src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->orderInfo['goods_image'],70,70)?>"></a></span>
                 <dl class="fl">
                     <dt>恭喜您获得 <a href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $this->view->orderInfo['goods_id'] ?>" class="orange" title="<?php echo $this->view->orderInfo['goods_name'] ?>">(第<?php echo $this->view->orderInfo['goods_period'] ?>云)<?php echo $this->view->orderInfo['goods_name'] ?></a></dt>
-                    <dd>价值：￥<?php echo number_format($this->view->orderInfo['goods_price'],2) ?></dd>
+                    <dd>价值：￥<?php echo showPrice($this->view->orderInfo['goods_price'],2) ?></dd>
                     <dd>幸运云购码：<?php echo $this->view->orderInfo['prize_code'] ?></dd>
                 </dl>
                 <?php if($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE1){?>

@@ -320,7 +320,7 @@ class ServiceController extends ControllerBase
                         'codePeriod' => $item['goods_info']['period'],
                         'goodsSName' => $item['goods_info']['name'],
                         'goodsPic' => $this->modelGoods->getImagePath($this->baseUrl, $item['goods_info']['image']),
-                        'codePrice' => number_format($item['goods_info']['price'], 2),
+                        'codePrice' => showPrice($item['goods_info']['price'], 2),
                         'codeRNO' => $item['goods_info']['prize_code'],
                         'codeRTime' => getMilliTime4Show($item['goods_info']['prize_time']),
                         'postId' => $item['_id'],

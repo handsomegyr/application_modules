@@ -35,7 +35,7 @@ class Alipay
      */
     public function directPay($out_trade_no, $subject, $total_fee, $body, $show_url, $notify_url, $return_url)
     {
-        $total_fee = number_format($total_fee, 2);
+        $total_fee = showPrice($total_fee, 2);
         
         $this->params = array(
             'service' => 'create_direct_pay_by_user',

@@ -430,7 +430,7 @@ class ServiceController extends ControllerBase
                             'goodsPic' => $this->modelGoods->getImagePath($this->baseUrl, $item['goods_image']),
                             'codeState' => $item['state'],
                             'codePeriod' => $item['goods_period'],
-                            'codePrice' => number_format($item['goods_price'], 2),
+                            'codePrice' => showPrice($item['goods_price'], 2),
                             'codeQuantity' => $item['goods_total_person_time'],
                             'codeSales' => $codeSales,
                             'codeRNO' => empty($item['prize_code']) ? '' : $item['prize_code'],
@@ -601,7 +601,7 @@ class ServiceController extends ControllerBase
                             'userName' => getBuyerName($goodsInfo['prize_buyer_name'], $goodsInfo['prize_buyer_register_by']),
                             'codeSales' => intval($goodsInfo['purchase_person_time']),
                             'codeQuantity' => intval($goodsInfo['total_person_time']),
-                            'codePrice' => number_format($goodsInfo['price'], 2),
+                            'codePrice' => showPrice($goodsInfo['price'], 2),
                             'userWeb' => $goodsInfo['prize_buyer_id'],
                             'userId' => $goodsInfo['prize_buyer_id'],
                             'codeRTime' => getMilliTime4Show($goodsInfo['prize_time']),
@@ -688,7 +688,7 @@ class ServiceController extends ControllerBase
                             'orderNo' => $item['order_no'],
                             'codePeriod' => $item['goods_period'],
                             'IsPostSingle' => $item['is_post_single'],
-                            'codePrice' => number_format($item['goods_price'], 2),
+                            'codePrice' => showPrice($item['goods_price'], 2),
                             'codeType' => 0,
                             'orderActDesc' => $item['orderActDesc'],
                             'orderAddTime' => date('Y-m-d H:i:s', $item['prize_time']),
@@ -696,7 +696,7 @@ class ServiceController extends ControllerBase
                             'goodsID' => $item['goods_commonid'],
                             'buyNum' => $item['purchase_num'],
                             'orderType' => 0,
-                            'ordersaleprice' => number_format($item['goods_price'], 2)
+                            'ordersaleprice' => showPrice($item['goods_price'], 2)
                         );
                     }
                 }
