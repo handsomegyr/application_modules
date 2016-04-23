@@ -929,7 +929,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'user_id' => $_SESSION['admin_id'],
             'user_name' => $_SESSION['admin_name']
         );
-        $ret = doPost("http://webcms.didv.cn/order/service/deliveryorder", $param);
+        $ret = doPost("http://www.jizigou.com/order/service/deliveryorder", $param);
         $ret = (string) $ret;
         if (! empty($ret)) {
             if (isJson($ret)) {
