@@ -1,12 +1,12 @@
 
         <div class="ng-total-nav">
             <ul class="ng-sort clearfix">
-            <?php $periodList = \App\Goods\Helpers\GoodsHelper::getPeriodList($this->view->goodsInfo['goods_commonid'])?>
+            <?php $periodList = \App\Goods\Views\Helpers\GoodsHelper::getPeriodList($this->view->goodsInfo['goods_commonid'])?>
             <?php if(!empty($periodList)){?>
             <?php foreach ($periodList as $idx => $goods) {?>
                 <li class="<?php if($this->view->goodsInfo['_id'] == $goods['_id']){?>current now<?php }?>">
                 <?php if($goods['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1){?>
-                <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" title="第<?php echo $goods['period']?>云<?php echo \App\Goods\Helpers\GoodsHelper::getSaleState($goods['sale_state'])?>">第<?php echo $goods['period']?>云<?php echo \App\Goods\Helpers\GoodsHelper::getSaleState($goods['sale_state'])?><span class="dotting"></span></a>
+                <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" title="第<?php echo $goods['period']?>云<?php echo \App\Goods\Views\Helpers\GoodsHelper::getSaleState($goods['sale_state'])?>">第<?php echo $goods['period']?>云<?php echo \App\Goods\Views\Helpers\GoodsHelper::getSaleState($goods['sale_state'])?><span class="dotting"></span></a>
                 <?php }elseif($goods['sale_state'] == \App\Goods\Models\Goods::SALE_STATE3 && $goods['prize_time'] <= getMilliTime()){?>
                 <a href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $goods['_id']?>" title="第<?php echo $goods['period']?>云">第<?php echo $goods['period']?>云</a>
                 <?php }else{?>
@@ -49,7 +49,7 @@
                                                     第<?php echo $goods['period']?>云
                                                     <?php if($idx==0){?>
                                                     <b>
-                                                        <?php echo \App\Goods\Helpers\GoodsHelper::getSaleState($goods['sale_state'])?>
+                                                        <?php echo \App\Goods\Views\Helpers\GoodsHelper::getSaleState($goods['sale_state'])?>
                                                         <span class="dotting">
                                                         </span>
                                                     </b>

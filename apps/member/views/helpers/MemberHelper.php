@@ -53,4 +53,15 @@ class MemberHelper extends \Phalcon\Tag
         $consigneeList = $modelConsignee->getListByMemberId($member_id, $is_default);
         return $consigneeList;
     }
+
+    /**
+     * 检测是否需要支付密码
+     *
+     * @return boolean
+     */
+    static public function isNeedPaypwd(array $buyerInfo, $pay_amount)
+    {
+        $modelMember = new Member();
+        return $modelMember->isNeedPaypwd($buyerInfo, $pay_amount);
+    }
 }

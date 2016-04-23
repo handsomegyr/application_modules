@@ -44,6 +44,22 @@ class PostController extends ControllerBase
         
         // 获取晒单分页列表信息
         $postList = $this->modelPost->getPageList($page, $size, $query, $sort);
+        if (! empty($_SESSION['member_id'])) {
+            if (! empty($postList['datas'])) {
+                $postIds = array();
+                foreach ($postList['datas'] as $post) {
+                    $postIds[] = $post['_id'];
+                }
+                
+                $voteList = $this->modelVote->getListByPostIdsAndUserId($postIds, $_SESSION['member_id']);
+                if (! empty($voteList)) {
+                    $vote_post_ids = array_keys($voteList);
+                    foreach ($postList['datas'] as &$post) {
+                        $post['isVoted'] = in_array($post['_id'], $vote_post_ids);
+                    }
+                }
+            }
+        }
         $this->assign('postList', $postList);
         // 创建分页信息
         $url = $this->getSelfUrl();

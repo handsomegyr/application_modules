@@ -11,7 +11,7 @@
         <div class="mana-req-inner" style="padding-top:0;">
             <div class="fl">
                 <ul class="mana-req-m">
-                    <?php $points = \App\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY1)?>
+                    <?php $points = \App\Points\Views\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY1)?>
                     <li>可用福分 <span class="yu" rmb='<?php echo $points*1.00/100?>'><?php echo $points?></span><i></i></li>
                     <li>可抵现金&nbsp;&nbsp;<?php echo $points*1.00/100?>元，100福分=1元 ，<a style="color: #2af;" href="<?php echo $this->view->baseUrl?>yungou/help/userexperience" target="_blank" title="如何获得福分">如何获得福分？</a></li>
                 </ul>

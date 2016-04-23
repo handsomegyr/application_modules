@@ -87,6 +87,8 @@ class CartController extends ControllerBase
         if (empty($buyer_id)) {
             die('登陆');
         }
+        $buyerInfo = $this->modelMember->getInfoById($buyer_id);
+        $this->assign('buyerInfo', $buyerInfo);
         
         // 获取订单信息 & 总支付金额
         $orderList = $this->modelOrder->getListByPaySn($pay_sn, $buyer_id);
@@ -100,19 +102,13 @@ class CartController extends ControllerBase
         $orderGoodsList = $this->modelOrderGoods->getListByOrderIds($order_ids);
         $this->assign('orderGoodsList', $orderGoodsList);
         
-        // 福分
-        $pointInfo = $this->modelPointsUser->getInfoByUserId($buyer_id, POINTS_CATEGORY1);
-        $this->assign('pointInfo', $pointInfo);
-        if (! empty($pointInfo)) {
-            $order_amount -= $pointInfo['current'];
-        }
+        // // 福分
+        // $pointInfo = $this->modelPointsUser->getInfoByUserId($buyer_id, POINTS_CATEGORY1);
+        // $this->assign('pointInfo', $pointInfo);
+        
         // 预存款金额
         $predepositInfo = $this->modelPointsUser->getInfoByUserId($buyer_id, POINTS_CATEGORY3);
         $this->assign('predepositInfo', $predepositInfo);
-        if (! empty($predepositInfo)) {
-            $order_amount -= $predepositInfo['current'] * 1.00 / 100;
-        }
-        $this->assign('pay_amount', $order_amount);
     }
 
     /**

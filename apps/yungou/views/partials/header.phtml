@@ -27,13 +27,13 @@
 		    <ul id="ulTopRight" class="fr">
                 <?php if(!empty($_SESSION['member_id'])){?>
                 <?php                
-                    $loginName = \App\Member\Helpers\MemberHelper::getLoginName($this->view->memberInfo);
+                    $loginName = \App\Member\Views\Helpers\MemberHelper::getLoginName($this->view->memberInfo);
                 ?>
 		    	<!-- 已登录 -->		    	
                 <li><div class="u-menu-hd u-menu-login">
                 <a href="<?php echo $this->view->baseUrl?>member/index/index" title="<?php echo $loginName?>" class="blue">
                 <span class="fl">
-                <img src="<?php echo \App\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl, $this->view->memberInfo['avatar'],30,30)?>">
+                <img src="<?php echo \App\Member\Views\Helpers\MemberHelper::getImagePath($this->view->baseUrl, $this->view->memberInfo['avatar'],30,30)?>">
                 <s class="transparent-png"></s>
                 </span><?php echo $loginName?></a><a href="<?php echo $this->view->baseUrl?>member/passport/logout" title="退出">[退出]</a></div></li>
                 <?php }else{?>

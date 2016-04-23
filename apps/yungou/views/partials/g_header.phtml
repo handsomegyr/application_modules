@@ -28,7 +28,7 @@
 	             <div class="form">
 	                 <input id="txtHSearch" type="text" class="inputFocus" value="输入“汽车”试试" />
 	                 <span>
-	                 <?php $hotSearchList = \App\Site\Helpers\SiteHelper::getHotSearchList();?>
+	                 <?php $hotSearchList = \App\Site\Views\Helpers\SiteHelper::getHotSearchList();?>
 	                 <?php foreach ($hotSearchList as $hotsearch) {?>
 	                     <a href="<?php echo $this->view->baseUrl?>yungou/product/search?q=<?php echo $hotsearch?>" target="_blank" title="<?php echo $hotsearch?>"><?php echo $hotsearch?></a>
 	                 <?php }?>

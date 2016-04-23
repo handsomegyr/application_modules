@@ -1,4 +1,4 @@
-﻿<?php $siteSettings=\App\Site\Helpers\SiteHelper::getSettings();?>
+﻿<?php $siteSettings=\App\Site\Views\Helpers\SiteHelper::getSettings();?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -21,7 +21,7 @@
                     <div class="pay_box qr_default">
                         <div class="area_bd">
                             <span class="wx_img_wrapper" id="qr_box">
-                                <img id="payQRImg" class="qrcode" src="<?php echo $this->view->baseUrl?>service/qrcode/create?url=<?php echo urlencode($this->view->orderPayInfo['memo']['code_url'])?>" alt="二维码" style="border-width:0px;" />
+                                <img id="payQRImg" class="qrcode" src="<?php echo $this->view->baseUrl?>service/qrcode/create?size=12&url=<?php echo urlencode($this->view->orderPayInfo['memo']['code_url'])?>" alt="二维码" style="border-width:0px;" />
                                 <img style="left: 50%; opacity: 0; display: none; margin-left: -101px;" class="guide pngFix" src="images/wxwebpay_guide.png" alt="" id="guide" />
                             </span>
                             <div class="msg_default_box"><i class="icon_wx pngFix"></i>

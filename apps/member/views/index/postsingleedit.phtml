@@ -17,7 +17,7 @@
         <div class="m-single-contents clrfix">
             <div class="single-left clrfix fl">
                 <span>
-                     <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $this->view->goodsInfo['_id']?>"><img src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>"></a>
+                     <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $this->view->goodsInfo['_id']?>"><img src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>"></a>
                 </span>
                 <i>
                     <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $this->view->goodsInfo['_id']?>" class="gray6">(第<?php echo $this->view->goodsInfo['period']?>云)<?php echo $this->view->goodsInfo['name']?></a>
@@ -45,7 +45,7 @@
                                 <?php $pics =  explode(',', $this->view->postInfo['pic'])?>
                                 <?php foreach ($pics as $pic) {?>
                                 <?php if(!empty($pic)){?>
-                                <li id="img<?php echo $pic?>"><img src="<?php echo \App\Post\Helpers\PostHelper::getPostImage($this->view->baseUrl, $pic)?>" alt=""><a href="javascript:;" pic="20160102141114933.jpg" class="z-delete u-personal"></a></li>
+                                <li id="img<?php echo $pic?>"><img src="<?php echo \App\Post\Views\Helpers\PostHelper::getPostImage($this->view->baseUrl, $pic)?>" alt=""><a href="javascript:;" pic="20160102141114933.jpg" class="z-delete u-personal"></a></li>
                                 <?php }?>
                                 <?php }?>
                                 <li>

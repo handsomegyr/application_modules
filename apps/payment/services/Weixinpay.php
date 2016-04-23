@@ -30,7 +30,7 @@ class Weixinpay
         
         // PC网页或公众号内支付请传"WEB"
         $device_info = "WEB";
-        $nonce_str = \Weixin\Helpers::createNonceStr(32);
+        $nonce_str = \Weixin\Views\Helpers::createNonceStr(32);
         $spbill_create_ip = getIp();
         $trade_type = "NATIVE";
         $weixinApi = $this->getWeixinPayApi();
@@ -49,7 +49,7 @@ class Weixinpay
         try {
             // 获取通知的数据
             $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
-            $notifyData = \Weixin\Helpers::xmlToArray($xml);
+            $notifyData = \Weixin\Views\Helpers::xmlToArray($xml);
             $$notifyData = $this->checkSign($notifyData);
             $result = $this->notifyProcess($callback, $notifyData);
         } catch (\Exception $e) {
@@ -67,7 +67,7 @@ class Weixinpay
             $ret['return_code'] = "SUCCESS";
             $ret['return_msg'] = "OK";
         }
-        $xml = \Weixin\Helpers::arrayToXml($ret);
+        $xml = \Weixin\Views\Helpers::arrayToXml($ret);
         echo $xml;
         
         return;
@@ -121,7 +121,7 @@ class Weixinpay
     private function orderquery($transaction_id, $out_trade_no)
     {
         try {
-            $nonce_str = \Weixin\Helpers::createNonceStr(32);
+            $nonce_str = \Weixin\Views\Helpers::createNonceStr(32);
             $weixinApi = $this->getWeixinPayApi();
             $weixinApi->orderquery($transaction_id, $out_trade_no, $nonce_str);
             return true;

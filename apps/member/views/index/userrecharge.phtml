@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="css/accounts.css" />
 <link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
 <link rel="stylesheet" type="text/css" href="datepicker/css/bootstrap.css" />
-<input type="hidden" id="pageID" value="">
+<input type="hidden" id="pageID" value="userrecharge">
 <div class="sidebar_main clrfix fr">
     <div class="g-obtain-title clrfix">
         <ul>
@@ -35,21 +35,21 @@
         <div class="f-pay-bank" id="div_platform">
             <dl class="clrfix">
                 <dd class="checked">
-                    <input type="radio" value="zfbpay" name="account" id="zfbpay" checked="checked"><label for="zfbpay"><span class="u-bank-zfb"></span></label>
+                    <input type="radio" value="alipay" name="account" id="alipay" checked="checked"><label for="alipay"><span class="u-bank-zfb"></span></label>
                 </dd>
                 <dd>
-                    <input type="radio" value="Swift" name="account" id="Pingan"><label for="Pingan"><span class="u-bank-weixin"></span></label>
+                    <input type="radio" value="weixin" name="account" id="weixin"><label for="weixin"><span class="u-bank-weixin"></span></label>
                 </dd>
             </dl>
         </div>
         <div class="amounts-payable clrfix">
             <p>应付金额<b class="orange">￥<em id="b_money">50</em>.00</b></p>
-            <form id="toPayForm" name="toPayForm" action="/" method="post" target="_blank">
+            <!-- <form id="toPayForm" name="toPayForm" action="/" method="post" target="_blank"> -->
                 <!-- <input type="hidden" id="hidPayName" name="payName" value="jdpay"> -->
-                <input type="hidden" id="hidPayBank" name="payBank" value="0">
+                <input type="hidden" id="hidPayBank" name="payBank" value="alipay">
                 <input type="hidden" id="hidMoney" name="money" value="50">
                 <input id="submit_ok" type="submit" name="submit" value="确认充值" title="确认充值">
-            </form>
+            <!-- </form> -->
 
         </div>
         <div id="payAltBox" style="display: none;">

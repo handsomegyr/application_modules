@@ -18,7 +18,7 @@ class Module
         $loader->registerNamespaces(array(
             'App\Sms\Controllers' => __DIR__ . '/controllers/',
             'App\Sms\Models' => __DIR__ . '/models/',
-            'App\Sms\Helpers' => __DIR__ . '/views/helpers/'
+            'App\Sms\Views\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }

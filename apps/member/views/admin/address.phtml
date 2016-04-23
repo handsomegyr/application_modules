@@ -22,7 +22,7 @@
                     <span class="u-address" 
                     provinceID="<?php echo $consignee['province']?>"  
                     cityID="<?php echo $consignee['city']?>"  
-                    districtID="<?php echo $consignee['district']?>"><?php echo \App\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?></span>
+                    districtID="<?php echo $consignee['district']?>"><?php echo \App\System\Views\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?></span>
                     <span class="u-code"><?php echo $consignee['zipcode']?></span>
                     <span class="u-option">
                         <a href="javascript:;" id="<?php echo $consignee['_id']?>" class="op-tail btn-modify">修改</a>
@@ -66,7 +66,7 @@
                                   <s class="u-personal"></s>
                               </a>
                               <div class="select-state">
-                                <?php $provinceList = \App\System\Helpers\AreaHelper::getProvinceList()?>
+                                <?php $provinceList = \App\System\Views\Helpers\AreaHelper::getProvinceList()?>
                                 <?php foreach ($provinceList as $key => $value) {?>
                                   <a href="javascript:;" value="<?php echo $key?>"><?php echo $value?></a>
                                 <?php }?>

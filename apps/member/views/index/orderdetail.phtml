@@ -1,4 +1,4 @@
-﻿<?php $siteSettings=\App\Site\Helpers\SiteHelper::getSettings();?>
+﻿<?php $siteSettings=\App\Site\Views\Helpers\SiteHelper::getSettings();?>
 <link rel="stylesheet" type="text/css" href="css/member_q.css" />
 <link rel="stylesheet" type="text/css" href="css/pageDialog.css" />
 <link rel="stylesheet" type="text/css" href="/yungou/css/share_style2_16.css" />
@@ -55,12 +55,12 @@
                     <cite class="gray3">请您确认收货地址</cite>
                     <ul id="ul_addrlist">
                         <?php 
-                            $consigneeList = \App\Member\Helpers\MemberHelper::getConsigneeList($this->view->orderInfo['buyer_id']);
+                            $consigneeList = \App\Member\Views\Helpers\MemberHelper::getConsigneeList($this->view->orderInfo['buyer_id']);
                             foreach ($consigneeList as $id => $consignee) {
                         ?>
-                        <li id="<?php echo $id?>" class="<?php if(!empty($consignee['is_default'])){?>z-che<?php }?>" name="<?php echo $consignee['name']?>" tel="<?php echo $consignee['mobile']?>" address="<?php echo \App\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>" code="" provinceID="<?php echo $consignee['province']?>" cityID="<?php echo $consignee['city']?>" districtID="<?php echo $consignee['district']?>">
+                        <li id="<?php echo $id?>" class="<?php if(!empty($consignee['is_default'])){?>z-che<?php }?>" name="<?php echo $consignee['name']?>" tel="<?php echo $consignee['mobile']?>" address="<?php echo \App\System\Views\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>" code="" provinceID="<?php echo $consignee['province']?>" cityID="<?php echo $consignee['city']?>" districtID="<?php echo $consignee['district']?>">
                             <p><span><?php echo $consignee['name']?></span><?php echo $consignee['mobile']?></p>
-                            <i><?php echo \App\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?></i><a href="javascript:;" class="z-alter" id="<?php echo $id?>">修改</a><s class="u-personal"></s>
+                            <i><?php echo \App\System\Views\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?></i><a href="javascript:;" class="z-alter" id="<?php echo $id?>">修改</a><s class="u-personal"></s>
                         </li>
                         <?php }?>
                         <li class="new-address"><a href="javascript:;"><b class="u-personal"></b><em>使用新地址</em></a></li>
@@ -80,7 +80,7 @@
                 <!--物流信息及收货人信息-->
                 <div class="delivery-mes gray6">  
                     <?php $consignee = $this->view->orderInfo['consignee_info'];?>                  
-                    <p><span>配送信息：</span><i><?php echo $consignee['name']?></i><i><?php echo $consignee['mobile']?></i><?php echo \App\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>，<?php echo $consignee['zipcode']?></p>
+                    <p><span>配送信息：</span><i><?php echo $consignee['name']?></i><i><?php echo $consignee['mobile']?></i><?php echo \App\System\Views\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>，<?php echo $consignee['zipcode']?></p>
                     <p><span><em>备</em>注：</span>工作日配送</p>
                     <div id="div_delivery" class="logistics-info-wrap"></div>
                 </div>
@@ -96,7 +96,7 @@
                         <a href="http://www.sto.cn" target="_blank" class="orange"><?php echo $deliveryInfo['name']?></a>&nbsp;&nbsp;&nbsp;
                         <span class="orange"><i><?php echo $deliveryInfo['delivery_sn']?></i></span>
                     </p>
-                    <p><span>配送信息：</span><i><?php echo $consignee['name']?></i><i><?php echo $consignee['mobile']?></i><?php echo \App\System\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>，<?php echo $consignee['zipcode']?></p>
+                    <p><span>配送信息：</span><i><?php echo $consignee['name']?></i><i><?php echo $consignee['mobile']?></i><?php echo \App\System\Views\Helpers\AreaHelper::getAddress($consignee['province'],$consignee['city'],$consignee['district'],$consignee['address'])?>，<?php echo $consignee['zipcode']?></p>
                     <p><span><em>备</em>注：</span>工作日配送</p>
                 </div>
             <?php }elseif($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE10){?>
@@ -112,7 +112,7 @@
               <ul>
               <?php if(!empty($this->view->logList)){?>
               <?php foreach ($this->view->logList as $logInfo) {?>
-                  <li><span><?php echo date('Y-m-d H:i:s',$logInfo['log_time']->sec)?></span><span class="ope-text"><?php echo $logInfo['msg']?></span><span class="gray9"><?php echo \App\Order\Helpers\OrderHelper::getLogName($logInfo)?></span></li>
+                  <li><span><?php echo date('Y-m-d H:i:s',$logInfo['log_time']->sec)?></span><span class="ope-text"><?php echo $logInfo['msg']?></span><span class="gray9"><?php echo \App\Order\Views\Helpers\OrderHelper::getLogName($logInfo)?></span></li>
               <?php }?>
               <?php }?>
               </ul>
@@ -135,7 +135,7 @@
                   <li class="f-com-name">
                       <span>
                           <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $this->view->orderInfo['goods_commonid']?>">
-                              <img src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->orderInfo['goods_image'])?>">
+                              <img src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->orderInfo['goods_image'])?>">
                           </a>
                       </span>
                       <p class="gray9">
@@ -178,7 +178,7 @@
                         <a href="javascript:;" class="gray6 select-xiala">---请选择---<s class="u-personal"></s></a>
                         <div class="select-state" style="display: none;">
                             <?php
-                            $provinceList = \App\System\Helpers\AreaHelper::getProvinceList();
+                            $provinceList = \App\System\Views\Helpers\AreaHelper::getProvinceList();
                             foreach ($provinceList as $code => $name) {
                             ?>
                             <a href="javascript:;" value="<?php echo $code?>"><?php echo $name?></a>

@@ -4,7 +4,7 @@
 	         <div class="m-menu-all">
 	             <h3><a href="<?php echo $this->view->baseUrl?>yungou/product/list">全部商品分类</a><em></em></h3>
 	         </div>
-	         <?php $categoryTree = \App\Goods\Helpers\GoodsHelper::getCategoryTree()?>
+	         <?php $categoryTree = \App\Goods\Views\Helpers\GoodsHelper::getCategoryTree()?>
 	         <div id="divSortList" class="m-all-sort">
 	         <?php if(!empty($categoryTree)){?>
 	         <?php foreach ($categoryTree as $category_id => $category) {?>

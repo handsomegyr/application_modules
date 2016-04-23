@@ -19,7 +19,7 @@
                 <img id="imgGoodsPic" alt="" src="http://goodsimg.1yyg.com/GoodsPic/pic-38-38/20140910144704643.jpg" style="display: none;"> -->
                 <div id="preview" class="ng-middle-box spec-preview">
                     <span class="jqzoom">
-                        <img style="width:343px;height:343px;" jqimg="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" />
+                        <img style="width:343px;height:343px;" jqimg="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" />
                     </span>
                 </div>
                 <div class="spec-scroll">
@@ -27,7 +27,7 @@
                         <ul>
                         <?php if(!empty($this->view->goodsImageList)){?>
                         <?php foreach ($this->view->goodsImageList as $idx => $goodsImage) {?>
-                            <li><img bimg="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'])?>" src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'])?>" onmousemove="preview(this);"></li>
+                            <li><img bimg="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'])?>" src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goodsImage['image'])?>" onmousemove="preview(this);"></li>
                         <?php if($idx>=6)break?>
                         <?php }?>
                         <?php }?>

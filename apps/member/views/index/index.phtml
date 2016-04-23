@@ -8,7 +8,7 @@
 
 				<div class="head-portrait fl">
 					<a id="a_UserPhoto" href="<?php echo $this->view->baseUrl?>member/admin/userphoto" target="_blank">
-					<img src="<?php echo \App\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>">
+					<img src="<?php echo \App\Member\Views\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>">
 					<b class="u-personal"></b></a>
 					<p>
 						<cite>修改头像</cite><em></em>
@@ -19,14 +19,14 @@
 					<dt class="gray3">
 						<?php echo getDayPeriod()?>好！
 						<?php if(empty($this->view->memberInfo['nickname'])){?>
-						<a href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->memberInfo['_id']?>" target="_blank"><cite><?php echo \App\Member\Helpers\MemberHelper::getRegisterName($this->view->memberInfo)?></cite><em class="gray9"></em></a>
+						<a href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->memberInfo['_id']?>" target="_blank"><cite><?php echo \App\Member\Views\Helpers\MemberHelper::getRegisterName($this->view->memberInfo)?></cite><em class="gray9"></em></a>
 						<?php }else{?>
-						<a href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->memberInfo['_id']?>" target="_blank"><cite><?php echo $this->view->memberInfo['nickname']?></cite><em class="gray9">(<?php echo \App\Member\Helpers\MemberHelper::getRegisterName($this->view->memberInfo)?>)</em></a>
+						<a href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->memberInfo['_id']?>" target="_blank"><cite><?php echo $this->view->memberInfo['nickname']?></cite><em class="gray9">(<?php echo \App\Member\Views\Helpers\MemberHelper::getRegisterName($this->view->memberInfo)?>)</em></a>
 						<?php }?>
 					</dt>
 					<dd class="gray9">
-					<?php $exp = \App\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY2)?>
-					<?php $gradeInfo= \App\Member\Helpers\MemberGradeHelper::getGradeInfo($exp)?>
+					<?php $exp = \App\Points\Views\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY2)?>
+					<?php $gradeInfo= \App\Member\Views\Helpers\MemberGradeHelper::getGradeInfo($exp)?>
 						<span class="class-icon<?php echo str_pad($gradeInfo['current']['level'], 2, '0', STR_PAD_LEFT)?>"><s></s><?php echo $gradeInfo['current']['name']?></span>(还差<?php echo $gradeInfo['next']['exp_from']-$exp?>经验值即可升级到<?php echo $gradeInfo['next']['name']?>)<a
 							href="<?php echo $this->view->baseUrl?>yungou/help/userexperience" target="_blank">查看等级介绍</a>
 					</dd>
@@ -61,7 +61,7 @@
 		</div>
 		<div class="m-info-down clrfix">
 			<div class="info-down-l fl">
-			<?php $predeposit = \App\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY3)?>
+			<?php $predeposit = \App\Points\Views\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY3)?>
 				<span class="fl gray9"> <b class="orange">￥<?php echo showPrice($predeposit,2)?></b> 可用余额
 				</span>
 				<p class="fl">
@@ -71,7 +71,7 @@
 			<div id="div_stat" class="info-down-r fr" style="">
 				<ul>
 					<li class="z-dividing-line"><s></s></li>
-					<?php $points = \App\Points\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY1)?>
+					<?php $points = \App\Points\Views\Helpers\PointsUserHelper::getPoints($_SESSION['member_id'], POINTS_CATEGORY1)?>
 					<li><a
 						href="<?php echo $this->view->baseUrl?>member/index/memberpoints"><em><?php echo $points?></em>可用福分</a></li>
 					<li class="z-dividing-line z-ends-line"><s></s></li>
@@ -112,7 +112,7 @@
         <ul>
             <li onclick="window.open('<?php echo $this->view->baseUrl?>member/index/orderdetail?orderno=<?php echo $this->view->orderInfo['order_no'] ?>')" class="f-congratulations bor-top">
                 <span class="fl"><a href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $this->view->orderInfo['goods_id'] ?>">
-                    <img alt="" src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->orderInfo['goods_image'],70,70)?>"></a></span>
+                    <img alt="" src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->orderInfo['goods_image'],70,70)?>"></a></span>
                 <dl class="fl">
                     <dt>恭喜您获得 <a href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $this->view->orderInfo['goods_id'] ?>" class="orange" title="<?php echo $this->view->orderInfo['goods_name'] ?>">(第<?php echo $this->view->orderInfo['goods_period'] ?>云)<?php echo $this->view->orderInfo['goods_name'] ?></a></dt>
                     <dd>价值：￥<?php echo showPrice($this->view->orderInfo['goods_price'],2) ?></dd>
@@ -328,7 +328,7 @@
 		<h3 class="gray3">
 			<b>服务热线</b>
 		</h3>
-		<?php $siteSettings=\App\Site\Helpers\SiteHelper::getSettings();?>
+		<?php $siteSettings=\App\Site\Views\Helpers\SiteHelper::getSettings();?>
 		<p class="orange">
 			<?php echo $siteSettings['tel400']?><i>（工作时间：09:00-21:00）</i>
 		</p>

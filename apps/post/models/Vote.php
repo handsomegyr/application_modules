@@ -19,6 +19,23 @@ class Vote extends \App\Common\Models\Post\Vote
         return $this->findOne($query);
     }
 
+    public function getListByPostIdsAndUserId(array $post_ids, $user_id)
+    {
+        $query = array();
+        $query['post_id'] = array(
+            '$in' => $post_ids
+        );
+        $query['user_id'] = $user_id;
+        $ret = $this->findAll($query);
+        $list = array();
+        if (! empty($ret)) {
+            foreach ($ret as $item) {
+                $list[$item['post_id']] = $item;
+            }
+        }
+        return $list;
+    }
+
     public function log($post_id, $user_id, $num = 1)
     {
         $data = array();

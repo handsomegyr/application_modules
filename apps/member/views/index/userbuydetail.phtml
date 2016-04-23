@@ -13,17 +13,17 @@
             <ul>
             <?php 
             $goods = $this->view->goodsInfo;
-            $ret = \App\Order\Helpers\OrderHelper::getUserBuyList($_SESSION['member_id'], $goods['_id']);
+            $ret = \App\Order\Views\Helpers\OrderHelper::getUserBuyList($_SESSION['member_id'], $goods['_id']);
             $buyList = $ret['buyList'];
             $total_buy_num = $ret['total_buy_num'];
             $total_lottery_code_num = $ret['total_lottery_code_num'];            
             ?>
                 <li class="mer-pic">
                     <a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>">
-                        <img src="<?php echo \App\Goods\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl,$goods['image'])?>">
+                        <img src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl,$goods['image'])?>">
                     </a>
                 </li>
-
+                <?php if($goods['sale_state'] == \App\Goods\Models\Goods::SALE_STATE3){?>
                 <!-- 已经揭晓 -->
                 <li class="other-winner">
                     <p>
@@ -41,42 +41,42 @@
                     </a>
                     <br>幸运云购码：<?php echo $goods['prize_code']?><br>揭晓时间：<?php echo getMilliTime4Show($goods['prize_time'])?>
                 </li>
-
+                <?php }elseif($goods['period'] == \App\Goods\Models\Goods::SALE_STATE2){?>
                 <!-- 正在揭晓 -->
                 <li>
-                    <p><a class="gray3" target="_blank" href="http://www.1yyg.com/product/2268125.html">(第7740云)苹果（Apple）iPad Air 2 9.7英寸平板电脑 16G WiFi版</a></p>
-                    <cite>价值：￥3488.00</cite><a target="_blank" href="http://www.1yyg.com/product/2268125.html" class="z-announcedIng">正在揭晓…</a><span>您已参与<i class="orange">1</i>人次</span>
+                    <p><a class="gray3" target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $goods['_id']?>">(第<?php echo $goods['period']?>云)<?php echo $goods['name']?></a></p>
+                    <cite>价值：￥<?php echo showPrice($goods['price'],2)?></cite><a target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" class="z-announcedIng">正在揭晓…</a><span>您已参与<i class="orange"><?php echo $total_buy_num?></i>人次</span>
                 </li>
-
+                <?php }else{?>
                 <!-- 还未结束正在进行 -->
                 <li>
-                    <p><a class="gray3" target="_blank" href="http://www.1yyg.com/product/2710789.html">(第10341云)苹果（Apple）iPad Air 2 9.7英寸平板电脑 16G WiFi版</a></p>
-                    <cite>价值：￥3488.00</cite>
+                    <p><a class="gray3" target="_blank" href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $goods['_id']?>">(第<?php echo $goods['period']?>云)<?php echo $goods['name']?></a></p>
+                    <cite>价值：￥<?php echo showPrice($goods['price'],2)?></cite>
                     <div class="g-progress">
                         <dl class="m-progress">
-                            <dt title="完成48.51%"><b style="width: 137px;"></b></dt>
+                            <dt title="完成<?php echo number_format($goods['complete_percent'],2)?>%"><b style="width: 137px;"></b></dt>
                             <dd>
-                                <span class="orange fl"><em>1692</em>已参与</span>
-                                <span class="gray6 fl"><em>3488</em>总需人次</span>
-                                <span class="blue fr"><em>1796</em>剩余</span>
+                                <span class="orange fl"><em><?php echo $goods['purchase_person_time']?></em>已参与</span>
+                                <span class="gray6 fl"><em><?php echo $goods['total_person_time']?></em>总需人次</span>
+                                <span class="blue fr"><em><?php echo $goods['remain_person_time']?></em>剩余</span>
                             </dd>
                         </dl>
                     </div>
-                    <span>您已参与<i class="orange">1</i>人次</span>
+                    <span>您已参与<i class="orange"><?php echo $total_buy_num?></i>人次</span>
                 </li>
-
+                <?php }?>
 
             </ul>
-
+            <?php if($goods['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1){?>
             <!-- 还未结束正在进行 -->
             <div class="pos-buttons">
-                <a href="javascript:;" codeid="2710789" class="z-add-btn">追加云购</a>
-                <a href="javascript:;" goodsid="21976" goodsname="苹果（Apple）iPad Air 2 9.7英寸平板电脑 16G WiFi版" goodspic="20141024155736176.jpg" class="z-share-btn">一键分享</a>
+                <a href="javascript:;" codeid="<?php echo $goods['_id']?>" class="z-add-btn">追加云购</a>
+                <a href="javascript:;" goodsid="<?php echo $goods['goods_commonid']?>" goodsname="<?php echo $goods['name']?>" goodspic="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>" class="z-share-btn">一键分享</a>
             </div>
+            <?php }?>
 
         </div>
 
-        <!-- 已经揭晓 -->
         <div class="m-buy-num clrfix">
             <dl>
                 <dt class="gray6">本云商品您总共参与<i class="orange"><?php echo $total_buy_num?></i>人次<em class="f-mar-left">拥有<i class="orange"><?php echo $total_lottery_code_num?></i>个云购码</em></dt>

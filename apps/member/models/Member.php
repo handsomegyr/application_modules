@@ -577,29 +577,46 @@ class Member extends \App\Common\Models\Member\Member
     }
 
     /**
-     * 检查支付密码
+     * 是否需要支付密码
      *
      * @param array $buyerInfo            
-     * @param string $password            
-     * @param number $pay_amount           
+     * @param number $pay_amount            
      * @return boolean
      */
-    public function checkPaypwd(array $buyerInfo, $password, $pay_amount)
+    public function isNeedPaypwd(array $buyerInfo, $pay_amount)
     {
         // 检查该会员是否设置了支付密码
         if (empty($buyerInfo['paypwd'])) {
-            return true;
+            return false;
         }
         
         // 小额免密码设置 开启后支付金额小于设置额度时，无需输入支付密码。
         if (! empty($buyerInfo['is_smallmoney_open'])) {
             if ($buyerInfo['smallmoney'] >= $pay_amount) {
-                return true;
+                return false;
             }
         }
+        return true;
+    }
+
+    /**
+     * 检查支付密码
+     *
+     * @param array $buyerInfo            
+     * @param string $password            
+     * @param number $pay_amount            
+     * @return boolean
+     */
+    public function checkPaypwd(array $buyerInfo, $password, $pay_amount)
+    {
+        // 检查该会员是否需要填写支付密码进行支付
+        $isNeed = $this->isNeedPaypwd($buyerInfo, $pay_amount);
         
+        if (empty($isNeed)) {
+            return true;
+        }
         // 检查是否相同
-        if($buyerInfo['paypwd'] == md5($password)){
+        if ($buyerInfo['paypwd'] == md5($password)) {
             return true;
         }
         

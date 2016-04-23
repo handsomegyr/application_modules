@@ -30,7 +30,7 @@
                         <li class="f-pay-comm">
                             <cite class="u-pay-pic">
                                 <a href="javascript:;" target="_blank" title="<?php echo $orderGoods['goods_name']?>">
-                                    <img alt="" src="/upload/goods/1/<?php echo $orderGoods['goods_image']?>">
+                                    <img alt="" src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl,$orderGoods['goods_image'],40,40)?>">
                                 </a>
                             </cite>
                             <cite class="u-pay-name  ">
@@ -61,13 +61,13 @@
 
                 <?php if(empty($predeposit)){?>
                 <dd id="ddBalanceBox" class="f-pay-grayBg" style="background: #f8f8f8;">
-                    <span id="spBalance" class="orange" style="display: none;">-￥<?php echo showPrice($predeposit,2)?></span>
+                    <span id="spBalance" class="orange" style="display: none;">-￥<?php echo showPrice($order_amount,2)?></span>
                     <span>使用账户余额支付，您的账户余额 ￥<?php echo showPrice($predeposit,2)?></span>
                     <span><a id="checkBalance" href="javascript:;" class="z-check"></a></span>
                 </dd>
                 <?php }else{?>
                 <dd id="ddBalanceBox" style="background: #f8f8f8;">
-                    <span id="spBalance" class="orange" style="">-￥<?php echo showPrice($predeposit,2)?></span>
+                    <span id="spBalance" class="orange" style="">-￥<?php echo showPrice($order_amount,2)?></span>
                     <span>使用账户余额支付，您的账户余额 ￥<?php echo showPrice($predeposit,2)?></span>
                     <span><a id="checkBalance" href="javascript:;" class="z-check"><b class="z-comms"></b></a></span>
                 </dd>
@@ -79,7 +79,7 @@
         <div id="divBankBox" class="m-pay-manner" style="display:none;">
             <div class="f-pay-select">
                 <span class="fl" id="spPayTitle">您的账户余额不足，请选择以下方式完成支付</span>
-                <span class="fr">使用网银支付<i id="iBankPay" class="orange">￥<?php echo showPrice($pay_amount,2)?></i></span>
+                <span class="fr">使用网银支付<i id="iBankPay" class="orange">￥<?php echo showPrice($order_amount,2)?></i></span>
             </div>
 
             <div class="f-pay-defray f-pay-defray2 clrfix">
@@ -88,7 +88,7 @@
                     <h3>支付平台支付：</h3>
                     <dl id="dlPayForm" class="clrfix">
                         <dd class="checked">
-                            <input type="radio" name="account" value="zfbpay" id="zfbpay"><label for="zfbpay"><span class="u-bank-zfb"></span></label>
+                            <input type="radio" name="account" value="alipay" id="zfbpay" checked="checked"><label for="zfbpay"><span class="u-bank-zfb"></span></label>
                         </dd>
                         <dd>
                             <input type="radio" name="account" value="weixin" id="weixin"><label for="weixin"><span class="u-bank-weixin"></span></label>
@@ -101,12 +101,12 @@
 
         <input type="hidden" id="hidPredeposit" value="<?php echo showPrice($predeposit,2)?>">  <!-- 账户余额 -->
         <input type="hidden" id="hidOrderamount" value="<?php echo showPrice($order_amount,2)?>"> <!-- 需要支付余额 -->
-        <input type="hidden" id="hidPassword" value=""> <!-- 余额支付是否需要输入支付密码 --> 
+        <input type="hidden" id="hidPassword" value="<?php echo \App\Member\Views\Helpers\MemberHelper::isNeedPaypwd($this->view->buyerInfo, $order_amount)?1:0?>"> <!-- 余额支付是否需要输入支付密码 --> 
 
         <!--使用网银支付提交表单-->
         <!-- 支付SN -->
         <input type="hidden" id="hidCheckSN" name="checkSN" value="<?php echo $this->view->pay_sn?>">
-        <input type="hidden" id="hidPayName" name="payName" value="zfbpay">
+        <input type="hidden" id="hidPayName" name="payName" value="alipay">
         <div class="m-pay-Total clrfix">
             <div id="divPaypwd" class="f-payment-password clrfix" style="display: none;">
                 <p>

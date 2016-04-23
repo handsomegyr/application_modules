@@ -365,6 +365,11 @@ class ServiceController extends ControllerBase
             $ret['datas'] = array();
             
             $otherConditions = array();
+            if (! empty($_SESSION['member_id'])) {
+                $otherConditions['buyer_id'] = array(
+                    '$ne' => $_SESSION['member_id']
+                );
+            }
             $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
@@ -386,7 +391,7 @@ class ServiceController extends ControllerBase
                     foreach ($picArr as &$pic) {
                         $pic = $this->modelPost->getImagePath($this->baseUrl, $pic);
                     }
-                    $item['pic'] = implode(',', $picArr);
+                    $item['pic'] = $picArr; // implode(',', $picArr);
                     $datas[] = array(
                         'postID' => $item['_id'],
                         'postTitle' => $item['title'],
@@ -846,7 +851,7 @@ class ServiceController extends ControllerBase
             $this->modelOrderGoods->finishOrder($postInfo['order_no']);
             
             // 增加积分
-            // 成功晒单 400-1500 500            
+            // 成功晒单 400-1500 500
             $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'suc_list');
             if ($pointsRuleInfo['points'] > $point) {
                 $point = $pointsRuleInfo['points'];

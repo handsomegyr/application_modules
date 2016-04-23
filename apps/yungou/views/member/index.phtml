@@ -6,12 +6,12 @@
         <!--banner以及相关操作-->
         <div class="map-banner">
             <div class="map-info">
-                <div class="h-pic"><a class="pic" href="javascript:;"><img alt="" src="<?php echo \App\Member\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>" width="140" height="140"> </a></div><div class="text-info">
-                <a class="name" href="javascript:;"><?php if(empty($this->view->memberInfo['nickname'])){?><?php echo \App\Member\Helpers\MemberHelper::getRegisterName($this->view->memberInfo,true)?><?php }else{?><?php echo $this->view->memberInfo['nickname']?>(<?php echo \App\Member\Helpers\MemberHelper::getRegisterName($this->view->memberInfo,true)?>)<?php }?></a>
-                <p><?php if(!empty($this->view->isCanSeeAreaInfo)){?><?php if(!empty($this->view->hometown)){?><span class="address"><?php echo \App\System\Helpers\AreaHelper::getAddress($this->view->hometown[0],$this->view->hometown[1],$this->view->hometown[2],'')?></span><?php }?><?php }?>
+                <div class="h-pic"><a class="pic" href="javascript:;"><img alt="" src="<?php echo \App\Member\Views\Helpers\MemberHelper::getImagePath($this->view->baseUrl,$this->view->memberInfo['avatar'])?>" width="140" height="140"> </a></div><div class="text-info">
+                <a class="name" href="javascript:;"><?php if(empty($this->view->memberInfo['nickname'])){?><?php echo \App\Member\Views\Helpers\MemberHelper::getRegisterName($this->view->memberInfo,true)?><?php }else{?><?php echo $this->view->memberInfo['nickname']?>(<?php echo \App\Member\Views\Helpers\MemberHelper::getRegisterName($this->view->memberInfo,true)?>)<?php }?></a>
+                <p><?php if(!empty($this->view->isCanSeeAreaInfo)){?><?php if(!empty($this->view->hometown)){?><span class="address"><?php echo \App\System\Views\Helpers\AreaHelper::getAddress($this->view->hometown[0],$this->view->hometown[1],$this->view->hometown[2],'')?></span><?php }?><?php }?>
                 <span class="net"><?php echo $this->view->webUrl?>yungou/member/index?id=<?php echo $this->view->memberInfo['_id']?></span></p>
-                <?php $exp = \App\Points\Helpers\PointsUserHelper::getPoints($this->view->memberInfo['_id'], POINTS_CATEGORY2)?>
-				<?php $gradeInfo= \App\Member\Helpers\MemberGradeHelper::getGradeInfo($exp)?>
+                <?php $exp = \App\Points\Views\Helpers\PointsUserHelper::getPoints($this->view->memberInfo['_id'], POINTS_CATEGORY2)?>
+				<?php $gradeInfo= \App\Member\Views\Helpers\MemberGradeHelper::getGradeInfo($exp)?>
                 <p class="mr4"><span class="level class-icon<?php echo str_pad($gradeInfo['current']['level'], 2, '0', STR_PAD_LEFT)?>"><s></s><?php echo $gradeInfo['current']['name']?></span>&nbsp;<span class="grade">经验值：<?php echo $exp?></span></p><p class="about" title="<?php echo $this->view->memberInfo['signature']?>"><?php echo $this->view->memberInfo['signature']?></p></div>
                 <!--三个操作选项-->
                 <ul class="option-wrapper">

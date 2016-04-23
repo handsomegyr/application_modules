@@ -329,7 +329,7 @@ class ServiceController extends ControllerBase
         // http://www.jizigou.com/order/service/getuserpagebuyrafpost?type=0&userID=9563477&limit=5&page=1
         try {
             // 0 云购记录 1 获得的商品 2 晒单
-            $type = intval($this->get('type', 0));
+            $type = intval($this->get('type', '0'));
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '10'));
             $userID = $this->get('userID', '');
@@ -390,63 +390,102 @@ class ServiceController extends ControllerBase
                     $list = $this->modelOrderGoods->getUserWinList($userID, $page, $limit);
                 } elseif ($type == 2) {
                     // 2 晒单
-                    $list = $this->modelOrderGoods->getUserWinList($userID, $page, $limit, \App\Order\Models\Goods::ORDER_STATE10);
+                    // 已晒单
+                    $otherConditions = array();
+                    $otherConditions['state'] = \App\Post\Models\Post::STATE2;
+                    $list = $this->modelPost->getPageListByBuyerId($userID, $page, $limit, $otherConditions);
                 }
                 
                 $ret['total'] = $list['total'];
                 $datas = array();
                 if (! empty($list['datas'])) {
                     foreach ($list['datas'] as $item) {
-                        // "codeID":2542873,
-                        // "goodsSName":"苹果（Apple）iPhone 6s 16G版 4G手机",
-                        // "goodsPic":"20150910150825965.jpg",
-                        // "codeState":"3",
-                        // "codePeriod":"21158",
-                        // "codePrice":"5188.00",
-                        // "codeQuantity":"5188",
-                        // "codeSales":"5188",
-                        // "codeRNO":"10001930",
-                        // "codeRTime":"2015-12-20 21:37:19",
-                        // "userName":"几十万该中宝马了",
-                        // "userPhoto":"20151213160405492.jpg",
-                        // "userWeb":"1011010841",
-                        // "codeType":"0",
-                        // "limitBuy":"0",
-                        // "buyNum":"1",
-                        // "buyTime":"2015-12-20 21:36"
-                        // "buyIP":"124.113.229.91",
-                        // "buyIPAddr":"安徽省滁州市",
-                        // "buyDevice":"3",
-                        // "buyID":"322265804"
-                        
-                        $codeSales = $item['goods_total_person_time'];
-                        if ($item['state'] == \App\Order\Models\Goods::STATE1) {
-                            $goodsInfo = $this->modelGoods->getInfoById($item['goods_id']);
-                            $codeSales = $goodsInfo['purchase_person_time'];
+                        if ($type == 2) {
+                            // 2 晒单
+                            // "postID":"165660",
+                            // "postPic":"20160304195137145.jpg",
+                            // "postTitle":"特别实用的奖品",
+                            // "postContent":"最近开始玩云购。妈妈看我中了旺仔牛奶和矿泉水就说让我给她中点实用的厨房用品。那天看…",
+                            // "postTime":"昨天 19:55",
+                            // "postHits":"0",
+                            // "postReplyCount":"0",
+                            // "replyUserPhoto":"",
+                            // "replyUserName":"",
+                            // "replyContent":"",
+                            // "replyUserWeb":"",
+                            // "postAllPic":"20160304195137145.jpg,20160304195147784.jpg,20160304195155912.jpg,20160304195203728.jpg"
+                            $picArr = explode(',', $item['pic']);
+                            foreach ($picArr as &$pic) {
+                                $pic = $this->modelPost->getImagePath($this->baseUrl, $pic);
+                            }
+                            $item['pic'] = implode(',', $picArr);
+                            $datas[] = array(
+                                'postId' => $item['_id'],
+                                'postPic' => $picArr[0],
+                                'postTitle' => $item['title'],
+                                'postContent' => $item['content'],
+                                'postTime' => date('Y-m-d H:i:s', $item['post_time']->sec),
+                                'postHits' => $item['vote_num'],
+                                'postReplyCount' => $item['reply_num'],
+                                
+                                'replyUserPhoto' => '',
+                                'replyUserName' => '',
+                                'replyUserWeb' => '',
+                                'replyContent' => '',
+                                'postAllPic' => $item['pic']
+                            );
+                        } else {
+                            // "codeID":2542873,
+                            // "goodsSName":"苹果（Apple）iPhone 6s 16G版 4G手机",
+                            // "goodsPic":"20150910150825965.jpg",
+                            // "codeState":"3",
+                            // "codePeriod":"21158",
+                            // "codePrice":"5188.00",
+                            // "codeQuantity":"5188",
+                            // "codeSales":"5188",
+                            // "codeRNO":"10001930",
+                            // "codeRTime":"2015-12-20 21:37:19",
+                            // "userName":"几十万该中宝马了",
+                            // "userPhoto":"20151213160405492.jpg",
+                            // "userWeb":"1011010841",
+                            // "codeType":"0",
+                            // "limitBuy":"0",
+                            // "buyNum":"1",
+                            // "buyTime":"2015-12-20 21:36"
+                            // "buyIP":"124.113.229.91",
+                            // "buyIPAddr":"安徽省滁州市",
+                            // "buyDevice":"3",
+                            // "buyID":"322265804"
+                            
+                            $codeSales = $item['goods_total_person_time'];
+                            if ($item['state'] == \App\Order\Models\Goods::STATE1) {
+                                $goodsInfo = $this->modelGoods->getInfoById($item['goods_id']);
+                                $codeSales = $goodsInfo['purchase_person_time'];
+                            }
+                            $datas[] = array(
+                                'codeID' => $item['goods_id'],
+                                'goodsSName' => $item['goods_name'],
+                                'goodsPic' => $this->modelGoods->getImagePath($this->baseUrl, $item['goods_image']),
+                                'codeState' => $item['state'],
+                                'codePeriod' => $item['goods_period'],
+                                'codePrice' => showPrice($item['goods_price'], 2),
+                                'codeQuantity' => $item['goods_total_person_time'],
+                                'codeSales' => $codeSales,
+                                'codeRNO' => empty($item['prize_code']) ? '' : $item['prize_code'],
+                                'codeRTime' => empty($item['prize_time']) ? '' : getMilliTime4Show($item['prize_time']),
+                                'userName' => getBuyerName($item['buyer_name'], $item['buyer_register_by']),
+                                'userPhoto' => $this->modelMember->getImagePath($this->baseUrl, $item['buyer_avatar']),
+                                'userWeb' => $item['buyer_id'],
+                                'buyNum' => $item['purchase_num'],
+                                'buyIP' => $item['buyer_ip'],
+                                'buyIPAddr' => convertIp($item['buyer_ip']),
+                                'buyTime' => getMilliTime4Show($item['purchase_time']),
+                                'buyDevice' => 0,
+                                'buyID' => $item['buyer_id'],
+                                'codeType' => 0,
+                                'limitBuy' => 0
+                            );
                         }
-                        $datas[] = array(
-                            'codeID' => $item['goods_id'],
-                            'goodsSName' => $item['goods_name'],
-                            'goodsPic' => $this->modelGoods->getImagePath($this->baseUrl, $item['goods_image']),
-                            'codeState' => $item['state'],
-                            'codePeriod' => $item['goods_period'],
-                            'codePrice' => showPrice($item['goods_price'], 2),
-                            'codeQuantity' => $item['goods_total_person_time'],
-                            'codeSales' => $codeSales,
-                            'codeRNO' => empty($item['prize_code']) ? '' : $item['prize_code'],
-                            'codeRTime' => empty($item['prize_time']) ? '' : getMilliTime4Show($item['prize_time']),
-                            'userName' => getBuyerName($item['buyer_name'], $item['buyer_register_by']),
-                            'userPhoto' => $this->modelMember->getImagePath($this->baseUrl, $item['buyer_avatar']),
-                            'userWeb' => $item['buyer_id'],
-                            'buyNum' => $item['purchase_num'],
-                            'buyIP' => $item['buyer_ip'],
-                            'buyIPAddr' => convertIp($item['buyer_ip']),
-                            'buyTime' => getMilliTime4Show($item['purchase_time']),
-                            'buyDevice' => 0,
-                            'buyID' => $item['buyer_id'],
-                            'codeType' => 0,
-                            'limitBuy' => 0
-                        );
                     }
                 }
                 $ret['datas'] = $datas;

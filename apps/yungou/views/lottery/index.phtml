@@ -17,7 +17,7 @@
             <div class="m-lott-menu" style="overflow: hidden;">
                 <ul>
                     <li class="<?php if(empty($this->view->i)){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/lottery/index" title="全部">全部</a></li>
-                    <?php $topLevelCategoryList = \App\Goods\Helpers\GoodsHelper::getTopLevelCategoryList();?>
+                    <?php $topLevelCategoryList = \App\Goods\Views\Helpers\GoodsHelper::getTopLevelCategoryList();?>
                     <?php if(!empty($topLevelCategoryList)){?>
                     <?php foreach ($topLevelCategoryList as $category) {?>                            
                     <li class="<?php if(!empty($this->view->i) && $this->view->i == $category['_id'] ){?>current<?php }?>"><a href="<?php echo $this->view->baseUrl?>yungou/lottery/index?i=<?php echo $category['_id'] ?>" title="<?php echo $category['name']?>"><?php echo $category['name']?></a></li>
