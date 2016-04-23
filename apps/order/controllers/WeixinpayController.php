@@ -61,7 +61,7 @@ class WeixinpayController extends ControllerBase
         ));
     }
 
-    private function notifyCallBack(array $notifyData)
+    public function notifyCallBack(array $notifyData)
     {
         // 确认商户订单号out_trade_no的有效性
         $out_trade_no = $notifyData['out_trade_no'];

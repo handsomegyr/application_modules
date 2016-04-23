@@ -48,9 +48,29 @@ class Weixinpay
         // 如果返回成功则验证签名
         try {
             // 获取通知的数据
+//             $xml = <<<EOD
+// <xml><appid><![CDATA[wxbf9165206b992f39]]></appid>
+//             <bank_type><![CDATA[CFT]]></bank_type>
+//             <cash_fee><![CDATA[100]]></cash_fee>
+//             <device_info><![CDATA[WEB]]></device_info>
+//             <fee_type><![CDATA[CNY]]></fee_type>
+//             <is_subscribe><![CDATA[N]]></is_subscribe>
+//             <mch_id><![CDATA[1332019901]]></mch_id>
+//             <nonce_str><![CDATA[hvIl5f75qlasHsHoKaJrq1Gmw8J5bsgt]]></nonce_str>
+//             <openid><![CDATA[o4ELSvz-B4_DThF0Vpfrverk3IpY]]></openid>
+//             <out_trade_no><![CDATA[571b0012887c2210688b4674]]></out_trade_no>
+//             <result_code><![CDATA[SUCCESS]]></result_code>
+//             <return_code><![CDATA[SUCCESS]]></return_code>
+//             <sign><![CDATA[A34729D2FD91578516B437E9E7850750]]></sign>
+//             <time_end><![CDATA[20160423125512]]></time_end>
+//             <total_fee>100</total_fee>
+//             <trade_type><![CDATA[NATIVE]]></trade_type>
+//             <transaction_id><![CDATA[4009222001201604235127207202]]></transaction_id>
+//             </xml>
+// EOD;
             $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
             $notifyData = \Weixin\Helpers::xmlToArray($xml);
-            $$notifyData = $this->checkSign($notifyData);
+            $this->checkSign($notifyData);
             $result = $this->notifyProcess($callback, $notifyData);
         } catch (\Exception $e) {
             $msg = $e->getMessage();
@@ -84,7 +104,7 @@ class Weixinpay
      *            回调解释出的参数
      * @return true 回调出来完成不需要继续回调，false 回调处理未完成需要继续回调
      */
-    final private function notifyProcess($callback, $notifyData)
+    final private function notifyProcess($callback, array $notifyData)
     {
         // 用户基础该类之后需要重写该方法，成功的时候返回true，失败返回false
         if (! array_key_exists("transaction_id", $notifyData)) {
