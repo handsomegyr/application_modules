@@ -2957,6 +2957,8 @@ CREATE TABLE `iweixinredpack_user` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
   `FromUserName` char(50) NOT NULL DEFAULT '' COMMENT '活动微信用户ID',
   `re_openid` char(50) NOT NULL DEFAULT '' COMMENT '红包微信用户ID',
+  `withdraw_date` char(8) NOT NULL DEFAULT '' COMMENT '提现日期',
+  `withdraw_money` int(10) NOT NULL DEFAULT '0' COMMENT '提现金额',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
