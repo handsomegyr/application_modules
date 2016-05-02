@@ -32,11 +32,12 @@ class User extends \App\Common\Models\Weixinredpack\User
             '$set' => $data
         ));
     }
-    
-    public function updateWithdrawDate($id, $is_withdrawed_date)
+
+    public function updateWithdrawDate($id, $withdraw_date, $withdraw_money)
     {
         $data = array(
-            'is_withdrawed_date' => $is_withdrawed_date
+            'withdraw_date' => $withdraw_date,
+            'withdraw_money' => $withdraw_money
         );
         $this->update(array(
             '_id' => $id
@@ -44,5 +45,4 @@ class User extends \App\Common\Models\Weixinredpack\User
             '$set' => $data
         ));
     }
-    
 }

@@ -208,20 +208,24 @@ class Api
             $try_count = 0; // 尝试次数,
             $is_reissue = false; // 是否有资格补发红包
             $logInfo = $this->_gotLog->record($mch_billno, $re_openid, $info['re_nickname'], $info['re_headimgurl'], $client_ip, $activity_id, $customer_id, $redpack_id, $total_num, $total_amount, $this->isNeedSendRedpack, $isOK, $try_count, $is_reissue, $logMemo);
+            
+            // 更新该规则的剩余数量和金额
+            $this->_rule->updateRemain($rule, $total_amount, $total_num);
+            
+            // 更新客户的使用金额
+            $this->_customer->incUsedAmount($customer_id, $total_amount);
+            
+            // 通过以上2步骤的话,说明他是有资格领取微信红包的,事后可以补发
+            $logInfoUpdateData = array(
+                'is_reissue' => true
+            );
+            $this->_gotLog->update(array(
+                '_id' => $logInfo['_id']
+            ), array(
+                '$set' => $logInfoUpdateData
+            ));
+            
             try {
-                // 更新该规则的剩余数量和金额
-                $this->_rule->updateRemain($rule, $total_amount, $total_num);
-                // 更新客户的使用金额
-                $this->_customer->incUsedAmount($customer_id, $total_amount);
-                // 通过以上2步骤的话,说明他是有资格领取微信红包的,事后可以补发
-                $logInfoUpdateData = array(
-                    'is_reissue' => true
-                );
-                $this->_gotLog->update(array(
-                    '_id' => $logInfo['_id']
-                ), array(
-                    '$set' => $logInfoUpdateData
-                ));
                 // 调用微信红包发送接口
                 $ret = $this->sendWeixinRedpack($mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl, $share_content, $share_url, $share_imgurl);
                 

@@ -23,6 +23,171 @@ class Application extends \App\Common\Models\Weixin\Application
      *
      * @return array
      */
+    public function getApplicationInfoByAppId($appid)
+    {
+        $cacheKey = cacheKey(__FILE__, __CLASS__, $appid);
+        $cache = $this->getDI()->get('cache');
+        $application = $cache->get($cacheKey);
+        if (empty($application)) {
+            $application = $this->findOne(array(
+                'appid' => $appid
+            ));
+            if (! empty($application)) {
+                $expire_time = $this->getExpireTime($application);
+                $cache->save($cacheKey, $application, $expire_time);
+            }
+        }
+        return $application;
+    }
+
+    /**
+     * 获取有效的token信息
+     *
+     * @throws Exception
+     * @return mixed array
+     */
+    public function getTokenByAppid($appid)
+    {
+        $cacheKey = cacheKey(__FILE__, __CLASS__, $appid);
+        $cache = $this->getDI()->get('cache');
+        noLock:
+        $token = $this->getApplicationInfoByAppId($appid);
+        if ($token == null) {
+            return null;
+        }
+        
+        if (isset($token['access_token_expire']) && ! empty($token['is_advanced'])) {
+            if ($token['access_token_expire']->sec <= time()) {
+                if (! empty($token['appid']) && ! empty($token['secret'])) {
+                    $lockKey = cacheKey(__FILE__, __CLASS__, __METHOD__, __LINE__);
+                    $objLock = new \iLock($lockKey);
+                    if (! $objLock->lock()) {
+                        $objToken = new \Weixin\Token\Server($token['appid'], $token['secret']);
+                        $arrToken = $objToken->getAccessToken();
+                        if (! isset($arrToken['access_token'])) {
+                            throw new \Exception(json_encode($arrToken));
+                        }
+                        
+                        $cmd = array();
+                        $cmd['query'] = array(
+                            '_id' => $token['_id']
+                        );
+                        $cmd['update'] = array(
+                            '$set' => array(
+                                'access_token' => $arrToken['access_token'],
+                                'access_token_expire' => getCurrentTime(time() + 7200)
+                            )
+                        );
+                        $cmd['new'] = true;
+                        $cmd['upsert'] = true;
+                        $rst = $this->findAndModify($cmd);
+                        if ($rst['ok'] == 1) {
+                            $expire_time = $this->getExpireTime($rst['value']);
+                            $cache->save($cacheKey, $rst['value'], $expire_time);
+                            $objLock->release();
+                            $token = $rst['value'];
+                        } else {
+                            throw new \Exception(json_encode($rst));
+                        }
+                    }
+                }
+            }
+            
+            // 缓存有效期不能超过token过期时间
+            if ((time() + $this->_expire) > $token['access_token_expire']->sec) {
+                $this->_expire = $token['access_token_expire']->sec - time();
+            }
+        }
+        
+        jsnoLock:
+        // 获取jsapi_ticket
+        if (! empty($token['is_advanced'])) {
+            if (! isset($token['jsapi_ticket_expire']) || $token['jsapi_ticket_expire']->sec <= time()) {
+                if (! empty($token['appid']) && ! empty($token['secret'])) {
+                    $lockKey = cacheKey(__FILE__, __CLASS__, __METHOD__, __LINE__);
+                    $objLock = new \iLock($lockKey);
+                    if (! $objLock->lock()) {
+                        
+                        // 获取jsapi_ticket
+                        $objJssdk = new \Weixin\Jssdk();
+                        $objJssdk->setAppId($token['appid']);
+                        $objJssdk->setAppSecret($token['secret']);
+                        $objJssdk->setAccessToken($token['access_token']);
+                        $arrJsApiTicket = $objJssdk->getJsApiTicket();
+                        
+                        $cmd = array();
+                        $cmd['query'] = array(
+                            '_id' => $token['_id']
+                        );
+                        $cmd['update'] = array(
+                            '$set' => array(
+                                'jsapi_ticket_expire' => getCurrentTime(time() + $arrJsApiTicket['expires_in']),
+                                'jsapi_ticket' => $arrJsApiTicket['ticket']
+                            )
+                        );
+                        $cmd['new'] = true;
+                        $cmd['upsert'] = true;
+                        $rst = $this->findAndModify($cmd);
+                        if ($rst['ok'] == 1) {
+                            $expire_time = $this->getExpireTime($rst['value']);
+                            $cache->save($cacheKey, $rst['value'], $expire_time);
+                            $objLock->release();
+                            $token = $rst['value'];
+                        } else {
+                            throw new \Exception(json_encode($rst));
+                        }
+                    }
+                }
+            }
+        }
+        
+        weixincardnoLock:
+        // 获取微信卡券的api_ticket
+        if (! empty($token['is_weixin_card'])) {
+            if (! isset($token['wx_card_api_ticket_expire']) || $token['wx_card_api_ticket_expire']->sec <= time()) {
+                if (! empty($token['appid']) && ! empty($token['secret'])) {
+                    $lockKey = cacheKey(__FILE__, __CLASS__, __METHOD__, __LINE__);
+                    $objLock = new \iLock($lockKey);
+                    if (! $objLock->lock()) {
+                        
+                        // 获取微信卡券的api_ticket
+                        $weixin = new \Weixin\Client();
+                        $weixin->setAccessToken($token['access_token']);
+                        $ret = $weixin->getCardManager()->getApiTicket();
+                        
+                        $cmd = array();
+                        $cmd['query'] = array(
+                            '_id' => $token['_id']
+                        );
+                        $cmd['update'] = array(
+                            '$set' => array(
+                                'wx_card_api_ticket_expire' => getCurrentTime(time() + $ret['expires_in']),
+                                'wx_card_api_ticket' => $ret['ticket']
+                            )
+                        );
+                        $cmd['new'] = true;
+                        $cmd['upsert'] = true;
+                        $rst = $this->findAndModify($cmd);
+                        if ($rst['ok'] == 1) {
+                            $expire_time = $this->getExpireTime($rst['value']);
+                            $cache->save($cacheKey, $rst['value'], $expire_time);
+                            $objLock->release();
+                            $token = $rst['value'];
+                        } else {
+                            throw new \Exception(json_encode($rst));
+                        }
+                    }
+                }
+            }
+        }
+        return $token;
+    }
+
+    /**
+     * 获取应用的信息
+     *
+     * @return array
+     */
     public function getApplicationInfo($is_product = true)
     {
         $cacheKey = cacheKey(__FILE__, __CLASS__, $is_product);

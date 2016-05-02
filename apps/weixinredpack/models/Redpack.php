@@ -3,6 +3,7 @@ namespace App\Weixinredpack\Models;
 
 class Redpack extends \App\Common\Models\Weixinredpack\Redpack
 {
+
     /**
      * 默认排序
      */
@@ -55,5 +56,25 @@ class Redpack extends \App\Common\Models\Weixinredpack\Redpack
             }
         }
         return $list;
+    }
+
+    /**
+     * 根据date获取信息
+     *
+     * @param string $now            
+     * @return array
+     */
+    public function getInfo4Today($now)
+    {
+        $query = array(
+            'start_time' => array(
+                '$lte' => $now
+            ),
+            'end_time' => array(
+                '$gte' => $now
+            )
+        );
+        $info = $this->findOne($query);
+        return $info;
     }
 }
