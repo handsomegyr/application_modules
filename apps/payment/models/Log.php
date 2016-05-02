@@ -91,7 +91,7 @@ class Log extends \App\Common\Models\Payment\Log
         $summary = 0;
         $ret = $this->sum($query, $fields, $groups);
         foreach ($ret as $row) {
-            $summary += $row->sumatory;
+            $summary += $row['sumatory'];
         }
         return $summary;
     }

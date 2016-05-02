@@ -60,12 +60,12 @@ class Base
 
     public function count($query)
     {
-        return $this->getModel()->getCount($query);
+        return $this->getModel()->count($query);
     }
 
     public function findOne(array $query)
     {
-        return $this->getModel()->getOne($query);
+        return $this->getModel()->findOne($query);
     }
 
     /**
@@ -79,12 +79,12 @@ class Base
      */
     public function find(array $query, array $sort = null, $skip = 0, $limit = 10, array $fields = array())
     {
-        return $this->getModel()->get($query, $sort, $skip, $limit, $fields);
+        return $this->getModel()->find($query, $sort, $skip, $limit, $fields);
     }
 
     public function findAll(array $query, array $sort = array(), array $fields = array())
     {
-        return $this->getModel()->getAll($query, $sort, $fields);
+        return $this->getModel()->findAll($query, $sort, $fields);
     }
 
     public function distinct($field, array $query)
@@ -101,7 +101,7 @@ class Base
      */
     public function sum(array $query, array $fields = array(), array $groups = array())
     {
-        return $this->getModel()->getSum($query, $fields, $groups);
+        return $this->getModel()->sum($query, $fields, $groups);
     }
 
     /**
@@ -134,7 +134,7 @@ class Base
      */
     public function findAndModify(array $options)
     {
-        return $this->getModel()->insertAndModify($options);
+        return $this->getModel()->findAndModify($options);
     }
 
     public function remove(array $query)

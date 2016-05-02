@@ -29,6 +29,7 @@ function registerAutoloaders()
             'App\Common\Models\Base' => APP_PATH . 'apps/common/models/base/',
             'App\Common\Models\Base\Mongodb' => APP_PATH . 'apps/common/models/base/mongodb/',
             'App\Common\Models\Base\Mysql' => APP_PATH . 'apps/common/models/base/mysql/',
+            'App\Common\Models\Base\Mysql\Phalcon' => APP_PATH . 'apps/common/models/base/mysql/phalcon/',
             
             'App\Common\Models\Goods\Mysql' => APP_PATH . 'apps/common/models/goods/mysql/',
             'App\Common\Models\Goods\Mongodb' => APP_PATH . 'apps/common/models/goods/mongodb/',
