@@ -148,11 +148,6 @@ class Impl2 extends Base
         $className = $this->getSource();
         $order = $this->getSort($sort);
         $conditions = array_merge($conditions, $order);
-        if ($this->isDebug) {
-            echo "<pre><br/>";
-            var_dump($conditions);
-            die('OK');
-        }
         $orderBy = "";
         if (! empty($order['order'])) {
             $orderBy = "ORDER BY {$order['order']}";
@@ -227,11 +222,7 @@ class Impl2 extends Base
      */
     public function insert(array $datas)
     {
-        if ($this->isPhql) {
-            $className = get_class($this);
-        } else {
-            $className = $this->getSource();
-        }
+        $className = $this->getSource();
         $insertFieldValues = $this->getInsertContents($datas);
         $phql = "INSERT INTO {$className}({$insertFieldValues['fields']}) VALUES ({$insertFieldValues['bindFields']})";
         $data = $insertFieldValues['values'];
@@ -295,7 +286,7 @@ class Impl2 extends Base
             } else {
                 // 进行更新操作
                 $criteria['_id'] = $info['_id'];
-                $this->modify($criteria, $object);
+                $this->update($criteria, $object);
                 if ($new) {
                     // 获取单条记录
                     $newInfo = $this->findOne(array(
@@ -325,16 +316,13 @@ class Impl2 extends Base
         return $rst;
     }
 
-    public function modify(array $criteria, array $object, array $options = array())
+    public function update(array $criteria, array $object, array $options = array())
     {
         if (empty($criteria)) {
             throw new \Exception("更新数据的时候请指定条件", - 999);
         }
-        if ($this->isPhql) {
-            $className = get_class($this);
-        } else {
-            $className = $this->getSource();
-        }
+        
+        $className = $this->getSource();
         $conditions = $this->getConditions($criteria);
         $updateFieldValues = $this->getUpdateContents($object);
         $phql = "UPDATE {$className} SET {$updateFieldValues['fields']} WHERE {$conditions['conditions']} ";
@@ -349,11 +337,7 @@ class Impl2 extends Base
         }
         
         $conditions = $this->getConditions($query);
-        if ($this->isPhql) {
-            $className = get_class($this);
-        } else {
-            $className = $this->getSource();
-        }
+        $className = $this->getSource();
         $phql = "DELETE FROM {$className} WHERE {$conditions['conditions']}";
         $result = $this->executeQuery($phql, $conditions['bind'], 'execute');
     }

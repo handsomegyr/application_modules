@@ -126,7 +126,7 @@ class Base
 
     public function update(array $criteria, array $object, array $options = array())
     {
-        return $this->getModel()->modify($criteria, $object, $options);
+        return $this->getModel()->update($criteria, $object, $options);
     }
 
     /**

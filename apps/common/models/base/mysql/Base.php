@@ -131,9 +131,9 @@ class Base
         return $this->impl->findAndModify($options);
     }
 
-    public function modify(array $criteria, array $object, array $options = array())
+    public function update(array $criteria, array $object, array $options = array())
     {
-        return $this->impl->modify($criteria, $object, $options);
+        return $this->impl->update($criteria, $object, $options);
     }
 
     public function remove(array $query)
