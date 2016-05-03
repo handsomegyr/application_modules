@@ -49,7 +49,7 @@ class SnsController extends ControllerBase
     }
 
     /**
-     * http://www.example.com/weixin/sns/index?appid=xxx&redirect=回调地址&scope=[snsapi_userinfo(default)|snsapi_base|snsapi_login]&dc=1
+     * http://www.example.com/weixin/sns/index?appid=xxx&redirect=http%3A%2F%2Fwww.baidu.com%2F%3Fa%3Dqw%26b%3D%E4%B8%AD%E5%9B%BD&scope=[snsapi_userinfo(default)|snsapi_base|snsapi_login]&dc=1
      * 引导用户去往登录授权
      */
     public function indexAction()
@@ -69,11 +69,14 @@ class SnsController extends ControllerBase
                 }
             }
             
-            if (isset($_SESSION['iWeixin']["accessToken_{$this->appid}_{$this->scope}"])) {
+            if (! empty($_SESSION['iWeixin']["accessToken_{$this->appid}_{$this->scope}"])) {
                 
                 $arrAccessToken = $_SESSION['iWeixin']["accessToken_{$this->appid}_{$this->scope}"];
                 
                 $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
+                
+                // print_r($arrAccessToken);
+                // die('session:' . $redirect);
                 
                 header("location:{$redirect}");
                 fastcgi_finish_request();
@@ -85,13 +88,14 @@ class SnsController extends ControllerBase
                 
                 $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
                 
+                // print_r($arrAccessToken);
+                // die('cookie:' . $redirect);
+                
                 header("location:{$redirect}");
                 fastcgi_finish_request();
                 $this->_tracking->record("授权cookie存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
                 exit();
             } else {
-                $redirect = isset($_GET['redirect']) ? urlencode(trim($_GET['redirect'])) : ''; // 附加参数存储跳转地址
-                
                 $moduleName = 'weixin';
                 $controllerName = 'sns';
                 $actionName = 'callback';
@@ -182,6 +186,7 @@ class SnsController extends ControllerBase
                     }
                 }
                 
+                // die($redirect);
                 header("location:{$redirect}");
                 // 调整数据库操作的执行顺序，优化跳转速度
                 fastcgi_finish_request();

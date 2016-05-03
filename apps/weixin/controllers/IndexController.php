@@ -69,10 +69,10 @@ class IndexController extends ControllerBase
             }
         } catch (\Exception $e) {
             if (! in_array($this->router->getActionName(), array(
-                "get-settings",
-                "get-jssdk-info",
-                "get-access-token",
-                "get-jsapi-ticket"
+                "getsettings",
+                "getjssdkinfo",
+                "getaccesstoken",
+                "getjsapiticket"
             ))) {
                 var_dump($e);
             }
@@ -155,6 +155,8 @@ class IndexController extends ControllerBase
                     return true;
                 }
             }
+            // 设定来源和目标用户的openid
+            $this->_weixin->setFromAndTo($FromUserName, $ToUserName);
             
             // 获取微信用户的个人信息
             if (! empty($this->_appConfig['access_token'])) {
@@ -162,12 +164,8 @@ class IndexController extends ControllerBase
                 $this->_user->updateUserInfoByAction($FromUserName);
             }
             
-            // 设定来源和目标用户的openid
-            $this->_weixin->setFromAndTo($FromUserName, $ToUserName);
-            
             // 为回复的Model装载weixin对象
             $this->_reply->setWeixinInstance($this->_weixin);
-            
             /**
              * ==================================================================================
              * ====================================以上逻辑请勿修改===================================
@@ -588,7 +586,7 @@ class IndexController extends ControllerBase
     /**
      * 同步菜单选项的Hook
      */
-    public function syncMenuAction()
+    public function syncmenuAction()
     {
         try {
             $menus = $this->_menu->buildMenu();
@@ -606,7 +604,7 @@ class IndexController extends ControllerBase
     /**
      * 创建二维码ticket的Hook
      */
-    public function createQrcodeAction()
+    public function createqrcodeAction()
     {
         try {
             $scenes = $this->_scene->getAll();
@@ -632,7 +630,7 @@ class IndexController extends ControllerBase
     /**
      * 发送模板消息
      */
-    public function sendTemplateMsgAction()
+    public function sendtemplatemsgAction()
     {
         try {
             $template_id = "5UWzYiEm8AsW97T9uZbX-zUGporKDGIfDFf-wUi8OD4";
@@ -678,7 +676,7 @@ class IndexController extends ControllerBase
     /**
      * 获取所有微信设置信息的接口
      */
-    public function getSettingsAction()
+    public function getsettingsAction()
     {
         try {
             if (empty($this->_appConfig)) {
@@ -706,7 +704,7 @@ class IndexController extends ControllerBase
     /**
      * 获取所有微信wssdk设置信息的接口
      */
-    public function getJssdkInfoAction()
+    public function getjssdkinfoAction()
     {
         try {
             // 如果不是跨域请求的话
@@ -752,7 +750,7 @@ class IndexController extends ControllerBase
     /**
      * 获取微信accesstoken信息的接口
      */
-    public function getAccessTokenAction()
+    public function getaccesstokenAction()
     {
         try {
             if (empty($this->_appConfig)) {
@@ -777,7 +775,7 @@ class IndexController extends ControllerBase
     /**
      * 获取微信jsapiticket信息的接口
      */
-    public function getJsapiTicketAction()
+    public function getjsapiticketAction()
     {
         try {
             if (empty($this->_appConfig)) {
@@ -827,7 +825,7 @@ class IndexController extends ControllerBase
     /**
      * 获取微信服务号组ID的接口
      */
-    public function getAllGroupAction()
+    public function getallGroupAction()
     {
         try {
             if (empty($this->_appConfig)) {
@@ -849,9 +847,35 @@ class IndexController extends ControllerBase
     }
 
     /**
+     * 获取微信服务号组ID的接口
+     */
+    public function getuserinfoAction()
+    {
+        try {
+            $FromUserName = $this->get('FromUserName', '');
+            
+            if (empty($this->_appConfig)) {
+                $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
+            }
+            if (empty($this->_appConfig)) {
+                echo $this->error("-1", "获取失败");
+                return false;
+            } else {
+                $rs = array();
+                $userInfo = $this->_weixin->getUserManager()->getUserInfo($FromUserName);
+                echo $this->result("OK", $userInfo);
+                return true;
+            }
+        } catch (\Exception $e) {
+            echo $this->error($e->getCode(), $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * 创建/更新公众平台组信息并更新到场景管理的微信组ID数组里
      */
-    public function updateGroupsAction()
+    public function updategroupsAction()
     {
         try {
             if (empty($this->_appConfig)) {

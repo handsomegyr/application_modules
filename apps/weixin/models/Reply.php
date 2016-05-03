@@ -1,8 +1,6 @@
 <?php
 namespace App\Weixin\Models;
 
-use Weixin\Client;
-
 class Reply extends \App\Common\Models\Weixin\Reply
 {
 
@@ -20,7 +18,7 @@ class Reply extends \App\Common\Models\Weixin\Reply
 
     const IMAGE = 6;
 
-    public function setWeixinInstance(Client $weixin)
+    public function setWeixinInstance(\Weixin\Client $weixin)
     {
         $this->_weixin = $weixin;
     }

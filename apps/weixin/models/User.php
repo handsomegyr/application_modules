@@ -1,14 +1,12 @@
 <?php
 namespace App\Weixin\Models;
 
-use Weixin\Client;
-
 class User extends \App\Common\Models\Weixin\User
 {
 
     private $_weixin;
 
-    public function setWeixinInstance(Client $weixin)
+    public function setWeixinInstance(\Weixin\Client $weixin)
     {
         $this->_weixin = $weixin;
     }
@@ -69,16 +67,31 @@ class User extends \App\Common\Models\Weixin\User
                 return false;
             }
             
+            $data = array();
+            $data['openid'] = isset($userInfo['openid']) ? $userInfo['openid'] : '';
+            $data['nickname'] = isset($userInfo['nickname']) ? $userInfo['nickname'] : '';
+            $data['sex'] = isset($userInfo['sex']) ? $userInfo['sex'] : '';
+            $data['language'] = isset($userInfo['language']) ? $userInfo['language'] : '';
+            $data['city'] = isset($userInfo['city']) ? $userInfo['city'] : '';
+            $data['province'] = isset($userInfo['province']) ? $userInfo['province'] : '';
+            $data['country'] = isset($userInfo['country']) ? $userInfo['country'] : '';
+            $data['headimgurl'] = isset($userInfo['headimgurl']) ? $userInfo['headimgurl'] : '';
+            $data['remark'] = isset($userInfo['remark']) ? $userInfo['remark'] : '';
+            $data['groupid'] = isset($userInfo['groupid']) ? $userInfo['groupid'] : '';
+            $data['tagid_list'] = isset($userInfo['tagid_list']) ? $userInfo['tagid_list'] : '';
+            $data['subscribe'] = isset($userInfo['subscribe']) ? $userInfo['subscribe'] : '';
+            $data['subscribe_time'] = isset($userInfo['subscribe_time']) ? $userInfo['subscribe_time'] : '';
+            $data['unionid'] = isset($userInfo['unionid']) ? $userInfo['unionid'] : '';
+            $data['privilege'] = isset($userInfo['privilege']) ? $userInfo['privilege'] : '';
+            
             if (! empty($check)) {
                 return $this->update(array(
                     'openid' => $openid
                 ), array(
-                    '$set' => $userInfo
-                ), array(
-                    'upsert' => true
+                    '$set' => $data
                 ));
             } else {
-                return $this->insert($userInfo);
+                return $this->insert($data);
             }
         }
         return false;
