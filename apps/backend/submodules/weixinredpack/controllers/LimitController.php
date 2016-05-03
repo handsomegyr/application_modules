@@ -30,7 +30,7 @@ class LimitController extends \App\Backend\Controllers\FormController
         $this->modelActivity = new Activity();
         parent::initialize();
     }
-
+    
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

@@ -31,6 +31,34 @@ class RuleController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
+    /**
+     * @title({name="复制规则"})
+     *
+     * @name 复制规则
+     */
+    public function copyAction()
+    {
+        try {
+            $this->view->disable();
+            
+            $input = $this->getFilterInput();
+            
+            if ($input->isValid("id")) {} else {
+                $messageInfo = $this->_getValidationMessage($input);
+                throw new \Exception($messageInfo);
+            }
+            $ruleInfo = $this->modelRule->getInfoById($input->id);
+            unset($ruleInfo['_id']);
+            unset($ruleInfo['__CREATE_TIME__']);
+            unset($ruleInfo['__MODIFY_TIME__']);
+            unset($ruleInfo['__REMOVED__']);
+            $this->modelRule->insert($ruleInfo);
+            $this->makeJsonResult();
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
@@ -478,7 +506,7 @@ class RuleController extends \App\Backend\Controllers\FormController
         foreach ($list['data'] as &$item) {
             $item['activity_name'] = $activityList[$item['activity']];
             $item['customer_name'] = $customerList[$item['customer']];
-            $item['redpack_name'] = $redpackList[$item['redpack']];
+            $item['redpack_name'] = $redpackList[$item['redpack']] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要复制该条规则吗？\', \'copy\')" class="halflings-icon user white"><i></i> 复制</a>';
             $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
             $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
         }
