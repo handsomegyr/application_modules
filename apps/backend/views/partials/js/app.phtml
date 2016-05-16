@@ -660,7 +660,7 @@ var App = function () {
 
         // handle theme colors
         var setColor = function (color) {
-            $('#style_color').attr("href", "{{resourceUrl}}media/css/" + color + ".css");
+            $('#style_color').attr("href", "<?php echo $this->view->resourceUrl?>media/css/" + color + ".css");
             $.cookie('style_color', color);                
         }
 
