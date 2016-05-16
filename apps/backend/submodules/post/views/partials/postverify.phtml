@@ -90,7 +90,7 @@
 <script>
 var Post = function () {
     return {
-		url : '{{baseUrl}}{{moduleName}}/{{controllerName}}',
+		url : '<?php echo $this->view->baseUrl?>{{moduleName}}/{{controllerName}}',
 		showPass:function (id){
 			//alert(id);
 			$('#is_recommend').val(0);

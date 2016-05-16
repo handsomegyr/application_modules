@@ -172,7 +172,7 @@
 												
 												<div class="fileupload-new thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
 
-													<img src="{{baseUrl}}service/file/index?id=noimg.png&w=200&h=150" style="max-height: 150px;" alt="" />
+													<img src="<?php echo $this->view->baseUrl?>service/file/index?id=noimg.png&w=200&h=150" style="max-height: 150px;" alt="" />
 
 												</div>
 												<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
@@ -184,9 +184,9 @@
                               	            	    }
                               	            	    ?>
                               	            	    <?php if(isset($this->view->row[$key])){?>
-                                                    <img src="{{baseUrl}}service/file/index?upload_path=<?php echo $path?>&id=<?php echo $this->view->row[$key]?>&w=200&h=150" style="max-height: 150px;">
+                                                    <img src="<?php echo $this->view->baseUrl?>service/file/index?upload_path=<?php echo $path?>&id=<?php echo $this->view->row[$key]?>&w=200&h=150" style="max-height: 150px;">
                                                     <?php }else{?>
-                                                    <img src="{{baseUrl}}service/file/index?id=noimg.png&w=200&h=150" style="max-height: 150px;">
+                                                    <img src="<?php echo $this->view->baseUrl?>service/file/index?id=noimg.png&w=200&h=150" style="max-height: 150px;">
                                                     <?php }?>
                                                 </div>
 												<div>

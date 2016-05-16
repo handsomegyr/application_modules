@@ -66,7 +66,7 @@ $icons2 = array(
 
 				<li class="start ">
 
-					<a href="{{baseUrl}}admin/index/index">
+					<a href="<?php echo $this->view->baseUrl?>admin/index/index">
 
 					<i class="icon-home"></i> 
 
@@ -97,7 +97,7 @@ $icons2 = array(
                         <?php if(true || !empty($priv['cando'])){?>
 						<li class="<?php if(!empty($priv['is_active'])){?>active<?php }?> " >
 
-							<a href="{{baseUrl}}<?php echo $priv['url']?>">
+							<a href="<?php echo $this->view->baseUrl?><?php echo $priv['url']?>">
 
 							<i class="<?php echo $icons2[$index2 % 6]?>"></i>
 

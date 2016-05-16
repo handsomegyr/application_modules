@@ -2,8 +2,8 @@
 var List = function () {
 
     return {
-    	url : '{{baseUrl}}{{moduleName}}/{{controllerName}}',
-	    imagepath : '{{baseUrl}}backend/',
+    	url : '<?php echo $this->view->baseUrl?>{{moduleName}}/{{controllerName}}',
+	    imagepath : '<?php echo $this->view->baseUrl?>backend/',
     	compileFilter:function() {
     		var data = new Object;
     		/**
@@ -159,7 +159,7 @@ var List = function () {
 			
         	$('#sample_editable_1_new').click(function (e) {
                 e.preventDefault();
-                window.location.href = "{{baseUrl}}{{moduleName}}/{{controllerName}}/add";           
+                window.location.href = "<?php echo $this->view->baseUrl?>{{moduleName}}/{{controllerName}}/add";           
             });
 
         	$('#sample_editable_1_export_csv').click(function (e) {
@@ -178,7 +178,7 @@ var List = function () {
 			   $.each( d, function(i, n){
 				  p +=("&"+i+"="+n);
 				});
-                window.location.href = "{{baseUrl}}{{moduleName}}/{{controllerName}}/export?m=csv"+p;           
+                window.location.href = "<?php echo $this->view->baseUrl?>{{moduleName}}/{{controllerName}}/export?m=csv"+p;           
             });
             
         	//https://datatables.net/reference/option/#Features
@@ -201,7 +201,7 @@ var List = function () {
          	    "pageLength": 30,
       	   	    "pagingType": "full_numbers",	   	        
       	   	    "ajax": {
-      	   	        "url": "{{baseUrl}}{{moduleName}}/{{controllerName}}/query",
+      	   	        "url": "<?php echo $this->view->baseUrl?>{{moduleName}}/{{controllerName}}/query",
       	   	        "type": 'POST',
       		   	    "data": function ( d ) {
            		   	   <?php foreach ($this->view->schemas as $key => $field) {?> 
@@ -240,7 +240,7 @@ var List = function () {
                 	       $path = empty($fileInfo['path'])?'':trim($fileInfo['path'],'/').'/';
                 	    }
    	            	    ?>
-      	            	return '<img src="{{baseUrl}}service/file/index?upload_path=<?php echo trim($path,'/') ?>&id='+data+'&w=200&h=150" style="max-height: 150px;" alt="">';
+      	            	return '<img src="<?php echo $this->view->baseUrl?>service/file/index?upload_path=<?php echo trim($path,'/') ?>&id='+data+'&w=200&h=150" style="max-height: 150px;" alt="">';
   	                 }
   	  	   	       <?php }elseif(isset($field['list']['items'])){ ?>
   	               "render": function ( data, type, full, meta ) {
@@ -272,7 +272,7 @@ var List = function () {
     	   	            "searchable":false,
        	   	            "render": function ( data, type, full, meta ) {
                             var id = full['_id'];
-                     	    var editOp = '<a href="{{baseUrl}}{{moduleName}}/{{controllerName}}/edit?id='+id+'" class="btn mini purple"><i class="icon-edit"></i> Edit</a>';
+                     	    var editOp = '<a href="<?php echo $this->view->baseUrl?>{{moduleName}}/{{controllerName}}/edit?id='+id+'" class="btn mini purple"><i class="icon-edit"></i> Edit</a>';
                      	    var deleteOp = '<a href="javascript:;" onclick="List.remove(\''+id+'\', \'你确定要删除这条记录吗？\')" class="btn mini black"><i class="icon-trash"></i> Delete</a>';
                      	    return editOp +'<br/>'+ deleteOp;
                         }

@@ -485,7 +485,7 @@ var FormComponents = function () {
             minimumInputLength: 1,
             ajax: {
                 //url: "https://api.github.com/search/repositories",
-                url: "{{baseUrl}}<?php echo $field['form']['select']['apiUrl']?>",
+                url: "<?php echo $this->view->baseUrl?><?php echo $field['form']['select']['apiUrl']?>",
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
