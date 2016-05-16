@@ -51,7 +51,7 @@
 <script>
 var Delivery = function () {
     return {
-		url : '<?php echo $this->view->baseUrl?>{{moduleName}}/{{controllerName}}',
+		url : '<?php echo $this->view->baseUrl?><?php echo $this->view->moduleName?>/<?php echo $this->view->controllerName?>',
 		show:function (id){
 			//alert(id);
 			$('#express_no').val('');

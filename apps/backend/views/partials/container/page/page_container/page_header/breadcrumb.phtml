@@ -99,13 +99,13 @@ if ($this->view->actionName == "list") {
 							</li>
 							<?php if(!empty($title)){?>
 							<li>
-								<a href="<?php echo $this->view->baseUrl?>{{moduleName}}/{{url1}}"><?php echo $title?></a>
+								<a href="<?php echo $this->view->baseUrl?><?php echo $this->view->moduleName?>/{{url1}}"><?php echo $title?></a>
                                 <?php if(!empty($smalltitle)){?>
 								<i class="icon-angle-right"></i>
                                 <?php }?>
 							</li>
 							<?php if(!empty($smalltitle)){?>
-							<li><a href="<?php echo $this->view->baseUrl?>{{moduleName}}/{{url2}}"><?php echo $smalltitle?></a></li>
+							<li><a href="<?php echo $this->view->baseUrl?><?php echo $this->view->moduleName?>/{{url2}}"><?php echo $smalltitle?></a></li>
                             <?php }?>
 							<?php }?>
 						</ul>
