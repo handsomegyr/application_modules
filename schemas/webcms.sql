@@ -2612,6 +2612,9 @@ CREATE TABLE `iweixin_reply` (
   `page` varchar(100) NOT NULL DEFAULT '',
   `show_times` int(11) unsigned NOT NULL DEFAULT '0',
   `click_times` int(11) unsigned NOT NULL DEFAULT '0',
+  `image_media_result` text,
+  `voice_media_result` text,
+  `video_media_result` text,
   `__CREATE_TIME__` datetime NOT NULL,
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -2620,7 +2623,7 @@ CREATE TABLE `iweixin_reply` (
 
 /*Data for the table `iweixin_reply` */
 
-insert  into `iweixin_reply`(`_id`,`reply_type`,`keyword`,`title`,`url`,`description`,`picture`,`icon`,`music`,`voice`,`video`,`image`,`priority`,`page`,`show_times`,`click_times`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('55dae2767f50ea400a00000f',1,'默认回复','标题','网址链接','<p>亲，今天你参加[极限挑战]了么？极限红包等着你，快来吧！<img alt=\"6630190355419536199.png\" src=\"/ueditor/php/upload/image/20151012/1444640786134125.png\" title=\"1444640786134125.png\" /></p>','banner图片','小图标','音乐','音频','视频','图片',0,'自定义页面',0,0,'0000-00-00 00:00:00','2015-10-12 18:02:34',0),('55e6c6d07f50ea6405000001',3,'测试1','测试1','测试1','<p>测试1</p>','561cd8ae7f50ea081b000029','','','','','561cd8c57f50ea381b000029',12,'测试1',0,0,'2015-09-02 17:52:16','2015-11-07 19:05:20',0);
+insert  into `iweixin_reply`(`_id`,`reply_type`,`keyword`,`title`,`url`,`description`,`picture`,`icon`,`music`,`voice`,`video`,`image`,`priority`,`page`,`show_times`,`click_times`,`image_media_result`,`voice_media_result`,`video_media_result`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('55dae2767f50ea400a00000f',1,'默认回复','标题','网址链接','<p>亲，今天你参加[极限挑战]了么？极限红包等着你，快来吧！<img alt=\"6630190355419536199.png\" src=\"/ueditor/php/upload/image/20151012/1444640786134125.png\" title=\"1444640786134125.png\" /></p>','banner图片','小图标','音乐','音频','视频','图片',0,'自定义页面',0,0,NULL,NULL,NULL,'0000-00-00 00:00:00','2015-10-12 18:02:34',0),('55e6c6d07f50ea6405000001',3,'测试1','测试1','测试1','<p>测试1</p>','561cd8ae7f50ea081b000029','','','','','561cd8c57f50ea381b000029',12,'测试1',0,0,NULL,NULL,NULL,'2015-09-02 17:52:16','2015-11-07 19:05:20',0);
 
 /*Table structure for table `iweixin_reply_type` */
 
@@ -2787,7 +2790,12 @@ CREATE TABLE `iweixin_user` (
   `privilege` text,
   `subscribe_time` datetime DEFAULT NULL,
   `subscribe` tinyint(1) unsigned DEFAULT '0',
+  `language` varchar(10) DEFAULT '',
+  `unionid` varchar(50) DEFAULT '',
+  `groupid` varchar(10) DEFAULT '',
+  `remark` text,
   `access_token` text,
+  `tagid_list` text,
   `__CREATE_TIME__` datetime NOT NULL,
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -2797,7 +2805,7 @@ CREATE TABLE `iweixin_user` (
 
 /*Data for the table `iweixin_user` */
 
-insert  into `iweixin_user`(`_id`,`openid`,`nickname`,`sex`,`country`,`province`,`city`,`headimgurl`,`privilege`,`subscribe_time`,`subscribe`,`access_token`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560ddba9fd4d3d9d018b4567','o6HiMuF61GElRIFGwfv8XkUzLO2Y','邬邬Verlaine',1,'中国','上海','黄浦','http://wx.qlogo.cn/mmopen/Q3auHgzwzM7UHa5pVr9e6B8rO6N6MoLnPmIupFsO1kofb9SN4UesJu4L5NrXaeAlkPyrSHKbgbPfkoY8zjazeQ/0','','2015-10-02 09:30:40',1,'','2015-10-02 09:19:37','2015-10-02 09:37:00',0);
+insert  into `iweixin_user`(`_id`,`openid`,`nickname`,`sex`,`country`,`province`,`city`,`headimgurl`,`privilege`,`subscribe_time`,`subscribe`,`language`,`unionid`,`groupid`,`remark`,`access_token`,`tagid_list`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560ddba9fd4d3d9d018b4567','o6HiMuF61GElRIFGwfv8XkUzLO2Y','邬邬Verlaine',1,'中国','上海','黄浦','http://wx.qlogo.cn/mmopen/Q3auHgzwzM7UHa5pVr9e6B8rO6N6MoLnPmIupFsO1kofb9SN4UesJu4L5NrXaeAlkPyrSHKbgbPfkoY8zjazeQ/0','','2015-10-02 09:30:40',1,'','','',NULL,'',NULL,'2015-10-02 09:19:37','2015-10-02 09:37:00',0);
 
 /*Table structure for table `iweixinredpack_customer` */
 
@@ -3048,7 +3056,7 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','192.168.81.1','2016-04-19 09:44:56',178,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','2016-04-19 09:44:56',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
+insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','192.168.81.1','2016-05-17 08:19:07',184,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','2016-05-17 08:19:07',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
