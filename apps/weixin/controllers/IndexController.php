@@ -826,7 +826,7 @@ class IndexController extends ControllerBase
     /**
      * 获取微信服务号组ID的接口
      */
-    public function getallGroupAction()
+    public function getallgroupAction()
     {
         try {
             if (empty($this->_appConfig)) {
