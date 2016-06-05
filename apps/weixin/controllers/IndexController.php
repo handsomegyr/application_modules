@@ -53,6 +53,7 @@ class IndexController extends ControllerBase
             $this->_keyword = new Keyword();
             $this->_not_keyword = new NotKeyword();
             $this->_reply = new Reply();
+            $this->_reply->filePath = $this->webUrl;
             $this->_app = new Application();
             $this->_user = new User();
             $this->_menu = new Menu();

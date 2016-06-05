@@ -142,7 +142,10 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => 'banner图片(图文)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100'
+                'length' => '100',
+                'file' => array(
+                    'path' => $this->modelReply->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
@@ -163,7 +166,10 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '小图标(图文)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100'
+                'length' => '100',
+                'file' => array(
+                    'path' => $this->modelReply->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
@@ -184,7 +190,10 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '音乐(音乐)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100'
+                'length' => '100',
+                'file' => array(
+                    'path' => $this->modelReply->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
@@ -205,7 +214,10 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '音频(音频)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100'
+                'length' => '100',
+                'file' => array(
+                    'path' => $this->modelReply->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
@@ -226,7 +238,10 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '视频(视频)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100'
+                'length' => '100',
+                'file' => array(
+                    'path' => $this->modelReply->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
@@ -247,7 +262,10 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '图片(图片)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100'
+                'length' => '100',
+                'file' => array(
+                    'path' => $this->modelReply->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false

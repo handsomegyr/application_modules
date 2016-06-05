@@ -4,6 +4,8 @@ namespace App\Weixin\Models;
 class Reply extends \App\Common\Models\Weixin\Reply
 {
 
+    public $filePath = '/';
+
     private $_weixin;
 
     const MULTI = 1;
@@ -85,12 +87,13 @@ class Reply extends \App\Common\Models\Weixin\Reply
         }
         
         if ($created_at + 24 * 3600 * 3 < time()) {
-            $media_result = $this->_weixin->getMediaManager()->upload($type, $reply[$type]);
+            $file = $this->getImagePath($this->filePath, $reply[$type]);
+            $media_result = $this->_weixin->getMediaManager()->upload($type, $file);
             $this->update(array(
                 '_id' => $reply['_id']
             ), array(
                 '$set' => array(
-                    $type . '_media_result' => $media_result
+                    $type . '_media_result' => json_encode($media_result)
                 )
             ));
         }
