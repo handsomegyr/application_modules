@@ -550,7 +550,7 @@ class IndexController extends ControllerBase
                 return false;
             }
             if (empty($response)) {
-                $response = followUrl($this->anwser($content), array(
+                $response = followUrl($this->answer($content), array(
                     'FromUserName' => $FromUserName,
                     'timestamp' => $__TIME_STAMP__,
                     'signkey' => $__SIGN_KEY__
@@ -922,7 +922,7 @@ class IndexController extends ControllerBase
      * @param string $content            
      * @return boolean
      */
-    private function anwser($content)
+    private function answer($content)
     {
         $match = $this->_keyword->matchKeyWord($content);
         if (empty($match)) {
