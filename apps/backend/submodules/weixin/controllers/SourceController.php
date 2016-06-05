@@ -330,7 +330,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        $schemas['description'] = array(
+        $schemas['Description'] = array(
             'name' => '消息描述',
             'data' => array(
                 'type' => 'string',
