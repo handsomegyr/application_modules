@@ -4,7 +4,7 @@ namespace App\Weixin\Models;
 class Reply extends \App\Common\Models\Weixin\Reply
 {
 
-    public $filePath = '/';
+    public $HOST_URL = '/';
 
     private $_weixin;
 
@@ -40,7 +40,7 @@ class Reply extends \App\Common\Models\Weixin\Reply
                         'title' => $reply['title'],
                         'description' => $reply['description'],
                         'picurl' => $index == 0 ? $reply['picture'] : $reply['icon'],
-                        'url' => ! empty($reply['url']) ? $reply['url'] : (isset($reply['page']) ? HOST_URL . 'weixin/page/index/id/' . $reply['page'] : '')
+                        'url' => ! empty($reply['url']) ? $reply['url'] : (isset($reply['page']) ? $this->HOST_URL . 'weixin/page/index/id/' . $reply['page'] : '')
                     ));
                 }
                 return $this->_weixin->getMsgManager()
@@ -87,7 +87,7 @@ class Reply extends \App\Common\Models\Weixin\Reply
         }
         
         if ($created_at + 24 * 3600 * 3 < time()) {
-            $file = $this->getImagePath($this->filePath, $reply[$type]);
+            $file = $this->getImagePath($this->HOST_URL, $reply[$type]);
             $media_result = $this->_weixin->getMediaManager()->upload($type, $file);
             $this->update(array(
                 '_id' => $reply['_id']
