@@ -39,10 +39,11 @@ class Reply extends \App\Common\Models\Weixin\Reply
                     array_push($articles, array(
                         'title' => $reply['title'],
                         'description' => $reply['description'],
-                        'picurl' => $index == 0 ? $reply['picture'] : $reply['icon'],
+                        'picurl' => $index == 0 ? $this->getImagePath($this->HOST_URL, $reply['picture']) : $this->getImagePath($this->HOST_URL, $reply['icon']),
                         'url' => ! empty($reply['url']) ? $reply['url'] : (isset($reply['page']) ? $this->HOST_URL . 'weixin/page/index/id/' . $reply['page'] : '')
                     ));
                 }
+                
                 return $this->_weixin->getMsgManager()
                     ->getReplySender()
                     ->replyGraphText($articles);
