@@ -14,4 +14,15 @@ class Reply extends Base
     {
         return 'iweixin_reply';
     }
+
+    public function reorganize(array $data)
+    {
+        $data = parent::reorganize($data);
+        
+        $data['image_media_result'] = $this->changeToArray($data['image_media_result']);
+        $data['voice_media_result'] = $this->changeToArray($data['voice_media_result']);
+        $data['video_media_result'] = $this->changeToArray($data['video_media_result']);
+        
+        return $data;
+    }
 }
