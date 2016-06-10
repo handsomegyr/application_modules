@@ -219,65 +219,105 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         return $ret;
     }
 
-    public function weixinauthorize()
-    {}
+    protected function weixinauthorize()
+    {
+        $userInfo = empty($_SESSION['Weixin_userInfo']) ? array() : $_SESSION['Weixin_userInfo'];
+        if (! empty($userInfo)) {
+            $openid = $userInfo['user_id'];
+            $nickname = $userInfo['user_name'];
+            $headimgurl = $userInfo['user_headimgurl'];
+            
+            // 加锁
+            $key = cacheKey(__FILE__, __CLASS__, $openid);
+            $objLock = new \iLock($key);
+            if ($objLock->lock()) {
+                $this->refreshPage(5);
+            }
+            // 获取
+            $userInfo = $this->modelMember->getInfoByWeixinOpenid($openid);
+            if (! empty($userInfo)) {
+                // 登录处理
+                $this->modelMember->login($userInfo);
+                // 跳转地址
+                $callbackUrl = $this->url->get("yungou/index/index");
+                $this->_redirect($callbackUrl);
+                exit();
+            }
+        }
+    }
 
     /**
-     * 微信授权页面
+     * 微信授权之后的页面
      */
     public function weixinauthorizeAction()
     {
         try {
-            // http://xxx/xxx/xxx/weixinauthorize?callbackUrl=xxx
-            $callbackUrl = trim($this->request->get('callbackUrl'));
-            $callbackUrl = urldecode($callbackUrl);
+            // http://www./member/xxxx/weixinauthorize?callbackUrl=xxx
+            $callbackUrl = trim($this->get('callbackUrl', ''));
             
-            // 检查session中是否有值
-            $userInfo = empty($_SESSION['Weixin_userInfo']) ? array() : $_SESSION['Weixin_userInfo'];
-            if (empty($userInfo)) {
-                // 如果在进行授权处理中的话
-                if (! empty($_SESSION['isWeixinAuthorizing'])) {
+            $FromUserName = trim($this->get('FromUserName', ''));
+            $nickname = trim($this->get('nickname', ''));
+            $headimgurl = trim($this->get('headimgurl', ''));
+            $timestamp = trim($this->get('timestamp', ''));
+            $signkey = trim($this->get('signkey', ''));
+            
+            // url的参数上已经有了FromUserName参数并且不是空的时候
+            if (! empty($FromUserName)) {
+                $config = $this->getDI()->get('config');
+                $secretKey = $config['weixinAuthorize']['secretKey'];
+                // 校验微信id,上线测试时需要加上去
+                if ($this->validateOpenid($FromUserName, $timestamp, $secretKey, $signkey)) {
+                    // 授权处理完成
+                    unset($_SESSION['isWeixinAuthorizing']);
+                    // 存储微信用户到session
+                    $userInfo = array(
+                        'user_id' => $FromUserName,
+                        'user_name' => urldecode($nickname),
+                        'user_headimgurl' => urldecode($headimgurl),
+                        'subscribe' => 0
+                    );
+                    // 存储微信id到session
+                    $_SESSION['Weixin_userInfo'] = $userInfo;
                     
-                    $wxUser = $this->request->get('wxUser');
-                    $sign = $this->request->get('sign');
-                    
-                    // url的参数上已经有了wxUser参数并且不是空的时候
-                    if (! empty($wxUser)) {
-                        $wxUser = json_decode($wxUser, true);
-                        $config = $this->getDI()->get('config');
-                        $secretKey = $config['weixinAuthorize']['secretKey'];
-                        // 校验微信id,上线测试时需要加上去
-                        if ($this->validateOpenid($wxUser, $secretKey, $sign)) {
-                            // 授权处理完成
-                            unset($_SESSION['isWeixinAuthorizing']);
-                            // 存储微信用户到session
-                            $userInfo = array(
-                                'FromUserName' => $wxUser['openid'],
-                                'nickname' => urldecode($wxUser['nickname']),
-                                'headimgurl' => urldecode($wxUser['headimgurl']),
-                                'subscribe' => empty($wxUser['subscribe']) ? 0 : $wxUser['subscribe']
-                            );
-                            // 存储微信id到session
-                            $_SESSION['Weixin_userInfo'] = $userInfo;
-                            
-                            // 授权成功之后的处理
-                            $this->weixinauthorize();
-                        }
-                    }
+                    // 授权成功之后的处理
+                    $this->weixinauthorize();
                 }
             }
+            
             // 跳转地址
             if (empty($callbackUrl)) {
-                $callbackUrl = $this->getUrl("index");
+                $callbackUrl = $this->url->get("member/passport/qcbind");
             }
+            
             $this->_redirect($callbackUrl);
             exit();
         } catch (\Exception $e) {
             die($e->getMessage());
         }
     }
+    
+    // 获取用户信息
+    protected function getWeixinUserInfo()
+    {
+        $userInfo = empty($_SESSION['Weixin_userInfo']) ? array() : $_SESSION['Weixin_userInfo'];
+        if (! empty($userInfo)) {
+            $this->assign('user_id', $userInfo['user_id']);
+            $this->assign('user_name', $userInfo['user_name']);
+            $this->assign('user_headimgurl', str_replace('/0', '/64', $userInfo['user_headimgurl']));
+            return $userInfo;
+        } else {
+            // 不是接口调用的话
+            if (! $this->getRequest()->isAjax()) {
+                unset($_SESSION['isWeixinAuthorizing']);
+                unset($_SESSION['Weixin_userInfo']);
+                $this->refreshPage(5);
+            } else {
+                return array();
+            }
+        }
+    }
 
-    public function tencentauthorize()
+    protected function tencentauthorize()
     {
         $userInfo = empty($_SESSION['Tencent_userInfo']) ? array() : $_SESSION['Tencent_userInfo'];
         if (! empty($userInfo)) {
@@ -352,6 +392,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             if (empty($callbackUrl)) {
                 $callbackUrl = $this->url->get("member/passport/qcbind");
             }
+            die($callbackUrl);
             $this->_redirect($callbackUrl);
             exit();
         } catch (\Exception $e) {
@@ -360,7 +401,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     }
     
     // 获取用户信息
-    public function getTencentUserInfo()
+    protected function getTencentUserInfo()
     {
         $userInfo = empty($_SESSION['Tencent_userInfo']) ? array() : $_SESSION['Tencent_userInfo'];
         if (! empty($userInfo)) {}

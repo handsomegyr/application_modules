@@ -48,8 +48,8 @@ class Module
         $di->set('dispatcher', function ()
         {
             $eventsManager = new EventsManager();
-            $eventsManager->attach('dispatch:beforeDispatch', new WeixinPlugin());
-            $eventsManager->attach('dispatch:beforeDispatch', new TencentPlugin());
+            // $eventsManager->attach('dispatch:beforeDispatch', new WeixinPlugin());
+            // $eventsManager->attach('dispatch:beforeDispatch', new TencentPlugin());
             
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace("App\Member\Controllers");

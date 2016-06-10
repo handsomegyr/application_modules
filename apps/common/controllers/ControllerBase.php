@@ -99,14 +99,15 @@ class ControllerBase extends Controller
     /**
      * 微信openid校验
      *
-     * @param array $wxUser            
+     * @param string $FromUserName            
+     * @param string $timestamp            
      * @param string $secretKey            
      * @param string $signature            
      * @return boolean
      */
-    public function validateOpenid(array $wxUser, $secretKey, $signature)
+    public function validateOpenid($FromUserName, $timestamp, $secretKey, $signature)
     {
-        $secret = md5(implode(':', $wxUser) . $secretKey);
+        $secret = sha1($FromUserName . "|" . $secretKey . "|" . $timestamp);
         if ($signature != $secret) {
             return false;
         } else {
@@ -161,5 +162,4 @@ class ControllerBase extends Controller
         }
         return $this->errors['none'];
     }
-    
 }

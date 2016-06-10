@@ -47,7 +47,7 @@ class Member extends \App\Common\Models\Member\Member
     }
 
     /**
-     * 根据用户qqopenid获得用户信息
+     * 根据用户QQ账号获得用户信息
      *
      * @param string $qqopenid            
      * @return array
@@ -56,6 +56,20 @@ class Member extends \App\Common\Models\Member\Member
     {
         $result = $this->findOne(array(
             "qqopenid" => $qqopenid
+        ));
+        return $result;
+    }
+
+    /**
+     * 根据用户微信账号获得用户信息
+     *
+     * @param string $weixinopenid            
+     * @return array
+     */
+    public function getInfoByWeixinOpenid($weixinopenid)
+    {
+        $result = $this->findOne(array(
+            "weixinopenid" => $weixinopenid
         ));
         return $result;
     }
