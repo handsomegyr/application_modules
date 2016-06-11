@@ -307,13 +307,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             return $userInfo;
         } else {
             // 不是接口调用的话
-            if (! $this->getRequest()->isAjax()) {
-                unset($_SESSION['isWeixinAuthorizing']);
-                unset($_SESSION['Weixin_userInfo']);
-                $this->refreshPage(5);
-            } else {
-                return array();
-            }
+            return array();
         }
     }
 

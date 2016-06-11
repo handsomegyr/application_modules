@@ -3,13 +3,13 @@
     </div>
 
     <div class="g-contentCon g-binding clrfix">
-        <div class="m-main clrfix">
+        <div class="m-main clrfix" style="padding-top:60px;">
             <div class="binding-con">
                 <span>
-                    <img src="<?php echo $_SESSION['Tencent_userInfo']['user_headimgurl']?>" alt="<?php echo $_SESSION['Tencent_userInfo']['user_name']?>"><i class="transparent-png"></i>
+                    <img src="<?php echo $this->view->user_headimgurl?>" alt="<?php echo $this->view->user_name?>"><i class="transparent-png"></i>
                 </span>
                 <p class="gray6">
-                    <em class="orange">欢迎您，<?php echo $_SESSION['Tencent_userInfo']['user_name']?></em>完善账号信息，下次可通过账号或QQ登录1元云购
+                    <em class="orange">欢迎您，<?php echo $this->view->user_name?></em>完善账号信息，下次可通过账号或QQ登录1元集资购
                 </p>
             </div>
             <div class="register-form-con clrfix">

@@ -3,10 +3,10 @@
 <input type="hidden" id="pageID" value="">
 <div class="buy-detail clrfix">
     <div class="g-cur-location">
-        您的位置：<a href="<?php echo $this->view->baseUrl?>">首页</a><em class="f-tran">&gt;</em><a href="<?php echo $this->view->baseUrl?>member/index/index">我的1元云购</a><em class="f-tran">&gt;</em><a href="<?php echo $this->view->baseUrl?>member/index/userbuylist">云购记录</a><em class="f-tran">&gt;</em>云购记录详情
+        您的位置：<a href="<?php echo $this->view->baseUrl?>">首页</a><em class="f-tran">&gt;</em><a href="<?php echo $this->view->baseUrl?>member/index/index">我的1元集资购</a><em class="f-tran">&gt;</em><a href="<?php echo $this->view->baseUrl?>member/index/userbuylist">集资购记录</a><em class="f-tran">&gt;</em>集资购记录详情
     </div>
     <div class="g-buyCon clrfix">
-        <h3 class="gray3">云购记录详情</h3>
+        <h3 class="gray3">集资购记录详情</h3>
 
 
         <div class="m-mer-info clrfix">
@@ -39,7 +39,7 @@
                     <a href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $goods['prize_buyer_id']?>" target="_blank" class="blue">
                         <?php echo getBuyerName($goods['prize_buyer_name'], $goods['prize_buyer_register_by'])?>
                     </a>
-                    <br>幸运云购码：<?php echo $goods['prize_code']?><br>揭晓时间：<?php echo getMilliTime4Show($goods['prize_time'])?>
+                    <br>幸运集资购码：<?php echo $goods['prize_code']?><br>揭晓时间：<?php echo getMilliTime4Show($goods['prize_time'])?>
                 </li>
                 <?php }elseif($goods['period'] == \App\Goods\Models\Goods::SALE_STATE2){?>
                 <!-- 正在揭晓 -->
@@ -70,7 +70,7 @@
             <?php if($goods['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1){?>
             <!-- 还未结束正在进行 -->
             <div class="pos-buttons">
-                <a href="javascript:;" codeid="<?php echo $goods['_id']?>" class="z-add-btn">追加云购</a>
+                <a href="javascript:;" codeid="<?php echo $goods['_id']?>" class="z-add-btn">追加集资购</a>
                 <a href="javascript:;" goodsid="<?php echo $goods['goods_commonid']?>" goodsname="<?php echo $goods['name']?>" goodspic="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>" class="z-share-btn">一键分享</a>
             </div>
             <?php }?>
@@ -79,7 +79,7 @@
 
         <div class="m-buy-num clrfix">
             <dl>
-                <dt class="gray6">本云商品您总共参与<i class="orange"><?php echo $total_buy_num?></i>人次<em class="f-mar-left">拥有<i class="orange"><?php echo $total_lottery_code_num?></i>个云购码</em></dt>
+                <dt class="gray6">本云商品您总共参与<i class="orange"><?php echo $total_buy_num?></i>人次<em class="f-mar-left">拥有<i class="orange"><?php echo $total_lottery_code_num?></i>个集资购码</em></dt>
                 <?php if(!empty($buyList)){?>
                 <?php foreach ($buyList as $item) {?>
                 <dd><p><?php echo getMilliTime4Show($item['purchase_time'])?><em class="f-mar-left"><?php echo $item['buy_num']?>人次</em></p><span><?php echo $item['lottery_code']?></span> </dd>

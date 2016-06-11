@@ -30,7 +30,6 @@ class PassportController extends ControllerBase
         $this->assign('account', $account);
     }
 
-
     /**
      * 会员注销操作
      */
@@ -78,8 +77,6 @@ class PassportController extends ControllerBase
         // http://www.jizigou.com/member/passport/findpassword
     }
 
-    
-
     /**
      * 验证信息页面
      */
@@ -95,14 +92,18 @@ class PassportController extends ControllerBase
     {
         // http://www.jizigou.com/member/passport/findresetsuccess
     }
-    
+
     /**
      * QQ绑定页面
      */
     public function qcbindAction()
     {
         // http://www.jizigou.com/member/passport/qcbind
-        //$this->view->setRenderLevel(View::LEVEL_ACTION);
+        // $this->view->setRenderLevel(View::LEVEL_ACTION);
+        $userInfo = $this->getWeixinUserInfo();
+        if (empty($userInfo)) {
+            die('非法访问');
+        }
     }
 }
 

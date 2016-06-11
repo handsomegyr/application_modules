@@ -116,7 +116,7 @@
                 <dl class="fl">
                     <dt>恭喜您获得 <a href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $this->view->orderInfo['goods_id'] ?>" class="orange" title="<?php echo $this->view->orderInfo['goods_name'] ?>">(第<?php echo $this->view->orderInfo['goods_period'] ?>云)<?php echo $this->view->orderInfo['goods_name'] ?></a></dt>
                     <dd>价值：￥<?php echo showPrice($this->view->orderInfo['goods_price'],2) ?></dd>
-                    <dd>幸运云购码：<?php echo $this->view->orderInfo['prize_code'] ?></dd>
+                    <dd>幸运集资购码：<?php echo $this->view->orderInfo['prize_code'] ?></dd>
                 </dl>
                 <?php if($this->view->orderInfo['order_state'] == \App\Order\Models\Goods::ORDER_STATE1){?>
                 <a href="javascript:;" class="z-perfect-btn">完善收货地址</a>
@@ -125,16 +125,16 @@
         </ul>
     </div>
     <?php }?>
-	<!--云购记录列表-->
+	<!--集资购记录列表-->
 	<div id="g_buys_records" class="g-buys-records g-common-control clrfix" style="display: none;">
 		<div class="m-getGood-title clrfix">
-			<a href="<?php echo $this->view->baseUrl?>member/index/userbuylist" class="gray9">全部<em class="f-tran">&gt;</em></a><b class="gray3">云购记录</b>
+			<a href="<?php echo $this->view->baseUrl?>member/index/userbuylist" class="gray9">全部<em class="f-tran">&gt;</em></a><b class="gray3">集资购记录</b>
 		</div>
 		<div class="m-comm-scroll">
 			<!-- 暂无数据 -->
 			<div class="null-data" style="display: none;">
-				<b class="gth-icon"></b>您还没有参与云购？ 梦想与您只有1元的距离！<br>
-				<a href="/" class="blue" target="_blank">去云购</a>
+				<b class="gth-icon"></b>您还没有参与集资购？ 梦想与您只有1元的距离！<br>
+				<a href="/" class="blue" target="_blank">去集资购</a>
 			</div>
 			<!-- 有数据 -->
 			<a href="javascript:;" class="z-prev" style="display: none;"> <i class="u-personal"></i><span></span></a>
@@ -192,7 +192,7 @@
 					<ul>
 						<li class="sig-pic"><a target="_blank" href="javascript:;"><img src=".jpg"></a></li>
 						<li class="sig-title"><a target="_blank" href="javascript:;"> <b>中了！中了！！！ </b></a></li>
-						<li class="sig-text">非常感谢云购！两元钱中了个电饭锅！！在我投入几百块后中的价值最高的一份！！感谢运气…</li>
+						<li class="sig-text">非常感谢集资购！两元钱中了个电饭锅！！在我投入几百块后中的价值最高的一份！！感谢运气…</li>
 						<li>昨天 19:37</li>
 						<li class="sig-xmjdh">
 							<a href="javascript:;"><cite class="fl"><img src=".jpg"><s></s></cite> <em class="fl"> 18606****75 </em></a>
@@ -216,7 +216,7 @@
 		</h3>
 
 		<div id="divCart">
-			<p>您的购物车为空！<a href="/" target="_blank" class="blue">立即去云购&gt;&gt;</a></p>
+			<p>您的购物车为空！<a href="/" target="_blank" class="blue">立即去集资购&gt;&gt;</a></p>
 		</div>
 	</div>
     
@@ -286,7 +286,7 @@
 	                        <span><a href="javascript:;" target="_blank" class="blue"><?php echo getBuyerName($news['user_name'], $news['user_register_by'])?></a></span>
 	                        <?php echo date('Y-m-d H:i',$news['msg_time']->sec)?><br>
 	                        <?php if($news['action'] == \App\Member\Models\News::ACTION1){ ?>
-	                                                云购了<a href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $news['content_id']?>" target="_blank" class="tit-con blue"><?php echo $news['memo']['name']?></a>
+	                                                集资购了<a href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $news['content_id']?>" target="_blank" class="tit-con blue"><?php echo $news['memo']['name']?></a>
 	                        <?php }elseif($news['action'] == \App\Member\Models\News::ACTION2){?>
 	                                                晒单了<a href="<?php echo $this->view->baseUrl?>yungou/post/detail?id=<?php echo $news['content_id']?>" target="_blank" class="tit-con blue"><?php echo $news['memo']['title']?></a>
 	                        <?php }?>
@@ -306,7 +306,7 @@
 		<div class="clrfix">
 			<span class="fl"><a href="<?php echo $this->view->baseUrl?>member/index/mobile.html" target="_blank"> <img src="/Images/app.jpg"></a></span>
 			<p class="fl gray6">
-				参与云购随心所欲！ <a href="<?php echo $this->view->baseUrl?>member/index/mobile.html" target="_blank">立即下载</a>
+				参与集资购随心所欲！ <a href="<?php echo $this->view->baseUrl?>member/index/mobile.html" target="_blank">立即下载</a>
 			</p>
 		</div>
 		<s class="u-personal"></s>

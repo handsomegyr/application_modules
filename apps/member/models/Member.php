@@ -63,7 +63,7 @@ class Member extends \App\Common\Models\Member\Member
     /**
      * 根据用户微信账号获得用户信息
      *
-     * @param string $weixinopenid            
+     * @param string $weixinopenid
      * @return array
      */
     public function getInfoByWeixinOpenid($weixinopenid)
@@ -73,7 +73,7 @@ class Member extends \App\Common\Models\Member\Member
         ));
         return $result;
     }
-
+    
     /**
      * 注册处理
      *

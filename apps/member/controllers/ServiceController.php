@@ -2090,6 +2090,27 @@ class ServiceController extends ControllerBase
                 echo ($this->error(- 1, '非法访问'));
                 return false;
             }
+            
+            // 检查QQ号是否使用了
+            if (! empty($_SESSION['Tencent_userInfo'])) {
+                $openid = $_SESSION['Tencent_userInfo']['user_id'];
+                $userInfo = $this->modelMember->getInfoByQQOpenid($openid);
+                if (! empty($userInfo)) {
+                    echo ($this->error(- 1, '非法访问,QQ号已经绑定了其他账号了'));
+                    return false;
+                }
+            }
+            
+            // 检查微信号是否使用了
+            if (! empty($_SESSION['Weixin_userInfo'])) {
+                $openid = $_SESSION['Weixin_userInfo']['user_id'];
+                $userInfo = $this->modelMember->getInfoByWeixinOpenid($openid);
+                if (! empty($userInfo)) {
+                    echo ($this->error(- 1, '非法访问,微信号已经绑定了其他账号了'));
+                    return false;
+                }
+            }
+            
             // 帐号检查
             $validateRet = $this->validateAccount($username, $mobile, $email);
             if (! empty($validateRet['error_code'])) {
@@ -2213,12 +2234,12 @@ class ServiceController extends ControllerBase
                 }
             }
             
-            // 绑定QQopenid操作
-            if (! empty($_SESSION['Tencent_userInfo'])) {
+            // 绑定QQ操作
+            if (! empty($_SESSION['Tencent_userInfo']) && empty($memberInfo['qqopenid'])) {
                 $this->modelMember->bindQQOpenid($memberInfo['_id'], $_SESSION['Tencent_userInfo']['user_id'], $_SESSION['Tencent_userInfo']);
             }
-            // 绑定Weixinopenid操作
-            if (! empty($_SESSION['Weixin_userInfo'])) {
+            // 绑定微信操作
+            if (! empty($_SESSION['Weixin_userInfo']) && empty($memberInfo['weixinopenid'])) {
                 $this->modelMember->bindWeixinOpenid($memberInfo['_id'], $_SESSION['Weixin_userInfo']['user_id'], $_SESSION['Weixin_userInfo']);
             }
             echo ($this->result("OK"));
