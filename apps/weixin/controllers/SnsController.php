@@ -146,7 +146,7 @@ class SnsController extends ControllerBase
             
             if (! isset($arrAccessToken['errcode'])) {
                 // 授权成功后，记录该微信用户的基本信息
-                if ($arrAccessToken['scope'] === 'snsapi_userinfo') {
+                if ($arrAccessToken['scope'] === 'snsapi_userinfo' || $arrAccessToken['scope'] === 'snsapi_login') {
                     $this->_weixin->setSnsAccessToken($arrAccessToken['access_token']);
                     
                     // 先判断用户在数据库中是否存在最近一周产生的openid，如果不存在，则再动用网络请求，进行用户信息获取
