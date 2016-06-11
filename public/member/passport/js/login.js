@@ -253,7 +253,7 @@ $(function(){
 	        	$(".blue").html(txtUserName);
 
 	        	setIntervalFun(3,function(_TIME){
-	        		$("#a_go").html('<em>立即1元云购</em>（'+_TIME+'秒）');
+	        		$("#a_go").html('<em>立即1元集资购</em>（'+_TIME+'秒）');
 	        		if( _TIME==0 ){
 	        			window.location.href = '/';
 	        		}

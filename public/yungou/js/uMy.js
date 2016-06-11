@@ -54,7 +54,7 @@ $(function(){
 	});
 
 
-	/************** 云购记录 ******************/
+	/************** 集资购记录 ******************/
 
 	// getuserpagebuyrafpostFirstDataFun(1,8,'');
 
@@ -81,7 +81,7 @@ $(function(){
 		});
 	}
 
-	// 数据插入 云购记录
+	// 数据插入 集资购记录
 	function getuserpagebuyrafpostAddDataFun(data){
 		if( data.success ){
 	    	var dataLi = '';
@@ -136,7 +136,7 @@ $(function(){
 				    +'<div class="g-total">'
 				        +'参与&nbsp;<span class="orange">'+buyNum+'</span>&nbsp;人次'
 				    +'</div>'
-				    +'<a class="g-buy" rel="nofollow" target="_blank" href="javascript:;">跟随云购</a>'
+				    +'<a class="g-buy" rel="nofollow" target="_blank" href="javascript:;">跟随集资购</a>'
 				    +'<i class="single"><i class="single"></i></i>'
 				    +'<div class="g-time"><div class="aricle"><div class="cir"></div></div><div class="time-str"><div class="str">'+buyTime+'</div></div></div>'
 				    +'<div class="clear"></div>'
@@ -176,7 +176,7 @@ $(function(){
 				    +'<a class="g-pic" target="_blank" href="javascript:;"><img alt="" src="'+goodsPic+'" width="100" height="100"></a>'
 				    +'<div class="g-info">'
 				        +'<h2 class="g-title owner"><a rel="nofollow" target="_blank" href="javascript:;">'+goodsSName+'</a></h2>'
-				        +'<div class="g-older"><p class="g-price">价值：￥'+codePrice+'</p><p>幸运云购码：<b class="orange">'+codeRNO+'</b></p></div>'
+				        +'<div class="g-older"><p class="g-price">价值：￥'+codePrice+'</p><p>幸运集资购码：<b class="orange">'+codeRNO+'</b></p></div>'
 				    +'</div>'
 				    +'<div class="g-total">参与&nbsp;<span class="orange">'+buyNum+'</span>&nbsp;人次</div>'
 				    +'<a rel="nofollow" class="g-see" target="_blank" href="javascript:;">查看详情</a>'
@@ -211,7 +211,7 @@ $(function(){
 	    		var postPic = item.postPic//: "20160105111905438.jpg"
 	    		var postReplyCount = item.postReplyCount//: "2"
 	    		var postTime = item.postTime//: "59分钟前"
-	    		var postTitle = item.postTitle//: "感谢云购"
+	    		var postTitle = item.postTitle//: "感谢集资购"
 	    		var replyContent = item.replyContent//: "大学商盟，当代理首先送一台苹果手机。诶反复说了好多遍，你才会…"
 	    		var replyUserName = item.replyUserName//: "大学商盟代理送苹果6s"
 	    		var replyUserPhoto = item.replyUserPhoto//: "20151230144448387.jpg"

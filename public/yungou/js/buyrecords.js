@@ -1,10 +1,10 @@
 $(function(){
 
 	if( pageTrue=='newestbuyrecords' ){
-		// 正在云购
+		// 正在集资购
 		var UserBuyNewListidname = "#recordList";
 		var $UserBuyNewListid = $(UserBuyNewListidname);
-		// 正在云购函数
+		// 正在集资购函数
 		getuserbuynewlistAjaxFun();
 		function getuserbuynewlistAjaxFun(){
 	        $.ajax({

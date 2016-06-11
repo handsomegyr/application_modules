@@ -982,7 +982,7 @@ function memberXialaFun(callback){
 }
 
 
-/*******************************************************云购记录**************************************************/
+/*******************************************************集资购记录**************************************************/
 if( pageTrue=="userbuylist" ){
 
 	// 日期选择筛选
@@ -1061,7 +1061,7 @@ if( pageTrue=="userbuylist" ){
 	                    +'<a href="javascript:;" class="gray6">'+buyNum+'人次</a>'
 	                +'</span>'
 	                +'<span class="u-operation">'
-	                    +'<a target="_blank" href="javascript:;" class="z-see-details">查看所有云购码</a>'
+	                    +'<a target="_blank" href="javascript:;" class="z-see-details">查看所有集资购码</a>'
 	                +'</span></dd>';
 
 
@@ -1084,7 +1084,7 @@ if( pageTrue=="userbuylist" ){
 	                    +'<a href="javascript:;" class="gray6">'+buyNum+'人次</a>'
 	                +'</span>'
 	                +'<span class="u-operation">'
-	                    +'<a target="_blank" href="javascript:;" class="z-see-details">查看所有云购码</a>'
+	                    +'<a target="_blank" href="javascript:;" class="z-see-details">查看所有集资购码</a>'
 	                +'</span>'
 	                +'<span class="u-to-share" goodsid="'+goodsID+'">'
 	                    +'<a href="javascript:;">一键分享</a>'
@@ -1128,7 +1128,7 @@ if( pageTrue=="userbuylist" ){
 	    });
 	}
 }
-/*******************************************************云购记录结束*********************************************/
+/*******************************************************集资购记录结束*********************************************/
 
 /*******************************************************获得的商品记录**************************************************/
 if( pageTrue=="orderlist" ){
@@ -1211,7 +1211,7 @@ if( pageTrue=="orderlist" ){
 	    		dataLi += '<dd class="has-announced"><span class="u-commodity-pic">'
 	                    +'<a target="_blank" href="/yungou/lottery/detail?id='+codeID+'"><img src="'+goodsPic+'"><i class="u-personal"></i></a>'
 	                +'</span>'
-	                +'<span class="u-commodity-name gray9"><h3><a target="_blank" href="/yungou/lottery/detail?id='+codeID+'" class="gray3">'+goodsName+'</a></h3>价值：￥'+ordersaleprice+'<br />幸运云购码：'+codeRNO+'<br/>揭晓时间：'+codeRTime+'</span>'
+	                +'<span class="u-commodity-name gray9"><h3><a target="_blank" href="/yungou/lottery/detail?id='+codeID+'" class="gray3">'+goodsName+'</a></h3>价值：￥'+ordersaleprice+'<br />幸运集资购码：'+codeRNO+'<br/>揭晓时间：'+codeRTime+'</span>'
 	                +'<span class="u-order-number">'+orderNo+'</span>'
 	                +'<span class="u-operation">'
 		                +btnHtml
@@ -1331,7 +1331,7 @@ if( pageTrue=="postsinglelist" ){
 		                    +'<a target="_blank" href="javascript:;"><img src="'+goodsPic+'"><i class="u-personal"></i></a>'
 		                +'</span>'
 		                +'<span class="u-commodity-name gray9">'
-		                    +'<h3><a target="_blank" href="javascript:;" class="gray3">'+goodsSName+'</a></h3>价值：￥'+codePrice+'<br />幸运云购码：'+codeRNO+'<br/>揭晓时间：'+codeRTime
+		                    +'<h3><a target="_blank" href="javascript:;" class="gray3">'+goodsSName+'</a></h3>价值：￥'+codePrice+'<br />幸运集资购码：'+codeRNO+'<br/>揭晓时间：'+codeRTime
 		                +'</span>'
 		                +'<span class="u-select-con">暂未晒单</span>'
 		                +'<span class="u-operation"><a target="_blank" href="/member/index/postsingleadd?goods_id='+codeID+'" class="z-perfect-address">立即晒单</a></span>'
@@ -1433,7 +1433,7 @@ if( pageTrue=="memberpoints" ){
 		if( data.success ){
 	    	var dataLi = '';
 	    	$.each(data.result.datas, function(i,item){
-	    		var logDescript = item.logDescript;//: "云购商品编码(2710789)福分抵扣"
+	    		var logDescript = item.logDescript;//: "集资购商品编码(2710789)福分抵扣"
 				var logPointNum = item.logDescript;//: "-100";
 				var logTime = item.logDescript;//: "2016.01.02 14:35:42"
 				var className = (eval(logPointNum)>0 ? 'add' : "mius");

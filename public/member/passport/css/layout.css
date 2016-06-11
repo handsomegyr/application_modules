@@ -632,13 +632,13 @@ a.letter-noSpac {
 .wx-login h2 {
 	font-size:18px;
 }
-.wx-login p {
+/*.wx-login p {
 	width:205px;
 	height:205px;
 	margin:25px auto 30px;
 	border:1px solid #eee;
 	position:relative;
-}
+}*/
 .wx-login span {
 	display:block;
 	font-size:18px;

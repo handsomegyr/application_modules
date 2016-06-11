@@ -45,7 +45,7 @@ $(function(){
         });
     });
 
-	// 云购标签切换
+	// 集资购标签切换
 	$("#div_buynav a").on("click", function(){
 		var index = $(this).index();
 		$(this).addClass('current').siblings().removeClass('current');
@@ -79,7 +79,7 @@ $(function(){
 		});
 
 
-		// 最新云购记录
+		// 最新集资购记录
 		var UserBuyNewListidname = "#UserBuyNewList";
 		var $UserBuyNewListid = $(UserBuyNewListidname);
 		var maxId = '';
@@ -255,7 +255,7 @@ $(function(){
                                 +'</i>'+userName+'</a>'
                         +'</span>'
                     +'</span>'
-                    +'<span class="people">'+buyNum+'<a name="showCode" href="javascript:;">查看云购码</a></span>'
+                    +'<span class="people">'+buyNum+'<a name="showCode" href="javascript:;">查看集资购码</a></span>'
                     +'<span class="ip">'+buyIPAddr+'&nbsp;&nbsp;'+buyIP+'</span>'
                     +'<span class="form"><a href="javascript:;" target="_blank">PC端<i class="f-icon pc"></i></a></span>'
                 +'</li>';
@@ -333,9 +333,9 @@ $(function(){
 	    		var userPhoto = item.userPhoto=='' ? '/Images/UserFace-160-0000.jpg':item.userPhoto;
 				var codePeriod = item.codePeriod;//: "2"
 				var grade = item.grade;//: "01"
-				var gradeName = item.gradeName;//: "云购小将"
+				var gradeName = item.gradeName;//: "集资购小将"
 				var postAllPic = item.postAllPic.split(',');//: "/upload/post/5688bd8d887c226e6a8b5725,/upload/post/5688bd69887c22184e8b4600,/upload/post/5688bd58887c2210688b4619"
-				var postContent = item.postContent.substr(0,180)+"...";//: "感言3333云购感言3333"
+				var postContent = item.postContent.substr(0,180)+"...";//: "感言3333集资购感言3333"
 				var postHits = item.postHits;//: "2"
 				var postID = item.postID;//: "5688af90887c22054a8b45ea"
 				var postReplyCount = item.postReplyCount;//: "0"

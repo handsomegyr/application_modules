@@ -304,7 +304,7 @@ var _IeVersion = $.browser.msie && parseInt($.browser.version);
 	var t = $("#btnTFavorite");
 	if (t.length > 0) {
 		var ak = function() {
-				var aE = "1元云购";
+				var aE = "1元集资购";
 				var aC = "http://www.1yyg.com";
 				try {
 					window.external.addFavorite(aC, aE)
@@ -585,7 +585,7 @@ var _IeVersion = $.browser.msie && parseInt($.browser.version);
 				var aE = $.cookie("_topNotice1");
 				var aC = "-1px";
 				if (aE == null) {
-					var aD = $('<div class="banner-prompt clrfix"><div class="w1190"><span class="fl">2015年春节放假及发货安排公告：根据国家法定节假日规定并结合公司具体情况，1元云购2015年春节放假及发货时间安排……<a href="http://group.1yyg.com/topic-8874.html" target="_blank" class="ckxq">查看详情</a></span><span class="fr"><a href="javascript:;" class="close" title="关闭"></a></span></div></div>');
+					var aD = $('<div class="banner-prompt clrfix"><div class="w1190"><span class="fl">2015年春节放假及发货安排公告：根据国家法定节假日规定并结合公司具体情况，1元集资购2015年春节放假及发货时间安排……<a href="http://group.1yyg.com/topic-8874.html" target="_blank" class="ckxq">查看详情</a></span><span class="fr"><a href="javascript:;" class="close" title="关闭"></a></span></div></div>');
 					aD.find("a.close").click(function() {
 						aD.remove();
 						$.cookie("_topNotice1", "1", {

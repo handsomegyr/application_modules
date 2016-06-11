@@ -542,7 +542,7 @@ $(function() {
 												_html += "<li>";
 												_html += '<span class="time">' + item.buyTime + "</span>";
 												_html += '<span class="name"><span class="w"><a href="http://u.1yyg.com/' + item.userWeb + '" target="_blank" title="' + item.userName + '"><i class="head-s-img"><img src="http://faceimg.1yyg.com/UserFace/30/' + item.userPhoto + '" width="22" height="22"></i>' + item.userName + "</a></span></span>";
-												_html += '<span class="people">' + item.buyNum + "<a name='showCode' buyid='" + item.buyID + "' buynum='" + item.buyNum + '\' href="javascript:;">查看云购码</a></span>';
+												_html += '<span class="people">' + item.buyNum + "<a name='showCode' buyid='" + item.buyID + "' buynum='" + item.buyNum + '\' href="javascript:;">查看集资购码</a></span>';
 												_html += '<span class="ip">' + item.buyIPAddr + " IP:" + item.buyIP + "</span>";
 												if (item.buyDevice == "1") {
 													_html += '<span class="form"><a href="http://info.1yyg.com/app/mobile.html" target="_blank">手机触屏版<i class="f-icon mobile"></i></a></span>'

@@ -124,7 +124,7 @@ $(function(){
                         +'<dd class="z-ygrc">'
                             +'<p class="two-row" style="display: block;">'
                                 +'<cite>'
-                                    +'<em>云购人次：</em><em class="shuliang">1</em>'
+                                    +'<em>集资购人次：</em><em class="shuliang">1</em>'
                                 +'</cite>'
                                 +'<cite>'
                                     +'<em>小计：</em>￥<em class="jiage">1</em>.00'

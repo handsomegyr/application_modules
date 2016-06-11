@@ -9,11 +9,11 @@ $(function(){
 
 	/*********************************************************************首页*****************************************************/
 
-	// 正在云购
+	// 正在集资购
 	var UserBuyNewListidname = "#UserBuyNewList";
 	var $UserBuyNewListid = $(UserBuyNewListidname);
 	var maxId = '';
-	// 正在云购函数
+	// 正在集资购函数
 	getuserbuynewlistAjaxFun(1,10);
 	function getuserbuynewlistAjaxFun(page,limit){
         $.ajax({
