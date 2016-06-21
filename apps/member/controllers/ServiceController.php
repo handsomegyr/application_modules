@@ -2242,6 +2242,8 @@ class ServiceController extends ControllerBase
             if (! empty($_SESSION['Weixin_userInfo']) && empty($memberInfo['weixinopenid'])) {
                 $this->modelMember->bindWeixinOpenid($memberInfo['_id'], $_SESSION['Weixin_userInfo']['user_id'], $_SESSION['Weixin_userInfo']);
             }
+            // 登录处理
+            $this->loginMember($memberInfo);
             echo ($this->result("OK"));
         } catch (\Exception $e) {
             echo ($this->error($e->getCode(), $e->getMessage()));

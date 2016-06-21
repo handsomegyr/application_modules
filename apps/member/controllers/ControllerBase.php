@@ -278,6 +278,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
                     );
                     // 存储微信id到session
                     $_SESSION['Weixin_userInfo'] = $userInfo;
+                    $_SESSION['login_from'] = 'weixin';
                     
                     // 授权成功之后的处理
                     $this->weixinauthorize();
@@ -370,7 +371,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
                     );
                     // 存储微信id到session
                     $_SESSION['Tencent_userInfo'] = $userInfo;
-                    
+                    $_SESSION['login_from'] = 'tencent';
                     // 授权成功之后的处理
                     $this->tencentauthorize();
                 }

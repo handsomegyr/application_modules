@@ -100,7 +100,14 @@ class PassportController extends ControllerBase
     {
         // http://www.jizigou.com/member/passport/qcbind
         // $this->view->setRenderLevel(View::LEVEL_ACTION);
-        $userInfo = $this->getWeixinUserInfo();
+        $userInfo = array();
+        if (! empty($_SESSION['login_from'])) {
+            if ($_SESSION['login_from'] == 'weixin') {
+                $userInfo = $this->getWeixinUserInfo();
+            } elseif ($_SESSION['login_from'] == 'tencent') {
+                $userInfo = $this->getTencentUserInfo();
+            }
+        }
         if (empty($userInfo)) {
             die('非法访问');
         }

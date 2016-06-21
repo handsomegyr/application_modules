@@ -33,7 +33,7 @@ class SnsController extends ControllerBase
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'get_user_info';
         
         // 获取设置
-        $this->_appConfig = $this->_app->getInfoById($this->appid);
+        $this->_appConfig = $this->_app->getInfoByAppId($this->appid);
         if (empty($this->_appConfig)) {
             exit("appid不正确");
         }
@@ -152,8 +152,8 @@ class SnsController extends ControllerBase
             }
             
             $userInfo['openid'] = $openid;
-            $userInfo['nickname'] = urlencode($userInfo['nickname']);
-            $userInfo['headimgurl'] = urlencode($userInfo['figureurl']);
+            $userInfo['nickname'] = ($userInfo['nickname']);
+            $userInfo['headimgurl'] = ($userInfo['figureurl']);
             
             $_SESSION['iTencent']["accessToken_{$this->appid}_{$this->scope}"] = $userInfo;
             $path = '/';
