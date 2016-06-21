@@ -2156,16 +2156,17 @@ CREATE TABLE `itencent_appkey` (
 
 /*Data for the table `itencent_appkey` */
 
-insert  into `itencent_appkey`(`_id`,`appName`,`akey`,`skey`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('563b1a72bbcb2674078b4567','测试应用1','101266338','b90b1d5d02d5faaa9233b7febb388153','2015-11-05 16:59:30','2015-11-05 17:26:44',0);
+insert  into `itencent_appkey`(`_id`,`appName`,`akey`,`skey`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('563b1a72bbcb2674078b4567','集资购','101327614','1018d1c75bb1e3833a0159925a79d7ce','2015-11-05 16:59:30','2015-11-05 17:26:44',0);
 
 /*Table structure for table `itencent_application` */
 
 DROP TABLE IF EXISTS `itencent_application`;
 
 CREATE TABLE `itencent_application` (
-  `_id` char(24) NOT NULL DEFAULT '',
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
   `name` varchar(30) NOT NULL DEFAULT '' COMMENT '应用名',
-  `appKeyId` char(50) NOT NULL DEFAULT '' COMMENT '应用密钥',
+  `akey` char(50) NOT NULL DEFAULT '' COMMENT 'APP ID',
+  `skey` char(50) NOT NULL DEFAULT '' COMMENT 'APP KEY',
   `secretKey` char(50) NOT NULL DEFAULT '' COMMENT '秘钥',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
@@ -2175,7 +2176,7 @@ CREATE TABLE `itencent_application` (
 
 /*Data for the table `itencent_application` */
 
-insert  into `itencent_application`(`_id`,`name`,`appKeyId`,`secretKey`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('563b20c5bbcb2605038b4568','测试用','563b1a72bbcb2674078b4567','12345667890','2015-11-05 17:26:29','2015-11-05 17:26:29',0);
+insert  into `itencent_application`(`_id`,`name`,`akey`,`skey`,`secretKey`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('563b20c5bbcb2605038b4568','集资购','101327614','1018d1c75bb1e3833a0159925a79d7ce','12345667890','2015-11-05 17:26:29','2015-11-05 17:26:29',0),('576530ed887c22774a8b5801','测试','xxx','xxx','xxxx','2016-06-18 19:30:53','2016-06-18 19:30:53',0);
 
 /*Table structure for table `itencent_oauthinfo` */
 
@@ -2200,10 +2201,17 @@ DROP TABLE IF EXISTS `itencent_user`;
 
 CREATE TABLE `itencent_user` (
   `_id` char(24) NOT NULL DEFAULT '',
+  `openid` char(50) NOT NULL DEFAULT '' COMMENT '用户ID',
+  `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '昵称',
+  `headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '头像',
+  `email` char(50) NOT NULL DEFAULT '' COMMENT '邮箱',
+  `scope` char(50) NOT NULL DEFAULT '' COMMENT 'scope',
+  `extra` text NOT NULL COMMENT '附加信息',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
+  PRIMARY KEY (`_id`),
+  KEY `NewIndex1` (`openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='腾讯-用户';
 
 /*Data for the table `itencent_user` */
@@ -3056,7 +3064,7 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','192.168.81.1','2016-05-17 08:19:07',184,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','2016-05-17 08:19:07',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
+insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','192.168.222.1','2016-06-14 15:00:10',201,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','2016-06-14 15:00:10',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

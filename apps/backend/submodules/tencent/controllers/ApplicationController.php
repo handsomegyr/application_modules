@@ -12,13 +12,10 @@ use App\Backend\Submodules\Tencent\Models\Application;
 class ApplicationController extends \App\Backend\Controllers\FormController
 {
 
-    private $modelAppKey;
-
     private $modelApplication;
 
     public function initialize()
     {
-        $this->modelAppKey = new AppKey();
         $this->modelApplication = new Application();
         parent::initialize();
     }
@@ -46,8 +43,9 @@ class ApplicationController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        $schemas['appKeyId'] = array(
-            'name' => '应用密钥',
+        
+        $schemas['akey'] = array(
+            'name' => 'AKEY',
             'data' => array(
                 'type' => 'string',
                 'length' => 50
@@ -56,18 +54,38 @@ class ApplicationController extends \App\Backend\Controllers\FormController
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->modelAppKey->getAll()
+                'input_type' => 'text',
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true,
-                'list_data_name' => 'appkey_name'
+                'is_show' => true
             ),
             'search' => array(
                 'is_show' => false
             )
         );
+        
+        $schemas['skey'] = array(
+            'name' => 'SKEY',
+            'data' => array(
+                'type' => 'string',
+                'length' => 50
+            ),
+            'validation' => array(
+                'required' => 1
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
         $schemas['secretKey'] = array(
             'name' => '秘钥',
             'data' => array(
@@ -99,14 +117,5 @@ class ApplicationController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelApplication;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $appKeyList = $this->modelAppKey->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['appkey_name'] = isset($appKeyList[$item['appKeyId']]) ? $appKeyList[$item['appKeyId']] : "--";
-        }
-        return $list;
     }
 }

@@ -29,6 +29,16 @@ return new \Phalcon\Config(array(
         "get_accesstoken_url" => "http://weixinoauth.umaman.com/weixin/index/get-access-token",
         'openid4developer' => 'on8S7uINhQNNenv2AUE7ytD18eNs'
     ),
+    'weixinAuthorize' => array(
+        'authorizeUrl' => 'http://www.jizigou.com/weixin/sns/index',
+        'secretKey' => 'jizigou',
+        'scope' => 'snsapi_userinfo'
+    ),
+    'tencentAuthorize' => array(
+        'authorizeUrl' => 'http://www.jizigou.com/tencent/sns/index',
+        'secretKey' => '12345667890',
+        'scope' => 'get_user_info'
+    ),
     'memcached' => array(
         "host" => '127.0.0.1',
         "port" => 11211,

@@ -67,22 +67,7 @@ class User extends \App\Common\Models\Weixin\User
                 return false;
             }
             
-            $data = array();
-            $data['openid'] = isset($userInfo['openid']) ? $userInfo['openid'] : '';
-            $data['nickname'] = isset($userInfo['nickname']) ? $userInfo['nickname'] : '';
-            $data['sex'] = isset($userInfo['sex']) ? $userInfo['sex'] : '';
-            $data['language'] = isset($userInfo['language']) ? $userInfo['language'] : '';
-            $data['city'] = isset($userInfo['city']) ? $userInfo['city'] : '';
-            $data['province'] = isset($userInfo['province']) ? $userInfo['province'] : '';
-            $data['country'] = isset($userInfo['country']) ? $userInfo['country'] : '';
-            $data['headimgurl'] = isset($userInfo['headimgurl']) ? $userInfo['headimgurl'] : '';
-            $data['remark'] = isset($userInfo['remark']) ? $userInfo['remark'] : '';
-            $data['groupid'] = isset($userInfo['groupid']) ? $userInfo['groupid'] : '';
-            $data['tagid_list'] = isset($userInfo['tagid_list']) ? $userInfo['tagid_list'] : '';
-            $data['subscribe'] = isset($userInfo['subscribe']) ? $userInfo['subscribe'] : '';
-            $data['subscribe_time'] = isset($userInfo['subscribe_time']) ? $userInfo['subscribe_time'] : '';
-            $data['unionid'] = isset($userInfo['unionid']) ? $userInfo['unionid'] : '';
-            $data['privilege'] = isset($userInfo['privilege']) ? $userInfo['privilege'] : '';
+            $data = $this->getPrepareData($userInfo);
             
             if (! empty($check)) {
                 return $this->update(array(
@@ -105,16 +90,16 @@ class User extends \App\Common\Models\Weixin\User
      */
     public function updateUserInfoBySns($openid, $userInfo)
     {
-        $userInfo['access_token'] = isset($_SESSION['iWeixin']['accessToken']) ? $_SESSION['iWeixin']['accessToken'] : false;
         $check = $this->checkOpenId($openid);
-        if ($check) {
+        $data = $this->getPrepareData($userInfo);
+        if ($check) {            
             return $this->update(array(
                 'openid' => $openid
             ), array(
-                '$set' => $userInfo
+                '$set' => $data
             ));
         } else {
-            return $this->insert($userInfo);
+            return $this->insert($data);
         }
     }
 
@@ -131,5 +116,26 @@ class User extends \App\Common\Models\Weixin\User
                 '$gt' => getCurrentTime(time() - 7 * 86400)
             )
         ));
+    }
+
+    private function getPrepareData($userInfo)
+    {
+        $data = array();
+        $data['openid'] = isset($userInfo['openid']) ? $userInfo['openid'] : '';
+        $data['nickname'] = isset($userInfo['nickname']) ? $userInfo['nickname'] : '';
+        $data['sex'] = isset($userInfo['sex']) ? $userInfo['sex'] : '';
+        $data['language'] = isset($userInfo['language']) ? $userInfo['language'] : '';
+        $data['city'] = isset($userInfo['city']) ? $userInfo['city'] : '';
+        $data['province'] = isset($userInfo['province']) ? $userInfo['province'] : '';
+        $data['country'] = isset($userInfo['country']) ? $userInfo['country'] : '';
+        $data['headimgurl'] = isset($userInfo['headimgurl']) ? $userInfo['headimgurl'] : '';
+        $data['remark'] = isset($userInfo['remark']) ? $userInfo['remark'] : '';
+        $data['groupid'] = isset($userInfo['groupid']) ? $userInfo['groupid'] : '';
+        $data['tagid_list'] = isset($userInfo['tagid_list']) ? $userInfo['tagid_list'] : '';
+        $data['subscribe'] = isset($userInfo['subscribe']) ? $userInfo['subscribe'] : '';
+        $data['subscribe_time'] = isset($userInfo['subscribe_time']) ? $userInfo['subscribe_time'] : '';
+        $data['unionid'] = isset($userInfo['unionid']) ? $userInfo['unionid'] : '';
+        $data['privilege'] = isset($userInfo['privilege']) ? $userInfo['privilege'] : '';
+        return $data;
     }
 }

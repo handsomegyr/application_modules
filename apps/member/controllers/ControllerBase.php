@@ -344,61 +344,53 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     public function tencentauthorizeAction()
     {
         try {
-            // http://xxx/xxx/xxx/tencentauthorize?callbackUrl=xxx
-            $callbackUrl = trim($this->request->get('callbackUrl'));
-            $callbackUrl = urldecode($callbackUrl);
+            // http://www./member/xxxx/tencentauthorize?callbackUrl=xxx
+            $callbackUrl = trim($this->get('callbackUrl', ''));
             
-            // 检查session中是否有值
-            $userInfo = empty($_SESSION['Tencent_userInfo']) ? array() : $_SESSION['Tencent_userInfo'];
-            if (empty($userInfo)) {
-                // 如果在进行授权处理中的话
-                if (! empty($_SESSION['isTencentAuthorizing'])) {
+            $FromUserName = trim($this->get('FromUserName', ''));
+            $nickname = trim($this->get('nickname', ''));
+            $headimgurl = trim($this->get('headimgurl', ''));
+            $timestamp = trim($this->get('timestamp', ''));
+            $signkey = trim($this->get('signkey', ''));
+            
+            // url的参数上已经有了FromUserName参数并且不是空的时候
+            if (! empty($FromUserName)) {
+                $config = $this->getDI()->get('config');
+                $secretKey = $config['tencentAuthorize']['secretKey'];
+                // 校验微信id,上线测试时需要加上去
+                if ($this->validateOpenid($FromUserName, $timestamp, $secretKey, $signkey)) {
+                    // 授权处理完成
+                    unset($_SESSION['isTencentAuthorizing']);
+                    // 存储微信用户到session
+                    $userInfo = array(
+                        'user_id' => $FromUserName,
+                        'user_name' => urldecode($nickname),
+                        'user_headimgurl' => urldecode($headimgurl),
+                        'subscribe' => 0
+                    );
+                    // 存储微信id到session
+                    $_SESSION['Tencent_userInfo'] = $userInfo;
                     
-                    $wxUser = $this->request->get('wxUser');
-                    $sign = $this->request->get('sign');
-                    
-                    // url的参数上已经有了wxUser参数并且不是空的时候
-                    if (! empty($wxUser)) {
-                        $wxUser = json_decode($wxUser, true);
-                        $config = $this->getDI()->get('config');
-                        $secretKey = $config['TencentAuthorize']['secretKey'];
-                        // 校验微信id,上线测试时需要加上去
-                        if ($this->validateOpenid($wxUser, $secretKey, $sign)) {
-                            // 授权处理完成
-                            unset($_SESSION['isTencentAuthorizing']);
-                            // 存储微信用户到session
-                            $userInfo = array(
-                                'user_id' => $wxUser['openid'],
-                                'user_name' => urldecode($wxUser['nickname']),
-                                'user_headimgurl' => urldecode($wxUser['headimgurl']),
-                                'subscribe' => 0
-                            );
-                            // 存储微信id到session
-                            $_SESSION['Tencent_userInfo'] = $userInfo;
-                            
-                            // 授权成功之后的处理
-                            $this->tencentauthorize();
-                        }
-                    }
+                    // 授权成功之后的处理
+                    $this->tencentauthorize();
                 }
             }
+            
             // 跳转地址
             if (empty($callbackUrl)) {
                 $callbackUrl = $this->url->get("member/passport/qcbind");
             }
-            die($callbackUrl);
+            
             $this->_redirect($callbackUrl);
             exit();
         } catch (\Exception $e) {
             die($e->getMessage());
         }
     }
-    
     // 获取用户信息
     protected function getTencentUserInfo()
     {
         $userInfo = empty($_SESSION['Tencent_userInfo']) ? array() : $_SESSION['Tencent_userInfo'];
-        if (! empty($userInfo)) {}
         if (! empty($userInfo)) {
             $this->assign('FromUserName', $userInfo['user_id']);
             $this->assign('nickname', $userInfo['user_name']);
