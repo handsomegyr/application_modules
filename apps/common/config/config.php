@@ -39,6 +39,9 @@ return new \Phalcon\Config(array(
         'secretKey' => '12345667890',
         'scope' => 'get_user_info'
     ),
+    'tencent' => array(
+        "appid" => 'wxbf9165206b992f39'
+    ),
     'memcached' => array(
         "host" => '127.0.0.1',
         "port" => 11211,
