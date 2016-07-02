@@ -96,7 +96,7 @@ class Pay
                     case 'predeposit':
                         // 预付款充值
                         // 增加预付款
-                        $pay_amount_yuan = $pay_amount/100;
+                        $pay_amount_yuan = $pay_amount / 100;
                         $this->modelPointsUser->addOrReduce(POINTS_CATEGORY3, $buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $out_trade_no, $orderPayInfo['__CREATE_TIME__'], $pay_amount, "预付款充值", "支付金额￥{$pay_amount_yuan}已充值到您的云购账户");
                         
                         // 增加支付日志记录
@@ -134,6 +134,7 @@ class Pay
                         $total_amount = 0.00; // 总花费金额
                                               
                         // 获取订单商品列表
+                        $goods_ids = array();
                         $orderGoodsList = $this->modelOrderGoods->getListByOrderIds($order_ids);
                         foreach ($orderGoodsList as $order_id => $goodsList) {
                             foreach ($goodsList as $goodsInfo) {
@@ -188,6 +189,7 @@ class Pay
                                             $exchangeInfo = $lotteryResult['result'];
                                             $lottery_code_list[] = $exchangeInfo['prize_virtual_code'];
                                             // 该期的商品参与人次增加一
+                                            $goods_ids[] = $goodsInfo['goods_id'];
                                             $this->modelGoods->incPurchasePersonTime($goodsInfo['goods_id'], 1);
                                         }
                                     }
@@ -224,10 +226,12 @@ class Pay
                                     if (! empty($buyerInfo['birthday']) && substr($buyerInfo['birthday'], 5) == date('m-d', $currentTime->sec)) {
                                         $double = 2;
                                     }
+                                    $unique_id = getNewId();
                                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'buy');
-                                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $exchangeInfo['_id'], null, $pointsRuleInfo['points'] * $double * $lottery_code_num, $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $unique_id, null, $pointsRuleInfo['points'] * $double * $lottery_code_num, $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                                    
                                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY2, 'buy');
-                                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY2, $buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $exchangeInfo['_id'], null, $pointsRuleInfo['points'] * $double * $lottery_code_num, $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY2, $buyerInfo['buyer_id'], $buyerInfo['buyer_name'], $buyerInfo['buyer_avatar'], $unique_id, null, $pointsRuleInfo['points'] * $double * $lottery_code_num, $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                                     
                                     // 增加支付日志记录
                                     $this->modelPayLog->recordLog($buyerInfo['buyer_id'], \App\Payment\Models\Log::TYPE2, $lottery_code_num, '云购商品', $goodsInfo);
@@ -277,6 +281,21 @@ class Pay
                 
                 $this->modelOrderPay->commit();
                 
+                if (! empty($goods_ids)) {
+                    $goods_ids = array_unique($goods_ids);
+                    foreach ($goods_ids as $goods_id) {
+                        // 后续的操作由队列处理
+                        // 入新期的商品处理队列
+                        \iQueue::enqueue4Newperiodgoods(array(
+                            'goods_id' => $goods_id
+                        ));
+                        
+                        // 入抽奖处理队列
+                        \iQueue::enqueue4Lotterygoods(array(
+                            'goods_id' => $goods_id
+                        ));
+                    }
+                }
                 $result = array(
                     'buyer_id' => $buyerInfo['buyer_id'],
                     'pay_sn' => $pay_sn,

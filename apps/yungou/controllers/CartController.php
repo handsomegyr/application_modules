@@ -21,7 +21,9 @@ class CartController extends ControllerBase
     private $modelPointsUser = null;
 
     private $serviceCart = null;
-
+    
+    private $modelPointsRule = null;
+    
     public function initialize()
     {
         parent::initialize();
@@ -31,6 +33,7 @@ class CartController extends ControllerBase
         $this->modelOrderPay = new \App\Order\Models\Pay();
         $this->modelOrderGoods = new \App\Order\Models\Goods();
         $this->modelPointsUser = new \App\Points\Models\User();
+        $this->modelPointsRule = new \App\Points\Models\Rule();
         $this->serviceCart = new \App\Order\Services\Cart();
     }
 
@@ -109,6 +112,10 @@ class CartController extends ControllerBase
         // 预存款金额
         $predepositInfo = $this->modelPointsUser->getInfoByUserId($buyer_id, POINTS_CATEGORY3);
         $this->assign('predepositInfo', $predepositInfo);
+        
+        // 购买所得的积分信息
+        $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'buy');
+        $this->assign('pointsRuleInfo', $pointsRuleInfo);
     }
 
     /**

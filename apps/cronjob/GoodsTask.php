@@ -22,15 +22,15 @@ class GoodsTask extends \Phalcon\CLI\Task
             if (! empty($goodsList['datas'])) {
                 foreach ($goodsList['datas'] as $goodsInfo) {
                     
-                    // 入新期的商品处理队列
-                    \iQueue::enqueue4NewPeriodGoods(array(
-                        'goods_id' => $goodsInfo['_id']
-                    ));
+                    // // 入新期的商品处理队列
+                    // \iQueue::enqueue4NewPeriodGoods(array(
+                    // 'goods_id' => $goodsInfo['_id']
+                    // ));
                     
-                    // 入抽奖处理队列
-                    \iQueue::enqueue4LotteryGoods(array(
-                        'goods_id' => $goodsInfo['_id']
-                    ));
+                    // // 入抽奖处理队列
+                    // \iQueue::enqueue4LotteryGoods(array(
+                    // 'goods_id' => $goodsInfo['_id']
+                    // ));
                 }
             }
             die("OK\n");

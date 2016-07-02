@@ -12,7 +12,7 @@
                 <img src="<?php echo \App\Member\Views\Helpers\MemberHelper::getImagePath($this->view->baseUrl, $this->view->postInfo['goods_info']['prize_buyer_avatar'])?>"><s class="transparent-png"></s></a></li><li class="win-name">
                 <a href="<?php echo $this->view->baseUrl?>yungou/member/index?id=<?php echo $this->view->postInfo['buyer_id']?>" target="_blank"><?php echo getBuyerName($this->view->postInfo['goods_info']['prize_buyer_name'], $this->view->postInfo['goods_info']['prize_buyer_register_by'])?></a></li>
                 <li><i>本云参与：</i><em class="orange f-tran-prev"><?php echo $this->view->postInfo['goods_info']['prize_buyer_purchase_num']?></em>人次</li>
-                <li><i>幸运云购码：</i><span class="orange"><?php echo $this->view->postInfo['goods_info']['prize_code']?></span></li>
+                <li><i>幸运集资购码：</i><span class="orange"><?php echo $this->view->postInfo['goods_info']['prize_code']?></span></li>
                 <li><i>揭晓时间：</i><cite><?php echo date('Y-m-d H:i:s',$this->view->postInfo['goods_info']['prize_time'])?></cite></li></ul><b class="point-out"><s></s></b></div><div class="next-period"><dl><dt>
                 <a rel="nofollow" href="<?php echo $this->view->baseUrl?>yungou/lottery/detail?id=<?php echo $this->view->postInfo['goods_id']?>" target="_blank">
                 <img src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->postInfo['goods_info']['image'])?>"></a></dt><dd class="comm-name "><p>
@@ -49,7 +49,7 @@
                                     本云参与：<em class="orange"><?php echo $this->view->postInfo['goods_info']['prize_buyer_purchase_num']?></em>人次
                                 </span>
                                 <span>
-                                    幸运云购码：<em class="orange"><?php echo $this->view->postInfo['goods_info']['prize_code']?></em>
+                                    幸运集资购码：<em class="orange"><?php echo $this->view->postInfo['goods_info']['prize_code']?></em>
                                 </span>
                                 <span>
                                     揭晓时间：<?php echo date('Y-m-d H:i:s',$this->view->postInfo['goods_info']['prize_time'])?>

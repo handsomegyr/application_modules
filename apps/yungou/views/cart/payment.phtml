@@ -4,7 +4,7 @@
     <!--头部-->
     <div class="g-special-head">
         <a href="/" class="f-logo fl transparent-png"></a>
-        <a href="/" title="继续云购" class="f-carryOn fr">继续云购</a>
+        <a href="/" title="继续集资购" class="f-carryOn fr">继续集资购</a>
     </div>
 
     <div class="g-main-con clrfix">
@@ -16,7 +16,7 @@
                 <dt>
                     <span class="f-pay-comm">商品</span>
                     <span class="f-pay-price">剩余人次</span>
-                    <span class="f-pay-plusLess">云购人次</span>
+                    <span class="f-pay-plusLess">集资购人次</span>
                     <span class="f-pay-subtotal">小计</span>
                 </dt>
                 <?php $order_amount = 0.00?>
@@ -87,11 +87,11 @@
                 <div class="fr f-pay-bank">
                     <h3>支付平台支付：</h3>
                     <dl id="dlPayForm" class="clrfix">
-                        <dd class="checked">
+                        <!-- <dd >
                             <input type="radio" name="account" value="alipay" id="zfbpay" checked="checked"><label for="zfbpay"><span class="u-bank-zfb"></span></label>
-                        </dd>
-                        <dd>
-                            <input type="radio" name="account" value="weixin" id="weixin"><label for="weixin"><span class="u-bank-weixin"></span></label>
+                        </dd> -->
+                        <dd class="checked">
+                            <input type="radio" name="account" value="weixin" id="weixin" checked="checked"><label for="weixin"><span class="u-bank-weixin"></span></label>
                         </dd>
                     </dl>
                 </div>
@@ -106,7 +106,7 @@
         <!--使用网银支付提交表单-->
         <!-- 支付SN -->
         <input type="hidden" id="hidCheckSN" name="checkSN" value="<?php echo $this->view->pay_sn?>">
-        <input type="hidden" id="hidPayName" name="payName" value="alipay">
+        <input type="hidden" id="hidPayName" name="payName" value="weixin">
         <div class="m-pay-Total clrfix">
             <div id="divPaypwd" class="f-payment-password clrfix" style="display: none;">
                 <p>
@@ -120,7 +120,7 @@
                 <input id="submitOK" type="submit" name="submit" value="确认支付">
             </div>
         </div>
-        <div id="divGetPoint" class="f-cgzf">成功支付即可获得13福分</div>
+        <div id="divGetPoint" class="f-cgzf">成功支付即可获得<?php echo $this->view->pointsRuleInfo['points']?>福分</div>
     </div>
 </div>
 <script type="text/javascript" src="/dist/js/common.js"></script>

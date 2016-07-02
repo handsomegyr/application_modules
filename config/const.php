@@ -5,7 +5,6 @@ defined('APP_PATH') || define('APP_PATH', dirname(dirname(__FILE__)) . '/');
 defined('APP_PAY_PATH') || define('APP_PAY_PATH', APP_PATH . 'library/pay/');
 defined('APPLICATION_ENV') || define('APPLICATION_ENV', isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'development'); // [production|development]
 
-define('CURRENT_TIMESTAMP', time()); // 当前时间
 define('POINTS_CATEGORY1', 1); // 福分
 define('POINTS_CATEGORY2', 2); // 经验值
 define('POINTS_CATEGORY3', 3); // 预存款

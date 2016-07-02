@@ -12,9 +12,9 @@ try {
     
     /**
      * Include const
-     */    
+     */
     require __DIR__ . '/../config/const.php';
-    
+    define('CURRENT_TIMESTAMP', time()); // 当前时间
     
     require __DIR__ . '/../vendor/autoload.php';
     

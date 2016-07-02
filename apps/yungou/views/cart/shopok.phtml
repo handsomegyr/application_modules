@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>云购</title>
+    <title>集资购</title>
     <base href="<?php echo $this->view->resourceUrl?>" />
     <link rel="stylesheet" type="text/css" href="css/header.css" />
     <link rel="stylesheet" type="text/css" href="css/CartList.css" />
@@ -16,7 +16,7 @@
         <!--头部-->
         <div class="g-special-head">
             <a href="/" class="f-logo fl transparent-png"></a>
-            <a href="/" title="继续云购" class="f-carryOn fr">继续云购</a>
+            <a href="/" title="继续集资购" class="f-carryOn fr">继续集资购</a>
         </div>
 
         <?php if(!empty($this->view->orderPayInfo['failure_count'])){?>
@@ -32,18 +32,18 @@
                         </b>
                     </dt>
                     <dd>
-                        <a href="javascript:;" target="_blank" title="查看云购记录">
-                            查看云购记录
+                        <a href="javascript:;" target="_blank" title="查看集资购记录">
+                            查看集资购记录
                         </a>
-                        <a href="/" title="继续云购">
-                            继续云购
+                        <a href="/" title="继续集资购">
+                            继续集资购
                         </a>
                     </dd>
                 </dl>
             </div>
             <div class="g-resulst-prompt">
                 <span>
-                    <?php echo $this->view->orderPayInfo['failure_count']?>件商品云购失败
+                    <?php echo $this->view->orderPayInfo['failure_count']?>件商品集资购失败
                 </span>
                 <b>
                 </b>
@@ -62,7 +62,7 @@
                             </a>
                         </span>
                         <cite>
-                            云购失败，支付金额￥<?php echo showPrice($orderGoods['goods_pay_price'],2)?>已退回您的云购账户，
+                            集资购失败，支付金额￥<?php echo showPrice($orderGoods['goods_pay_price'],2)?>已退回您的集资购账户，
                             <a href="javascript:;" target="_blank">
                                 查看
                             </a>
@@ -98,18 +98,18 @@
                         </b>
                     </dt>
                     <dd>
-                        <a href="javascript:;" target="_blank" title="查看云购记录">
-                            查看云购记录
+                        <a href="/member/index/userbuylist" target="_blank" title="查看集资购记录">
+                            查看集资购记录
                         </a>
-                        <a href="javascript:;" title="继续云购">
-                            继续云购
+                        <a href="/" title="继续集资购">
+                            继续集资购
                         </a>
                     </dd>
                 </dl>
             </div>
             <div class="g-resulst-prompt">
                 <span>
-                    <?php echo $this->view->orderPayInfo['success_count']?>件商品云购成功
+                    <?php echo $this->view->orderPayInfo['success_count']?>件商品集资购成功
                 </span>
                 <b>
                 </b>
@@ -121,10 +121,10 @@
                             商品名称
                         </span>
                         <span class="u-results-time">
-                            云购时间
+                            集资购时间
                         </span>
                         <span class="u-results-visitors">
-                            云购人次
+                            集资购人次
                         </span>
                         <span class="u-results-code">
                         </span>
@@ -150,7 +150,7 @@
                         <span class="u-results-code">
                             <em>
                                 <a href="<?php echo $this->view->baseUrl?>member/index/userbuydetail?goods_id=<?php echo $orderGoods['goods_id']?>" target="_blank">
-                                    查看所有云购码
+                                    查看所有集资购码
                                 </a>
                             </em>
                         </span>

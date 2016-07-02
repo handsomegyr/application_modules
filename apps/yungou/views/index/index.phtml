@@ -91,11 +91,11 @@
   <!--最新揭晓-->
   <div class="g-title">
       <h3 class="fl"><i></i>最新揭晓<span>截至目前共揭晓商品<em><a id="em_lotcount" href="javascript:;" target="_blank"><?php echo $this->view->raffleCount?></a></em>个</span></h3>
-      <div class="m-other fr">
+<!--       <div class="m-other fr">
           <cite>
               <a href="javascript:;" target="_blank" title="看看附近都有谁获得了商品？"><em></em>看看附近都有谁获得了商品？</a>
           </cite>
-      </div>
+      </div> -->
   </div>
   <div class="g-list">
       <ul id="ul_Lottery">
@@ -172,7 +172,7 @@
                     <dd><span class="orange fl"><em><?php echo $goods['purchase_person_time']?></em>已参与</span><span class="gray6 fl"><em><?php echo $goods['total_person_time']?></em>总需人次</span><span class="blue fr"><em><?php echo $goods['remain_person_time']?></em>剩余</span></dd>
                   </dl>
                 </li>
-                <li><a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" class="u-imm" target="_blank" title="立即1元云购">立即1元云购</a></li>
+                <li><a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" class="u-imm" target="_blank" title="立即1元集资购">立即1元集资购</a></li>
               </ul>
             </div>
             <div class="u_buyCount" style="top:169px;" codeid="<?php echo $goods['_id']?>"></div>
@@ -182,7 +182,7 @@
           <!-- 数据结束 -->
       </div>
       <div class="g-hotR fr">
-          <div class="u-are">正在云购</div>
+          <div class="u-are">正在集资购</div>
           <div class="g-zzyging">
               <input name="hidBuyID" type="hidden" id="hidBuyID" value="190444501" />
               <ul id="UserBuyNewList">                           
@@ -207,6 +207,7 @@
       <div class="fr">
           <?php $topLevelCategoryList = \App\Goods\Views\Helpers\GoodsHelper::getTopLevelCategoryList();?>
           <?php if(!empty($topLevelCategoryList)){?>
+          <?php $topLevelCategoryList = array_slice($topLevelCategoryList, 0,6);?>
           <?php foreach ($topLevelCategoryList as $category) {?>
           <a href="<?php echo $this->view->baseUrl?>yungou/product/list?i=<?php echo $category['_id'] ?>" target="_blank" title="<?php echo $category['name']?>"><?php echo $category['name']?></a>
           <?php }?>
@@ -237,7 +238,7 @@
               </dl>
             </li>
             <li>
-              <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank" class="u-now">立即1元云购</a>
+              <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" target="_blank" class="u-now">立即1元集资购</a>
               <a href="javascript:;" class="u-cart" _src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'])?>" codeid="<?php echo $goods['_id']?>" goodsid="<?php echo $goods['goods_commonid']?>"><s></s></a>
             </li>
           </ul>

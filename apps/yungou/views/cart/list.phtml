@@ -1,10 +1,10 @@
-﻿<link rel="stylesheet" type="text/css" href="/CSS/pageDialog.css" />
-<link rel="stylesheet" type="text/css" href="css/CartList.css" />
+﻿<link href="/CSS/pageDialog.css rel="stylesheet" type="text/css"" />
+<link href="css/CartList.css" rel="stylesheet" type="text/css" />
 <div class="w1190 clrfix">
     <!--头部-->
     <div class="g-special-head">
         <a href="/" class="f-logo fl transparent-png"></a>
-        <a href="/" title="继续云购" class="f-carryOn fr">继续云购</a>
+        <a href="/" title="继续集资购" class="f-carryOn fr">继续集资购</a>
     </div>
     <div class="g-main-con clrfix">
         <div class="m-cart-title gray3"><b>我的购物车</b></div>
@@ -15,7 +15,7 @@
                 <dt>
                     <span class="f-cart-comm">商品</span>
                     <span class="f-cart-price">剩余人次</span>
-                    <span class="f-cart-plusLess">云购人次</span>
+                    <span class="f-cart-plusLess">集资购人次</span>
                     <span class="f-cart-subtotal">小计</span>
                     <span class="f-cart-operate">操作</span>
                 </dt>                
@@ -62,7 +62,7 @@
                 </p>
                 <cite class="fr">金额总计：<i class="orange" id="iTotalMoney">￥<?php echo showPrice($this->view->totalAmount,2)?></i></cite>
                 <div class="f-list-accounts">
-                    <a href="/" title="返回继续云购" class="f-list-return">返回继续云购</a>
+                    <a href="/" title="返回继续集资购" class="f-list-return">返回继续集资购</a>
                     <a id="btnGoPay" href="javascript:;" title="去结算" class="f-list-jiesuan">去结算</a>
                 </div>
             </div>
@@ -70,25 +70,25 @@
         
         <?php }else{?>
         <!-- 购物车无数据 -->
-        <div id="divEmpty" class="z-cart-nothing"><b></b><span>您的购物车为空！<a href="/" title="立即去云购>>">立即去云购<em class="f-tran">&gt;&gt;</em></a></span></div>
+        <div id="divEmpty" class="z-cart-nothing"><b></b><span>您的购物车为空！<a href="/" title="立即去集资购>>">立即去集资购<em class="f-tran">&gt;&gt;</em></a></span></div>
         <?php }?>
         <div id="divRec" class="m-rqtj-con clrfix">
-        <p>人气推荐</p>
-        <div id="divRecList" class="m-recomm-con clrfix">
-            <?php if(!empty($this->view->commendGoodsList['datas'])){?>
-            <?php foreach ($this->view->commendGoodsList['datas'] as $goods) {?>
-          
-            <div class="f-recomm-list" codeid="<?php echo $goods['_id']?>">
-                <dl>
-                    <dt><a href="javascript:;" title="<?php echo $goods['name']?>">
-                        <img src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>"></a></dt>
-                    <dd class="u-recomm-name"><a href="javascript:;" title="<?php echo $goods['name']?>"><?php echo $goods['name']?></a></dd>
-                    <dd class="gray9">剩余<em><?php echo $goods['remain_person_time']?></em>人次</dd>
-                </dl>
+            <p>人气推荐</p>
+            <div id="divRecList" class="m-recomm-con clrfix">
+                <?php if(!empty($this->view->commendGoodsList['datas'])){?>
+                <?php foreach ($this->view->commendGoodsList['datas'] as $goods) {?>
+              
+                <div class="f-recomm-list" codeid="<?php echo $goods['_id']?>">
+                    <dl>
+                        <dt><a href="javascript:;" title="<?php echo $goods['name']?>">
+                            <img src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $goods['image'],200,200)?>"></a></dt>
+                        <dd class="u-recomm-name"><a href="javascript:;" title="<?php echo $goods['name']?>"><?php echo $goods['name']?></a></dd>
+                        <dd class="gray9">剩余<em><?php echo $goods['remain_person_time']?></em>人次</dd>
+                    </dl>
+                </div>
+                <?php }?>
+                <?php }?>
             </div>
-            <?php }?>
-            <?php }?>
-        </div>
         </div>
     </div>
 </div>

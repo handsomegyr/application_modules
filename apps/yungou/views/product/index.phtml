@@ -102,14 +102,14 @@
                     <span id="span_tip"></span>
                 </div>
                 <div id="divBuy" class="consume-wrapper clearfix">
-                    <a goodsid="<?php echo $this->view->goodsInfo['_id']?>" href="javascript:;" class="consume-now">立即1元云购</a>
+                    <a goodsid="<?php echo $this->view->goodsInfo['_id']?>" href="javascript:;" class="consume-now">立即1元集资购</a>
                     <a goodsid="<?php echo $this->view->goodsInfo['_id']?>" href="javascript:;" _src="<?php echo \App\Goods\Views\Helpers\GoodsHelper::getGoodsImage($this->view->baseUrl, $this->view->goodsInfo['image'])?>" class="consume-addcar">加入购物车</a>
                 </div>
                 <?php }else{?>
 
                 <!-- 已经结束内容 -->
                 <h2 class="title end-title"><?php echo $this->view->goodsInfo['name']?></h2>
-                <div class="has-end"><span>本商品已结束云购</span></div>
+                <div class="has-end"><span>本商品已结束集资购</span></div>
                 <?php }?>
                 <div class="about-tips clearfix">
                     <ul class="f-inner clearfix">
@@ -156,15 +156,15 @@
                     </div>
                 </div>
             </div>
-            <!--右侧：云购记录-->
+            <!--右侧：集资购记录-->
             <div class="ng-goods-buy">    
 
                 <?php if(!\App\Goods\Views\Helpers\GoodsHelper::isOver($this->view->goodsInfo) ){?>       
                 <!--进行中状态-->
                 <div class="ng-buy-list">
                     <div id="div_buynav" class="ng-buy-nav">
-                        <a href="javascript:;" title="最新云购记录" class="ng-fl current">最新云购记录</a>
-                        <a href="javascript:;" title="我的云购记录" class="ng-fr">我的云购记录</a>
+                        <a href="javascript:;" title="最新集资购记录" class="ng-fl current">最新集资购记录</a>
+                        <a href="javascript:;" title="我的集资购记录" class="ng-fr">我的集资购记录</a>
                         <div class="b-line"></div>
                     </div>
                     <div id="div_goodsrecord" class="list-wrap">
@@ -197,7 +197,7 @@
                             <!--未登录-->
                             <div class="no-login-wrapper">
                                 <div class="gth-icon transparent-png"></div>
-                                <p class="ng-see-mycord">请您<a id="a_login" href="javascript:;">登录</a>后查看云购记录！</p>
+                                <p class="ng-see-mycord">请您<a id="a_login" href="javascript:;">登录</a>后查看集资购记录！</p>
                             </div>
                             <?php }?>
                         </div>
@@ -224,7 +224,7 @@
                                 <dl class="m-progress">
                                     <dt><b title="已完成<?php echo number_format($goods['complete_percent'],2)?>%" style="width:<?php echo number_format($goods['complete_percent'],2)?>%"></b></dt>
                                 </dl>
-                                <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" class="now-buy">立即1元云购</a>
+                                <a href="<?php echo $this->view->baseUrl?>yungou/product/index?id=<?php echo $goods['goods_commonid']?>" class="now-buy">立即1元集资购</a>
                             </div>
                         </div>
                         <?php }?>

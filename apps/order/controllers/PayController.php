@@ -185,10 +185,14 @@ class PayController extends ControllerBase
                     $pay_url = $this->servicePayment4Alipay->directPay($out_trade_no, $subject, $total_fee, $body, $show_url, $notify_url, $return_url);
                 }
             } else {
-                $pay_state = true;
+                // $pay_state = true;
                 // 如果支付完成的话，支付处理
                 // 将该支付单号入队列处理???
                 // $this->servicePay->finishPay($out_trade_no);
+                // 后续的操作由队列处理
+                \iQueue::enqueue4OrderPay(array(
+                    'out_trade_no' => $out_trade_no
+                ));
             }
             
             $key = $this->getCacheKey4Payresult($out_trade_no);
@@ -326,7 +330,7 @@ class PayController extends ControllerBase
     public function finishAction()
     {
         try {
-            // http://www.jizigou.com/order/pay/finish?out_trade_no=56c18084887c224f7b8b4577
+            // http://www.jizigou.com/order/pay/finish?out_trade_no=577791f1887c22a4328b457a
             // 订单支付单号
             $out_trade_no = trim($this->get('out_trade_no', ''));
             $ret = $this->servicePay->finishPay($out_trade_no);

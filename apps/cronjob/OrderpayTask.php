@@ -21,9 +21,9 @@ class OrderpayTask extends \Phalcon\CLI\Task
             if (! empty($orderPayList['datas'])) {
                 foreach ($orderPayList['datas'] as $orderPayInfo) {
                     // 入完成支付处理队列
-                    \iQueue::enqueue4OrderPay(array(
-                        'out_trade_no' => $orderPayInfo['_id']
-                    ));
+                    //\iQueue::enqueue4OrderPay(array(
+                    //    'out_trade_no' => $orderPayInfo['_id']
+                    //));
                 }
             }
             die("OK\n");
