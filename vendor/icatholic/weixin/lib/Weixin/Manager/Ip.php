@@ -12,6 +12,9 @@ use Weixin\Client;
  */
 class Ip
 {
+    
+    // 接口地址
+    private $_url = 'https://api.weixin.qq.com/cgi-bin/';
 
     private $_client;
 
@@ -20,7 +23,7 @@ class Ip
     public function __construct(Client $client)
     {
         $this->_client = $client;
-        $this->_request = $client->getRequest();
+        $this->_request = $client->getRequest('v2');
     }
 
     /**
@@ -33,7 +36,7 @@ class Ip
      * https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=ACCESS_TOKEN
      * 参数说明
      *
-     * 参数	是否必须	说明
+     * 参数 是否必须 说明
      * access_token 是 公众号的access_token
      * 返回说明
      *
@@ -42,7 +45,7 @@ class Ip
      * {
      * "ip_list":["127.0.0.1","127.0.0.1"]
      * }
-     * 参数	说明
+     * 参数 说明
      * ip_list 微信服务器IP地址列表
      * 错误时微信会返回错误码等信息，JSON数据包示例如下（该示例为AppID无效错误）:
      *
@@ -52,7 +55,7 @@ class Ip
      */
     public function getcallbackip()
     {
-        $rst = $this->_request->get('getcallbackip');
+        $rst = $this->_request->get($this->_url . 'getcallbackip');
         return $this->_client->rst($rst);
     }
 }

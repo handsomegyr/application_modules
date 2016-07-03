@@ -3,7 +3,7 @@ namespace Weixin;
 
 use Weixin\Helpers;
 use Weixin\Exception;
-use Weixin\Http\Request;
+use Weixin\Http\Request2;
 
 /**
  * 微信JS-SDK
@@ -13,6 +13,8 @@ use Weixin\Http\Request;
  */
 class Jssdk
 {
+    // 接口地址
+    private $_url = 'https://api.weixin.qq.com/cgi-bin/';
     
     // appId公众号身份标识。
     private $appId = "";
@@ -62,31 +64,28 @@ class Jssdk
         return $this->accessToken;
     }
 
-    private $_request = null;
+    protected $_request = null;
 
     /**
      * 初始化认证的http请求对象
      */
-    private function initRequest()
+    protected function initRequest()
     {
-        $this->_request = new Request($this->getAccessToken());
+        $this->_request = new Request2($this->getAccessToken());
     }
 
     /**
      * 获取请求对象
      *
-     * @return \Weixin\Http\Request
+     * @return \Weixin\Http\Request2
      */
-    public function getRequest()
+    protected function getRequest()
     {
         if (empty($this->_request)) {
             $this->initRequest();
         }
         return $this->_request;
     }
-
-    public function __construct()
-    {}
 
     /**
      * jsapi_ticket
@@ -105,14 +104,14 @@ class Jssdk
      * }
      * 获得jsapi_ticket之后，就可以生成JS-SDK权限验证的签名了。
      *
-     * @return unknown
+     * @return array
      */
     public function getJsApiTicket()
     {
         $params = array(
             'type' => 'jsapi'
         );
-        $rst = $this->getRequest()->get('ticket/getticket', $params);
+        $rst = $this->getRequest()->get($this->_url . 'ticket/getticket', $params);
         if (! empty($rst['errcode'])) {
             // 如果有异常，会在errcode 和errmsg 描述出来。
             throw new Exception($rst['errmsg'], $rst['errcode']);

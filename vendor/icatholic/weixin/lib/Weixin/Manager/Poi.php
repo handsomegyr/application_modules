@@ -29,6 +29,8 @@ use Weixin\Client;
  */
 class Poi
 {
+    // 接口地址
+    private $_url = 'http://api.weixin.qq.com/cgi-bin/';
 
     private $_client;
 
@@ -37,7 +39,7 @@ class Poi
     public function __construct(Client $client)
     {
         $this->_client = $client;
-        $this->_request = $client->getRequest();
+        $this->_request = $client->getRequest('v2');
     }
 
     /**
@@ -48,7 +50,7 @@ class Poi
      * 1.2 接口调用请求说明
      * 协议 https
      * http 请求方式 POST/FORM
-     * 请求 Url https://file.api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=ACCESS_TOKEN
+     * 请求 Url https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=ACCESS_TOKEN
      * POST 数据格式 buffer
      * 1.3 参数说明
      * 参数 是否必须 说明
@@ -75,7 +77,7 @@ class Poi
     {
         $options = array();
         $options['fieldName'] = 'buffer';
-        return $this->_request->uploadFile('https://file.api.weixin.qq.com/cgi-bin/', 'media/uploadimg', $img);
+        return $this->_request->uploadFile('https://api.weixin.qq.com/cgi-bin/', 'media/uploadimg', $img);
     }
 
     /**
@@ -160,7 +162,7 @@ class Poi
      *
      * @return mixed
      */
-    public function addPoi(Weixin\Model\Poi $poi)
+    public function addPoi(\Weixin\Model\Poi $poi)
     {
         $base_info = array();
         $base_info['sid'] = $poi->sid;
@@ -185,7 +187,7 @@ class Poi
         $params = array();
         $params['business']['base_info'] = $base_info;
         
-        $rst = $this->_request->post('poi/addpoi', $params);
+        $rst = $this->_request->post($this->_url . 'poi/addpoi', $params);
         return $this->_client->rst($rst);
     }
 
@@ -257,7 +259,7 @@ class Poi
         $params = array();
         $params['poi_id'] = $poi_id;
         
-        $rst = $this->_request->post('poi/getpoi', $params);
+        $rst = $this->_request->post($this->_url . 'poi/getpoi', $params);
         return $this->_client->rst($rst);
     }
 
@@ -322,7 +324,7 @@ class Poi
         $params = array();
         $params['begin'] = $begin;
         $params['limit'] = $limit;
-        $rst = $this->_request->post('poi/getpoilist', $params);
+        $rst = $this->_request->post($this->_url . 'poi/getpoilist', $params);
         return $this->_client->rst($rst);
     }
 
@@ -365,7 +367,7 @@ class Poi
     {
         $params = array();
         $params['poi_id'] = $poi_id;
-        $rst = $this->_request->post('poi/delpoi', $params);
+        $rst = $this->_request->post($this->_url . 'poi/delpoi', $params);
         return $this->_client->rst($rst);
     }
 
@@ -443,7 +445,7 @@ class Poi
         }
         $params = array();
         $params['business']['base_info'] = $base_info;
-        $rst = $this->_request->post('poi/updatepoi', $params);
+        $rst = $this->_request->post($this->_url . 'poi/updatepoi', $params);
         return $this->_client->rst($rst);
     }
 }

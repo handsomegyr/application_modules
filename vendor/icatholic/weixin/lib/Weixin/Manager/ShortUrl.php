@@ -17,6 +17,8 @@ use Weixin\Client;
  */
 class ShortUrl
 {
+    // 接口地址
+    private $_url = 'https://api.weixin.qq.com/cgi-bin/';
 
     private $_client;
 
@@ -25,7 +27,7 @@ class ShortUrl
     public function __construct(Client $client)
     {
         $this->_client = $client;
-        $this->_request = $client->getRequest();
+        $this->_request = $client->getRequest('v2');
     }
 
     /**
@@ -40,7 +42,7 @@ class ShortUrl
          * https://api.weixin.qq.com/cgi-bin/shorturl?access_token=ACCESS_TOKEN
          * 参数说明
          *
-         * 参数	是否必须	说明
+         * 参数 是否必须 说明
          * access_token 是 调用接口凭证
          * action 是 此处填long2short，代表长链接转短链接
          * long_url 是 需要转换的长链接，支持http://、https://、weixin://wxpay 格式的url
@@ -48,7 +50,7 @@ class ShortUrl
         $params = array();
         $params['action'] = "long2short";
         $params['long_url'] = $long_url;
-        $rst = $this->_request->post('shorturl', $params);
+        $rst = $this->_request->post($this->_url . 'shorturl', $params);
         return $this->_client->rst($rst);
     }
 }

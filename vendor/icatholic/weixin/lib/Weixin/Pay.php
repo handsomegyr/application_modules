@@ -3,7 +3,7 @@ namespace Weixin;
 
 use Weixin\Helpers;
 use Weixin\Exception;
-use Weixin\Http\Request;
+use Weixin\Http\Request2;
 
 /**
  * 微信支付接口
@@ -14,15 +14,17 @@ use Weixin\Http\Request;
  * 对于appSecret 和paySignKey 的区别，可以这样认为：appSecret 是API 使用时的登录密码，会在网络中传播的；
  * 而paySignKey 是在所有支付相关数据传输时用于加密并进行身份校验的密钥，
  * 仅保留在第三方后台和微信后台，不会在网络中传播。
- * 
+ *
  * @author guoyongrong <handsomegyr@gmail.com>
  */
 class Pay
 {
 
+    private $_url = 'https://api.weixin.qq.com/';
+
     /**
      * 获取微信支付版本
-     * 
+     *
      * @return string
      */
     public function getVersion()
@@ -132,7 +134,7 @@ class Pay
      */
     private function initRequest()
     {
-        $this->_request = new Request($this->getAccessToken());
+        $this->_request = new Request2($this->getAccessToken());
     }
 
     /**
@@ -227,7 +229,7 @@ class Pay
         $postData["app_signature"] = $this->getPaySign($para);
         $postData["sign_method"] = $sign_method;
         
-        $rst = $this->getRequest()->payPost('pay/delivernotify', $postData);
+        $rst = $this->getRequest()->post($this->_url . 'pay/delivernotify', $postData);
         if (! empty($rst['errcode'])) {
             // 如果有异常，会在errcode 和errmsg 描述出来。
             throw new Exception($rst['errmsg'], $rst['errcode']);
@@ -303,7 +305,7 @@ class Pay
         $postData["app_signature"] = $this->getPaySign($para);
         $postData["sign_method"] = $sign_method;
         
-        $rst = $this->getRequest()->payPost('pay/orderquery', $postData);
+        $rst = $this->getRequest()->post($this->_url . 'pay/orderquery', $postData);
         if (! empty($rst['errcode'])) {
             // 如果有异常，会在errcode 和errmsg 描述出来。
             throw new Exception($rst['errmsg'], $rst['errcode']);
@@ -414,7 +416,7 @@ class Pay
     /**
      * Native（原生）支付回调商户后台获取package 在公众平台接到用户点击上述特殊Native（原生）支付的URL
      * 之后，会调用注册时填写的商家获取订单Package 的回调URL。 假设回调URL
-     * 为https://www.outdomain.com/cgi-bin/bizpaygetpackage
+     * 为https://www.outdomain.com/cgi-bin/bizpackage
      *
      *
      * @param string $package            
@@ -668,7 +670,7 @@ class Pay
         $postData["openid"] = $openid;
         $postData["feedbackid"] = $feedbackid;
         
-        $rst = $this->getRequest()->payGet('payfeedback/update', $postData);
+        $rst = $this->getRequest()->get($this->_url . 'payfeedback/update', $postData);
         if (! empty($rst['errcode'])) {
             // 如果有异常，会在errcode 和errmsg 描述出来。
             throw new Exception($rst['errmsg'], $rst['errcode']);

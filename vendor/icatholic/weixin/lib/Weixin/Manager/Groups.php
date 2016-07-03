@@ -14,6 +14,8 @@ use Weixin\Client;
  */
 class Groups
 {
+    // 接口地址
+    private $_url = 'https://api.weixin.qq.com/cgi-bin/';
 
     private $_client;
 
@@ -22,7 +24,7 @@ class Groups
     public function __construct(Client $client)
     {
         $this->_client = $client;
-        $this->_request = $client->getRequest();
+        $this->_request = $client->getRequest('v2');
     }
 
     /**
@@ -37,7 +39,7 @@ class Groups
      */
     public function get()
     {
-        $rst = $this->_request->get('groups/get');
+        $rst = $this->_request->get($this->_url . 'groups/get');
         return $this->_client->rst($rst);
     }
 
@@ -65,7 +67,7 @@ class Groups
                 "name" => $name
             )
         );
-        $rst = $this->_request->post('groups/create', $params);
+        $rst = $this->_request->post($this->_url . 'groups/create', $params);
         return $this->_client->rst($rst);
     }
 
@@ -95,7 +97,7 @@ class Groups
         $params['group']['id'] = $id;
         $params['group']['name'] = $name;
         
-        $rst = $this->_request->post('groups/update', $params);
+        $rst = $this->_request->post($this->_url . 'groups/update', $params);
         return $this->_client->rst($rst);
     }
 
@@ -123,7 +125,7 @@ class Groups
         $params = array();
         $params['openid'] = $openid;
         $params['to_groupid'] = $to_groupid;
-        $rst = $this->_request->post('groups/members/update', $params);
+        $rst = $this->_request->post($this->_url . 'groups/members/update', $params);
         return $this->_client->rst($rst);
     }
 
@@ -137,7 +139,7 @@ class Groups
      * POST数据例子：{"openid":"od8XIjsmk6QdVTETa9jLtGWA6KBc"}
      * 参数说明
      *
-     * 参数	说明
+     * 参数 说明
      * access_token 调用接口凭证
      * openid 用户的OpenID
      * 返回说明 正常时的返回JSON数据包示例：
@@ -147,7 +149,7 @@ class Groups
      * }
      * 参数说明
      *
-     * 参数	说明
+     * 参数 说明
      * groupid 用户所属的groupid
      * 错误时的JSON数据包示例（该示例为OpenID无效错误）：
      *
@@ -161,7 +163,7 @@ class Groups
     {
         $params = array();
         $params['openid'] = $openid;
-        $rst = $this->_request->post('groups/getid', $params);
+        $rst = $this->_request->post($this->_url . 'groups/getid', $params);
         return $this->_client->rst($rst);
     }
 
@@ -176,7 +178,7 @@ class Groups
      * POST数据例子：{"openid_list":["oDF3iYx0ro3_7jD4HFRDfrjdCM58","oDF3iY9FGSSRHom3B-0w5j4jlEyY"],"to_groupid":108}
      * 参数说明
      *
-     * 参数	说明
+     * 参数 说明
      * access_token 调用接口凭证
      * openid_list 用户唯一标识符openid的列表（size不能超过50）
      * to_groupid 分组id
@@ -192,7 +194,7 @@ class Groups
         $params = array();
         $params['openid_list'] = $openid_list;
         $params['to_groupid'] = $to_groupid;
-        $rst = $this->_request->post('groups/members/batchupdate', $params);
+        $rst = $this->_request->post($this->_url . 'groups/members/batchupdate', $params);
         return $this->_client->rst($rst);
     }
 }

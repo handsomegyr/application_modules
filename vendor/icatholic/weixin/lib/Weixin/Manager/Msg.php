@@ -14,12 +14,17 @@ use Weixin\Manager\Msg\Template;
 
 class Msg
 {
+    // 接口地址
+    private $_url = 'https://api.weixin.qq.com/cgi-bin/';
 
     private $_client;
+
+    private $_request;
 
     public function __construct(Client $client)
     {
         $this->_client = $client;
+        $this->_request = $client->getRequest('v2');
     }
 
     /**
@@ -218,7 +223,7 @@ class Msg
      *
      * 参数说明
      *
-     * 参数	说明
+     * 参数 说明
      * is_add_friend_reply_open 关注后自动回复是否开启，0代表未开启，1代表开启
      * is_autoreply_open 消息自动回复是否开启，0代表未开启，1代表开启
      * add_friend_autoreply_info 关注后自动回复的信息
@@ -243,7 +248,7 @@ class Msg
     public function getCurrentAutoreplyInfo()
     {
         $params = array();
-        $rst = $this->_client->getRequest()->get('get_current_autoreply_info', $params);
+        $rst = $this->_request->get($this->_url . 'get_current_autoreply_info', $params);
         return $this->_client->rst($rst);
     }
 

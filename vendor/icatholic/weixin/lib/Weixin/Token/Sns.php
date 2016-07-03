@@ -28,7 +28,7 @@ class Sns
         if (empty($secret)) {
             throw new Exception('请设定$secret');
         }
-        
+        $this->_state = uniqid();
         $this->_appid = $appid;
         $this->_secret = $secret;
         
@@ -71,7 +71,8 @@ class Sns
     {
         if (! in_array($scope, array(
             'snsapi_userinfo',
-            'snsapi_base'
+            'snsapi_base',
+            'snsapi_login'
         ), true)) {
             throw new Exception('$scope无效');
         }
@@ -91,11 +92,19 @@ class Sns
     /**
      * 获取认证地址的URL
      */
-    public function getAuthorizeUrl()
+    public function getAuthorizeUrl($is_redirect = true)
     {
-        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->_appid}&redirect_uri={$this->_redirect_uri}&response_type=code&scope={$this->_scope}&state={$this->_state}#wechat_redirect";
-        header("location:{$url}");
-        exit();
+        if ($this->_scope != 'snsapi_login') {
+            $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->_appid}&redirect_uri={$this->_redirect_uri}&response_type=code&scope={$this->_scope}&state={$this->_state}#wechat_redirect";
+        } else {
+            $url = "https://open.weixin.qq.com/connect/qrconnect?appid={$this->_appid}&redirect_uri={$this->_redirect_uri}&response_type=code&scope={$this->_scope}&state={$this->_state}#wechat_redirect";
+        }
+        if (! empty($is_redirect)) {
+            header("location:{$url}");
+            exit();
+        } else {
+            return $url;
+        }
     }
 
     /**

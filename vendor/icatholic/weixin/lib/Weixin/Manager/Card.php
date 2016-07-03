@@ -23,6 +23,10 @@ use Weixin\Model\CardBase;
  */
 class Card
 {
+    // 接口地址
+    private $_url = 'https://api.weixin.qq.com/';
+
+    private $_url2 = 'http://api.weixin.qq.com/';
 
     private $_client;
 
@@ -31,7 +35,7 @@ class Card
     public function __construct(Client $client)
     {
         $this->_client = $client;
-        $this->_request = $client->getRequest();
+        $this->_request = $client->getRequest('v2');
     }
 
     /**
@@ -110,7 +114,7 @@ class Card
     public function getcolors()
     {
         $params = array();
-        $rst = $this->_request->payGet('card/getcolors', $params);
+        $rst = $this->_request->get($this->_url . 'card/getcolors', $params);
         return $this->_client->rst($rst);
     }
 
@@ -173,7 +177,7 @@ class Card
     {
         $params = array();
         $params['card'] = $card->getParams4Create();
-        $rst = $this->_request->payPost('card/create', $params);
+        $rst = $this->_request->post($this->_url . 'card/create', $params);
         return $this->_client->rst($rst);
     }
 
@@ -262,7 +266,17 @@ class Card
         }
         $params['action_info']['card']['outer_id'] = $outer_id;
         
-        $rst = $this->_request->payPost('card/qrcode/create', $params);
+        $rst = $this->_request->post($this->_url . 'card/qrcode/create', $params);
+        return $this->_client->rst($rst);
+    }
+
+    public function qrcodeCreate4Multiple(array $card_list)
+    {
+        $params = array();
+        $params['action_name'] = "QR_MULTIPLE_CARD";
+        $params['action_info']['multiple_card'] = array();
+        $params['action_info']['multiple_card']['card_list'] = $card_list;
+        $rst = $this->_request->post($this->_url . 'card/qrcode/create', $params);
         return $this->_client->rst($rst);
     }
 
@@ -298,7 +312,7 @@ class Card
         $params = array(
             'type' => 'wx_card'
         );
-        $rst = $this->_request->get('ticket/getticket', $params);
+        $rst = $this->_request->get('https://api.weixin.qq.com/cgi-bin/ticket/getticket', $params);
         if (! empty($rst['errcode'])) {
             // 如果有异常，会在errcode 和errmsg 描述出来。
             throw new Exception($rst['errmsg'], $rst['errcode']);
@@ -355,7 +369,7 @@ class Card
         if (! empty($card_id)) {
             $params['card_id'] = $card_id;
         }
-        $rst = $this->_request->payPost('card/code/consume', $params);
+        $rst = $this->_request->post($this->_url . 'card/code/consume', $params);
         return $this->_client->rst($rst);
     }
 
@@ -401,7 +415,7 @@ class Card
     {
         $params = array();
         $params['encrypt_code'] = $encrypt_code;
-        $rst = $this->_request->payPost('card/code/decrypt', $params);
+        $rst = $this->_request->post($this->_url . 'card/code/decrypt', $params);
         return $this->_client->rst($rst);
     }
 
@@ -443,7 +457,7 @@ class Card
     {
         $params = array();
         $params['card_id'] = $card_id;
-        $rst = $this->_request->payPost('card/delete', $params);
+        $rst = $this->_request->post($this->_url . 'card/delete', $params);
         return $this->_client->rst($rst);
     }
 
@@ -499,7 +513,7 @@ class Card
         if (! empty($card_id)) {
             $params['card_id'] = $card_id;
         }
-        $rst = $this->_request->payPost('card/code/get', $params);
+        $rst = $this->_request->post($this->_url . 'card/code/get', $params);
         return $this->_client->rst($rst);
     }
 
@@ -545,7 +559,7 @@ class Card
         $params = array();
         $params['offset'] = $offset;
         $params['count'] = min($count, 50);
-        $rst = $this->_request->payPost('card/batchget', $params);
+        $rst = $this->_request->post($this->_url . 'card/batchget', $params);
         return $this->_client->rst($rst);
     }
 
@@ -705,7 +719,7 @@ class Card
     {
         $params = array();
         $params['card_id'] = $card_id;
-        $rst = $this->_request->payPost('card/get', $params);
+        $rst = $this->_request->post($this->_url . 'card/get', $params);
         return $this->_client->rst($rst);
     }
 
@@ -754,7 +768,7 @@ class Card
         $params['card_id'] = $card_id;
         $params['new_code'] = $new_code;
         
-        $rst = $this->_request->payPost('card/code/update', $params);
+        $rst = $this->_request->post($this->_url . 'card/code/update', $params);
         return $this->_client->rst($rst);
     }
 
@@ -806,7 +820,7 @@ class Card
         if (! empty($card_id)) {
             $params['card_id'] = $card_id;
         }
-        $rst = $this->_request->payPost('card/code/unavailable', $params);
+        $rst = $this->_request->post($this->_url . 'card/code/unavailable', $params);
         return $this->_client->rst($rst);
     }
 
@@ -885,7 +899,7 @@ class Card
     public function update(CardBase $card)
     {
         $params = $card->getParams4Update();
-        $rst = $this->_request->payPost('card/update', $params);
+        $rst = $this->_request->post($this->_url . 'card/update', $params);
         return $this->_client->rst($rst);
     }
 
@@ -931,7 +945,7 @@ class Card
         $params['increase_stock_value'] = $increase_stock_value;
         $params['reduce_stock_value'] = $reduce_stock_value;
         
-        $rst = $this->_request->payPost('card/modifystock', $params);
+        $rst = $this->_request->post($this->_url . 'card/modifystock', $params);
         return $this->_client->rst($rst);
     }
 
@@ -985,7 +999,7 @@ class Card
         $params['openid'] = $openids;
         $params['username'] = $usernames;
         
-        $rst = $this->_request->payPost('card/testwhitelist/set', $params);
+        $rst = $this->_request->post($this->_url . 'card/testwhitelist/set', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1088,7 +1102,7 @@ class Card
         
         $params['init_bonus'] = $init_bonus;
         $params['init_balance'] = $init_balance;
-        $rst = $this->_request->payPost('card/membercard/activate', $params);
+        $rst = $this->_request->post($this->_url . 'card/membercard/activate', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1166,7 +1180,7 @@ class Card
         if (! empty($custom_field_value3)) {
             $params['custom_field_value3'] = $custom_field_value3;
         }
-        $rst = $this->_request->payPost('card/membercard/updateuser', $params);
+        $rst = $this->_request->post($this->_url . 'card/membercard/updateuser', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1210,7 +1224,7 @@ class Card
         if (! empty($thumb_url)) {
             $params['thumb_url'] = $thumb_url;
         }
-        $rst = $this->_request->payPost('card/announcement/send', $params);
+        $rst = $this->_request->post($this->_url . 'card/announcement/send', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1267,7 +1281,7 @@ class Card
         if (! empty($close)) {
             $params['close'] = $close;
         }
-        $rst = $this->_request->payPost('card/announcement/update', $params);
+        $rst = $this->_request->post($this->_url . 'card/announcement/update', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1323,7 +1337,7 @@ class Card
         if (! empty($outer_id)) {
             $params['outer_id'] = $outer_id;
         }
-        $rst = $this->_request->payPost('card/sms/geturl', $params);
+        $rst = $this->_request->post($this->_url . 'card/sms/geturl', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1386,7 +1400,7 @@ class Card
         if (! empty($card_id)) {
             $params['card_id'] = $card_id;
         }
-        $rst = $this->_request->payPost('card/movieticket/updateuser', $params);
+        $rst = $this->_request->post($this->_url . 'card/movieticket/updateuser', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1453,7 +1467,7 @@ class Card
             $params['card_id'] = $card_id;
         }
         
-        $rst = $this->_request->payPost('card/boardingpass/checkin', $params);
+        $rst = $this->_request->post($this->_url . 'card/boardingpass/checkin', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1518,7 +1532,7 @@ class Card
         if (! empty($card_id)) {
             $params['card_id'] = $card_id;
         }
-        $rst = $this->_request->payPost('card/meetingticket/updateuser', $params);
+        $rst = $this->_request->post($this->_url . 'card/meetingticket/updateuser', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1568,7 +1582,7 @@ class Card
             $params['card_id'] = $card_id;
         }
         
-        $rst = $this->_request->payPost('card/luckymoney/updateuserbalance', $params);
+        $rst = $this->_request->post($this->_url . 'card/luckymoney/updateuserbalance', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1619,7 +1633,59 @@ class Card
         $params = array();
         $params['card_id'] = $card_id;
         $params['code'] = $codes;
-        $rst = $this->_request->post2('card/code/deposit', $params);
+        $rst = $this->_request->post($this->_url2 . 'card/code/deposit', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 查询导入code数目接口
+     *
+     * 接口说明
+     *
+     * 支持开发者调用该接口查询code导入微信后台成功的数目。
+     *
+     * 接口调用请求说明
+     *
+     * http请求方式: POST
+     * http://api.weixin.qq.com/card/code/getdepositcount?access_token=ACCESS_TOKEN
+     * 请求参数说明
+     *
+     * 参数 是否必须 说明
+     * access_token 是 调用接口凭证
+     * 请POST数据
+     *
+     * 数据示例
+     *
+     * {
+     * "card_id" : " pDF3iY0_dVjb_Pua96MMewA96qvA "
+     * }
+     *
+     * 字段说明：
+     *
+     * 字段 说明 是否必填
+     * cardid 进行导入code的卡券ID。 是
+     * 返回数据说明
+     *
+     * 返回示例：
+     *
+     * {
+     * "errcode":0,
+     * "errmsg":"ok"，
+     * "count":123
+     * }
+     *
+     * 字段说明：
+     *
+     * 字段 说明
+     * errcode 错误码，0为正常。
+     * errmsg 错误信息。
+     * count 已经成功存入的code数目。
+     */
+    public function codeGetDepositCount($card_id)
+    {
+        $params = array();
+        $params['card_id'] = $card_id;
+        $rst = $this->_request->post($this->_url2 . 'card/code/getdepositcount', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1669,7 +1735,7 @@ class Card
         $params = array();
         $params['card_id'] = $card_id;
         $params['code'] = $codes;
-        $rst = $this->_request->post2('card/code/checkcode', $params);
+        $rst = $this->_request->post($this->_url2 . 'card/code/checkcode', $params);
         return $this->_client->rst($rst);
     }
     
@@ -1750,7 +1816,7 @@ class Card
         $params = array(
             "location_list" => $location_list
         );
-        $rst = $this->_request->payPost('card/location/batchadd', $params);
+        $rst = $this->_request->post($this->_url . 'card/location/batchadd', $params);
         return $this->_client->rst($rst);
     }
 
@@ -1821,7 +1887,242 @@ class Card
         $params['offset'] = $offset;
         $params['count'] = $count;
         
-        $rst = $this->_request->payPost('card/location/batchget', $params);
+        $rst = $this->_request->post($this->_url . 'card/location/batchget', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 设置买单接口
+     *
+     * 买单接口说明 创建卡券之后，开发者可以通过设置微信买单接口设置该card_id支持微信买单功能。值得开发者注意的是，设置买单的card_id必须已经配置了门店，否则会报错。 接口详情
+     *
+     * 接口调用请求说明
+     *
+     * http请求方式: POST
+     * https://api.weixin.qq.com/card/paycell/set?access_token=TOKEN
+     * 参数说明
+     *
+     * 参数 是否必须 说明
+     * access_token 是 调用接口凭证
+     * POST数据 是 Json数据
+     * POST数据
+     *
+     * {
+     * “card_id”:“ph_gmt7cUVrlRk8swPwx7aDyF-pg“,
+     * “is_open”: true
+     * }
+     * 字段说明
+     *
+     * 字段名 说明
+     * cardid 卡券ID。
+     * is_open 是否开启买单功能，填true/false
+     * 返回数据
+     *
+     * {
+     * "errcode":0,
+     * "errmsg":"ok"
+     * }
+     * 字段说明
+     *
+     * 字段名 说明
+     * 错误码 错误码，0为正常；43008为商户没有开通微信支付权限或者没有在商户后台申请微信买单功能；
+     * errmsg 错误信息
+     */
+    public function paycellSet($card_id, $is_open = false)
+    {
+        $params = array();
+        $params['card_id'] = $card_id;
+        $params['is_open'] = $is_open;
+        
+        $rst = $this->_request->post($this->_url . 'card/paycell/set', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 拉取微信会员信息
+     *
+     * @param string $code            
+     * @param string $card_id            
+     */
+    public function getMembercardUserInfo($code, $card_id)
+    {
+        $params = array();
+        $params['code'] = $code;
+        $params['card_id'] = $card_id;
+        $rst = $this->_request->post($this->_url . 'card/membercard/userinfo/get', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 图文消息群发卡券
+     *
+     * 支持开发者调用该接口获取卡券嵌入图文消息的标准格式代码，将返回代码填入上传图文素材接口中content字段，即可获取嵌入卡券的图文消息素材。
+     *
+     * 特别注意：目前该接口仅支持填入非自定义code的卡券,自定义code的卡券需先进行code导入后调用。
+     *
+     * 接口调用请求说明
+     *
+     * http请求方式: POST
+     * https://api.weixin.qq.com/card/mpnews/gethtml?access_token=TOKEN
+     * 参数说明
+     *
+     * 参数 是否必须 说明
+     * POST数据 是 Json数据
+     * access_token 是 调用接口凭证
+     * POST数据
+     *
+     * {
+     * "card_id":"p1Pj9jr90_SQRaVqYI239Ka1erkI"
+     * }
+     * 参数名 必填 类型 示例值 描述
+     * cardid 否 string(32) pFS7Fjg8kV1IdDz01r4SQwMkuCKc 卡券ID。
+     * 返回数据
+     *
+     * 数据示例：
+     *
+     * {
+     * "errcode":0,
+     * "errmsg":"ok",
+     * "content":"<iframeclass=\"res_iframecard_iframejs_editor_card\"data-src=\"http: \/\/mp.weixin.qq.com\/bizmall\/appmsgcard?action=show&biz=MjM5OTAwODk4MA%3D%3D&cardid=p1Pj9jnXTLf2nF7lccYScFUYqJ0&wechat_card_js=1#wechat_redirect\">"
+     * }
+     * 参数名 描述
+     * errcode 错误码
+     * errmsg 错误信息
+     * content 返回一段html代码，可以直接嵌入到图文消息的正文里。即可以把这段代码嵌入到上传图文消息素材接口中的content字段里。
+     */
+    public function mpnewsGetHtml($card_id)
+    {
+        $params = array();
+        $params['card_id'] = $card_id;
+        
+        $rst = $this->_request->post($this->_url . 'card/mpnews/gethtml', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 创建货架接口
+     *
+     * 接口说明
+     *
+     * 开发者需调用该接口创建货架链接，用于卡券投放。创建货架时需填写投放路径的场景字段。
+     *
+     *
+     * 接口调用请求说明
+     *
+     * http请求方式: POST
+     * https://api.weixin.qq.com/card/landingpage/create?access_token=$TOKEN
+     * 请求参数说明
+     *
+     * 参数 是否必须 说明
+     * access_token 是 调用接口凭证
+     * buffer 是 文件的数据流
+     * POST数据
+     *
+     * {
+     * "banner":"http://mmbiz.qpic.cn/mmbiz/iaL1LJM1mF9aRKPZJkmG8xXhiaHqkKSVMMWeN3hLut7X7h icFN",
+     * "page_title": "惠城优惠大派送",
+     * "can_share": true,
+     * "scene": "SCENE_NEAR_BY",
+     * "card_list": [
+     * {
+     * "card_id": "pXch-jnOlGtbuWwIO2NDftZeynRE",
+     * "thumb_url": "www.qq.com/a.jpg"
+     * },
+     * {
+     * "card_id": "pXch-jnAN-ZBoRbiwgqBZ1RV60fI",
+     * "thumb_url": "www.qq.com/b.jpg"
+     * }
+     * ]
+     * }
+     * 参数说明：
+     *
+     * 字段 说明 是否必填
+     * banner 页面的banner图片链接，须调用，建议尺寸为640*300。 是
+     * title 页面的title。 是
+     * can_share 页面是否可以分享,填入true/false 是
+     * scene 投放页面的场景值；
+     * SCENE_NEAR_BY 附近 SCENE_MENU 自定义菜单 SCENE_QRCODE 二维码 SCENE_ARTICLE 公众号文章 SCENE_H5 h5页面 SCENE_IVR 自动回复 SCENE_CARD_CUSTOM_CELL 卡券自定义cell
+     *
+     * 是
+     * cardlist 卡券列表，每个item有两个字段 是
+     * cardid 所要在页面投放的cardid 是
+     * thumb_url 缩略图url 是
+     * 返回数据说明
+     *
+     * {
+     * "errcode":0,
+     * "errmsg":"ok",
+     * "url":"www.test.url",
+     * "page_id":1
+     * }
+     * 字段说明：
+     *
+     * 字段 说明
+     * errcode 错误码，0为正常。
+     * errmsg 错误信息。
+     * url 货架链接。
+     * page_id 货架ID。货架的唯一标识。
+     */
+    public function landingpageCreate($banner, $title, $can_share, $scene, array $cardlist)
+    {
+        $params = array();
+        $params['banner'] = $banner;
+        $params['title'] = $title;
+        $params['can_share'] = $can_share;
+        $params['scene'] = $scene;
+        $params['cardlist'] = $cardlist;
+        $rst = $this->_request->post($this->_url . 'card/landingpage/create', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 获取用户已领取卡券接口
+     *
+     * 用于获取用户卡包里的，属于该appid下的卡券。
+     *
+     * 接口调用请求说明
+     *
+     * http请求方式: POST
+     * https://api.weixin.qq.com/card/user/getcardlist?access_token=TOKEN
+     * 参数说明
+     *
+     * 参数 是否必须 说明
+     * POST数据 是 Json数据
+     * access_token 是 调用接口凭证
+     * POST数据
+     *
+     * {
+     * "openid": "12312313",
+     * "card_id": "xxxxxxxxxx"
+     * }
+     * 参数名 必填 类型 示例值 描述
+     * openid 是 string(64) 1231231 需要查询的用户openid
+     * card_id 否 string(32) pFS7Fjg8kV1IdDz01xxxxx 卡券ID。不填写时默认查询当前appid下的卡券。
+     * 返回数据
+     *
+     * 数据示例：
+     *
+     * {
+     * "errcode":0,
+     * "errmsg":"ok",
+     * "card_list": [
+     * {"code": "xxx1434079154", "card_id": "xxxxxxxxxx"},
+     * {"code": "xxx1434079155", "card_id": "xxxxxxxxxx"}
+     * ]
+     * }
+     * 参数名 描述
+     * errcode 错误码
+     * errmsg 错误信息
+     * card_list 卡券列表
+     */
+    public function userGetcardlist($openid, $card_id = '')
+    {
+        $params = array();
+        $params['openid'] = $openid;
+        if (! empty($card_id)) {
+            $params['card_id'] = $card_id;
+        }
+        $rst = $this->_request->post($this->_url . 'card/user/getcardlist', $params);
         return $this->_client->rst($rst);
     }
 }

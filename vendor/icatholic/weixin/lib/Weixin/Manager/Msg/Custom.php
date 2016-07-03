@@ -18,6 +18,8 @@ use Weixin\Client;
  */
 class Custom
 {
+    // 接口地址
+    private $_url = 'https://api.weixin.qq.com/cgi-bin/';
 
     private $_client;
 
@@ -25,9 +27,12 @@ class Custom
 
     private $_kf_account = "";
 
+    private $_request;
+
     public function __construct(Client $client)
     {
         $this->_client = $client;
+        $this->_request = $client->getRequest('v2');
     }
 
     /**
@@ -61,7 +66,8 @@ class Custom
     }
 
     /**
-     *
+     * 发送
+     * 
      * @param array $params            
      * @throws Exception
      * @return array
@@ -74,7 +80,7 @@ class Custom
                 "kf_account" => $this->_kf_account
             );
         }
-        $rst = $this->_client->getRequest()->post('message/custom/send', $params);
+        $rst = $this->_request->post($this->_url . 'message/custom/send', $params);
         return $this->_client->rst($rst);
     }
 
@@ -202,6 +208,25 @@ class Custom
         $ret['touser'] = $toUser;
         $ret['msgtype'] = 'news';
         $ret['news']['articles'] = $items;
+        return $this->send($ret);
+    }
+
+    /**
+     * 发送卡券消息
+     * 特别注意客服消息接口投放卡券仅支持非自定义Code码的卡券。
+     *
+     * @param string $toUser            
+     * @param string $card_id            
+     * @param array $card_ext            
+     * @return string
+     */
+    public function sendWxcard($toUser, $card_id, array $card_ext)
+    {
+        $ret = array();
+        $ret['touser'] = $toUser;
+        $ret['msgtype'] = 'wxcard';
+        $ret['wxcard']['card_id'] = $card_id;
+        $ret['wxcard']['card_ext'] = json_encode($card_ext);
         return $this->send($ret);
     }
 }

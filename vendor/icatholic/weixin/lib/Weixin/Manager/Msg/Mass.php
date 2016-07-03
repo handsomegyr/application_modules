@@ -11,14 +11,19 @@ use Weixin\Client;
  */
 class Mass
 {
+    // 接口地址
+    private $_url = 'https://api.weixin.qq.com/cgi-bin/';
 
     public $is_to_all = false;
 
     private $_client;
 
+    private $_request;
+
     public function __construct(Client $client)
     {
         $this->_client = $client;
+        $this->_request = $client->getRequest('v2');
     }
 
     /**
@@ -30,7 +35,7 @@ class Mass
      */
     public function sendAll($params)
     {
-        $rst = $this->_client->getRequest()->post('message/mass/sendall', $params);
+        $rst = $this->_request->post($this->_url . 'message/mass/sendall', $params);
         return $this->_client->rst($rst);
     }
 
@@ -150,6 +155,27 @@ class Mass
     }
 
     /**
+     * 发送卡券消息
+     *
+     * @param string $group_id            
+     * @param string $card_id            
+     * @param array $card_ext            
+     * @return array
+     */
+    public function sendWxcardByGroup($group_id, $card_id, array $card_ext)
+    {
+        $ret = array();
+        $ret['filter']['group_id'] = $group_id;
+        if (! empty($this->is_to_all)) {
+            $ret['filter']['is_to_all'] = $this->is_to_all;
+        }
+        $ret['msgtype'] = 'wxcard';
+        $ret['wxcard']['card_id'] = $card_id;
+        $ret['wxcard']['card_ext'] = json_encode($card_ext);
+        return $this->sendAll($ret);
+    }
+
+    /**
      * 根据OpenID列表群发
      *
      * @param array $params            
@@ -158,7 +184,7 @@ class Mass
      */
     public function send($params)
     {
-        $rst = $this->_client->getRequest()->post('message/mass/send', $params);
+        $rst = $this->_request->post($this->_url . 'message/mass/send', $params);
         return $this->_client->rst($rst);
     }
 
@@ -263,6 +289,24 @@ class Mass
     }
 
     /**
+     * 发送卡券消息
+     *
+     * @param array $toUsers            
+     * @param string $card_id            
+     * @param array $card_ext            
+     * @return array
+     */
+    public function sendWxcardByOpenid(array $toUsers, $card_id, array $card_ext)
+    {
+        $ret = array();
+        $ret['touser'] = $toUsers;
+        $ret['msgtype'] = 'wxcard';
+        $ret['wxcard']['card_id'] = $card_id;
+        $ret['wxcard']['card_ext'] = json_encode($card_ext);
+        return $this->send($ret);
+    }
+
+    /**
      * 删除群发
      *
      * @param string $msgid            
@@ -272,7 +316,7 @@ class Mass
     {
         $ret = array();
         $ret['msgid'] = $msgid;
-        $rst = $this->_client->getRequest()->post("message/mass/delete", $ret);
+        $rst = $this->_request->post($this->_url . "message/mass/delete", $ret);
         return $this->_client->rst($rst);
     }
 
@@ -285,7 +329,7 @@ class Mass
      */
     public function preview($params)
     {
-        $rst = $this->_client->getRequest()->post("message/mass/preview", $params);
+        $rst = $this->_request->post($this->_url . "message/mass/preview", $params);
         return $this->_client->rst($rst);
     }
 }

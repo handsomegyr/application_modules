@@ -7,7 +7,6 @@
  */
 namespace Weixin;
 
-use Weixin\Http\Request;
 use Weixin\Exception;
 use Weixin\Manager\Msg;
 use Weixin\Manager\Groups;
@@ -23,6 +22,7 @@ use Weixin\Manager\Card;
 use Weixin\Manager\Ip;
 use Weixin\Manager\Datacube;
 use Weixin\Manager\Poi;
+use Weixin\Manager\Material;
 
 class Client
 {
@@ -34,8 +34,9 @@ class Client
     private $_from = null;
 
     private $_to = null;
-
-    private $_request = null;
+    
+    // private $_request = null;
+    private $_requests = array();
 
     private $_signature = null;
 
@@ -65,7 +66,7 @@ class Client
     public function setAccessToken($accessToken)
     {
         $this->_accessToken = $accessToken;
-        $this->initRequest();
+        // $this->initRequest();
         return $this;
     }
 
@@ -109,22 +110,33 @@ class Client
     /**
      * 初始化认证的http请求对象
      */
-    private function initRequest()
+    private function initRequest($version = 'v1')
     {
-        $this->_request = new Request($this->getAccessToken());
+        if (empty($version)) {
+            $version = 'v1';
+        }
+        if ($version == 'v1') {
+            $this->_requests[$version] = new \Weixin\Http\Request($this->getAccessToken());
+        } elseif ($version == 'v2') {
+            $this->_requests[$version] = new \Weixin\Http\Request2($this->getAccessToken());
+        }
     }
 
     /**
      * 获取请求对象
      *
-     * @return \Weixin\Http\Request
+     * @return \Weixin\Http\Request|\Weixin\Http\Request2
      */
-    public function getRequest()
+    public function getRequest($version = 'v1')
     {
-        if (empty($this->_request)) {
-            throw new Exception('尚未初始化request对象，请确认是否设定了access token');
+        if (empty($version)) {
+            $version = 'v1';
         }
-        return $this->_request;
+        if (empty($this->_requests[$version])) {
+            $this->initRequest($version);
+            // throw new Exception("尚未初始化{$version}所对应的request对象，请确认是否设定了access token");
+        }
+        return $this->_requests[$version];
     }
 
     /**
@@ -256,7 +268,17 @@ class Client
     {
         return new Poi($this);
     }
-
+    
+    /**
+     * 素材管理器
+     *
+     * @return \Weixin\Manager\Material
+     */
+    public function getMaterialManager()
+    {
+        return new Material($this);
+    }
+    
     /**
      * 设置用户授权的token信息
      *

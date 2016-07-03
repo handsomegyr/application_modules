@@ -2,7 +2,6 @@
 namespace Weixin\Manager;
 
 use Weixin\Client;
-use Weixin\Http\Request;
 
 /**
  * 用户管理-----获取用户基本信息接口
@@ -18,6 +17,8 @@ use Weixin\Http\Request;
  */
 class User
 {
+    // 接口地址
+    private $_url = 'https://api.weixin.qq.com/cgi-bin/';
 
     /**
      * 微信客户端
@@ -26,17 +27,12 @@ class User
      */
     private $_client;
 
-    /**
-     * 请求对象
-     *
-     * @var Request
-     */
     private $_request;
 
     public function __construct(Client $client)
     {
         $this->_client = $client;
-        $this->_request = $client->getRequest();
+        $this->_request = $client->getRequest('v2');
     }
 
     /**
@@ -53,7 +49,7 @@ class User
         $params = array();
         $params['openid'] = $openid;
         $params['lang'] = $lang;
-        $rst = $this->_request->get('user/info', $params);
+        $rst = $this->_request->get($this->_url . 'user/info', $params);
         return $this->_client->rst($rst);
     }
 
@@ -72,7 +68,7 @@ class User
         // next_openid 是 第一个拉取的OPENID，不填默认从头开始拉取
         $params = array();
         $params['next_openid'] = $next_openid;
-        $rst = $this->_request->get('user/get', $params);
+        $rst = $this->_request->get($this->_url . 'user/get', $params);
         return $this->_client->rst($rst);
     }
 
@@ -94,7 +90,7 @@ class User
         $params = array();
         $params['openid'] = $openid;
         $params['remark'] = $remark; // 新的备注名，长度必须小于30字符
-        $rst = $this->_request->post('user/info/updateremark', $params);
+        $rst = $this->_request->post($this->_url . 'user/info/updateremark', $params);
         return $this->_client->rst($rst);
     }
 }
