@@ -165,11 +165,11 @@ class SnsController extends ControllerBase
                     
                     if (! empty($userInfo)) {
                         if (! empty($userInfo['nickname'])) {
-                            $arrAccessToken['nickname'] = urlencode($userInfo['nickname']);
+                            $arrAccessToken['nickname'] = ($userInfo['nickname']);
                         }
                         
                         if (! empty($userInfo['headimgurl'])) {
-                            $arrAccessToken['headimgurl'] = urlencode($userInfo['headimgurl']);
+                            $arrAccessToken['headimgurl'] = stripslashes($userInfo['headimgurl']);
                         }
                     }
                     $_SESSION['iWeixin']["accessToken_{$this->appid}_{$arrAccessToken['scope']}"] = $arrAccessToken;
@@ -191,6 +191,7 @@ class SnsController extends ControllerBase
                 // 调整数据库操作的执行顺序，优化跳转速度
                 fastcgi_finish_request();
                 if ($updateInfoFromWx) {
+					$userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
                     $this->_user->updateUserInfoBySns($arrAccessToken['openid'], $userInfo);
                 }
                 $this->_tracking->record("SNS授权", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
@@ -235,6 +236,10 @@ class SnsController extends ControllerBase
             'userToken' => urlencode($arrAccessToken['access_token'])
         ));
         
+		$redirect = $this->addUrlParameter($redirect, array(
+            'refreshToken' => urlencode($arrAccessToken['refresh_token'])
+        ));
+		
         $redirect = $this->addUrlParameter($redirect, array(
             'FromUserName' => $arrAccessToken['openid']
         ));
@@ -251,13 +256,13 @@ class SnsController extends ControllerBase
         
         if (! empty($arrAccessToken['nickname'])) {
             $redirect = $this->addUrlParameter($redirect, array(
-                'nickname' => $arrAccessToken['nickname']
+                'nickname' => urlencode($arrAccessToken['nickname'])
             ));
         }
         
         if (! empty($arrAccessToken['headimgurl'])) {
             $redirect = $this->addUrlParameter($redirect, array(
-                'headimgurl' => $arrAccessToken['headimgurl']
+                'headimgurl' => urlencode(stripslashes($arrAccessToken['headimgurl']))
             ));
         }
         return $redirect;
