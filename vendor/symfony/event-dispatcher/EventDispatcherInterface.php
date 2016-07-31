@@ -17,8 +17,6 @@ namespace Symfony\Component\EventDispatcher;
  * manager.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
- *
- * @api
  */
 interface EventDispatcherInterface
 {
@@ -28,12 +26,10 @@ interface EventDispatcherInterface
      * @param string $eventName The name of the event to dispatch. The name of
      *                          the event is the name of the method that is
      *                          invoked on listeners.
-     * @param Event  $event     The event to pass to the event handlers/listeners.
+     * @param Event  $event     The event to pass to the event handlers/listeners
      *                          If not supplied, an empty Event instance is created.
      *
      * @return Event
-     *
-     * @api
      */
     public function dispatch($eventName, Event $event = null);
 
@@ -44,8 +40,6 @@ interface EventDispatcherInterface
      * @param callable $listener  The listener
      * @param int      $priority  The higher this value, the earlier an event
      *                            listener will be triggered in the chain (defaults to 0)
-     *
-     * @api
      */
     public function addListener($eventName, $listener, $priority = 0);
 
@@ -55,9 +49,7 @@ interface EventDispatcherInterface
      * The subscriber is asked for all the events he is
      * interested in and added as a listener for these events.
      *
-     * @param EventSubscriberInterface $subscriber The subscriber.
-     *
-     * @api
+     * @param EventSubscriberInterface $subscriber The subscriber
      */
     public function addSubscriber(EventSubscriberInterface $subscriber);
 
@@ -84,6 +76,18 @@ interface EventDispatcherInterface
      * @return array The event listeners for the specified event, or all event listeners by event name
      */
     public function getListeners($eventName = null);
+
+    /**
+     * Gets the listener priority for a specific event.
+     *
+     * Returns null if the event or the listener does not exist.
+     *
+     * @param string   $eventName The name of the event
+     * @param callable $listener  The listener
+     *
+     * @return int|null The event listener priority
+     */
+    public function getListenerPriority($eventName, $listener);
 
     /**
      * Checks whether an event has any registered listeners.

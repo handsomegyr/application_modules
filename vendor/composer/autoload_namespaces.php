@@ -6,14 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
-    'Weixin' => array($vendorDir . '/icatholic/weixin/lib'),
+    'Weixin' => array($vendorDir . '/handsomegyr/wechat/lib'),
     'Sms' => array($vendorDir . '/handsomegyr/sms/lib'),
     'SecurityLib' => array($vendorDir . '/ircmaxell/security-lib/lib'),
     'RandomLib' => array($vendorDir . '/ircmaxell/random-lib/lib'),
-    'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
-    'Phalcon' => array($vendorDir . '/phalcon/devtools/scripts', $vendorDir . '/phalcon/incubator/Library'),
     'Imagine' => array($vendorDir . '/imagine/imagine/lib'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'Guzzle\\Stream' => array($vendorDir . '/guzzle/stream'),

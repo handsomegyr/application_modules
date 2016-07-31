@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @since      Class available since Release 3.3.0
- */
 class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var PHPUnit_Util_Configuration
+     */
     protected $configuration;
 
     protected function setUp()
@@ -105,6 +105,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                 'file' =>
                 [
                   0 => '/path/to/file',
+                  1 => '/path/to/file',
                 ],
               ],
               'exclude' =>
@@ -132,6 +133,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Util_Configuration::getGroupConfiguration
+     * @covers PHPUnit_Util_Configuration::parseGroupConfiguration
      */
     public function testGroupConfigurationIsReadCorrectly()
     {
@@ -147,6 +149,27 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             ],
             ],
             $this->configuration->getGroupConfiguration()
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Configuration::getTestdoxGroupConfiguration
+     * @covers PHPUnit_Util_Configuration::parseGroupConfiguration
+     */
+    public function testTestdoxGroupConfigurationIsReadCorrectly()
+    {
+        $this->assertEquals(
+            [
+                'include' =>
+                    [
+                        0 => 'name',
+                    ],
+                'exclude' =>
+                    [
+                        0 => 'name',
+                    ],
+            ],
+            $this->configuration->getTestdoxGroupConfiguration()
         );
     }
 
@@ -215,10 +238,10 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'json'                 => '/tmp/logfile.json',
             'plain'                => '/tmp/logfile.txt',
             'tap'                  => '/tmp/logfile.tap',
-            'logIncompleteSkipped' => false,
             'junit'                => '/tmp/logfile.xml',
             'testdox-html'         => '/tmp/testdox.html',
             'testdox-text'         => '/tmp/testdox.txt',
+            'testdox-xml'          => '/tmp/testdox.xml'
             ],
             $this->configuration->getLoggingConfiguration()
         );
@@ -321,9 +344,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'convertNoticesToExceptions'                 => true,
             'convertWarningsToExceptions'                => true,
             'forceCoversAnnotation'                      => false,
-            'mapTestClassNameToCoveredClassName'         => false,
             'printerClass'                               => 'PHPUnit_TextUI_ResultPrinter',
             'stopOnFailure'                              => false,
+            'stopOnWarning'                              => false,
             'reportUselessTests'                         => false,
             'strictCoverage'                             => false,
             'disallowTestOutput'                         => false,
@@ -334,7 +357,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'timeoutForMediumTests'                      => 10,
             'timeoutForLargeTests'                       => 60,
             'beStrictAboutResourceUsageDuringSmallTests' => false,
-            'disallowTodoAnnotatedTests'                 => false
+            'disallowTodoAnnotatedTests'                 => false,
+            'failOnWarning'                              => false,
+            'failOnRisky'                                => false
             ],
             $this->configuration->getPHPUnitConfiguration()
         );

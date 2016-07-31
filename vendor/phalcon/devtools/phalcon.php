@@ -30,16 +30,10 @@ use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Exception as PhalconException;
 
 try {
-    $extensionLoaded = true;
-
     if (!extension_loaded('phalcon')) {
-        $extensionLoaded = false;
-        include dirname(__FILE__) . '/scripts/Phalcon/Script.php';
         throw new Exception(
-            sprintf(
-                "Phalcon extension isn't installed, follow these instructions to install it: %s",
-                Script::DOC_INSTALL_URL
-            )
+            "Phalcon extension isn't installed, follow these instructions to install it: " .
+            'https://docs.phalconphp.com/en/latest/reference/install.html'
         );
     }
 
@@ -48,6 +42,10 @@ try {
         ->registerDirs(array(__DIR__ . '/scripts/'))
         ->registerNamespaces(array('Phalcon' => __DIR__ . '/scripts/'))
         ->register();
+
+    if (file_exists('.phalcon/autoload.php')) {
+        require_once '.phalcon/autoload.php';
+    }
 
     if (Version::getId() < Script::COMPATIBLE_VERSION) {
         throw new Exception(
@@ -58,9 +56,7 @@ try {
         );
     }
 
-    if (!defined('TEMPLATE_PATH')) {
-        define('TEMPLATE_PATH', __DIR__ . '/templates');
-    }
+    defined('TEMPLATE_PATH') || define('TEMPLATE_PATH', __DIR__ . '/templates');
 
     $vendor = sprintf('Phalcon DevTools (%s)', Version::get());
     print PHP_EOL . Color::colorize($vendor, Color::FG_GREEN, Color::AT_BOLD) . PHP_EOL . PHP_EOL;
@@ -74,6 +70,7 @@ try {
     $commandsToEnable = array(
         '\Phalcon\Commands\Builtin\Enumerate',
         '\Phalcon\Commands\Builtin\Controller',
+        '\Phalcon\Commands\Builtin\Module',
         '\Phalcon\Commands\Builtin\Model',
         '\Phalcon\Commands\Builtin\AllModels',
         '\Phalcon\Commands\Builtin\Project',
@@ -88,11 +85,9 @@ try {
 
     $script->run();
 } catch (PhalconException $e) {
-    print Color::error($e->getMessage()) . PHP_EOL;
+    fwrite(STDERR, Color::error($e->getMessage()) . PHP_EOL);
+    exit(1);
 } catch (Exception $e) {
-    if ($extensionLoaded) {
-        print Color::error($e->getMessage()) . PHP_EOL;
-    } else {
-        print 'ERROR: ' . $e->getMessage() . PHP_EOL;
-    }
+    fwrite(STDERR, 'ERROR: ' . $e->getMessage() . PHP_EOL);
+    exit(1);
 }

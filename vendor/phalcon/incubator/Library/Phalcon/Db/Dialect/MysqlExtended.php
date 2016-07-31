@@ -4,7 +4,7 @@
   +------------------------------------------------------------------------+
   | Phalcon Framework                                                      |
   +------------------------------------------------------------------------+
-  | Copyright (c) 2011-2014 Phalcon Team (http://www.phalconphp.com)       |
+  | Copyright (c) 2011-2016 Phalcon Team (http://www.phalconphp.com)       |
   +------------------------------------------------------------------------+
   | This source file is subject to the New BSD License that is bundled     |
   | with this package in the file docs/LICENSE.txt.                        |
@@ -20,8 +20,6 @@
 
 namespace Phalcon\Db\Dialect;
 
-use Phalcon\Db\Dialect\Mysql;
-
 /**
  * Phalcon\Db\Adapter\Dialect\MysqlExtended
  *
@@ -29,7 +27,6 @@ use Phalcon\Db\Dialect\Mysql;
  */
 class MysqlExtended extends Mysql
 {
-
     /**
      * Transforms an intermediate representation for a expression into a database system valid expression
      *
@@ -39,7 +36,7 @@ class MysqlExtended extends Mysql
      * @return string
      * @throws \Exception
      */
-    public function getSqlExpression(array $expression, $escapeChar = null)
+    public function getSqlExpression(array $expression, $escapeChar = null, $bindCounts = null)
     {
         if ($expression["type"] == 'functionCall') {
             switch ($expression["name"]) {
@@ -49,12 +46,26 @@ class MysqlExtended extends Mysql
                     }
 
                     switch ($expression["arguments"][1]['value']) {
+                        case "'MICROSECOND'":
+                            return 'INTERVAL ' . $this->getSqlExpression($expression["arguments"][0]) . ' MICROSECOND';
+                        case "'SECOND'":
+                            return 'INTERVAL ' . $this->getSqlExpression($expression["arguments"][0]) . ' SECOND';
+                        case "'MINUTE'":
+                            return 'INTERVAL ' . $this->getSqlExpression($expression["arguments"][0]) . ' MINUTE';
+                        case "'HOUR'":
+                            return 'INTERVAL ' . $this->getSqlExpression($expression["arguments"][0]) . ' HOUR';
                         case "'DAY'":
                             return 'INTERVAL ' . $this->getSqlExpression($expression["arguments"][0]) . ' DAY';
+                        case "'WEEK'":
+                            return 'INTERVAL ' . $this->getSqlExpression($expression["arguments"][0]) . ' WEEK';
                         case "'MONTH'":
                             return 'INTERVAL ' . $this->getSqlExpression($expression["arguments"][0]) . ' MONTH';
+                        case "'QUARTER'":
+                            return 'INTERVAL ' . $this->getSqlExpression($expression["arguments"][0]) . ' QUARTER';
                         case "'YEAR'":
                             return 'INTERVAL ' . $this->getSqlExpression($expression["arguments"][0]) . ' YEAR';
+                        default:
+                            throw new \Exception('DATE_INTERVAL unit is not supported');
                     }
                     break;
 

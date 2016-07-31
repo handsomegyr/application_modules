@@ -3,7 +3,7 @@
   +------------------------------------------------------------------------+
   | Phalcon Framework                                                      |
   +------------------------------------------------------------------------+
-  | Copyright (c) 2011-2015 Phalcon Team (http://www.phalconphp.com)       |
+  | Copyright (c) 2011-2016 Phalcon Team (http://www.phalconphp.com)       |
   +------------------------------------------------------------------------+
   | This source file is subject to the New BSD License that is bundled     |
   | with this package in the file docs/LICENSE.txt.                        |
@@ -19,6 +19,18 @@
 */
 namespace Phalcon\Error;
 
+/**
+ * Class Error
+ * @package Phalcon\Error
+ *
+ * @method int type()
+ * @method string message()
+ * @method string file()
+ * @method string line()
+ * @method \Exception exception()
+ * @method bool isException()
+ * @method bool isError()
+ */
 class Error
 {
     /**

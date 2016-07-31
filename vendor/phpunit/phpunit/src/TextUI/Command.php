@@ -52,6 +52,7 @@ class PHPUnit_TextUI_Command
         'enforce-time-limit'      => null,
         'exclude-group='          => null,
         'filter='                 => null,
+        'generate-configuration'  => null,
         'group='                  => null,
         'help'                    => null,
         'include-path='           => null,
@@ -73,16 +74,23 @@ class PHPUnit_TextUI_Command
         'stderr'                  => null,
         'stop-on-error'           => null,
         'stop-on-failure'         => null,
+        'stop-on-warning'         => null,
         'stop-on-incomplete'      => null,
         'stop-on-risky'           => null,
         'stop-on-skipped'         => null,
+        'fail-on-warning'         => null,
+        'fail-on-risky'           => null,
         'strict-coverage'         => null,
+        'disable-coverage-ignore' => null,
         'strict-global-state'     => null,
         'tap'                     => null,
         'teamcity'                => null,
         'testdox'                 => null,
+        'testdox-group='          => null,
+        'testdox-exclude-group='  => null,
         'testdox-html='           => null,
         'testdox-text='           => null,
+        'testdox-xml='            => null,
         'test-suffix='            => null,
         'testsuite='              => null,
         'verbose'                 => null,
@@ -151,24 +159,20 @@ class PHPUnit_TextUI_Command
         unset($this->arguments['testFile']);
 
         try {
-            $result = $runner->doRun($suite, $this->arguments);
+            $result = $runner->doRun($suite, $this->arguments, $exit);
         } catch (PHPUnit_Framework_Exception $e) {
             print $e->getMessage() . "\n";
         }
 
-        $ret = PHPUnit_TextUI_TestRunner::FAILURE_EXIT;
+        $return = PHPUnit_TextUI_TestRunner::FAILURE_EXIT;
 
         if (isset($result) && $result->wasSuccessful()) {
-            $ret = PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
+            $return = PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
         } elseif (!isset($result) || $result->errorCount() > 0) {
-            $ret = PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT;
+            $return = PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT;
         }
 
-        if ($exit) {
-            exit($ret);
-        } else {
-            return $ret;
-        }
+        return $return;
     }
 
     /**
@@ -176,7 +180,7 @@ class PHPUnit_TextUI_Command
      *
      * @return PHPUnit_TextUI_TestRunner
      *
-     * @since  Method available since Release 3.6.0
+     * @since Method available since Release 3.6.0
      */
     protected function createRunner()
     {
@@ -331,6 +335,55 @@ class PHPUnit_TextUI_Command
                     $this->arguments['testsuite'] = $option[1];
                     break;
 
+                case '--generate-configuration':
+                    $this->printVersionString();
+
+                    printf(
+                        "Generating phpunit.xml in %s\n\n",
+                        getcwd()
+                    );
+
+                    print 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
+                    $bootstrapScript = trim(fgets(STDIN));
+
+                    print 'Tests directory (relative to path shown above; default: tests): ';
+                    $testsDirectory = trim(fgets(STDIN));
+
+                    print 'Source directory (relative to path shown above; default: src): ';
+                    $src = trim(fgets(STDIN));
+
+                    if ($bootstrapScript == '') {
+                        $bootstrapScript = 'vendor/autoload.php';
+                    }
+
+                    if ($testsDirectory == '') {
+                        $testsDirectory = 'tests';
+                    }
+
+                    if ($src == '') {
+                        $src = 'src';
+                    }
+
+                    $generator = new PHPUnit_Util_ConfigurationGenerator;
+
+                    file_put_contents(
+                        'phpunit.xml',
+                        $generator->generateDefaultConfiguration(
+                            PHPUnit_Runner_Version::series(),
+                            $bootstrapScript,
+                            $testsDirectory,
+                            $src
+                        )
+                    );
+
+                    printf(
+                        "\nGenerated phpunit.xml in %s\n",
+                        getcwd()
+                    );
+
+                    exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+                    break;
+
                 case '--group':
                     $this->arguments['groups'] = explode(',', $option[1]);
                     break;
@@ -401,6 +454,10 @@ class PHPUnit_TextUI_Command
                     $this->arguments['stopOnFailure'] = true;
                     break;
 
+                case '--stop-on-warning':
+                    $this->arguments['stopOnWarning'] = true;
+                    break;
+
                 case '--stop-on-incomplete':
                     $this->arguments['stopOnIncomplete'] = true;
                     break;
@@ -411,6 +468,14 @@ class PHPUnit_TextUI_Command
 
                 case '--stop-on-skipped':
                     $this->arguments['stopOnSkipped'] = true;
+                    break;
+
+                case '--fail-on-warning':
+                    $this->arguments['failOnWarning'] = true;
+                    break;
+
+                case '--fail-on-risky':
+                    $this->arguments['failOnRisky'] = true;
                     break;
 
                 case '--tap':
@@ -425,12 +490,30 @@ class PHPUnit_TextUI_Command
                     $this->arguments['printer'] = 'PHPUnit_Util_TestDox_ResultPrinter_Text';
                     break;
 
+                case '--testdox-group':
+                    $this->arguments['testdoxGroups'] = explode(
+                        ',',
+                        $option[1]
+                    );
+                    break;
+
+                case '--testdox-exclude-group':
+                    $this->arguments['testdoxExcludeGroups'] = explode(
+                        ',',
+                        $option[1]
+                    );
+                    break;
+
                 case '--testdox-html':
                     $this->arguments['testdoxHTMLFile'] = $option[1];
                     break;
 
                 case '--testdox-text':
                     $this->arguments['testdoxTextFile'] = $option[1];
+                    break;
+
+                case '--testdox-xml':
+                    $this->arguments['testdoxXMLFile'] = $option[1];
                     break;
 
                 case '--no-configuration':
@@ -472,6 +555,10 @@ class PHPUnit_TextUI_Command
 
                 case '--strict-coverage':
                     $this->arguments['strictCoverage'] = true;
+                    break;
+
+                case '--disable-coverage-ignore':
+                    $this->arguments['disableCodeCoverageIgnore'] = true;
                     break;
 
                 case '--strict-global-state':
@@ -917,6 +1004,7 @@ Code Coverage Options:
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
   --whitelist <dir>         Whitelist <dir> for code coverage analysis.
+  --disable-coverage-ignore Disable annotations for ignoring code coverage.
 
 Logging Options:
 
@@ -926,6 +1014,7 @@ Logging Options:
   --log-json <file>         Log test execution in JSON format.
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
+  --testdox-xml <file>      Write agile documentation in XML format to file.
   --reverse-list            Print defects in reverse order
 
 Test Selection Options:
@@ -941,7 +1030,7 @@ Test Selection Options:
 Test Execution Options:
 
   --report-useless-tests    Be strict about tests that do not test anything.
-  --strict-coverage         Be strict about unintentionally covered code.
+  --strict-coverage         Be strict about @covers annotation usage.
   --strict-global-state     Be strict about changes to global state
   --disallow-test-output    Be strict about output during tests.
   --disallow-resource-usage Be strict about resource usage during small tests.
@@ -958,9 +1047,12 @@ Test Execution Options:
   --stderr                  Write to STDERR instead of STDOUT.
   --stop-on-error           Stop execution upon first error.
   --stop-on-failure         Stop execution upon first error or failure.
+  --stop-on-warning         Stop execution upon first warning.
   --stop-on-risky           Stop execution upon first risky test.
   --stop-on-skipped         Stop execution upon first skipped test.
   --stop-on-incomplete      Stop execution upon first incomplete test.
+  --fail-on-warning         Treat tests with warnings as failures.
+  --fail-on-risky           Treat risky tests as failures.
   -v|--verbose              Output more verbose information.
   --debug                   Display debugging information during test execution.
 
@@ -969,6 +1061,8 @@ Test Execution Options:
   --tap                     Report test execution progress in TAP format.
   --teamcity                Report test execution progress in TeamCity format.
   --testdox                 Report test execution progress in TestDox format.
+  --testdox-group           Only include tests from the specified group(s).
+  --testdox-exclude-group   Exclude tests from the specified group(s).
   --printer <printer>       TestListener implementation to use.
 
 Configuration Options:
@@ -979,6 +1073,7 @@ Configuration Options:
   --no-coverage             Ignore code coverage configuration.
   --include-path <path(s)>  Prepend PHP's include_path with given path(s).
   -d key[=value]            Sets a php.ini value.
+  --generate-configuration  Generate configuration file with suggested settings.
 
 Miscellaneous Options:
 

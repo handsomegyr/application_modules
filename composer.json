@@ -1,20 +1,18 @@
 {
     "require": {
         "phalcon/devtools": "^2.0",
-        "icatholic/weixin": "dev-master",
+        "handsomegyr/wechat": "dev-master",
         "phpunit/phpunit": "^5.0",
         "phalcon/incubator": "^2.0",
         "respect/validation": "^1.0",
         "dapphp/securimage": "^3.6",
         "phpmailer/phpmailer": "^5.2",
-        "evaengine/eva-oauth": "^1.0",
         "ircmaxell/random-lib": "^1.1",
         "ezyang/htmlpurifier": "^4.7",
         "handsomegyr/sms": "dev-master",
         "endroid/qrcode": "^1.5",
         "imagine/imagine": "~0.5.0",
         "pda/pheanstalk": "^3.1",
-        "ronnylt/redlock-php": "dev-master",
         "qiniu/php-sdk": "^7.0"
     }
 }
