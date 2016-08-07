@@ -228,50 +228,6 @@
         ]
     },
     {
-        "name": "handsomegyr/wechat",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/handsomegyr/wechat.git",
-            "reference": "56c5a86f9cf668d7233568793fe410dc9c4969c5"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/handsomegyr/wechat/zipball/56c5a86f9cf668d7233568793fe410dc9c4969c5",
-            "reference": "56c5a86f9cf668d7233568793fe410dc9c4969c5",
-            "shasum": ""
-        },
-        "require": {
-            "guzzlehttp/guzzle": "^6.2",
-            "php": ">=5.5"
-        },
-        "time": "2016-07-31 01:52:15",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Weixin": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "郭永荣",
-                "email": "handsomegyr@gmail.com",
-                "homepage": "http://github.com/handsomegyr/"
-            }
-        ],
-        "description": "A simple PHP client library for weixin",
-        "homepage": "http://github.com/handsomegyr/wechat",
-        "keywords": [
-            "weixin"
-        ]
-    },
-    {
         "name": "ircmaxell/security-lib",
         "version": "1.0.0",
         "version_normalized": "1.0.0.0",
@@ -2692,6 +2648,50 @@
             "qiniu",
             "sdk",
             "storage"
+        ]
+    },
+    {
+        "name": "handsomegyr/wechat",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/handsomegyr/wechat.git",
+            "reference": "efbf9bb4f7ebbf212b481701fac5cadb5261cfdc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/handsomegyr/wechat/zipball/efbf9bb4f7ebbf212b481701fac5cadb5261cfdc",
+            "reference": "efbf9bb4f7ebbf212b481701fac5cadb5261cfdc",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/guzzle": "^6.2",
+            "php": ">=5.5"
+        },
+        "time": "2016-08-07 02:34:43",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Weixin": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "郭永荣",
+                "email": "handsomegyr@gmail.com",
+                "homepage": "http://github.com/handsomegyr/"
+            }
+        ],
+        "description": "A simple PHP client library for weixin",
+        "homepage": "http://github.com/handsomegyr/wechat",
+        "keywords": [
+            "weixin"
         ]
     }
 ]

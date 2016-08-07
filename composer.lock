@@ -624,12 +624,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/handsomegyr/wechat.git",
-                "reference": "56c5a86f9cf668d7233568793fe410dc9c4969c5"
+                "reference": "efbf9bb4f7ebbf212b481701fac5cadb5261cfdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/handsomegyr/wechat/zipball/56c5a86f9cf668d7233568793fe410dc9c4969c5",
-                "reference": "56c5a86f9cf668d7233568793fe410dc9c4969c5",
+                "url": "https://api.github.com/repos/handsomegyr/wechat/zipball/efbf9bb4f7ebbf212b481701fac5cadb5261cfdc",
+                "reference": "efbf9bb4f7ebbf212b481701fac5cadb5261cfdc",
                 "shasum": ""
             },
             "require": {
@@ -658,7 +658,7 @@
             "keywords": [
                 "weixin"
             ],
-            "time": "2016-07-31 01:52:15"
+            "time": "2016-08-07 02:34:43"
         },
         {
             "name": "imagine/imagine",
