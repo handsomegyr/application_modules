@@ -1,21 +1,21 @@
 <?php
 namespace App\Backend\Submodules\Weixin\Controllers;
 
-use App\Backend\Submodules\Weixin\Models\Source;
+use App\Backend\Submodules\Weixin\Models\ComponentApplication;
 
 /**
- * @title({name="微信原始数据管理"})
+ * @title({name="微信第3方平台应用管理"})
  *
- * @name 微信原始数据管理
+ * @name 微信第3方平台应用管理
  */
-class SourceController extends \App\Backend\Controllers\FormController
+class ComponentapplicationController extends \App\Backend\Controllers\FormController
 {
 
-    private $modelSource;
+    private $modelComponentApplication;
 
     public function initialize()
     {
-        $this->modelSource = new Source();
+        $this->modelComponentApplication = new ComponentApplication();
         parent::initialize();
     }
 
@@ -23,8 +23,53 @@ class SourceController extends \App\Backend\Controllers\FormController
     {
         $schemas = parent::getSchemas();
         
-        $schemas['ToUserName'] = array(
-            'name' => '开发者微信号',
+        $schemas['_id']['list']['is_show'] = false;
+        $schemas['_id']['search']['is_show'] = false;
+        
+        $schemas['authorizer_appid'] = array(
+            'name' => '授权方appid',
+            'data' => array(
+                'type' => 'string',
+                'length' => '20'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['weixin_id'] = array(
+            'name' => '原始ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => '20'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['weixin_name'] = array(
+            'name' => '名称',
             'data' => array(
                 'type' => 'string',
                 'length' => '30'
@@ -44,200 +89,17 @@ class SourceController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['FromUserName'] = array(
-            'name' => '发送方帐号',
-            'data' => array(
-                'type' => 'string',
-                'length' => '30'
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['CreateTime'] = array(
-            'name' => '消息创建时间',
-            'data' => array(
-                'type' => 'integer',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['MsgType'] = array(
-            'name' => '消息类型',
-            'data' => array(
-                'type' => 'string',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['Content'] = array(
-            'name' => '文本消息内容',
-            'data' => array(
-                'type' => 'string',
-                'length' => '200'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['MsgId'] = array(
-            'name' => '消息id',
+        $schemas['appid'] = array(
+            'name' => '应用ID',
             'data' => array(
                 'type' => 'string',
                 'length' => '20'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['PicUrl'] = array(
-            'name' => '图片链接',
-            'data' => array(
-                'type' => 'string',
-                'length' => '100'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['MediaId'] = array(
-            'name' => '图片消息媒体id',
-            'data' => array(
-                'type' => 'string',
-                'length' => '20'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['Format'] = array(
-            'name' => '语音格式',
-            'data' => array(
-                'type' => 'string',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['ThumbMediaId'] = array(
-            'name' => '视频消息缩略图的媒体id',
-            'data' => array(
-                'type' => 'string',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['Location_X'] = array(
-            'name' => '维度',
-            'data' => array(
-                'type' => 'integer',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'decimal',
                 'is_show' => true
             ),
             'list' => array(
@@ -248,17 +110,17 @@ class SourceController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['Location_Y'] = array(
-            'name' => '经度',
+        $schemas['secret'] = array(
+            'name' => '应用密钥',
             'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'type' => 'string',
+                'length' => '45'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'decimal',
+                'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
@@ -269,92 +131,74 @@ class SourceController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['Scale'] = array(
-            'name' => '地图缩放大小',
+        $schemas['verify_token'] = array(
+            'name' => 'Token(令牌)',
             'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'type' => 'string',
+                'length' => '50'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'decimal',
+                'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
                 'is_show' => false
             )
         );
         
-        $schemas['Label'] = array(
-            'name' => '地理位置信息',
+        $schemas['secretKey'] = array(
+            'name' => '秘钥',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '50'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
                 'is_show' => false
             )
         );
-        $schemas['Title'] = array(
-            'name' => '消息标题',
+        
+        $schemas['EncodingAESKey'] = array(
+            'name' => '加解密秘钥',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '43'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['Description'] = array(
-            'name' => '消息描述',
-            'data' => array(
-                'type' => 'string',
-                'length' => '100'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
                 'is_show' => true
             ),
-            'list' => array(
-                'is_show' => false
-            ),
             'search' => array(
                 'is_show' => false
             )
         );
-        $schemas['Url'] = array(
-            'name' => '消息链接',
+        
+        $schemas['mch_id'] = array(
+            'name' => '商户ID',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '50'
             ),
             'validation' => array(
                 'required' => false
@@ -370,28 +214,9 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        $schemas['Event'] = array(
-            'name' => '事件类型',
-            'data' => array(
-                'type' => 'string',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['EventKey'] = array(
-            'name' => '事件KEY值',
+        
+        $schemas['sub_mch_id'] = array(
+            'name' => '子商户号',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -410,11 +235,12 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        $schemas['Ticket'] = array(
-            'name' => '二维码的ticket',
+        
+        $schemas['key'] = array(
+            'name' => '商户支付密钥',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '50'
             ),
             'validation' => array(
                 'required' => false
@@ -424,131 +250,90 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
                 'is_show' => false
             )
         );
         
-        $schemas['Latitude'] = array(
-            'name' => '地理位置纬度',
+        $schemas['is_advanced'] = array(
+            'name' => '高级功能？',
             'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'type' => 'boolean',
+                'length' => '1',
+                'defaultValue' => false
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'decimal',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['Longitude'] = array(
-            'name' => '地理位置经度',
-            'data' => array(
-                'type' => 'integer',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'decimal',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['Precision'] = array(
-            'name' => '地理位置精度',
-            'data' => array(
-                'type' => 'integer',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'decimal',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['interval'] = array(
-            'name' => '响应速度',
-            'data' => array(
-                'type' => 'integer',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'decimal',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['coordinate'] = array(
-            'name' => '坐标',
-            'data' => array(
-                'type' => 'array',
-                'length' => '100'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
+                'input_type' => 'radio',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return array();
-                },
-                'select' => array(
-                    'multiple' => true
-                )
+                'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
-                'is_show' => false,
-                'list_data_name' => 'coordinate_show'
+                'is_show' => true,
+                'list_type' => '1'
             ),
             'search' => array(
                 'is_show' => false
             )
         );
         
-        $schemas['Status'] = array(
-            'name' => '发送状态',
+        $schemas['is_product'] = array(
+            'name' => '生产环境？',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => '1',
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1'
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['is_weixin_card'] = array(
+            'name' => '卡券功能？',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => '1',
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1'
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['access_token'] = array(
+            'name' => 'ACCESS TOKEN',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
@@ -558,46 +343,6 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['request_xml'] = array(
-            'name' => '原始请求',
-            'data' => array(
-                'type' => 'string',
-                'length' => '2000'
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['response'] = array(
-            'name' => '响应内容',
-            'data' => array(
-                'type' => 'string',
-                'length' => '2000'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true
-            ),
-            'list' => array(
                 'is_show' => false
             ),
             'search' => array(
@@ -605,8 +350,8 @@ class SourceController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['response_time'] = array(
-            'name' => '响应时间',
+        $schemas['access_token_expire'] = array(
+            'name' => 'ACCESS TOKEN过期时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => '19',
@@ -620,7 +365,199 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['refresh_token'] = array(
+            'name' => '刷新令牌',
+            'data' => array(
+                'type' => 'string',
+                'length' => '255'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
                 'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['jsapi_ticket'] = array(
+            'name' => 'JS临时票据',
+            'data' => array(
+                'type' => 'string',
+                'length' => '255'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['jsapi_ticket_expire'] = array(
+            'name' => 'JS过期时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => '19',
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['wx_card_api_ticket'] = array(
+            'name' => '卡券临时票据',
+            'data' => array(
+                'type' => 'string',
+                'length' => '255'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['wx_card_api_ticket_expire'] = array(
+            'name' => '卡券过期时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => '19',
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['component_access_token'] = array(
+            'name' => '第三方平台接口调用凭据',
+            'data' => array(
+                'type' => 'string',
+                'length' => '255'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['component_access_token_expire'] = array(
+            'name' => '第3方平台接口调用凭据过期时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => '19',
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['component_verify_ticket'] = array(
+            'name' => '推送的ticket',
+            'data' => array(
+                'type' => 'string',
+                'length' => '255'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['memo'] = array(
+            'name' => '备注',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1000
+            ),
+            'validation' => array(
+                'required' => 1
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -632,18 +569,20 @@ class SourceController extends \App\Backend\Controllers\FormController
 
     protected function getName()
     {
-        return '微信原始数据';
+        return '微信第3方平台应用';
     }
 
     protected function getModel()
     {
-        return $this->modelSource;
+        return $this->modelComponentApplication;
     }
 
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
-            $item['response_time'] = ! empty($item['response_time']) ? date("Y-m-d H:i:s", $item['response_time']->sec) : "--";
+            $item['access_token_expire'] = ! empty($item['access_token_expire']) ? date("Y-m-d H:i:s", $item['access_token_expire']->sec) : "--";
+            $item['jsapi_ticket_expire'] = ! empty($item['jsapi_ticket_expire']) ? date("Y-m-d H:i:s", $item['jsapi_ticket_expire']->sec) : "--";
+            $item['wx_card_api_ticket_expire'] = ! empty($item['wx_card_api_ticket_expire']) ? date("Y-m-d H:i:s", $item['wx_card_api_ticket_expire']->sec) : "--";
         }
         return $list;
     }

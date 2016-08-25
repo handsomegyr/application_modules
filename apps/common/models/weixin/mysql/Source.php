@@ -20,6 +20,7 @@ class Source extends Base
         $data = parent::reorganize($data);
         $data['coordinate'] = $this->changeToArray($data['coordinate']);
         $data['response_time'] = $this->changeToMongoDate($data['response_time']);
+        $data['AESInfo'] = $this->changeToArray($data['AESInfo']);
         
         return $data;
     }
