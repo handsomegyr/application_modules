@@ -4,7 +4,7 @@ namespace App\Backend\Submodules\Weixinredpack\Controllers;
 use App\Backend\Submodules\Weixinredpack\Models\Limit;
 use App\Backend\Submodules\Weixinredpack\Models\Redpack;
 use App\Backend\Submodules\Weixinredpack\Models\Customer;
-use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\Activity\Models\Activity;
 
 /**
  * @title({name="红包限制管理"})

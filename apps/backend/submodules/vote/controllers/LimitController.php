@@ -5,7 +5,7 @@ use App\Backend\Submodules\Vote\Models\Limit;
 use App\Backend\Submodules\Vote\Models\Subject;
 use App\Backend\Submodules\Vote\Models\Item;
 use App\Backend\Submodules\Vote\Models\LimitCategory;
-use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\Activity\Models\Activity;
 
 /**
  * @title({name="投票限制管理"})

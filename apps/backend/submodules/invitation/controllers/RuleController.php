@@ -2,7 +2,7 @@
 namespace App\Backend\Submodules\Invitation\Controllers;
 
 use App\Backend\Submodules\Invitation\Models\Rule;
-use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\Activity\Models\Activity;
 
 /**
  * @title({name="邀请规则管理"})

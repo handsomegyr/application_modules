@@ -1,5 +1,5 @@
 <?php
-namespace App\Backend\Submodules\System\Controllers;
+namespace App\Backend\Submodules\Activity\Controllers;
 
 use App\Backend\Submodules\Activity\Models\Activity;
 

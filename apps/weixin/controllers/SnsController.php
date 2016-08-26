@@ -194,6 +194,10 @@ class SnsController extends ControllerBase
                     $this->_user->updateUserInfoBySns($arrAccessToken['openid'], $userInfo);
                 }
                 $this->_tracking->record($this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+                
+                $objService = \App\Weixin\Services\Base::getServiceObject();
+                $objService->doSnsCallback($arrAccessToken);
+                
                 exit();
             } else {
                 // 如果用户未授权登录，点击取消，自行设定取消的业务逻辑

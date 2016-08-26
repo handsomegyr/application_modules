@@ -3,7 +3,7 @@ namespace App\Backend\Submodules\Vote\Controllers;
 
 use App\Backend\Submodules\Vote\Models\Subject;
 use App\Backend\Submodules\Vote\Models\Category;
-use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\Activity\Models\Activity;
 
 /**
  * @title({name="投票主题管理"})

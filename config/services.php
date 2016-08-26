@@ -127,6 +127,10 @@ function registerAutoloaders()
             'App\Common\Models\Weixinredpack\Mongodb' => APP_PATH . 'apps/common/models/weixinredpack/mongodb/',
             'App\Common\Models\Weixinredpack' => APP_PATH . 'apps/common/models/weixinredpack/',
             
+            'App\Common\Models\Activity\Mysql' => APP_PATH . 'apps/common/models/activity/mysql/',
+            'App\Common\Models\Activity\Mongodb' => APP_PATH . 'apps/common/models/activity/mongodb/',
+            'App\Common\Models\Activity' => APP_PATH . 'apps/common/models/activity/',
+            
             'App\Common\Controllers' => APP_PATH . 'apps/common/controllers/',
             
             'App\Weixin\Models' => APP_PATH . 'apps/weixin/models/',
@@ -151,6 +155,7 @@ function registerAutoloaders()
             'App\Mail\Models' => APP_PATH . 'apps/mail/models/',
             'App\Vote\Models' => APP_PATH . 'apps/vote/models/',
             'App\Weixinredpack\Models' => APP_PATH . 'apps/weixinredpack/models/',
+            'App\Activity\Models' => APP_PATH . 'apps/activity/models/',
             
             'App\Lottery\Services' => APP_PATH . 'apps/lottery/services/',
             'App\Order\Services' => APP_PATH . '/apps/order/services/',
@@ -158,6 +163,7 @@ function registerAutoloaders()
             'App\Goods\Services' => APP_PATH . '/apps/goods/services/',
             'App\Payment\Services' => APP_PATH . '/apps/payment/services/',
             'App\Weixinredpack\Services' => APP_PATH . '/apps/weixinredpack/services/',
+			'App\Weixin\Services' => APP_PATH . '/apps/weixin/services/',
             
             'App\Points\Views\Helpers' => APP_PATH . 'apps/points/views/helpers/',
             'App\Goods\Views\Helpers' => APP_PATH . 'apps/goods/views/helpers/',

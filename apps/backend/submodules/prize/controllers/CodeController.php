@@ -3,7 +3,7 @@ namespace App\Backend\Submodules\Prize\Controllers;
 
 use App\Backend\Submodules\Prize\Models\Code;
 use App\Backend\Submodules\Prize\Models\Prize;
-use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\Activity\Models\Activity;
 
 /**
  * @title({name="奖品券码管理"})

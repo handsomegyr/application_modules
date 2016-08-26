@@ -4,7 +4,7 @@ namespace App\Backend\Submodules\Vote\Controllers;
 use App\Backend\Submodules\Vote\Models\Log;
 use App\Backend\Submodules\Vote\Models\Subject;
 use App\Backend\Submodules\Vote\Models\Item;
-use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\Activity\Models\Activity;
 
 /**
  * @title({name="投票日志管理"})

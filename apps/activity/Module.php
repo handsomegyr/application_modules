@@ -1,9 +1,11 @@
 <?php
-namespace App\Weixin;
+namespace App\Activity;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
+use Phalcon\Events\Manager as EventsManager;
+use App\Common\Plugins\WeixinPlugin;
 
 class Module
 {
@@ -16,9 +18,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'App\Weixin\Controllers' => __DIR__ . '/controllers/',
-            'App\Weixin\Models' => __DIR__ . '/models/',
-            'App\Weixin\Services' => __DIR__ . '/services/'
+            'App\Activity\Controllers' => __DIR__ . '/controllers/',
+            'App\Activity\Services' => __DIR__ . '/services/',
+            'App\Activity\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
@@ -39,8 +41,13 @@ class Module
         // Registering a dispatcher
         $di->set('dispatcher', function ()
         {
+            $eventsManager = new EventsManager();
+            $eventsManager->attach('dispatch:beforeDispatch', new WeixinPlugin());
+            
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("App\Weixin\Controllers");
+            $dispatcher->setDefaultNamespace("App\Activity\Controllers");
+            $dispatcher->setEventsManager($eventsManager);
+            
             return $dispatcher;
         });
         

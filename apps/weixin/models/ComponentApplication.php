@@ -77,7 +77,8 @@ class ComponentApplication extends \App\Common\Models\Weixin\ComponentApplicatio
         }
         
         try {
-            $token = $this->refreshInfo($appid, $token);
+            $cacheKey = $this->getCacheKey($appid);
+            $token = $this->refreshInfo($cacheKey, $token);
         } catch (\Exception $e) {}
         
         return $token;
@@ -97,7 +98,8 @@ class ComponentApplication extends \App\Common\Models\Weixin\ComponentApplicatio
             return null;
         }
         try {
-            $token = $this->refreshInfo($appid, $token);
+            $cacheKey = $this->getCacheKey($appid);
+            $token = $this->refreshInfo($cacheKey, $token);
         } catch (\Exception $e) {}
         
         return $token;
@@ -216,9 +218,8 @@ class ComponentApplication extends \App\Common\Models\Weixin\ComponentApplicatio
         return $cacheKey;
     }
 
-    private function refreshInfo($appid, $token)
+    private function refreshInfo($cacheKey, $token)
     {
-        $cacheKey = $this->getCacheKey($appid);
         $cache = $this->getDI()->get('cache');
         
         if (isset($token['access_token_expire']) && ! empty($token['is_advanced'])) {

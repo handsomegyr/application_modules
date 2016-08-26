@@ -3,7 +3,7 @@ namespace App\Backend\Submodules\Lottery\Controllers;
 
 use App\Backend\Submodules\Lottery\Models\Exchange;
 use App\Backend\Submodules\Prize\Models\Prize;
-use App\Backend\Submodules\System\Models\Activity;
+use App\Backend\Submodules\Activity\Models\Activity;
 use App\Backend\Submodules\System\Models\Source;
 
 /**
