@@ -22,6 +22,7 @@ class Module
         
         $loader->registerNamespaces(array(
             'App\Backend\Submodules\System\Models' => APP_PATH . 'apps/backend/submodules/system/models/',
+            'App\Backend\Submodules\Activity\Models' => APP_PATH . 'apps/backend/submodules/activity/models/',
             
             'App\Backend\Models' => APP_PATH . 'apps/backend/models/',
             'App\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',

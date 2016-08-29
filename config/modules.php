@@ -15,6 +15,10 @@ $application->registerModules(array(
         'className' => 'App\Backend\Exchange\Module',
         'path' => APP_PATH . 'apps/backend/submodules/exchange/Module.php'
     ),
+    'admin/activity' => array(
+        'className' => 'App\Backend\Activity\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/activity/Module.php'
+    ),
     'admin/weixin' => array(
         'className' => 'App\Backend\Weixin\Module',
         'path' => APP_PATH . 'apps/backend/submodules/weixin/Module.php'

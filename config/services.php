@@ -163,7 +163,7 @@ function registerAutoloaders()
             'App\Goods\Services' => APP_PATH . '/apps/goods/services/',
             'App\Payment\Services' => APP_PATH . '/apps/payment/services/',
             'App\Weixinredpack\Services' => APP_PATH . '/apps/weixinredpack/services/',
-			'App\Weixin\Services' => APP_PATH . '/apps/weixin/services/',
+            'App\Weixin\Services' => APP_PATH . '/apps/weixin/services/',
             
             'App\Points\Views\Helpers' => APP_PATH . 'apps/points/views/helpers/',
             'App\Goods\Views\Helpers' => APP_PATH . 'apps/goods/views/helpers/',
@@ -199,24 +199,21 @@ function registerServices($di)
      * Read configuration
      */
     $config = include APP_PATH . "apps/common/config/config.php";
-    $di->set('config', function () use($config)
-    {
+    $di->set('config', function () use($config) {
         return $config;
     });
     
     /**
      * Setting up the view component
      */
-    $di['errors'] = function () use($config)
-    {
+    $di['errors'] = function () use($config) {
         return $config['errors'];
     };
     
     /**
      * Database connection is created based in the parameters defined in the configuration file
      */
-    $di['db'] = function () use($config)
-    {
+    $di['db'] = function () use($config) {
         $connection = new DbAdapter(array(
             "host" => $config->database->host,
             "username" => $config->database->username,
@@ -226,8 +223,7 @@ function registerServices($di)
         ));
         // $connection->execute("SET NAMES 'utf8';");
         $eventsManager = new EventsManager();
-        $eventsManager->attach('db', function ($event, $conn)
-        {
+        $eventsManager->attach('db', function ($event, $conn) {
             // echo $conn->getSQLStatement() . '<br />';
         });
         $connection->setEventsManager($eventsManager);
@@ -237,8 +233,7 @@ function registerServices($di)
     /**
      * Database connection is created based in the parameters defined in the configuration file
      */
-    $di['dbfrom'] = function () use($config)
-    {
+    $di['dbfrom'] = function () use($config) {
         $connection = new DbAdapter(array(
             "host" => $config->databasefrom->host,
             "username" => $config->databasefrom->username,
@@ -250,16 +245,14 @@ function registerServices($di)
         return $connection;
     };
     
-    $di->setShared('transactions', function ()
-    {
+    $di->setShared('transactions', function () {
         return new TransactionManager();
     });
     
     /**
      * Register a database component
      */
-    $di->set('databases', function ()
-    {
+    $di->set('databases', function () {
         $default = new \iDatabase('54602cae489619970f8b4b58', 'guoyongrong0123456789', '54602cde4896197a0e8b4c5a');
         return array(
             "default" => $default
@@ -269,8 +262,7 @@ function registerServices($di)
     /**
      * Setting up the pheanstalk queue component
      */
-    $di['pheanstalk'] = function () use($config)
-    {
+    $di['pheanstalk'] = function () use($config) {
         $pheanstalk = new Pheanstalk('127.0.0.1');
         return $pheanstalk;
     };
@@ -281,8 +273,7 @@ function registerServices($di)
     /**
      * Setting up the cache component
      */
-    $di['cache'] = function () use($config)
-    {
+    $di['cache'] = function () use($config) {
         // Cache the files for 2 days using a Data frontend
         $frontCache = new FrontData(array(
             "lifetime" => 172800
@@ -315,8 +306,7 @@ function registerServices($di)
     /**
      * Setting up the memcached component
      */
-    $di['memcached'] = function () use($config)
-    {
+    $di['memcached'] = function () use($config) {
         $objMemcached = new \Memcached();
         $parameters = array();
         $memcacheConfig = array();
@@ -354,8 +344,7 @@ function registerServices($di)
     /**
      * Setting up the redis component
      */
-    $di['redis'] = function () use($config)
-    {
+    $di['redis'] = function () use($config) {
         if (! empty($_SERVER['ICC_REDIS_MASTERS'])) {
             $redisServers = explode(',', $_SERVER['ICC_REDIS_MASTERS']);
             $parameters = array();
@@ -379,8 +368,7 @@ function registerServices($di)
         /**
          * Registering a router
          */
-        $di['router'] = function ()
-        {
+        $di['router'] = function () {
             $router = new Router();
             
             $router->setDefaultModule("yungou");
@@ -517,6 +505,12 @@ function registerServices($di)
                 'action' => 2
             ));
             
+            $router->add("/admin/activity/:controller/:action", array(
+                'module' => 'admin/activity',
+                'controller' => 1,
+                'action' => 2
+            ));
+            
             $router->add("/:module/:controller/:action", array(
                 'module' => 1,
                 'controller' => 2,
@@ -540,8 +534,7 @@ function registerServices($di)
         /**
          * The URL component is used to generate all kind of urls in the application
          */
-        $di['url'] = function ()
-        {
+        $di['url'] = function () {
             $url = new UrlResolver();
             $url->setBaseUri('/');
             return $url;
