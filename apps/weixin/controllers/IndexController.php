@@ -9,6 +9,7 @@ use App\Weixin\Models\User;
 use App\Weixin\Models\NotKeyword;
 use App\Weixin\Models\Menu;
 use App\Weixin\Models\ConditionalMenu;
+use App\Weixin\Models\ConditionalMenuMatchRule;
 use App\Weixin\Models\Qrcode;
 use App\Weixin\Models\Scene;
 use App\Weixin\Models\ComponentApplication;
@@ -37,6 +38,8 @@ class IndexController extends ControllerBase
     protected $_menu;
 
     protected $_conditional_menu;
+	
+    protected $_conditional_menu_match_rule;
 
     protected $_weixin;
 
@@ -67,6 +70,7 @@ class IndexController extends ControllerBase
             $this->_user = new User();
             $this->_menu = new Menu();
             $this->_conditional_menu = new ConditionalMenu();
+            $this->_conditional_menu_match_rule = new ConditionalMenuMatchRule();
             $this->_qrcode = new Qrcode();
             $this->_scene = new Scene();
             $this->_tracking = new ScriptTracking();
@@ -298,11 +302,16 @@ class IndexController extends ControllerBase
             $matchRuleList = $this->_conditional_menu->getList4MatchRule();
             if (! empty($matchRuleList)) {
                 foreach ($matchRuleList as $matchRule) {
+					$ruleInfo = $this->_conditional_menu_match_rule->getInfoById($matchRule['matchrule']);
+					if(empty($ruleInfo)){
+						continue;
+					}
+					$matchRule['ruleInfo'] = $ruleInfo;
                     // 如果原来的有值的话就删除
                     if (! empty($matchRule['menuid'])) {
                         $ret = $this->_weixin->getMenuManager()->delconditional($matchRule['menuid']);
                         if (! empty($ret['errcode'])) {
-                            throw new \Exception($ret['errcode'], $ret['errmsg']);
+                            throw new \Exception( $ret['errmsg'], $ret['errcode']);
                         }
                     }
                     
@@ -310,7 +319,7 @@ class IndexController extends ControllerBase
                     $menusWithMatchrule = $this->_conditional_menu->buildMenusWithMatchrule($matchRule);
                     $ret = $this->_weixin->getMenuManager()->addconditional($menusWithMatchrule);
                     if (! empty($ret['errcode'])) {
-                        throw new \Exception($ret['errcode'], $ret['errmsg']);
+                        throw new \Exception($ret['errmsg'],$ret['errcode'] );
                     }
                     $this->_conditional_menu->recordMenuId($matchRule, $ret['menuid']);
                 }
@@ -339,7 +348,7 @@ class IndexController extends ControllerBase
                 $ticketInfo = $this->_weixin->getQrcodeManager()->create($scene['sence_id'], ! empty($scene['is_temporary']) ? $scene['is_temporary'] : false, ! empty($scene['expire_seconds']) ? $scene['expire_seconds'] : 0);
                 $ticket = urlencode($ticketInfo['ticket']);
                 $ticket = $this->_weixin->getQrcodeManager()->getQrcodeUrl($ticket);
-                $this->_scene->recordTicket($scene, $ticket);
+                $this->_scene->recordTicket($scene, $ticket, $ticketInfo['url']);
             }
             return true;
         } catch (\Exception $e) {

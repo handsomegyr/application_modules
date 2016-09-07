@@ -13,7 +13,7 @@ class ConditionalMenu extends \App\Common\Models\Weixin\ConditionalMenu
     {
         return $this->findAll(array(
             'matchrule' => array(
-                '$exists' => true
+                '$ne' => ''
             )
         ), array(
             'priority' => - 1
@@ -27,7 +27,7 @@ class ConditionalMenu extends \App\Common\Models\Weixin\ConditionalMenu
      */
     public function buildMenusWithMatchrule(array $matchRule)
     {
-        $parent = ($matchRule['_id']);
+        $matchRuleParent = myMongoId($matchRule['_id']);
         $ruleInfo = array();
         foreach (array(
             "group_id",
@@ -38,15 +38,31 @@ class ConditionalMenu extends \App\Common\Models\Weixin\ConditionalMenu
             "client_platform_type",
             "language"
         ) as $field) {
-            $ruleInfo[$field] = empty($matchRule[$field]) ? '' : $matchRule[$field];
+            $ruleInfo[$field] = empty($matchRule['ruleInfo'][$field]) ? '' : $matchRule['ruleInfo'][$field];
         }
         $plainText = implode('', $ruleInfo);
         if (empty($plainText)) {
-            throw new \Exception("{$matchRule['matchrule_name']}所对应的匹配规则设置不正确");
+            throw new \Exception("{$matchRule['ruleInfo']['matchrule_name']}所对应的匹配规则设置不正确");
         }
         
         $menus = $this->findAll(array(
-            'parent' => $parent
+            'parent' => $matchRuleParent
+        ), array(
+            'priority' => - 1
+        ));
+        $parentList = array(
+            $matchRuleParent
+        );
+        if (! empty($menus)) {
+            foreach ($menus as $item) {
+                $parentList[] = $item['_id'];
+            }
+        }
+        
+        $menus = $this->findAll(array(
+            'parent' => array(
+                '$in' => $parentList
+            )
         ), array(
             'priority' => - 1
         ), array(
@@ -62,11 +78,17 @@ class ConditionalMenu extends \App\Common\Models\Weixin\ConditionalMenu
             $parent = array();
             $new = array();
             foreach ($menus as $a) {
-                if (empty($a['parent']))
+				unset($a['matchrule']);
+				unset($a['menuid']);
+				unset($a['menu_time']);
+				unset($a['__CREATE_TIME__']);
+				unset($a['__MODIFY_TIME__']);
+				unset($a['__REMOVED__']);
+                if ($a['parent'] == $matchRuleParent)
                     $parent[] = $a;
                 $new[$a['parent']][] = $a;
             }
-            $tree = $this->buildTree($new, $parent);
+            $tree = $this->buildTree($new, $parent);			
             return array(
                 'button' => $tree,
                 'matchrule' => $ruleInfo
@@ -79,7 +101,7 @@ class ConditionalMenu extends \App\Common\Models\Weixin\ConditionalMenu
     public function recordMenuId(array $matchRule, $menuid)
     {
         $query = array();
-        $query['_id'] = $scene['_id'];
+        $query['_id'] = $matchRule['_id'];
         
         $data['menuid'] = $menuid;
         $data['menu_time'] = getCurrentTime();
@@ -132,4 +154,5 @@ class ConditionalMenu extends \App\Common\Models\Weixin\ConditionalMenu
         }
         return $tree;
     }
+	
 }

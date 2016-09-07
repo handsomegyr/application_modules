@@ -17,12 +17,13 @@ class Scene extends \App\Common\Models\Weixin\Scene
         return $list;
     }
 
-    public function recordTicket(array $scene, $ticket)
+    public function recordTicket(array $scene, $ticket, $url)
     {
         $query = array();
         $query['_id'] = $scene['_id'];
         
         $data['ticket'] = $ticket;
+		$data['url'] = $url;
         $data['ticket_time'] = getCurrentTime();
         $data['is_created'] = true;
         $this->update($query, array(

@@ -195,7 +195,27 @@ class SceneController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+		
+        $schemas['url'] = array(
+            'name' => '二维码图片地址',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => false
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
         $schemas['ticket_time'] = array(
             'name' => '二维码生成时间',
             'data' => array(

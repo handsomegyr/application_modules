@@ -41,7 +41,7 @@ class ConditionalmenuController extends \App\Backend\Controllers\FormController
                 'length' => '24'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'select',
@@ -204,7 +204,7 @@ class ConditionalmenuController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => false
             ),
             'list' => array(
                 'is_show' => true
@@ -226,7 +226,7 @@ class ConditionalmenuController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => false
             ),
             'list' => array(
                 'is_show' => false
