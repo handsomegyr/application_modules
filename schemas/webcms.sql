@@ -97,6 +97,51 @@ CREATE TABLE `errorlog` (
 
 /*Data for the table `errorlog` */
 
+/*Table structure for table `iactivity_activity` */
+
+DROP TABLE IF EXISTS `iactivity_activity`;
+
+CREATE TABLE `iactivity_activity` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '活动名称',
+  `start_time` datetime NOT NULL COMMENT '活动开始时间',
+  `end_time` datetime NOT NULL COMMENT '活动结束时间',
+  `is_actived` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='活动-活动';
+
+/*Data for the table `iactivity_activity` */
+
+insert  into `iactivity_activity`(`_id`,`name`,`start_time`,`end_time`,`is_actived`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('565d5aaa7f50ea081300002d','云购','2015-12-19 00:00:00','2016-12-26 16:38:45',1,'2015-12-19 17:07:26','2016-08-29 11:45:03',0);
+
+/*Table structure for table `iactivity_user` */
+
+DROP TABLE IF EXISTS `iactivity_user`;
+
+CREATE TABLE `iactivity_user` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
+  `user_id` char(50) NOT NULL DEFAULT '' COMMENT '用户ID',
+  `user_name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名称',
+  `user_headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户头像',
+  `worth` int(10) NOT NULL DEFAULT '0' COMMENT '价值',
+  `worth2` int(11) NOT NULL DEFAULT '0' COMMENT '价值2',
+  `log_time` datetime NOT NULL COMMENT '记录时间',
+  `lock` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否LOCK',
+  `expire` datetime NOT NULL COMMENT '锁过期时间',
+  `memo` text NOT NULL COMMENT '备注',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`),
+  KEY `NewIndex1` (`user_id`,`activity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='活动-活动用戶';
+
+/*Data for the table `iactivity_user` */
+
 /*Table structure for table `iarticle_article` */
 
 DROP TABLE IF EXISTS `iarticle_article`;
@@ -632,6 +677,105 @@ CREATE TABLE `igoods_gift` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品赠品表';
 
 /*Data for the table `igoods_gift` */
+
+/*Table structure for table `igoods_goods` */
+
+DROP TABLE IF EXISTS `igoods_goods`;
+
+CREATE TABLE `igoods_goods` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '商品id(SKU)',
+  `goods_commonid` char(24) NOT NULL DEFAULT '' COMMENT '商品公共表id',
+  `name` varchar(50) NOT NULL COMMENT '商品名称（+规格名称）',
+  `jingle` varchar(150) NOT NULL COMMENT '商品广告词',
+  `price` decimal(10,2) NOT NULL COMMENT '商品价格',
+  `image` varchar(100) NOT NULL DEFAULT '' COMMENT '商品主图',
+  `state` tinyint(3) unsigned NOT NULL COMMENT '商品状态 0下架，1正常，10违规（禁售）',
+  `verify` tinyint(3) unsigned NOT NULL COMMENT '商品审核 1通过，0未通过，10审核中',
+  `is_hot` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否热门',
+  `is_new` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否新品',
+  `period` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '期数',
+  `lottery_code` int(10) unsigned NOT NULL DEFAULT '10000001' COMMENT '云购码基数',
+  `lottery_prize_id` char(24) NOT NULL DEFAULT '' COMMENT '云购奖品',
+  `total_person_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '总需人次',
+  `purchase_person_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '参与人次',
+  `remain_person_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '剩余人次',
+  `complete_percent` float(5,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '完成度百分比',
+  `restrict_person_time` int(9) unsigned NOT NULL DEFAULT '0' COMMENT '限购次数',
+  `sale_state` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '销售状态 1 进行中 2 揭晓中 3 已揭晓',
+  `last_purchase_time` decimal(13,3) unsigned NOT NULL DEFAULT '0.000' COMMENT '最后购买时间',
+  `prize_code` int(10) unsigned NOT NULL COMMENT '中奖码',
+  `prize_time` decimal(13,3) unsigned NOT NULL DEFAULT '0.000' COMMENT '中奖时间',
+  `order_goods_list` text NOT NULL COMMENT '订单商品列表',
+  `prize_buyer_id` char(24) NOT NULL DEFAULT '' COMMENT '中奖购买用户ID',
+  `prize_buyer_name` varchar(30) NOT NULL DEFAULT '' COMMENT '中奖购买用户名',
+  `prize_buyer_avatar` varchar(100) NOT NULL DEFAULT '' COMMENT '中奖购买用户头像',
+  `prize_buyer_register_by` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '中奖购买用户注册方式',
+  `prize_buyer_purchase_num` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '中奖购买用户购买次数',
+  `prize_buyer_purchase_time` decimal(13,3) unsigned NOT NULL DEFAULT '0.000' COMMENT '中奖购买用户购买时间',
+  `prize_buyer_ip` char(15) NOT NULL DEFAULT '0.0.0.0' COMMENT '中奖购买用户IP',
+  `prize_buyer_lottery_code` text NOT NULL COMMENT '中奖购买云购码',
+  `prize_order_goods_id` char(24) NOT NULL DEFAULT '' COMMENT '中奖订单商品ID',
+  `prize_order_goods_order_no` char(24) NOT NULL DEFAULT '' COMMENT '中奖订单NO',
+  `prize_total_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '中奖购买时间总和',
+  `gc_id` char(24) NOT NULL DEFAULT '' COMMENT '商品分类id',
+  `gc_id_1` char(24) NOT NULL DEFAULT '' COMMENT '一级分类id',
+  `gc_id_2` char(24) NOT NULL DEFAULT '' COMMENT '二级分类id',
+  `gc_id_3` char(24) NOT NULL DEFAULT '' COMMENT '三级分类id',
+  `store_id` char(24) NOT NULL DEFAULT '' COMMENT '店铺id',
+  `store_name` varchar(50) NOT NULL COMMENT '店铺名称',
+  `brand_id` char(24) NOT NULL DEFAULT '' COMMENT '品牌id',
+  `promotion_price` decimal(10,2) NOT NULL COMMENT '商品促销价格',
+  `promotion_type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '促销类型 0无促销，1团购，2限时折扣',
+  `marketprice` decimal(10,2) NOT NULL COMMENT '市场价',
+  `serial` varchar(50) NOT NULL COMMENT '商家编号',
+  `storage_alarm` tinyint(3) unsigned NOT NULL COMMENT '库存报警值',
+  `click` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品点击数量',
+  `salenum` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '销售数量',
+  `collect` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收藏数量',
+  `spec` text NOT NULL COMMENT '商品规格序列化',
+  `storage` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品库存',
+  `addtime` datetime NOT NULL COMMENT '商品添加时间',
+  `edittime` datetime NOT NULL COMMENT '商品编辑时间',
+  `areaid_1` int(10) unsigned NOT NULL COMMENT '一级地区id',
+  `areaid_2` int(10) unsigned NOT NULL COMMENT '二级地区id',
+  `color_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '颜色规格id',
+  `transport_id` mediumint(8) unsigned NOT NULL COMMENT '运费模板id',
+  `freight` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '运费 0为免运费',
+  `vat` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否开具增值税发票 1是，0否',
+  `commend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '商品推荐 1是，0否 默认0',
+  `stcids` varchar(255) NOT NULL DEFAULT '' COMMENT '店铺分类id 首尾用,隔开',
+  `evaluation_good_star` tinyint(3) unsigned NOT NULL DEFAULT '5' COMMENT '好评星级',
+  `evaluation_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '评价数',
+  `is_virtual` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否为虚拟商品 1是，0否',
+  `virtual_indate` int(10) unsigned NOT NULL COMMENT '虚拟商品有效期',
+  `virtual_limit` tinyint(3) unsigned NOT NULL COMMENT '虚拟商品购买上限',
+  `virtual_invalid_refund` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否允许过期退款， 1是，0否',
+  `is_fcode` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否为F码商品 1是，0否',
+  `is_appoint` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否是预约商品 1是，0否',
+  `is_presell` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否是预售商品 1是，0否',
+  `have_gift` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否拥有赠品',
+  `is_own_shop` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否为平台自营',
+  `__CREATE_TIME__` datetime NOT NULL,
+  `__MODIFY_TIME__` datetime NOT NULL,
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `shopnc_goods_id` int(11) DEFAULT NULL,
+  `shopnc_goods_commonid` int(11) DEFAULT NULL,
+  `shopnc_store_id` int(11) DEFAULT NULL,
+  `shopnc_gc_id` int(11) DEFAULT NULL,
+  `shopnc_gc_id_1` int(11) DEFAULT NULL,
+  `shopnc_gc_id_2` int(11) DEFAULT NULL,
+  `shopnc_gc_id_3` int(11) DEFAULT NULL,
+  `shopnc_brand_id` int(11) DEFAULT NULL,
+  `shopnc_areaid_1` int(11) DEFAULT NULL,
+  `shopnc_areaid_2` int(11) DEFAULT NULL,
+  `shopnc_color_id` int(11) DEFAULT NULL,
+  `shopnc_transport_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品表';
+
+/*Data for the table `igoods_goods` */
+
+insert  into `igoods_goods`(`_id`,`goods_commonid`,`name`,`jingle`,`price`,`image`,`state`,`verify`,`is_hot`,`is_new`,`period`,`lottery_code`,`lottery_prize_id`,`total_person_time`,`purchase_person_time`,`remain_person_time`,`complete_percent`,`restrict_person_time`,`sale_state`,`last_purchase_time`,`prize_code`,`prize_time`,`order_goods_list`,`prize_buyer_id`,`prize_buyer_name`,`prize_buyer_avatar`,`prize_buyer_register_by`,`prize_buyer_purchase_num`,`prize_buyer_purchase_time`,`prize_buyer_ip`,`prize_buyer_lottery_code`,`prize_order_goods_id`,`prize_order_goods_order_no`,`prize_total_time`,`gc_id`,`gc_id_1`,`gc_id_2`,`gc_id_3`,`store_id`,`store_name`,`brand_id`,`promotion_price`,`promotion_type`,`marketprice`,`serial`,`storage_alarm`,`click`,`salenum`,`collect`,`spec`,`storage`,`addtime`,`edittime`,`areaid_1`,`areaid_2`,`color_id`,`transport_id`,`freight`,`vat`,`commend`,`stcids`,`evaluation_good_star`,`evaluation_count`,`is_virtual`,`virtual_indate`,`virtual_limit`,`virtual_invalid_refund`,`is_fcode`,`is_appoint`,`is_presell`,`have_gift`,`is_own_shop`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`,`shopnc_goods_id`,`shopnc_goods_commonid`,`shopnc_store_id`,`shopnc_gc_id`,`shopnc_gc_id_1`,`shopnc_gc_id_2`,`shopnc_gc_id_3`,`shopnc_brand_id`,`shopnc_areaid_1`,`shopnc_areaid_2`,`shopnc_color_id`,`shopnc_transport_id`) values ('569b85bb887c22054a8b4626','563728c07f50eab004000404','【周黑鸭旗舰店_锁鲜装】盒装鸭翅190g*2 武汉特产官方食品零食','','2.00','1_161020d50ftb1ztcx___0-item_pic.jpg',1,1,0,0,1,10000001,'569b85bb887c22054a8b4627',2,0,2,0.00,0,1,'0.000',0,'0.000','','','','',0,0,'0.000','0.0.0.0','','','',0,'56360fd5adfb3842018b47bf','56360fd5adfb3842018b47b4','56360fd5adfb3842018b47b5','56360fd5adfb3842018b47bf','564f2e20887c22054a8b4567','家宝网站','','0.00',0,'2.00','44921832830',0,0,0,0,'',1,'2016-01-17 20:14:51','2016-01-17 20:14:51',12,198,0,0,'0.00',0,1,',0,',0,0,0,0,0,0,0,0,0,0,0,'2016-01-17 20:14:51','2016-01-17 20:14:51',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),('569b85bf887c22cf6c8b46d3','563728c07f50eab004000403','包邮港荣奶香蒸蛋糕整箱1kg 蒸蛋糕鸡蛋糕 代餐糕点零食品 新日期','','2.00','1_161660a1e2tb1w8ix___0-item_pic.jpg',1,1,0,0,1,10000001,'569b85bf887c22cf6c8b46d4',2,0,2,0.00,0,1,'0.000',0,'0.000','','','','',0,0,'0.000','0.0.0.0','','','',0,'56360fd5adfb3842018b47bf','56360fd5adfb3842018b47b4','56360fd5adfb3842018b47b5','56360fd5adfb3842018b47bf','564f2e20887c22054a8b4567','家宝网站','','0.00',0,'2.00','44650678058',0,0,0,0,'',1,'2016-01-17 20:14:55','2016-01-17 20:14:55',12,198,0,0,'0.00',0,1,',0,',0,0,0,0,0,0,0,0,0,0,0,'2016-01-17 20:14:55','2016-01-17 20:14:55',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `igoods_images` */
 
@@ -1494,7 +1638,7 @@ DROP TABLE IF EXISTS `iorder_log`;
 CREATE TABLE `iorder_log` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
   `order_id` char(24) NOT NULL DEFAULT '' COMMENT '订单id',
-  `order_state` tinyint(1) NOT NULL DEFAULT '0' COMMENT '订单状态',
+  `order_state` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单状态',
   `log_time` datetime NOT NULL COMMENT '处理时间',
   `msg` text NOT NULL COMMENT '文字描述',
   `role` char(20) NOT NULL DEFAULT '' COMMENT '操作人角色',
@@ -2511,6 +2655,29 @@ CREATE TABLE `iweixin_menu` (
 
 insert  into `iweixin_menu`(`_id`,`type`,`name`,`key`,`url`,`parent`,`priority`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560d3787fd4d3d32018b456b','click','远东互通','远东互通','','',1,'2015-10-01 21:39:19','2015-10-01 21:39:19',0),('560d37abfd4d3d7c018b4567','view','留言信箱','留言信箱','http://www.baidu.com/','560d3787fd4d3d32018b456b',1,'2015-10-01 21:39:55','2015-10-01 21:39:55',0),('560d37ccfd4d3d89018b4567','click','活动资讯','活动资讯','','560d3787fd4d3d32018b456b',2,'2015-10-01 21:40:28','2015-10-01 21:40:28',0),('560d3998fd4d3d7d018b4567','click','远东来客','远东来客','','',3,'2015-10-01 21:48:08','2015-10-01 21:48:08',0),('560d3a20fd4d3d87018b4567','view','联系我们','联系我们','http://www.baidu.com/','560d3998fd4d3d7d018b4567',1,'2015-10-01 21:50:24','2015-10-01 21:50:24',0),('560d3a46fd4d3d9b018b4567','click','远东见闻','远东见闻','','',2,'2015-10-01 21:51:02','2015-10-01 21:51:02',0),('560d3a61fd4d3d98018b4567','click','行业快报','行业快报','','560d3a46fd4d3d9b018b4567',1,'2015-10-01 21:51:29','2015-10-01 21:51:29',0);
 
+/*Table structure for table `iweixin_menu_conditional` */
+
+DROP TABLE IF EXISTS `iweixin_menu_conditional`;
+
+CREATE TABLE `iweixin_menu_conditional` (
+  `_id` char(24) NOT NULL DEFAULT '',
+  `type` varchar(30) NOT NULL DEFAULT '' COMMENT '类型',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '名称',
+  `key` varchar(30) NOT NULL DEFAULT '' COMMENT '事件名称(英文、数字)(click等点击类型必须)',
+  `url` varchar(100) NOT NULL DEFAULT '' COMMENT '链接(类型为view时必填)',
+  `parent` char(24) NOT NULL DEFAULT '' COMMENT '上级菜单',
+  `priority` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
+  `matchrule` char(24) NOT NULL DEFAULT '' COMMENT '匹配规则',
+  `menuid` varchar(50) NOT NULL DEFAULT '' COMMENT '菜单id',
+  `menu_time` datetime NOT NULL COMMENT '菜单生成时间',
+  `__CREATE_TIME__` datetime NOT NULL,
+  `__MODIFY_TIME__` datetime NOT NULL,
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Data for the table `iweixin_menu_conditional` */
+
 /*Table structure for table `iweixin_menu_type` */
 
 DROP TABLE IF EXISTS `iweixin_menu_type`;
@@ -2670,6 +2837,7 @@ CREATE TABLE `iweixin_scene` (
   `is_temporary` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `expire_seconds` int(11) unsigned NOT NULL DEFAULT '0',
   `ticket` char(100) NOT NULL DEFAULT '',
+  `url` char(100) NOT NULL DEFAULT '',
   `ticket_time` datetime DEFAULT NULL,
   `is_created` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `__CREATE_TIME__` datetime NOT NULL,
@@ -2680,7 +2848,7 @@ CREATE TABLE `iweixin_scene` (
 
 /*Data for the table `iweixin_scene` */
 
-insert  into `iweixin_scene`(`_id`,`scene_id`,`scene_name`,`scene_desc`,`subscribe_number`,`is_temporary`,`expire_seconds`,`ticket`,`ticket_time`,`is_created`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560df105fd4d3dad018b4567','1','场景1','场景描述',0,1,100,'',NULL,0,'2015-10-02 10:50:45','2015-10-02 10:50:45',0);
+insert  into `iweixin_scene`(`_id`,`scene_id`,`scene_name`,`scene_desc`,`subscribe_number`,`is_temporary`,`expire_seconds`,`ticket`,`url`,`ticket_time`,`is_created`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560df105fd4d3dad018b4567','1','场景1','场景描述',0,1,100,'','',NULL,0,'2015-10-02 10:50:45','2015-10-02 10:50:45',0);
 
 /*Table structure for table `iweixin_script_tracking` */
 
@@ -2761,6 +2929,7 @@ CREATE TABLE `iweixin_source` (
   `request_xml` text NOT NULL,
   `response` text,
   `response_time` datetime DEFAULT NULL,
+  `AESInfo` text,
   `__CREATE_TIME__` datetime NOT NULL,
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -2769,7 +2938,7 @@ CREATE TABLE `iweixin_source` (
 
 /*Data for the table `iweixin_source` */
 
-insert  into `iweixin_source`(`_id`,`ToUserName`,`FromUserName`,`CreateTime`,`MsgType`,`Content`,`MsgId`,`PicUrl`,`MediaId`,`Format`,`ThumbMediaId`,`Location_X`,`Location_Y`,`Scale`,`Label`,`Title`,`Description`,`Url`,`Event`,`EventKey`,`Ticket`,`Latitude`,`Longitude`,`Precision`,`interval`,`coordinate`,`Status`,`request_xml`,`response`,`response_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560deb75fd4d3da9018b4567','gh_6762364063ee','o6HiMuF61GElRIFGwfv8XkUzLO2Y',1443604783,'event','','','','','','',0,0,0,'','','','','VIEW','http://www.baidu.com/','',0,0,0,2.77119e+06,'','','1443604783','','2015-10-02 10:18:41','2015-10-02 10:27:01','2015-10-02 10:27:01',0);
+insert  into `iweixin_source`(`_id`,`ToUserName`,`FromUserName`,`CreateTime`,`MsgType`,`Content`,`MsgId`,`PicUrl`,`MediaId`,`Format`,`ThumbMediaId`,`Location_X`,`Location_Y`,`Scale`,`Label`,`Title`,`Description`,`Url`,`Event`,`EventKey`,`Ticket`,`Latitude`,`Longitude`,`Precision`,`interval`,`coordinate`,`Status`,`request_xml`,`response`,`response_time`,`AESInfo`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560deb75fd4d3da9018b4567','gh_6762364063ee','o6HiMuF61GElRIFGwfv8XkUzLO2Y',1443604783,'event','','','','','','',0,0,0,'','','','','VIEW','http://www.baidu.com/','',0,0,0,2.77119e+06,'','','1443604783','','2015-10-02 10:18:41',NULL,'2015-10-02 10:27:01','2015-10-02 10:27:01',0);
 
 /*Table structure for table `iweixin_subscribe_user` */
 
@@ -3009,7 +3178,7 @@ CREATE TABLE `menu` (
 
 /*Data for the table `menu` */
 
-insert  into `menu`(`_id`,`pid`,`name`,`show_order`,`is_show`,`url`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('55d6d6b47f50ea380a00001b','','系统管理',99,1,'','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('55d6d6d77f50ea380a00001c','55d6d6b47f50ea380a00001b','菜单管理',1,1,'admin/system/menu/list','0000-00-00 00:00:00','2015-10-01 11:57:28',0),('55d6d6fa7f50ea380a00001d','55d6d6b47f50ea380a00001b','角色管理',2,1,'admin/system/role/list','0000-00-00 00:00:00','2015-10-10 16:46:21',0),('55d6d71f7f50ea380a00001e','55d6d6b47f50ea380a00001b','用户管理',3,1,'admin/system/user/list','0000-00-00 00:00:00','2015-10-01 11:57:19',0),('55dab86d7f50ea400a000000','','微信管理',90,1,'','0000-00-00 00:00:00','2015-09-11 18:22:15',0),('55dad5817f50eac00700000f','55dab86d7f50ea400a000000','回复类型管理',1,1,'admin/weixin/replytype/list','0000-00-00 00:00:00','2015-10-01 10:24:22',0),('55dadb857f50eac007000014','55dab86d7f50ea400a000000','回复管理',2,1,'admin/weixin/reply/list','0000-00-00 00:00:00','2015-10-01 10:40:40',0),('55dae7157f50eac007000015','55dab86d7f50ea400a000000','关键字管理',3,1,'admin/weixin/keyword/list','0000-00-00 00:00:00','2015-10-01 10:40:30',0),('55e3caee7f50ea9407000000','','抽奖管理',80,1,'','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('55e3cbdc7f50ea9407000002','55e3caee7f50ea9407000000','概率管理',1,1,'admin/lottery/rule/list','0000-00-00 00:00:00','2015-12-19 20:07:50',0),('55e3cc307f50ea9407000003','55e3caee7f50ea9407000000','中奖限制管理',2,1,'admin/lottery/limit/list','0000-00-00 00:00:00','2015-12-19 20:07:54',0),('55e3cd117f50ea9407000004','55e3caee7f50ea9407000000','中奖信息管理',3,1,'admin/lottery/exchange/list','0000-00-00 00:00:00','2015-12-19 20:07:57',0),('55e3cd657f50ea9407000005','55e3caee7f50ea9407000000','抽奖日志管理',4,1,'admin/lottery/log/list','0000-00-00 00:00:00','2015-12-19 20:08:20',0),('560cff4efd4d3d1d018b4567','55dab86d7f50ea400a000000','菜单类型管理',4,1,'admin/weixin/menutype/list','2015-10-01 17:39:26','2015-10-01 17:39:26',0),('560d2995fd4d3d30018b4568','55dab86d7f50ea400a000000','消息类型管理',5,1,'admin/weixin/msgtype/list','2015-10-01 20:39:49','2015-10-01 20:39:49',0),('560d29d0fd4d3d7a018b4567','55dab86d7f50ea400a000000','性别管理',6,1,'admin/weixin/gender/list','2015-10-01 20:40:48','2015-10-01 20:40:48',0),('560d2b41fd4d3d24018b4568','55dab86d7f50ea400a000000','自定义菜单管理',7,1,'admin/weixin/menu/list','2015-10-01 20:46:57','2015-10-01 20:47:12',0),('560d2b9cfd4d3d7a018b4569','55dab86d7f50ea400a000000','应用管理',8,1,'admin/weixin/application/list','2015-10-01 20:48:28','2015-10-01 20:48:28',0),('560d2bdefd4d3d32018b456a','55dab86d7f50ea400a000000','用户管理',9,1,'admin/weixin/user/list','2015-10-01 20:49:34','2015-10-01 20:49:34',0),('560d2c0dfd4d3d78018b4568','55dab86d7f50ea400a000000','原始数据管理',10,1,'admin/weixin/source/list','2015-10-01 20:50:21','2015-10-01 20:50:21',0),('560d2c56fd4d3d24018b4569','55dab86d7f50ea400a000000','二维码推广场景管理',11,1,'admin/weixin/qrcode/list','2015-10-01 20:51:34','2015-10-01 21:23:56',0),('560d2c8afd4d3d7a018b456a','55dab86d7f50ea400a000000','二维码场景管理',12,1,'admin/weixin/scene/list','2015-10-01 20:52:26','2015-10-01 21:23:24',0),('560d2ce4fd4d3d30018b456c','55dab86d7f50ea400a000000','非关键字管理管理',13,1,'admin/weixin/notkeyword/list','2015-10-01 20:53:56','2015-10-01 20:54:19',0),('560d2d28fd4d3d1d018b4569','55dab86d7f50ea400a000000','自定义页面管理',14,1,'admin/weixin/page/list','2015-10-01 20:55:04','2015-10-01 20:55:23',0),('560d2d76fd4d3d7a018b456b','55dab86d7f50ea400a000000','执行时间跟踪统计管理',15,1,'admin/weixin/scripttracking/list','2015-10-01 20:56:22','2015-10-01 20:56:22',0),('560d2da6fd4d3d30018b456d','55dab86d7f50ea400a000000','回调地址安全域名管理',16,1,'admin/weixin/callbackurls/list','2015-10-01 20:57:10','2015-10-01 20:57:10',0),('560d2df4fd4d3d33018b4568','55dab86d7f50ea400a000000','关注用户管理',17,1,'admin/weixin/subscribeuser/list','2015-10-01 20:58:28','2015-10-01 20:58:28',0),('5631ded27f50eaf409000029','','商品管理',60,1,'','2015-10-29 16:54:42','2015-10-29 16:54:42',0),('5631defb7f50eaf40900002a','5631ded27f50eaf409000029','品牌管理',1,1,'admin/goods/brand/list','2015-10-29 16:55:23','2015-10-29 16:55:23',0),('563361397f50ea0c0a000029','5631ded27f50eaf409000029','分类管理',3,1,'admin/goods/category/list','2015-10-30 20:23:21','2015-10-30 21:52:18',0),('563364637f50ea4c16000029','5631ded27f50eaf409000029','类型管理',2,1,'admin/goods/type/list','2015-10-30 20:36:51','2015-10-30 20:36:51',0),('5635a755adfb3837018b4567','5631ded27f50eaf409000029','规格管理',4,1,'admin/goods/spec/list','2015-11-01 13:47:01','2015-11-01 13:47:14',0),('5635adeeadfb383e018b4567','5631ded27f50eaf409000029','属性管理',6,1,'admin/goods/attribute/list','2015-11-01 14:15:10','2015-11-01 14:47:00',0),('5635b527adfb383e018b4568','5631ded27f50eaf409000029','属性值管理',7,1,'admin/goods/attributevalue/list','2015-11-01 14:45:59','2015-11-01 14:46:52',0),('5635b54badfb383c018b4568','5631ded27f50eaf409000029','规格值管理',5,1,'admin/goods/specvalue/list','2015-11-01 14:46:35','2015-11-10 23:58:43',0),('56361542adfb3840018b4567','5631ded27f50eaf409000029','类型品牌管理',8,1,'admin/goods/typebrand/list','2015-11-01 21:36:02','2015-11-01 21:36:02',0),('56361568adfb383e018b4569','5631ded27f50eaf409000029','类型规格管理',9,1,'admin/goods/typespec/list','2015-11-01 21:36:40','2015-11-01 21:36:40',0),('56382b2e7f50eaf40f000029','5631ded27f50eaf409000029','商品分类TAG管理',10,1,'admin/goods/categorytag/list','2015-11-03 11:34:06','2015-11-03 11:34:06',0),('56382b607f50ead014000029','5631ded27f50eaf409000029','商品公共内容管理',11,1,'admin/goods/goodscommon/list','2015-11-03 11:34:56','2015-11-03 11:34:56',0),('56382b827f50ead009000029','5631ded27f50eaf409000029','商品SKU管理',12,1,'admin/goods/goods/list','2015-11-03 11:35:30','2015-11-03 11:35:30',0),('56382bc37f50ead00900002a','5631ded27f50eaf409000029','商品属性对应管理',13,1,'admin/goods/attributeindex/list','2015-11-03 11:36:35','2015-11-03 11:36:35',0),('56382beb7f50ead01400002a','5631ded27f50eaf409000029','商品F码管理',14,1,'admin/goods/fcode/list','2015-11-03 11:37:15','2015-11-03 11:37:15',0),('56382c1b7f50ead01400002b','5631ded27f50eaf409000029','商品图片管理',15,1,'admin/goods/image/list','2015-11-03 11:38:03','2015-11-03 11:38:03',0),('5639d665bbcb2605038b4567','','QQ管理',50,1,'','2015-11-04 17:56:53','2015-11-04 17:56:53',0),('5639d702bbcb269b108b4567','5639d665bbcb2605038b4567','应用密码管理',1,1,'admin/tencent/appkey/list','2015-11-04 17:59:30','2015-11-04 17:59:30',0),('563b2073bbcb2607038b4567','5639d665bbcb2605038b4567','应用设置',2,1,'admin/tencent/application/list','2015-11-05 17:25:07','2015-11-05 17:25:07',0),('563d6e57887c22d1498b4567','55d6d6b47f50ea380a00001b','枚举管理',4,1,'admin/system/enum/list','2015-11-07 11:21:59','2015-11-07 11:21:59',0),('563d7bb7887c22ce498b456d','55d6d6b47f50ea380a00001b','全国行政区划管理',5,1,'admin/system/area/list','2015-11-07 12:19:03','2015-11-07 12:19:03',0),('563dad20887c22ce498b456e','','邮件管理',98,1,'','2015-11-07 15:49:52','2015-11-07 17:24:12',0),('563dae77887c22d1498b456f','563dad20887c22ce498b456e','邮件设置',1,1,'admin/mail/settings/list','2015-11-07 15:55:35','2015-11-07 17:23:29',0),('563dcabb887c22d2498b456e','','消息管理',97,1,'','2015-11-07 17:56:11','2015-11-07 17:56:11',0),('563dcade887c22fa188b4567','563dcabb887c22d2498b456e','模版管理',1,1,'admin/message/template/list','2015-11-07 17:56:46','2015-11-07 17:56:46',0),('563de133887c2238118b456c','','支付管理',96,1,'','2015-11-07 19:32:03','2015-11-07 19:32:03',0),('563de154887c22d0498b456e','563de133887c2238118b456c','支付方式管理',1,1,'admin/payment/payment/list','2015-11-07 19:32:36','2015-11-07 19:32:36',0),('563df08c887c22cf498b4571','567d1d3a887c22054a8b45af','网站设置管理',1,1,'admin/site/site/list','2015-11-07 20:37:32','2015-12-25 18:41:35',0),('5645e702887c22f25e8b4567','','短信管理',95,1,'','2015-11-13 21:34:58','2015-11-13 21:34:58',0),('5645e729887c221b608b4567','5645e702887c22f25e8b4567','短信设置',1,1,'admin/sms/settings/list','2015-11-13 21:35:37','2015-11-13 21:35:49',0),('5645f5b6887c221b608b4568','','会员管理',94,1,'','2015-11-13 22:37:42','2015-11-13 22:37:42',0),('5645f5d6887c22f05e8b4567','5645f5b6887c221b608b4568','会员资料',1,1,'admin/member/member/list','2015-11-13 22:38:14','2015-11-13 22:38:59',0),('564604bf887c221b608b4569','5645f5b6887c221b608b4568','会员等级',2,1,'admin/member/grade/list','2015-11-13 23:41:51','2015-11-13 23:41:51',0),('564609b9887c22f05e8b456a','','积分管理',93,1,'','2015-11-14 00:03:05','2015-11-14 00:03:05',0),('564609cb887c22f25e8b456b','564609b9887c22f05e8b456a','积分规则',2,1,'admin/points/rule/list','2015-11-14 00:03:23','2015-11-14 00:43:32',0),('56461304887c22f15e8b456e','564609b9887c22f05e8b456a','积分分类',1,1,'admin/points/category/list','2015-11-14 00:42:44','2015-11-14 00:42:44',0),('56461322887c22f45e8b456f','564609b9887c22f05e8b456a','积分日志',3,1,'admin/points/log/list','2015-11-14 00:43:14','2015-11-14 00:43:14',0),('5646efed887c221b608b456b','5645f5b6887c221b608b4568','收货人管理',3,1,'admin/member/consignee/list','2015-11-14 16:25:17','2015-11-14 16:25:17',0),('564f2de1887c22774a8b4567','','店铺管理',92,1,'','2015-11-20 22:27:45','2015-11-20 22:27:45',0),('564f2dfe887c22034a8b4567','564f2de1887c22774a8b4567','店铺管理',1,1,'admin/store/store/list','2015-11-20 22:28:14','2015-11-20 22:28:14',0),('56751e13887c22834c8b458d','55d6d6b47f50ea380a00001b','活动管理',7,1,'admin/system/activity/list','2015-12-19 17:06:27','2015-12-19 17:06:27',0),('56751e28887c22054a8b45a6','55d6d6b47f50ea380a00001b','错误管理',8,1,'admin/system/errorlog/list','2015-12-19 17:06:48','2015-12-19 17:06:48',0),('56753940887c22034a8b4590','','奖品管理',91,1,'','2015-12-19 19:02:24','2015-12-19 19:02:24',0),('5675397e887c22024a8b4653','56753940887c22034a8b4590','奖品分类',1,1,'admin/prize/category/list','2015-12-19 19:03:26','2015-12-26 16:15:42',0),('567539a9887c22cf6c8b4647','56753940887c22034a8b4590','奖品管理',2,1,'admin/prize/prize/list','2015-12-19 19:04:09','2015-12-19 19:04:09',0),('567539d3887c2210688b45b3','56753940887c22034a8b4590','卡券管理',3,1,'admin/prize/code/list','2015-12-19 19:04:51','2015-12-19 19:04:51',0),('567d1d3a887c22054a8b45af','','网站管理',89,1,'','2015-12-25 18:40:58','2015-12-25 18:40:58',0),('567d1d97887c22034a8b45a1','567d1d3a887c22054a8b45af','Banner管理',2,1,'admin/site/banner/list','2015-12-25 18:42:31','2015-12-25 18:42:31',0),('567e4db5887c22834c8b459c','564609b9887c22f05e8b456a','积分用户管理',4,1,'admin/points/user/list','2015-12-26 16:20:05','2015-12-26 16:20:05',0),('567e65cc887c22014a8b466d','','订单管理',88,1,'','2015-12-26 18:02:52','2015-12-26 18:02:52',0),('567e6601887c22024a8b4672','567e65cc887c22014a8b466d','订单支付管理',1,1,'admin/order/pay/list','2015-12-26 18:03:45','2015-12-26 18:03:45',0),('567f71f8887c22774a8b45ba','5631ded27f50eaf409000029','商品广告管理',16,1,'admin/goods/ad/list','2015-12-27 13:07:04','2015-12-27 13:08:00',0),('568149b8887c2210688b45f5','567e65cc887c22014a8b466d','订单统计管理',2,1,'admin/order/statistics/list','2015-12-28 22:39:52','2015-12-28 22:39:52',0),('568786aa887c22034a8b45bc','567e65cc887c22014a8b466d','订单商品管理',3,1,'admin/order/goods/list','2016-01-02 16:13:30','2016-01-02 16:13:30',0),('568932b3887c2210688b461b','','晒单管理',87,1,'','2016-01-03 22:39:47','2016-01-03 22:40:56',0),('568932e4887c2210688b461c','568932b3887c2210688b461b','晒单管理',1,1,'admin/post/post/list','2016-01-03 22:40:36','2016-01-03 22:40:36',0),('568a6449887c22774a8b5790','','文章管理',86,1,'','2016-01-04 20:23:37','2016-01-04 20:23:37',0),('568a645b887c22834c8b45cb','','运价管理',85,1,'','2016-01-04 20:23:55','2016-01-04 22:02:32',0),('568a6483887c226e6a8b5727','568a6449887c22774a8b5790','文章分类管理',1,1,'admin/article/category/list','2016-01-04 20:24:35','2016-01-04 20:24:35',0),('568a64af887c22cf6c8b46a2','568a6449887c22774a8b5790','文章管理',2,1,'admin/article/article/list','2016-01-04 20:25:19','2016-01-04 20:25:19',0),('568a7ba9887c22184e8b460d','568a645b887c22834c8b45cb','快递公司管理',1,1,'admin/freight/express/list','2016-01-04 22:03:21','2016-01-04 22:03:21',0),('568fdd43887c2213518b4567','5645f5b6887c221b608b4568','举报管理',4,1,'admin/member/report/list','2016-01-09 00:01:07','2016-01-09 00:01:38',0),('5691d7e3887c2206528b4767','563dcabb887c22d2498b456e','系统消息管理',2,1,'admin/message/sysmsg/list','2016-01-10 12:02:43','2016-01-10 12:02:43',0),('5691ead3887c22034a8b45d9','5645f5b6887c221b608b4568','动态管理',6,1,'admin/member/news/list','2016-01-10 13:23:31','2016-01-10 13:23:31',0),('56c43d8c887c22184e8b4660','567d1d3a887c22054a8b45af','投诉与建议',3,1,'admin/site/suggestion/list','2016-02-17 15:50:50','2016-02-17 15:50:50',0),('56de82c77f50ea4405000029','','投票管理',40,1,'','2016-03-08 15:44:07','2016-03-08 15:44:07',0),('56de82ef7f50ea440500002a','56de82c77f50ea4405000029','投票类型管理',1,1,'admin/vote/category/list','2016-03-08 15:44:47','2016-03-08 15:44:47',0),('56de85d77f50ea6011000029','56de82c77f50ea4405000029','投票限制类别管理',2,1,'admin/vote/limitcategory/list','2016-03-08 15:57:11','2016-03-08 15:57:11',0),('56de9b367f50ea241200002a','56de82c77f50ea4405000029','投票主题管理',3,1,'admin/vote/subject/list','2016-03-08 17:28:22','2016-03-08 17:28:22',0),('56de9fe47f50eab801000029','56de82c77f50ea4405000029','投票选项管理',4,1,'admin/vote/item/list','2016-03-08 17:48:20','2016-03-08 17:48:20',0),('56dea0dd7f50ea2c0a00002a','56de82c77f50ea4405000029','投票限制管理',5,1,'admin/vote/limit/list','2016-03-08 17:52:29','2016-03-08 17:52:29',0),('56deaa1d7f50ea2c0a00002b','56de82c77f50ea4405000029','投票日志管理',6,1,'admin/vote/log/list','2016-03-08 18:31:57','2016-03-08 18:31:57',0),('56deac6a7f50ea381200002a','56de82c77f50ea4405000029','投票排行期管理',7,1,'admin/vote/period/list','2016-03-08 18:41:46','2016-03-08 18:41:46',0),('56deac827f50eab80100002a','56de82c77f50ea4405000029','投票每期排行管理',8,1,'admin/vote/rankperiod/list','2016-03-08 18:42:10','2016-03-08 18:42:10',0),('56ee0da7ae8715942d000029','','微信红包管理',84,1,'','2016-03-20 10:40:39','2016-03-20 10:40:39',0),('56ee0de3ae8715942d00002a','56ee0da7ae8715942d000029','顾客管理',1,1,'admin/weixinredpack/customer/list','2016-03-20 10:41:39','2016-03-20 10:41:39',0),('56ee0e0eae8715942d00002b','56ee0da7ae8715942d000029','红包管理',2,1,'admin/weixinredpack/redpack/list','2016-03-20 10:42:22','2016-03-20 10:42:22',0),('56ee0e57ae8715942d00002c','56ee0da7ae8715942d000029','红包限制管理',3,1,'admin/weixinredpack/limit/list','2016-03-20 10:43:34','2016-03-20 10:43:34',0),('56ee0e81ae8715942d00002d','56ee0da7ae8715942d000029','红包发放规则管理',4,1,'admin/weixinredpack/rule/list','2016-03-20 10:44:16','2016-03-20 10:44:16',0),('56ee0ebfae8715942d00002e','56ee0da7ae8715942d000029','红包领取日志管理',5,1,'admin/weixinredpack/log/list','2016-03-20 10:45:19','2016-03-20 10:45:19',0),('56ee0f16ae8715942d00002f','56ee0da7ae8715942d000029','补发日志管理',6,1,'admin/weixinredpack/reissue/list','2016-03-20 10:46:46','2016-03-20 10:46:46',0);
+insert  into `menu`(`_id`,`pid`,`name`,`show_order`,`is_show`,`url`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('55d6d6b47f50ea380a00001b','','系统管理',99,1,'','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('55d6d6d77f50ea380a00001c','55d6d6b47f50ea380a00001b','菜单管理',1,1,'admin/system/menu/list','0000-00-00 00:00:00','2015-10-01 11:57:28',0),('55d6d6fa7f50ea380a00001d','55d6d6b47f50ea380a00001b','角色管理',2,1,'admin/system/role/list','0000-00-00 00:00:00','2015-10-10 16:46:21',0),('55d6d71f7f50ea380a00001e','55d6d6b47f50ea380a00001b','用户管理',3,1,'admin/system/user/list','0000-00-00 00:00:00','2015-10-01 11:57:19',0),('55dab86d7f50ea400a000000','','微信管理',90,1,'','0000-00-00 00:00:00','2015-09-11 18:22:15',0),('55dad5817f50eac00700000f','55dab86d7f50ea400a000000','回复类型管理',1,1,'admin/weixin/replytype/list','0000-00-00 00:00:00','2015-10-01 10:24:22',0),('55dadb857f50eac007000014','55dab86d7f50ea400a000000','回复管理',2,1,'admin/weixin/reply/list','0000-00-00 00:00:00','2015-10-01 10:40:40',0),('55dae7157f50eac007000015','55dab86d7f50ea400a000000','关键字管理',3,1,'admin/weixin/keyword/list','0000-00-00 00:00:00','2015-10-01 10:40:30',0),('55e3caee7f50ea9407000000','','抽奖管理',80,1,'','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('55e3cbdc7f50ea9407000002','55e3caee7f50ea9407000000','概率管理',1,1,'admin/lottery/rule/list','0000-00-00 00:00:00','2015-12-19 20:07:50',0),('55e3cc307f50ea9407000003','55e3caee7f50ea9407000000','中奖限制管理',2,1,'admin/lottery/limit/list','0000-00-00 00:00:00','2015-12-19 20:07:54',0),('55e3cd117f50ea9407000004','55e3caee7f50ea9407000000','中奖信息管理',3,1,'admin/lottery/exchange/list','0000-00-00 00:00:00','2015-12-19 20:07:57',0),('55e3cd657f50ea9407000005','55e3caee7f50ea9407000000','抽奖日志管理',4,1,'admin/lottery/log/list','0000-00-00 00:00:00','2015-12-19 20:08:20',0),('560cff4efd4d3d1d018b4567','55dab86d7f50ea400a000000','菜单类型管理',4,1,'admin/weixin/menutype/list','2015-10-01 17:39:26','2015-10-01 17:39:26',0),('560d2995fd4d3d30018b4568','55dab86d7f50ea400a000000','消息类型管理',5,1,'admin/weixin/msgtype/list','2015-10-01 20:39:49','2015-10-01 20:39:49',0),('560d29d0fd4d3d7a018b4567','55dab86d7f50ea400a000000','性别管理',6,1,'admin/weixin/gender/list','2015-10-01 20:40:48','2015-10-01 20:40:48',0),('560d2b41fd4d3d24018b4568','55dab86d7f50ea400a000000','自定义菜单管理',7,1,'admin/weixin/menu/list','2015-10-01 20:46:57','2015-10-01 20:47:12',0),('560d2b9cfd4d3d7a018b4569','55dab86d7f50ea400a000000','应用管理',8,1,'admin/weixin/application/list','2015-10-01 20:48:28','2015-10-01 20:48:28',0),('560d2bdefd4d3d32018b456a','55dab86d7f50ea400a000000','用户管理',9,1,'admin/weixin/user/list','2015-10-01 20:49:34','2015-10-01 20:49:34',0),('560d2c0dfd4d3d78018b4568','55dab86d7f50ea400a000000','原始数据管理',10,1,'admin/weixin/source/list','2015-10-01 20:50:21','2015-10-01 20:50:21',0),('560d2c56fd4d3d24018b4569','55dab86d7f50ea400a000000','二维码推广场景管理',11,1,'admin/weixin/qrcode/list','2015-10-01 20:51:34','2015-10-01 21:23:56',0),('560d2c8afd4d3d7a018b456a','55dab86d7f50ea400a000000','二维码场景管理',12,1,'admin/weixin/scene/list','2015-10-01 20:52:26','2015-10-01 21:23:24',0),('560d2ce4fd4d3d30018b456c','55dab86d7f50ea400a000000','非关键字管理管理',13,1,'admin/weixin/notkeyword/list','2015-10-01 20:53:56','2015-10-01 20:54:19',0),('560d2d28fd4d3d1d018b4569','55dab86d7f50ea400a000000','自定义页面管理',14,1,'admin/weixin/page/list','2015-10-01 20:55:04','2015-10-01 20:55:23',0),('560d2d76fd4d3d7a018b456b','55dab86d7f50ea400a000000','执行时间跟踪统计管理',15,1,'admin/weixin/scripttracking/list','2015-10-01 20:56:22','2015-10-01 20:56:22',0),('560d2da6fd4d3d30018b456d','55dab86d7f50ea400a000000','回调地址安全域名管理',16,1,'admin/weixin/callbackurls/list','2015-10-01 20:57:10','2015-10-01 20:57:10',0),('560d2df4fd4d3d33018b4568','55dab86d7f50ea400a000000','关注用户管理',17,1,'admin/weixin/subscribeuser/list','2015-10-01 20:58:28','2015-10-01 20:58:28',0),('5631ded27f50eaf409000029','','商品管理',60,1,'','2015-10-29 16:54:42','2015-10-29 16:54:42',0),('5631defb7f50eaf40900002a','5631ded27f50eaf409000029','品牌管理',1,1,'admin/goods/brand/list','2015-10-29 16:55:23','2015-10-29 16:55:23',0),('563361397f50ea0c0a000029','5631ded27f50eaf409000029','分类管理',3,1,'admin/goods/category/list','2015-10-30 20:23:21','2015-10-30 21:52:18',0),('563364637f50ea4c16000029','5631ded27f50eaf409000029','类型管理',2,1,'admin/goods/type/list','2015-10-30 20:36:51','2015-10-30 20:36:51',0),('5635a755adfb3837018b4567','5631ded27f50eaf409000029','规格管理',4,1,'admin/goods/spec/list','2015-11-01 13:47:01','2015-11-01 13:47:14',0),('5635adeeadfb383e018b4567','5631ded27f50eaf409000029','属性管理',6,1,'admin/goods/attribute/list','2015-11-01 14:15:10','2015-11-01 14:47:00',0),('5635b527adfb383e018b4568','5631ded27f50eaf409000029','属性值管理',7,1,'admin/goods/attributevalue/list','2015-11-01 14:45:59','2015-11-01 14:46:52',0),('5635b54badfb383c018b4568','5631ded27f50eaf409000029','规格值管理',5,1,'admin/goods/specvalue/list','2015-11-01 14:46:35','2015-11-10 23:58:43',0),('56361542adfb3840018b4567','5631ded27f50eaf409000029','类型品牌管理',8,1,'admin/goods/typebrand/list','2015-11-01 21:36:02','2015-11-01 21:36:02',0),('56361568adfb383e018b4569','5631ded27f50eaf409000029','类型规格管理',9,1,'admin/goods/typespec/list','2015-11-01 21:36:40','2015-11-01 21:36:40',0),('56382b2e7f50eaf40f000029','5631ded27f50eaf409000029','商品分类TAG管理',10,1,'admin/goods/categorytag/list','2015-11-03 11:34:06','2015-11-03 11:34:06',0),('56382b607f50ead014000029','5631ded27f50eaf409000029','商品公共内容管理',11,1,'admin/goods/goodscommon/list','2015-11-03 11:34:56','2015-11-03 11:34:56',0),('56382b827f50ead009000029','5631ded27f50eaf409000029','商品SKU管理',12,1,'admin/goods/goods/list','2015-11-03 11:35:30','2015-11-03 11:35:30',0),('56382bc37f50ead00900002a','5631ded27f50eaf409000029','商品属性对应管理',13,1,'admin/goods/attributeindex/list','2015-11-03 11:36:35','2015-11-03 11:36:35',0),('56382beb7f50ead01400002a','5631ded27f50eaf409000029','商品F码管理',14,1,'admin/goods/fcode/list','2015-11-03 11:37:15','2015-11-03 11:37:15',0),('56382c1b7f50ead01400002b','5631ded27f50eaf409000029','商品图片管理',15,1,'admin/goods/image/list','2015-11-03 11:38:03','2015-11-03 11:38:03',0),('5639d665bbcb2605038b4567','','QQ管理',50,1,'','2015-11-04 17:56:53','2015-11-04 17:56:53',0),('5639d702bbcb269b108b4567','5639d665bbcb2605038b4567','应用密码管理',1,1,'admin/tencent/appkey/list','2015-11-04 17:59:30','2015-11-04 17:59:30',0),('563b2073bbcb2607038b4567','5639d665bbcb2605038b4567','应用设置',2,1,'admin/tencent/application/list','2015-11-05 17:25:07','2015-11-05 17:25:07',0),('563d6e57887c22d1498b4567','55d6d6b47f50ea380a00001b','枚举管理',4,1,'admin/system/enum/list','2015-11-07 11:21:59','2015-11-07 11:21:59',0),('563d7bb7887c22ce498b456d','55d6d6b47f50ea380a00001b','全国行政区划管理',5,1,'admin/system/area/list','2015-11-07 12:19:03','2015-11-07 12:19:03',0),('563dad20887c22ce498b456e','','邮件管理',98,1,'','2015-11-07 15:49:52','2015-11-07 17:24:12',0),('563dae77887c22d1498b456f','563dad20887c22ce498b456e','邮件设置',1,1,'admin/mail/settings/list','2015-11-07 15:55:35','2015-11-07 17:23:29',0),('563dcabb887c22d2498b456e','','消息管理',97,1,'','2015-11-07 17:56:11','2015-11-07 17:56:11',0),('563dcade887c22fa188b4567','563dcabb887c22d2498b456e','模版管理',1,1,'admin/message/template/list','2015-11-07 17:56:46','2015-11-07 17:56:46',0),('563de133887c2238118b456c','','支付管理',96,1,'','2015-11-07 19:32:03','2015-11-07 19:32:03',0),('563de154887c22d0498b456e','563de133887c2238118b456c','支付方式管理',1,1,'admin/payment/payment/list','2015-11-07 19:32:36','2015-11-07 19:32:36',0),('563df08c887c22cf498b4571','567d1d3a887c22054a8b45af','网站设置管理',1,1,'admin/site/site/list','2015-11-07 20:37:32','2015-12-25 18:41:35',0),('5645e702887c22f25e8b4567','','短信管理',95,1,'','2015-11-13 21:34:58','2015-11-13 21:34:58',0),('5645e729887c221b608b4567','5645e702887c22f25e8b4567','短信设置',1,1,'admin/sms/settings/list','2015-11-13 21:35:37','2015-11-13 21:35:49',0),('5645f5b6887c221b608b4568','','会员管理',94,1,'','2015-11-13 22:37:42','2015-11-13 22:37:42',0),('5645f5d6887c22f05e8b4567','5645f5b6887c221b608b4568','会员资料',1,1,'admin/member/member/list','2015-11-13 22:38:14','2015-11-13 22:38:59',0),('564604bf887c221b608b4569','5645f5b6887c221b608b4568','会员等级',2,1,'admin/member/grade/list','2015-11-13 23:41:51','2015-11-13 23:41:51',0),('564609b9887c22f05e8b456a','','积分管理',93,1,'','2015-11-14 00:03:05','2015-11-14 00:03:05',0),('564609cb887c22f25e8b456b','564609b9887c22f05e8b456a','积分规则',2,1,'admin/points/rule/list','2015-11-14 00:03:23','2015-11-14 00:43:32',0),('56461304887c22f15e8b456e','564609b9887c22f05e8b456a','积分分类',1,1,'admin/points/category/list','2015-11-14 00:42:44','2015-11-14 00:42:44',0),('56461322887c22f45e8b456f','564609b9887c22f05e8b456a','积分日志',3,1,'admin/points/log/list','2015-11-14 00:43:14','2015-11-14 00:43:14',0),('5646efed887c221b608b456b','5645f5b6887c221b608b4568','收货人管理',3,1,'admin/member/consignee/list','2015-11-14 16:25:17','2015-11-14 16:25:17',0),('564f2de1887c22774a8b4567','','店铺管理',92,1,'','2015-11-20 22:27:45','2015-11-20 22:27:45',0),('564f2dfe887c22034a8b4567','564f2de1887c22774a8b4567','店铺管理',1,1,'admin/store/store/list','2015-11-20 22:28:14','2015-11-20 22:28:14',0),('56751e13887c22834c8b458d','55d6d6b47f50ea380a00001b','活动管理',7,1,'admin/system/activity/list','2015-12-19 17:06:27','2015-12-19 17:06:27',0),('56751e28887c22054a8b45a6','55d6d6b47f50ea380a00001b','错误管理',8,1,'admin/system/errorlog/list','2015-12-19 17:06:48','2015-12-19 17:06:48',0),('56753940887c22034a8b4590','','奖品管理',91,1,'','2015-12-19 19:02:24','2015-12-19 19:02:24',0),('5675397e887c22024a8b4653','56753940887c22034a8b4590','奖品分类',1,1,'admin/prize/category/list','2015-12-19 19:03:26','2015-12-26 16:15:42',0),('567539a9887c22cf6c8b4647','56753940887c22034a8b4590','奖品管理',2,1,'admin/prize/prize/list','2015-12-19 19:04:09','2015-12-19 19:04:09',0),('567539d3887c2210688b45b3','56753940887c22034a8b4590','卡券管理',3,1,'admin/prize/code/list','2015-12-19 19:04:51','2015-12-19 19:04:51',0),('567d1d3a887c22054a8b45af','','网站管理',89,1,'','2015-12-25 18:40:58','2015-12-25 18:40:58',0),('567d1d97887c22034a8b45a1','567d1d3a887c22054a8b45af','Banner管理',2,1,'admin/site/banner/list','2015-12-25 18:42:31','2015-12-25 18:42:31',0),('567e4db5887c22834c8b459c','564609b9887c22f05e8b456a','积分用户管理',4,1,'admin/points/user/list','2015-12-26 16:20:05','2015-12-26 16:20:05',0),('567e65cc887c22014a8b466d','','订单管理',88,1,'','2015-12-26 18:02:52','2015-12-26 18:02:52',0),('567e6601887c22024a8b4672','567e65cc887c22014a8b466d','订单支付管理',1,1,'admin/order/pay/list','2015-12-26 18:03:45','2015-12-26 18:03:45',0),('567f71f8887c22774a8b45ba','5631ded27f50eaf409000029','商品广告管理',16,1,'admin/goods/ad/list','2015-12-27 13:07:04','2015-12-27 13:08:00',0),('568149b8887c2210688b45f5','567e65cc887c22014a8b466d','订单统计管理',2,1,'admin/order/statistics/list','2015-12-28 22:39:52','2015-12-28 22:39:52',0),('568786aa887c22034a8b45bc','567e65cc887c22014a8b466d','订单商品管理',3,1,'admin/order/goods/list','2016-01-02 16:13:30','2016-01-02 16:13:30',0),('568932b3887c2210688b461b','','晒单管理',87,1,'','2016-01-03 22:39:47','2016-01-03 22:40:56',0),('568932e4887c2210688b461c','568932b3887c2210688b461b','晒单管理',1,1,'admin/post/post/list','2016-01-03 22:40:36','2016-01-03 22:40:36',0),('568a6449887c22774a8b5790','','文章管理',86,1,'','2016-01-04 20:23:37','2016-01-04 20:23:37',0),('568a645b887c22834c8b45cb','','运价管理',85,1,'','2016-01-04 20:23:55','2016-01-04 22:02:32',0),('568a6483887c226e6a8b5727','568a6449887c22774a8b5790','文章分类管理',1,1,'admin/article/category/list','2016-01-04 20:24:35','2016-01-04 20:24:35',0),('568a64af887c22cf6c8b46a2','568a6449887c22774a8b5790','文章管理',2,1,'admin/article/article/list','2016-01-04 20:25:19','2016-01-04 20:25:19',0),('568a7ba9887c22184e8b460d','568a645b887c22834c8b45cb','快递公司管理',1,1,'admin/freight/express/list','2016-01-04 22:03:21','2016-01-04 22:03:21',0),('568fdd43887c2213518b4567','5645f5b6887c221b608b4568','举报管理',4,1,'admin/member/report/list','2016-01-09 00:01:07','2016-01-09 00:01:38',0),('5691d7e3887c2206528b4767','563dcabb887c22d2498b456e','系统消息管理',2,1,'admin/message/sysmsg/list','2016-01-10 12:02:43','2016-01-10 12:02:43',0),('5691ead3887c22034a8b45d9','5645f5b6887c221b608b4568','动态管理',6,1,'admin/member/news/list','2016-01-10 13:23:31','2016-01-10 13:23:31',0),('56c43d8c887c22184e8b4660','567d1d3a887c22054a8b45af','投诉与建议',3,1,'admin/site/suggestion/list','2016-02-17 15:50:50','2016-02-17 15:50:50',0),('56de82c77f50ea4405000029','','投票管理',40,1,'','2016-03-08 15:44:07','2016-03-08 15:44:07',0),('56de82ef7f50ea440500002a','56de82c77f50ea4405000029','投票类型管理',1,1,'admin/vote/category/list','2016-03-08 15:44:47','2016-03-08 15:44:47',0),('56de85d77f50ea6011000029','56de82c77f50ea4405000029','投票限制类别管理',2,1,'admin/vote/limitcategory/list','2016-03-08 15:57:11','2016-03-08 15:57:11',0),('56de9b367f50ea241200002a','56de82c77f50ea4405000029','投票主题管理',3,1,'admin/vote/subject/list','2016-03-08 17:28:22','2016-03-08 17:28:22',0),('56de9fe47f50eab801000029','56de82c77f50ea4405000029','投票选项管理',4,1,'admin/vote/item/list','2016-03-08 17:48:20','2016-03-08 17:48:20',0),('56dea0dd7f50ea2c0a00002a','56de82c77f50ea4405000029','投票限制管理',5,1,'admin/vote/limit/list','2016-03-08 17:52:29','2016-03-08 17:52:29',0),('56deaa1d7f50ea2c0a00002b','56de82c77f50ea4405000029','投票日志管理',6,1,'admin/vote/log/list','2016-03-08 18:31:57','2016-03-08 18:31:57',0),('56deac6a7f50ea381200002a','56de82c77f50ea4405000029','投票排行期管理',7,1,'admin/vote/period/list','2016-03-08 18:41:46','2016-03-08 18:41:46',0),('56deac827f50eab80100002a','56de82c77f50ea4405000029','投票每期排行管理',8,1,'admin/vote/rankperiod/list','2016-03-08 18:42:10','2016-03-08 18:42:10',0),('56ee0da7ae8715942d000029','','微信红包管理',84,1,'','2016-03-20 10:40:39','2016-03-20 10:40:39',0),('56ee0de3ae8715942d00002a','56ee0da7ae8715942d000029','顾客管理',1,1,'admin/weixinredpack/customer/list','2016-03-20 10:41:39','2016-03-20 10:41:39',0),('56ee0e0eae8715942d00002b','56ee0da7ae8715942d000029','红包管理',2,1,'admin/weixinredpack/redpack/list','2016-03-20 10:42:22','2016-03-20 10:42:22',0),('56ee0e57ae8715942d00002c','56ee0da7ae8715942d000029','红包限制管理',3,1,'admin/weixinredpack/limit/list','2016-03-20 10:43:34','2016-03-20 10:43:34',0),('56ee0e81ae8715942d00002d','56ee0da7ae8715942d000029','红包发放规则管理',4,1,'admin/weixinredpack/rule/list','2016-03-20 10:44:16','2016-03-20 10:44:16',0),('56ee0ebfae8715942d00002e','56ee0da7ae8715942d000029','红包领取日志管理',5,1,'admin/weixinredpack/log/list','2016-03-20 10:45:19','2016-03-20 10:45:19',0),('56ee0f16ae8715942d00002f','56ee0da7ae8715942d000029','补发日志管理',6,1,'admin/weixinredpack/reissue/list','2016-03-20 10:46:46','2016-03-20 10:46:46',0),('57c3ab2f8dc6370a008b4567','55dab86d7f50ea400a000000','个性化菜单匹配规则管理',18,1,'admin/weixin/conditionalmenumatchrule/list','2016-08-29 11:25:35','2016-08-29 11:25:35',0),('57c3ab4a8dc63707008b4567','55dab86d7f50ea400a000000','个性化菜单管理',19,1,'admin/weixin/conditionalmenu/list','2016-08-29 11:26:01','2016-08-29 11:26:01',0),('57c3ab608dc63732008b4567','55dab86d7f50ea400a000000','第3方平台应用管理',20,1,'admin/weixin/componentapplication/list','2016-08-29 11:26:24','2016-08-29 11:26:24',0),('57c3ab9e8dc63707008b4568','','活动管理',30,1,'','2016-08-29 11:27:26','2016-08-29 11:27:26',0),('57c3abb38dc63732008b4568','57c3ab9e8dc63707008b4568','活动管理',1,1,'admin/activity/activity/list','2016-08-29 11:27:46','2016-08-29 11:27:46',0),('57c3abc98dc6370a008b4568','57c3ab9e8dc63707008b4568','活动用户管理',2,1,'admin/activity/user/list','2016-08-29 11:28:09','2016-08-29 11:28:09',0);
 
 /*Table structure for table `role` */
 
@@ -3070,7 +3239,7 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','192.168.222.1','2016-06-14 15:00:10',201,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','2016-06-14 15:00:10',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
+insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','192.168.81.1','2016-09-06 20:26:46',203,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','2016-09-06 20:26:46',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
