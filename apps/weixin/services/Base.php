@@ -131,7 +131,7 @@ class Base
             }
         }
         
-        $datas['content'] = $content;
+        $datas['content_process'] = $content;
         $datas['response'] = $response;
         return $datas;
     }

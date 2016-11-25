@@ -6,29 +6,14 @@ use App\Common\Models\Base\Mysql\BaseTrait;
 
 class Impl2 extends Base
 {
-    
-    use BaseTrait;
 
-    protected $model = NULL;
+    public function __construct()
+    {}
 
-    public function __construct($model)
+    public function getDI()
     {
-        $this->model = $model;
-    }
-
-    public function setDebug($isDebug)
-    {
-        $this->isDebug = $isDebug;
-    }
-
-    public function reorganize(array $data)
-    {
-        return $this->model->reorganize($data);
-    }
-
-    public function getSource()
-    {
-        return $this->model->getSource();
+        $di = \Phalcon\DI::getDefault();
+        return $di;
     }
 
     public function begin()
@@ -234,6 +219,16 @@ class Impl2 extends Base
     }
 
     /**
+     * 执行save操作
+     *
+     * @param array $datas            
+     */
+    public function save(array $datas)
+    {
+        return $this->insert($datas);
+    }
+
+    /**
      * findAndModify
      */
     public function findAndModify(array $options)
@@ -271,8 +266,7 @@ class Impl2 extends Base
             if (empty($info)) {
                 // 如果需要插入的话
                 if ($upsert) {
-                    array_walk_recursive($criteria, function (&$value, $key)
-                    {
+                    array_walk_recursive($criteria, function (&$value, $key) {
                         if (is_array($value)) {
                             unset($criteria[$key]);
                         }
@@ -347,7 +341,7 @@ class Impl2 extends Base
         try {
             $phql = preg_replace('/:(.*?):/i', ':$1', $phql);
             $phql = preg_replace('/\[(.*?)\]/i', '`$1`', $phql);
-            if ($this->isDebug) {
+            if ($this->getDebug()) {
                 echo "<pre><br/>";
                 echo $phql . "<br/>";
                 var_dump($data);
@@ -355,6 +349,10 @@ class Impl2 extends Base
             }
             $di = $this->getDI();
             $db = $di['db'];
+            // 只有在读取数据的时候，如果设置了secondary的话
+            if ($method == 'query' && $this->getSecondary()) {
+                $db = $di['secondarydb'];
+            }
             $result = $db->$method($phql, $data);
             if ($method == 'query') {
                 $result->setFetchMode(\Phalcon\Db::FETCH_ASSOC);

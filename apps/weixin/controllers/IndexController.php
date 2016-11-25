@@ -219,7 +219,7 @@ class IndexController extends ControllerBase
             }
             // 不同项目特定的业务逻辑结束
             
-            $content = $datas['content'];
+            $content = $datas['content_process'];
             $response = $datas['response'];
             
             /**
@@ -998,7 +998,7 @@ class IndexController extends ControllerBase
             $Url = isset($datas['Url']) ? trim($datas['Url']) : '';
         }
         
-        $datas['content'] = $content;
+        $datas['content_process'] = $content;
         $datas['response'] = $response;
         return $datas;
     }

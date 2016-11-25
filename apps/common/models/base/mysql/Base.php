@@ -1,36 +1,80 @@
 <?php
 namespace App\Common\Models\Base\Mysql;
 
-use App\Common\Models\Base\Mysql\Phalcon\Impl2;
-
-class Base
+class Base implements \App\Common\Models\Base\IBase
 {
+
+    protected $isDebug = false;
+
+    protected $isPhql = false;
+
+    protected $name = null;
+
+    protected $dbName = 'db';
+
+    protected $secondary = false;
+    
     use BaseTrait;
 
-    protected $impl = NULL;
+    private $impl = NULL;
 
     public function __construct()
     {
-        $this->impl = new Impl2($this);
+        $this->impl = new \App\Common\Models\Base\Mysql\Phalcon\Impl2();
+        $this->impl->setPhql($this->getPhql());
+        $this->impl->setDebug($this->getDebug());
+        $this->impl->setDb($this->getDb());
+        $this->impl->setSource($this->getSource());
     }
-
-    protected $isPhql = false;
 
     public function setPhql($isPhql)
     {
         $this->isPhql = $isPhql;
     }
 
-    protected $isDebug = false;
+    public function getPhql()
+    {
+        return $this->isPhql;
+    }
 
     public function setDebug($isDebug)
     {
-        $this->impl->setDebug($isDebug);
+        $this->isDebug = $isDebug;
+    }
+
+    public function getDebug()
+    {
+        return $this->isDebug;
+    }
+
+    public function setSource($source)
+    {
+        $this->name = $source;
     }
 
     public function getSource()
     {
-        new \Exception('getSource is not implement');
+        return $this->name;
+    }
+
+    public function setDb($db)
+    {
+        $this->dbName = $db;
+    }
+
+    public function getDb()
+    {
+        return $this->dbName;
+    }
+
+    public function setSecondary($secondary)
+    {
+        $this->secondary = $secondary;
+    }
+
+    public function getSecondary()
+    {
+        return $this->secondary;
     }
 
     public function reorganize(array $data)
@@ -55,8 +99,7 @@ class Base
 
     public function getDI()
     {
-        $di = \Phalcon\DI::getDefault();
-        return $di;
+        return $this->impl->getDI();
     }
 
     public function begin()
@@ -121,6 +164,16 @@ class Base
     public function insert(array $datas)
     {
         return $this->impl->insert($datas);
+    }
+
+    /**
+     * 执行save操作
+     *
+     * @param array $datas            
+     */
+    public function save(array $datas)
+    {
+        return $this->impl->save($datas);
     }
 
     /**

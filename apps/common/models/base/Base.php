@@ -1,13 +1,61 @@
 <?php
 namespace App\Common\Models\Base;
 
-class Base
+class Base implements IBase
 {
+
+    protected $isDebug = false;
+
+    protected $isPhql = false;
+
+    protected $name = null;
+
+    protected $dbName = 'db';
+
+    protected $secondary = false;
+    
     use BaseTrait;
 
+    /**
+     * model
+     *
+     * @var \App\Common\Models\Base\IBase
+     */
+    private $_model = null;
+
+    protected function setModel(\App\Common\Models\Base\IBase $model)
+    {
+        if (empty($model)) {
+            throw new \Exception('Model设置错误');
+        }
+        $this->_model = $model;
+        $this->setPhql($this->isPhql);
+        $this->setDebug($this->isDebug);
+        $this->setDb($this->dbName);
+        $this->setSource($this->name);
+    }
+
+    protected function getModel()
+    {
+        if (empty($this->_model)) {
+            throw new \Exception('Model没有设置');
+        }
+        return $this->_model;
+    }
+
+    /**
+     * 设置是否phql
+     *
+     * @param boolean $isPhql            
+     */
     public function setPhql($isPhql)
     {
-        $this->getModel()->setPhql($isPhql);
+        return $this->getModel()->setPhql($isPhql);
+    }
+
+    public function getPhql()
+    {
+        return $this->getModel()->getPhql();
     }
 
     /**
@@ -17,25 +65,58 @@ class Base
      */
     public function setDebug($isDebug)
     {
-        $this->getModel()->setDebug($isDebug);
+        return $this->getModel()->setDebug($isDebug);
     }
 
-    private $_model = null;
-
-    protected function setModel($model)
+    public function getDebug()
     {
-        if (empty($model)) {
-            throw new \Exception('Model设置错误');
-        }
-        $this->_model = $model;
+        return $this->getModel()->getDebug();
     }
 
-    protected function getModel()
+    /**
+     * 设置数据源表
+     *
+     * @param string $source            
+     */
+    public function setSource($source)
     {
-        if (empty($this->_model)) {
-            throw new \Exception('Model没有设置');
-        }
-        return $this->_model;
+        return $this->getModel()->setSource($source);
+    }
+
+    /**
+     * 获取数据源表
+     */
+    public function getSource()
+    {
+        return $this->getModel()->getSource();
+    }
+
+    /**
+     * 设置数据源库
+     *
+     * @param string $dbName            
+     */
+    public function setDb($dbName)
+    {
+        return $this->getModel()->setDb($dbName);
+    }
+
+    /**
+     * 获取数据源库
+     */
+    public function getDb()
+    {
+        return $this->getModel()->getDb();
+    }
+
+    public function setSecondary($secondary)
+    {
+        return $this->getModel()->setSecondary($secondary);
+    }
+
+    public function getSecondary()
+    {
+        return $this->getModel()->getSecondary();
     }
 
     public function begin()
@@ -58,7 +139,7 @@ class Base
         return $this->getModel()->getDI();
     }
 
-    public function count($query)
+    public function count(array $query)
     {
         return $this->getModel()->count($query);
     }
@@ -121,7 +202,7 @@ class Base
      */
     public function save(array $datas)
     {
-        return $this->insert($datas);
+        return $this->getModel()->save($datas);
     }
 
     public function update(array $criteria, array $object, array $options = array())
