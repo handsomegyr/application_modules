@@ -361,6 +361,189 @@ trait BaseTrait
         }
         return $ret;
     }
+
+    protected function getSqlAndConditions4Count(array $query)
+    {
+        $conditions = $this->getConditions($query);
+        if (empty($conditions)) {
+            $conditions = array();
+            $conditions['conditions'] = '1=1';
+            $conditions['bind'] = array();
+        }
+        $className = $this->getSource();
+        $phql = "SELECT COUNT(*) as num FROM {$className} WHERE {$conditions['conditions']}";
+        return array(
+            'sql' => $phql,
+            'conditions' => $conditions
+        );
+    }
+
+    protected function getSqlAndConditions4FindOne(array $query)
+    {
+        $conditions = $this->getConditions($query);
+        if (empty($conditions)) {
+            $conditions = array();
+            $conditions['conditions'] = '1=1';
+            $conditions['bind'] = array();
+        }
+        $className = $this->getSource();
+        $phql = "SELECT * FROM {$className} WHERE {$conditions['conditions']}";
+        return array(
+            'sql' => $phql,
+            'conditions' => $conditions
+        );
+    }
+
+    /**
+     * 查询某个表中的数据
+     *
+     * @param array $query            
+     * @param array $sort            
+     * @param int $skip            
+     * @param int $limit            
+     * @param array $fields            
+     */
+    protected function getSqlAndConditions4Find(array $query, array $sort = null, $skip = 0, $limit = 10, array $fields = array())
+    {
+        $conditions = $this->getConditions($query);
+        if (empty($conditions)) {
+            $conditions = array();
+            $conditions['conditions'] = '1=1';
+            $conditions['bind'] = array();
+        }
+        $className = $this->getSource();
+        $order = $this->getSort($sort);
+        $conditions = array_merge($conditions, $order, array(
+            'limit' => $limit
+        ), array(
+            'offset' => $skip
+        ));
+        $orderBy = "";
+        if (! empty($order['order'])) {
+            $orderBy = "ORDER BY {$order['order']}";
+        }
+        $phql = "SELECT * FROM {$className} WHERE {$conditions['conditions']} {$orderBy} LIMIT {$conditions['limit']} OFFSET {$conditions['offset']} ";
+        return array(
+            'sql' => $phql,
+            'conditions' => $conditions
+        );
+    }
+
+    protected function getSqlAndConditions4FindAll(array $query, array $sort = null, array $fields = array())
+    {
+        $conditions = $this->getConditions($query);
+        if (empty($conditions)) {
+            $conditions = array();
+            $conditions['conditions'] = '1=1';
+            $conditions['bind'] = array();
+        }
+        $className = $this->getSource();
+        $order = $this->getSort($sort);
+        $conditions = array_merge($conditions, $order);
+        $orderBy = "";
+        if (! empty($order['order'])) {
+            $orderBy = "ORDER BY {$order['order']}";
+        }
+        $phql = "SELECT * FROM {$className} WHERE {$conditions['conditions']} {$orderBy} ";
+        return array(
+            'sql' => $phql,
+            'conditions' => $conditions
+        );
+    }
+
+    protected function getSqlAndConditions4Sum(array $query, array $fields = array(), array $groups = array())
+    {
+        $conditions = $this->getConditions($query);
+        if (empty($conditions)) {
+            $conditions = array();
+            $conditions['conditions'] = '1=1';
+            $conditions['bind'] = array();
+        }
+        $className = $this->getSource();
+        $columns = $this->getColumns($fields);
+        $groups = $this->getGroups($groups);
+        $params = array_merge($columns, $conditions, $groups);
+        
+        $groupBy = "";
+        $groupFields = "";
+        if (! empty($groups) && ! empty($groups['group'])) {
+            $groupBy = "GROUP BY {$groups['group']}";
+            $groupFields = "{$groups['group']},";
+        }
+        
+        $phql = "select {$groupFields} SUM({$columns['column']}) AS sumatory FROM {$className} WHERE {$conditions['conditions']} {$groupBy}";
+        return array(
+            'sql' => $phql,
+            'conditions' => $conditions
+        );
+    }
+
+    protected function getSqlAndConditions4Distinct($field, array $query)
+    {
+        if (empty($field)) {
+            throw new \Exception('请指定字段$field', - 999);
+        }
+        $conditions = $this->getConditions($query);
+        if (empty($conditions)) {
+            $conditions = array();
+            $conditions['conditions'] = '1=1';
+            $conditions['bind'] = array();
+        }
+        $className = $this->getSource();
+        $phql = "select DISTINCT {$field} FROM {$className} WHERE {$conditions['conditions']}";
+        return array(
+            'sql' => $phql,
+            'conditions' => $conditions
+        );
+    }
+
+    /**
+     * 执行insert操作
+     *
+     * @param array $datas            
+     */
+    protected function getSqlAndConditions4Insert(array $datas)
+    {
+        $className = $this->getSource();
+        $insertFieldValues = $this->getInsertContents($datas);
+        $phql = "INSERT INTO {$className}({$insertFieldValues['fields']}) VALUES ({$insertFieldValues['bindFields']})";
+        return array(
+            'sql' => $phql,
+            'insertFieldValues' => $insertFieldValues
+        );
+    }
+
+    protected function getSqlAndConditions4Update(array $criteria, array $object, array $options = array())
+    {
+        if (empty($criteria)) {
+            throw new \Exception("更新数据的时候请指定条件", - 999);
+        }
+        
+        $className = $this->getSource();
+        $conditions = $this->getConditions($criteria);
+        $updateFieldValues = $this->getUpdateContents($object);
+        $phql = "UPDATE {$className} SET {$updateFieldValues['fields']} WHERE {$conditions['conditions']} ";
+        return array(
+            'sql' => $phql,
+            'updateFieldValues' => $updateFieldValues,
+            'conditions' => $conditions
+        );
+    }
+
+    protected function getSqlAndConditions4Remove(array $query)
+    {
+        if (empty($query)) {
+            throw new \Exception("删除数据的时候请指定条件", - 999);
+        }
+        $conditions = $this->getConditions($query);
+        $className = $this->getSource();
+        $phql = "DELETE FROM {$className} WHERE {$conditions['conditions']}";
+        return array(
+            'sql' => $phql,
+            'conditions' => $conditions
+        );
+    }
+
 }
 
 ?>

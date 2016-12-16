@@ -2,7 +2,6 @@
 namespace App\Common\Models\Base\Mysql\Phalcon;
 
 use App\Common\Models\Base\Mysql\Base;
-use App\Common\Models\Base\Mysql\BaseTrait;
 
 class Impl2 extends Base
 {
@@ -12,7 +11,7 @@ class Impl2 extends Base
      *
      * @var \App\Common\Models\Base\Mysql\Base
      */
-    private $model = null;
+    protected $model = null;
 
     public function __construct(\App\Common\Models\Base\Mysql\Base $model)
     {
@@ -24,6 +23,24 @@ class Impl2 extends Base
         $this->setDebug($this->model->getDebug());
         $this->setDb($this->model->getDb());
         $this->setSource($this->model->getSource());
+    }
+
+    /**
+     * 获取Model
+     *
+     * @var \App\Common\Models\Base\Mysql\Base
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
+     * 数据字段整理
+     */
+    public function reorganize(array $data)
+    {
+        return $this->model->reorganize($data);
     }
 
     public function getDI()
@@ -55,14 +72,9 @@ class Impl2 extends Base
 
     public function count(array $query)
     {
-        $conditions = $this->getConditions($query);
-        if (empty($conditions)) {
-            $conditions = array();
-            $conditions['conditions'] = '1=1';
-            $conditions['bind'] = array();
-        }
-        $className = $this->getSource();
-        $phql = "SELECT COUNT(*) as num FROM {$className} WHERE {$conditions['conditions']}";
+        $sqlAndConditions = $this->getSqlAndConditions4Count($query);
+        $phql = $sqlAndConditions['sql'];
+        $conditions = $sqlAndConditions['conditions'];
         $result = $this->executeQuery($phql, $conditions['bind']);
         $result = $result->fetch();
         if (! empty($result)) {
@@ -75,14 +87,9 @@ class Impl2 extends Base
 
     public function findOne(array $query)
     {
-        $conditions = $this->getConditions($query);
-        if (empty($conditions)) {
-            $conditions = array();
-            $conditions['conditions'] = '1=1';
-            $conditions['bind'] = array();
-        }
-        $className = $this->getSource();
-        $phql = "SELECT * FROM {$className} WHERE {$conditions['conditions']}";
+        $sqlAndConditions = $this->getSqlAndConditions4FindOne($query);
+        $phql = $sqlAndConditions['sql'];
+        $conditions = $sqlAndConditions['conditions'];
         $result = $this->executeQuery($phql, $conditions['bind']);
         $info = $result->fetch();
         if (! empty($info)) {
@@ -105,24 +112,9 @@ class Impl2 extends Base
     {
         $total = $this->count($query);
         
-        $conditions = $this->getConditions($query);
-        if (empty($conditions)) {
-            $conditions = array();
-            $conditions['conditions'] = '1=1';
-            $conditions['bind'] = array();
-        }
-        $className = $this->getSource();
-        $order = $this->getSort($sort);
-        $conditions = array_merge($conditions, $order, array(
-            'limit' => $limit
-        ), array(
-            'offset' => $skip
-        ));
-        $orderBy = "";
-        if (! empty($order['order'])) {
-            $orderBy = "ORDER BY {$order['order']}";
-        }
-        $phql = "SELECT * FROM {$className} WHERE {$conditions['conditions']} {$orderBy} LIMIT {$conditions['limit']} OFFSET {$conditions['offset']} ";
+        $sqlAndConditions = $this->getSqlAndConditions4Find($query, $sort, $skip, $limit, $fields);
+        $phql = $sqlAndConditions['sql'];
+        $conditions = $sqlAndConditions['conditions'];
         $result = $this->executeQuery($phql, $conditions['bind']);
         $ret = $result->fetchAll();
         $list = array();
@@ -140,20 +132,9 @@ class Impl2 extends Base
 
     public function findAll(array $query, array $sort = null, array $fields = array())
     {
-        $conditions = $this->getConditions($query);
-        if (empty($conditions)) {
-            $conditions = array();
-            $conditions['conditions'] = '1=1';
-            $conditions['bind'] = array();
-        }
-        $className = $this->getSource();
-        $order = $this->getSort($sort);
-        $conditions = array_merge($conditions, $order);
-        $orderBy = "";
-        if (! empty($order['order'])) {
-            $orderBy = "ORDER BY {$order['order']}";
-        }
-        $phql = "SELECT * FROM {$className} WHERE {$conditions['conditions']} {$orderBy} ";
+        $sqlAndConditions = $this->getSqlAndConditions4FindAll($query, $sort, $fields);
+        $phql = $sqlAndConditions['sql'];
+        $conditions = $sqlAndConditions['conditions'];
         $result = $this->executeQuery($phql, $conditions['bind']);
         $ret = $result->fetchAll();
         $list = array();
@@ -167,25 +148,9 @@ class Impl2 extends Base
 
     public function sum(array $query, array $fields = array(), array $groups = array())
     {
-        $conditions = $this->getConditions($query);
-        if (empty($conditions)) {
-            $conditions = array();
-            $conditions['conditions'] = '1=1';
-            $conditions['bind'] = array();
-        }
-        $className = $this->getSource();
-        $columns = $this->getColumns($fields);
-        $groups = $this->getGroups($groups);
-        $params = array_merge($columns, $conditions, $groups);
-        
-        $groupBy = "";
-        $groupFields = "";
-        if (! empty($groups) && ! empty($groups['group'])) {
-            $groupBy = "GROUP BY {$groups['group']}";
-            $groupFields = "{$groups['group']},";
-        }
-        
-        $phql = "select {$groupFields} SUM({$columns['column']}) AS sumatory FROM {$className} WHERE {$conditions['conditions']} {$groupBy}";
+        $sqlAndConditions = $this->getSqlAndConditions4Sum($query, $fields, $groups);
+        $phql = $sqlAndConditions['sql'];
+        $conditions = $sqlAndConditions['conditions'];
         $result = $this->executeQuery($phql, $conditions['bind']);
         $ret = $result->fetchAll();
         return $ret;
@@ -193,17 +158,9 @@ class Impl2 extends Base
 
     public function distinct($field, array $query)
     {
-        if (empty($field)) {
-            throw new \Exception('请指定字段$field', - 999);
-        }
-        $conditions = $this->getConditions($query);
-        if (empty($conditions)) {
-            $conditions = array();
-            $conditions['conditions'] = '1=1';
-            $conditions['bind'] = array();
-        }
-        $className = $this->getSource();
-        $phql = "select DISTINCT {$field} FROM {$className} WHERE {$conditions['conditions']}";
+        $sqlAndConditions = $this->getSqlAndConditions4Distinct($field, $query);
+        $phql = $sqlAndConditions['sql'];
+        $conditions = $sqlAndConditions['conditions'];
         $result = $this->executeQuery($phql, $conditions['bind']);
         $ret = $result->fetchAll();
         $list = array();
@@ -223,15 +180,33 @@ class Impl2 extends Base
      */
     public function insert(array $datas)
     {
-        $className = $this->getSource();
-        $insertFieldValues = $this->getInsertContents($datas);
-        $phql = "INSERT INTO {$className}({$insertFieldValues['fields']}) VALUES ({$insertFieldValues['bindFields']})";
+        $sqlAndConditions = $this->getSqlAndConditions4Insert($datas);
+        $phql = $sqlAndConditions['sql'];
+        $insertFieldValues = $sqlAndConditions['insertFieldValues'];
         $data = $insertFieldValues['values'];
         $result = $this->executeQuery($phql, $data, 'execute');
         $_id = $insertFieldValues['_id'];
         return $this->findOne(array(
             '_id' => $_id
         ));
+    }
+
+    public function update(array $criteria, array $object, array $options = array())
+    {
+        $sqlAndConditions = $this->getSqlAndConditions4Update($criteria, $object, $options);
+        $phql = $sqlAndConditions['sql'];
+        $conditions = $sqlAndConditions['conditions'];
+        $updateFieldValues = $sqlAndConditions['updateFieldValues'];
+        $data = array_merge($updateFieldValues['values'], $conditions['bind']);
+        $result = $this->executeQuery($phql, $data, 'execute');
+    }
+
+    public function remove(array $query)
+    {
+        $sqlAndConditions = $this->getSqlAndConditions4Remove($query);
+        $phql = $sqlAndConditions['sql'];
+        $conditions = $sqlAndConditions['conditions'];
+        $result = $this->executeQuery($phql, $conditions['bind'], 'execute');
     }
 
     /**
@@ -282,7 +257,8 @@ class Impl2 extends Base
             if (empty($info)) {
                 // 如果需要插入的话
                 if ($upsert) {
-                    array_walk_recursive($criteria, function (&$value, $key) {
+                    array_walk_recursive($criteria, function (&$value, $key)
+                    {
                         if (is_array($value)) {
                             unset($criteria[$key]);
                         }
@@ -324,37 +300,6 @@ class Impl2 extends Base
             );
         }
         return $rst;
-    }
-
-    public function update(array $criteria, array $object, array $options = array())
-    {
-        if (empty($criteria)) {
-            throw new \Exception("更新数据的时候请指定条件", - 999);
-        }
-        
-        $className = $this->getSource();
-        $conditions = $this->getConditions($criteria);
-        $updateFieldValues = $this->getUpdateContents($object);
-        $phql = "UPDATE {$className} SET {$updateFieldValues['fields']} WHERE {$conditions['conditions']} ";
-        $data = array_merge($updateFieldValues['values'], $conditions['bind']);
-        $result = $this->executeQuery($phql, $data, 'execute');
-    }
-
-    public function remove(array $query)
-    {
-        if (empty($query)) {
-            throw new \Exception("删除数据的时候请指定条件", - 999);
-        }
-        
-        $conditions = $this->getConditions($query);
-        $className = $this->getSource();
-        $phql = "DELETE FROM {$className} WHERE {$conditions['conditions']}";
-        $result = $this->executeQuery($phql, $conditions['bind'], 'execute');
-    }
-
-    public function reorganize(array $data)
-    {
-        return $this->model->reorganize($data);
     }
 
     protected function executeQuery($phql, array $data, $method = 'query')
