@@ -16,9 +16,9 @@ class Role extends Base
 
     public function reorganize(array $data)
     {
-        $data = parent::reorganize($data);        
+        $data = parent::reorganize($data);
         $data['menu_list'] = $this->changeToArray($data['menu_list']);
-        $data['operation_list'] = $this->changeToArray($data['operation_list']);        
+        $data['operation_list'] = $this->changeToArray($data['operation_list']);
         return $data;
     }
 }

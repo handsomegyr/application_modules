@@ -7,8 +7,24 @@ use App\Common\Models\Base\Mysql\BaseTrait;
 class Impl2 extends Base
 {
 
-    public function __construct()
-    {}
+    /**
+     * model
+     *
+     * @var \App\Common\Models\Base\Mysql\Base
+     */
+    private $model = null;
+
+    public function __construct(\App\Common\Models\Base\Mysql\Base $model)
+    {
+        if (empty($model)) {
+            throw new \Exception('Model设置错误2');
+        }
+        $this->model = $model;
+        $this->setPhql($this->model->getPhql());
+        $this->setDebug($this->model->getDebug());
+        $this->setDb($this->model->getDb());
+        $this->setSource($this->model->getSource());
+    }
 
     public function getDI()
     {
@@ -334,6 +350,11 @@ class Impl2 extends Base
         $className = $this->getSource();
         $phql = "DELETE FROM {$className} WHERE {$conditions['conditions']}";
         $result = $this->executeQuery($phql, $conditions['bind'], 'execute');
+    }
+
+    public function reorganize(array $data)
+    {
+        return $this->model->reorganize($data);
     }
 
     protected function executeQuery($phql, array $data, $method = 'query')

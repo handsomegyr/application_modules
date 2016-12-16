@@ -15,6 +15,7 @@ class MyTags extends \Phalcon\Tag
         $privList = array();
         /* 获取菜单数据 */
         $modelMenu = new Menu();
+        die('showPrivilege');
         $menu_priv_arr = $modelMenu->getPrivilege($menu_list);
         $privList['菜单设置'] = array(
             'values' => $menu_priv_arr,
