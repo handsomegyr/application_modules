@@ -533,9 +533,16 @@ trait BaseTrait
     protected function getSqlAndConditions4Remove(array $query)
     {
         if (empty($query)) {
-            throw new \Exception("删除数据的时候请指定条件", - 999);
+            // throw new \Exception("删除数据的时候请指定条件", - 999);
+            $query = array();
         }
+        
         $conditions = $this->getConditions($query);
+        if (empty($conditions)) {
+            $conditions = array();
+            $conditions['conditions'] = '1=1';
+            $conditions['bind'] = array();
+        }
         $className = $this->getSource();
         $phql = "DELETE FROM {$className} WHERE {$conditions['conditions']}";
         return array(
@@ -543,7 +550,6 @@ trait BaseTrait
             'conditions' => $conditions
         );
     }
-
 }
 
 ?>

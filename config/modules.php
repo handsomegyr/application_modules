@@ -103,6 +103,10 @@ $application->registerModules(array(
         'className' => 'App\Backend\Weixinredpack\Module',
         'path' => APP_PATH . 'apps/backend/submodules/weixinredpack/Module.php'
     ),
+    'admin/weixincard' => array(
+        'className' => 'App\Backend\Weixincard\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/weixincard/Module.php'
+    ),
     'weixin' => array(
         'className' => 'App\Weixin\Module',
         'path' => APP_PATH . 'apps/weixin/Module.php'

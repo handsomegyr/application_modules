@@ -127,6 +127,10 @@ function registerAutoloaders()
             'App\Common\Models\Weixinredpack\Mongodb' => APP_PATH . 'apps/common/models/weixinredpack/mongodb/',
             'App\Common\Models\Weixinredpack' => APP_PATH . 'apps/common/models/weixinredpack/',
             
+            'App\Common\Models\Weixincard\Mysql' => APP_PATH . 'apps/common/models/weixincard/mysql/',
+            'App\Common\Models\Weixincard\Mongodb' => APP_PATH . 'apps/common/models/weixincard/mongodb/',
+            'App\Common\Models\Weixincard' => APP_PATH . 'apps/common/models/weixincard/',
+            
             'App\Common\Models\Activity\Mysql' => APP_PATH . 'apps/common/models/activity/mysql/',
             'App\Common\Models\Activity\Mongodb' => APP_PATH . 'apps/common/models/activity/mongodb/',
             'App\Common\Models\Activity' => APP_PATH . 'apps/common/models/activity/',
@@ -501,6 +505,11 @@ function registerServices($di)
             
             $router->add("/admin/weixinredpack/:controller/:action", array(
                 'module' => 'admin/weixinredpack',
+                'controller' => 1,
+                'action' => 2
+            ));
+            $router->add("/admin/weixincard/:controller/:action", array(
+                'module' => 'admin/weixincard',
                 'controller' => 1,
                 'action' => 2
             ));
