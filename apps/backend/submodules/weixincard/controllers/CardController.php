@@ -67,7 +67,8 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '卡券类型',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '30',
+                'defaultValue' => 'GENERAL_COUPON'
             ),
             'validation' => array(
                 'required' => true
@@ -75,7 +76,8 @@ class CardController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelCardType->getAll();
                 }
             ),
@@ -92,7 +94,8 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => 'code码展示类型',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '30',
+                'defaultValue' => 'CODE_TYPE_TEXT'
             ),
             'validation' => array(
                 'required' => true
@@ -100,7 +103,8 @@ class CardController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelCodeType->getAll();
                 }
             ),
@@ -115,17 +119,18 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 商户名字,字数上限为12个汉字
         $schemas['brand_name'] = array(
-            'name' => '商户名字',
+            'name' => '商户名字(字数上限为12个汉字)',
             'data' => array(
                 'type' => 'string',
-                'length' => '50'
+                'length' => '50',
+                'defaultValue' => '来伊份'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => true
@@ -137,17 +142,18 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 券名，字数上限为9个汉字
         $schemas['title'] = array(
-            'name' => '券名',
+            'name' => '券名(字数上限为9个汉字)',
             'data' => array(
                 'type' => 'string',
-                'length' => '50'
+                'length' => '50',
+                'defaultValue' => '全场限时券'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => true
@@ -159,23 +165,24 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 券名的副标题，字数上限为18个汉字
         $schemas['sub_title'] = array(
-            'name' => '副标题',
+            'name' => '副标题(字数上限为18个汉字)',
             'data' => array(
                 'type' => 'string',
-                'length' => '50'
+                'length' => '50',
+                'defaultValue' => '满88立减8元'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         // 券颜色。按色彩规范标注填写Color010-Color100
@@ -183,7 +190,8 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '券颜色',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '30',
+                'defaultValue' => '#63B359'
             ),
             'validation' => array(
                 'required' => true
@@ -191,7 +199,8 @@ class CardController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelColor->getAll();
                 }
             ),
@@ -205,23 +214,24 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         // 使用提醒，字数上限为9个汉字。（一句话描述，展示在首页，示例：请出示二维码核销卡券）
         $schemas['notice'] = array(
-            'name' => '使用提醒',
+            'name' => '使用提醒(字数上限为9个汉字)',
             'data' => array(
                 'type' => 'string',
-                'length' => '20'
+                'length' => '20',
+                'defaultValue' => '前9位卡号后4位密码'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
@@ -230,64 +240,74 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '客服电话',
             'data' => array(
                 'type' => 'string',
-                'length' => '10'
+                'length' => '10',
+                'defaultValue' => '4008819777'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         // 第三方来源名，例如同程旅游、 格瓦拉
         $schemas['source'] = array(
-            'name' => '第三方来源名',
+            'name' => '第三方来源名(例如同程旅游、 格瓦拉)',
             'data' => array(
                 'type' => 'string',
-                'length' => '50'
+                'length' => '50',
+                'defaultValue' => '来伊份'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         // 使用说明。长文本描述，可以分行，上限为1000个汉字。
         $schemas['description'] = array(
-            'name' => '使用说明',
+            'name' => '使用说明(字数上限为1000个汉字)',
             'data' => array(
                 'type' => 'string',
-                'length' => '1000'
+                'length' => '1000',
+                'defaultValue' => '•       优惠券使用规则：
+•       使用时间为：即日起至2016年12月31日，单份优惠重复使用无效。
+•       使用范围：本券仅限用于在全国来伊份门店、官方商城 www.laiyifen.com，来伊份APP。
+•       使用规则：全品类通用券，消费满88元可抵用8元，多买多抵。
+•       本券限量20000张，领完为止，优惠金额不可兑换现金，不设找零，不可累积使用，不可与店内其他优惠叠加使用。
+•       本活动奖品只作优惠抵用，不能兑换现金，非销售行为，恕不提供优惠金额部分发票。
+•       此券不可用于其他商品优惠，也不适用会员卡充值及伊点卡购买。
+•       咨询热线：400-8819-777（来伊份热线营运时间：08:00-21:00，市内话费自付。）'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
-                'is_show' => false
+                'input_type' => 'textarea',
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
@@ -295,7 +315,31 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '每人使用次数限制',
             'data' => array(
                 'type' => 'integer',
-                'length' => 10
+                'length' => 10,
+                'defaultValue' => 1
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        // 上架的数量。(不支持填写0或无限大)
+        $schemas['sku_quantity'] = array(
+            'name' => '上架数量(不支持填写0或无限大)',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 10,
+                'defaultValue' => 10
             ),
             'validation' => array(
                 'required' => true
@@ -314,10 +358,11 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 每人最大领取次数，不填写默认等于quantity
         $schemas['get_limit'] = array(
-            'name' => '每人最大领取次数',
+            'name' => '每人最大领取次数(不填写默认等于上架数量)',
             'data' => array(
                 'type' => 'integer',
-                'length' => 10
+                'length' => 10,
+                'defaultValue' => 10
             ),
             'validation' => array(
                 'required' => true
@@ -365,7 +410,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'boolean',
                 'length' => '1',
-                'defaultValue' => true
+                'defaultValue' => false
             ),
             'validation' => array(
                 'required' => false
@@ -440,25 +485,26 @@ class CardController extends \App\Backend\Controllers\FormController
                 'length' => '1000'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         $schemas['date_info_type'] = array(
             'name' => '使用时间类型',
             'data' => array(
-                'type' => 'int',
-                'length' => '1'
+                'type' => 'integer',
+                'length' => '1',
+                'defaultValue' => 1
             ),
             'validation' => array(
                 'required' => true
@@ -466,12 +512,13 @@ class CardController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
+                'items' => function ()
+                {
                     return $this->modelDateInfoType->getAll();
                 }
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_data_name' => 'date_info_type_name'
             ),
             'search' => array(
@@ -488,14 +535,14 @@ class CardController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime($now)
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -507,17 +554,17 @@ class CardController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'datetime',
                 'length' => '19',
-                'defaultValue' => getCurrentTime($now + 3600 * 24 * 2 - 1)
+                'defaultValue' => getCurrentTime($now + 3600 * 24 * 30 - 1)
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -525,20 +572,20 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         // 固定时长专用，表示自领取后多少天内有效。（单位为天）
         $schemas['date_info_fixed_term'] = array(
-            'name' => '领取后多少天内有效',
+            'name' => '领取后多少天内有效(单位为天)',
             'data' => array(
                 'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -547,41 +594,20 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 固定时长专用，表示自领取后多少天开始生效。（单位为天）
         $schemas['date_info_fixed_begin_term'] = array(
-            'name' => '领取后多少天开始生效',
+            'name' => '领取后多少天开始生效(单位为天)',
             'data' => array(
                 'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
                 'is_show' => false
-            )
-        );
-        // 上架的数量。(不支持填写0或无限大)
-        $schemas['sku_quantity'] = array(
-            'name' => '上架的数量',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 10
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
             ),
             'search' => array(
                 'is_show' => false
@@ -590,23 +616,23 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 商户自定义入口名称，与custom_url 字段共同使用，长度限制在 5 个汉字内。
         $schemas['custom_url_name'] = array(
-            'name' => '商户自定义入口名称',
+            'name' => '商户自定义入口名称(限制在5个汉字内)',
             'data' => array(
                 'type' => 'string',
                 'length' => '10'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
@@ -618,174 +644,175 @@ class CardController extends \App\Backend\Controllers\FormController
                 'length' => '100'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         // 显示在入口右侧的 tips，长度限制在 6 个汉字内。
         $schemas['custom_url_sub_title'] = array(
-            'name' => '显示在入口右侧的tips',
+            'name' => '显示在入口右侧的tips(限制在 6个汉字内)',
             'data' => array(
                 'type' => 'string',
                 'length' => '20'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
+        // 微信摇一摇
         // 获取自定义code的方式
         $schemas['get_custom_code_mode'] = array(
-            'name' => '获取自定义code的方式',
+            'name' => '微信摇一摇，获取自定义code的方式',
             'data' => array(
                 'type' => 'string',
                 'length' => '30'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         // 新年祝语标题
         $schemas['shake_slogan_title'] = array(
-            'name' => '新年祝语标题',
+            'name' => '微信摇一摇，新年祝语标题',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         $schemas['shake_slogan_sub_title'] = array(
-            'name' => '新年祝语正文',
+            'name' => '微信摇一摇，新年祝语正文',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         $schemas['promotion_url_name'] = array(
-            'name' => '营销场景的自定义入口',
+            'name' => '微信摇一摇，营销场景的自定义入口',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         $schemas['promotion_url'] = array(
-            'name' => '入口跳转外链的地址链接',
+            'name' => '微信摇一摇，入口跳转外链的地址链接',
             'data' => array(
                 'type' => 'string',
                 'length' => '100'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         // 显示在入口右侧的 tips，长度限制在 6 个汉字内。
         $schemas['promotion_url_sub_title'] = array(
-            'name' => '显示在入口右侧的 tips',
+            'name' => '微信摇一摇，显示在入口右侧的tips(限制在 6个汉字内)',
             'data' => array(
                 'type' => 'string',
                 'length' => '20'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         $schemas['can_shake'] = array(
-            'name' => '参加摇礼券活动的标志位',
+            'name' => '微信摇一摇，参加摇礼券活动的标志位',
             'data' => array(
                 'type' => 'boolean',
                 'length' => '1',
-                'defaultValue' => true
+                'defaultValue' => false
             ),
             'validation' => array(
                 'required' => false
@@ -796,7 +823,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '1'
             ),
             'search' => array(
@@ -811,17 +838,17 @@ class CardController extends \App\Backend\Controllers\FormController
                 'length' => '50'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
@@ -832,35 +859,35 @@ class CardController extends \App\Backend\Controllers\FormController
                 'length' => '50'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         // 折扣券专用，表示打折额度（百分比）。填30就是七折。
         $schemas['discount'] = array(
-            'name' => '折扣券专用，打折额度',
+            'name' => '折扣券专用，打折额度（百分比）填30就是七折',
             'data' => array(
                 'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -874,36 +901,36 @@ class CardController extends \App\Backend\Controllers\FormController
                 'length' => '50'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         // 代金券专用，表示起用金额（单位为分）。
         $schemas['least_cost'] = array(
-            'name' => '代金券专用，起用金额',
+            'name' => '代金券专用，起用金额(单位为分)',
             'data' => array(
                 'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -911,20 +938,20 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         // 代金券专用，表示减免金额（单位为分）。
         $schemas['reduce_cost'] = array(
-            'name' => '代金券专用，减免金额',
+            'name' => '代金券专用，减免金额(单位为分)',
             'data' => array(
                 'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -933,11 +960,11 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 是否支持积分，填写 true 或 false，如填写 true，积分相关字段均为必填。填写 false，积分字段无需填写。储值字段处理方式相同。
         $schemas['supply_bonus'] = array(
-            'name' => '是否支持积分',
+            'name' => '会员卡专用，是否支持积分',
             'data' => array(
                 'type' => 'boolean',
                 'length' => '1',
-                'defaultValue' => true
+                'defaultValue' => false
             ),
             'validation' => array(
                 'required' => false
@@ -948,7 +975,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '1'
             ),
             'search' => array(
@@ -958,11 +985,11 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 是否支持储值，填写 true 或false。 （该权限申请及说明详见Q&A 文档)
         $schemas['supply_balance'] = array(
-            'name' => '是否支持积分',
+            'name' => '会员卡专用，是否支持积分',
             'data' => array(
                 'type' => 'boolean',
                 'length' => '1',
-                'defaultValue' => true
+                'defaultValue' => false
             ),
             'validation' => array(
                 'required' => false
@@ -973,7 +1000,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '1'
             ),
             'search' => array(
@@ -982,7 +1009,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         // 自定义会员信息类目，会员卡激活后显示。 否
         $schemas['custom_field1'] = array(
-            'name' => '自定义会员信息类目1',
+            'name' => '会员卡专用，自定义会员信息类目1',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -992,7 +1019,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -1003,7 +1030,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['custom_field2'] = array(
-            'name' => '自定义会员信息类目2',
+            'name' => '会员卡专用，自定义会员信息类目2',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1013,7 +1040,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -1024,7 +1051,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['custom_field3'] = array(
-            'name' => '自定义会员信息类目3',
+            'name' => '会员卡专用，自定义会员信息类目3',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1034,7 +1061,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -1045,7 +1072,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['bonus_cleared'] = array(
-            'name' => '积分清零规则',
+            'name' => '会员卡专用，积分清零规则',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1055,7 +1082,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -1066,7 +1093,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['bonus_rules'] = array(
-            'name' => '积分规则',
+            'name' => '会员卡专用，积分规则',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1076,7 +1103,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -1087,7 +1114,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['balance_rules'] = array(
-            'name' => '储值说明',
+            'name' => '会员卡专用，储值说明',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1097,7 +1124,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -1108,7 +1135,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['prerogative'] = array(
-            'name' => '特权说明',
+            'name' => '会员卡专用，特权说明',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1118,7 +1145,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -1130,7 +1157,7 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 绑定旧卡的 url，与“ activate_url”字段二选一必填，用户领取会员卡后显示“ 绑定会员卡” 。
         $schemas['bind_old_card_url'] = array(
-            'name' => '绑定旧卡的 url',
+            'name' => '会员卡专用，绑定旧卡的 url',
             'data' => array(
                 'type' => 'string',
                 'length' => '100'
@@ -1140,7 +1167,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -1152,7 +1179,7 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 激活会员卡的 url，与“ bind_old_card_url”字段二选一必填。 用户领取会员卡后显示“激活会员卡”。
         $schemas['activate_url'] = array(
-            'name' => '激活会员卡的 url',
+            'name' => '会员卡专用，激活会员卡的 url',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1162,7 +1189,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
@@ -1174,7 +1201,7 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // true 为用户点击进入会员卡时是否推送事件。
         $schemas['need_push_on_view'] = array(
-            'name' => '进入会员卡时是否推送事件',
+            'name' => '会员卡专用，进入会员卡时是否推送事件',
             'data' => array(
                 'type' => 'boolean',
                 'length' => '1',
@@ -1189,7 +1216,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '1'
             ),
             'search' => array(
@@ -1199,44 +1226,44 @@ class CardController extends \App\Backend\Controllers\FormController
         
         // 会员卡类型专属营销入口，会员卡激活前后均显示。否
         $schemas['custom_cell1'] = array(
-            'name' => '会员卡类型专属营销入口1',
+            'name' => '会员卡专用，会员卡类型专属营销入口1',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
         $schemas['custom_cell2'] = array(
-            'name' => '会员卡类型专属营销入口2',
+            'name' => '会员卡专用，会员卡类型专属营销入口2',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
