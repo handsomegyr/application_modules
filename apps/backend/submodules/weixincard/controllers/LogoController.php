@@ -90,18 +90,8 @@ class LogoController extends \App\Backend\Controllers\FormController
         // http://www.applicationmodule.com:10080/admin/weixincard/logo/upload
         try {
             $this->view->disable();
+            $weixin = $this->getWeixin();
             
-            $this->_config = $this->getDI()->get('config');
-            $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : $this->_config['weixin']['appid'];
-            
-            $this->_app = new \App\Weixin\Models\Application();
-            $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
-            
-            $this->_weixin = new \Weixin\Client();
-            $this->_weixin->setAccessToken('UZmJYKlNmVLEbUJlZ3FaHXl153Wb1Sx7PrH6CQVfoTTBbI0gZijVCXp6q0iHwVo4_CP0sD52uZ6VRJu0GnqAFpvrs54VrpEbMyXZcjNEjA5hqD4DuPZuw8VD3xYqcU9-VHAgACAIUN');
-            // if (! empty($this->_appConfig['access_token'])) {
-            // $this->_weixin->setAccessToken($this->_appConfig['access_token']);
-            // }
             $logoList = $this->modelLogo->getAll();
             foreach ($logoList as $item) {
                 if (! empty($item['is_uploaded'])) {
@@ -110,7 +100,7 @@ class LogoController extends \App\Backend\Controllers\FormController
                 $uploadPath = $this->modelLogo->getUploadPath();
                 $logo = APP_PATH . "public/upload/{$uploadPath}/{$item['logo']}";
                 // die($logo);
-                $ret = $this->_weixin->getCardManager()->uploadLogoUrl($logo);
+                $ret = $weixin->getCardManager()->uploadLogoUrl($logo);
                 if (! empty($ret['errcode'])) {
                     throw new \Exception($ret['errmsg'], $ret['errcode']);
                 }

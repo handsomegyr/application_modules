@@ -86,18 +86,7 @@ class TestwhitelistController extends \App\Backend\Controllers\FormController
         // http://www.applicationmodule.com:10080/admin/weixincard/testwhitelist/set
         try {
             $this->view->disable();
-            
-            $this->_config = $this->getDI()->get('config');
-            $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : $this->_config['weixin']['appid'];
-            
-            $this->_app = new \App\Weixin\Models\Application();
-            $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
-            
-            $this->_weixin = new \Weixin\Client();
-            $this->_weixin->setAccessToken('UZmJYKlNmVLEbUJlZ3FaHXl153Wb1Sx7PrH6CQVfoTTBbI0gZijVCXp6q0iHwVo4_CP0sD52uZ6VRJu0GnqAFpvrs54VrpEbMyXZcjNEjA5hqD4DuPZuw8VD3xYqcU9-VHAgACAIUN');
-            // if (! empty($this->_appConfig['access_token'])) {
-            // $this->_weixin->setAccessToken($this->_appConfig['access_token']);
-            // }
+            $weixin = $this->getWeixin();
             
             $whiteList = $this->modelTestwhitelist->getAll();
             $openids = array();
@@ -114,7 +103,7 @@ class TestwhitelistController extends \App\Backend\Controllers\FormController
             }
             if (! empty($ids)) {
                 if (! empty($openids) || ! empty($usernames)) {
-                    $ret = $this->_weixin->getCardManager()->testwhitelistSet($openids, $usernames);
+                    $ret = $weixin->getCardManager()->testwhitelistSet($openids, $usernames);
                     if (! empty($ret['errcode'])) {
                         throw new \Exception($ret['errmsg'], $ret['errcode']);
                     }

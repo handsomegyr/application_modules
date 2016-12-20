@@ -86,23 +86,10 @@ class ColorController extends \App\Backend\Controllers\FormController
         // http://www.applicationmodule.com:10080/admin/weixincard/color/getcolors
         try {
             $this->view->disable();
-            
-            $this->_config = $this->getDI()->get('config');
-            $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : $this->_config['weixin']['appid'];
-            
-            $this->_app = new \App\Weixin\Models\Application();
-            $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
-            
-            $this->_weixin = new \Weixin\Client();
-            $this->_weixin->setAccessToken('UZmJYKlNmVLEbUJlZ3FaHXl153Wb1Sx7PrH6CQVfoTTBbI0gZijVCXp6q0iHwVo4_CP0sD52uZ6VRJu0GnqAFpvrs54VrpEbMyXZcjNEjA5hqD4DuPZuw8VD3xYqcU9-VHAgACAIUN');
-            // if (! empty($this->_appConfig['access_token'])) {
-            // $this->_weixin->setAccessToken($this->_appConfig['access_token']);
-            // }
-            
-            $ret = $this->_weixin->getCardManager()->getcolors();
+            $weixin = $this->getWeixin();
+            $ret = $weixin->getCardManager()->getcolors();
             // print_r($ret);
             // die('xxx');
-            
             // Array ( [errcode] => 0 [errmsg] => ok [colors] => Array ( [0] => Array ( [name] => Color010 [value] => #55bd47 ) [1] => Array ( [name] => Color020 [value] => #10ad61 ) [2] => Array ( [name] => Color030 [value] => #35a4de ) [3] => Array ( [name] => Color040 [value] => #3d78da ) [4] => Array ( [name] => Color050 [value] => #9058cb ) [5] => Array ( [name] => Color060 [value] => #de9c33 ) [6] => Array ( [name] => Color070 [value] => #ebac16 ) [7] => Array ( [name] => Color080 [value] => #f9861f ) [8] => Array ( [name] => Color090 [value] => #e75735 ) [9] => Array ( [name] => Color100 [value] => #d54036 ) [10] => Array ( [name] => Color101 [value] => #cf3e36 ) ) )
             if (! empty($ret['errcode'])) {
                 throw new \Exception($ret['errmsg'], $ret['errcode']);
