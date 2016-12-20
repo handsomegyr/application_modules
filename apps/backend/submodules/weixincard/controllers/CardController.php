@@ -6,6 +6,7 @@ use App\Backend\Submodules\Weixincard\Models\CodeType;
 use App\Backend\Submodules\Weixincard\Models\Color;
 use App\Backend\Submodules\Weixincard\Models\Card;
 use App\Backend\Submodules\Weixincard\Models\DateInfoType;
+use App\Backend\Submodules\Weixincard\Models\Logo;
 
 /**
  * @title({name="微信卡券管理"})
@@ -25,6 +26,8 @@ class CardController extends \App\Backend\Controllers\FormController
 
     private $modelDateInfoType;
 
+    private $modelLogo;
+
     public function initialize()
     {
         $this->modelCard = new Card();
@@ -32,6 +35,7 @@ class CardController extends \App\Backend\Controllers\FormController
         $this->modelCodeType = new CodeType();
         $this->modelColor = new Color();
         $this->modelDateInfoType = new DateInfoType();
+        $this->modelLogo = new Logo();
         parent::initialize();
     }
 
@@ -39,6 +43,7 @@ class CardController extends \App\Backend\Controllers\FormController
     {
         $schemas = parent::getSchemas();
         
+        $use_custom_code = true;
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
         
@@ -76,8 +81,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCardType->getAll();
                 }
             ),
@@ -103,14 +107,38 @@ class CardController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCodeType->getAll();
                 }
             ),
             'list' => array(
                 'is_show' => true,
                 'list_data_name' => 'code_type_name'
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['logo_url'] = array(
+            'name' => '商户logo，尺寸为 300*300',
+            'data' => array(
+                'type' => 'file',
+                'length' => 100,
+                'file' => array(
+                    'path' => $this->modelLogo->getUploadPath()
+                )
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'file',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true,
+                'render' => 'img'
             ),
             'search' => array(
                 'is_show' => false
@@ -159,7 +187,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         
@@ -172,7 +200,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 'defaultValue' => '满88立减8元'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -199,8 +227,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelColor->getAll();
                 }
             ),
@@ -244,7 +271,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 'defaultValue' => '4008819777'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -267,7 +294,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 'defaultValue' => '来伊份'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -339,7 +366,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'integer',
                 'length' => 10,
-                'defaultValue' => 10
+                'defaultValue' => $use_custom_code ? 0 : 10
             ),
             'validation' => array(
                 'required' => true
@@ -385,7 +412,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'boolean',
                 'length' => '1',
-                'defaultValue' => true
+                'defaultValue' => $use_custom_code
             ),
             'validation' => array(
                 'required' => false
@@ -512,8 +539,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelDateInfoType->getAll();
                 }
             ),
@@ -684,7 +710,8 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '微信摇一摇，获取自定义code的方式',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '30',
+                'defaultValue' => $use_custom_code ? 'GET_CUSTOM_CODE_MODE_DEPOSIT' : ''
             ),
             'validation' => array(
                 'required' => false
@@ -831,7 +858,7 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['default_detail'] = array(
+        $schemas['general_coupon_default_detail'] = array(
             'name' => '通用券专用，描述文本',
             'data' => array(
                 'type' => 'string',
@@ -852,7 +879,7 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['deal_detail'] = array(
+        $schemas['groupon_deal_detail'] = array(
             'name' => '团购券专用，团购详情',
             'data' => array(
                 'type' => 'string',
@@ -873,7 +900,7 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         // 折扣券专用，表示打折额度（百分比）。填30就是七折。
-        $schemas['discount'] = array(
+        $schemas['discount_discount'] = array(
             'name' => '折扣券专用，打折额度（百分比）填30就是七折',
             'data' => array(
                 'type' => 'integer',
@@ -894,7 +921,7 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['gift'] = array(
+        $schemas['gift_gift'] = array(
             'name' => '礼品券专用，礼品名字',
             'data' => array(
                 'type' => 'string',
@@ -916,7 +943,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         // 代金券专用，表示起用金额（单位为分）。
-        $schemas['least_cost'] = array(
+        $schemas['cash_least_cost'] = array(
             'name' => '代金券专用，起用金额(单位为分)',
             'data' => array(
                 'type' => 'integer',
@@ -937,7 +964,7 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         // 代金券专用，表示减免金额（单位为分）。
-        $schemas['reduce_cost'] = array(
+        $schemas['cash_reduce_cost'] = array(
             'name' => '代金券专用，减免金额(单位为分)',
             'data' => array(
                 'type' => 'integer',
@@ -959,7 +986,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         // 是否支持积分，填写 true 或 false，如填写 true，积分相关字段均为必填。填写 false，积分字段无需填写。储值字段处理方式相同。
-        $schemas['supply_bonus'] = array(
+        $schemas['member_card_supply_bonus'] = array(
             'name' => '会员卡专用，是否支持积分',
             'data' => array(
                 'type' => 'boolean',
@@ -984,7 +1011,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         // 是否支持储值，填写 true 或false。 （该权限申请及说明详见Q&A 文档)
-        $schemas['supply_balance'] = array(
+        $schemas['member_card_supply_balance'] = array(
             'name' => '会员卡专用，是否支持积分',
             'data' => array(
                 'type' => 'boolean',
@@ -1007,9 +1034,9 @@ class CardController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        // 自定义会员信息类目，会员卡激活后显示。 否
-        $schemas['custom_field1'] = array(
-            'name' => '会员卡专用，自定义会员信息类目1',
+        // 自定义会员信息类目1名称
+        $schemas['member_card_custom_field1_name_type'] = array(
+            'name' => '会员卡专用，自定义会员信息类目1名称',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1028,9 +1055,30 @@ class CardController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
-        $schemas['custom_field2'] = array(
-            'name' => '会员卡专用，自定义会员信息类目2',
+        // 自定义会员信息类目1自定义跳转url
+        $schemas['member_card_custom_field1_url'] = array(
+            'name' => '会员卡专用，自定义会员信息类目1自定义跳转url',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        // 自定义会员信息类目2名称
+        $schemas['member_card_custom_field2_name_type'] = array(
+            'name' => '会员卡专用，自定义会员信息类目2名称',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1049,9 +1097,30 @@ class CardController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
-        $schemas['custom_field3'] = array(
-            'name' => '会员卡专用，自定义会员信息类目3',
+        // 自定义会员信息类目2自定义跳转url
+        $schemas['member_card_custom_field2_url'] = array(
+            'name' => '会员卡专用，自定义会员信息类目2自定义跳转url',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        // 自定义会员信息类目3名称
+        $schemas['member_card_custom_field3_name_type'] = array(
+            'name' => '会员卡专用，自定义会员信息类目3名称',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1070,8 +1139,29 @@ class CardController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
+        // 自定义会员信息类目3自定义跳转url
+        $schemas['member_card_custom_field3_url'] = array(
+            'name' => '会员卡专用，自定义会员信息类目3自定义跳转url',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
         
-        $schemas['bonus_cleared'] = array(
+        $schemas['member_card_bonus_cleared'] = array(
             'name' => '会员卡专用，积分清零规则',
             'data' => array(
                 'type' => 'string',
@@ -1092,7 +1182,7 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['bonus_rules'] = array(
+        $schemas['member_card_bonus_rules'] = array(
             'name' => '会员卡专用，积分规则',
             'data' => array(
                 'type' => 'string',
@@ -1113,7 +1203,7 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['balance_rules'] = array(
+        $schemas['member_card_balance_rules'] = array(
             'name' => '会员卡专用，储值说明',
             'data' => array(
                 'type' => 'string',
@@ -1134,7 +1224,7 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['prerogative'] = array(
+        $schemas['member_card_prerogative'] = array(
             'name' => '会员卡专用，特权说明',
             'data' => array(
                 'type' => 'string',
@@ -1156,7 +1246,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         // 绑定旧卡的 url，与“ activate_url”字段二选一必填，用户领取会员卡后显示“ 绑定会员卡” 。
-        $schemas['bind_old_card_url'] = array(
+        $schemas['member_card_bind_old_card_url'] = array(
             'name' => '会员卡专用，绑定旧卡的 url',
             'data' => array(
                 'type' => 'string',
@@ -1178,7 +1268,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         // 激活会员卡的 url，与“ bind_old_card_url”字段二选一必填。 用户领取会员卡后显示“激活会员卡”。
-        $schemas['activate_url'] = array(
+        $schemas['member_card_activate_url'] = array(
             'name' => '会员卡专用，激活会员卡的 url',
             'data' => array(
                 'type' => 'string',
@@ -1200,7 +1290,7 @@ class CardController extends \App\Backend\Controllers\FormController
         );
         
         // true 为用户点击进入会员卡时是否推送事件。
-        $schemas['need_push_on_view'] = array(
+        $schemas['member_card_need_push_on_view'] = array(
             'name' => '会员卡专用，进入会员卡时是否推送事件',
             'data' => array(
                 'type' => 'boolean',
@@ -1224,9 +1314,9 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        // 会员卡类型专属营销入口，会员卡激活前后均显示。否
-        $schemas['custom_cell1'] = array(
-            'name' => '会员卡专用，会员卡类型专属营销入口1',
+        // 会员卡类型专属营销入口1入口名称
+        $schemas['member_card_custom_cell1_name'] = array(
+            'name' => '会员卡专用，会员卡类型专属营销入口1入口名称',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1246,8 +1336,53 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['custom_cell2'] = array(
-            'name' => '会员卡专用，会员卡类型专属营销入口2',
+        // 会员卡类型专属营销入口1入口右侧提示语，6个汉字内
+        $schemas['member_card_custom_cell1_tips'] = array(
+            'name' => '会员卡专用，会员卡类型专属营销入口1入口右侧提示语，6个汉字内',
+            'data' => array(
+                'type' => 'string',
+                'length' => '20'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        // 会员卡类型专属营销入口1入口跳转链接
+        $schemas['member_card_custom_cell1_url'] = array(
+            'name' => '会员卡专用，会员卡类型专属营销入口1入口跳转链接',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        // 会员卡类型专属营销入口2入口名称
+        $schemas['member_card_custom_cell2_name'] = array(
+            'name' => '会员卡专用，会员卡类型专属营销入口2入口名称',
             'data' => array(
                 'type' => 'string',
                 'length' => '50'
@@ -1263,6 +1398,74 @@ class CardController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             ),
             'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        // 会员卡类型专属营销入口2入口右侧提示语，6个汉字内
+        $schemas['member_card_custom_cell2_tips'] = array(
+            'name' => '会员卡专用，会员卡类型专属营销入口2入口右侧提示语，6个汉字内',
+            'data' => array(
+                'type' => 'string',
+                'length' => '20'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        // 会员卡类型专属营销入口2入口跳转链接
+        $schemas['member_card_custom_cell2_url'] = array(
+            'name' => '会员卡专用，会员卡类型专属营销入口2入口跳转链接',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['memo'] = array(
+            'name' => '备注',
+            'data' => array(
+                'type' => 'json',
+                'length' => '1000'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
                 'is_show' => false
             )
         );
@@ -1295,5 +1498,117 @@ class CardController extends \App\Backend\Controllers\FormController
             // $item['article_time'] = date("Y-m-d H:i:s", $item['article_time']->sec);
         }
         return $list;
+    }
+
+    /**
+     * 在微信公众平台上创建卡券的Hook
+     */
+    public function createcardAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/createcard?card_id=xxxx
+        try {
+            $this->view->disable();
+            
+            $weixin = $this->getWeixin();
+            $this->modelCard->setWeixin($weixin);
+            
+            $card_id = $this->get('card_id', '');
+            if (empty($card_id)) {
+                $cards = $this->modelCard->getAll();
+            } else {
+                $cardInfo = $this->modelCard->getInfoById($card_id);
+                $cards = array(
+                    $cardInfo
+                );
+            }
+            
+            $colors = $this->modelColor->getAll();
+            if (! empty($cards)) {
+                foreach ($cards as $card) {
+                    if (! empty($card['card_id'])) { // 如果已生成的话
+                        continue;
+                    }
+                    $this->modelCard->create($card, $colors);
+                }
+            }
+            $this->makeJsonResult();
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * 从微信公众平台上获取最新的卡券信息更新本地的Hook
+     */
+    public function updatecardinfoAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/updatecardinfo?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
+        try {
+            $this->view->disable();
+            
+            $weixin = $this->getWeixin();
+            $this->modelCard->setWeixin($weixin);
+            
+            $card_id = $this->get('card_id', '');
+            
+            if (empty($card_id)) { // 如果没有指定卡券ID,那么根据卡券类别获取列表
+                $cards = $this->modelCard->getAll();
+            } else {
+                $cards[] = array(
+                    "card_id" => $card_id
+                );
+            }
+            if (! empty($cards)) {
+                foreach ($cards as $item) {
+                    if (empty($item["card_id"])) {
+                        continue;
+                    }
+                    // 获取最新的卡券信息并且更新本地的信息
+                    $this->modelCard->getAndUpdateCardInfo($item["card_id"]);
+                }
+            }
+            $this->makeJsonResult();
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * 修改库存接口
+     *
+     * @throws \Exception
+     */
+    public function modifystockAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/modifystock?card_id=p4ELSv5zS98NBYuq8D1l2HcgRou0
+        try {
+            $this->view->disable();
+            $weixin = $this->getWeixin();
+            $this->modelCard->setWeixin($weixin);
+            
+            $card_id = $this->get('card_id', '');
+            $increase_stock_value = intval($this->get('increase_stock_value', '0'));
+            $reduce_stock_value = intval($this->get('reduce_stock_value', '0'));
+            if (empty($card_id)) {
+                throw new \Exception("card_id未指定", - 1);
+            }
+            if ($increase_stock_value <= 0) {
+                throw new \Exception("increase_stock_value未指定", - 2);
+            }
+            if ($reduce_stock_value <= 0) {
+                throw new \Exception("reduce_stock_value未指定", - 2);
+            }
+            $cardManager = $weixin->getCardManager();
+            $rst = $cardManager->modifyStock($card_id, $increase_stock_value, $reduce_stock_value);
+            
+            if (! empty($rst['errcode'])) {
+                // 如果有异常，会在errcode 和errmsg 描述出来。
+                throw new \Exception($rst['errmsg'], $rst['errcode']);
+            }
+            
+            $this->makeJsonResult();
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
     }
 }

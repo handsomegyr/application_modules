@@ -327,8 +327,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
         }
         
-        $input->isValid = function ($fieldName = null) use($input, $schemas)
-        {
+        $input->isValid = function ($fieldName = null) use($input, $schemas) {
             $data = $this->request->get();
             $validation = new Validation();
             
@@ -353,8 +352,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
         };
         
-        $input->getMessages = function () use($input, $schemas)
-        {
+        $input->getMessages = function () use($input, $schemas) {
             return empty($input->messages) ? array() : $input->messages;
         };
         
@@ -421,13 +419,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             
             $input->$key = $this->request->get($key, $filters, $defaultValue);
         }
-        $input->isValid = function ()
-        {
+        $input->isValid = function () {
             return true;
         };
         
-        $input->getMessages = function ()
-        {
+        $input->getMessages = function () {
             return array();
         };
         
@@ -803,5 +799,27 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         // unlink($zipname); // 下载完成后要主动删除
         // exit();
         // }
+    }
+
+    /**
+     * 获取微信客户端对象
+     * 
+     * @return \Weixin\Client
+     */
+    protected function getWeixin()
+    {
+        $config = $this->getDI()->get('config');
+        $appid = isset($_GET['appid']) ? trim($_GET['appid']) : $config['weixin']['appid'];
+        
+        $modelWeixinApplication = new \App\Weixin\Models\Application();
+        $appWeixinConfig = $modelWeixinApplication->getTokenByAppid($appid);
+        
+        $weixin = new \Weixin\Client();
+        $weixin->setAccessToken('KHKQVcN2ThBtLED_2-6i_oeb0R0OGztWZaEt3Q721C00AyleDk3Y-LGC0KFBohxY9PUQC3PIXUN3vUCfU9-7M2RI_v_nKM7L5i5aI632M-qiZey7o86wA30Q8uj2xKucHUJeACADQF');
+        // if (! empty($appWeixinConfig['access_token'])) {
+        // $weixin->setAccessToken($appWeixinConfig['access_token']);
+        // }
+        
+        return $weixin;
     }
 }

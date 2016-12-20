@@ -25,9 +25,9 @@ class Card extends Base
         $data['date_info_begin_timestamp'] = $this->changeToMongoDate($data['date_info_begin_timestamp']);
         $data['date_info_end_timestamp'] = $this->changeToMongoDate($data['date_info_end_timestamp']);
         $data['can_shake'] = $this->changeToBoolean($data['can_shake']);
-        $data['supply_bonus'] = $this->changeToBoolean($data['supply_bonus']);
-        $data['supply_balance'] = $this->changeToBoolean($data['supply_balance']);
-        $data['need_push_on_view'] = $this->changeToBoolean($data['need_push_on_view']);
+        $data['member_card_supply_bonus'] = $this->changeToBoolean($data['member_card_supply_bonus']);
+        $data['member_card_supply_balance'] = $this->changeToBoolean($data['member_card_supply_balance']);
+        $data['member_card_need_push_on_view'] = $this->changeToBoolean($data['member_card_need_push_on_view']);
         
         return $data;
     }
