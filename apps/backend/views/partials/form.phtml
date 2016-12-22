@@ -201,6 +201,25 @@
 												</div>
 
 											</div>
+										<?php }elseif($field['form']['input_type'] == "image"){?>
+                                            <div class="fileupload <?php if(empty($this->view->row[$key])){?>fileupload-new<?php }else{?>fileupload-exists<?php }?>" data-provides="fileupload">
+                                                
+                                                <input type="hidden" value="<?php echo $this->view->row[$key]?>" name="<?php echo $key?>">
+												
+												<div class="fileupload-new thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+
+													<img src="<?php echo $this->view->row[$key]?>" style="max-height: 150px;" alt="" />
+
+												</div>
+												<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                              	            	    <?php if(isset($this->view->row[$key])){?>
+                                                    <img src="<?php echo $this->view->row[$key]?>" style="max-height: 150px;">
+                                                    <?php }else{?>
+                                                    <img src="<?php echo $this->view->baseUrl?>service/file/index?id=noimg.png&w=200&h=150" style="max-height: 150px;">
+                                                    <?php }?>
+                                                </div>
+
+											</div>
 
                                             
 										<?php }?>

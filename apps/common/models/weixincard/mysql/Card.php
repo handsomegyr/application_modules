@@ -24,6 +24,7 @@ class Card extends Base
         $data['can_give_friend'] = $this->changeToBoolean($data['can_give_friend']);
         $data['date_info_begin_timestamp'] = $this->changeToMongoDate($data['date_info_begin_timestamp']);
         $data['date_info_end_timestamp'] = $this->changeToMongoDate($data['date_info_end_timestamp']);
+        $data['date_info_fixed_end_timestamp'] = $this->changeToMongoDate($data['date_info_fixed_end_timestamp']);
         $data['can_shake'] = $this->changeToBoolean($data['can_shake']);
         $data['member_card_supply_bonus'] = $this->changeToBoolean($data['member_card_supply_bonus']);
         $data['member_card_supply_balance'] = $this->changeToBoolean($data['member_card_supply_balance']);

@@ -27,7 +27,7 @@ class CodetypeController extends \App\Backend\Controllers\FormController
             'name' => '展示类型',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '16'
             ),
             'validation' => array(
                 'required' => true

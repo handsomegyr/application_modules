@@ -31,7 +31,7 @@ class CodedepositController extends \App\Backend\Controllers\FormController
             'name' => '微信卡券',
             'data' => array(
                 'type' => 'string',
-                'length' => '50'
+                'length' => '32'
             ),
             'validation' => array(
                 'required' => true
@@ -56,7 +56,7 @@ class CodedepositController extends \App\Backend\Controllers\FormController
             'name' => '自定义码',
             'data' => array(
                 'type' => 'string',
-                'length' => '60'
+                'length' => '20'
             ),
             'validation' => array(
                 'required' => true
@@ -77,7 +77,7 @@ class CodedepositController extends \App\Backend\Controllers\FormController
             'name' => '券码',
             'data' => array(
                 'type' => 'string',
-                'length' => '10'
+                'length' => '12'
             ),
             'validation' => array(
                 'required' => true
@@ -98,7 +98,7 @@ class CodedepositController extends \App\Backend\Controllers\FormController
             'name' => '券密码',
             'data' => array(
                 'type' => 'string',
-                'length' => '10'
+                'length' => '8'
             ),
             'validation' => array(
                 'required' => true

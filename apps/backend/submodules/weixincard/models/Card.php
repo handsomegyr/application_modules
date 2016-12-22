@@ -627,9 +627,13 @@ class Card extends \App\Common\Models\Weixincard\Card
      */
     public function create(array $card, array $colors)
     {
-        $type = intval($card['date_info_type']);
+        $type = ($card['date_info_type']);
         $begin_timestamp = ! empty($card['date_info_begin_timestamp']) ? intval($card['date_info_begin_timestamp']->sec) : 0;
-        $end_timestamp = ! empty($card['date_info_end_timestamp']) ? intval($card['date_info_end_timestamp']->sec) : 0;
+        if ($type == 'DATE_TYPE_FIX_TIME_RANGE') {
+            $end_timestamp = ! empty($card['date_info_end_timestamp']) ? intval($card['date_info_end_timestamp']->sec) : 0;
+        } else {
+            $end_timestamp = ! empty($card['date_info_fixed_end_timestamp']) ? intval($card['date_info_fixed_end_timestamp']->sec) : 0;
+        }
         $fixed_term = ! empty($card['date_info_fixed_term']) ? intval($card['date_info_fixed_term']) : 0;
         $fixed_begin_term = ! empty($card['date_info_fixed_begin_term']) ? intval($card['date_info_fixed_begin_term']) : 0;
         $date_info = new DateInfo($type, $begin_timestamp, $end_timestamp, $fixed_term, $fixed_begin_term);
@@ -798,8 +802,8 @@ class Card extends \App\Common\Models\Weixincard\Card
                 break;
             case 'SCENIC_TICKET':
                 // 门票
-                $ticket_class = empty($card[strtolower($card_type)]['ticket_class']) ? NULL : trim($card[strtolower($card_type)]['ticket_class']);
-                $guide_url = empty($card[strtolower($card_type)]['guide_url']) ? NULL : trim($card[strtolower($card_type)]['guide_url']);
+                $ticket_class = empty($card['scenic_ticket_ticket_class']) ? NULL : trim($card['scenic_ticket_ticket_class']);
+                $guide_url = empty($card['scenic_ticket_guide_url']) ? NULL : trim($card['scenic_ticket_guide_url']);
                 $objCard = new ScenicTicket($baseInfo);
                 $objCard->set_ticket_class($ticket_class);
                 $objCard->set_guide_url($guide_url);
@@ -807,22 +811,22 @@ class Card extends \App\Common\Models\Weixincard\Card
                 break;
             case 'MOVIE_TICKET':
                 // 电影票
-                $detail = empty($card[strtolower($card_type)]['detail']) ? NULL : trim($card[strtolower($card_type)]['detail']);
+                $detail = empty($card['movie_ticket_detail']) ? NULL : trim($card['movie_ticket_detail']);
                 $objCard = new MovieTicket($baseInfo);
                 $objCard->set_detail($detail);
                 break;
             case 'BOARDING_PASS':
                 // 飞机票
-                $from = empty($card[strtolower($card_type)]['from']) ? NULL : trim($card[strtolower($card_type)]['from']);
-                $to = empty($card[strtolower($card_type)]['to']) ? NULL : trim($card[strtolower($card_type)]['to']);
-                $flight = empty($card[strtolower($card_type)]['flight']) ? NULL : trim($card[strtolower($card_type)]['flight']);
+                $from = empty($card['boarding_pass_from']) ? NULL : trim($card['boarding_pass_from']);
+                $to = empty($card['boarding_pass_to']) ? NULL : trim($card['boarding_pass_to']);
+                $flight = empty($card['boarding_pass_flight']) ? NULL : trim($card['boarding_pass_flight']);
                 
-                $departure_time = empty($card[strtolower($card_type)]['departure_time']) ? NULL : trim($card[strtolower($card_type)]['departure_time']);
-                $landing_time = empty($card[strtolower($card_type)]['landing_time']) ? NULL : trim($card[strtolower($card_type)]['landing_time']);
-                $check_in_url = empty($card[strtolower($card_type)]['check_in_url']) ? NULL : trim($card[strtolower($card_type)]['check_in_url']);
-                $gate = empty($card[strtolower($card_type)]['gate']) ? NULL : trim($card[strtolower($card_type)]['gate']);
-                $boarding_time = empty($card[strtolower($card_type)]['boarding_time']) ? NULL : trim($card[strtolower($card_type)]['boarding_time']);
-                $air_model = empty($card[strtolower($card_type)]['air_model']) ? NULL : trim($card[strtolower($card_type)]['air_model']);
+                $departure_time = empty($card['boarding_pass_departure_time']) ? NULL : trim($card['boarding_pass_departure_time']);
+                $landing_time = empty($card['boarding_pass_landing_time']) ? NULL : trim($card['boarding_pass_landing_time']);
+                $check_in_url = empty($card['boarding_pass_check_in_url']) ? NULL : trim($card['boarding_pass_check_in_url']);
+                $gate = empty($card['boarding_pass_gate']) ? NULL : trim($card['boarding_pass_gate']);
+                $boarding_time = empty($card['boarding_pass_boarding_time']) ? NULL : trim($card['boarding_pass_boarding_time']);
+                $air_model = empty($card['boarding_pass_air_model']) ? NULL : trim($card['boarding_pass_air_model']);
                 
                 $objCard = new BoardingPass($baseInfo, $from, $to, $flight);
                 $objCard->set_departure_time($departure_time);
@@ -845,6 +849,8 @@ class Card extends \App\Common\Models\Weixincard\Card
         if (empty($this->_weixin)) {
             throw new \Exception("微信接口对象没有设置");
         }
+        // var_dump($objCard);
+        // die('xxx');
         $ret = $this->_weixin->getCardManager()->create($objCard);
         // Array ( [errcode] => 0 [errmsg] => ok [card_id] => pgW8rt02smNifj51uqt1J3jNQXQY )
         if (! empty($ret['errcode'])) {

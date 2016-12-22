@@ -27,7 +27,7 @@ class CardtypeController extends \App\Backend\Controllers\FormController
             'name' => '值',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '24'
             ),
             'validation' => array(
                 'required' => true

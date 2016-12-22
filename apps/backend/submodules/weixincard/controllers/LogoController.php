@@ -27,13 +27,13 @@ class LogoController extends \App\Backend\Controllers\FormController
             'name' => '商户logo图片',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 128,
                 'file' => array(
                     'path' => $this->modelLogo->getUploadPath()
                 )
             ),
             'validation' => array(
-                'required' => 0
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'file',
@@ -52,7 +52,7 @@ class LogoController extends \App\Backend\Controllers\FormController
             'name' => '商户logo的url',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '128'
             ),
             'validation' => array(
                 'required' => false
