@@ -7,7 +7,6 @@ use App\Backend\Submodules\Weixincard\Models\Color;
 use App\Backend\Submodules\Weixincard\Models\Card;
 use App\Backend\Submodules\Weixincard\Models\DateInfoType;
 use App\Backend\Submodules\Weixincard\Models\Logo;
-use function GuzzleHttp\json_encode;
 
 /**
  * @title({name="微信卡券管理"})
