@@ -14,8 +14,6 @@ class CampaignController extends ControllerBase
         }
     }
 
-    
-
     public function getJssdkInfo()
     {
         $cacheKey = cacheKey(__FILE__, __CLASS__, __METHOD__);
@@ -132,11 +130,78 @@ class CampaignController extends ControllerBase
         $keys = $cache->queryKeys();
         var_dump($keys);
     }
-    
+
     public function getaccesstokenAction()
     {
         $this->view->disable();
         $accessToken = $this->getAccessToken();
-        echo 'access token:'.$accessToken;
+        echo 'access token:' . $accessToken;
     }
+
+    /**
+     * 按COOKIE方式，进行授权处理
+     *
+     * @name 授权处理
+     */
+    public function weixinauthorizecallbackAction()
+    {
+        try {
+            // http://xxxx.umaman.com/xxx/index/weixinauthorizecallback?callbackUrl=xxx
+            // $callbackUrl = trim($this->get('callbackUrl', ''));
+            $callbackUrl = isset($_SESSION['Weixin_callbackUrl']) ? $_SESSION['Weixin_callbackUrl'] : '';
+            if (empty($callbackUrl)) {
+                die('callbackurl 不能为空');
+            }
+            $userInfo = empty($_COOKIE['Weixin_userInfo']) ? array() : json_decode($_COOKIE['Weixin_userInfo'], true);
+            
+            if (empty($userInfo)) {
+                // 如果在进行授权处理中的话
+                if (! empty($_SESSION['isAuthorizing'])) {
+                    $FromUserName = trim($this->get('FromUserName', ''));
+                    $nickname = trim($this->get('nickname', ''));
+                    $headimgurl = trim($this->get('headimgurl', ''));
+                    $timestamp = trim($this->get('timestamp', ''));
+                    $signkey = trim($this->get('signkey', ''));
+                    
+                    // url的参数上已经有了FromUserName参数并且不是空的时候
+                    if (! empty($FromUserName)) {
+                        $secretKey = $this->getSecretKey();
+                        // 校验微信id,上线测试时需要加上去
+                        if (empty($secretKey) || $this->validateOpenid($FromUserName, $timestamp, $secretKey, $signkey)) {
+                            // 授权处理完成
+                            unset($_SESSION['isAuthorizing']);
+                            // 存储微信用户到COOKIE,保存30天
+                            $userInfo = array(
+                                'FromUserName' => $FromUserName,
+                                'nickname' => trim($nickname),
+                                'headimgurl' => trim($headimgurl),
+                                'signkey' => $signkey,
+                                'timestamp' => $timestamp
+                            );
+                            setcookie('Weixin_userInfo', json_encode($userInfo), time() + 3600 * 24 * 30, '/');
+                            $_COOKIE['Weixin_userInfo'] = json_encode($userInfo);
+                            
+                            // 授权成功之后的处理
+                            $this->authorize();
+                        }
+                    }
+                }
+            }
+            // 跳转地址
+            $this->_redirect($callbackUrl);
+            exit();
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function getSecretKey()
+    {
+        $config = $this->getDI()->get('config');
+        $secretKey = $config['weixinAuthorize']['secretKey'];
+        return $secretKey;
+    }
+
+    public function authorize()
+    {}
 }
