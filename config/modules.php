@@ -206,5 +206,9 @@ $application->registerModules(array(
     'weixinredpack' => array(
         'className' => 'App\Weixinredpack\Module',
         'path' => APP_PATH . 'apps/weixinredpack/Module.php'
+    ),
+    'campaign' => array(
+        'className' => 'App\Campaign\Module',
+        'path' => APP_PATH . 'apps/campaign/Module.php'
     )
 ));

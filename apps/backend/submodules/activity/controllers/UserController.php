@@ -33,7 +33,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'select',
@@ -70,14 +70,14 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['user_name'] = array(
+        $schemas['nickname'] = array(
             'name' => '用户名',
             'data' => array(
                 'type' => 'string',
                 'length' => 30
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -90,14 +90,14 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        $schemas['user_headimgurl'] = array(
+        $schemas['headimgurl'] = array(
             'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
                 'length' => 300
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -117,7 +117,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'length' => 10
             ),
             'validation' => array(
-                'required' => 1
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -130,63 +130,58 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        $schemas['log_time'] = array(
-            'name' => '记录时间',
+        $schemas['worth2'] = array(
+            'name' => '价值2',
             'data' => array(
-                'type' => 'datetime',
-                'length' => '19',
-                'defaultValue' => getCurrentTime()
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'condition_type' => 'period' // single
-            )
-        );
-        $schemas['lock'] = array(
-            'name' => '锁',
-            'data' => array(
-                'type' => 'boolean',
-                'length' => '1'
+                'type' => 'integer',
+                'length' => 10
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'input_type' => 'number',
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true,
-                'list_type' => 1
+                'is_show' => true
             ),
             'search' => array(
                 'is_show' => false
             )
         );
-        $schemas['expire'] = array(
-            'name' => '锁过期时间',
+        $schemas['redpack_user'] = array(
+            'name' => '微信红包账号',
             'data' => array(
-                'type' => 'datetime',
-                'length' => '19',
-                'defaultValue' => getCurrentTime()
+                'type' => 'string',
+                'length' => 50
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'datetimepicker',
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['thirdparty_user'] = array(
+            'name' => '第3方账号',
+            'data' => array(
+                'type' => 'string',
+                'length' => 50
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
@@ -235,8 +230,6 @@ class UserController extends \App\Backend\Controllers\FormController
         $activityList = $this->modelActivity->getAll();
         foreach ($list['data'] as &$item) {
             $item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : "--";
-            $item['log_time'] = date("Y-m-d H:i:s", $item['log_time']->sec);
-            $item['expire'] = date("Y-m-d H:i:s", $item['expire']->sec);
         }
         
         return $list;

@@ -168,6 +168,7 @@ function registerAutoloaders()
             'App\Payment\Services' => APP_PATH . '/apps/payment/services/',
             'App\Weixinredpack\Services' => APP_PATH . '/apps/weixinredpack/services/',
             'App\Weixin\Services' => APP_PATH . '/apps/weixin/services/',
+            'App\Activity\Services' => APP_PATH . '/apps/activity/services/',
             
             'App\Points\Views\Helpers' => APP_PATH . 'apps/points/views/helpers/',
             'App\Goods\Views\Helpers' => APP_PATH . 'apps/goods/views/helpers/',
@@ -179,6 +180,7 @@ function registerAutoloaders()
             'App\Article\Views\Helpers' => APP_PATH . 'apps/article/views/helpers/',
             'App\Freight\Views\Helpers' => APP_PATH . 'apps/freight/views/helpers/',
             'App\Task\Views\Helpers' => APP_PATH . 'apps/task/views/helpers/',
+            'App\Activity\Views\Helpers' => APP_PATH . 'apps/activity/views/helpers/',
             
             'App\Common\Plugins' => APP_PATH . 'apps/common/plugins/'
         ));

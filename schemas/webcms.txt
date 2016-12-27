@@ -103,10 +103,13 @@ DROP TABLE IF EXISTS `iactivity_activity`;
 
 CREATE TABLE `iactivity_activity` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
+  `category` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '活动分类',
   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '活动名称',
   `start_time` datetime NOT NULL COMMENT '活动开始时间',
   `end_time` datetime NOT NULL COMMENT '活动结束时间',
   `is_actived` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活',
+  `is_paused` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否暂停',
+  `config` text NOT NULL COMMENT '活动配置',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
@@ -115,7 +118,45 @@ CREATE TABLE `iactivity_activity` (
 
 /*Data for the table `iactivity_activity` */
 
-insert  into `iactivity_activity`(`_id`,`name`,`start_time`,`end_time`,`is_actived`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('565d5aaa7f50ea081300002d','云购','2015-12-19 00:00:00','2016-12-26 16:38:45',1,'2015-12-19 17:07:26','2016-08-29 11:45:03',0);
+insert  into `iactivity_activity`(`_id`,`category`,`name`,`start_time`,`end_time`,`is_actived`,`is_paused`,`config`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861e812887c22015f8b456b',3,'某抽奖活动','2016-12-27 00:00:00','2019-12-27 14:22:20',1,0,'','2016-12-27 12:03:30','2016-12-27 14:22:31',0);
+
+/*Table structure for table `iactivity_black_user` */
+
+DROP TABLE IF EXISTS `iactivity_black_user`;
+
+CREATE TABLE `iactivity_black_user` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
+  `user_id` char(50) NOT NULL DEFAULT '' COMMENT '黑名单用户ID',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`),
+  KEY `NewIndex1` (`user_id`,`activity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='活动-活动黑名单用戶';
+
+/*Data for the table `iactivity_black_user` */
+
+insert  into `iactivity_black_user`(`_id`,`activity_id`,`user_id`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861ed36887c22c96e8b4576','5861e812887c22015f8b456b','xxxx','2016-12-27 12:25:26','2016-12-27 12:25:26',0),('5861ed49887c22bc5c8b45a5','','','2016-12-27 12:25:45','2016-12-27 12:25:45',0);
+
+/*Table structure for table `iactivity_category` */
+
+DROP TABLE IF EXISTS `iactivity_category`;
+
+CREATE TABLE `iactivity_category` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `code` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '分类标识码',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '名称',
+  `sort` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='活动-分类';
+
+/*Data for the table `iactivity_category` */
+
+insert  into `iactivity_category`(`_id`,`code`,`name`,`sort`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861e657887c2224678b4582',1,'组团',1,'2016-12-27 11:56:07','2016-12-27 11:56:07',0),('5861e737887c22a1268b4569',2,'红包',2,'2016-12-27 11:59:51','2016-12-27 11:59:51',0),('5861e74d887c222c688b4576',3,'抽奖',3,'2016-12-27 12:00:13','2016-12-27 12:00:13',0),('5861e758887c2223678b4597',4,'兑换',4,'2016-12-27 12:00:24','2016-12-27 12:00:24',0);
 
 /*Table structure for table `iactivity_user` */
 
@@ -125,13 +166,12 @@ CREATE TABLE `iactivity_user` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
   `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
   `user_id` char(50) NOT NULL DEFAULT '' COMMENT '用户ID',
-  `user_name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名称',
-  `user_headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户头像',
+  `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名称',
+  `headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户头像',
   `worth` int(10) NOT NULL DEFAULT '0' COMMENT '价值',
   `worth2` int(11) NOT NULL DEFAULT '0' COMMENT '价值2',
-  `log_time` datetime NOT NULL COMMENT '记录时间',
-  `lock` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否LOCK',
-  `expire` datetime NOT NULL COMMENT '锁过期时间',
+  `redpack_user` char(50) NOT NULL DEFAULT '' COMMENT '微信红包账号',
+  `thirdparty_user` char(50) NOT NULL DEFAULT '' COMMENT '第3方账号',
   `memo` text NOT NULL COMMENT '备注',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
@@ -141,6 +181,8 @@ CREATE TABLE `iactivity_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='活动-活动用戶';
 
 /*Data for the table `iactivity_user` */
+
+insert  into `iactivity_user`(`_id`,`activity_id`,`user_id`,`nickname`,`headimgurl`,`worth`,`worth2`,`redpack_user`,`thirdparty_user`,`memo`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('58620e65887c22a17c8b4579','5861e812887c22015f8b456b','xxxx','xx','xx',0,0,'','','{\"prize_num\":0,\"is_hongbao1_lottery\":false,\"is_hongbao2_lottery\":false}','2016-12-27 14:47:00','2016-12-27 14:47:00',0),('58620f22887c2224678b4584','5861e812887c22015f8b456b','xxxx2','xx2','xx2',0,0,'redpack_user','thirdparty_user','{\"prize_num\":0,\"is_hongbao1_lottery\":false,\"is_hongbao2_lottery\":false}','2016-12-27 14:50:10','2016-12-27 14:50:10',0);
 
 /*Table structure for table `iarticle_article` */
 
@@ -2989,6 +3031,279 @@ CREATE TABLE `iweixin_user` (
 /*Data for the table `iweixin_user` */
 
 insert  into `iweixin_user`(`_id`,`openid`,`nickname`,`sex`,`country`,`province`,`city`,`headimgurl`,`privilege`,`subscribe_time`,`subscribe`,`language`,`unionid`,`groupid`,`remark`,`access_token`,`tagid_list`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560ddba9fd4d3d9d018b4567','o6HiMuF61GElRIFGwfv8XkUzLO2Y','邬邬Verlaine',1,'中国','上海','黄浦','http://wx.qlogo.cn/mmopen/Q3auHgzwzM7UHa5pVr9e6B8rO6N6MoLnPmIupFsO1kofb9SN4UesJu4L5NrXaeAlkPyrSHKbgbPfkoY8zjazeQ/0','','2015-10-02 09:30:40',1,'','','',NULL,'',NULL,'2015-10-02 09:19:37','2015-10-02 09:37:00',0);
+
+/*Table structure for table `iweixincard_card` */
+
+DROP TABLE IF EXISTS `iweixincard_card`;
+
+CREATE TABLE `iweixincard_card` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '卡券ID',
+  `card_id` char(32) NOT NULL DEFAULT '' COMMENT '微信公众平台的卡券ID',
+  `card_type` varchar(24) NOT NULL DEFAULT '' COMMENT '卡券类型 例如GENERAL_COUPON',
+  `logo_url` varchar(128) NOT NULL DEFAULT '' COMMENT '卡券的商户logo，尺寸为 300*300 例如http://mmbiz.qpic.cn/',
+  `code_type` varchar(16) NOT NULL DEFAULT '' COMMENT 'code码展示类型 例如CODE_TYPE_TEXT',
+  `brand_name` varchar(36) NOT NULL DEFAULT '' COMMENT '商户名字,字数上限为12个汉字 例如海底捞',
+  `title` varchar(27) NOT NULL DEFAULT '' COMMENT '券名，字数上限为9个汉字 例如双人套餐100元兑换券',
+  `sub_title` varchar(54) NOT NULL DEFAULT '' COMMENT '券名的副标题，字数上限为18个汉字 例如鸳鸯锅底+牛肉1份+土豆一份',
+  `color` varchar(16) NOT NULL DEFAULT '' COMMENT '券颜色。按色彩规范标注填写Color010-Color100',
+  `notice` varchar(48) NOT NULL DEFAULT '' COMMENT '卡券使用提醒，字数上限为16个汉字。例如请出示二维码核销卡券',
+  `description` text NOT NULL COMMENT '卡券使用说明，字数上限为1024个汉字。例如不可与其他优惠同享/n如需团购券发票，请向店员提出要求。',
+  `sku_quantity` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '卡券库存的数量，上限为100000000 例如10000',
+  `date_info_type` varchar(30) NOT NULL DEFAULT '' COMMENT '使用时间的类型，旧文档采用的1和2依然生效',
+  `date_info_begin_timestamp` datetime NOT NULL COMMENT 'type为DATE_TYPE_FIX_TIME_RANGE时专用，表示起用时间。从1970年1月1日00:00:00至起用时间的秒数，最终需转换为字符串形态传入。（东八区时间，单位为秒）',
+  `date_info_end_timestamp` datetime NOT NULL COMMENT 'type为DATE_TYPE_FIX_TIME_RANGE时，表示卡券统一的结束时间，建议设置为截止日期的23:59:59过期。（东八区时间，单位为秒）',
+  `date_info_fixed_term` smallint(4) unsigned NOT NULL DEFAULT '0' COMMENT 'type为DATE_TYPE_FIX_TERM时专用，表示自领取后多少天内有效，不支持填写0。例如15',
+  `date_info_fixed_begin_term` smallint(4) unsigned NOT NULL DEFAULT '0' COMMENT '	type为DATE_TYPE_FIX_TERM时专用，表示自领取后多少天开始生效，领取后当天生效填写0。（单位为天）例如0',
+  `date_info_fixed_end_timestamp` datetime NOT NULL COMMENT '可用于DATE_TYPE_FIX_TERM时间类型，表示卡券统一过期时间，建议设置为截止日期的23:59:59过期。（东八区时间，单位为秒），设置了fixed_term卡券，当时间达到end_timestamp时卡券统一过期',
+  `use_custom_code` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否自定义Code码。填写true或false，默认为false。通常自有优惠码系统的开发者选择自定义Code码，并在卡券投放时带入Code码，详情见是否自定义Code码。',
+  `bind_openid` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否指定用户领取，填写true或false。默认为false。通常指定特殊用户群体投放卡券或防止刷券时选择指定用户领取。',
+  `service_phone` varchar(24) NOT NULL DEFAULT '' COMMENT '客服电话 例如40012234',
+  `location_id_list` text NOT NULL COMMENT '门店位置ID 例如1234,2312',
+  `source` varchar(36) NOT NULL DEFAULT '' COMMENT '第三方来源名，例如同程旅游、 格瓦拉',
+  `center_title` varchar(18) NOT NULL DEFAULT '' COMMENT '卡券顶部居中的按钮，仅在卡券状态正常(可以核销)时显示，建议开发者设置此按钮时code_type选择CODE_TYPE_NONE类型。例如立即使用',
+  `center_sub_title` varchar(24) NOT NULL DEFAULT '' COMMENT '显示在入口下方的提示语，仅在卡券状态正常(可以核销)时显示。例如立即享受优惠',
+  `center_url` varchar(128) NOT NULL DEFAULT '' COMMENT '顶部居中的url，仅在卡券状态正常(可以核销)时显示。例如www.xxx.com',
+  `custom_url_name` varchar(15) NOT NULL DEFAULT '' COMMENT '自定义跳转外链的入口名字。详情见活用自定义入口 例如立即使用',
+  `custom_url` varchar(128) NOT NULL DEFAULT '' COMMENT '自定义跳转的URL。例如xxxx.com',
+  `custom_url_sub_title` varchar(18) NOT NULL DEFAULT '' COMMENT '显示在入口右侧的提示语。例如更多惊喜',
+  `promotion_url_name` varchar(15) NOT NULL DEFAULT '' COMMENT '营销场景的自定义入口名称。例如产品介绍',
+  `promotion_url` varchar(128) NOT NULL DEFAULT '' COMMENT '入口跳转外链的地址链接。例如xxxx.com',
+  `promotion_url_sub_title` varchar(18) NOT NULL DEFAULT '' COMMENT '显示在营销入口右侧的提示语。例如更多惊喜',
+  `use_limit` smallint(4) unsigned NOT NULL DEFAULT '1' COMMENT '每人使用次数限制',
+  `get_limit` smallint(4) unsigned NOT NULL DEFAULT '1' COMMENT '每人可领券的数量限制,不填写默认为50',
+  `can_share` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '卡券领取页面是否可分享',
+  `can_give_friend` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '卡券是否可转赠。',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1：待审核，2：审核失败，3：通过审核， 4：已删除（飞机票的status 字段为1：正常2：已删除）',
+  `get_custom_code_mode` varchar(30) NOT NULL DEFAULT '' COMMENT '获取自定义code的方式',
+  `shake_slogan_title` varchar(50) NOT NULL DEFAULT '' COMMENT '新年祝语标题',
+  `shake_slogan_sub_title` varchar(50) NOT NULL DEFAULT '' COMMENT '新年祝语正文',
+  `can_shake` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '参加摇礼券活动的标志位',
+  `weixin_title` varchar(50) NOT NULL DEFAULT '' COMMENT '微信公众推送标题',
+  `weixin_image` varchar(100) NOT NULL DEFAULT '' COMMENT '微信公众推送封面图片',
+  `weixin_desc` varchar(1000) NOT NULL DEFAULT '' COMMENT '微信公众推送摘要',
+  `weixin_url` varchar(100) NOT NULL DEFAULT '' COMMENT '微信公众推送URL',
+  `general_coupon_default_detail` text NOT NULL COMMENT '优惠券专用，优惠详情。例如音乐木盒。',
+  `groupon_deal_detail` text NOT NULL COMMENT '团购券专用，团购详情。例如双人套餐\\n -进口红酒一支。\\n孜然牛肉一份',
+  `discount_discount` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '折扣券专用，表示打折额度（百分比）。填30就是七折。',
+  `gift_gift` text NOT NULL COMMENT '兑换券专用，兑换内容。例如可兑换音乐木盒一个。',
+  `cash_least_cost` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '代金券专用，表示起用金额（单位为分）。,如果无起用门槛则填0。',
+  `cash_reduce_cost` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '代金券专用，表示减免金额（单位为分）。,如果无起用门槛则填0。',
+  `member_card_supply_bonus` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否支持积分，填写 true 或 false，如填写 true，积分相关字段均为必填。填写 false，积分字段无需填写。储值字段处理方式相同。',
+  `member_card_supply_balance` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否支持储值，填写 true 或false。 （该权限申请及说明详见Q&A 文档)',
+  `member_card_custom_field1_name_type` varchar(50) NOT NULL DEFAULT '' COMMENT '自定义会员信息类目1名称',
+  `member_card_custom_field1_url` varchar(100) NOT NULL DEFAULT '' COMMENT '自定义会员信息类目1自定义跳转url',
+  `member_card_custom_field2_name_type` varchar(50) NOT NULL DEFAULT '' COMMENT '自定义会员信息类目2名称',
+  `member_card_custom_field2_url` varchar(100) NOT NULL DEFAULT '' COMMENT '自定义会员信息类目2自定义跳转url',
+  `member_card_custom_field3_name_type` varchar(50) NOT NULL DEFAULT '' COMMENT '自定义会员信息类目3名称',
+  `member_card_custom_field3_url` varchar(100) NOT NULL COMMENT '自定义会员信息类目3自定义跳转url',
+  `member_card_bonus_cleared` varchar(50) NOT NULL DEFAULT '' COMMENT '积分清零规则。 否',
+  `member_card_bonus_rules` varchar(50) NOT NULL DEFAULT '' COMMENT '积分规则。 否',
+  `member_card_balance_rules` varchar(50) NOT NULL DEFAULT '' COMMENT '储值说明。 否',
+  `member_card_prerogative` varchar(50) NOT NULL DEFAULT '' COMMENT '特权说明。 是',
+  `member_card_bind_old_card_url` varchar(100) NOT NULL DEFAULT '' COMMENT '绑定旧卡的 url，与“ activate_url”字段二选一必填，用户领取会员卡后显示“ 绑定会员卡” 。',
+  `member_card_activate_url` varchar(100) NOT NULL DEFAULT '' COMMENT '激活会员卡的 url，与“ bind_old_card_url”字段二选一必填。 用户领取会员卡后显示“激活会员卡”。',
+  `member_card_need_push_on_view` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'true 为用户点击进入会员卡时是否推送事件。',
+  `member_card_custom_cell1_name` varchar(50) NOT NULL DEFAULT '' COMMENT '会员卡类型专属营销入口1入口名称',
+  `member_card_custom_cell1_tips` varchar(20) NOT NULL DEFAULT '' COMMENT '会员卡类型专属营销入口1入口右侧提示语，6个汉字内',
+  `member_card_custom_cell1_url` varchar(100) NOT NULL DEFAULT '' COMMENT '会员卡类型专属营销入口1入口跳转链接',
+  `member_card_custom_cell2_name` varchar(50) NOT NULL DEFAULT '' COMMENT '会员卡类型专属营销入口2入口名称',
+  `member_card_custom_cell2_tips` varchar(20) NOT NULL DEFAULT '' COMMENT '会员卡类型专属营销入口2入口右侧提示语，6个汉字内',
+  `member_card_custom_cell2_url` varchar(100) NOT NULL DEFAULT '' COMMENT '会员卡类型专属营销入口2入口跳转链接',
+  `scenic_ticket_ticket_class` text NOT NULL COMMENT '景区门票专用，票类型 例如平日全票，套票等。',
+  `scenic_ticket_guide_url` varchar(128) NOT NULL DEFAULT '' COMMENT '景区门票专用，导览图url 例如xxx.com',
+  `movie_ticket_detail` text NOT NULL COMMENT '电影票类型专用，电影票详情 例如电影名：xxx，电影简介：xxx。',
+  `boarding_pass_from` varchar(54) NOT NULL DEFAULT '' COMMENT '飞机票类型专用，起点，上限为18个汉字。例如成都',
+  `boarding_pass_to` varchar(54) NOT NULL DEFAULT '' COMMENT '飞机票类型专用，终点，上限为18个汉字。例如广州',
+  `boarding_pass_flight` varchar(24) NOT NULL DEFAULT '' COMMENT '飞机票类型专用，航班 例如CE123',
+  `boarding_pass_gate` varchar(12) NOT NULL DEFAULT '' COMMENT '飞机票类型专用，入口，上限为4个汉字。例如A11',
+  `boarding_pass_check_in_url` varchar(128) NOT NULL DEFAULT '' COMMENT '飞机票类型专用，在线值机的链接 例如xxx.com',
+  `boarding_pass_air_model` varchar(24) NOT NULL DEFAULT '' COMMENT '飞机票类型专用，机型，上限为8个汉字。例如空客A320',
+  `boarding_pass_departure_time` datetime NOT NULL COMMENT '飞机票类型专用，起飞时间。Unix时间戳格式。',
+  `boarding_pass_landing_time` datetime NOT NULL COMMENT '飞机票类型专用，降落时间。Unix时间戳格式。',
+  `meeting_ticket_meeting_detail` text NOT NULL COMMENT '会议门票类型专用，会议详情 例如本次会议于2015年5月10号在广州举行，会场地点：xxxx。',
+  `meeting_ticket_map_url` varchar(128) NOT NULL DEFAULT '' COMMENT '会议门票类型专用，会场导览图 例如xxx.com',
+  `memo` text NOT NULL COMMENT '备注',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`,`member_card_balance_rules`),
+  KEY `NewIndex1` (`card_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-卡券';
+
+/*Data for the table `iweixincard_card` */
+
+insert  into `iweixincard_card`(`_id`,`card_id`,`card_type`,`logo_url`,`code_type`,`brand_name`,`title`,`sub_title`,`color`,`notice`,`description`,`sku_quantity`,`date_info_type`,`date_info_begin_timestamp`,`date_info_end_timestamp`,`date_info_fixed_term`,`date_info_fixed_begin_term`,`date_info_fixed_end_timestamp`,`use_custom_code`,`bind_openid`,`service_phone`,`location_id_list`,`source`,`center_title`,`center_sub_title`,`center_url`,`custom_url_name`,`custom_url`,`custom_url_sub_title`,`promotion_url_name`,`promotion_url`,`promotion_url_sub_title`,`use_limit`,`get_limit`,`can_share`,`can_give_friend`,`status`,`get_custom_code_mode`,`shake_slogan_title`,`shake_slogan_sub_title`,`can_shake`,`weixin_title`,`weixin_image`,`weixin_desc`,`weixin_url`,`general_coupon_default_detail`,`groupon_deal_detail`,`discount_discount`,`gift_gift`,`cash_least_cost`,`cash_reduce_cost`,`member_card_supply_bonus`,`member_card_supply_balance`,`member_card_custom_field1_name_type`,`member_card_custom_field1_url`,`member_card_custom_field2_name_type`,`member_card_custom_field2_url`,`member_card_custom_field3_name_type`,`member_card_custom_field3_url`,`member_card_bonus_cleared`,`member_card_bonus_rules`,`member_card_balance_rules`,`member_card_prerogative`,`member_card_bind_old_card_url`,`member_card_activate_url`,`member_card_need_push_on_view`,`member_card_custom_cell1_name`,`member_card_custom_cell1_tips`,`member_card_custom_cell1_url`,`member_card_custom_cell2_name`,`member_card_custom_cell2_tips`,`member_card_custom_cell2_url`,`scenic_ticket_ticket_class`,`scenic_ticket_guide_url`,`movie_ticket_detail`,`boarding_pass_from`,`boarding_pass_to`,`boarding_pass_flight`,`boarding_pass_gate`,`boarding_pass_check_in_url`,`boarding_pass_air_model`,`boarding_pass_departure_time`,`boarding_pass_landing_time`,`meeting_ticket_meeting_detail`,`meeting_ticket_map_url`,`memo`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('58588b90dc753c44008b4567','p4ELSv5zS98NBYuq8D1l2HcgRou0','GENERAL_COUPON','http://mmbiz.qpic.cn/mmbiz_png/OEUan7AibOibSwZLsbS0we5INWL86eWe9zga7oloZz9MnqKfJvZlpJblU4yAsHe7ibzd2','CODE_TYPE_TEXT','来伊份','全场限时券','满88立减8元','#63B359','前9位卡号后4位密码','•       优惠券使用规则：\r\n•       使用时间为：即日起至2016年12月31日，单份优惠重复使用无效。\r\n•       使用范围：本券仅限用于在全国来伊份门店、官方商城 www.laiyifen.com，来伊份APP。\r\n•       使用规则：全品类通用券，消费满88元可抵用8元，多买多抵。\r\n•       本券限量20000张，领完为止，优惠金额不可兑换现金，不设找零，不可累积使用，不可与店内其他优惠叠加使用。\r\n•       本活动奖品只作优惠抵用，不能兑换现金，非销售行为，恕不提供优惠金额部分发票。\r\n•       此券不可用于其他商品优惠，也不适用会员卡充值及伊点卡购买。\r\n•       咨询热线：400-8819-777（来伊份热线营运时间：08:00-21:00，市内话费自付。）',10,'DATE_TYPE_FIX_TIME_RANGE','2016-12-20 00:00:00','2017-01-18 23:59:59',0,0,'0000-00-00 00:00:00',1,0,'4008819777','','来伊份','','','','','','','','','',1,10,1,1,1,'','','',0,'','','','','通用券专用，描述文本','',0,'',0,0,0,0,'','','','','','','','','','','','',1,'','','','','','','','','','','','','','','','0000-00-00 00:00:00','0000-00-00 00:00:00','','','','2016-12-20 09:38:24','2016-12-20 11:05:07',0),('585a1528d2fb9c09008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','GENERAL_COUPON','http://mmbiz.qpic.cn/mmbiz_png/OEUan7AibOibSwZLsbS0we5INWL86eWe9zga7oloZz9MnqKfJvZlpJblU4yAsHe7ibzd2','CODE_TYPE_TEXT','来伊份','全场限时券2','满88立减8元','#63B359','前9位卡号后4位密码','•       优惠券使用规则：\r\n•       使用时间为：即日起至2016年12月31日，单份优惠重复使用无效。\r\n•       使用范围：本券仅限用于在全国来伊份门店、官方商城 www.laiyifen.com，来伊份APP。\r\n•       使用规则：全品类通用券，消费满88元可抵用8元，多买多抵。\r\n•       本券限量20000张，领完为止，优惠金额不可兑换现金，不设找零，不可累积使用，不可与店内其他优惠叠加使用。\r\n•       本活动奖品只作优惠抵用，不能兑换现金，非销售行为，恕不提供优惠金额部分发票。\r\n•       此券不可用于其他商品优惠，也不适用会员卡充值及伊点卡购买。\r\n•       咨询热线：400-8819-777（来伊份热线营运时间：08:00-21:00，市内话费自付。）',0,'DATE_TYPE_FIX_TIME_RANGE','2016-12-21 00:00:00','2017-01-19 23:59:59',0,0,'0000-00-00 00:00:00',1,0,'4008819777','','来伊份','','','','','','','','','',1,1,1,1,1,'GET_CUSTOM_CODE_MODE_DEPOSIT','','',0,'','','','','通用券专用，描述文本','',0,'',0,0,0,0,'','','','','','','','','','','','',1,'','','','','','','','','','','','','','','','0000-00-00 00:00:00','0000-00-00 00:00:00','','','','2016-12-21 13:37:43','2016-12-21 14:55:02',0);
+
+/*Table structure for table `iweixincard_card_type` */
+
+DROP TABLE IF EXISTS `iweixincard_card_type`;
+
+CREATE TABLE `iweixincard_card_type` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '分类ID',
+  `code` varchar(24) NOT NULL DEFAULT '' COMMENT '代码',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '名称',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-卡券类别';
+
+/*Data for the table `iweixincard_card_type` */
+
+insert  into `iweixincard_card_type`(`_id`,`code`,`name`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5857495b4a0b43e3008b4567','GENERAL_COUPON','优惠券','2016-12-19 10:43:39','2016-12-19 10:43:39',0),('5857497c4a0b430c008b4568','GROUPON','团购券','2016-12-19 10:44:12','2016-12-19 10:44:12',0),('5857498c4a0b43e3008b4568','DISCOUNT','折扣券','2016-12-19 10:44:28','2016-12-19 10:44:28',0),('585749984a0b43e9008b4567','GIFT','兑换券','2016-12-19 10:44:40','2016-12-19 10:44:40',0),('585749ab4a0b430c008b4569','CASH','代金券','2016-12-19 10:44:59','2016-12-19 10:44:59',0),('585749b74a0b43e3008b4569','MEMBER_CARD','会员卡','2016-12-19 10:45:11','2016-12-19 10:45:11',0),('585749c34a0b43e9008b4568','SCENIC_TICKET','门票','2016-12-19 10:45:23','2016-12-19 10:45:23',0),('585749ce4a0b430b008b4567','MOVIE_TICKET','电影票','2016-12-19 10:45:34','2016-12-19 10:45:34',0),('585749da4a0b43e2008b4567','BOARDING_PASS','飞机票','2016-12-19 10:45:46','2016-12-19 10:45:46',0),('585749e74a0b4308008b4567','LUCKY_MONEY','红包','2016-12-19 10:45:59','2016-12-19 10:45:59',0),('585a6d3cd2fb9c0d008b4567','MEETING_TICKET','会议/演出门票','2016-12-21 19:53:32','2016-12-21 19:53:32',0);
+
+/*Table structure for table `iweixincard_category` */
+
+DROP TABLE IF EXISTS `iweixincard_category`;
+
+CREATE TABLE `iweixincard_category` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '分类ID',
+  `code` varchar(30) NOT NULL DEFAULT '' COMMENT '代码',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '名称',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-卡券类别';
+
+/*Data for the table `iweixincard_category` */
+
+/*Table structure for table `iweixincard_code_deposit` */
+
+DROP TABLE IF EXISTS `iweixincard_code_deposit`;
+
+CREATE TABLE `iweixincard_code_deposit` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `card_id` char(32) NOT NULL DEFAULT '' COMMENT '微信卡券ID',
+  `card_code` char(20) NOT NULL DEFAULT '' COMMENT '卡券的自定义code',
+  `code` char(12) NOT NULL DEFAULT '' COMMENT '券码',
+  `pwd` char(8) NOT NULL DEFAULT '' COMMENT '券密码',
+  `start_time` datetime NOT NULL COMMENT '开始有效期',
+  `end_time` datetime NOT NULL COMMENT '结束有效期',
+  `is_deposited` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已导入',
+  `is_consumed` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已核销',
+  `memo` text NOT NULL COMMENT '备注',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`),
+  KEY `index1` (`card_code`),
+  KEY `NewIndex1` (`card_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-code导入';
+
+/*Data for the table `iweixincard_code_deposit` */
+
+insert  into `iweixincard_code_deposit`(`_id`,`card_id`,`card_code`,`code`,`pwd`,`start_time`,`end_time`,`is_deposited`,`is_consumed`,`memo`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5858b229dc753c55008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','12345678901234','1234567890','1234','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:23:05','2016-12-21 15:59:05',0),('5858b265dc753c56008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','12345678904567','1234567890','4567','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:24:05','2016-12-21 15:59:05',0),('5858b268dc753c0c008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','12345678902345','1234567890','2345','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:24:08','2016-12-21 15:59:05',0),('5858b26adc753c4f008b4568','p4ELSv4jvY47ePzbGAZxAQgh5mbo','12345678903456','1234567890','3456','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:24:10','2016-12-21 15:59:05',0),('5858b2c3dc753c64008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','12345678905678','1234567890','5678','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:25:39','2016-12-21 15:59:05',0),('5858b31bdc753c45008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','23456789011234','2345678901','1234','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:27:07','2016-12-21 15:59:05',0),('5858b33bdc753c66008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','23456789012345','2345678901','2345','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:27:38','2016-12-21 15:59:05',0),('5858b34adc753c68008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','23456789013456','2345678901','3456','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:27:54','2016-12-21 15:59:05',0),('5858b36adc753c69008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','23456789014567','2345678901','4567','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:28:26','2016-12-21 15:59:05',0),('5858b379dc753c54008b4567','p4ELSv4jvY47ePzbGAZxAQgh5mbo','23456789015678','2345678901','5678','2016-12-20 00:00:00','2017-01-18 23:59:59',1,0,'{\"memo\":\"\"}','2016-12-20 12:28:41','2016-12-21 15:59:05',0);
+
+/*Table structure for table `iweixincard_code_type` */
+
+DROP TABLE IF EXISTS `iweixincard_code_type`;
+
+CREATE TABLE `iweixincard_code_type` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '展示类型ID',
+  `code_type` varchar(16) NOT NULL DEFAULT '' COMMENT '展示类型值',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '展示类型名称',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-code码展示类型';
+
+/*Data for the table `iweixincard_code_type` */
+
+insert  into `iweixincard_code_type`(`_id`,`code_type`,`name`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('58574d914a0b43e9008b456a','CODE_TYPE_TEXT','文本','2016-12-19 11:01:37','2016-12-19 11:01:37',0),('58574da54a0b430b008b4569','CODE_TYPE_BARCOD','一维码','2016-12-19 11:01:57','2016-12-19 11:01:57',0),('58574db24a0b43e2008b4568','CODE_TYPE_QRCODE','二维码','2016-12-19 11:02:10','2016-12-19 11:02:10',0),('58574dc14a0b4308008b4569','CODE_TYPE_ONLY_Q','二维码无 code 显示','2016-12-19 11:02:25','2016-12-19 11:02:25',0),('58574dce4a0b43ec008b4567','CODE_TYPE_ONLY_B','一维码无 code 显示','2016-12-19 11:02:38','2016-12-19 11:02:38',0);
+
+/*Table structure for table `iweixincard_color` */
+
+DROP TABLE IF EXISTS `iweixincard_color`;
+
+CREATE TABLE `iweixincard_color` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '颜色ID',
+  `value` varchar(16) NOT NULL DEFAULT '' COMMENT '颜色值',
+  `name` varchar(16) NOT NULL DEFAULT '' COMMENT '颜色名称',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-颜色';
+
+/*Data for the table `iweixincard_color` */
+
+insert  into `iweixincard_color`(`_id`,`value`,`name`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('585755ac4a0b43e2008b4569','#63B359','Color010','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ac4a0b43e2008b456a','#2C9F67','Color020','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b456b','#509FC9','Color030','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b456c','#5885CF','Color040','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b456d','#9062C0','Color050','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b456e','#D09A45','Color060','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b456f','#E4B138','Color070','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b4570','#EE903C','Color080','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b4571','#F08500','Color081','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b4572','#A9D92D','Color082','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b4573','#DD6549','Color090','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b4574','#CC463D','Color100','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b4575','#CF3E36','Color101','2016-12-19 11:36:11','2016-12-19 11:36:11',0),('585755ad4a0b43e2008b4576','#5E6671','Color102','2016-12-19 11:36:11','2016-12-19 11:36:11',0);
+
+/*Table structure for table `iweixincard_custom_field_type` */
+
+DROP TABLE IF EXISTS `iweixincard_custom_field_type`;
+
+CREATE TABLE `iweixincard_custom_field_type` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '类型ID',
+  `type` varchar(30) NOT NULL DEFAULT '' COMMENT '类型值',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '类型名称',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-会员信息卡类型';
+
+/*Data for the table `iweixincard_custom_field_type` */
+
+insert  into `iweixincard_custom_field_type`(`_id`,`type`,`name`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('585761794a0b43e9008b456b','FIELD_NAME_TYPE_LEVE','等级','2016-12-19 12:26:33','2016-12-19 12:26:33',0),('585761914a0b430b008b456a','FIELD_NAME_TYPE_COUPON','优惠券','2016-12-19 12:26:57','2016-12-19 12:26:57',0),('5857619d4a0b43e2008b4578','FIELD_NAME_TYPE_MILEAGE','里程','2016-12-19 12:27:09','2016-12-19 12:27:09',0),('585761aa4a0b4308008b456c','FIELD_NAME_TYPE_STAMP','印花','2016-12-19 12:27:22','2016-12-19 12:27:22',0),('585761b84a0b43ec008b456a','FIELD_NAME_TYPE_ACHIEVEMENT','成就','2016-12-19 12:27:36','2016-12-19 12:27:36',0),('585761c54a0b430c008b456a','FIELD_NAME_TYPE_DISCOUNT','折扣','2016-12-19 12:27:49','2016-12-19 12:27:49',0);
+
+/*Table structure for table `iweixincard_date_info_type` */
+
+DROP TABLE IF EXISTS `iweixincard_date_info_type`;
+
+CREATE TABLE `iweixincard_date_info_type` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '使用时间的类型ID',
+  `code` varchar(30) NOT NULL DEFAULT '' COMMENT '使用时间的类型值',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '使用时间的类型名',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-使用时间的类型';
+
+/*Data for the table `iweixincard_date_info_type` */
+
+insert  into `iweixincard_date_info_type`(`_id`,`code`,`name`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('58574e2a4a0b4308008b456a','DATE_TYPE_FIX_TIME_RANGE','固定日期区间','2016-12-19 11:04:10','2016-12-19 11:04:10',0),('58574e364a0b43ec008b4568','DATE_TYPE_FIX_TERM','固定时长（自领取后按天算）','2016-12-19 11:04:22','2016-12-19 11:04:22',0);
+
+/*Table structure for table `iweixincard_logo` */
+
+DROP TABLE IF EXISTS `iweixincard_logo`;
+
+CREATE TABLE `iweixincard_logo` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '卡券的商户LOGO ID',
+  `logo` varchar(128) NOT NULL DEFAULT '' COMMENT '卡券的商户logo图片文件',
+  `logo_url` varchar(128) NOT NULL DEFAULT '' COMMENT '卡券的商户logo的url',
+  `is_uploaded` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已上传',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-商户logo';
+
+/*Data for the table `iweixincard_logo` */
+
+insert  into `iweixincard_logo`(`_id`,`logo`,`logo_url`,`is_uploaded`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('585768de4a0b43ec008b456b','来伊份logo.png','http://mmbiz.qpic.cn/mmbiz_png/OEUan7AibOibSwZLsbS0we5INWL86eWe9zga7oloZz9MnqKfJvZlpJblU4yAsHe7ibzd2',1,'2016-12-19 12:58:06','2016-12-19 13:12:42',0);
+
+/*Table structure for table `iweixincard_testwhitelist` */
+
+DROP TABLE IF EXISTS `iweixincard_testwhitelist`;
+
+CREATE TABLE `iweixincard_testwhitelist` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '白名单ID',
+  `openid` char(50) NOT NULL DEFAULT '' COMMENT '测试的openid',
+  `username` varchar(30) NOT NULL DEFAULT '' COMMENT '测试的微信昵称',
+  `is_set` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已设置',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-设置测试用户白名单';
+
+/*Data for the table `iweixincard_testwhitelist` */
+
+insert  into `iweixincard_testwhitelist`(`_id`,`openid`,`username`,`is_set`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('585766a04a0b430b008b456b','o4ELSvz-B4_DThF0Vpfrverk3IpY','',1,'2016-12-19 12:48:32','2016-12-19 12:50:41',0);
 
 /*Table structure for table `iweixinredpack_customer` */
 

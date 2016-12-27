@@ -14,13 +14,4 @@ class User extends Base
     {
         return 'iactivity_user';
     }
-
-    public function reorganize(array $data)
-    {
-        $data = parent::reorganize($data);
-        $data['log_time'] = $this->changeToMongoDate($data['log_time']);
-        $data['expire'] = $this->changeToMongoDate($data['expire']);
-        $data['lock'] = $this->changeToBoolean($data['lock']);
-        return $data;
-    }
 }

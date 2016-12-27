@@ -4,8 +4,6 @@ namespace App\Lottery\Services;
 class Api
 {
 
-    private $_activity;
-
     private $_code;
 
     private $_exchange;
@@ -28,7 +26,6 @@ class Api
 
     public function __construct()
     {
-        $this->_activity = new \App\System\Models\Activity();
         $this->_code = new \App\Prize\Models\Code();
         $this->_exchange = new \App\Lottery\Models\Exchange();
         $this->_limit = new \App\Lottery\Models\Limit();
@@ -72,13 +69,6 @@ class Api
             if ($objLock->lock()) {
                 $ret['error_code'] = - 99;
                 $ret['error_msg'] = '抽奖处于锁定状态，请稍后尝试';
-                return $ret;
-            }
-            
-            // 检查活动信息
-            if (! $this->_activity->checkActivityActive($activity_id)) {
-                $ret['error_code'] = - 1;
-                $ret['error_msg'] = '活动尚未开始或已结束';
                 return $ret;
             }
             

@@ -5,20 +5,89 @@ class Activity extends \App\Common\Models\Activity\Activity
 {
 
     /**
-     * 获取所有活动列表
+     * 根据ID获取信息
      *
+     * @param string $id            
      * @return array
      */
-    public function getAll()
+    public function getInfoById($id)
     {
-        $query = array();
-        $sort = array();
-        $ret = $this->findAll($query, $sort);
-        $list = array();
-        foreach ($ret as $item) {
-            $list[$item['_id']] = $item['name'];
+        $cache = $this->getDI()->get("cache");
+        $cacheKey = cacheKey(__FILE__, __CLASS__, __METHOD__, $id);
+        $info = $cache->get($cacheKey);
+        if (empty($info)) {
+            $query = array(
+                '_id' => $id,
+                'is_actived' => true
+            );
+            $info = $this->findOne($query);
+            $cache->save($cacheKey, $info, 5 * 60);
         }
-        return $list;
+        return $info;
+    }
+
+    public function getActivityInfo($activity_id, $now, $is_return_info = false)
+    {
+        $ret = array();
+        // 获取活动信息
+        $activityInfo = $this->getInfoById($activity_id);
+        if (empty($activityInfo)) {
+            $is_activity_started = false;
+            $is_activity_over = false;
+            $is_actvity_paused = false;
+        } else {
+            $is_activity_started = $this->isActivityStarted($activityInfo, $now);
+            $is_activity_over = $this->isActivityOver($activityInfo, $now);
+            $is_actvity_paused = empty($activityInfo['is_paused']) ? false : true;
+        }
+        // 活动是否开始了
+        $ret['is_activity_started'] = $is_activity_started;
+        // 活动是否暂停
+        $ret['is_actvity_paused'] = $is_actvity_paused;
+        // 活动是否结束了
+        $ret['is_activity_over'] = $is_activity_over;
+        
+        if (! empty($is_return_info)) {
+            // 活动信息
+            $ret['activityInfo'] = $activityInfo;
+        }
+        return $ret;
+    }
+
+    /**
+     * 检查活动是否开始了
+     *
+     * @param array $activityInfo            
+     */
+    protected function isActivityStarted($activityInfo, $now)
+    {
+        if (empty($activityInfo)) {
+            return false;
+        } else {
+            if ($activityInfo['start_time']->sec <= $now) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * 检查活动是否发完了
+     *
+     * @param array $activityInfo            
+     */
+    protected function isActivityOver($activityInfo, $now)
+    {
+        if (empty($activityInfo)) {
+            return false;
+        } else {
+            if ($activityInfo['end_time']->sec < $now) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     private $_activityInfo = null;

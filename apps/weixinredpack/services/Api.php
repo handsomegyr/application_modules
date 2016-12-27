@@ -44,7 +44,6 @@ class Api
         $this->weixinRedpackSettings = $weixinRedpackSettings;
         $this->_rtnMsgType = $rtnMsgType;
         
-        $this->_activity = new \App\System\Models\Activity();
         $this->_redpack = new \App\Weixinredpack\Models\Redpack();
         $this->_gotLog = new \App\Weixinredpack\Models\GotLog();
         $this->_rule = new \App\Weixinredpack\Models\Rule();
@@ -112,12 +111,6 @@ class Api
             // if ($objLock->lock()) {
             // return $this->error(- 99, "处于锁定状态，请稍后尝试");
             // }
-            
-            // 检查活动信息
-            $activityInfo = $this->_activity->getInfoById($activity_id);
-            if (empty($activityInfo)) {
-                return $this->error(- 6, "该活动不存在");
-            }
             
             // 检查客户信息
             $customerInfo = $this->_customer->getInfoById($customer_id);
