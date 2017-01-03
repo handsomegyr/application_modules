@@ -43,8 +43,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelActivity->getAll();
                 }
             ),
@@ -71,8 +70,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelPrize->getAll();
                 }
             ),
@@ -191,8 +189,8 @@ class RuleController extends \App\Backend\Controllers\FormController
         $prizeList = $this->modelPrize->getAll();
         $activityList = $this->modelActivity->getAll();
         foreach ($list['data'] as &$item) {
-            $item['activity_name'] = $activityList[$item['activity_id']];
-            $item['prize_name'] = $prizeList[$item['prize_id']];
+            $item['activity_name'] = empty($activityList[$item['activity_id']]) ? '' : $activityList[$item['activity_id']];
+            $item['prize_name'] = empty($prizeList[$item['prize_id']]) ? '' : $prizeList[$item['prize_id']];
             $item['allow_start_time'] = date("Y-m-d H:i:s", $item['allow_start_time']->sec);
             $item['allow_end_time'] = date("Y-m-d H:i:s", $item['allow_end_time']->sec);
         }

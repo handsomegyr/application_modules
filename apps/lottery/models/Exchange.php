@@ -152,9 +152,9 @@ class Exchange extends \App\Common\Models\Lottery\Exchange
             $data['user_headimgurl'] = $user_info['user_headimgurl'];
         }
         if (! empty($user_contact)) {
-            $data['user_name'] = $user_contact['name'];
-            $data['user_mobile'] = $user_contact['mobile'];
-            $data['user_address'] = $user_contact['address'];
+            $data['contact_name'] = $user_contact['name'];
+            $data['contact_mobile'] = $user_contact['mobile'];
+            $data['contact_address'] = $user_contact['address'];
         }
         $data['memo'] = $memo;
         return $this->insert($data);

@@ -5,13 +5,15 @@ namespace App\Campaign\Controllers;
  * 例子
  *
  * 授权地址
- * http://www.jizigou.com/campaign/index/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
+ * http://www.applicationmodule.com:10080/campaign/index/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
  *
- * http://www.jizigou.com/campaign/index/weixinauthorizebefore?operation4cookie=clear
+ * http://www.applicationmodule.com:10080/campaign/index/weixinauthorizebefore?operation4cookie=clear
  *
- * http://www.jizigou.com/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
+ * http://www.applicationmodule.com:10080/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
- * http://www.jizigou.com/html/index/index.html
+ * http://www.applicationmodule.com:10080/html/index/index.html
+ *
+ * http://www.applicationmodule.com:10080/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
  * @author 郭永荣
  *        
@@ -33,7 +35,7 @@ class IndexController extends ControllerBase
     protected $serviceLottery = null;
     
     // 活动ID
-    protected $activity = '5861e812887c22015f8b456b';
+    protected $activity_id = '5861e812887c22015f8b456b';
     
     // 是否需要微信公众号关注
     private $is_need_subscribed = false;
@@ -47,7 +49,7 @@ class IndexController extends ControllerBase
         $this->now = getCurrentTime();
         $this->today = date('Ymd', $this->now->sec);
         
-        $this->modelErrorLog = new \App\System\Models\ErrorLog();
+        $this->modelErrorLog = new \App\Activity\Models\ErrorLog();
         $this->modelActivity = new \App\Activity\Models\Activity();
         $this->modelActivityUser = new \App\Activity\Models\User();
         $this->modelActivityBlackUser = new \App\Activity\Models\BlackUser();
@@ -57,7 +59,7 @@ class IndexController extends ControllerBase
         try {
             parent::initialize();
         } catch (\Exception $e) {
-            $this->modelErrorLog->log($e);
+            $this->modelErrorLog->log($this->activity_id, $e);
         }
     }
 
@@ -78,12 +80,12 @@ class IndexController extends ControllerBase
      */
     public function getcampaignuserinfoAction()
     {
-        // http://www.jizigou.com/campaign/index/getcampaignuserinfo
+        // http://www.applicationmodule.com:10080/campaign/index/getcampaignuserinfo
         try {
             $this->view->disable();
             
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo($this->activity, $this->now->sec);
+            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity_id, $this->now->sec);
             
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {
@@ -104,7 +106,7 @@ class IndexController extends ControllerBase
             // 从cookie中直接获取
             $userInfo = empty($_COOKIE['Weixin_userInfo']) ? array() : json_decode($_COOKIE['Weixin_userInfo'], true);
             if (empty($userInfo)) {
-                echo $this->error(- 40499, "用户信息为空");
+                echo $this->error(- 40498, "用户信息为空");
                 return false;
             }
             
@@ -118,16 +120,19 @@ class IndexController extends ControllerBase
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
-                echo $this->error(- 888, "上次操作还未完成,请等待");
+                echo $this->error(- 40499, "上次操作还未完成,请等待");
                 return false;
             }
             
             // 记录该用户
-            $memo = array();
+            $memo = array(
+                'is_got_prize' => false,
+                'is_record_lottery_user_contact_info' => false
+            );
             $userInfo = $this->getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, 'redpack_user', 'thirdparty_user', $memo);
             
             // 是否是黑名单用户
-            $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity);
+            $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity_id);
             
             // 根据具体的业务返回相应的信息
             // 获取从奖池数量
@@ -145,20 +150,18 @@ class IndexController extends ControllerBase
                     'is_blankuser' => empty($blankUserInfo) ? 0 : 1,
                     // 奖池
                     'prizeRemainNum' => $prizeRemainNum,
-                    // 普通红包1是否已经抽取过
-                    'is_hongbao1_lottery' => empty($userInfo['memo']['is_hongbao1_lottery']) ? 0 : 1,
-                    // 普通红包1
-                    'hongbao1' => empty($userInfo['memo']['hongbao1']) ? '' : $userInfo['memo']['hongbao1'],
+                    // 是否已经抽取过
+                    'is_got_prize' => empty($userInfo['memo']['is_got_prize']) ? 0 : 1,
+                    // 是否已经填写了中奖联系信息
+                    'is_record_lottery_user_contact_info' => empty($userInfo['memo']['is_record_lottery_user_contact_info']) ? 0 : 1,
                     // 红包
-                    'worth' => $userInfo['worth'],
-                    // 领取过的奖品列表
-                    'prize_list' => empty($userInfo['memo']['prize_list']) ? array() : $userInfo['memo']['prize_list']
+                    'worth' => $userInfo['worth']
                 )
             );
             echo $this->result("OK", $ret);
             return true;
         } catch (\Exception $e) {
-            $this->modelErrorLog->log($this->activity, $e);
+            $this->modelErrorLog->log($this->activity_id, $e);
             echo $this->error($e->getCode(), $e->getMessage());
             return false;
         }
@@ -169,11 +172,11 @@ class IndexController extends ControllerBase
      */
     public function lotteryAction()
     {
-        // http://www.jizigou.com/campaign/index/lottery?name=guoyongrong&mobile=13564100096&address=xxx
+        // http://www.applicationmodule.com:10080/campaign/index/lottery?name=guoyongrong&mobile=13564100096&address=xxx
         try {
             $this->view->disable();
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo($this->activity, $this->now->sec);
+            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity_id, $this->now->sec);
             
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {
@@ -194,7 +197,7 @@ class IndexController extends ControllerBase
             // 从cookie中直接获取
             $userInfo = empty($_COOKIE['Weixin_userInfo']) ? array() : json_decode($_COOKIE['Weixin_userInfo'], true);
             if (empty($userInfo)) {
-                echo $this->error(- 40499, "用户信息为空");
+                echo $this->error(- 40498, "用户信息为空");
                 return false;
             }
             
@@ -209,51 +212,51 @@ class IndexController extends ControllerBase
             $addressCheck = false;
             if ($nameCheck) {
                 if (empty($name)) {
-                    echo $this->error(- 30, "姓名不能为空");
+                    echo $this->error(- 40411, "姓名不能为空");
                     return false;
                 }
             }
             if ($mobileCheck) {
                 if (empty($mobile)) {
-                    echo $this->error(- 40, "手机号不能为空");
+                    echo $this->error(- 40412, "手机号不能为空");
                     return false;
                 }
                 if (! isValidMobile($mobile)) {
-                    echo $this->error(- 50, "手机号格式不正确");
+                    echo $this->error(- 40413, "手机号格式不正确");
                     return false;
                 }
             }
             if ($addressCheck) {
                 if (empty($address)) {
-                    echo $this->error(- 60, "地址不能为空");
+                    echo $this->error(- 40414, "地址不能为空");
                     return false;
                 }
             }
             
             // 检查是否锁定，如果没有锁定加锁
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
-            $objLock = new iLock($key);
+            $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(- 40499, "上次操作还未完成,请等待");
                 return false;
             }
             
-            $userInfo = $this->modelActivityUser->getInfoByUserId($FromUserName, $this->activity);
+            $userInfo = $this->modelActivityUser->getInfoByUserId($FromUserName, $this->activity_id);
             if (empty($userInfo)) {
-                echo $this->error(- 2, 'FromUserName不正确');
+                echo $this->error(- 40421, 'FromUserName不正确');
                 return false;
             }
             
             // 是否是黑名单用户
-            $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity);
+            $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity_id);
             if (! empty($blankUserInfo)) {
-                echo $this->error(- 40404, '该用户已经是黑名单用户');
+                echo $this->error(- 40422, '该用户已经是黑名单用户');
                 return false;
             }
             
             // 检查是否已经领取了普通红包
             if (! empty($userInfo['memo']['is_got_prize'])) {
-                echo $this->error(- 40405, '该用户已领取');
+                echo $this->error(- 40431, '该用户已领取');
                 return false;
             }
             
@@ -261,26 +264,25 @@ class IndexController extends ControllerBase
             $this->modelActivityUser->incWorth($userInfo, - 1);
             
             // 抽奖处理
+            // 记录抽奖用户的昵称和头像
             $user_info = array(
                 'user_name' => $userInfo['nickname'],
                 'user_headimgurl' => $userInfo['headimgurl']
             );
+            // 抽奖用户联系方式
             $identityContact = array(
                 'name' => '',
                 'mobile' => '',
                 'address' => ''
             );
+            // 记录活动用户ID
             $memo = array(
-                'source_data' => array(
-                    'user_id' => $userInfo['_id'],
-                    'nickname' => $userInfo['nickname'],
-                    'headimgurl' => $userInfo['headimgurl']
-                )
+                'activity_user_id' => $userInfo['_id']
             );
-            $lotteryResult = $this->serviceLottery->doLottery($this->activity, $FromUserName, array(), array(), 'weixin', $user_info, $memo);
+            $lotteryResult = $this->serviceLottery->doLottery($this->activity_id, $FromUserName, array(), array(), 'weixin', $user_info, $identityContact, $memo);
             
             // 抽奖成功的话
-            if (empty($lotteryResult['error_code'])) {
+            if (empty($lotteryResult['error_code']) && ! empty($lotteryResult['result'])) {
                 $successInfo = $lotteryResult['result'];
                 $ret = array();
                 $ret['exchange_id'] = $successInfo['_id'];
@@ -301,10 +303,10 @@ class IndexController extends ControllerBase
                     '_id' => $userInfo['_id']
                 );
                 $data = array();
-                $data['memo'] = array(
+                $data['memo'] = array_merge($userInfo['memo'], array(
                     'is_got_prize' => true,
                     'prizeInfo' => $successInfo
-                );
+                ));
                 $this->modelActivityUser->update($query, array(
                     '$set' => $data
                 ));
@@ -313,11 +315,13 @@ class IndexController extends ControllerBase
                 return true;
             } else {
                 // 失败的话
-                echo ($this->error($lotteryResult['error_code'], $lotteryResult['error_msg']));
+                $e = new \Exception($lotteryResult['error_msg'], $lotteryResult['error_code']);
+                $this->modelErrorLog->log($this->activity_id, $e);
+                echo ($this->error(- 40432, '活动太火爆，奖品还在路上'));
                 return false;
             }
         } catch (\Exception $e) {
-            $this->modelErrorLog->log($this->activity, $e);
+            $this->modelErrorLog->log($this->activity_id, $e);
             echo $this->error($e->getCode(), $e->getMessage());
             return false;
         }
@@ -328,7 +332,7 @@ class IndexController extends ControllerBase
      */
     public function recorduserinfoAction()
     {
-        // http://www.jizigou.com/campaign/index/recorduserinfo?exchange_id=xxx&identity_id=xxx&name=xxx&mobile=xxx&address=xxx
+        // http://www.applicationmodule.com:10080/campaign/index/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
         try {
             $this->view->disable();
             
@@ -339,12 +343,12 @@ class IndexController extends ControllerBase
             $identity_id = trim($this->get('identity_id', ''));
             
             if (empty($exchange_id)) {
-                echo $this->error(- 1, "中奖ID不能为空");
+                echo $this->error(- 40451, "中奖ID不能为空");
                 return false;
             }
             
             if (empty($identity_id)) {
-                echo $this->error(- 2, "身份ID不能为空");
+                echo $this->error(- 40452, "身份ID不能为空");
                 return false;
             }
             
@@ -354,63 +358,75 @@ class IndexController extends ControllerBase
             $addressCheck = false;
             if ($nameCheck) {
                 if (empty($name)) {
-                    echo $this->error(- 3, "姓名不能为空");
+                    echo $this->error(- 40453, "姓名不能为空");
                     return false;
                 }
             }
             if ($mobileCheck) {
                 if (empty($mobile)) {
-                    echo $this->error(- 4, "手机号不能为空");
+                    echo $this->error(- 40454, "手机号不能为空");
                     return false;
                 }
                 if (! isValidMobile($mobile)) {
-                    echo $this->error(- 5, "手机号格式不正确");
+                    echo $this->error(- 40455, "手机号格式不正确");
                     return false;
                 }
             }
             if ($addressCheck) {
                 if (empty($address)) {
-                    echo $this->error(- 6, "地址不能为空");
+                    echo $this->error(- 40456, "地址不能为空");
                     return false;
                 }
             }
-            $info = array();
+            $info = array(
+                'is_valid' => true
+            );
             
             if (! empty($name))
-                $info['name'] = $name;
+                $info['contact_name'] = $name;
             
             if (! empty($mobile))
-                $info['mobile'] = $mobile;
+                $info['contact_mobile'] = $mobile;
             
             if (! empty($address))
-                $info['address'] = $address;
+                $info['contact_address'] = $address;
             
             if (empty($info)) {
-                echo $this->error(- 7, "用户信息不能为空");
+                echo $this->error(- 40457, "用户信息不能为空");
                 return false;
             }
-            
-            $info['exchange_id'] = $exchange_id;
-            $info['identity_id'] = $identity_id;
             
             // 判断是否中奖
             $exchangeInfo = $this->modelLotteryExchange->checkExchangeBy($identity_id, $exchange_id);
             if (empty($exchangeInfo)) {
-                echo $this->error(- 8, "该用户无此兑换信息");
+                echo $this->error(- 40458, "该用户无此兑换信息");
+                return false;
+            }
+            // 获取活动用户信息
+            $userInfo = $this->modelActivityUser->getInfoById($exchangeInfo['memo']['activity_user_id']);
+            if (empty($userInfo)) {
+                echo $this->error(- 40458, "该用户无此兑换信息");
                 return false;
             }
             
             // 记录中奖用户的信息
-            $datas = array();
-            $datas['is_valid'] = true;
-            $datas['identity_contact'] = $info;
+            $this->modelLotteryExchange->updateExchangeInfo($exchange_id, $info);
             
-            $this->modelLotteryExchange->updateExchangeInfo($exchange_id, $datas);
-            
+            // 更新活动用户的是否填写抽奖联系信息
+            $query = array(
+                '_id' => $userInfo['_id']
+            );
+            $data = array();
+            $data['memo'] = array_merge($userInfo['memo'], array(
+                'is_record_lottery_user_contact_info' => true
+            ));
+            $this->modelActivityUser->update($query, array(
+                '$set' => $data
+            ));
             echo ($this->result('处理完成'));
             return true;
         } catch (Exception $e) {
-            $this->modelErrorLog->log($e);
+            $this->modelErrorLog->log($this->activity_id, $e);
             echo $this->error($e->getCode(), $e->getMessage());
             return false;
         }
@@ -419,7 +435,7 @@ class IndexController extends ControllerBase
     protected function getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, array $memo = array())
     {
         // 生成活动用户
-        $userInfo = $this->modelActivityUser->getOrCreateByUserId($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, 0, 0, $this->activity, $memo);
+        $userInfo = $this->modelActivityUser->getOrCreateByUserId($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, 1, 0, $this->activity_id, $memo);
         return $userInfo;
     }
 
@@ -457,7 +473,7 @@ class IndexController extends ControllerBase
             
             // asyncSendTpl($openid, $template_id, $url, $data);
         } catch (\Exception $e) {
-            $this->modelErrorLog->log($e);
+            $this->modelErrorLog->log($this->activity_id, $e);
         }
     }
 }

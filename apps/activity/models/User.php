@@ -65,7 +65,7 @@ class User extends \App\Common\Models\Activity\User
      * @param array $memo            
      * @return array
      */
-    public function create($user_id, $nickname, $headimgurl, $redpack_user, $thirdparty_user, $worth = 0, $worth2 = 0, $activity_id = '', array $memo = array('memo'=>''))
+    public function create($user_id, $nickname, $headimgurl, $redpack_user, $thirdparty_user, $worth = 0, $worth2 = 0, $activity_id, array $memo = array('memo'=>''))
     {
         $data = array();
         $data['activity_id'] = strval($activity_id); // 邀请活动
@@ -95,7 +95,7 @@ class User extends \App\Common\Models\Activity\User
      * @param array $memo            
      * @return array
      */
-    public function getOrCreateByUserId($user_id, $nickname, $headimgurl, $redpack_user, $thirdparty_user, $worth = 0, $worth2 = 0, $activity_id = '', array $memo = array())
+    public function getOrCreateByUserId($user_id, $nickname, $headimgurl, $redpack_user, $thirdparty_user, $worth = 0, $worth2 = 0, $activity_id, array $memo = array())
     {
         $info = $this->getInfoByuserid($user_id, $activity_id);
         if (empty($info)) {

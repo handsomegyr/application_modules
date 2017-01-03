@@ -9,8 +9,8 @@ class CampaignController extends ControllerBase
         parent::initialize();
         
         if (! $this->getRequest()->isAjax()) {
-            $jssdk = $this->getJssdkInfo();
-            $this->assign("jssdkInfo", $jssdk);
+            // $jssdk = $this->getJssdkInfo();
+            // $this->assign("jssdkInfo", $jssdk);
         }
     }
 

@@ -2,6 +2,18 @@
 namespace App\Weixin\Controllers;
 
 use App\Weixin\Models\Source;
+use App\Weixin\Models\Keyword;
+use App\Weixin\Models\Reply;
+use App\Weixin\Models\Application;
+use App\Weixin\Models\User;
+use App\Weixin\Models\NotKeyword;
+use App\Weixin\Models\Menu;
+use App\Weixin\Models\ConditionalMenu;
+use App\Weixin\Models\ConditionalMenuMatchRule;
+use App\Weixin\Models\Qrcode;
+use App\Weixin\Models\Scene;
+use App\Weixin\Models\ComponentApplication;
+use App\Weixin\Models\ScriptTracking;
 
 class IndexController extends ControllerBase
 {

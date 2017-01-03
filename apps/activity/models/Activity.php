@@ -26,7 +26,7 @@ class Activity extends \App\Common\Models\Activity\Activity
         return $info;
     }
 
-    public function getActivityInfo($activity_id, $now, $is_return_info = false)
+    public function getActivityInfo2($activity_id, $now, $is_return_info = false)
     {
         $ret = array();
         // 获取活动信息

@@ -27,13 +27,16 @@ class IndexController extends ControllerBase
             $source = "weixin";
             
             $modelApi = new \App\Lottery\Services\Api();
-            $identityInfo = array(
+            $userInfo = array(
                 'nickname' => '郭永荣'
+            );
+            $identityInfo = array(
+                'name' => '郭永荣'
             );
             $demo = array(
                 'activity_id' => $activity_id
             );
-            $lotteryInfo = $modelApi->doLottery($activity_id, $identity_id, array(), array(), $source, $identityInfo, $demo);
+            $lotteryInfo = $modelApi->doLottery($activity_id, $identity_id, array(), array(), $source, $userInfo, $identityInfo, $demo);
             if (empty($lotteryInfo['error_code']) && ! empty($lotteryInfo['result'])) {
                 $exchangeInfo = $lotteryInfo['result'];
                 echo $this->result("OK", $exchangeInfo);

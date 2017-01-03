@@ -45,9 +45,10 @@ class Api
      * @param array $exclude_prize_ids            
      * @param string $source            
      * @param array $user_info            
+     * @param array $identityContact            
      * @param array $memo            
      */
-    public function doLottery($activity_id, $identity_id, array $prize_ids = array(), array $exclude_prize_ids = array(), $source = 'weixin', array $user_info = array(), array $memo = array())
+    public function doLottery($activity_id, $identity_id, array $prize_ids = array(), array $exclude_prize_ids = array(), $source = 'weixin', array $user_info = array(), $identityContact = array(), array $memo = array())
     {
         $ret = array(
             'error_code' => '',
@@ -128,7 +129,7 @@ class Api
                 
                 // 记录中奖记录
                 $prizeCode = ! empty($code) ? $code : array();
-                $identityContact = array();
+                
                 // 记录信息
                 $exchangeInfo = $this->_exchange->record($activity_id, $rule['prize_id'], $prizeInfo, $prizeCode, $identity_id, $user_info, $identityContact, $isValid, $source, $memo);
                 if (! empty($exchangeInfo)) {
@@ -149,64 +150,5 @@ class Api
             $ret['error_msg'] = $e->getMessage();
         }
         return $ret;
-    }
-
-    /**
-     * 记录中奖用户的信息
-     *
-     * @param array $userInfo            
-     */
-    public function finish($userInfo)
-    {
-        $diaplay_name = isset($userInfo['diaplay_name']) ? $userInfo['diaplay_name'] : '';
-        $name = isset($userInfo['name']) ? $userInfo['name'] : '';
-        $mobile = isset($userInfo['mobile']) ? $userInfo['mobile'] : '';
-        $tel = isset($userInfo['tel']) ? $userInfo['tel'] : '';
-        $address = isset($userInfo['address']) ? $userInfo['address'] : '';
-        $zip = isset($userInfo['zip']) ? $userInfo['zip'] : '';
-        $id_number = isset($userInfo['id_number']) ? $userInfo['id_number'] : '';
-        $address = isset($userInfo['address']) ? $userInfo['address'] : '';
-        $exchange_id = isset($userInfo['exchange_id']) ? $userInfo['exchange_id'] : '';
-        $identity_id = isset($userInfo['identity_id']) ? $userInfo['identity_id'] : '';
-        
-        $exchangeInfo = $this->_exchange->checkExchangeBy($identity_id, $exchange_id);
-        if ($exchangeInfo == null) {
-            return $this->error(506, "该用户无此兑换信息");
-        }
-        
-        $info = array();
-        
-        if (! empty($diaplay_name))
-            $info['name'] = $diaplay_name;
-        
-        if (! empty($name))
-            $info['name'] = $name;
-        
-        if (! empty($mobile))
-            $info['mobile'] = $mobile;
-        
-        if (! empty($tel))
-            $info['tel'] = $tel;
-        
-        if (! empty($address))
-            $info['address'] = $address;
-        
-        if (! empty($zip))
-            $info['zip'] = $zip;
-        
-        if (! empty($id_number))
-            $info['id_number'] = $id_number;
-        
-        try {
-            $datas = array();
-            $datas['is_valid'] = true;
-            $datas['identity_contact'] = $info;
-            
-            $this->_exchange->updateExchangeInfo($exchange_id, $datas);
-            
-            return $this->result('OK', "提交成功");
-        } catch (\Exception $e) {
-            return $this->error(505, $e->getFile() . $e->getLine() . $e->getMessage());
-        }
     }
 }
