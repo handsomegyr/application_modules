@@ -7,66 +7,6 @@ class CampaignController extends ControllerBase
     protected function initialize()
     {
         parent::initialize();
-        
-        if (! $this->getRequest()->isAjax()) {
-            // $jssdk = $this->getJssdkInfo();
-            // $this->assign("jssdkInfo", $jssdk);
-        }
-    }
-
-    public function getJssdkInfo()
-    {
-        $cacheKey = cacheKey(__FILE__, __CLASS__, __METHOD__);
-        $cache = $this->getDI()->get("cache");
-        $info = $cache->get($cacheKey);
-        
-        if (empty($info)) {
-            $jssdk = doGet("http://wxapi.toysrus.com.cn/wxapi/getjt.php");
-            $jssdk = (string) $jssdk;
-            if (! empty($jssdk)) {
-                if (isJson($jssdk)) {
-                    $info = json_decode($jssdk, true);
-                    $cache->save($cacheKey, $info, 1 * 60); // 1分钟
-                } else {
-                    throw new \Exception("获取微信jssdk信息不是有效的json格式");
-                }
-            } else {
-                throw new \Exception("可能网络繁忙,获取微信jssdk信息请求失败");
-            }
-        } else {
-            // die('getJssdkInfo from cache');
-        }
-        return $info;
-    }
-
-    public function getAccessToken()
-    {
-        $cacheKey = cacheKey(__FILE__, __CLASS__, __METHOD__);
-        $cache = $this->getDI()->get("cache");
-        $info = $cache->get($cacheKey);
-        
-        if (empty($info)) {
-            $accessToken = doGet("http://wxapi.toysrus.com.cn/wxapi/getat.php");
-            $accessToken = (string) $accessToken;
-            if (! empty($accessToken)) {
-                if (isJson($accessToken)) {
-                    $ret = json_decode($accessToken, true);
-                    if (! empty($ret["access_token"])) {
-                        $info = $ret['access_token'];
-                        $cache->save($cacheKey, $info, 1 * 60); // 1分钟
-                    } else {
-                        throw new \Exception("获取微信accesstoken信息为空");
-                    }
-                } else {
-                    throw new \Exception("获取微信accesstoken信息不是有效的json格式");
-                }
-            } else {
-                throw new \Exception("可能网络繁忙,获取微信accesstoken信息请求失败");
-            }
-        } else {
-            // die('getAccessToken from cache');
-        }
-        return $info;
     }
 
     /**
@@ -131,13 +71,6 @@ class CampaignController extends ControllerBase
         var_dump($keys);
     }
 
-    public function getaccesstokenAction()
-    {
-        $this->view->disable();
-        $accessToken = $this->getAccessToken();
-        echo 'access token:' . $accessToken;
-    }
-
     /**
      * 按COOKIE方式，进行授权处理
      *
@@ -193,6 +126,13 @@ class CampaignController extends ControllerBase
         } catch (Exception $e) {
             die($e->getMessage());
         }
+    }
+
+    public function getcookiesAction()
+    {
+        $this->view->disable();
+        
+        var_dump($_COOKIE['Weixin_userInfo']);
     }
 
     public function getSecretKey()

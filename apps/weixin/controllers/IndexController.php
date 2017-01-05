@@ -37,7 +37,7 @@ class IndexController extends ControllerBase
     protected $_menu;
 
     protected $_conditional_menu;
-	
+
     protected $_conditional_menu_match_rule;
 
     protected $_weixin;
@@ -100,6 +100,7 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
+        // http://www.jizigou.com/weixin/index/index
         die('index');
     }
 
@@ -110,6 +111,7 @@ class IndexController extends ControllerBase
      */
     public function callbackAction()
     {
+        // http://www.jizigou.com/weixin/index/callback
         try {
             /**
              * ==================================================================================
@@ -279,6 +281,7 @@ class IndexController extends ControllerBase
      */
     public function syncmenuAction()
     {
+        // http://www.jizigou.com/weixin/index/syncmenu
         try {
             $menus = $this->_menu->buildMenu();
             if (! empty($menus)) {
@@ -297,20 +300,21 @@ class IndexController extends ControllerBase
      */
     public function syncconditionalmenuAction()
     {
+        // http://www.jizigou.com/weixin/index/syncconditionalmenu
         try {
             $matchRuleList = $this->_conditional_menu->getList4MatchRule();
             if (! empty($matchRuleList)) {
                 foreach ($matchRuleList as $matchRule) {
-					$ruleInfo = $this->_conditional_menu_match_rule->getInfoById($matchRule['matchrule']);
-					if(empty($ruleInfo)){
-						continue;
-					}
-					$matchRule['ruleInfo'] = $ruleInfo;
+                    $ruleInfo = $this->_conditional_menu_match_rule->getInfoById($matchRule['matchrule']);
+                    if (empty($ruleInfo)) {
+                        continue;
+                    }
+                    $matchRule['ruleInfo'] = $ruleInfo;
                     // 如果原来的有值的话就删除
                     if (! empty($matchRule['menuid'])) {
                         $ret = $this->_weixin->getMenuManager()->delconditional($matchRule['menuid']);
                         if (! empty($ret['errcode'])) {
-                            throw new \Exception( $ret['errmsg'], $ret['errcode']);
+                            throw new \Exception($ret['errmsg'], $ret['errcode']);
                         }
                     }
                     
@@ -318,7 +322,7 @@ class IndexController extends ControllerBase
                     $menusWithMatchrule = $this->_conditional_menu->buildMenusWithMatchrule($matchRule);
                     $ret = $this->_weixin->getMenuManager()->addconditional($menusWithMatchrule);
                     if (! empty($ret['errcode'])) {
-                        throw new \Exception($ret['errmsg'],$ret['errcode'] );
+                        throw new \Exception($ret['errmsg'], $ret['errcode']);
                     }
                     $this->_conditional_menu->recordMenuId($matchRule, $ret['menuid']);
                 }
@@ -335,6 +339,7 @@ class IndexController extends ControllerBase
      */
     public function createqrcodeAction()
     {
+        // http://www.jizigou.com/weixin/index/createqrcode
         try {
             $scenes = $this->_scene->getAll();
             foreach ($scenes as $scene) {
@@ -361,11 +366,12 @@ class IndexController extends ControllerBase
      */
     public function sendtemplatemsgAction()
     {
+        // http://www.jizigou.com/weixin/index/sendtemplatemsg
         try {
             $template_id = "5UWzYiEm8AsW97T9uZbX-zUGporKDGIfDFf-wUi8OD4";
             $url = "http://www.baidu.com";
             $topcolor = "#FF0000";
-            $touser = "oFEX-joe9BYUKqluMFux104CxRNE";
+            $touser = "o4ELSvz-B4_DThF0Vpfrverk3IpY";
             $data = array();
             $data['first'] = array(
                 "value" => "您好，您已成功消费。",
@@ -392,9 +398,10 @@ class IndexController extends ControllerBase
                 "color" => "#0A0A0A"
             );
             
-            $this->_weixin->getMsgManager()
+            $ret = $this->_weixin->getMsgManager()
                 ->getTemplateSender()
                 ->send($touser, $template_id, $url, $topcolor, $data);
+            var_dump($ret);
             return true;
         } catch (\Exception $e) {
             var_dump($e);
@@ -407,6 +414,7 @@ class IndexController extends ControllerBase
      */
     public function getsettingsAction()
     {
+        // http://www.jizigou.com/weixin/index/getsettings
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -435,6 +443,7 @@ class IndexController extends ControllerBase
      */
     public function getjssdkinfoAction()
     {
+        // http://www.jizigou.com/weixin/index/getjssdkinfo
         try {
             // 如果不是跨域请求的话
             $jsonpcallback = trim($this->get('jsonpcallback'));
@@ -481,6 +490,7 @@ class IndexController extends ControllerBase
      */
     public function getaccesstokenAction()
     {
+        // http://www.jizigou.com/weixin/index/getaccesstoken
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -506,6 +516,7 @@ class IndexController extends ControllerBase
      */
     public function getjsapiticketAction()
     {
+        // http://www.jizigou.com/weixin/index/getjsapiticket
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -532,6 +543,7 @@ class IndexController extends ControllerBase
      */
     public function getcallbackipAction()
     {
+        // http://www.jizigou.com/weixin/index/getcallbackip
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -556,6 +568,7 @@ class IndexController extends ControllerBase
      */
     public function getallgroupAction()
     {
+        // http://www.jizigou.com/weixin/index/getcallbackip
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -580,6 +593,7 @@ class IndexController extends ControllerBase
      */
     public function getuserinfoAction()
     {
+        // http://www.jizigou.com/weixin/index/getuserinfo?FromUserName=o4ELSvz-B4_DThF0Vpfrverk3IpY
         try {
             $FromUserName = $this->get('FromUserName', '');
             
