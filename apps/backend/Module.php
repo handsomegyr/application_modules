@@ -20,9 +20,7 @@ class Module
     {
         $loader = new Loader();
         
-        $loader->registerNamespaces(array(            
-            'App\Backend\Submodules\System\Models' => __DIR__ . '/submodules/system/models/',
-            'App\Backend\Models' => __DIR__ . '/models/',
+        $loader->registerNamespaces(array(
             'App\Backend\Controllers' => __DIR__ . '/controllers/',
             'App\Backend\Tags' => __DIR__ . '/tags/',
             'App\Backend\Plugins' => __DIR__ . '/plugins/'
@@ -44,8 +42,7 @@ class Module
         $config = include __DIR__ . "/config/config.php";
         
         // Registering a dispatcher
-        $di->set('dispatcher', function ()
-        {
+        $di->set('dispatcher', function () {
             $eventsManager = new EventsManager();
             
             /**
@@ -66,16 +63,14 @@ class Module
             return $dispatcher;
         });
         
-        $di['myTag'] = function ()
-        {
+        $di['myTag'] = function () {
             return new MyTags();
         };
         
         /**
          * Setting up the view component
          */
-        $di['view'] = function ()
-        {
+        $di['view'] = function () {
             $view = new View();
             $view->setViewsDir(__DIR__ . '/views/');
             $view->registerEngines(array(
@@ -88,8 +83,7 @@ class Module
         /**
          * Setting up volt
          */
-        $di->set('volt', function ($view, $di)
-        {
+        $di->set('volt', function ($view, $di) {
             
             $volt = new VoltEngine($view, $di);
             
@@ -101,6 +95,6 @@ class Module
             $compiler->addFunction('is_a', 'is_a');
             
             return $volt;
-        }, true);        
+        }, true);
     }
 }

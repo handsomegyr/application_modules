@@ -20,15 +20,10 @@ class Module
     {
         $loader = new Loader();
         
-        $loader->registerNamespaces(array( 
-            'App\Backend\Submodules\System\Models' => APP_PATH . 'apps/backend/submodules/system/models/',
-            
-            'App\Backend\Models' => APP_PATH . 'apps/backend/models/',
+        $loader->registerNamespaces(array(
             'App\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
             'App\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
-            
-            'App\Backend\Submodules\Member\Models' => __DIR__ . '/models/',
             'App\Backend\Submodules\Member\Controllers' => __DIR__ . '/controllers/'
         ));
         
@@ -48,8 +43,7 @@ class Module
         $config = include APP_PATH . "apps/backend/config/config.php";
         
         // Registering a dispatcher
-        $di->set('dispatcher', function ()
-        {
+        $di->set('dispatcher', function () {
             $eventsManager = new EventsManager();
             
             /**
@@ -71,16 +65,14 @@ class Module
             return $dispatcher;
         });
         
-        $di['myTag'] = function ()
-        {
+        $di['myTag'] = function () {
             return new MyTags();
         };
         
         /**
          * Setting up the view component
          */
-        $di['view'] = function ()
-        {
+        $di['view'] = function () {
             $view = new View();
             $view->setViewsDir(__DIR__ . '/views/');
             $view->setLayoutsDir('../../../views/layouts/');
@@ -97,8 +89,7 @@ class Module
         /**
          * Setting up volt
          */
-        $di->set('volt', function ($view, $di)
-        {
+        $di->set('volt', function ($view, $di) {
             
             $volt = new VoltEngine($view, $di);
             

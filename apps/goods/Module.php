@@ -17,9 +17,6 @@ class Module
         
         $loader->registerNamespaces(array(
             'App\Goods\Controllers' => __DIR__ . '/controllers/',
-            'App\Goods\Models' => __DIR__ . '/models/',
-            'App\Goods\Service' => __DIR__ . '/service/',
-            'App\Goods\Views\Helpers' => __DIR__ . '/views/helpers/'
         ));
         $loader->register();
     }
@@ -37,8 +34,7 @@ class Module
         $config = include __DIR__ . "/config/config.php";
         
         // Registering a dispatcher
-        $di->set('dispatcher', function ()
-        {
+        $di->set('dispatcher', function () {
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace("App\Goods\Controllers");
             return $dispatcher;
@@ -47,8 +43,7 @@ class Module
         /**
          * Setting up the view component
          */
-        $di['view'] = function ()
-        {
+        $di['view'] = function () {
             $view = new View();
             $view->setViewsDir(__DIR__ . '/views/');
             

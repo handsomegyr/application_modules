@@ -16,8 +16,7 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'App\Tencent\Controllers' => __DIR__ . '/controllers/',
-            'App\Tencent\Models' => __DIR__ . '/models/'
+            'App\Tencent\Controllers' => __DIR__ . '/controllers/'
         ));
         $loader->register();
     }
@@ -35,8 +34,7 @@ class Module
         $config = include __DIR__ . "/config/config.php";
         
         // Registering a dispatcher
-        $di->set('dispatcher', function ()
-        {
+        $di->set('dispatcher', function () {
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace("App\Tencent\Controllers");
             return $dispatcher;
@@ -45,8 +43,7 @@ class Module
         /**
          * Setting up the view component
          */
-        $di['view'] = function ()
-        {
+        $di['view'] = function () {
             $view = new View();
             $view->setViewsDir(__DIR__ . '/views/');
             

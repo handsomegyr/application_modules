@@ -1,0 +1,21 @@
+{
+  "name" : "handsomegyr/model",
+  "description" : "A simple PHP model library for Business",
+  "require" : {
+    "php" : ">=5.5"
+  },
+  "authors" : [ {
+    "name" : "郭永荣",
+    "email" : "handsomegyr@gmail.com",
+    "homepage" : "http://github.com/handsomegyr/"
+  } ],
+  "keywords" : [ "model" ],
+  "autoload" : {
+    "psr-0" : {
+      "App" : "lib/"
+    }
+  },
+  "license" : "MIT",
+  "type" : "library",
+  "homepage" : "http://github.com/handsomegyr/models"
+}

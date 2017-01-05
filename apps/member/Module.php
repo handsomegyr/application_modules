@@ -19,9 +19,7 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'App\Member\Controllers' => __DIR__ . '/controllers/',
-            'App\Member\Models' => __DIR__ . '/models/',
-            'App\Member\Services' => __DIR__ . '/services/'
+            'App\Member\Controllers' => __DIR__ . '/controllers/'
         ));
         $loader->register();
     }
@@ -45,8 +43,7 @@ class Module
         $config = include __DIR__ . "/config/config.php";
         
         // Registering a dispatcher
-        $di->set('dispatcher', function ()
-        {
+        $di->set('dispatcher', function () {
             $eventsManager = new EventsManager();
             // $eventsManager->attach('dispatch:beforeDispatch', new WeixinPlugin());
             // $eventsManager->attach('dispatch:beforeDispatch', new TencentPlugin());
@@ -60,8 +57,7 @@ class Module
         /**
          * Setting up the view component
          */
-        $di['view'] = function ()
-        {
+        $di['view'] = function () {
             $view = new View();
             $view->setViewsDir(__DIR__ . '/views/');
             

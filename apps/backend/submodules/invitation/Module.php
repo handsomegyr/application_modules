@@ -21,15 +21,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'App\Backend\Submodules\System\Models' => APP_PATH . 'apps/backend/submodules/system/models/',
-            'App\Backend\Submodules\Activity\Models' => APP_PATH . 'apps/backend/submodules/activity/models/',
-            
-            'App\Backend\Models' => APP_PATH . 'apps/backend/models/',
             'App\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
             'App\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
-            
-            'App\Backend\Submodules\Invitation\Models' => __DIR__ . '/models/',
             'App\Backend\Submodules\Invitation\Controllers' => __DIR__ . '/controllers/'
         ));
         

@@ -17,7 +17,6 @@ class Module
         
         $loader->registerNamespaces(array(
             'App\Message\Controllers' => __DIR__ . '/controllers/',
-            'App\Message\Models' => __DIR__ . '/models/'
         ));
         $loader->register();
     }
