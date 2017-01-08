@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App' => array($vendorDir . '/handsomegyr/model/lib'),
     'Weixin' => array($vendorDir . '/handsomegyr/wechat/lib'),
     'Sms' => array($vendorDir . '/handsomegyr/sms/lib'),
     'SecurityLib' => array($vendorDir . '/ircmaxell/security-lib/lib'),

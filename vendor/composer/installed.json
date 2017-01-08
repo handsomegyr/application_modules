@@ -2693,5 +2693,48 @@
         "keywords": [
             "weixin"
         ]
+    },
+    {
+        "name": "handsomegyr/model",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/handsomegyr/models.git",
+            "reference": "7b5c08357ecadb770ae1140284a9e6050b621dac"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/handsomegyr/models/zipball/7b5c08357ecadb770ae1140284a9e6050b621dac",
+            "reference": "7b5c08357ecadb770ae1140284a9e6050b621dac",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5"
+        },
+        "time": "2017-01-04 12:25:22",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "App": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "郭永荣",
+                "email": "handsomegyr@gmail.com",
+                "homepage": "http://github.com/handsomegyr/"
+            }
+        ],
+        "description": "A simple PHP model library for Business",
+        "homepage": "http://github.com/handsomegyr/models",
+        "keywords": [
+            "model"
+        ]
     }
 ]

@@ -475,7 +475,7 @@ class IndexController extends ControllerBase
                 $rs = $objJssdk->getSignPackage($url, $this->_appConfig['jsapi_ticket']);
                 $rs['access_token'] = $this->_appConfig['access_token'];
                 $rs['jsapi_ticket'] = $this->_appConfig['jsapi_ticket'];
-                $rs['expire_time'] = $this->_appConfig['expire_time'];
+                $rs['expire_time'] = $this->_appConfig['jsapi_ticket_expire'];
                 echo $this->result("OK", $rs);
                 return true;
             }

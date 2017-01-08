@@ -132,6 +132,13 @@ class ComposerStaticInit40c6deb47b8891fd8f6c21382d1654a7
     );
 
     public static $prefixesPsr0 = array (
+        'A' => 
+        array (
+            'App' => 
+            array (
+                0 => __DIR__ . '/..' . '/handsomegyr/model/lib',
+            ),
+        ),    
         'W' => 
         array (
             'Weixin' => 
