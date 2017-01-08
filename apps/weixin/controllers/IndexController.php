@@ -58,8 +58,8 @@ class IndexController extends ControllerBase
 
     public function initialize()
     {
-        parent::initialize();
-        
+        parent::initialize();        
+        $this->view->disable();
         try {
             $this->_source = new Source();
             $this->_keyword = new Keyword();
