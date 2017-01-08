@@ -459,7 +459,7 @@ class IndexController extends ControllerBase
                 echo $this->error("-1", "参数URL的为空");
                 return false;
             }
-            $url = urldecode($url);
+            //$url = urldecode($url);
             
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
