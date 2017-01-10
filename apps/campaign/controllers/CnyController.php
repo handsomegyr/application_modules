@@ -214,13 +214,13 @@ class CnyController extends ControllerBase
             $addressCheck = false;
             if ($nameCheck) {
                 if (empty($name)) {
-                    echo $this->error(- 40411, "姓名不能为空");
+                    echo $this->error(- 40411, "请填写姓名");
                     return false;
                 }
             }
             if ($mobileCheck) {
                 if (empty($mobile)) {
-                    echo $this->error(- 40412, "手机号不能为空");
+                    echo $this->error(- 40412, "请填写手机号");
                     return false;
                 }
                 if (! isValidMobile($mobile)) {
@@ -230,7 +230,7 @@ class CnyController extends ControllerBase
             }
             if ($addressCheck) {
                 if (empty($address)) {
-                    echo $this->error(- 40414, "地址不能为空");
+                    echo $this->error(- 40414, "请填写地址");
                     return false;
                 }
             }
@@ -239,7 +239,7 @@ class CnyController extends ControllerBase
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
-                echo $this->error(- 40499, "上次操作还未完成,请等待");
+                echo $this->error(- 40499, "请等待");
                 return false;
             }
             
@@ -252,7 +252,7 @@ class CnyController extends ControllerBase
             // 是否是黑名单用户
             $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity_id);
             if (! empty($blankUserInfo)) {
-                echo $this->error(- 40422, '该用户已经是黑名单用户');
+                echo $this->error(- 40422, '该用户已经禁用');
                 return false;
             }
             
@@ -310,7 +310,7 @@ class CnyController extends ControllerBase
                 // 失败的话
                 $e = new \Exception($lotteryResult['error_msg'], $lotteryResult['error_code']);
                 $this->modelErrorLog->log($this->activity_id, $e);
-                echo ($this->error(- 40432, '活动太火爆，奖品还在路上'));
+                echo ($this->error(- 40432, '没有中奖'));
                 return false;
             }
         } catch (\Exception $e) {
@@ -351,13 +351,13 @@ class CnyController extends ControllerBase
             $addressCheck = true;
             if ($nameCheck) {
                 if (empty($name)) {
-                    echo $this->error(- 40453, "姓名不能为空");
+                    echo $this->error(- 40453, "请填写姓名");
                     return false;
                 }
             }
             if ($mobileCheck) {
                 if (empty($mobile)) {
-                    echo $this->error(- 40454, "手机号不能为空");
+                    echo $this->error(- 40454, "请填写手机号");
                     return false;
                 }
                 if (! isValidMobile($mobile)) {
@@ -367,7 +367,7 @@ class CnyController extends ControllerBase
             }
             if ($addressCheck) {
                 if (empty($address)) {
-                    echo $this->error(- 40456, "地址不能为空");
+                    echo $this->error(- 40456, "请填写地址");
                     return false;
                 }
             }
@@ -408,7 +408,7 @@ class CnyController extends ControllerBase
                 'prize_is_virtual' => false
             ));
             if (! empty($isMobileExist)) {
-                echo $this->error(- 40461, "该手机号已经填写过了");
+                echo $this->error(- 40461, "手机号已存在");
                 return false;
             }
             // 记录中奖用户的信息
@@ -483,7 +483,7 @@ class CnyController extends ControllerBase
             // {"code":200,"name":"OK","description":"message queued, status=waiting"}
             $ret = $this->doSendSms($mobile, $exchangeInfo['prize_virtual_code']);
             if (! (isset($ret['code']) && $ret['code'] == 200)) {
-                echo $this->error(- 40471, "该手机号无法发送短信");
+                echo $this->error(- 40471, "无法发送短信");
                 return false;
             }
             
@@ -600,11 +600,11 @@ class CnyController extends ControllerBase
             $code = trim($this->get('code', uniqid()));
             
             if (empty($mobile)) {
-                echo $this->error(- 40454, "手机号不能为空");
+                echo $this->error(- 40454, "请填写手机号");
                 return false;
             }
             if (! isValidMobile($mobile)) {
-                echo $this->error(- 40455, "手机号格式不正确");
+                echo $this->error(- 40455, "手机号格式错误");
                 return false;
             }
             
