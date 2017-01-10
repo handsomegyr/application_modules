@@ -3,6 +3,7 @@ namespace App\Backend\Submodules\Lottery\Controllers;
 
 use App\Backend\Submodules\Lottery\Models\Exchange;
 use App\Backend\Submodules\Prize\Models\Prize;
+use App\Backend\Submodules\Prize\Models\Category;
 use App\Backend\Submodules\Activity\Models\Activity;
 use App\Backend\Submodules\System\Models\Source;
 
@@ -18,6 +19,8 @@ class ExchangeController extends \App\Backend\Controllers\FormController
 
     private $modelPrize;
 
+    private $modelPrizeCategory;
+
     private $modelActivity;
 
     private $modelSource;
@@ -28,6 +31,7 @@ class ExchangeController extends \App\Backend\Controllers\FormController
         $this->modelPrize = new Prize();
         $this->modelActivity = new Activity();
         $this->modelSource = new Source();
+        $this->modelPrizeCategory = new Category();
         parent::initialize();
     }
 
@@ -263,8 +267,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->modelPrizeCategory->getAll()
             ),
             'list' => array(
                 'is_show' => false
@@ -303,8 +308,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
                 'is_show' => false
