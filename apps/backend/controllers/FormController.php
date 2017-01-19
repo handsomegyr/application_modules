@@ -815,7 +815,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $appWeixinConfig = $modelWeixinApplication->getTokenByAppid($appid);
         
         $weixin = new \Weixin\Client();
-        $weixin->setAccessToken('sv3Ix1YHnKTYpXg2YxbCkZIhuvW0p0hLu_-nWOs5jcbdZAqTmnWNs0-Vawl1IAXASY8VVtwnsdVBrzkWjMRavmQWGsa-CAkwsADx_AGox-90hnm1LZinmRwv3t-IL4h_JJWjADAAAN');
+        $weixin->setAccessToken('3YgWolF5jpZMCh5OU2ZuBuSq3x6LXW1KoSGTZoy0jtKS4W2Xo_ZFkgBDufgHUZ4UicDlRqAQnP8CAfSfBOzZZ1mxk17iubvhYQHbhQgAx1gtZIgxr9DmD-2uS_0cMiiKQGFiADAIYX');
         // if (! empty($appWeixinConfig['access_token'])) {
         // $weixin->setAccessToken($appWeixinConfig['access_token']);
         // }

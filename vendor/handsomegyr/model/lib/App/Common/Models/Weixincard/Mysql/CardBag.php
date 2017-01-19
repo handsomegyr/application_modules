@@ -8,19 +8,20 @@ class CardBag extends Base
 
     /**
      * 微信卡券-卡包
-     * This model is mapped to the table iweixincard_cardbag
+     * This model is mapped to the table iweixincard_card_bag
      */
     public function getSource()
     {
-        return 'iweixincard_cardbag';
+        return 'iweixincard_card_bag';
     }
 
     public function reorganize(array $data)
     {
         $data = parent::reorganize($data);
+        $data['IsGiveByFriend'] = $this->changeToBoolean($data['IsGiveByFriend']);
+        
         $data['is_got'] = $this->changeToBoolean($data['is_got']);
         $data['got_time'] = $this->changeToMongoDate($data['got_time']);
-        $data['IsGiveByFriend'] = $this->changeToBoolean($data['IsGiveByFriend']);
         $data['is_consumed'] = $this->changeToBoolean($data['is_consumed']);
         $data['consume_time'] = $this->changeToMongoDate($data['consume_time']);
         $data['is_deleted'] = $this->changeToBoolean($data['is_deleted']);

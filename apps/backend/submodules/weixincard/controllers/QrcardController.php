@@ -52,14 +52,14 @@ class QrcardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['card_code'] = array(
+        $schemas['code'] = array(
             'name' => '自定义码',
             'data' => array(
                 'type' => 'string',
                 'length' => '20'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -73,14 +73,14 @@ class QrcardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['code'] = array(
-            'name' => '券码',
+        $schemas['openid'] = array(
+            'name' => '领取者openid',
             'data' => array(
                 'type' => 'string',
-                'length' => '12'
+                'length' => '32'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -94,21 +94,194 @@ class QrcardController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['pwd'] = array(
-            'name' => '券密码',
+        $schemas['expire_seconds'] = array(
+            'name' => '有效时间',
             'data' => array(
-                'type' => 'string',
-                'length' => '8'
+                'type' => 'integer',
+                'length' => '10',
+                'defaultValue' => 1800
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['is_unique_code'] = array(
+            'name' => '是否指定下发二维码',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => '1'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => 1
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['balance'] = array(
+            'name' => '红包余额',
+            'data' => array(
+                'type' => 'integer',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['outer_id'] = array(
+            'name' => '场景值',
+            'data' => array(
+                'type' => 'integer',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['ticket'] = array(
+            'name' => '二维码ticket',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['url'] = array(
+            'name' => '二维码图片解析地址',
+            'data' => array(
+                'type' => 'string',
+                'length' => '128'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
                 'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['qrcodeUrl'] = array(
+            'name' => '通过ticket换取二维码',
+            'data' => array(
+                'type' => 'string',
+                'length' => '128'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['show_qrcode_url'] = array(
+            'name' => '二维码显示地址',
+            'data' => array(
+                'type' => 'string',
+                'length' => '128'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['is_created'] = array(
+            'name' => '是否已生成',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => '1'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => 1
             ),
             'search' => array(
                 'is_show' => false
@@ -118,15 +291,15 @@ class QrcardController extends \App\Backend\Controllers\FormController
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
         
-        $schemas['start_time'] = array(
-            'name' => '开始有效期',
+        $schemas['ticket_time'] = array(
+            'name' => '生成时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => '19',
                 'defaultValue' => getCurrentTime($now)
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -136,98 +309,6 @@ class QrcardController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['end_time'] = array(
-            'name' => '截止有效期',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => '19',
-                'defaultValue' => getCurrentTime($now + 3600 * 24 * 30 - 1)
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['is_deposited'] = array(
-            'name' => '是否已导入',
-            'data' => array(
-                'type' => 'boolean',
-                'length' => '1'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => 1
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['is_consumed'] = array(
-            'name' => '是否已核销',
-            'data' => array(
-                'type' => 'boolean',
-                'length' => '1'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => 1
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['memo'] = array(
-            'name' => '备注',
-            'data' => array(
-                'type' => 'json',
-                'length' => '1000'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
                 'is_show' => false
             )
         );
@@ -250,41 +331,68 @@ class QrcardController extends \App\Backend\Controllers\FormController
         $cardList = $this->modelCard->getAllWithCardId();
         foreach ($list['data'] as &$item) {
             $item['card_name'] = isset($cardList[$item['card_id']]) ? $cardList[$item['card_id']] : "--";
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
+            $item['ticket_time'] = date("Y-m-d H:i:s", $item['ticket_time']->sec);
         }
         
         return $list;
     }
 
     /**
-     * 导入code
-     * 开发者需调用该接口将自定义code 导入微信卡券后台，由微信侧代理存储并下发
-     * code，本接口仅用于支持微信摇卡券活动。
-     * 注：
-     * 1）单次调用接口传入code 的数量上限为100 个。
-     * 2）每一个 code 均不能为空串，且不能重复填入相同code，否则会导入失败。
-     * 3）导入失败支持重复导入，提示成功为止。
-     *
-     * 一次性处理,不用计划任务配置
-     * 如果导入的数据量过大,那么可以使用多进程 来导入数据
-     * 可以先用getidsAction获取每个进程的数据处理范围
+     * 生成卡券二维码的Hook
      */
-    public function depositecodeAction()
+    public function createAction()
     {
-        // http://www.applicationmodule.com:10080/admin/weixincard/Qrcard/depositecode?card_id=p4ELSv5zS98NBYuq8D1l2HcgRou0
+        // http://www.applicationmodule.com:10080/admin/weixincard/qrcard/create
         try {
             $this->view->disable();
             $weixin = $this->getWeixin();
             $this->modelQrcard->setWeixin($weixin);
             
-            $card_id = $this->get('card_id', '');
-            if (empty($card_id)) {
-                throw new \Exception("card_id未指定", - 1);
+            $cards = $this->modelQrcard->getAll();
+            foreach ($cards as $card) {
+                if (empty($card['expire_seconds']) && ! empty($card['is_created'])) { // 如果是永久并且已生成的话
+                    continue;
+                }
+                if (! empty($card['expire_seconds']) && ! empty($card['is_created']) && ($card['ticket_time']->sec + $card['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
+                    continue;
+                }
+                
+                $card_id = $card['card_id'];
+                $cardInfo = $this->modelCard->getInfoByCardId($card_id);
+                if (empty($cardInfo)) {
+                    throw new \Exception("卡券ID为{$card_id}的数据不存在", - 1);
+                }
+                
+                // 卡券Code码,use_custom_code字段为true的卡券必须填写，非自定义code不必填写。
+                if (empty($card['code']) && ! empty($cardInfo['use_custom_code'])) {
+                    throw new \Exception("use_custom_code字段为true的卡券必须填写卡券Code码", - 2);
+                }
+                
+                // 指定领取者的openid，只有该用户能领取。bind_openid字段为true的卡券必须填写，非指定openid不必填写。
+                if (empty($card['openid']) && ! empty($cardInfo['bind_openid'])) {
+                    throw new \Exception("bind_openid字段为true的卡券必须填写必须指定领取者的openid", - 3);
+                }
+                // 指定二维码的有效时间，范围是60 ~ 1800秒。不填默认为永久有效
+                if (! empty($card['expire_seconds']) && ($cardInfo['expire_seconds'] < 60 || $cardInfo['expire_seconds'] < 1800)) {
+                    throw new \Exception("指定二维码的有效时间，范围是60 ~ 1800秒", - 4);
+                }
+                // 注意填写该字段时，卡券须通过审核且库存不为0。
+                if (! empty($card['is_unique_code']) && $cardInfo['expire_seconds'] == 0 && $cardInfo['expire_seconds']) {
+                    throw new \Exception("卡券须通过审核且库存不为0", - 5);
+                }
+                
+                // 在微信公众平台生成相应的二维码
+                $this->modelQrcard->create4Weixin($card);
+                
+                // // 在卡包里面记录信息
+                // $memo = array(
+                // 'card_type' => $cardInfo['card_type'],
+                // 'iscreatedByQrcard' => 1,
+                // 'balance' => $balance,
+                // 'card_record_id' => $cardInfo['_id']
+                // );
+                // $cardbagInfo = $this->_cardBag->addCard($card_id, $code, $openid, $outer_id, $memo);
             }
-            // 导入自定义卡券code处理
-            $this->modelQrcard->depositeCode($card_id);
-            
             $this->makeJsonResult();
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

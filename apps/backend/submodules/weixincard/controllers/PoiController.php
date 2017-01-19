@@ -27,33 +27,50 @@ class PoiController extends \App\Backend\Controllers\FormController
     {
         $schemas = parent::getSchemas();
         
-        $schemas['card_id'] = array(
-            'name' => '微信卡券',
+        $schemas['poi_id'] = array(
+            'name' => '微信门店ID',
             'data' => array(
                 'type' => 'string',
-                'length' => '32'
+                'length' => '10'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => function () {
-                    return $this->modelCard->getAllWithCardId();
-                }
+                'input_type' => 'text',
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true,
-                'list_data_name' => 'card_name'
+                'is_show' => true
             ),
             'search' => array(
                 'is_show' => false
             )
         );
         
-        $schemas['card_code'] = array(
-            'name' => '自定义码',
+        $schemas['sid'] = array(
+            'name' => '商户id',
+            'data' => array(
+                'type' => 'string',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['business_name'] = array(
+            'name' => '名称',
             'data' => array(
                 'type' => 'string',
                 'length' => '20'
@@ -73,11 +90,11 @@ class PoiController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['code'] = array(
-            'name' => '券码',
+        $schemas['branch_name'] = array(
+            'name' => '分店名',
             'data' => array(
                 'type' => 'string',
-                'length' => '12'
+                'length' => '20'
             ),
             'validation' => array(
                 'required' => true
@@ -94,11 +111,374 @@ class PoiController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['pwd'] = array(
-            'name' => '券密码',
+        $schemas['province'] = array(
+            'name' => '省',
             'data' => array(
                 'type' => 'string',
-                'length' => '8'
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['city'] = array(
+            'name' => '市',
+            'data' => array(
+                'type' => 'string',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['district'] = array(
+            'name' => '区',
+            'data' => array(
+                'type' => 'string',
+                'length' => '20'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['address'] = array(
+            'name' => '街道地址',
+            'data' => array(
+                'type' => 'string',
+                'length' => '50'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['telephone'] = array(
+            'name' => '电话',
+            'data' => array(
+                'type' => 'string',
+                'length' => '20'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['categories'] = array(
+            'name' => '类型',
+            'data' => array(
+                'type' => 'string',
+                'length' => '1000'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['offset_type'] = array(
+            'name' => '坐标类型',
+            'data' => array(
+                'type' => 'integer',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['longitude'] = array(
+            'name' => '经度',
+            'data' => array(
+                'type' => 'integer',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['latitude'] = array(
+            'name' => '纬度',
+            'data' => array(
+                'type' => 'integer',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['photo_list'] = array(
+            'name' => '图片列表',
+            'data' => array(
+                'type' => 'string',
+                'length' => '1000'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['recommend'] = array(
+            'name' => '推荐品',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['special'] = array(
+            'name' => '特色服务',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['introduction'] = array(
+            'name' => '商户简介',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['open_time'] = array(
+            'name' => '营业时间',
+            'data' => array(
+                'type' => 'string',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['avg_price'] = array(
+            'name' => '人均价格',
+            'data' => array(
+                'type' => 'integer',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['available_state'] = array(
+            'name' => '可用状态',
+            'data' => array(
+                'type' => 'integer',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['update_status'] = array(
+            'name' => '更新状态',
+            'data' => array(
+                'type' => 'integer',
+                'length' => '10'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['mobile'] = array(
+            'name' => '移动电话',
+            'data' => array(
+                'type' => 'string',
+                'length' => '11'
             ),
             'validation' => array(
                 'required' => true
@@ -118,75 +498,8 @@ class PoiController extends \App\Backend\Controllers\FormController
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
         
-        $schemas['start_time'] = array(
-            'name' => '开始有效期',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => '19',
-                'defaultValue' => getCurrentTime($now)
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['end_time'] = array(
-            'name' => '截止有效期',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => '19',
-                'defaultValue' => getCurrentTime($now + 3600 * 24 * 30 - 1)
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['is_deposited'] = array(
-            'name' => '是否已导入',
-            'data' => array(
-                'type' => 'boolean',
-                'length' => '1'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => 1
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['is_consumed'] = array(
-            'name' => '是否已核销',
+        $schemas['is_uploaded'] = array(
+            'name' => '是否已上传',
             'data' => array(
                 'type' => 'boolean',
                 'length' => '1'
@@ -243,51 +556,5 @@ class PoiController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelPoi;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $cardList = $this->modelCard->getAllWithCardId();
-        foreach ($list['data'] as &$item) {
-            $item['card_name'] = isset($cardList[$item['card_id']]) ? $cardList[$item['card_id']] : "--";
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-        }
-        
-        return $list;
-    }
-
-    /**
-     * 导入code
-     * 开发者需调用该接口将自定义code 导入微信卡券后台，由微信侧代理存储并下发
-     * code，本接口仅用于支持微信摇卡券活动。
-     * 注：
-     * 1）单次调用接口传入code 的数量上限为100 个。
-     * 2）每一个 code 均不能为空串，且不能重复填入相同code，否则会导入失败。
-     * 3）导入失败支持重复导入，提示成功为止。
-     *
-     * 一次性处理,不用计划任务配置
-     * 如果导入的数据量过大,那么可以使用多进程 来导入数据
-     * 可以先用getidsAction获取每个进程的数据处理范围
-     */
-    public function depositecodeAction()
-    {
-        // http://www.applicationmodule.com:10080/admin/weixincard/Poi/depositecode?card_id=p4ELSv5zS98NBYuq8D1l2HcgRou0
-        try {
-            $this->view->disable();
-            $weixin = $this->getWeixin();
-            $this->modelPoi->setWeixin($weixin);
-            
-            $card_id = $this->get('card_id', '');
-            if (empty($card_id)) {
-                throw new \Exception("card_id未指定", - 1);
-            }
-            // 导入自定义卡券code处理
-            $this->modelPoi->depositeCode($card_id);
-            
-            $this->makeJsonResult();
-        } catch (\Exception $e) {
-            $this->makeJsonError($e->getMessage());
-        }
     }
 }

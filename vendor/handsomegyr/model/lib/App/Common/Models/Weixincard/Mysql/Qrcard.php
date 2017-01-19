@@ -18,6 +18,7 @@ class Qrcard extends Base
     public function reorganize(array $data)
     {
         $data = parent::reorganize($data);
+        $data['is_unique_code'] = $this->changeToBoolean($data['is_unique_code']);
         $data['is_created'] = $this->changeToBoolean($data['is_created']);
         $data['ticket_time'] = $this->changeToMongoDate($data['ticket_time']);
         return $data;
