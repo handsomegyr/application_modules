@@ -97,7 +97,7 @@ class Base
                 }
             } else {
                 // 卡券处理
-                $this->processCard();
+                $this->processCard($datas);
                 $response = 'success';
             }
         }
@@ -157,92 +157,135 @@ class Base
     /**
      * 卡券的处理
      *
-     * @param string $content            
+     * @param array $datas            
      * @return boolean
      */
-    protected function processCard()
+    protected function processCard(array $datas)
     {
-        // $datas = $this->_sourceDatas;
-        // $Event = isset($datas['Event']) ? trim($datas['Event']) : '';
-        // $MsgType = isset($datas['MsgType']) ? trim($datas['MsgType']) : '';
-        // $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
-        // $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
-        // $CreateTime = isset($datas['CreateTime']) ? intval($datas['CreateTime']) : 0;
-        // $CardId = isset($datas['CardId']) ? trim($datas['CardId']) : '';
-        // $IsGiveByFriend = isset($datas['IsGiveByFriend']) ? intval($datas['IsGiveByFriend']) : 0;
-        // $UserCardCode = isset($datas['UserCardCode']) ? trim($datas['UserCardCode']) : '';
-        // $FriendUserName = isset($datas['FriendUserName']) ? trim($datas['FriendUserName']) : '';
+        $Event = isset($datas['Event']) ? trim($datas['Event']) : '';
+        $MsgType = isset($datas['MsgType']) ? trim($datas['MsgType']) : '';
+        $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
+        $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
+        $CreateTime = isset($datas['CreateTime']) ? intval($datas['CreateTime']) : time();
+        $CardId = isset($datas['CardId']) ? trim($datas['CardId']) : '';
+        $IsGiveByFriend = isset($datas['IsGiveByFriend']) ? intval($datas['IsGiveByFriend']) : 0;
+        $UserCardCode = isset($datas['UserCardCode']) ? trim($datas['UserCardCode']) : '';
+        $FriendUserName = isset($datas['FriendUserName']) ? trim($datas['FriendUserName']) : '';
+        $OuterId = isset($datas['OuterId']) ? trim($datas['OuterId']) : '';
         
-        // switch ($Event) {
-        // case 'card_pass_check':
-        // case 'card_not_pass_check':
-        // // 审核通过或不通过事件推送
-        // /**
-        // * 生成的卡券通过审核时，微信会把这个事件推送到开发者填写的URL。
-        // * 推送XML数据包示例：
-        // * <xml> <ToUserName><![CDATA[toUser]]></ToUserName>
-        // * <FromUserName><![CDATA[FromUser]]></FromUserName>
-        // * <CreateTime>123456789</CreateTime>
-        // * <MsgType><![CDATA[event]]></MsgType>
-        // * <Event><![CDATA[card_pass_check]]></Event> //不通过为card_not_pass_check
-        // * <CardId><![CDATA[cardid]]></CardId>
-        // * </xml>
-        // */
-        // $modelCardEvent = new Weixincard_Model_Event();
-        // $modelCardEvent->record($ToUserName, $FromUserName, $CreateTime, $MsgType, $Event, $CardId, $FriendUserName, $IsGiveByFriend, $UserCardCode);
+        $content = file_get_contents('php://input');
         
-        // // 根据cardid更新审核是否通过信息
+        $modelCard = new \App\Weixincard\Models\Card();
+        $modelCard->setWeixin($this->_weixin);
+        $modelWeixincardEvent = new \App\Weixincard\Models\Event();
+        $modelWeixincardCardBag = new \App\Weixincard\Models\CardBag();
+        // $modelWeixincardMemberCardBag = new Weixinmembercard_Model_CardBag();
         
-        // break;
-        // case 'user_get_card':
-        // // 领取卡券事件推送
-        // /**
-        // * 用户在领取卡券时，微信会把这个事件推送到开发者填写的URL。
-        // * 推送XML数据包示例：
-        // * <xml> <ToUserName><![CDATA[toUser]]></ToUserName>
-        // * <FromUserName><![CDATA[FromUser]]></FromUserName>
-        // * <FriendUserName><![CDATA[FriendUser]]></FriendUserName>
-        // * <CreateTime>123456789</CreateTime>
-        // * <MsgType><![CDATA[event]]></MsgType>
-        // * <Event><![CDATA[user_get_card]]></Event>
-        // * <CardId><![CDATA[cardid]]></CardId>
-        // * <IsGiveByFriend>1</IsGiveByFriend>
-        // * <UserCardCode><![CDATA[12312312]]></UserCardCode>
-        // * </xml>
-        // */
-        // $modelCardEvent = new Weixincard_Model_Event();
-        // $modelCardEvent->record($ToUserName, $FromUserName, $CreateTime, $MsgType, $Event, $CardId, $FriendUserName, $IsGiveByFriend, $UserCardCode);
-        
-        // // 在卡包里面记录信息
-        // $modelCardBag = new Weixincard_Model_CardBag();
-        // $modelCardBag->getCard($FromUserName, $CardId, $UserCardCode, $CreateTime, $IsGiveByFriend, $FriendUserName, false, false, "");
-        
-        // break;
-        // case 'user_del_card':
-        // // 删除卡券事件推送
-        // /**
-        // * 用户在删除卡券时，微信会把这个事件推送到开发者填写的URL。
-        // * 推送XML数据包示例：
-        // * <xml> <ToUserName><![CDATA[toUser]]></ToUserName>
-        // * <FromUserName><![CDATA[FromUser]]></FromUserName>
-        // * <CreateTime>123456789</CreateTime>
-        // * <MsgType><![CDATA[event]]></MsgType>
-        // * <Event><![CDATA[user_del_card]]></Event>
-        // * <CardId><![CDATA[cardid]]></CardId>
-        // * <UserCardCode><![CDATA[12312312]]></UserCardCode>
-        // * </xml>
-        // */
-        // $modelCardEvent = new Weixincard_Model_Event();
-        // $modelCardEvent->record($ToUserName, $FromUserName, $CreateTime, $MsgType, $Event, $CardId, $FriendUserName, $IsGiveByFriend, $UserCardCode);
-        
-        // // 删除卡包数据
-        // $modelCardBag = new Weixincard_Model_CardBag();
-        // $modelCardBag->deleteCard($CardId, $UserCardCode);
-        
-        // break;
-        // default:
-        // break;
-        // }
+        switch ($Event) {
+            case 'card_pass_check':
+            case 'card_not_pass_check':
+                // 审核通过或不通过事件推送
+                /**
+                 * 生成的卡券通过审核时，微信会把这个事件推送到开发者填写的URL。
+                 * 推送XML数据包示例：
+                 * <xml> <ToUserName><![CDATA[toUser]]></ToUserName>
+                 * <FromUserName><![CDATA[FromUser]]></FromUserName>
+                 * <CreateTime>123456789</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[card_pass_check]]></Event> //不通过为card_not_pass_check
+                 * <CardId><![CDATA[cardid]]></CardId>
+                 * </xml>
+                 */
+                $modelWeixincardEvent->record($ToUserName, $FromUserName, $CreateTime, $MsgType, $Event, $CardId, $FriendUserName, $IsGiveByFriend, $UserCardCode, $OuterId, $content);
+                
+                // 获取最新的卡券信息并且更新本地的信息
+                $modelCard->getAndUpdateCardInfo($CardId);
+                
+                break;
+            case 'user_get_card':
+                // 领取卡券事件推送
+                /**
+                 * 用户在领取卡券时，微信会把这个事件推送到开发者填写的URL。
+                 * 推送XML数据包示例：
+                 * <xml> <ToUserName><![CDATA[toUser]]></ToUserName>
+                 * <FromUserName><![CDATA[FromUser]]></FromUserName>
+                 * <FriendUserName><![CDATA[FriendUser]]></FriendUserName>
+                 * <CreateTime>123456789</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[user_get_card]]></Event>
+                 * <CardId><![CDATA[cardid]]></CardId>
+                 * <IsGiveByFriend>1</IsGiveByFriend>
+                 * <UserCardCode><![CDATA[12312312]]></UserCardCode>
+                 * <OuterId>0</OuterId>
+                 * </xml>
+                 */
+                $modelWeixincardEvent->record($ToUserName, $FromUserName, $CreateTime, $MsgType, $Event, $CardId, $FriendUserName, $IsGiveByFriend, $UserCardCode, $OuterId, $content);
+                
+                // 领取卡券处理
+                $memo = array(
+                    'event' => 'user_get_card'
+                );
+                // $modelWeixincardCardBag->userGetCard($CardId, $UserCardCode, $FromUserName, $CreateTime, $IsGiveByFriend, $FriendUserName, $OuterId, $memo);
+                
+                break;
+            case 'user_del_card':
+                // 删除卡券事件推送
+                /**
+                 * 用户在删除卡券时，微信会把这个事件推送到开发者填写的URL。
+                 * 推送XML数据包示例：
+                 * <xml> <ToUserName><![CDATA[toUser]]></ToUserName>
+                 * <FromUserName><![CDATA[FromUser]]></FromUserName>
+                 * <CreateTime>123456789</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[user_del_card]]></Event>
+                 * <CardId><![CDATA[cardid]]></CardId>
+                 * <UserCardCode><![CDATA[12312312]]></UserCardCode>
+                 * </xml>
+                 */
+                $modelWeixincardEvent->record($ToUserName, $FromUserName, $CreateTime, $MsgType, $Event, $CardId, $FriendUserName, $IsGiveByFriend, $UserCardCode, $OuterId, $content);
+                // 删除卡包数据
+                // $modelWeixincardCardBag->userDelCard($CardId, $UserCardCode);
+                
+                // // 删除会员卡卡包数据
+                // $this->_weixinMemberCardBag->userDelCard($CardId, $UserCardCode);
+                break;
+            
+            case 'user_view_card':
+                // 进入会员卡事件推送
+                /**
+                 * <xml> <ToUserName><![CDATA[toUser]]></ToUserName>
+                 * <FromUserName><![CDATA[FromUser]]></FromUserName>
+                 * <CreateTime>123456789</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[user_view_card]]></Event>
+                 * <CardId><![CDATA[cardid]]></CardId>
+                 * <UserCardCode><![CDATA[12312312]]></UserCardCode>
+                 * </xml>
+                 */
+                $modelWeixincardEvent->record($ToUserName, $FromUserName, $CreateTime, $MsgType, $Event, $CardId, $FriendUserName, $IsGiveByFriend, $UserCardCode, $OuterId, $content);
+                
+                break;
+            
+            case 'user_consume_card':
+                // 核销事件推送
+                /**
+                 * <xml> <ToUserName><![CDATA[toUser]]></ToUserName>
+                 * <FromUserName><![CDATA[FromUser]]></FromUserName>
+                 * <CreateTime>123456789</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[user_consume_card]]></Event>
+                 * <CardId><![CDATA[cardid]]></CardId>
+                 * <UserCardCode><![CDATA[12312312]]></UserCardCode>
+                 * </xml>
+                 */
+                $modelWeixincardEvent->record($ToUserName, $FromUserName, $CreateTime, $MsgType, $Event, $CardId, $FriendUserName, $IsGiveByFriend, $UserCardCode, $OuterId, $content);
+                
+                // 领取卡券处理
+                // $modelWeixincardCardBag->userConsumeCard($CardId, $UserCardCode, $FromUserName);
+                break;
+            default:
+                break;
+        }
         return true;
     }
 

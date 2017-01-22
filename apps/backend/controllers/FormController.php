@@ -803,7 +803,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
     /**
      * 获取微信客户端对象
-     * 
+     *
      * @return \Weixin\Client
      */
     protected function getWeixin()
@@ -815,7 +815,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $appWeixinConfig = $modelWeixinApplication->getTokenByAppid($appid);
         
         $weixin = new \Weixin\Client();
-        $weixin->setAccessToken('3YgWolF5jpZMCh5OU2ZuBuSq3x6LXW1KoSGTZoy0jtKS4W2Xo_ZFkgBDufgHUZ4UicDlRqAQnP8CAfSfBOzZZ1mxk17iubvhYQHbhQgAx1gtZIgxr9DmD-2uS_0cMiiKQGFiADAIYX');
+        $weixin->setAccessToken('58xW3fnfp01gMyCHO71b37rU16TIAUY3ZWJYFCKg6ANlXdoAPPOmztmugQd8kWTDnteMnRMXez2UhnAXdBxyjD2CpDMzmqmUanUtKKt2SN62HvhEj9OpAaC67giYoaoELEFiACAVOP');
         // if (! empty($appWeixinConfig['access_token'])) {
         // $weixin->setAccessToken($appWeixinConfig['access_token']);
         // }

@@ -94,6 +94,28 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
+        $schemas['status'] = array(
+            'name' => '卡券状态',
+            'data' => array(
+                'type' => 'string',
+                'length' => '30',
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => false
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
         $schemas['code_type'] = array(
             'name' => 'code码展示类型',
             'data' => array(
@@ -1900,7 +1922,11 @@ class CardController extends \App\Backend\Controllers\FormController
             $item['code_type_name'] = isset($codeTypeList[$item['code_type']]) ? $codeTypeList[$item['code_type']] : '';
             $item['color_name'] = isset($colorList[$item['color']]) ? $colorList[$item['color']] : '';
             $item['date_info_type'] = isset($dateInfoTypeList[$item['date_info_type']]) ? $dateInfoTypeList[$item['date_info_type']] : '';
-            
+            if (empty($item['card_id'])) {
+                $item['card_id'] = $item['card_id'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要将本地卡券信息上传，在微信公众平台上生成卡券吗？\', \'createcard\')" class="halflings-icon user white"><i></i> 创建</a>';
+            } else {
+                $item['card_id'] = $item['card_id'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要从微信公众平台上拉取最新的卡券信息更新到本地吗？\', \'updatecardinfo\')" class="halflings-icon user white"><i></i> 拉取</a>';
+            }
             // $item['article_time'] = date("Y-m-d H:i:s", $item['article_time']->sec);
         }
         return $list;
@@ -1911,14 +1937,14 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function createcardAction()
     {
-        // http://www.applicationmodule.com:10080/admin/weixincard/card/createcard?card_id=xxxx
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/createcard?id=xxxx
         try {
             $this->view->disable();
             
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
             
-            $card_id = $this->get('card_id', '');
+            $card_id = $this->get('id', '');
             if (empty($card_id)) {
                 $cards = $this->modelCard->getAll();
             } else {
@@ -1944,11 +1970,11 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
-     * 从微信公众平台上获取最新的卡券信息更新本地的Hook
+     * 从微信公众平台上获取最新的卡券信息
      */
-    public function updatecardinfoAction()
+    public function getcardinfoAction()
     {
-        // http://www.applicationmodule.com:10080/admin/weixincard/card/updatecardinfo?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/getcardinfo?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
         try {
             $this->view->disable();
             
@@ -1957,11 +1983,33 @@ class CardController extends \App\Backend\Controllers\FormController
             
             $card_id = $this->get('card_id', '');
             
+            $ret = $weixin->getCardManager()->get($card_id);
+            $this->makeJsonResult($ret);
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * 从微信公众平台上获取最新的卡券信息更新本地的Hook
+     */
+    public function updatecardinfoAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/updatecardinfo?id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
+        try {
+            $this->view->disable();
+            
+            $weixin = $this->getWeixin();
+            $this->modelCard->setWeixin($weixin);
+            
+            $card_id = $this->get('id', '');
+            
             if (empty($card_id)) { // 如果没有指定卡券ID,那么根据卡券类别获取列表
                 $cards = $this->modelCard->getAll();
             } else {
-                $cards[] = array(
-                    "card_id" => $card_id
+                $cardInfo = $this->modelCard->getInfoById($card_id);
+                $cards = array(
+                    $cardInfo
                 );
             }
             if (! empty($cards)) {
