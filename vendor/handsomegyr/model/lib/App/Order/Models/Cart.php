@@ -39,7 +39,7 @@ class Cart extends \App\Common\Models\Order\Cart
         $data['goods_image'] = $goodsInfo['image'];
         $data['bl_id'] = isset($goodsInfo['bl_id']) ? $goodsInfo['bl_id'] : '';
         $data['is_checkout'] = false;
-        $data['memo'] = json_encode($goodsInfo);
+        $data['memo'] = $goodsInfo;
         if (! empty($buyer_id)) {
             return $this->insert($data);
         } else {

@@ -26,7 +26,7 @@ class EventController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+        $schemas['_id']['list']['is_show'] = false;
         $schemas['ToUserName'] = array(
             'name' => '开发者微信号',
             'data' => array(
@@ -41,7 +41,7 @@ class EventController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -83,7 +83,7 @@ class EventController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -288,7 +288,7 @@ class EventController extends \App\Backend\Controllers\FormController
     {
         $cardList = $this->modelCard->getAllWithCardId();
         foreach ($list['data'] as &$item) {
-            $item['card_name'] = isset($cardList[$item['card_id']]) ? $cardList[$item['card_id']] : "--";
+            $item['card_name'] = isset($cardList[$item['CardId']]) ? $cardList[$item['CardId']] : "--";
             $item['CreateTime'] = date("Y-m-d H:i:s", $item['CreateTime']->sec);
         }
         

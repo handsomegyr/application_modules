@@ -121,8 +121,9 @@ class Qrcard extends \App\Common\Models\Weixincard\Qrcard
      * @param string $url            
      * @param string $qrcodeUrl            
      * @param string $show_qrcode_url            
+     * @param array $memo            
      */
-    public function recordTicket(array $card, $ticket, $url, $qrcodeUrl, $show_qrcode_url)
+    public function recordTicket(array $card, $ticket, $url, $qrcodeUrl, $show_qrcode_url, array $memo = array('memo'=>''))
     {
         $query = array();
         $query['_id'] = $card['_id'];
@@ -135,6 +136,7 @@ class Qrcard extends \App\Common\Models\Weixincard\Qrcard
         
         $data['ticket_time'] = new \MongoDate();
         $data['is_created'] = true;
+        $data['memo'] = $memo;
         $this->update($query, array(
             '$set' => $data
         ));
@@ -142,11 +144,11 @@ class Qrcard extends \App\Common\Models\Weixincard\Qrcard
 
     public function create4Weixin(array $card)
     {
-        $card_id = empty($card['card_id']) ? "" : $card['card_id'];
-        $code = empty($card['code']) ? "" : $card['code'];
-        $openid = empty($card['openid']) ? "" : $card['openid'];
-        $expire_seconds = empty($card['expire_seconds']) ? 0 : $card['expire_seconds'];
-        $is_unique_code = empty($card['is_unique_code']) ? false : $card['is_unique_code'];
+        $card_id = empty($card['card_id']) ? "" : trim($card['card_id']);
+        $code = empty($card['code']) ? "" : trim($card['code']);
+        $openid = empty($card['openid']) ? "" : trim($card['openid']);
+        $expire_seconds = empty($card['expire_seconds']) ? 0 : intval($card['expire_seconds']);
+        $is_unique_code = empty($card['is_unique_code']) ? false : true;
         $balance = empty($card['balance']) ? 0 : $card['balance'];
         $outer_id = empty($card['outer_id']) ? 0 : $card['outer_id'];
         
@@ -158,9 +160,12 @@ class Qrcard extends \App\Common\Models\Weixincard\Qrcard
         $ticket = ($ticketInfo['ticket']);
         $url = ($ticketInfo['url']);
         // $qrcodeUrl = $this->_weixin->getQrcodeManager()->getQrcodeUrl(urlencode($ticket));
-        $show_qrcode_url = ($ticketInfo['show_qrcode_url']);
+        $qrcodeUrl = $show_qrcode_url = ($ticketInfo['show_qrcode_url']);
         
         // 记录
-        $this->recordTicket($card, $ticket, $url, $qrcodeUrl, $show_qrcode_url);
+        $memo = array(
+            'weixinQrcodeCreate' => $ticketInfo
+        );
+        $this->recordTicket($card, $ticket, $url, $qrcodeUrl, $show_qrcode_url, $memo);
     }
 }

@@ -80,14 +80,14 @@ class CodedepositController extends \App\Backend\Controllers\FormController
                 'length' => '12'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -101,14 +101,14 @@ class CodedepositController extends \App\Backend\Controllers\FormController
                 'length' => '8'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -255,39 +255,5 @@ class CodedepositController extends \App\Backend\Controllers\FormController
         }
         
         return $list;
-    }
-
-    /**
-     * 导入code
-     * 开发者需调用该接口将自定义code 导入微信卡券后台，由微信侧代理存储并下发
-     * code，本接口仅用于支持微信摇卡券活动。
-     * 注：
-     * 1）单次调用接口传入code 的数量上限为100 个。
-     * 2）每一个 code 均不能为空串，且不能重复填入相同code，否则会导入失败。
-     * 3）导入失败支持重复导入，提示成功为止。
-     *
-     * 一次性处理,不用计划任务配置
-     * 如果导入的数据量过大,那么可以使用多进程 来导入数据
-     * 可以先用getidsAction获取每个进程的数据处理范围
-     */
-    public function depositecodeAction()
-    {
-        // http://www.applicationmodule.com:10080/admin/weixincard/codedeposit/depositecode?card_id=p4ELSv5zS98NBYuq8D1l2HcgRou0
-        try {
-            $this->view->disable();
-            $weixin = $this->getWeixin();
-            $this->modelCodeDeposit->setWeixin($weixin);
-            
-            $card_id = $this->get('card_id', '');
-            if (empty($card_id)) {
-                throw new \Exception("card_id未指定", - 1);
-            }
-            // 导入自定义卡券code处理
-            $this->modelCodeDeposit->depositeCode($card_id);
-            
-            $this->makeJsonResult();
-        } catch (\Exception $e) {
-            $this->makeJsonError($e->getMessage());
-        }
     }
 }

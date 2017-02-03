@@ -72,7 +72,7 @@ class Log extends \App\Common\Models\Payment\Log
         $data['money'] = $money;
         $data['desc'] = $desc;
         $data['log_time'] = getCurrentTime();
-        $data['memo'] = json_encode($memo);
+        $data['memo'] = $memo;
         return $this->insert($data);
     }
 

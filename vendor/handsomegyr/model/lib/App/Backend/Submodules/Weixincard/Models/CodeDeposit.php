@@ -38,11 +38,15 @@ class CodeDeposit extends \App\Common\Models\Weixincard\CodeDeposit
             $rst = $cardManager->codeDeposit($card_id, $codes);
             // $rst = $cardManager->codeCheck($card_id, $codes);
             if (! empty($rst['errcode'])) {
-                $this->updateIsDeposited($ids, false, $rst);
+                $this->updateIsDeposited($ids, false, array(
+                    'weixinCodeDeposite' => $rst
+                ));
                 // 如果有异常，会在errcode 和errmsg 描述出来。
                 throw new \Exception($rst['errmsg'], $rst['errcode']);
             } else {
-                $this->updateIsDeposited($ids, true);
+                $this->updateIsDeposited($ids, true, array(
+                    'weixinCodeDeposite' => $rst
+                ));
             }
         }
     }
@@ -60,7 +64,7 @@ class CodeDeposit extends \App\Common\Models\Weixincard\CodeDeposit
             '$in' => $ids
         );
         $data = array();
-        $data['is_deposited'] = ($is_deposited);
+        $data['is_deposited'] = intval($is_deposited);
         $data['memo'] = $demo;
         $this->update($query, array(
             '$set' => $data

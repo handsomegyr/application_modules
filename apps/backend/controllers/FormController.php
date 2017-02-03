@@ -801,6 +801,15 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         // }
     }
 
+    protected function getWeixinConfig()
+    {
+        $config = $this->getDI()->get('config');
+        $appid = isset($_GET['appid']) ? trim($_GET['appid']) : $config['weixin']['appid'];
+        $modelWeixinApplication = new \App\Weixin\Models\Application();
+        $appWeixinConfig = $modelWeixinApplication->getTokenByAppid($appid);
+        return $appWeixinConfig;
+    }
+
     /**
      * 获取微信客户端对象
      *
@@ -808,18 +817,68 @@ class FormController extends \App\Backend\Controllers\ControllerBase
      */
     protected function getWeixin()
     {
-        $config = $this->getDI()->get('config');
-        $appid = isset($_GET['appid']) ? trim($_GET['appid']) : $config['weixin']['appid'];
-        
-        $modelWeixinApplication = new \App\Weixin\Models\Application();
-        $appWeixinConfig = $modelWeixinApplication->getTokenByAppid($appid);
+        $appWeixinConfig = $this->getWeixinConfig();
         
         $weixin = new \Weixin\Client();
-        $weixin->setAccessToken('58xW3fnfp01gMyCHO71b37rU16TIAUY3ZWJYFCKg6ANlXdoAPPOmztmugQd8kWTDnteMnRMXez2UhnAXdBxyjD2CpDMzmqmUanUtKKt2SN62HvhEj9OpAaC67giYoaoELEFiACAVOP');
+        $weixin->setAccessToken('FCxWuaeE2gtz04Dj9o-YUkGJfknP2LYPlzVRBHxZO3n0jXuMM4j1TIb1TOjD4aF0XP3h4bcI9Por7zm0T9dDoRT5ga0p-ZC-dcaxXKxs3qq_q-eS8yjYftFKwIKiuRbNENFdAFAXGY');
         // if (! empty($appWeixinConfig['access_token'])) {
         // $weixin->setAccessToken($appWeixinConfig['access_token']);
         // }
         
         return $weixin;
+    }
+
+    /**
+     * 获取签名
+     *
+     * @param string $card_id            
+     * @param string $code            
+     * @param string $openid            
+     * @param number $outer_id            
+     * @param number $balance            
+     * @return array
+     */
+    protected function getSignature($card_id, $code, $openid, $outer_id = 0, $balance = 0)
+    {
+        // api_ticket、timestamp、card_id、code、openid、balance
+        $appWeixinConfig = $this->getWeixinConfig();
+        // $api_ticket = $appWeixinConfig['wx_card_api_ticket'];
+        $api_ticket = '';
+        
+        $timestamp = (string) time();
+        $outer_id = (string) $outer_id;
+        $balance = (string) $balance;
+        
+        $objSignature = new \Weixin\Model\Signature();
+        $objSignature->add_data($api_ticket);
+        $objSignature->add_data($timestamp);
+        $objSignature->add_data($card_id);
+        $objSignature->add_data($code);
+        $objSignature->add_data($openid);
+        if (! empty($balance)) {
+            $objSignature->add_data($balance);
+        }
+        if (! empty($outer_id)) {
+            $objSignature->add_data($outer_id);
+        }
+        
+        $signature = $objSignature->get_signature();
+        $card_ext = array(
+            "code" => $code,
+            "openid" => $openid,
+            "timestamp" => $timestamp,
+            "signature" => $signature
+        );
+        if (! empty($outer_id)) {
+            $card_ext["outer_id"] = $outer_id;
+        }
+        if (! empty($balance)) {
+            $card_ext["balance"] = $balance;
+        }
+        return array(
+            'signature' => $signature,
+            'timestamp' => $timestamp,
+            'card_ext' => json_encode($card_ext)
+        );
     }
 }

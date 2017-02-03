@@ -120,7 +120,8 @@ class QrcardController extends \App\Backend\Controllers\FormController
             'name' => '是否指定下发二维码',
             'data' => array(
                 'type' => 'boolean',
-                'length' => '1'
+                'length' => '1',
+                'defaultValue' => true
             ),
             'validation' => array(
                 'required' => false
@@ -164,7 +165,8 @@ class QrcardController extends \App\Backend\Controllers\FormController
             'name' => '场景值',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => '10',
+                'defaultValue' => 1
             ),
             'validation' => array(
                 'required' => false
@@ -234,7 +236,7 @@ class QrcardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => false
             ),
             'list' => array(
                 'is_show' => false
@@ -313,6 +315,30 @@ class QrcardController extends \App\Backend\Controllers\FormController
             )
         );
         
+        $schemas['memo'] = array(
+            'name' => '备注',
+            'data' => array(
+                'type' => 'json',
+                'length' => '1000'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
         return $schemas;
     }
 
@@ -331,6 +357,18 @@ class QrcardController extends \App\Backend\Controllers\FormController
         $cardList = $this->modelCard->getAllWithCardId();
         foreach ($list['data'] as &$item) {
             $item['card_name'] = isset($cardList[$item['card_id']]) ? $cardList[$item['card_id']] : "--";
+            if (isset($cardList[$item['card_id']])) {
+                $isCanCreate = true;
+                if ($isCanCreate && empty($item['expire_seconds']) && ! empty($item['is_created'])) { // 如果是永久并且已生成的话
+                    $isCanCreate = false;
+                }
+                if ($isCanCreate && ! empty($item['expire_seconds']) && ! empty($item['is_created']) && ($item['ticket_time']->sec + $item['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
+                    $isCanCreate = false;
+                }
+                if ($isCanCreate) {
+                    $item['card_name'] = $item['card_name'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要在微信公众平台上生成卡券二维码吗？\', \'create\')" class="halflings-icon user white"><i></i> 创建</a>';
+                }
+            }
             $item['ticket_time'] = date("Y-m-d H:i:s", $item['ticket_time']->sec);
         }
         
@@ -342,13 +380,21 @@ class QrcardController extends \App\Backend\Controllers\FormController
      */
     public function createAction()
     {
-        // http://www.applicationmodule.com:10080/admin/weixincard/qrcard/create
+        // http://www.applicationmodule.com:10080/admin/weixincard/qrcard/create?id=xx
         try {
             $this->view->disable();
             $weixin = $this->getWeixin();
             $this->modelQrcard->setWeixin($weixin);
+            $id = $this->get('id', '');
+            if (empty($id)) {
+                $cards = $this->modelQrcard->getAll();
+            } else {
+                $cardInfo = $this->modelQrcard->getInfoById($id);
+                $cards = array(
+                    $cardInfo
+                );
+            }
             
-            $cards = $this->modelQrcard->getAll();
             foreach ($cards as $card) {
                 if (empty($card['expire_seconds']) && ! empty($card['is_created'])) { // 如果是永久并且已生成的话
                     continue;
@@ -363,21 +409,23 @@ class QrcardController extends \App\Backend\Controllers\FormController
                     throw new \Exception("卡券ID为{$card_id}的数据不存在", - 1);
                 }
                 
+                // 指定二维码的有效时间，范围是60 ~ 1800秒。不填默认为永久有效
+                if (! empty($card['expire_seconds']) && ($card['expire_seconds'] < 60 || $card['expire_seconds'] > 1800)) {
+                    throw new \Exception("指定二维码的有效时间，范围是60 ~ 1800秒", - 4);
+                }
+                
                 // 卡券Code码,use_custom_code字段为true的卡券必须填写，非自定义code不必填写。
-                if (empty($card['code']) && ! empty($cardInfo['use_custom_code'])) {
+                if (! empty($cardInfo['use_custom_code']) && empty($card['code'])) {
                     throw new \Exception("use_custom_code字段为true的卡券必须填写卡券Code码", - 2);
                 }
                 
                 // 指定领取者的openid，只有该用户能领取。bind_openid字段为true的卡券必须填写，非指定openid不必填写。
-                if (empty($card['openid']) && ! empty($cardInfo['bind_openid'])) {
+                if (! empty($cardInfo['bind_openid']) && empty($card['openid'])) {
                     throw new \Exception("bind_openid字段为true的卡券必须填写必须指定领取者的openid", - 3);
                 }
-                // 指定二维码的有效时间，范围是60 ~ 1800秒。不填默认为永久有效
-                if (! empty($card['expire_seconds']) && ($cardInfo['expire_seconds'] < 60 || $cardInfo['expire_seconds'] < 1800)) {
-                    throw new \Exception("指定二维码的有效时间，范围是60 ~ 1800秒", - 4);
-                }
+                
                 // 注意填写该字段时，卡券须通过审核且库存不为0。
-                if (! empty($card['is_unique_code']) && $cardInfo['expire_seconds'] == 0 && $cardInfo['expire_seconds']) {
+                if (! empty($card['is_unique_code']) && ! ($cardInfo['sku_quantity'] > 0 && $cardInfo['status'] == 'CARD_STATUS_VERIFY_OK')) {
                     throw new \Exception("卡券须通过审核且库存不为0", - 5);
                 }
                 

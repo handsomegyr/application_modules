@@ -37,7 +37,7 @@ class News extends \App\Common\Models\Member\News
         $data['action'] = $action;
         $data['content_id'] = $content_id;
         $data['news_time'] = getCurrentTime();
-        $data['memo'] = json_encode($memo);
+        $data['memo'] = $memo;
         return $this->insert($data);
     }
 }

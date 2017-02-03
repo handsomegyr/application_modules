@@ -146,7 +146,7 @@ class Pay extends \App\Common\Models\Order\Pay
             '_id' => $id
         );
         $data = array(
-            'memo' => json_encode($unifiedorderInfo)
+            'memo' => $unifiedorderInfo
         );
         $this->update($query, array(
             '$set' => $data

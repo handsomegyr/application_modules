@@ -7,6 +7,7 @@ use App\Backend\Submodules\Weixincard\Models\Color;
 use App\Backend\Submodules\Weixincard\Models\Card;
 use App\Backend\Submodules\Weixincard\Models\DateInfoType;
 use App\Backend\Submodules\Weixincard\Models\Logo;
+use App\Backend\Submodules\Weixincard\Models\CodeDeposit;
 
 /**
  * @title({name="微信卡券管理"})
@@ -28,6 +29,8 @@ class CardController extends \App\Backend\Controllers\FormController
 
     private $modelLogo;
 
+    private $modelCodeDeposit;
+
     public function initialize()
     {
         $this->modelCard = new Card();
@@ -36,6 +39,7 @@ class CardController extends \App\Backend\Controllers\FormController
         $this->modelColor = new Color();
         $this->modelDateInfoType = new DateInfoType();
         $this->modelLogo = new Logo();
+        $this->modelCodeDeposit = new CodeDeposit();
         parent::initialize();
     }
 
@@ -188,7 +192,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => true
@@ -1898,6 +1902,119 @@ class CardController extends \App\Backend\Controllers\FormController
             )
         );
         
+        // 领取数
+        $schemas['received_num'] = array(
+            'name' => '领取数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 10,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        // 核销数
+        $schemas['consumed_num'] = array(
+            'name' => '核销数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 10,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        // 删除数
+        $schemas['deleted_num'] = array(
+            'name' => '删除数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 10,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        // 失效数
+        $schemas['unavailable_num'] = array(
+            'name' => '失效数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 10,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        // 转赠朋友数
+        $schemas['give_by_friend_num'] = array(
+            'name' => '转赠朋友数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 10,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
         return $schemas;
     }
 
@@ -1926,6 +2043,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 $item['card_id'] = $item['card_id'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要将本地卡券信息上传，在微信公众平台上生成卡券吗？\', \'createcard\')" class="halflings-icon user white"><i></i> 创建</a>';
             } else {
                 $item['card_id'] = $item['card_id'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要从微信公众平台上拉取最新的卡券信息更新到本地吗？\', \'updatecardinfo\')" class="halflings-icon user white"><i></i> 拉取</a>';
+                $item['card_id'] = $item['card_id'] . '&nbsp&nbsp<a href="javascript:;" class="btn yellow icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要将本地自定义code上传到微信公众平台上吗？\', \'depositecode\')" class="halflings-icon user white"><i></i> 上传自定义code</a>';
             }
             // $item['article_time'] = date("Y-m-d H:i:s", $item['article_time']->sec);
         }
@@ -1944,11 +2062,11 @@ class CardController extends \App\Backend\Controllers\FormController
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
             
-            $card_id = $this->get('id', '');
-            if (empty($card_id)) {
+            $id = $this->get('id', '');
+            if (empty($id)) {
                 $cards = $this->modelCard->getAll();
             } else {
-                $cardInfo = $this->modelCard->getInfoById($card_id);
+                $cardInfo = $this->modelCard->getInfoById($id);
                 $cards = array(
                     $cardInfo
                 );
@@ -1991,23 +2109,64 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * 发送卡券消息的接口
+     */
+    public function masssendAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/masssend?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k&toUsers=o4ELSvz-B4_DThF0Vpfrverk3IpY,o4ELSv7CChC3YKmM8WKXX4kXSr8c&preview=1
+        try {
+            $this->view->disable();
+            
+            $weixin = $this->getWeixin();
+            
+            $card_id = $this->get('card_id', '');
+            $toUsers = $this->get('toUsers', '');
+            $preview = $this->get('preview', '');
+            $toUsers = explode(',', $toUsers);
+            
+            if ($preview) {
+                $signature = $this->getSignature($card_id, '', $toUsers[0]);
+                $params = array(
+                    'touser' => $toUsers[0],
+                    'wxcard' => array(
+                        'card_id' => $card_id,
+                        'card_ext' => $signature['card_ext']
+                    ),
+                    'msgtype' => 'wxcard'
+                );
+                $ret = $weixin->getMsgManager()
+                    ->getMassSender()
+                    ->preview($params);
+            } else {
+                $ret = $weixin->getMsgManager()
+                    ->getMassSender()
+                    ->sendWxcardByOpenid($toUsers, $card_id);
+            }
+            
+            $this->makeJsonResult($ret);
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
      * 从微信公众平台上获取最新的卡券信息更新本地的Hook
      */
     public function updatecardinfoAction()
     {
-        // http://www.applicationmodule.com:10080/admin/weixincard/card/updatecardinfo?id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/updatecardinfo?id=xxx
         try {
             $this->view->disable();
             
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
             
-            $card_id = $this->get('id', '');
+            $id = $this->get('id', '');
             
-            if (empty($card_id)) { // 如果没有指定卡券ID,那么根据卡券类别获取列表
+            if (empty($id)) { // 如果没有指定卡券ID,那么根据卡券类别获取列表
                 $cards = $this->modelCard->getAll();
             } else {
-                $cardInfo = $this->modelCard->getInfoById($card_id);
+                $cardInfo = $this->modelCard->getInfoById($id);
                 $cards = array(
                     $cardInfo
                 );
@@ -2034,7 +2193,7 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function modifystockAction()
     {
-        // http://www.applicationmodule.com:10080/admin/weixincard/card/modifystock?card_id=p4ELSv5zS98NBYuq8D1l2HcgRou0&increase_stock_value=10&reduce_stock_value=0
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/modifystock?card_id=p4ELSv6c5tkQvR6ihip_Z1KdNm8c&increase_stock_value=1&reduce_stock_value=0
         try {
             $this->view->disable();
             $weixin = $this->getWeixin();
@@ -2060,9 +2219,52 @@ class CardController extends \App\Backend\Controllers\FormController
                 throw new \Exception($rst['errmsg'], $rst['errcode']);
             }
             
-            $ret = $weixin->getCardManager()->get($card_id);
+            // 获取最新的卡券信息并且更新本地的信息
+            $this->modelCard->getAndUpdateCardInfo($card_id);
             
-            $this->makeJsonResult(json_encode($ret));
+            $this->makeJsonResult(json_encode($rst));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * 导入code
+     * 开发者需调用该接口将自定义code 导入微信卡券后台，由微信侧代理存储并下发
+     * code，本接口仅用于支持微信摇卡券活动。
+     * 注：
+     * 1）单次调用接口传入code 的数量上限为100 个。
+     * 2）每一个 code 均不能为空串，且不能重复填入相同code，否则会导入失败。
+     * 3）导入失败支持重复导入，提示成功为止。
+     *
+     * 一次性处理,不用计划任务配置
+     * 如果导入的数据量过大,那么可以使用多进程 来导入数据
+     * 可以先用getidsAction获取每个进程的数据处理范围
+     */
+    public function depositecodeAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/depositecode?id=xxx
+        try {
+            $this->view->disable();
+            $weixin = $this->getWeixin();
+            $this->modelCodeDeposit->setWeixin($weixin);
+            
+            $id = $this->get('id', '');
+            if (empty($id)) {
+                throw new \Exception("id未指定", - 1);
+            }
+            $cardInfo = $this->modelCard->getInfoById($id);
+            if (empty($cardInfo)) {
+                throw new \Exception("id不正确", - 2);
+            }
+            if (empty($cardInfo['card_id'])) {
+                throw new \Exception("card_id未生成", - 3);
+            }
+            
+            // 导入自定义卡券code处理
+            $this->modelCodeDeposit->depositeCode($cardInfo['card_id']);
+            
+            $this->makeJsonResult();
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

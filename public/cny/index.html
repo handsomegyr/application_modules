@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="img/fav.ico">
+
+    <title>YOOX新年柜礼</title>
+
+    <!-- External css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <!-- Custom styles for this web -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- baidu -->
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8d9701e1e8eb01a92cb1f6cebdf4e3c9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+
+</head>
+
+<body>
+
+<section class="hide" id="J_main">
+
+    <!--main content start-->
+    <section class="pages" id="J_pages">
+        <section class="page page1">
+            <img class="page1-title" src="img/page1-title.png">
+            <div class="page1-box">
+                <img class="page1-box-img" src="img/page1-box.png" onclick="_hmt.push(['_trackEvent', 'Btn_box', 'click', 'open box']);">
+                <img class="page1-hand" src="img/page1-hand.png">
+                <img class="page1-tie" src="img/page1-tie.png">
+            </div>
+        </section>
+
+        <section class="page page2">
+            <div class="page2-bg"></div>
+            <img class="page2-title" src="img/page2-title.png">
+            <input class="page2-input border-input2" id="J_codeInput" type="text" placeholder="YOOX" />
+            <button class="page2-input border-input page2-btn" onclick="_hmt.push(['_trackEvent', 'Btn_nextstep_yoox', 'click', 'open next step']);">下一步</button>
+        </section>
+    </section>
+    <!--main content end-->
+
+    <!--nav start-->
+    <nav id="nav">
+        <div class="nav-bar">
+            <a class="nav-bar-item" id="J_ruleTrigger" onclick="_hmt.push(['_trackEvent', 'Huodongguizhe', 'click', 'open huodongguize']);">活动规则</a>
+            <a class="nav-bar-item" href="
+http://help.yoox.cn/system/selfservice.controller?CMD=BROWSE_TOPIC&CONFIGURATION=1106&COUNTRY=cn&LANGUAGE=zh&PARTITION_ID=1&TOPIC_ID=1025&USERTYPE=1&secureFlag=false#article-2074
+" onclick="_hmt.push(['_trackEvent', 'Btn_aboutyoox', 'click', 'open aboutyoox']);">关于YOOX</a>
+            <a class="nav-bar-item" href="http://mobile.yoox.cn/cn/%e5%a5%b3%e5%a3%ab?utm_source=Wechat&utm_medium=social&utm_campaign=CNYH5&tp=129675" onclick="_hmt.push(['_trackEvent', 'Btn_yooxcn', 'click', 'open yooxcn']);">YOOX.CN</a>
+        </div>
+    </nav>
+    <!--nav end-->
+
+    <section class="alert alert-result1" id="J_alertResult1">
+        <div class="alert-main">
+            <i class="icon-close-black alert-close J_lotteryAgain" onclick="_hmt.push(['_trackEvent', 'Btn_close_winner', 'click', 'close winner box']);"></i>
+            <!-- sw -->
+            <p class="result-title">
+                恭喜你<br>已开启您的新年柜礼<br><span class="gift-name"></span>
+            </p>
+            <div class="alert-inner">
+                <div class="result-detail">
+                    <div class="label">
+                        <input class="border-input" name="name" type="text" placeholder="姓名" value="">
+                    </div>
+                    <div class="label">
+                        <input class="border-input" name="mobile" type="text" placeholder="手机" value="">
+                    </div>
+                    <div class="label">
+                        <input class="border-input" name="address" type="text" placeholder="地址" value="">
+                    </div>
+                    <div class="label flex-box">
+                        <button class="flex1 btn-yellow J_lotteryAgain" onclick="_hmt.push(['_trackEvent', 'Btn_winner_again', 'click', 'open again in winner box']);">再次开启</button>
+                        <button class="flex1 btn-red" id="J_sendInfo" onclick="_hmt.push(['_trackEvent', 'Btn_submit_winner', 'click', 'submit info in winner box']);">提交信息</button>
+                        <!-- loading msg -->
+                        <div class="send-loading">
+                            <img src="img/sendloading.gif" >
+                        </div>
+                    </div>
+                    <div class="label">我们将有专人于2017年2月10日前与您电话联系。</div>
+                    <div class="flex-box download-group">
+                        <a class="flex1" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.yoox"><img src="img/download-ios.jpg" onclick="_hmt.push(['_trackEvent', 'Btn_down_appios_winner', 'click', 'down load ios in winner box']);"></a>
+                        <a class="flex1" href="http://android.myapp.com/myapp/detail.htm?apkName=com.yoox"><img src="img/download-android.jpg" onclick="_hmt.push(['_trackEvent', 'Btn_down_appandrew_winner', 'click', 'download android in winner box']);"></a>
+                    </div>
+                    <p class="download-tip">更多不定期专享优惠 即刻下载YOOX APP</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="alert alert-result2" id="J_alertResult2">
+        <div class="alert-main">
+            <i class="icon-close-black alert-close J_lotteryAgain" onclick="_hmt.push(['_trackEvent', 'Btn_close_juan', 'click', 'close quan box']);"></i>
+            <!-- xuni -->
+            <p class="result-title">
+                恭喜你<br>已开启您的新年柜礼<br>立即领取 折上<span class="gift-name"></span>
+            </p>
+            <div class="alert-inner">
+                <div class="result-detail">
+                    <p class="copy-tip">长按复制优惠码</p>
+                    <div class="label">
+                        <input id="J_code" class="border-input" name="code" type="text" readonly="" placeholder="优惠码" value="优惠码：CDS3322323">
+                    </div>
+                    <div class="label">
+                        <input class="send-phone border-input" name="mobile" type="text" placeholder="发送到手机" value="">
+                        <span class="btn-gold send-code" id="J_sendPhone" onclick="_hmt.push(['_trackEvent', 'Btn_send_sms', 'click', 'send sms in quan box']);">发 送</span>
+
+                        <!-- loading msg -->
+                        <div class="send-loading">
+                            <img src="img/sendloading.gif" >
+                        </div>
+                    </div>
+                    <div class="label">
+                        <button class="flex1 btn-gold grid1 J_lotteryAgain" onclick="_hmt.push(['_trackEvent', 'Btn_juan_again', 'click', 'open again in quan box']);">再次开启</button>
+                    </div>
+                    <div class="flex-box download-group">
+                        <a class="flex1" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.yoox"><img src="img/download-ios.jpg" onclick="_hmt.push(['_trackEvent', 'Btn_down_appios', 'click', 'download ios in quan box']);"></a>
+                        <a class="flex1" href="http://android.myapp.com/myapp/detail.htm?apkName=com.yoox"><img src="img/download-android.jpg" onclick="_hmt.push(['_trackEvent', 'Btn_down_appandrew', 'click', 'download android in quan box']);"></a>
+                    </div>
+                    <p class="download-tip">更多不定期专享优惠 即刻下载<a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.yoox">YOOX APP</a></p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="alert alert-rule" id="J_alertRule">
+        <div class="alert-main">
+            <i class="icon-close alert-close J_closeAlert"></i>
+            <div class="alert-inner">
+                <div class="rule-detail">
+                    <img class="rule-logo" src="img/alert-rule-logo.png">
+                    <img class="rule-title" src="img/alert-rule-title.png">
+                    <div class="rule-text">
+                        <p>
+                            参与YOOX新年柜礼活动，赢取YOOX折上折优惠码与意大利米兰双人往返机票大礼！
+                        </p>
+                        <br>
+                        <p><b>参与方式</b></p>
+                        <p>1、点击时尚礼柜开启YOOX新年柜礼;</p>
+                        <p>2、输入时尚密码 YOOX，开启礼物;</p>
+                        <p>3、发送礼券编码至手机或填写礼品收取地址领取优惠</p>
+                        <br>
+                        <p><b>活动奖品</b></p>
+                        <p> 特等奖：意大利米兰双人往返机票</p>
+                        <p>一等奖：YOOX.CN折上折85折优惠码</p>
+                        <p>二等奖：YOOX.CN折上折9折优惠码</p>
+                        <p>三等奖：YOOX.CN折上折95折优惠码 </p>
+                        <br>
+                        <p><b>活动时间</b></p>
+                        <p>特等奖意大利米兰双人往返机票兑奖时间：2017年6月30日前</p>
+                        <p>优惠码使用期限：即日起至2017年1月20日</p>
+                        <p>我们会在活动结束后两周内于官方微信上公布特等奖获奖名单</p>
+                        <p>
+                            本活动最终解释权由YOOX 所有，如果有疑问请联系我们的官方微信 YOOX网络概念店 ，微信号:yooxyooxyoox
+                        </p>
+                    </div>
+                    <img class="rule-box" src="img/alert-rule-img.jpg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+</section>
+
+<section class="loading" id="J_loading">
+    <!--<img class="loading-logo translateCenter" src="img/loading-logo.gif">-->
+    <div class="loading-img"></div>
+</section>
+
+<!-- common script for all pages -->
+<script src="js/lib/zepto.min.js"></script>
+<script src="js/lib/jquery.cookie.js"></script>
+<script src="js/lib/jweixin-1.0.0.js"></script>
+<script src="js/global.js"></script>
+
+
+</body>
+</html>
