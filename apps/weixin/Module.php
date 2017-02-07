@@ -16,7 +16,9 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'App\Weixin\Controllers' => __DIR__ . '/controllers/'
+            'App\Weixin\Controllers' => __DIR__ . '/controllers/',
+            'App\Weixin\Models' => __DIR__ . '/models/',
+            'App\Weixin\Services' => __DIR__ . '/services/'
         ));
         $loader->register();
     }
