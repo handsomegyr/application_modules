@@ -82,6 +82,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -103,6 +106,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['user_headimgurl'] = array(
@@ -123,6 +129,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -145,6 +154,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['is_valid'] = array(
@@ -167,6 +179,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['got_time'] = array(
@@ -189,7 +204,11 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             'search' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => false,
-                'condition_type' => 'period' // single
+                'condition_type' => 'period'
+            ) // single
+,
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['source'] = array(
@@ -204,8 +223,7 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelSource->getAll();
                 }
             ),
@@ -235,6 +253,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['prize_name'] = array(
@@ -255,6 +276,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['prize_category'] = array(
@@ -296,6 +320,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['prize_is_virtual'] = array(
@@ -337,6 +364,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['prize_virtual_pwd'] = array(
@@ -357,6 +387,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -378,6 +411,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['contact_mobile'] = array(
@@ -398,6 +434,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['contact_address'] = array(
@@ -418,6 +457,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         

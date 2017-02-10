@@ -45,6 +45,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -66,6 +69,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['sex'] = array(
@@ -80,8 +86,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelGender->getAll();
                 }
             ),
@@ -90,6 +95,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -111,6 +119,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -132,6 +143,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -153,6 +167,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -174,6 +191,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -217,6 +237,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -241,6 +264,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         

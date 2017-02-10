@@ -67,6 +67,9 @@ class SuccessController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['user_headimgurl'] = array(
@@ -87,6 +90,9 @@ class SuccessController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['prize_id'] = array(
@@ -101,8 +107,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelPrize->getAll();
                 }
             ),
@@ -113,8 +118,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelPrize->getAll();
                 }
             ),
@@ -216,8 +220,9 @@ class SuccessController extends \App\Backend\Controllers\FormController
             'search' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'condition_type' => 'period' // single
-                        ),
+                'condition_type' => 'period'
+            ) // single
+,
             'export' => array(
                 'is_show' => true
             )
@@ -261,6 +266,9 @@ class SuccessController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['prize_name'] = array(
@@ -281,6 +289,9 @@ class SuccessController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['prize_category'] = array(
@@ -321,6 +332,9 @@ class SuccessController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['prize_virtual_currency'] = array(
@@ -361,6 +375,9 @@ class SuccessController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['prize_virtual_pwd'] = array(
@@ -381,6 +398,9 @@ class SuccessController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['contact_name'] = array(

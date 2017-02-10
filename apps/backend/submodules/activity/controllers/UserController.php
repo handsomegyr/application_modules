@@ -68,6 +68,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['nickname'] = array(
@@ -88,6 +91,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['headimgurl'] = array(
@@ -108,6 +114,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['worth'] = array(
@@ -128,6 +137,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['worth2'] = array(
@@ -148,6 +160,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['redpack_user'] = array(
@@ -168,6 +183,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -189,6 +207,80 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+
+        $schemas['contact_name'] = array(
+            'name' => '联系用户',
+            'data' => array(
+                'type' => 'string',
+                'length' => 50
+            ),
+            'validation' => array(
+                'required' => 1
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['contact_mobile'] = array(
+            'name' => '联系手机',
+            'data' => array(
+                'type' => 'string',
+                'length' => 20
+            ),
+            'validation' => array(
+                'required' => 1
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['contact_address'] = array(
+            'name' => '联系地址',
+            'data' => array(
+                'type' => 'string',
+                'length' => 200
+            ),
+            'validation' => array(
+                'required' => 1
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         

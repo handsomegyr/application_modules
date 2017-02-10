@@ -465,6 +465,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $input = $this->getListFilterInput();
             
             // 根据检索条件获取列表
+            resetTimeMemLimit();
             $list = $this->getModel()->getAllList($input);
             $this->export($list);
             exit();

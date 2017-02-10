@@ -23,6 +23,8 @@ class Api
     private $_uniqueId;
 
     public $_isInstance = false;
+    // 是否是简单抽奖,主要用于没有任何奖品数量限制的抽奖場景
+    public $_isSimpleLottery = false;
 
     public function __construct()
     {
@@ -95,16 +97,18 @@ class Api
                 if ($rule == false) {
                     throw new \Exception('很遗憾，您没有中奖', - 4);
                 }
-                
-                // LOCK
-                $rule = $this->_rule->findOne(array(
-                    '_id' => $rule['_id'],
-                    '__FOR_UPDATE__' => true
-                ));
-                
-                // 更新中奖信息
-                if (! $this->_rule->updateRemain($rule)) {
-                    throw new \Exception('竞争争夺奖品失败', - 5);
+                // 如果不是简单抽奖的话
+                if (! $this->_isSimpleLottery) {
+                    // LOCK
+                    $rule = $this->_rule->findOne(array(
+                        '_id' => $rule['_id'],
+                        '__FOR_UPDATE__' => true
+                    ));
+                    
+                    // 更新中奖信息
+                    if (! $this->_rule->updateRemain($rule)) {
+                        throw new \Exception('竞争争夺奖品失败', - 5);
+                    }
                 }
                 // throw new \Exception("测试", 999);
                 // 竞争到奖品，根据奖品的属性标记状态
