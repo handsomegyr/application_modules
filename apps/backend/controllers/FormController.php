@@ -821,11 +821,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $appWeixinConfig = $this->getWeixinConfig();
         
         $weixin = new \Weixin\Client();
-        $weixin->setAccessToken('FCxWuaeE2gtz04Dj9o-YUkGJfknP2LYPlzVRBHxZO3n0jXuMM4j1TIb1TOjD4aF0XP3h4bcI9Por7zm0T9dDoRT5ga0p-ZC-dcaxXKxs3qq_q-eS8yjYftFKwIKiuRbNENFdAFAXGY');
+        $weixin->setAccessToken('5r40in-A3AT16qI_9c6Mg96spYMnEeOim5GraIudD6ArSvI40YEfGyu00Eo_mZXRoOPrIZUibVj14NPdz6DOccc0thB-8mDRWXpV-if5_jJLCJmNWKomdEEPMf4IT-NNXTVhABAPLN');
         // if (! empty($appWeixinConfig['access_token'])) {
         // $weixin->setAccessToken($appWeixinConfig['access_token']);
         // }
-        
         return $weixin;
     }
 

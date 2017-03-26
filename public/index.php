@@ -2,14 +2,18 @@
 use Phalcon\Mvc\Application;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\DI;
-
-ini_set("display_errors", "On");
-
+// ini_set('display_errors', 'On');
+// die('xxx:' . ini_get('display_errors'));
 error_reporting(E_ALL);
+// ini_set('display_startup_errors', 1);
+// ini_set('display_errors', 1);
+// error_reporting(- 1);
+
+ini_set("session.save_handler", "memcached"); // 是memcached不是memcache
+ini_set("session.save_path", "127.0.0.1:11211"); // 不要tcp:
 
 try {
     session_start();
-    
     /**
      * Include const
      */

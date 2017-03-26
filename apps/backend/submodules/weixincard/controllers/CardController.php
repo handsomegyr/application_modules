@@ -2269,4 +2269,57 @@ class CardController extends \App\Backend\Controllers\FormController
             $this->makeJsonError($e->getMessage());
         }
     }
+
+    /**
+     * 核查code接口
+     */
+    public function checkcodeAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/checkcode?id=xxx
+        try {
+            $this->view->disable();
+            $weixin = $this->getWeixin();
+            $this->modelCodeDeposit->setWeixin($weixin);
+            
+            $id = $this->get('id', '');
+            if (empty($id)) {
+                throw new \Exception("id未指定", - 1);
+            }
+            $cardInfo = $this->modelCard->getInfoById($id);
+            if (empty($cardInfo)) {
+                throw new \Exception("id不正确", - 2);
+            }
+            if (empty($cardInfo['card_id'])) {
+                throw new \Exception("card_id未生成", - 3);
+            }
+            
+            // 核查code处理
+            $this->modelCodeDeposit->checkCode($cardInfo['card_id']);
+            
+            $this->makeJsonResult();
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * 从微信公众平台上获取最新的卡券信息
+     */
+    public function getdepositcodecountAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/weixincard/card/getdepositcodecount?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
+        try {
+            $this->view->disable();
+            
+            $weixin = $this->getWeixin();
+            $this->modelCard->setWeixin($weixin);
+            
+            $card_id = $this->get('card_id', '');
+            
+            $ret = $weixin->getCardManager()->codeGetDepositCount($card_id);
+            $this->makeJsonResult($ret);
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
 }

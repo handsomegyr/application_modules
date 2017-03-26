@@ -294,7 +294,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
                 'length' => '255'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -316,7 +316,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -337,7 +337,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
                 'length' => '255'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -359,7 +359,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -380,7 +380,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
                 'length' => '255'
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -402,7 +402,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',

@@ -5,15 +5,15 @@ namespace App\Campaign\Controllers;
  * 例子
  *
  * 授权地址
- * http://www.161224sk0001.com:10080/campaign/index/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
+ * http://www.applicationmodule.com:10080/campaign/index/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
  *
- * http://www.161224sk0001.com:10080/campaign/index/weixinauthorizebefore?operation4cookie=clear
+ * http://www.applicationmodule.com:10080/campaign/index/weixinauthorizebefore?operation4cookie=clear
  *
- * http://www.161224sk0001.com:10080/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
+ * http://www.applicationmodule.com:10080/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
- * http://www.161224sk0001.com:10080/html/index/index.html
+ * http://www.applicationmodule.com:10080/html/index/index.html
  *
- * http://www.161224sk0001.com:10080/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
+ * http://www.applicationmodule.com:10080/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
  * @author 郭永荣
  *        
@@ -80,7 +80,7 @@ class IndexController extends ControllerBase
      */
     public function getcampaignuserinfoAction()
     {
-        // http://www.161224sk0001.com:10080/campaign/index/getcampaignuserinfo
+        // http://www.applicationmodule.com:10080/campaign/index/getcampaignuserinfo
         try {
             $this->view->disable();
             
@@ -172,7 +172,7 @@ class IndexController extends ControllerBase
      */
     public function lotteryAction()
     {
-        // http://www.161224sk0001.com:10080/campaign/index/lottery?name=guoyongrong&mobile=13564100096&address=xxx
+        // http://www.applicationmodule.com:10080/campaign/index/lottery?name=guoyongrong&mobile=13564100096&address=xxx
         try {
             $this->view->disable();
             // 获取活动信息
@@ -332,7 +332,7 @@ class IndexController extends ControllerBase
      */
     public function recorduserinfoAction()
     {
-        // http://www.161224sk0001.com:10080/campaign/index/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
+        // http://www.applicationmodule.com:10080/campaign/index/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
         try {
             $this->view->disable();
             

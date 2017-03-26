@@ -683,6 +683,7 @@ class IndexController extends ControllerBase
     protected function doCommonLogic(array $datas)
     {
         $content = isset($datas['Content']) ? strtolower(trim($datas['Content'])) : '';
+		$FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
         $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
         $MsgType = isset($datas['MsgType']) ? trim($datas['MsgType']) : '';
         $Event = isset($datas['Event']) ? trim($datas['Event']) : '';

@@ -25,7 +25,7 @@ function registerAutoloaders()
 {
     $loader = new Loader();
     $loader->registerNamespaces(array(
-		'App\Common\Controllers' => APP_PATH . 'apps/common/controllers/',
+        'App\Common\Controllers' => APP_PATH . 'apps/common/controllers/',
         'App\Common\Plugins' => APP_PATH . 'apps/common/plugins/'
     ));
     
@@ -349,6 +349,12 @@ function registerServices($di)
                 'action' => 2
             ));
             
+            $router->add("/admin/questionnaire/:controller/:action", array(
+                'module' => 'admin/questionnaire',
+                'controller' => 1,
+                'action' => 2
+            ));
+            
             $router->add("/admin/weixinredpack/:controller/:action", array(
                 'module' => 'admin/weixinredpack',
                 'controller' => 1,
@@ -362,6 +368,12 @@ function registerServices($di)
             
             $router->add("/admin/activity/:controller/:action", array(
                 'module' => 'admin/activity',
+                'controller' => 1,
+                'action' => 2
+            ));
+            
+            $router->add("/admin/bargain/:controller/:action", array(
+                'module' => 'admin/bargain',
                 'controller' => 1,
                 'action' => 2
             ));

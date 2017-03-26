@@ -150,7 +150,7 @@ class Qrcard extends \App\Common\Models\Weixincard\Qrcard
         $expire_seconds = empty($card['expire_seconds']) ? 0 : intval($card['expire_seconds']);
         $is_unique_code = empty($card['is_unique_code']) ? false : true;
         $balance = empty($card['balance']) ? 0 : $card['balance'];
-        $outer_id = empty($card['outer_id']) ? 0 : $card['outer_id'];
+        $outer_id = empty($card['outer_id']) ? 0 : intval($card['outer_id']);
         
         $ticketInfo = $this->_weixin->getCardManager()->qrcodeCreate($card_id, $code, $openid, $expire_seconds, $is_unique_code, $balance, $outer_id);
         if (! empty($ticketInfo['errcode'])) {

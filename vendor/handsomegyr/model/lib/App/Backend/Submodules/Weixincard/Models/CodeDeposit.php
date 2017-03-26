@@ -51,6 +51,33 @@ class CodeDeposit extends \App\Common\Models\Weixincard\CodeDeposit
         }
     }
 
+    public function checkCode($card_id)
+    {
+        $query = array();
+        $query['card_id'] = $card_id;
+        $query['is_deposited'] = true;
+        $defaultQuery = $this->getQuery();
+        $query = array_merge($query, $defaultQuery);
+        
+        $limit = 100;
+        $sort = $this->getDefaultSort();
+        $list = $this->find($query, $sort, 0, $limit);
+        if (! empty($list['datas'])) {
+            $cardManager = $this->_weixin->getCardManager();
+            $codes = array();
+            $ids = array();
+            foreach ($list['datas'] as $value) {
+                $codes[] = $value['card_code'];
+                $ids[] = $value['_id'];
+            }
+            $rst = $cardManager->codeCheck($card_id, $codes);
+            if (! empty($rst['errcode'])) {
+                // 如果有异常，会在errcode 和errmsg 描述出来。
+                throw new \Exception($rst['errmsg'], $rst['errcode']);
+            }
+        }
+    }
+
     /**
      * 更新导入信息
      *

@@ -446,4 +446,76 @@ class QrcardController extends \App\Backend\Controllers\FormController
             $this->makeJsonError($e->getMessage());
         }
     }
+
+    /**
+     * 生成多张卡券二维码的Hook
+     */
+    public function createmultipleAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/weixincard/qrcard/createmultiple?id=xx
+        try {
+            $this->view->disable();
+            $weixin = $this->getWeixin();
+            $this->modelQrcard->setWeixin($weixin);
+            $id = $this->get('id', '');
+            if (empty($id)) {
+                $cards = $this->modelQrcard->getAll();
+            } else {
+                $cardInfo = $this->modelQrcard->getInfoById($id);
+                $cards = array(
+                    $cardInfo
+                );
+            }
+            
+            foreach ($cards as $card) {
+                if (empty($card['expire_seconds']) && ! empty($card['is_created'])) { // 如果是永久并且已生成的话
+                    continue;
+                }
+                if (! empty($card['expire_seconds']) && ! empty($card['is_created']) && ($card['ticket_time']->sec + $card['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
+                    continue;
+                }
+                
+                $card_id = $card['card_id'];
+                $cardInfo = $this->modelCard->getInfoByCardId($card_id);
+                if (empty($cardInfo)) {
+                    throw new \Exception("卡券ID为{$card_id}的数据不存在", - 1);
+                }
+                
+                // 指定二维码的有效时间，范围是60 ~ 1800秒。不填默认为永久有效
+                if (! empty($card['expire_seconds']) && ($card['expire_seconds'] < 60 || $card['expire_seconds'] > 1800)) {
+                    throw new \Exception("指定二维码的有效时间，范围是60 ~ 1800秒", - 4);
+                }
+                
+                // 卡券Code码,use_custom_code字段为true的卡券必须填写，非自定义code不必填写。
+                if (! empty($cardInfo['use_custom_code']) && empty($card['code'])) {
+                    throw new \Exception("use_custom_code字段为true的卡券必须填写卡券Code码", - 2);
+                }
+                
+                // 指定领取者的openid，只有该用户能领取。bind_openid字段为true的卡券必须填写，非指定openid不必填写。
+                if (! empty($cardInfo['bind_openid']) && empty($card['openid'])) {
+                    throw new \Exception("bind_openid字段为true的卡券必须填写必须指定领取者的openid", - 3);
+                }
+                
+                // 注意填写该字段时，卡券须通过审核且库存不为0。
+                if (! empty($card['is_unique_code']) && ! ($cardInfo['sku_quantity'] > 0 && $cardInfo['status'] == 'CARD_STATUS_VERIFY_OK')) {
+                    throw new \Exception("卡券须通过审核且库存不为0", - 5);
+                }
+                
+                // 在微信公众平台生成相应的二维码
+                $this->modelQrcard->create4Weixin($card);
+                
+                // // 在卡包里面记录信息
+                // $memo = array(
+                // 'card_type' => $cardInfo['card_type'],
+                // 'iscreatedByQrcard' => 1,
+                // 'balance' => $balance,
+                // 'card_record_id' => $cardInfo['_id']
+                // );
+                // $cardbagInfo = $this->_cardBag->addCard($card_id, $code, $openid, $outer_id, $memo);
+            }
+            $this->makeJsonResult();
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
 }

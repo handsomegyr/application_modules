@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>微信卡券领取页面</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no, address=no, email=no">
+<meta http-equiv="cleartype" content="on">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="">
+<script type="text/javascript">
+var wx_card_id = "<?php echo $this->view->ret['wx_card_id']?>";
+var callbackUrl = "<?php echo $this->view->ret['callbackUrl']?>";
+var card_ext = '<?php echo $this->view->ret['signatureInfo']['card_ext']?>';
+var error = '<?php echo empty($this->view->error)?'':json_encode($this->view->error)?>';
+</script>
+</head>
+<body>
+    <p>正在加载...</p>
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        /**
+         * 获取JSSDK参数，并设置config
+         */
+        function getJSSDK() {
+            return $.getJSON('http://www.jizigou.com/weixin/index/getjssdkinfo?jsonpcallback=?', {
+                url: encodeURIComponent(window.location.href.split('#')[0])
+            }).then(function (res) {
+                $('p').empty();
+
+                if (!res.success) {
+                    alert(res.error_msg);
+                } else {
+                    var result = res.result;
+                    wx.config({
+                        debug: false,
+                        appId: result.appId, // 必填，公众号的唯一标识
+                        timestamp: result.timestamp, // 必填，生成签名的时间戳
+                        nonceStr: result.nonceStr, // 必填，生成签名的随机串
+                        signature: result.signature,// 必填，签名，见附录1
+                        jsApiList: ['addCard'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    });
+
+                    wx.ready(function () {
+                        addCard()
+                    })
+                }
+            }, onError);
+        }
+
+        /**
+         * 请求失败执行此函数
+         */
+        function onError() {
+            alert('网络繁忙，请稍候重试!');
+        }
+
+        /**
+         * 添加到卡包
+         */
+        function addCard() {
+            wx.addCard({
+                cardList: [{
+                    cardId:  ''+wx_card_id,
+                    cardExt: ''+card_ext
+                }],
+                success: function() {
+                    var cb_url = getQueryString('cb_url')
+                    if(cb_url) {
+                        window.location.replace(cb_url);
+                    }
+                },
+                cancel: function() {
+
+                }
+            });
+        }
+
+        /**
+         * 转义正则字符串
+         * @param str
+         */
+        function quote(str) {
+            return str.replace(/[-[\]{}()*+?.\\^$|,#\s]/g, '\\$&');
+        }
+
+        /**
+         * 获取查询字符串
+         * @param name
+         */
+        function getQueryString(name) {
+            var result = window.location.search.match(new RegExp('(?:\\?|&)' + quote(name) + '=(.*?)(?:$|&)', 'i'));
+            return result ? decodeURIComponent(result[1]) : '';
+        }
+
+        if(error) {
+            alert(JSON.parse(error).error_msg)
+        } else {
+            getJSSDK()
+        }
+
+    </script>
+</body>
+</html>

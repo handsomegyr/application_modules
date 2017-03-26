@@ -30,6 +30,9 @@ class Card extends Base
         $data['member_card_supply_balance'] = $this->changeToBoolean($data['member_card_supply_balance']);
         $data['member_card_need_push_on_view'] = $this->changeToBoolean($data['member_card_need_push_on_view']);
         
+        $data['boarding_pass_departure_time'] = $this->changeToMongoDate($data['boarding_pass_departure_time']);
+        $data['boarding_pass_landing_time'] = $this->changeToMongoDate($data['boarding_pass_landing_time']);
+        
         return $data;
     }
 }

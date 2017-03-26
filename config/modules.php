@@ -95,6 +95,10 @@ $application->registerModules(array(
         'className' => 'App\Backend\Vote\Module',
         'path' => APP_PATH . 'apps/backend/submodules/vote/Module.php'
     ),
+    'admin/questionnaire' => array(
+        'className' => 'App\Backend\Questionnaire\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/questionnaire/Module.php'
+    ),
     'admin/task' => array(
         'className' => 'App\Backend\Task\Module',
         'path' => APP_PATH . 'apps/backend/submodules/task/Module.php'
@@ -106,6 +110,10 @@ $application->registerModules(array(
     'admin/weixincard' => array(
         'className' => 'App\Backend\Weixincard\Module',
         'path' => APP_PATH . 'apps/backend/submodules/weixincard/Module.php'
+    ),
+    'admin/bargain' => array(
+        'className' => 'App\Backend\bargain\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/bargain/Module.php'
     ),
     'weixin' => array(
         'className' => 'App\Weixin\Module',
@@ -198,14 +206,6 @@ $application->registerModules(array(
     'sms' => array(
         'className' => 'App\Sms\Module',
         'path' => APP_PATH . 'apps/sms/Module.php'
-    ),
-    'vote' => array(
-        'className' => 'App\Vote\Module',
-        'path' => APP_PATH . 'apps/vote/Module.php'
-    ),
-    'weixinredpack' => array(
-        'className' => 'App\Weixinredpack\Module',
-        'path' => APP_PATH . 'apps/weixinredpack/Module.php'
     ),
     'campaign' => array(
         'className' => 'App\Campaign\Module',

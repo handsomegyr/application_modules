@@ -29,6 +29,7 @@ class Base
     {
         $content = isset($datas['Content']) ? strtolower(trim($datas['Content'])) : '';
 		$content_process = isset($datas['content_process']) ? strtolower(trim($datas['content_process'])) : '';
+		$FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
         $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
         $MsgType = isset($datas['MsgType']) ? trim($datas['MsgType']) : '';
         $Event = isset($datas['Event']) ? trim($datas['Event']) : '';

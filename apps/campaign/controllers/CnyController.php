@@ -5,15 +5,15 @@ namespace App\Campaign\Controllers;
  * 例子
  *
  * 授权地址
- * http://yoox.rice5.com.cn/campaign/cny/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
+ * http://www.applicationmodule.com:10080/campaign/cny/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
  *
- * http://yoox.rice5.com.cn/campaign/cny/weixinauthorizebefore?operation4cookie=clear
+ * http://www.applicationmodule.com:10080/campaign/cny/weixinauthorizebefore?operation4cookie=clear
  *
- * http://yoox.rice5.com.cn/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
+ * http://www.applicationmodule.com:10080/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
- * http://yoox.rice5.com.cn/html/cny/index.html
+ * http://www.applicationmodule.com:10080/html/cny/index.html
  *
- * http://yoox.rice5.com.cn/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=ok0K2vystcQkKolNr3anJd-soVuI&nickname=郭永荣&headimgurl=xx
+ * http://www.applicationmodule.com:10080/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=ok0K2vystcQkKolNr3anJd-soVuI&nickname=郭永荣&headimgurl=xx
  *
  * @author 郭永荣
  *        
@@ -46,6 +46,7 @@ class CnyController extends ControllerBase
 
     public function initialize()
     {
+        die('CnyController');
         $this->now = getCurrentTime();
         $this->today = date('Ymd', $this->now->sec);
         
@@ -80,7 +81,7 @@ class CnyController extends ControllerBase
      */
     public function getcampaignuserinfoAction()
     {
-        // http://yoox.rice5.com.cn/campaign/cny/getcampaignuserinfo
+        // http://www.applicationmodule.com:10080/campaign/cny/getcampaignuserinfo
         try {
             $this->view->disable();
             
@@ -174,7 +175,7 @@ class CnyController extends ControllerBase
      */
     public function lotteryAction()
     {
-        // http://yoox.rice5.com.cn/campaign/cny/lottery?name=guoyongrong&mobile=13564100096&address=xxx
+        // http://www.applicationmodule.com:10080/campaign/cny/lottery?name=guoyongrong&mobile=13564100096&address=xxx
         try {
             $this->view->disable();
             // 获取活动信息
@@ -325,7 +326,7 @@ class CnyController extends ControllerBase
      */
     public function recorduserinfoAction()
     {
-        // http://yoox.rice5.com.cn/campaign/cny/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
+        // http://www.applicationmodule.com:10080/campaign/cny/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
         try {
             $this->view->disable();
             
@@ -439,7 +440,7 @@ class CnyController extends ControllerBase
      */
     public function sendsmsAction()
     {
-        // http://yoox.rice5.com.cn/campaign/cny/sendsms?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&mobile=13564100096
+        // http://www.applicationmodule.com:10080/campaign/cny/sendsms?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&mobile=13564100096
         try {
             $this->view->disable();
             
@@ -592,7 +593,7 @@ class CnyController extends ControllerBase
      */
     public function testsendsmsAction()
     {
-        // http://yoox.rice5.com.cn/campaign/cny/testsendsms?code=xxxx&mobile=13564100096
+        // http://www.applicationmodule.com:10080/campaign/cny/testsendsms?code=xxxx&mobile=13564100096
         try {
             $this->view->disable();
             

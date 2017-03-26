@@ -139,9 +139,6 @@ class CardBag extends \App\Common\Models\Weixincard\CardBag
                 'get' => $memo
             ));
             
-            print_r($info);
-            die('xxx222');
-            
             $query = array();
             $query['_id'] = $cardbagInfo['_id'];
             $query['is_got'] = false;
@@ -155,10 +152,10 @@ class CardBag extends \App\Common\Models\Weixincard\CardBag
             $options['upsert'] = true;
             $rst = $this->findAndModify($options);
             if (empty($rst['ok'])) {
-                throw new Exception("卡券ID:{$card_id} Code:{$UserCardCode}的对应卡包更新失败" . json_encode($rst));
+                throw new \Exception("卡券ID:{$card_id} Code:{$UserCardCode}的对应卡包领取失败" . json_encode($rst));
             }
             if (empty($rst['value'])) {
-                throw new Exception("卡券ID:{$card_id} Code:{$UserCardCode}的对应卡包更新失败" . json_encode($rst));
+                throw new \Exception("卡券ID:{$card_id} Code:{$UserCardCode}的对应卡包领取失败" . json_encode($rst));
             }
             return $rst['value'];
         } else { // 新增一条记录
@@ -394,7 +391,9 @@ class CardBag extends \App\Common\Models\Weixincard\CardBag
         $query = array();
         $query['card_id'] = (string) $card_id;
         $query['UserCardCode'] = (string) $UserCardCode;
-        $query['FromUserName'] = (string) $FromUserName;
+        if (! empty($FromUserName)) {
+            $query['FromUserName'] = (string) $FromUserName;
+        }
         return $query;
     }
 }
