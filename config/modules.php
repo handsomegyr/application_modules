@@ -115,6 +115,10 @@ $application->registerModules(array(
         'className' => 'App\Backend\bargain\Module',
         'path' => APP_PATH . 'apps/backend/submodules/bargain/Module.php'
     ),
+    'admin/cronjob' => array(
+        'className' => 'App\Backend\cronjob\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/cronjob/Module.php'
+    ),
     'weixin' => array(
         'className' => 'App\Weixin\Module',
         'path' => APP_PATH . 'apps/weixin/Module.php'

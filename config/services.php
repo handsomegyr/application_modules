@@ -13,6 +13,7 @@ use Phalcon\Cache\Frontend\Data as FrontData;
 use Phalcon\Mvc\Model\Transaction\Manager as TransactionManager;
 use Phalcon\Events\Manager as EventsManager;
 use Pheanstalk\Pheanstalk;
+use Elasticsearch\ClientBuilder;
 
 registerAutoloaders();
 
@@ -214,6 +215,21 @@ function registerServices($di)
         }
     };
     
+    /**
+     * Setting up the elasticsearch component
+     */
+    $di['elasticsearch'] = function () use($config) {
+        $hosts = [
+            // This is effectively equal to: "http://username:password!#$?*abc@foo.com:9200/"
+            [
+                'host' => '192.168.128.81',
+                'port' => '9200'
+            ]
+        ];
+        $client = ClientBuilder::create()->setHosts($hosts)->build();
+        return $client;
+    };
+    
     if (! defined('IS_IN_CLI_MODE')) {
         /**
          * Registering a router
@@ -374,6 +390,12 @@ function registerServices($di)
             
             $router->add("/admin/bargain/:controller/:action", array(
                 'module' => 'admin/bargain',
+                'controller' => 1,
+                'action' => 2
+            ));
+            
+            $router->add("/admin/cronjob/:controller/:action", array(
+                'module' => 'admin/cronjob',
                 'controller' => 1,
                 'action' => 2
             ));

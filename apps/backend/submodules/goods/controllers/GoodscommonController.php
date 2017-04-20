@@ -487,8 +487,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCategory->getList4Tree('');
                 }
             ),
@@ -511,8 +510,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCategory->getList4Tree('');
                 }
             ),
@@ -535,8 +533,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCategory->getList4Tree('');
                 }
             ),
@@ -559,8 +556,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCategory->getList4Tree('');
                 }
             ),
@@ -683,8 +679,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelBrand->getAll();
                 }
             ),
@@ -727,8 +722,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => false,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelType->getAll();
                 }
             ),
@@ -1396,7 +1390,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             )
         );
         
-		$schemas['collect'] = array(
+        $schemas['collect'] = array(
             'name' => '收藏数量',
             'data' => array(
                 'type' => 'integer',
