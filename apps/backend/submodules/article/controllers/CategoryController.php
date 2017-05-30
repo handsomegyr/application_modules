@@ -58,8 +58,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCategory->getList4Tree('');
                 }
             ),
@@ -129,7 +128,64 @@ class CategoryController extends \App\Backend\Controllers\FormController
     {
         foreach ($list['data'] as &$item) {
             $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];
+            $item['show_name'] = $item['show_name'] . '&nbsp&nbsp<a href="javascript:;" class="btn yellow icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要将本地数据上传到elasticsearch吗？\', \'elastic\')" class="halflings-icon user white"><i></i> elasticsearch</a>';
         }
         return $list;
+    }
+
+    /**
+     * 上传至elastic
+     */
+    public function elasticAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/article/category/elastic?id=xxx
+        try {
+            $this->view->disable();
+            
+            $id = $this->get('id', '');
+            if (empty($id)) {
+                throw new \Exception("id未指定", - 1);
+            }
+            $categoryInfo = $this->modelCategory->getInfoById($id);
+            if (empty($categoryInfo)) {
+                throw new \Exception("id不正确", - 2);
+            }
+            
+            $client = $this->getDI()->get('elasticsearch');
+            
+            // 删除
+            $params = [
+                'index' => 'application_modules',
+                'type' => 'article_category',
+                'id' => $id
+            ];
+            $response = $client->delete($params);
+            
+            // 新建
+            $params = [
+                'index' => 'application_modules',
+                'type' => 'article_category',
+                'id' => $id,
+                'body' => [
+                    'title' => $categoryInfo['name'],
+                    'content' => $categoryInfo['name'],
+                    'dataFrom' => 'article_category'
+                ]
+            ];
+            $response = $client->index($params);
+            
+            // 获取
+            $params = [
+                'index' => 'application_modules',
+                'type' => 'article_category',
+                'id' => $id
+            ];
+            
+            $response = $client->get($params);
+            
+            $this->makeJsonResult($response);
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
     }
 }

@@ -40,8 +40,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCategory->getList4Tree();
                 }
             ),
@@ -110,7 +109,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -136,7 +135,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -159,9 +158,9 @@ class ArticleController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => 1,
-                'ajax' => 'toggleisshow'
+                'list_type' => 1
             ),
+            // 'ajax' => 'toggleisshow'
             'search' => array(
                 'is_show' => false
             )
@@ -203,11 +202,68 @@ class ArticleController extends \App\Backend\Controllers\FormController
 
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
-        $categoryList = $this->modelCategory->getAll();
+        $categoryList = array(); // $this->modelCategory->getAll();
         foreach ($list['data'] as &$item) {
             $item['category_name'] = isset($categoryList[$item['category_id']]) ? $categoryList[$item['category_id']] : '';
             $item['article_time'] = date("Y-m-d H:i:s", $item['article_time']->sec);
+            $item['title'] = $item['title'] . '&nbsp&nbsp<a href="javascript:;" class="btn yellow icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要将本地文章上传到elasticsearch吗？\', \'elastic\')" class="halflings-icon user white"><i></i> elasticsearch</a>';
         }
         return $list;
+    }
+
+    /**
+     * 上传文章至elastic
+     */
+    public function elasticAction()
+    {
+        // http://www.applicationmodule.com:10080/admin/article/article/elastic?id=xxx
+        try {
+            $this->view->disable();
+            
+            $id = $this->get('id', '');
+            if (empty($id)) {
+                throw new \Exception("id未指定", - 1);
+            }
+            $articleInfo = $this->modelArticle->getInfoById($id);
+            if (empty($articleInfo)) {
+                throw new \Exception("id不正确", - 2);
+            }
+            
+            $client = $this->getDI()->get('elasticsearch');
+            
+            // 删除
+            $params = [
+                'index' => 'application_modules',
+                'type' => 'article',
+                'id' => $id
+            ];
+            $response = $client->delete($params);
+            
+            // 新建
+            $params = [
+                'index' => 'application_modules',
+                'type' => 'article',
+                'id' => $id,
+                'body' => [
+                    'title' => $categoryInfo['name'],
+                    'content' => $categoryInfo['name'],
+                    'dataFrom' => 'article'
+                ]
+            ];
+            $response = $client->index($params);
+            
+            // 获取
+            $params = [
+                'index' => 'application_modules',
+                'type' => 'article',
+                'id' => $id
+            ];
+            
+            $response = $client->get($params);
+            
+            $this->makeJsonResult($response);
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
     }
 }

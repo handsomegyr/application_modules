@@ -214,5 +214,9 @@ $application->registerModules(array(
     'campaign' => array(
         'className' => 'App\Campaign\Module',
         'path' => APP_PATH . 'apps/campaign/Module.php'
+    ),
+    'install' => array(
+        'className' => 'App\Install\Module',
+        'path' => APP_PATH . 'apps/install/Module.php'
     )
 ));

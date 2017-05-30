@@ -222,7 +222,7 @@ function registerServices($di)
         $hosts = [
             // This is effectively equal to: "http://username:password!#$?*abc@foo.com:9200/"
             [
-                'host' => '192.168.128.81',
+                'host' => '192.168.81.128',
                 'port' => '9200'
             ]
         ];

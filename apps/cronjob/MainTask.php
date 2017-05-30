@@ -17,8 +17,8 @@ class MainTask extends \Phalcon\CLI\Task
      */
     public function testAction(array $params)
     {
-        echo sprintf('hello %s', $params[0]) . PHP_EOL;
-        echo sprintf('best regards, %s', $params[1]) . PHP_EOL;
+        echo sprintf('hello %s', $params[0] . uniqid()) . PHP_EOL;
+        echo sprintf('best regards, %s', $params[1] . uniqid()) . PHP_EOL;
     }
 
     public function testputsamejobtoqueueAction(array $params)

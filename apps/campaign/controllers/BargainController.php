@@ -20,7 +20,7 @@ class BargainController extends ControllerBase
     {
         $this->modelBargain = new \App\Bargain\Models\Bargain();
         $this->modelLog = new \App\Bargain\Models\Log();
-        $this->modelApi = new \App\Bargain\Services\Api('nojson');
+        $this->modelApi = new \App\Bargain\Services\Api();
         parent::initialize();
         $this->view->disable();
     }
@@ -186,7 +186,7 @@ class BargainController extends ControllerBase
             
             // 砍价处理
             $memo = array();
-            $ret = $this->modelApi->bargain($FromUserName, $nickname, $headimgurl, $bargainInfo, $memo);
+            $ret = $this->modelApi->bargain($FromUserName, $nickname, $headimgurl, $bargain_id, $memo);
             if (empty($ret['error_code'])) {
                 echo $this->result('OK', $ret['result']);
                 return true;

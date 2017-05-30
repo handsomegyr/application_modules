@@ -1,6 +1,6 @@
 {
     "require": {
-        "phalcon/devtools": "^2.0",
+        "phalcon/devtools": "^3.1",
         "handsomegyr/wechat": "dev-master",
         "phpunit/phpunit": "^5.0",
         "phalcon/incubator": "^2.0",
@@ -13,6 +13,11 @@
         "endroid/qrcode": "^1.5",
         "imagine/imagine": "~0.5.0",
         "pda/pheanstalk": "^3.1",
-        "qiniu/php-sdk": "^7.0"
+        "qiniu/php-sdk": "^7.0",
+        "elasticsearch/elasticsearch": "~5.0",
+        "mtdowling/cron-expression": "^1.2",
+        "hellogerard/jobby": "^3.2",
+        "handsomegyr/model": "dev-master",
+        "monolog/monolog": "^1.22"
     }
 }

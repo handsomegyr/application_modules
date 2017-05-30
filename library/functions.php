@@ -3,7 +3,7 @@
 /**
  * 递归的创建多层级的目录
  *
- * @param string $dir
+ * @param string $dir            
  */
 function forceDirectory($dir)
 {
@@ -315,8 +315,7 @@ function getIp()
 {
     // $config = Zend_Registry::get('config');
     if (! empty($config['global']['cdn']['status'])) {
-        $first = function ($ips)
-        {
+        $first = function ($ips) {
             $explode = explode(',', $ips);
             return array_shift($explode);
         };
@@ -1310,8 +1309,7 @@ function followUrl($body, $extraArray)
     ); // 过滤指定后缀名URL
     $regex = "(?:http|https|ftp|ftps)://(?:[a-zA-Z0-9\-]*\.)+[a-zA-Z0-9]{2,4}(?:/[a-zA-Z0-9=.\?&\-\%/_,]*)?";
     // 为外链增加相应的需要传递的微信变量
-    $body = preg_replace_callback("#$regex#im", function ($matchs) use($extraArray, $filters, $whiteList)
-    {
+    $body = preg_replace_callback("#$regex#im", function ($matchs) use($extraArray, $filters, $whiteList) {
         $url = $matchs[0];
         
         foreach ($whiteList as $domain) {
@@ -1623,8 +1621,7 @@ function invokeResource($module, $controller, $action, $params)
 {
     $module = ucfirst(strtolower($module));
     $controller = ucfirst(strtolower($module));
-    $action = preg_replace_callback("/-\[a-z]/", function ($match)
-    {
+    $action = preg_replace_callback("/-\[a-z]/", function ($match) {
         return strtoupper(str_replace('-', '', $match));
     }, $action);
     

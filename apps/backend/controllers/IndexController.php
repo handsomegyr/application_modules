@@ -114,8 +114,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             'int'
         ), 0);
         
-        $input->isValid = function ($fieldName = null) use($input)
-        {
+        $input->isValid = function ($fieldName = null) use($input) {
             $data = $this->request->get();
             $validation = new Validation();
             
@@ -137,8 +136,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             }
         };
         
-        $input->getMessages = function () use($input)
-        {
+        $input->getMessages = function () use($input) {
             return empty($input->messages) ? array() : $input->messages;
         };
         

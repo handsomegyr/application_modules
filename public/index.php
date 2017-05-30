@@ -20,12 +20,12 @@ try {
     require __DIR__ . '/../config/const.php';
     define('CURRENT_TIMESTAMP', time()); // 当前时间
     
-    require __DIR__ . '/../vendor/autoload.php';
-    
+    require __DIR__ . '/../vendor/autoload.php';    
+	
     require __DIR__ . '/../library/functions.php';
     
     require __DIR__ . '/../library/core.php';
-    
+    	
     /**
      * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
      */
@@ -35,7 +35,7 @@ try {
      * Include services
      */
     require __DIR__ . '/../config/services.php';
-    
+    	
     // Add any needed services to the DI here
     DI::reset();
     DI::setDefault($di);
