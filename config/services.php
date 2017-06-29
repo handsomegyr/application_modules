@@ -65,7 +65,8 @@ function registerServices($di)
      * Database connection is created based in the parameters defined in the configuration file
      */
     $di['db'] = function () use($config) {
-        $connection = new DbAdapter(array(
+        // $connection = new DbAdapter(array(
+        $connection = new \App\Common\Models\Base\Mysql\Pdo\DbAdapter(array(
             "host" => $config->database->host,
             "username" => $config->database->username,
             "password" => $config->database->password,
@@ -78,6 +79,7 @@ function registerServices($di)
             // echo $conn->getSQLStatement() . '<br />';
         });
         $connection->setEventsManager($eventsManager);
+        
         return $connection;
     };
     
@@ -114,7 +116,7 @@ function registerServices($di)
      * Setting up the pheanstalk queue component
      */
     $di['pheanstalk'] = function () use($config) {
-        $pheanstalk = new Pheanstalk('127.0.0.1');
+        $pheanstalk = new Pheanstalk($config->pheanstalk->host, $config->pheanstalk->port);
         return $pheanstalk;
     };
     
@@ -188,7 +190,7 @@ function registerServices($di)
         if ($objMemcached->addServers($parameters)) {
             return $objMemcached;
         } else {
-            throw new Exception("请检查memcached服务器配置是否存在或者当前服务是否可用");
+            throw new \Exception("请检查memcached服务器配置是否存在或者当前服务是否可用");
         }
     };
     
@@ -196,22 +198,37 @@ function registerServices($di)
      * Setting up the redis component
      */
     $di['redis'] = function () use($config) {
+        $_SERVER['ICC_REDIS_MASTERS'] = "{$config['redis']['host']}:{$config['redis']['port']}";
+        // if (! empty($_SERVER['ICC_REDIS_MASTERS'])) {
+        // $redisServers = explode(',', $_SERVER['ICC_REDIS_MASTERS']);
+        // $parameters = array();
+        // if (is_array($redisServers) && ! empty($redisServers)) {
+        // foreach ($redisServers as $server) {
+        // $parameters[] = 'tcp://' . trim($server);
+        // }
+        // }
+        
+        // $options = array(
+        // 'cluster' => 'redis'
+        // );
+        // $objRedis = new \Predis\Client($parameters, $options);
+        // return $objRedis;
+        // } else {
+        // throw new \Exception("生产环境中尚未设定环境变量ICC_REDIS_MASTERS，请检查");
+        // }
         if (! empty($_SERVER['ICC_REDIS_MASTERS'])) {
-            $redisServers = explode(',', $_SERVER['ICC_REDIS_MASTERS']);
-            $parameters = array();
-            if (is_array($redisServers) && ! empty($redisServers)) {
-                foreach ($redisServers as $server) {
-                    $parameters[] = 'tcp://' . trim($server);
-                }
-            }
-            
-            $options = array(
-                'cluster' => 'redis'
+            $redisServer = explode(':', $_SERVER['ICC_REDIS_MASTERS']);
+            $parameters = array(
+                'host' => $redisServer[0],
+                'port' => $redisServer[1],
+                // 'database' => 15,
+                'read_write_timeout' => 0
             );
+            $options = null;
             $objRedis = new \Predis\Client($parameters, $options);
             return $objRedis;
         } else {
-            throw new Exception("生产环境中尚未设定环境变量ICC_REDIS_MASTERS，请检查");
+            throw new \Exception("生产环境中尚未设定环境变量ICC_REDIS_MASTERS，请检查");
         }
     };
     
@@ -222,8 +239,8 @@ function registerServices($di)
         $hosts = [
             // This is effectively equal to: "http://username:password!#$?*abc@foo.com:9200/"
             [
-                'host' => '192.168.81.128',
-                'port' => '9200'
+                'host' => $config->elasticsearch->host,
+                'port' => $config->elasticsearch->port
             ]
         ];
         $client = ClientBuilder::create()->setHosts($hosts)->build();
