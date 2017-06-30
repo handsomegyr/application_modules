@@ -20,10 +20,10 @@
     </target>
 
     <target name="generate-code" description="composer install thirdparty library and autoloader code">
-        <apply executable="/usr/bin/php" failonerror="true" taskname="composer">
+        <exec executable="/usr/bin/php" taskname="composer">
             <arg value="/usr/local/bin/composer"/>
             <arg value="install"/>
-        </apply>
+        </exec>
     </target>
 
     <target name="lint" depends="generate-code">
