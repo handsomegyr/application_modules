@@ -20,8 +20,13 @@
     </target>
 
     <target name="generate-code" description="composer install thirdparty library and autoloader code">
-        <exec executable="/usr/bin/php" taskname="composer">
+        <!--
+	<exec executable="/usr/bin/php" taskname="composer">
             <arg value="/usr/local/bin/composer"/>
+            <arg value="install"/>
+        </exec>
+	-->   
+	<exec executable="/usr/local/bin/composer" taskname="composer">
             <arg value="install"/>
         </exec>
     </target>
