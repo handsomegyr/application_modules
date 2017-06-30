@@ -26,7 +26,7 @@
     </target>
 
     <target name="lint" depends="generate-code">
-        <apply executable="php" failonerror="true" taskname="lint">
+        <apply executable="/usr/bin/php" failonerror="true" taskname="lint">
             <arg value="-l"/>
 
             <fileset dir="${basedir}/apps">
@@ -93,7 +93,7 @@
 
     <target name="phpcs"
             description="Find coding standard violations using PHP_CodeSniffer and print result in text format">
-        <exec executable="/usr/local/bin/phpcs" taskname="phpcs">
+        <exec executable="/usr/bin/phpcs" taskname="phpcs">
             <arg value="--standard=PSR2"/>
             <arg value="--extensions=php"/>
             <arg value="--ignore=autoload.php"/>
@@ -103,7 +103,7 @@
 
     <target name="phpcs-ci" depends="prepare"
             description="Find coding standard violations using PHP_CodeSniffer and log result in XML format">
-        <exec executable="/usr/local/bin/phpcs" output="/dev/null" taskname="phpcs">
+        <exec executable="/usr/bin/phpcs" output="/dev/null" taskname="phpcs">
             <arg value="--report=checkstyle"/>
             <arg value="--report-file=${basedir}/build/logs/checkstyle.xml"/>
             <arg value="--standard=PSR2"/>
