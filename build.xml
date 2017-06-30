@@ -19,9 +19,11 @@
         <property name="prepare.done" value="true"/>
     </target>
 
-    <target name="generate-code" description="composer install thirdparty library and autoloader code">        
+    <target name="generate-code" description="composer install thirdparty library and autoloader code">
+<!--
 	<apply executable="/usr/local/bin/composer install" failonerror="true" taskname="composer">
-        </apply>		
+        </apply>
+-->
     </target>
 
     <target name="lint" depends="generate-code">
