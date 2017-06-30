@@ -54,7 +54,7 @@
             <arg path="${basedir}/build/logs/phploc.csv"/>
             <arg value="--log-xml"/>
             <arg path="${basedir}/build/logs/phploc.xml"/>
-            <arg path="${basedir}"/
+            <arg path="${basedir}"/>
         </exec>
     </target>
 
