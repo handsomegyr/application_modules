@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Money" default="build">
+<project name="application_modules" default="build">
     <target name="build" depends="prepare,lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpunit,phpdox,-check-failure"/>
 
     <target name="clean" unless="clean.done" description="Cleanup build artifacts">
@@ -18,7 +18,7 @@
         <mkdir dir="${basedir}/build/pdepend"/>
         <property name="prepare.done" value="true"/>
     </target>
-
+<!--
     <target name="generate-code" description="composer install thirdparty library and autoloader code">
         
 		<apply executable="composer" failonerror="true" taskname="composer">
@@ -26,7 +26,7 @@
         </apply>
 		
     </target>
-
+-->
     <target name="lint" depends="generate-code">
         <apply executable="php" failonerror="true" taskname="lint">
             <arg value="-l"/>
