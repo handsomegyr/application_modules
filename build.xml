@@ -13,7 +13,7 @@
         <property name="clean.done" value="true"/>
     </target>
 
-    <target name="prepare" unless="prepare.done" depends="clean,generate-code" description="Prepare for build">
+    <target name="prepare" unless="prepare.done" depends="clean,composer-install" description="Prepare for build">
         <mkdir dir="${basedir}/build/api"/>
         <mkdir dir="${basedir}/build/coverage"/>
         <mkdir dir="${basedir}/build/logs"/>
@@ -21,7 +21,7 @@
         <property name="prepare.done" value="true"/>
     </target>
 
-    <target name="generate-code" description="composer install thirdparty library and autoloader code">
+    <target name="composer-install" description="composer install thirdparty library and autoloader code">
     <!--
 		<exec executable="/usr/bin/php" taskname="composer">
             <arg value="/usr/local/bin/composer"/>
@@ -33,7 +33,7 @@
         </exec>
     </target>
 
-    <target name="lint" depends="generate-code">
+    <target name="lint" depends="composer-install">
         <apply executable="/usr/bin/php" failonerror="true" taskname="lint">
             <arg value="-l"/>
 
