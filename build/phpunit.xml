@@ -32,17 +32,12 @@
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">../src</directory>
+            <directory suffix=".php">../test</directory>
             <exclude>
-                <file>../src/autoload.php</file>
+                <file>../test/autoload.php</file>
             </exclude>
         </whitelist>
     </filter>
 </phpunit>
 
-
-    <testsuite name="Phalcon - Testsuite">
-        <directory>./</directory>
-    </testsuite>
-</phpunit>
 
