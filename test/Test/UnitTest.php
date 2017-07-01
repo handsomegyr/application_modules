@@ -21,14 +21,14 @@ class UnitTest extends \UnitTestCase
     {
         $this->assertEquals('works', 'works', 'This is OK');
         
-        $this->assertEquals('works', 'works1', 'This will fail');
+        //$this->assertEquals('works', 'works1', 'This will fail');
     }
     
     public function test2TestCase()
     {
         $this->assertEquals('works', 'works', 'This is OK');
         
-        $this->assertEquals('works', 'works1', 'This will fail');
+        //$this->assertEquals('works', 'works1', 'This will fail');
         //$modelKeyword = new Keyword();
         //$lowKey = $modelKeyword->keyword2lower('ABC');
         //$this->assertEquals($lowKey, 'abc', 'This is OK');

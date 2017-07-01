@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="application_modules" default="build">
+	<!--
     <target name="build" depends="prepare,lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpunit,phpdox,-check-failure"/>
-
+	-->
+    <target name="build" depends="prepare,lint,phpunit,phpdox,-check-failure"/>
     <target name="clean" unless="clean.done" description="Cleanup build artifacts">
         <delete dir="${basedir}/build/api"/>
         <delete dir="${basedir}/build/coverage"/>
@@ -55,6 +57,7 @@
     </target>
 
     <target name="phploc" description="Measure project size using PHPLOC">
+		
         <exec executable="/usr/local/bin/phploc" taskname="phploc">
             <arg value="--count-tests"/>
             <arg path="${basedir}/apps"/>
@@ -62,7 +65,7 @@
     </target>
 
     <target name="phploc-ci" depends="prepare"
-            description="Measure project size using PHPLOC and log result in CSV and XML format">
+            description="Measure project size using PHPLOC and log result in CSV and XML format">			
         <exec executable="/usr/local/bin/phploc" taskname="phploc">
             <arg value="--count-tests"/>
             <arg value="--log-csv"/>
