@@ -8,8 +8,8 @@
         <delete dir="${basedir}/build/logs"/>
         <delete dir="${basedir}/build/pdepend"/>
         <delete dir="${basedir}/vendor"/>
-	<delete dir="${basedir}/vendor"/>
-	<delete file="${basedir}/composer.lock"/>	    
+		<delete dir="${basedir}/vendor"/>
+		<delete file="${basedir}/composer.lock"/>	    
         <property name="clean.done" value="true"/>
     </target>
 
@@ -22,13 +22,13 @@
     </target>
 
     <target name="generate-code" description="composer install thirdparty library and autoloader code">
-        <!--
-	<exec executable="/usr/bin/php" taskname="composer">
+    <!--
+		<exec executable="/usr/bin/php" taskname="composer">
             <arg value="/usr/local/bin/composer"/>
             <arg value="install"/>
         </exec>
 	-->   
-	<exec executable="/usr/local/bin/composer" taskname="composer">
+		<exec executable="/usr/local/bin/composer" taskname="composer">
             <arg value="install"/>
         </exec>
     </target>
@@ -41,11 +41,11 @@
                 <include name="**/*.php"/>
                 <modified/>
             </fileset>		
-	    <fileset dir="${basedir}/config">
+			<fileset dir="${basedir}/config">
                 <include name="**/*.php"/>
                 <modified/>
             </fileset>
-	    <fileset dir="${basedir}/library">
+			<fileset dir="${basedir}/library">
                 <include name="**/*.php"/>
                 <modified/>
             </fileset>
