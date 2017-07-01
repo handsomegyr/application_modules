@@ -24,6 +24,7 @@ $loader->registerDirs(array(
     ROOT_PATH
 ));
 
+/**
 $loader->registerNamespaces(array(
     'App\Common\Models' => APP_PATH . 'apps/common/models/base/',
     'App\Common\Models\Base\Mongodb' => APP_PATH . 'apps/common/models/base/mongodb/',
@@ -35,10 +36,10 @@ $loader->registerNamespaces(array(
 ));
 
 $loader->register();
+**/
 
 $di = new FactoryDefault();
 DI::reset();
 
 // Add any needed services to the DI here
-
 DI::setDefault($di);

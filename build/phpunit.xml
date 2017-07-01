@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/5.2/phpunit.xsd"
-         bootstrap="../src/autoload.php"
+         bootstrap="../test/TestHelper.php"
          backupGlobals="false"
          backupStaticAttributes="false"
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutTodoAnnotatedTests="true"
+		 convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
          forceCoversAnnotation="true"
-         verbose="true">
+		 processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="true"
+         verbose="true" 
+		 colors="false">
     <testsuite name="application_modules">
-        <directory suffix="Test.php">../tests</directory>
+        <directory suffix="Test.php">../test/Test</directory>
     </testsuite>
 
     <logging>
@@ -31,5 +38,11 @@
             </exclude>
         </whitelist>
     </filter>
+</phpunit>
+
+
+    <testsuite name="Phalcon - Testsuite">
+        <directory>./</directory>
+    </testsuite>
 </phpunit>
 
