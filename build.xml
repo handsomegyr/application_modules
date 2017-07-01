@@ -3,7 +3,7 @@
 	<!--
     <target name="build" depends="prepare,lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpunit,phpdox,-check-failure"/>
 	-->
-    <target name="build" depends="prepare,lint,phpunit,phpdox,-check-failure"/>
+    <target name="build" depends="prepare,lint,phpunit,-check-failure"/>
     <target name="clean" unless="clean.done" description="Cleanup build artifacts">
         <delete dir="${basedir}/build/api"/>
         <delete dir="${basedir}/build/coverage"/>
