@@ -1088,7 +1088,7 @@ CREATE TABLE `ilottery_exchange` (
   `user_headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户信息.头像',
   `contact_name` varchar(50) NOT NULL DEFAULT '' COMMENT '联系信息.姓名',
   `contact_mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '联系信息.手机',
-  `contact_address` varchar(200) NOT NULL DEFAULT '' COMMENT '联系信息.头像',
+  `contact_address` varchar(200) NOT NULL DEFAULT '' COMMENT '联系信息.地址',
   `memo` text NOT NULL COMMENT '备注',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',

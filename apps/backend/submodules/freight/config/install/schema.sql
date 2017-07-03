@@ -1,6 +1,6 @@
 /*
 SQLyog 企业版 - MySQL GUI v8.14 
-MySQL - 5.1.73 : Database - webcms
+MySQL - 5.6.35 : Database - webcms
 *********************************************************************
 */
 
@@ -16,40 +16,28 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET 
 
 USE `webcms`;
 
-/*Table structure for table `iarticle_article` */
+/*Table structure for table `ifreight_express` */
 
-DROP TABLE IF EXISTS `iarticle_article`;
+DROP TABLE IF EXISTS `ifreight_express`;
 
-CREATE TABLE `iarticle_article` (
+CREATE TABLE `ifreight_express` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
-  `category_id` char(24) NOT NULL DEFAULT '' COMMENT '分类id',
-  `url` varchar(100) NOT NULL DEFAULT '' COMMENT '跳转链接',
-  `is_show` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否显示',
-  `show_order` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
-  `title` varchar(100) NOT NULL DEFAULT '' COMMENT '标题',
-  `content` text NOT NULL COMMENT '内容',
-  `article_time` datetime NOT NULL COMMENT '发布时间',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '公司名称',
+  `state` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
+  `code` varchar(50) NOT NULL DEFAULT '' COMMENT '编号',
+  `letter` char(1) NOT NULL DEFAULT '' COMMENT '首字母',
+  `is_order` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否常用',
+  `url` varchar(100) NOT NULL DEFAULT '' COMMENT '公司网址',
+  `zt_state` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否支持服务站配送0否1是',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章-文章';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运价-快递公司';
 
-/*Table structure for table `iarticle_category` */
+/*Data for the table `ifreight_express` */
 
-DROP TABLE IF EXISTS `iarticle_category`;
-
-CREATE TABLE `iarticle_category` (
-  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
-  `code` varchar(20) NOT NULL DEFAULT '' COMMENT '分类标识码',
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '名称',
-  `parent_id` char(24) NOT NULL DEFAULT '' COMMENT '父ID',
-  `sort` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
-  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
-  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
-  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章-分类';
+insert  into `ifreight_express`(`_id`,`name`,`state`,`code`,`letter`,`is_order`,`url`,`zt_state`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('568a7d77887c226e6a8b5728','公司1',1,'code1','G',1,'http://www.baidu.com/',1,'2016-01-04 22:11:03','2016-01-04 22:11:03',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

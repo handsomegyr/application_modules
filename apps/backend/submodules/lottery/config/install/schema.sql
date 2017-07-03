@@ -1,6 +1,6 @@
 /*
 SQLyog 企业版 - MySQL GUI v8.14 
-MySQL - 5.6.26 : Database - webcms
+MySQL - 5.6.35 : Database - webcms
 *********************************************************************
 */
 
@@ -16,110 +16,105 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET 
 
 USE `webcms`;
 
-/*Table structure for table `iactivity_activity` */
+/*Table structure for table `ilottery_exchange` */
 
-DROP TABLE IF EXISTS `iactivity_activity`;
+DROP TABLE IF EXISTS `ilottery_exchange`;
 
-CREATE TABLE `iactivity_activity` (
-  `_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
-  `category` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '活动分类',
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '活动名称',
-  `start_time` datetime NOT NULL COMMENT '活动开始时间',
-  `end_time` datetime NOT NULL COMMENT '活动结束时间',
-  `is_actived` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活',
-  `is_paused` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否暂停',
-  `config` text NOT NULL COMMENT '活动配置',
-  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
-  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
-  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='活动-活动';
-
-/*Data for the table `iactivity_activity` */
-
-insert  into `iactivity_activity`(`_id`,`category`,`name`,`start_time`,`end_time`,`is_actived`,`is_paused`,`config`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861e812887c22015f8b456b',3,'某抽奖活动','2016-12-27 00:00:00','2019-12-27 14:22:20',1,0,'','2016-12-27 12:03:30','2016-12-27 14:22:31',0);
-
-/*Table structure for table `iactivity_black_user` */
-
-DROP TABLE IF EXISTS `iactivity_black_user`;
-
-CREATE TABLE `iactivity_black_user` (
-  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
-  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
-  `user_id` char(50) NOT NULL DEFAULT '' COMMENT '黑名单用户ID',
-  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
-  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
-  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`),
-  KEY `NewIndex1` (`user_id`,`activity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='活动-活动黑名单用戶';
-
-/*Data for the table `iactivity_black_user` */
-
-insert  into `iactivity_black_user`(`_id`,`activity_id`,`user_id`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861ed36887c22c96e8b4576','5861e812887c22015f8b456b','xxxx','2016-12-27 12:25:26','2016-12-27 12:25:26',0);
-
-/*Table structure for table `iactivity_category` */
-
-DROP TABLE IF EXISTS `iactivity_category`;
-
-CREATE TABLE `iactivity_category` (
-  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
-  `code` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '分类标识码',
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '名称',
-  `sort` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
-  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
-  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
-  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='活动-分类';
-
-/*Data for the table `iactivity_category` */
-
-insert  into `iactivity_category`(`_id`,`code`,`name`,`sort`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861e657887c2224678b4582',1,'组团',1,'2016-12-27 11:56:07','2016-12-27 11:56:07',0),('5861e737887c22a1268b4569',2,'红包',2,'2016-12-27 11:59:51','2016-12-27 11:59:51',0),('5861e74d887c222c688b4576',3,'抽奖',3,'2016-12-27 12:00:13','2016-12-27 12:00:13',0),('5861e758887c2223678b4597',4,'兑换',4,'2016-12-27 12:00:24','2016-12-27 12:00:24',0);
-
-/*Table structure for table `iactivity_errorlog` */
-
-DROP TABLE IF EXISTS `iactivity_errorlog`;
-
-CREATE TABLE `iactivity_errorlog` (
-  `_id` char(24) NOT NULL DEFAULT '' COMMENT '错误记录ID',
-  `activity` char(24) NOT NULL DEFAULT '' COMMENT '活动',
-  `error_code` int(11) NOT NULL DEFAULT '0' COMMENT '错误码',
-  `error_message` varchar(1000) NOT NULL DEFAULT '' COMMENT '错误信息',
-  `happen_time` datetime NOT NULL COMMENT '发生时间',
-  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
-  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
-  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='错误日志';
-
-/*Data for the table `iactivity_errorlog` */
-
-/*Table structure for table `iactivity_user` */
-
-DROP TABLE IF EXISTS `iactivity_user`;
-
-CREATE TABLE `iactivity_user` (
-  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+CREATE TABLE `ilottery_exchange` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '抽奖ID',
   `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
   `user_id` char(50) NOT NULL DEFAULT '' COMMENT '用户ID',
-  `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名称',
-  `headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户头像',
-  `worth` int(10) NOT NULL DEFAULT '0' COMMENT '价值',
-  `worth2` int(11) NOT NULL DEFAULT '0' COMMENT '价值2',
-  `redpack_user` char(50) NOT NULL DEFAULT '' COMMENT '微信红包账号',
-  `thirdparty_user` char(50) NOT NULL DEFAULT '' COMMENT '第3方账号',
+  `prize_id` char(24) NOT NULL DEFAULT '' COMMENT '奖品ID',
+  `is_valid` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否有效',
+  `got_time` datetime NOT NULL COMMENT '获取时间',
+  `source` char(10) NOT NULL DEFAULT '' COMMENT '来源',
+  `prize_code` char(24) NOT NULL DEFAULT '' COMMENT '奖品信息.奖品代码',
+  `prize_name` varchar(50) NOT NULL DEFAULT '' COMMENT '奖品信息.奖品名',
+  `prize_category` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '奖品信息.奖品类别',
+  `prize_virtual_currency` int(11) NOT NULL COMMENT '奖品信息.奖品价值',
+  `prize_is_virtual` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '奖品信息.是否实物奖',
+  `prize_virtual_code` char(24) NOT NULL DEFAULT '' COMMENT '券码信息.卡号',
+  `prize_virtual_pwd` char(30) NOT NULL DEFAULT '' COMMENT '券码信息.卡密',
+  `user_name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户信息.名称',
+  `user_headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户信息.头像',
+  `contact_name` varchar(50) NOT NULL DEFAULT '' COMMENT '联系信息.姓名',
+  `contact_mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '联系信息.手机',
+  `contact_address` varchar(200) NOT NULL DEFAULT '' COMMENT '联系信息.地址',
   `memo` text NOT NULL COMMENT '备注',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`user_id`,`activity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='活动-活动用戶';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='抽奖-中奖';
 
-/*Data for the table `iactivity_user` */
+/*Data for the table `ilottery_exchange` */
 
-insert  into `iactivity_user`(`_id`,`activity_id`,`user_id`,`nickname`,`headimgurl`,`worth`,`worth2`,`redpack_user`,`thirdparty_user`,`memo`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('58620e65887c22a17c8b4579','5861e812887c22015f8b456b','xxxx','xx','xx',0,0,'','','{\"prize_num\":0,\"is_hongbao1_lottery\":false,\"is_hongbao2_lottery\":false}','2016-12-27 14:47:00','2016-12-27 14:47:00',0),('58620f22887c2224678b4584','5861e812887c22015f8b456b','xxxx2','xx2','xx2',0,0,'redpack_user','thirdparty_user','{\"prize_num\":0,\"is_hongbao1_lottery\":false,\"is_hongbao2_lottery\":false}','2016-12-27 14:50:10','2016-12-27 14:50:10',0);
+insert  into `ilottery_exchange`(`_id`,`activity_id`,`user_id`,`prize_id`,`is_valid`,`got_time`,`source`,`prize_code`,`prize_name`,`prize_category`,`prize_virtual_currency`,`prize_is_virtual`,`prize_virtual_code`,`prize_virtual_pwd`,`user_name`,`user_headimgurl`,`contact_name`,`contact_mobile`,`contact_address`,`memo`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5865f1edfcc2b60a008b456c','5861e812887c22015f8b456b','xxxx','569b85bf887c22cf6c8b46d4',1,'2016-12-30 13:34:37','weixin','569b85bf887c22cf6c8b46d3','优惠券1',1,10,1,'10000002','1234','xx','xx','guoyongrong','13564100096','shanghai','{\"activity_user_id\":\"5865eed5fcc2b6e8008b4568\"}','2016-12-30 13:34:37','2016-12-30 13:42:45',0);
+
+/*Table structure for table `ilottery_limit` */
+
+DROP TABLE IF EXISTS `ilottery_limit`;
+
+CREATE TABLE `ilottery_limit` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '抽奖限制ID',
+  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
+  `prize_id` char(24) NOT NULL DEFAULT '' COMMENT '奖品ID',
+  `limit` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '限制数量',
+  `start_time` datetime NOT NULL COMMENT '限制开始时间',
+  `end_time` datetime NOT NULL COMMENT '限制结束时间',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='抽奖-限制';
+
+/*Data for the table `ilottery_limit` */
+
+insert  into `ilottery_limit`(`_id`,`activity_id`,`prize_id`,`limit`,`start_time`,`end_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5864a5c7c63b7b08008b4568','5861e812887c22015f8b456b','569b85bf887c22cf6c8b46d4',1,'2016-12-29 13:56:54','2019-12-29 13:56:54','2016-12-29 13:57:27','2016-12-29 13:57:27',0);
+
+/*Table structure for table `ilottery_record` */
+
+DROP TABLE IF EXISTS `ilottery_record`;
+
+CREATE TABLE `ilottery_record` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '抽奖记录ID',
+  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
+  `user_id` char(50) NOT NULL DEFAULT '' COMMENT '用户ID',
+  `source` char(10) NOT NULL DEFAULT '' COMMENT '来源',
+  `result_id` smallint(6) NOT NULL DEFAULT '0' COMMENT '结果ID',
+  `result_msg` text NOT NULL COMMENT '结果说明',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='抽奖-日志';
+
+/*Data for the table `ilottery_record` */
+
+insert  into `ilottery_record`(`_id`,`activity_id`,`user_id`,`source`,`result_id`,`result_msg`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5865f1edfcc2b60a008b456d','5861e812887c22015f8b456b','xxxx','weixin',1,'恭喜您中奖了！','2016-12-30 13:34:37','2016-12-30 13:34:37',0);
+
+/*Table structure for table `ilottery_rule` */
+
+DROP TABLE IF EXISTS `ilottery_rule`;
+
+CREATE TABLE `ilottery_rule` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '抽奖规则ID',
+  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '活动ID',
+  `prize_id` char(24) NOT NULL DEFAULT '' COMMENT '奖品ID',
+  `allow_start_time` datetime NOT NULL COMMENT '开始时间',
+  `allow_end_time` datetime NOT NULL COMMENT '结束时间',
+  `allow_number` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '奖品数量',
+  `allow_probability` int(11) NOT NULL DEFAULT '0' COMMENT '抽奖概率',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='抽奖-规则';
+
+/*Data for the table `ilottery_rule` */
+
+insert  into `ilottery_rule`(`_id`,`activity_id`,`prize_id`,`allow_start_time`,`allow_end_time`,`allow_number`,`allow_probability`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('569b85bf887c22cf6c8b46d7','5861e812887c22015f8b456b','569b85bf887c22cf6c8b46d4','2016-01-17 20:14:55','2099-12-31 23:59:59',1,10000,'2016-01-17 20:14:55','2016-12-30 13:34:37',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

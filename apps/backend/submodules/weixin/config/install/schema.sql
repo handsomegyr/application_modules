@@ -50,8 +50,6 @@ CREATE TABLE `iweixin_application` (
 
 /*Data for the table `iweixin_application` */
 
-insert  into `iweixin_application`(`_id`,`weixin_name`,`weixin_id`,`verify_token`,`appid`,`secret`,`mch_id`,`sub_mch_id`,`key`,`cert`,`certKey`,`access_token`,`access_token_expire`,`is_advanced`,`is_product`,`secretKey`,`jsapi_ticket`,`jsapi_ticket_expire`,`is_weixin_card`,`wx_card_api_ticket`,`wx_card_api_ticket_expire`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('571a3ba4887c22054a8b465a','集资购','gh_abc8231997cb','jizigou','wxbf9165206b992f39','2ce91eb3530c6bedefeb24569a14cc38','1332019901','','NbR5Jf9TaN2MwZ2hOCxfpAFPB3eMqdsp',NULL,NULL,'sv3Ix1YHnKTYpXg2YxbCkZIhuvW0p0hLu_-nWOs5jcbdZAqTmnWNs0-Vawl1IAXASY8VVtwnsdVBrzkWjMRavmQWGsa-CAkwsADx_AGox-90hnm1LZinmRwv3t-IL4h_JJWjADAAAN','2016-12-22 14:44:28',1,1,'jizigou','kgt8ON7yVITDhtdwci0qecyqV6fjJw1vRyI3V3Qj4Zq6OTJpKdjJc6U2GrjOHnBPmYwvQ945Bktn-ukEO7eHZw','2016-12-22 14:44:28',0,'3','2016-04-22 22:53:14','2016-04-22 22:56:36','2016-12-22 12:44:27',0),('575ab578887c2206528b47c2','集资购微信PC','gh_0e436d576f1d','jizigou','wxa7f90ea22051777d','8a73848294b884e01d7ad038ad60bcd9','','','',NULL,NULL,'1','2016-06-10 20:38:43',0,0,'jizigou','1','2016-06-10 20:38:43',0,'1','2016-06-10 20:38:43','2016-06-10 20:41:28','2016-06-10 20:41:28',0);
-
 /*Table structure for table `iweixin_callbackurls` */
 
 DROP TABLE IF EXISTS `iweixin_callbackurls`;

@@ -1,6 +1,6 @@
 /*
 SQLyog 企业版 - MySQL GUI v8.14 
-MySQL - 5.6.26 : Database - webcms
+MySQL - 5.6.35 : Database - webcms
 *********************************************************************
 */
 
@@ -40,7 +40,7 @@ CREATE TABLE `icronjob_job` (
 
 /*Data for the table `icronjob_job` */
 
-insert  into `icronjob_job`(`_id`,`name`,`desc`,`start_time`,`end_time`,`cmd`,`cycle`,`cron`,`last_execute_time`,`last_execute_result`,`script_execute_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('58f6fe14befcf2ed008b4568','测试1','测试1','2017-04-19 00:00:00','2027-04-19 23:59:59','main test a b',5,'','2017-04-19 14:23:00','hello a\nbest regards, b\n',1,'2017-04-19 14:04:48','2017-04-19 14:23:44',0);
+insert  into `icronjob_job`(`_id`,`name`,`desc`,`start_time`,`end_time`,`cmd`,`cycle`,`cron`,`last_execute_time`,`last_execute_result`,`script_execute_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('58f6fe14befcf2ed008b4568','测试1','测试1','2017-04-19 00:00:00','2027-04-19 23:59:59','main test a b',0,'*/2 * * * *','2017-04-21 14:26:00','hello a\nbest regards, b\n',10,'2017-04-19 14:04:48','2017-04-21 14:26:38',0);
 
 /*Table structure for table `icronjob_log` */
 
@@ -59,7 +59,7 @@ CREATE TABLE `icronjob_log` (
 
 /*Data for the table `icronjob_log` */
 
-insert  into `icronjob_log`(`_id`,`job_name`,`execute_result`,`script_execute_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('58f70270befcf28b018b4567','58f6fe14befcf2ed008b4568','hello a\nbest regards, b\n',1,'2017-04-19 14:23:44','2017-04-19 14:23:44',0);
+insert  into `icronjob_log`(`_id`,`job_name`,`execute_result`,`script_execute_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('58f70270befcf28b018b4567','58f6fe14befcf2ed008b4568','hello a\nbest regards, b\n',1,'2017-04-19 14:23:44','2017-04-19 14:23:44',0),('58f9a61d423394f7008b4567','58f6fe14befcf2ed008b4568','hello a\nbest regards, b\n',10,'2017-04-21 14:26:37','2017-04-21 14:26:37',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

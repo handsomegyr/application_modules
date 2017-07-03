@@ -1,6 +1,6 @@
 /*
 SQLyog 企业版 - MySQL GUI v8.14 
-MySQL - 5.1.73 : Database - webcms
+MySQL - 5.6.35 : Database - webcms
 *********************************************************************
 */
 
@@ -16,40 +16,26 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET 
 
 USE `webcms`;
 
-/*Table structure for table `iarticle_article` */
+/*Table structure for table `itask_log` */
 
-DROP TABLE IF EXISTS `iarticle_article`;
+DROP TABLE IF EXISTS `itask_log`;
 
-CREATE TABLE `iarticle_article` (
+CREATE TABLE `itask_log` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
-  `category_id` char(24) NOT NULL DEFAULT '' COMMENT '分类id',
-  `url` varchar(100) NOT NULL DEFAULT '' COMMENT '跳转链接',
-  `is_show` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否显示',
-  `show_order` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
-  `title` varchar(100) NOT NULL DEFAULT '' COMMENT '标题',
-  `content` text NOT NULL COMMENT '内容',
-  `article_time` datetime NOT NULL COMMENT '发布时间',
+  `task` varchar(50) NOT NULL DEFAULT '' COMMENT '任务名',
+  `is_success` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否成功',
+  `request` text NOT NULL COMMENT '请求参数',
+  `result` text NOT NULL COMMENT '获得结果',
+  `log_time` datetime NOT NULL COMMENT '日志时间',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章-文章';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='任务-日志';
 
-/*Table structure for table `iarticle_category` */
+/*Data for the table `itask_log` */
 
-DROP TABLE IF EXISTS `iarticle_category`;
-
-CREATE TABLE `iarticle_category` (
-  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
-  `code` varchar(20) NOT NULL DEFAULT '' COMMENT '分类标识码',
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '名称',
-  `parent_id` char(24) NOT NULL DEFAULT '' COMMENT '父ID',
-  `sort` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
-  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
-  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
-  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章-分类';
+insert  into `itask_log`(`_id`,`task`,`is_success`,`request`,`result`,`log_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('569b85bb887c22054a8b462b','新一期商品生成',1,'{\"goods_commonid\":\"563728c07f50eab004000404\"}','{\"new_period\":\"1\",\"new_period_goods_id\":\"569b85bb887c22054a8b4626\"}','2016-01-17 20:14:51','2016-01-17 20:14:51','2016-01-17 20:14:51',0),('569b85bf887c22cf6c8b46d8','新一期商品生成',1,'{\"goods_commonid\":\"563728c07f50eab004000403\"}','{\"new_period\":\"1\",\"new_period_goods_id\":\"569b85bf887c22cf6c8b46d3\"}','2016-01-17 20:14:55','2016-01-17 20:14:55','2016-01-17 20:14:55',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

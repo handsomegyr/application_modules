@@ -1,6 +1,6 @@
 /*
 SQLyog 企业版 - MySQL GUI v8.14 
-MySQL - 5.6.26 : Database - webcms
+MySQL - 5.6.35 : Database - webcms
 *********************************************************************
 */
 
@@ -56,7 +56,7 @@ CREATE TABLE `iprize_code` (
 
 /*Data for the table `iprize_code` */
 
-insert  into `iprize_code`(`_id`,`activity_id`,`prize_id`,`code`,`pwd`,`is_used`,`start_time`,`end_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('569b85bf887c22cf6c8b46d5','','569b85bf887c22cf6c8b46d4','10000001','4321',0,'2016-01-17 20:14:55','2099-12-31 23:59:59','2016-01-17 20:14:55','2016-12-29 13:46:05',0),('569b85bf887c22cf6c8b46d6','','569b85bf887c22cf6c8b46d4','10000002','1234',0,'2016-01-17 20:14:55','2099-12-31 23:59:59','2016-01-17 20:14:55','2016-12-29 13:45:56',0);
+insert  into `iprize_code`(`_id`,`activity_id`,`prize_id`,`code`,`pwd`,`is_used`,`start_time`,`end_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('569b85bf887c22cf6c8b46d5','5861e812887c22015f8b456b','569b85bf887c22cf6c8b46d4','10000001','4321',1,'2016-01-17 20:14:55','2099-12-31 23:59:59','2016-01-17 20:14:55','2016-12-30 13:32:21',0),('569b85bf887c22cf6c8b46d6','5861e812887c22015f8b456b','569b85bf887c22cf6c8b46d4','10000002','1234',1,'2016-01-17 20:14:55','2099-12-31 23:59:59','2016-01-17 20:14:55','2016-12-30 13:34:37',0);
 
 /*Table structure for table `iprize_prize` */
 

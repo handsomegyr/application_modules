@@ -108,6 +108,9 @@ CREATE TABLE `iactivity_user` (
   `worth2` int(11) NOT NULL DEFAULT '0' COMMENT '价值2',
   `redpack_user` char(50) NOT NULL DEFAULT '' COMMENT '微信红包账号',
   `thirdparty_user` char(50) NOT NULL DEFAULT '' COMMENT '第3方账号',
+  `contact_name` varchar(50) NOT NULL DEFAULT '' COMMENT '联系信息.姓名',
+  `contact_mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '联系信息.手机',
+  `contact_address` varchar(200) NOT NULL DEFAULT '' COMMENT '联系信息.地址',
   `memo` text NOT NULL COMMENT '备注',
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
@@ -118,7 +121,7 @@ CREATE TABLE `iactivity_user` (
 
 /*Data for the table `iactivity_user` */
 
-insert  into `iactivity_user`(`_id`,`activity_id`,`user_id`,`nickname`,`headimgurl`,`worth`,`worth2`,`redpack_user`,`thirdparty_user`,`memo`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5865eed5fcc2b6e8008b4568','5861e812887c22015f8b456b','xxxx','xx','xx',0,0,'redpack_user','thirdparty_user','{\"is_got_prize\":true,\"is_record_lottery_user_contact_info\":true,\"prizeInfo\":{\"_id\":\"5865f1edfcc2b60a008b456c\",\"activity_id\":\"5861e812887c22015f8b456b\",\"user_id\":\"xxxx\",\"prize_id\":\"569b85bf887c22cf6c8b46d4\",\"is_valid\":\"1\",\"got_time\":{\"sec\":1483076077,\"usec\":0},\"source\":\"weixin\",\"prize_code\":\"569b85bf887c22cf6c8b46d3\",\"prize_name\":\"\\u4f18\\u60e0\\u52381\",\"prize_category\":\"1\",\"prize_virtual_currency\":\"10\",\"prize_is_virtual\":\"1\",\"prize_virtual_code\":\"10000002\",\"prize_virtual_pwd\":\"1234\",\"user_name\":\"xx\",\"user_headimgurl\":\"xx\",\"contact_name\":\"\",\"contact_mobile\":\"\",\"contact_address\":\"\",\"memo\":{\"activity_user_id\":\"5865eed5fcc2b6e8008b4568\"},\"__CREATE_TIME__\":{\"sec\":1483076077,\"usec\":0},\"__MODIFY_TIME__\":{\"sec\":1483076077,\"usec\":0},\"__REMOVED__\":false,\"exchange_id\":\"5865f1edfcc2b60a008b456c\"}}','2016-12-30 13:21:05','2016-12-30 13:42:45',0);
+insert  into `iactivity_user`(`_id`,`activity_id`,`user_id`,`nickname`,`headimgurl`,`worth`,`worth2`,`redpack_user`,`thirdparty_user`,`contact_name`,`contact_mobile`,`contact_address`,`memo`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5865eed5fcc2b6e8008b4568','5861e812887c22015f8b456b','xxxx','xx','xx',0,0,'redpack_user','thirdparty_user','','','','{\"is_got_prize\":true,\"is_record_lottery_user_contact_info\":true,\"prizeInfo\":{\"_id\":\"5865f1edfcc2b60a008b456c\",\"activity_id\":\"5861e812887c22015f8b456b\",\"user_id\":\"xxxx\",\"prize_id\":\"569b85bf887c22cf6c8b46d4\",\"is_valid\":\"1\",\"got_time\":{\"sec\":1483076077,\"usec\":0},\"source\":\"weixin\",\"prize_code\":\"569b85bf887c22cf6c8b46d3\",\"prize_name\":\"\\u4f18\\u60e0\\u52381\",\"prize_category\":\"1\",\"prize_virtual_currency\":\"10\",\"prize_is_virtual\":\"1\",\"prize_virtual_code\":\"10000002\",\"prize_virtual_pwd\":\"1234\",\"user_name\":\"xx\",\"user_headimgurl\":\"xx\",\"contact_name\":\"\",\"contact_mobile\":\"\",\"contact_address\":\"\",\"memo\":{\"activity_user_id\":\"5865eed5fcc2b6e8008b4568\"},\"__CREATE_TIME__\":{\"sec\":1483076077,\"usec\":0},\"__MODIFY_TIME__\":{\"sec\":1483076077,\"usec\":0},\"__REMOVED__\":false,\"exchange_id\":\"5865f1edfcc2b60a008b456c\"}}','2016-12-30 13:21:05','2016-12-30 13:42:45',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
