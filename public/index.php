@@ -18,6 +18,13 @@ try {
      * Include const
      */
     require __DIR__ . '/../config/const.php';
+	
+	require __DIR__ . '/../library/MongoDate.php';
+    
+    require __DIR__ . '/../library/MongoId.php';
+	
+	require __DIR__ . '/../library/MongoRegex.php';
+	
     define('CURRENT_TIMESTAMP', time()); // 当前时间
     
     require __DIR__ . '/../vendor/autoload.php';    
