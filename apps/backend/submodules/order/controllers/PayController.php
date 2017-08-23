@@ -392,7 +392,7 @@ class PayController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['memo'] = array(
-            'name' => 'memo',
+            'name' => '备注',
             'data' => array(
                 'type' => 'string',
                 'length' => 0

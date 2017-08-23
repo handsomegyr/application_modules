@@ -20,7 +20,7 @@
 					<option value="">请选择...</option>    
 					<?php
 					$defaultValues=array();
-					$modelExpress= new App\Backend\Models\Freight\Express();
+					$modelExpress= new \App\Backend\Submodules\Freight\Models\Express();
                     $items = $modelExpress->getAll();
                     foreach ($items as $value=> $name) {?>
 					<option value="<?php echo $value?>" <?php if(in_array($value,$defaultValues)){?>selected<?php }?>><?php echo $name?></option>
