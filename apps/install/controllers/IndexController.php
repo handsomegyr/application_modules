@@ -92,7 +92,7 @@ class IndexController extends ControllerBase
 			touch($this->lockfile);
 			
             // 创建数据库 构建表结构和数据
-            //$this->doMysql2($dbhost, $dbname, $dbuser, $dbpw);
+            $this->doMysql2($dbhost, $dbname, $dbuser, $dbpw);
             
             echo $this->result('OK');
             return true;
