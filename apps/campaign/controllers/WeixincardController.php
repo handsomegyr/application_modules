@@ -33,7 +33,7 @@ class WeixincardController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.applicationmodule.com:10080/campaign/weixincard/index?wechat_card_js=1&openid=xx&card_id=556d2bb249961986398b45db&card_code=code1&balance=0&outer_id=0&cb_url=http%3A%2F%2Fwww.baidu.com%2F&FromUserName=ogW8rtyob18sg_MBKH-V2qYe2tt4&istest=1&sign=xxx
+        // http://www.applicationmodule.com/campaign/weixincard/index?wechat_card_js=1&openid=xx&card_id=556d2bb249961986398b45db&card_code=code1&balance=0&outer_id=0&cb_url=http%3A%2F%2Fwww.baidu.com%2F&FromUserName=ogW8rtyob18sg_MBKH-V2qYe2tt4&istest=1&sign=xxx
         try {
             // 回调地址
             $cb_url = $this->get('cb_url', '');

@@ -138,7 +138,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
      */
     public function elasticAction()
     {
-        // http://www.applicationmodule.com:10080/admin/article/category/elastic?id=xxx
+        // http://www.applicationmodule.com/admin/article/category/elastic?id=xxx
         try {
             $this->view->disable();
             

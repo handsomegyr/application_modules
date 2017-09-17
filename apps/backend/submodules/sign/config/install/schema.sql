@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `isign_log`;
 
 CREATE TABLE `isign_log` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '所属活动',
   `user_id` char(50) NOT NULL DEFAULT '' COMMENT '用户ID',
   `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '用户昵称',
   `headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户头像',
@@ -31,7 +32,8 @@ CREATE TABLE `isign_log` (
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
+  PRIMARY KEY (`_id`),
+  KEY `NewIndex1` (`user_id`,`activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='签到-签到日志';
 
 /*Data for the table `isign_log` */
@@ -42,6 +44,7 @@ DROP TABLE IF EXISTS `isign_sign`;
 
 CREATE TABLE `isign_sign` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '所属活动',
   `user_id` char(50) NOT NULL DEFAULT '' COMMENT '用户ID',
   `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '用户昵称',
   `headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户头像',
@@ -59,7 +62,8 @@ CREATE TABLE `isign_sign` (
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
+  PRIMARY KEY (`_id`),
+  KEY `NewIndex1` (`user_id`,`activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='签到-用户签到';
 
 /*Data for the table `isign_sign` */

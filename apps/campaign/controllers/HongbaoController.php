@@ -61,7 +61,7 @@ class HongbaoController extends ControllerBase
     public function indexAction()
     {
         try {
-            // http://www.applicationmodule.com:10080/hongbao/index/index?FromUserName=ol6BkwxV-PJVlfRUd5nhUJ_EGM20&istest=1
+            // http://www.applicationmodule.com/hongbao/index/index?FromUserName=ol6BkwxV-PJVlfRUd5nhUJ_EGM20&istest=1
             $userInfo = $this->getUserInfo();
             // 检查是否已经有了红包所需的微信号
             $hongbaoUserInfo = $this->modelHongbaoUser->getInfoByFromUserName($userInfo['FromUserName']);
@@ -92,7 +92,7 @@ class HongbaoController extends ControllerBase
      */
     public function withdrawAction()
     {
-        // http://www.applicationmodule.com:10080/hongbao/index/withdraw?FromUserName=xxxx&money=100
+        // http://www.applicationmodule.com/hongbao/index/withdraw?FromUserName=xxxx&money=100
         try {
             $this->view->disable();
             
@@ -201,7 +201,7 @@ class HongbaoController extends ControllerBase
     public function hongbaoauthorizeAction()
     {
         try {
-            // http://www.applicationmodule.com:10080/hongbao/index/hongbaoauthorize?callbackUrl=xxx
+            // http://www.applicationmodule.com/hongbao/index/hongbaoauthorize?callbackUrl=xxx
             $callbackUrl = trim($this->get('callbackUrl', ''));
             $callbackUrl = urldecode($callbackUrl);
             
@@ -263,7 +263,7 @@ class HongbaoController extends ControllerBase
      */
     public function sendredpackAction()
     {
-        // http://www.applicationmodule.com:10080/hongbao/index/sendredpack
+        // http://www.applicationmodule.com/hongbao/index/sendredpack
         try {
             $this->view->disable();
             $redpack_id = '5714ef1447489a42778b4587';

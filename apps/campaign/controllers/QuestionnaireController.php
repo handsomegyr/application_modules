@@ -36,7 +36,7 @@ class QuestionnaireController extends ControllerBase
      */
     public function getAction()
     {
-        // http://www.applicationmodule.com:10080/campaign/questionnaire/get?questionnaireId=58af94ff6a2e0e0b008b4567&userId=xxx
+        // http://www.applicationmodule.com/campaign/questionnaire/get?questionnaireId=58af94ff6a2e0e0b008b4567&userId=xxx
         try {
             $userId = $this->get("userId", '');
             if (empty($userId)) {
@@ -134,7 +134,7 @@ class QuestionnaireController extends ControllerBase
      */
     public function answerAction()
     {
-        // http://www.applicationmodule.com:10080/campaign/questionnaire/answer?questionnaireId=58af94ff6a2e0e0b008b4567&userId=xxx&nickname=guoyongrong&headimgurl=xxx&randomId=&answers={"58afa31a6a2e0e00018b4567":[{key:"A",content:''}],"58b64bda89972ff1008b4567":[{key:"A",content:''},{key:"B",content:''},{key:"C",content:'海南'}]}
+        // http://www.applicationmodule.com/campaign/questionnaire/answer?questionnaireId=58af94ff6a2e0e0b008b4567&userId=xxx&nickname=guoyongrong&headimgurl=xxx&randomId=&answers={"58afa31a6a2e0e00018b4567":[{key:"A",content:''}],"58b64bda89972ff1008b4567":[{key:"A",content:''},{key:"B",content:''},{key:"C",content:'海南'}]}
         try {
             $userId = $this->get("userId", '');
             $nickname = $this->get("nickname", '');

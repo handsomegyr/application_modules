@@ -25,7 +25,7 @@ class RedisController extends ControllerBase
      */
     public function testAction()
     {
-        // http://www.applicationmodule.com:10080/campaign/redis/test
+        // http://www.applicationmodule.com/campaign/redis/test
         try {
             $di = \Phalcon\DI::getDefault();
             $redis = $di->get("redis");

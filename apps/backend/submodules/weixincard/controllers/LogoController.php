@@ -87,7 +87,7 @@ class LogoController extends \App\Backend\Controllers\FormController
      */
     public function uploadAction()
     {
-        // http://www.applicationmodule.com:10080/admin/weixincard/logo/upload
+        // http://www.applicationmodule.com/admin/weixincard/logo/upload
         try {
             $this->view->disable();
             $weixin = $this->getWeixin();

@@ -83,7 +83,7 @@ class TestwhitelistController extends \App\Backend\Controllers\FormController
      */
     public function setAction()
     {
-        // http://www.applicationmodule.com:10080/admin/weixincard/testwhitelist/set
+        // http://www.applicationmodule.com/admin/weixincard/testwhitelist/set
         try {
             $this->view->disable();
             $weixin = $this->getWeixin();

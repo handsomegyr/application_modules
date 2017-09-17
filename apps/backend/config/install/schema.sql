@@ -120,7 +120,7 @@ CREATE TABLE `iactivity_activity` (
 
 /*Data for the table `iactivity_activity` */
 
-insert  into `iactivity_activity`(`_id`,`category`,`name`,`start_time`,`end_time`,`is_actived`,`is_paused`,`config`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861e812887c22015f8b456b',3,'某抽奖活动','2016-12-27 00:00:00','2019-12-27 14:22:20',1,0,'','2016-12-27 12:03:30','2016-12-27 14:22:31',0),('58af94a36a2e0e01018b4567',5,'某问卷调查','2017-02-24 00:00:00','2019-11-28 23:00:22',1,0,'','2017-02-24 10:04:19','2017-02-24 10:04:56',0),('58d4d7b4f3b9530b008b4567',7,'某砍价活动','2017-03-24 16:23:35','2019-11-28 22:55:35',1,0,'','2017-03-24 16:24:20','2017-03-24 16:24:20',0);
+insert  into `iactivity_activity`(`_id`,`category`,`name`,`start_time`,`end_time`,`is_actived`,`is_paused`,`config`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861e812887c22015f8b456b',3,'某抽奖活动','2016-12-27 00:00:00','2019-12-27 14:22:20',1,0,'','2016-12-27 12:03:30','2016-12-27 14:22:31',0),('58af94a36a2e0e01018b4567',5,'某问卷调查','2017-02-24 00:00:00','2019-11-28 23:00:22',1,0,'','2017-02-24 10:04:19','2017-02-24 10:04:56',0),('58d4d7b4f3b9530b008b4567',7,'某砍价活动','2017-03-24 16:23:35','2019-11-28 22:55:35',1,0,'','2017-03-24 16:24:20','2017-03-24 16:24:20',0),('59bde95f9fff63070a8b4567',8,'某签到活动','2017-09-17 00:00:00','2018-09-17 11:17:34',1,0,'','2017-09-17 11:17:51','2017-09-17 11:17:51',0);
 
 /*Table structure for table `iactivity_black_user` */
 
@@ -156,7 +156,7 @@ CREATE TABLE `iactivity_category` (
 
 /*Data for the table `iactivity_category` */
 
-insert  into `iactivity_category`(`_id`,`code`,`name`,`sort`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861e657887c2224678b4582',1,'组团',1,'2016-12-27 11:56:07','2016-12-27 11:56:07',0),('5861e737887c22a1268b4569',2,'红包',2,'2016-12-27 11:59:51','2016-12-27 11:59:51',0),('5861e74d887c222c688b4576',3,'抽奖',3,'2016-12-27 12:00:13','2016-12-27 12:00:13',0),('5861e758887c2223678b4597',4,'兑换',4,'2016-12-27 12:00:24','2016-12-27 12:00:24',0),('58af94526a2e0eff008b4567',5,'问卷调查',5,'2017-02-24 10:02:58','2017-02-24 10:02:58',0),('58af94626a2e0e09008b4567',6,'投票',6,'2017-02-24 10:03:14','2017-02-24 10:03:14',0),('58d4d77ef3b9530c008b4568',7,'砍价',7,'2017-03-24 16:23:26','2017-03-24 16:23:26',0);
+insert  into `iactivity_category`(`_id`,`code`,`name`,`sort`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5861e657887c2224678b4582',1,'组团',1,'2016-12-27 11:56:07','2016-12-27 11:56:07',0),('5861e737887c22a1268b4569',2,'红包',2,'2016-12-27 11:59:51','2016-12-27 11:59:51',0),('5861e74d887c222c688b4576',3,'抽奖',3,'2016-12-27 12:00:13','2016-12-27 12:00:13',0),('5861e758887c2223678b4597',4,'兑换',4,'2016-12-27 12:00:24','2016-12-27 12:00:24',0),('58af94526a2e0eff008b4567',5,'问卷调查',5,'2017-02-24 10:02:58','2017-02-24 10:02:58',0),('58af94626a2e0e09008b4567',6,'投票',6,'2017-02-24 10:03:14','2017-02-24 10:03:14',0),('58d4d77ef3b9530c008b4568',7,'砍价',7,'2017-03-24 16:23:26','2017-03-24 16:23:26',0),('59bdcd649fff63050a8b4567',8,'签到',8,'2017-09-17 09:18:28','2017-09-17 09:18:28',0);
 
 /*Table structure for table `iactivity_errorlog` */
 
@@ -2224,6 +2224,77 @@ CREATE TABLE `ipost_vote` (
 
 /*Data for the table `ipost_vote` */
 
+/*Table structure for table `ipredeposit_cash` */
+
+DROP TABLE IF EXISTS `ipredeposit_cash`;
+
+CREATE TABLE `ipredeposit_cash` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `member_id` char(24) NOT NULL DEFAULT '' COMMENT '会员编号',
+  `member_name` varchar(50) NOT NULL DEFAULT '' COMMENT '会员名称',
+  `amount` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '金额',
+  `bank_name` varchar(40) NOT NULL DEFAULT '' COMMENT '收款银行',
+  `bank_no` varchar(30) NOT NULL DEFAULT '' COMMENT '收款账号',
+  `bank_user` varchar(10) NOT NULL DEFAULT '' COMMENT '开户人姓名',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `payment_time` datetime NOT NULL COMMENT '付款时间',
+  `payment_state` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '提现支付状态 0默认1支付完成',
+  `payment_admin` varchar(30) NOT NULL DEFAULT '' COMMENT '支付管理员',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='预存款提现记录表';
+
+/*Data for the table `ipredeposit_cash` */
+
+/*Table structure for table `ipredeposit_log` */
+
+DROP TABLE IF EXISTS `ipredeposit_log`;
+
+CREATE TABLE `ipredeposit_log` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `member_id` char(24) NOT NULL DEFAULT '' COMMENT '会员编号',
+  `member_name` varchar(50) NOT NULL DEFAULT '' COMMENT '会员名称',
+  `admin_name` varchar(50) NOT NULL DEFAULT '' COMMENT '管理员名称',
+  `type` varchar(15) NOT NULL DEFAULT '' COMMENT 'order_pay下单支付预存款,order_freeze下单冻结预存款,order_cancel取消订单解冻预存款,order_comb_pay下单支付被冻结的预存款,recharge充值,cash_apply申请提现冻结预存款,cash_pay提现成功,cash_del取消提现申请，解冻预存款,refund退款',
+  `av_amount` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '可用金额变更0表示未变更',
+  `freeze_amount` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '冻结金额变更0表示未变更',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `desc` varchar(150) DEFAULT NULL COMMENT '描述',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='预存款变更日志表';
+
+/*Data for the table `ipredeposit_log` */
+
+/*Table structure for table `ipredeposit_recharge` */
+
+DROP TABLE IF EXISTS `ipredeposit_recharge`;
+
+CREATE TABLE `ipredeposit_recharge` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `member_id` char(24) NOT NULL DEFAULT '' COMMENT '会员编号',
+  `member_name` varchar(50) DEFAULT '' COMMENT '会员名称',
+  `amount` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '充值金额',
+  `payment_code` varchar(20) NOT NULL DEFAULT '' COMMENT '支付方式',
+  `payment_name` varchar(15) NOT NULL DEFAULT '' COMMENT '支付方式',
+  `trade_sn` varchar(50) NOT NULL DEFAULT '' COMMENT '第三方支付接口交易号',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `payment_state` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '支付状态 0未支付1支付',
+  `payment_time` datetime DEFAULT NULL COMMENT '支付时间',
+  `admin` varchar(30) DEFAULT '' COMMENT '管理员名',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `pay_sn` char(24) NOT NULL DEFAULT '' COMMENT '支付单号',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='预存款充值表';
+
+/*Data for the table `ipredeposit_recharge` */
+
 /*Table structure for table `iprize_category` */
 
 DROP TABLE IF EXISTS `iprize_category`;
@@ -2440,6 +2511,7 @@ DROP TABLE IF EXISTS `isign_log`;
 
 CREATE TABLE `isign_log` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '所属活动',
   `user_id` char(50) NOT NULL DEFAULT '' COMMENT '用户ID',
   `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '用户昵称',
   `headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户头像',
@@ -2449,7 +2521,8 @@ CREATE TABLE `isign_log` (
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
+  PRIMARY KEY (`_id`),
+  KEY `NewIndex1` (`user_id`,`activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='签到-签到日志';
 
 /*Data for the table `isign_log` */
@@ -2460,6 +2533,7 @@ DROP TABLE IF EXISTS `isign_sign`;
 
 CREATE TABLE `isign_sign` (
   `_id` char(24) NOT NULL DEFAULT '' COMMENT 'ID',
+  `activity_id` char(24) NOT NULL DEFAULT '' COMMENT '所属活动',
   `user_id` char(50) NOT NULL DEFAULT '' COMMENT '用户ID',
   `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '用户昵称',
   `headimgurl` varchar(300) NOT NULL DEFAULT '' COMMENT '用户头像',
@@ -2477,7 +2551,8 @@ CREATE TABLE `isign_sign` (
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  PRIMARY KEY (`_id`)
+  PRIMARY KEY (`_id`),
+  KEY `NewIndex1` (`user_id`,`activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='签到-用户签到';
 
 /*Data for the table `isign_sign` */
@@ -3570,6 +3645,22 @@ CREATE TABLE `iweixincard_card_type` (
 
 insert  into `iweixincard_card_type`(`_id`,`code`,`name`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('5857495b4a0b43e3008b4567','GENERAL_COUPON','优惠券','2016-12-19 10:43:39','2016-12-19 10:43:39',0),('5857497c4a0b430c008b4568','GROUPON','团购券','2016-12-19 10:44:12','2016-12-19 10:44:12',0),('5857498c4a0b43e3008b4568','DISCOUNT','折扣券','2016-12-19 10:44:28','2016-12-19 10:44:28',0),('585749984a0b43e9008b4567','GIFT','兑换券','2016-12-19 10:44:40','2016-12-19 10:44:40',0),('585749ab4a0b430c008b4569','CASH','代金券','2016-12-19 10:44:59','2016-12-19 10:44:59',0),('585749b74a0b43e3008b4569','MEMBER_CARD','会员卡','2016-12-19 10:45:11','2016-12-19 10:45:11',0),('585749c34a0b43e9008b4568','SCENIC_TICKET','门票','2016-12-19 10:45:23','2016-12-19 10:45:23',0),('585749ce4a0b430b008b4567','MOVIE_TICKET','电影票','2016-12-19 10:45:34','2016-12-19 10:45:34',0),('585749da4a0b43e2008b4567','BOARDING_PASS','飞机票','2016-12-19 10:45:46','2016-12-19 10:45:46',0),('585749e74a0b4308008b4567','LUCKY_MONEY','红包','2016-12-19 10:45:59','2016-12-19 10:45:59',0),('585a6d3cd2fb9c0d008b4567','MEETING_TICKET','会议/演出门票','2016-12-21 19:53:32','2016-12-21 19:53:32',0);
 
+/*Table structure for table `iweixincard_category` */
+
+DROP TABLE IF EXISTS `iweixincard_category`;
+
+CREATE TABLE `iweixincard_category` (
+  `_id` char(24) NOT NULL DEFAULT '' COMMENT '分类ID',
+  `code` varchar(30) NOT NULL DEFAULT '' COMMENT '代码',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '名称',
+  `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
+  `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
+  `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信卡券-卡券类别';
+
+/*Data for the table `iweixincard_category` */
+
 /*Table structure for table `iweixincard_code_deposit` */
 
 DROP TABLE IF EXISTS `iweixincard_code_deposit`;
@@ -4056,7 +4147,7 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','192.168.81.1','2017-09-08 17:03:40',337,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','2017-09-08 17:03:40',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
+insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','192.168.81.1','2017-09-17 11:15:27',340,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','2017-09-17 11:15:27',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','0000-00-00 00:00:00','0000-00-00 00:00:00',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

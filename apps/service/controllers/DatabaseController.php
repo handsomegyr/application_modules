@@ -33,7 +33,7 @@ class DatabaseController extends ControllerBase
     public function transfertypeAction()
     {
         // http://phalconm4local/service/database/transfertype
-        // http://phalconm:10080/service/database/transfertype
+        // http://phalconm/service/database/transfertype
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_type");
         $result = $this->connectionFrom->query('SELECT * FROM type order by type_id asc', null);
@@ -69,7 +69,7 @@ class DatabaseController extends ControllerBase
     public function transfercategoryAction()
     {
         // http://phalconm4local/service/database/transfercategory
-        // http://phalconm:10080/service/database/transfercategory
+        // http://phalconm/service/database/transfercategory
         
         // 从源表中获取数据
         // $statement = $this->connectionFrom->prepare('SELECT * FROM goods_class Where 1=:name');
@@ -133,7 +133,7 @@ class DatabaseController extends ControllerBase
     public function updatetypeAction()
     {
         // http://phalconm4local/service/database/updatetype
-        // http://phalconm:10080/service/database/updatetype
+        // http://phalconm/service/database/updatetype
         // 从源表中获取数据
         $result = $this->connectionTo->query('SELECT * FROM igoods_type order by _id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
@@ -159,7 +159,7 @@ class DatabaseController extends ControllerBase
     public function transferbrandAction()
     {
         // http://phalconm4local/service/database/transferbrand
-        // http://phalconm:10080/service/database/transferbrand
+        // http://phalconm/service/database/transferbrand
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_brand");
@@ -208,7 +208,7 @@ class DatabaseController extends ControllerBase
     public function transferspecAction()
     {
         // http://phalconm4local/service/database/transferspec
-        // http://phalconm:10080/service/database/transferspec
+        // http://phalconm/service/database/transferspec
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_spec");
@@ -249,7 +249,7 @@ class DatabaseController extends ControllerBase
     public function transferspecvalueAction()
     {
         // http://phalconm4local/service/database/transferspecvalue
-        // http://phalconm:10080/service/database/transferspecvalue
+        // http://phalconm/service/database/transferspecvalue
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_spec_value");
@@ -303,7 +303,7 @@ class DatabaseController extends ControllerBase
     public function transfertypebrandAction()
     {
         // http://phalconm4local/service/database/transfertypebrand
-        // http://phalconm:10080/service/database/transfertypebrand
+        // http://phalconm/service/database/transfertypebrand
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_type_brand");
@@ -351,7 +351,7 @@ class DatabaseController extends ControllerBase
     public function transfertypespecAction()
     {
         // http://phalconm4local/service/database/transfertypespec
-        // http://phalconm:10080/service/database/transfertypespec
+        // http://phalconm/service/database/transfertypespec
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_type_spec");
@@ -399,7 +399,7 @@ class DatabaseController extends ControllerBase
     public function transferattributeAction()
     {
         // http://phalconm4local/service/database/transferattribute
-        // http://phalconm:10080/service/database/transferattribute
+        // http://phalconm/service/database/transferattribute
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_attribute");
@@ -441,7 +441,7 @@ class DatabaseController extends ControllerBase
     public function transferattributevalueAction()
     {
         // http://phalconm4local/service/database/transferattributevalue
-        // http://phalconm:10080/service/database/transferattributevalue
+        // http://phalconm/service/database/transferattributevalue
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_attribute_value");
@@ -490,7 +490,7 @@ class DatabaseController extends ControllerBase
     public function transfergoodsclasstagAction()
     {
         // http://phalconm4local/service/database/transfergoodsclasstag
-        // http://phalconm:10080/service/database/transfergoodsclasstag
+        // http://phalconm/service/database/transfergoodsclasstag
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_category_tag");
@@ -563,7 +563,7 @@ class DatabaseController extends ControllerBase
     public function transfergoodscommonAction()
     {
         // http://phalconm4local/service/database/transfergoodscommon
-        // http://phalconm:10080/service/database/transfergoodscommon
+        // http://phalconm/service/database/transfergoodscommon
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_common");
@@ -694,7 +694,7 @@ class DatabaseController extends ControllerBase
     public function transfergoodsAction()
     {
         // http://phalconm4local/service/database/transfergoods
-        // http://phalconm:10080/service/database/transfergoods
+        // http://phalconm/service/database/transfergoods
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_goods");
@@ -821,7 +821,7 @@ class DatabaseController extends ControllerBase
     public function transfergoodsattrindexAction()
     {
         // http://phalconm4local/service/database/transfergoodsattrindex
-        // http://phalconm:10080/service/database/transfergoodsattrindex
+        // http://phalconm/service/database/transfergoodsattrindex
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_attr_index");
@@ -899,7 +899,7 @@ class DatabaseController extends ControllerBase
     public function transfergoodsfcodeAction()
     {
         // http://phalconm4local/service/database/transfergoodsfcode
-        // http://phalconm:10080/service/database/transfergoodsfcode
+        // http://phalconm/service/database/transfergoodsfcode
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_fcode");
@@ -941,7 +941,7 @@ class DatabaseController extends ControllerBase
     public function transfergoodsimagesAction()
     {
         // http://phalconm4local/service/database/transfergoodsimages
-        // http://phalconm:10080/service/database/transfergoodsimages
+        // http://phalconm/service/database/transfergoodsimages
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_images");
@@ -989,7 +989,7 @@ class DatabaseController extends ControllerBase
     public function areaparentcodeAction()
     {
         // http://phalconm4local/service/database/areaparentcode
-        // http://phalconm:10080/service/database/areaparentcode
+        // http://phalconm/service/database/areaparentcode
         // http://www.jizigou.com/service/database/areaparentcode
         
         // 从源表中获取数据
@@ -1041,7 +1041,7 @@ class DatabaseController extends ControllerBase
     public function transferexpressAction()
     {
         // http://phalconm4local/service/database/transferexpress
-        // http://phalconm:10080/service/database/transferexpress
+        // http://phalconm/service/database/transferexpress
         
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM ifreight_express");
