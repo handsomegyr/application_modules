@@ -237,9 +237,10 @@ class SignController extends \App\Backend\Controllers\FormController
 				'condition_type' => '',
 				'defaultValues' => array(),
 				'cascade' => '',
-				'items' => function() {
-					return $this->modelXXXX->getAll();
-				},
+				'items' => function ()
+                {
+                    return array_column($this->trueOrFalseDatas, 'name', 'value');
+                },
 				'is_show' => true
 			),
 			'export' => array(
@@ -327,9 +328,10 @@ class SignController extends \App\Backend\Controllers\FormController
 				'condition_type' => '',
 				'defaultValues' => array(),
 				'cascade' => '',
-				'items' => function() {
-					return $this->modelXXXX->getAll();
-				},
+				'items' => function ()
+                {
+                    return array_column($this->trueOrFalseDatas, 'name', 'value');
+                },
 				'is_show' => true
 			),
 			'export' => array(

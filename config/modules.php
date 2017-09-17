@@ -112,12 +112,16 @@ $application->registerModules(array(
         'path' => APP_PATH . 'apps/backend/submodules/weixincard/Module.php'
     ),
     'admin/bargain' => array(
-        'className' => 'App\Backend\bargain\Module',
+        'className' => 'App\Backend\Bargain\Module',
         'path' => APP_PATH . 'apps/backend/submodules/bargain/Module.php'
     ),
     'admin/cronjob' => array(
-        'className' => 'App\Backend\cronjob\Module',
+        'className' => 'App\Backend\Cronjob\Module',
         'path' => APP_PATH . 'apps/backend/submodules/cronjob/Module.php'
+    ),
+    'admin/sign' => array(
+        'className' => 'App\Backend\Sign\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/sign/Module.php'
     ),
     'weixin' => array(
         'className' => 'App\Weixin\Module',
