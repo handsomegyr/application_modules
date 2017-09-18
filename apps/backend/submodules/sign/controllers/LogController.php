@@ -191,7 +191,7 @@ class LogController extends \App\Backend\Controllers\FormController
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
-                'type' => 'text',
+                'type' => 'json',
                 'defaultValue' => '',
                 'length' => 1024
             ),

@@ -421,10 +421,35 @@ class SignController extends \App\Backend\Controllers\FormController
             )
         );
         
+        $schemas['valid_log_id'] = array(
+            'name' => '签到日志记录ID',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 24
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
-                'type' => 'text',
+                'type' => 'json',
                 'defaultValue' => '',
                 'length' => 1024
             ),
@@ -470,7 +495,7 @@ class SignController extends \App\Backend\Controllers\FormController
             if (! empty($item['restart_sign_time'])) {
                 $item['restart_sign_time'] = date("Y-m-d H:i:s", $item['restart_sign_time']->sec);
             }
-            if (! empty($item['launch_time'])) {
+            if (! empty($item['last_sign_time'])) {
                 $item['last_sign_time'] = date("Y-m-d H:i:s", $item['last_sign_time']->sec);
             }
         }
