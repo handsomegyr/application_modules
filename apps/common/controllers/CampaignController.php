@@ -123,7 +123,7 @@ class CampaignController extends ControllerBase
             // 跳转地址
             $this->_redirect($callbackUrl);
             exit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             die($e->getMessage());
         }
     }
@@ -143,5 +143,65 @@ class CampaignController extends ControllerBase
     }
 
     public function authorize()
+    {}
+
+    /**
+     * 支付宝授权页面
+     */
+    public function alipayauthorizecallbackAction()
+    {
+        try {
+            // http://xxxx.umaman.com/xxx/index/alipayauthorizecallback?callbackUrl=xxx
+            // $callbackUrl = trim($this->get('callbackUrl', ''));
+            $callbackUrl = isset($_SESSION['Alipay_callbackUrl']) ? $_SESSION['Alipay_callbackUrl'] : '';
+            if (empty($callbackUrl)) {
+                die('callbackurl 不能为空');
+            }
+            $userInfo = empty($_COOKIE['Alipay_userInfo']) ? array() : json_decode($_COOKIE['Alipay_userInfo'], true);
+            
+            if (empty($userInfo)) {
+                // 如果在进行授权处理中的话
+                if (! empty($_SESSION['Alipay_isAuthorizing'])) {
+                    
+                    $user_id = trim($this->get('user_id', ''));
+                    $nickname = trim($this->get('nickname', ''));
+                    $headimgurl = trim($this->get('headimgurl', ''));
+                    $timestamp = trim($this->get('timestamp', ''));
+                    $signkey = trim($this->get('signkey', ''));
+                    
+                    // url的参数上已经有了user_id参数并且不是空的时候
+                    if (! empty($user_id)) {
+                        $config = $this->getDI()->get('config');
+                        $secretKey = $config['alipayAuthorize']['secretKey'];
+                        // 校验微信id,上线测试时需要加上去
+                        if (empty($secretKey) || $this->validateOpenid($user_id, $timestamp, $secretKey, $signkey)) {
+                            // 授权处理完成
+                            unset($_SESSION['Alipay_isAuthorizing']);
+                            // 存储微信用户到COOKIE,保存30天
+                            $userInfo = array(
+                                'user_id' => $user_id,
+                                'nickname' => trim($nickname),
+                                'headimgurl' => trim($headimgurl),
+                                'signkey' => $signkey,
+                                'timestamp' => $timestamp
+                            );
+                            setcookie('Alipay_userInfo', json_encode($userInfo), time() + 3600 * 24 * 30, '/');
+                            $_COOKIE['Alipay_userInfo'] = json_encode($userInfo);
+                            
+                            // 授权成功之后的处理
+                            $this->alipayauthorize();
+                        }
+                    }
+                }
+            }
+            // 跳转地址
+            $this->_redirect($callbackUrl);
+            exit();
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function alipayauthorize()
     {}
 }

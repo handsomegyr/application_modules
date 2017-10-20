@@ -12,7 +12,8 @@ use App\Weixin\Models\ComponentApplication;
 class ComponentController extends IndexController
 {
 
-    private $_weixinComponent;
+    /** @var  \Weixin\Component */
+    protected $_weixinComponent;
 
     /**
      * 初始化
@@ -357,6 +358,82 @@ class ComponentController extends IndexController
             print("解密后: " . $msg . "\n");
         } else {
             die('errcode:' . $errCode);
+        }
+    }
+
+    protected function verifyComponent($datas)
+    {
+        $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
+        $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
+        $content = isset($datas['Content']) ? trim($datas['Content']) : '';
+        $MsgType = isset($datas['MsgType']) ? trim($datas['MsgType']) : '';
+        $Event = isset($datas['Event']) ? trim($datas['Event']) : '';
+        
+        // 自动化测试的专用测试公众号的信息如下：
+        // （1）appid： wx570bc396a51b8ff8
+        // （2）Username： gh_3c884a361561
+        // 自动化测试的专用测试小程序的信息如下：
+        // （1）appid：wxd101a85aa106f53e
+        // （2）Username： gh_8dad206e9538
+        if (in_array($ToUserName, array(
+            'gh_3c884a361561',
+            'gh_8dad206e9538'
+        ))) {
+            // 1、模拟粉丝触发专用测试公众号的事件，并推送事件消息到专用测试公众号，第三方平台方开发者需要提取推送XML信息中的event值，并在5秒内立即返回按照下述要求组装的文本消息给粉丝。
+            // 1）微信推送给第三方平台方： 事件XML内容（与普通公众号接收到的信息是一样的）
+            // 2）服务方开发者在5秒内回应文本消息并最终触达到粉丝：文本消息的XML中Content字段的内容必须组装为：event + “from_callback”（假定event为LOCATION，则Content为: LOCATIONfrom_callback）
+            // 接收事件推送
+            if ($MsgType == 'event') {
+                $msg = "{$Event}from_callback";
+            }            
+
+            // 2、模拟粉丝发送文本消息给专用测试公众号，第三方平台方需根据文本消息的内容进行相应的响应：
+            // 1）微信模推送给第三方平台方：文本消息，其中Content字段的内容固定为：TESTCOMPONENT_MSG_TYPE_TEXT
+            // 2）第三方平台方立马回应文本消息并最终触达粉丝：Content必须固定为：TESTCOMPONENT_MSG_TYPE_TEXT_callback
+            elseif ($content == 'TESTCOMPONENT_MSG_TYPE_TEXT') {
+                $msg = "{$content}_callback";
+            }            
+
+            // 3、模拟粉丝发送文本消息给专用测试公众号，第三方平台方需在5秒内返回空串表明暂时不回复，然后再立即使用客服消息接口发送消息回复粉丝
+            // 1）微信模推送给第三方平台方：文本消息，其中Content字段的内容固定为： QUERY_AUTH_CODE:$query_auth_code$（query_auth_code会在专用测试公众号自动授权给第三方平台方时，由微信后台推送给开发者）
+            // 2）第三方平台方拿到$query_auth_code$的值后，通过接口文档页中的“使用授权码换取公众号的授权信息”API，将$query_auth_code$的值赋值给API所需的参数authorization_code。然后，调用发送客服消息api回复文本消息给粉丝，其中文本消息的content字段设为：$query_auth_code$_from_api（其中$query_auth_code$需要替换成推送过来的query_auth_code）
+            elseif (preg_match('/QUERY_AUTH_CODE:/', $content)) {
+                $query_auth_code = str_replace('QUERY_AUTH_CODE:', '', $content);
+                $authorizer = $this->_weixinComponent->apiQueryAuth($query_auth_code);
+                $authorizer_info = empty($authorizer['authorization_info']) ? [] : $authorizer['authorization_info'];
+                $authorizer_access_token = empty($authorizer_info['authorizer_access_token']) ? '' : $authorizer_info['authorizer_access_token'];
+                $msg = $query_auth_code . '_from_api';
+                
+                $objWeixin = new \Weixin\Client();
+                $objWeixin->setAccessToken($authorizer_access_token);
+                $objWeixin->getMsgManager()
+                    ->getCustomSender()
+                    ->sendText($FromUserName, $msg);
+                
+                $msg = 'none';
+            } else {
+                return false;
+            }
+            
+            if ($msg != 'none') {
+                $now = time();
+                $response = "<xml>
+                <ToUserName><![CDATA[{$FromUserName}]]></ToUserName>
+                <FromUserName><![CDATA[{$ToUserName}]]></FromUserName>
+                <CreateTime>{$now}</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA[{$msg}]]></Content>
+                </xml>";
+                // 输出响应结果
+                $response = $this->responseToWeixinServer($response);
+            } else {
+                $response = '';
+            }
+            echo $response;
+            $this->_sourceDatas['response'] = $response;
+            return true;
+        } else {
+            return false;
         }
     }
 }

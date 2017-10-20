@@ -58,7 +58,7 @@ class IndexController extends ControllerBase
 
     public function initialize()
     {
-        parent::initialize();        
+        parent::initialize();
         $this->view->disable();
         try {
             $this->_source = new Source();
@@ -160,6 +160,12 @@ class IndexController extends ControllerBase
             if ($__DEBUG__) {
                 $datas = $this->_app->debug($__DEBUG__);
             }
+            
+            // 全网发布自动校验
+            if ($this->verifyComponent($datas)) {
+                return true;
+            }
+            
             // 开始处理相关的业务逻辑
             $content = isset($datas['Content']) ? strtolower(trim($datas['Content'])) : '';
             
@@ -459,7 +465,7 @@ class IndexController extends ControllerBase
                 echo $this->error("-1", "参数URL的为空");
                 return false;
             }
-            //$url = urldecode($url);
+            // $url = urldecode($url);
             
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -683,7 +689,7 @@ class IndexController extends ControllerBase
     protected function doCommonLogic(array $datas)
     {
         $content = isset($datas['Content']) ? strtolower(trim($datas['Content'])) : '';
-		$FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
+        $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
         $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
         $MsgType = isset($datas['MsgType']) ? trim($datas['MsgType']) : '';
         $Event = isset($datas['Event']) ? trim($datas['Event']) : '';
@@ -942,7 +948,7 @@ class IndexController extends ControllerBase
                 $OriginalFee = isset($datas['OriginalFee']) ? trim($datas['OriginalFee']) : 0;
                 $response = "success";
             } else {
-                //$response = "success";
+                // $response = "success";
             }
         }
         
@@ -1076,6 +1082,11 @@ class IndexController extends ControllerBase
             }
         }
         return $response;
+    }
+
+    protected function verifyComponent($datas)
+    {
+        return false;
     }
 
     /**

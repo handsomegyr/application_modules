@@ -7,6 +7,7 @@ use Phalcon\Mvc\Dispatcher;
 use Phalcon\Events\Manager as EventsManager;
 use App\Common\Plugins\WeixinPlugin2;
 use App\Common\Plugins\TerminatePlugin;
+use App\Common\Plugins\AlipayPlugin;
 
 class Module
 {
@@ -43,6 +44,7 @@ class Module
         $di->set('dispatcher', function () {
             $eventsManager = new EventsManager();
             $eventsManager->attach('dispatch:beforeDispatch', new WeixinPlugin2());
+            $eventsManager->attach('dispatch:beforeDispatch', new AlipayPlugin());
             $eventsManager->attach('dispatch:beforeDispatch', new TerminatePlugin());
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace("App\Campaign\Controllers");

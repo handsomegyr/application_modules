@@ -42,6 +42,14 @@ return new \Phalcon\Config(array(
     'tencent' => array(
         "appid" => 'wxbf9165206b992f39'
     ),
+    'alipayAuthorize' => array(
+        'authorizeUrl' => 'http://www.jizigou.com/alipay/sns/index',
+        'secretKey' => 'jizigou',
+        'scope' => 'auth_user'
+    ),
+    'alipay' => array(
+        "appid" => '2017071707783020'
+    ),
     'memcached' => array(
         "host" => '192.168.81.128',
         "port" => 11211,

@@ -170,6 +170,10 @@ class SnsController extends ControllerBase
                         if (! empty($userInfo['headimgurl'])) {
                             $arrAccessToken['headimgurl'] = stripslashes($userInfo['headimgurl']);
                         }
+                        
+                        if (! empty($userInfo['unionid'])) {
+                            $arrAccessToken['unionid'] = ($userInfo['unionid']);
+                        }
                     }
                     $_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$arrAccessToken['scope']}"] = $arrAccessToken;
                     $path = '/';
@@ -297,6 +301,17 @@ class SnsController extends ControllerBase
                 'headimgurl' => urlencode(stripslashes($arrAccessToken['headimgurl']))
             ));
         }
+        
+        if (! empty($arrAccessToken['unionid'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'unionid' => $arrAccessToken['unionid']
+            ));
+            $signkey = $this->getSignKey($arrAccessToken['unionid'], $timestamp);
+            $redirect = $this->addUrlParameter($redirect, array(
+                'signkey2' => $signkey
+            ));
+        }
+        
         return $redirect;
     }
 
