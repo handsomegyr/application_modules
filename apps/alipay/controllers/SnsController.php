@@ -1,27 +1,25 @@
 <?php
-namespace App\Weixin\Controllers;
+namespace App\Alipay\Controllers;
 
-use App\Weixin\Models\User;
-use App\Weixin\Models\Application;
-use App\Weixin\Models\ScriptTracking;
-use App\Weixin\Models\Callbackurls;
+use App\Alipay\Models\User;
+use App\Alipay\Models\Application;
+use App\Alipay\Models\ScriptTracking;
+use App\Alipay\Models\Callbackurls;
 
 class SnsController extends ControllerBase
 {
-
-    protected $_weixin;
 
     protected $_user;
 
     protected $_app;
 
-    protected $_config;
-
     protected $_tracking;
 
-    protected $_appConfig;
-
     protected $_callbackurls;
+
+    protected $_config;
+
+    protected $_appConfig;
 
     protected $appid;
 
@@ -29,31 +27,32 @@ class SnsController extends ControllerBase
 
     protected $state;
 
-    protected $cookie_session_key = 'iWeixin';
+    protected $cookie_session_key = 'iAlipay';
 
     protected $trackingKey = "SNS授权";
-
-    protected $controllerName = 'sns';
 
     public function initialize()
     {
         parent::initialize();
         $this->view->disable();
         
+        $this->_config = $this->getDI()->get('config');
+        $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : $this->_config['alipay']['appid'];
+        $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'auth_user';
+        $this->state = isset($_GET['state']) ? trim($_GET['state']) : '';
+        
+        $this->_app = new Application();
         $this->_user = new User();
         $this->_tracking = new ScriptTracking();
         $this->_callbackurls = new Callbackurls();
-        
-        $this->_config = $this->getDI()->get('config');
-        $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : $this->_config['weixin']['appid'];
-        $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_userinfo';
-        $this->state = isset($_GET['state']) ? trim($_GET['state']) : 'wx';
         
         $this->doInitializeLogic();
     }
 
     /**
-     * http://www.example.com/weixin/sns/index?appid=xxx&redirect=http%3A%2F%2Fwww.baidu.com%2F%3Fa%3Dqw%26b%3D%E4%B8%AD%E5%9B%BD&scope=[snsapi_userinfo(default)|snsapi_base|snsapi_login]&dc=1
+     * scope接口权限值，目前只支持auth_user和auth_base两个值
+     * http://www.example.com/alipay/sns/index?appid=xxx&redirect=回调地址&scope=[auth_user(default)|auth_base]&dc=1&state=xxx
+     * http://www.applicationmodule.com/alipay/sns/index?appid=2017071707783020&redirect=https%3A%2F%2Fwww.baidu.com%2F&scope=auth_user&state=xxx&refresh=1
      * 引导用户去往登录授权
      */
     public function indexAction()
@@ -68,7 +67,7 @@ class SnsController extends ControllerBase
             
             if ($dc) {
                 // 添加重定向域的检查
-                $isValid = $this->_callbackurls->isValid($redirect);
+                $isValid = $this->_callbackurls->isValid($this->appid, $redirect);
                 if (empty($isValid)) {
                     die('回调地址不合法');
                 }
@@ -85,7 +84,7 @@ class SnsController extends ControllerBase
                 
                 header("location:{$redirect}");
                 fastcgi_finish_request();
-                $this->_tracking->record("授权session存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+                $this->_tracking->record($this->appid, "授权session存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['user_id']);
                 exit();
             } elseif (! $refresh && ! empty($_COOKIE["__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__"])) {
                 
@@ -98,22 +97,22 @@ class SnsController extends ControllerBase
                 
                 header("location:{$redirect}");
                 fastcgi_finish_request();
-                $this->_tracking->record("授权cookie存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+                $this->_tracking->record($this->appid, "授权cookie存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['user_id']);
                 exit();
             } else {
-                $moduleName = 'weixin';
-                $controllerName = $this->controllerName;
-                
                 $redirectUri = 'http://';
                 $redirectUri .= $_SERVER["HTTP_HOST"];
-                $redirectUri .= '/' . $moduleName;
-                $redirectUri .= '/' . $controllerName;
+                $redirectUri .= '/alipay';
+                $redirectUri .= '/sns';
                 $redirectUri .= '/callback';
                 $redirectUri .= '?appid=' . $this->appid;
                 $redirectUri .= '&scope=' . $this->scope;
                 $redirectUri .= '&redirect=' . $redirect;
                 
-                $this->getAuthorizeUrl($redirectUri);
+                // 授权处理
+                $redirectUri = \iAlipay::getAuthorizeUrl($redirectUri, $this->appid, $this->scope, $this->state);
+                header("location:{$redirectUri}");
+                exit();
             }
         } catch (\Exception $e) {
             print_r($e->getFile());
@@ -123,86 +122,90 @@ class SnsController extends ControllerBase
     }
 
     /**
-     * 处理微信的回调数据
+     * 第二步：获取auth_code
      *
-     * @return boolean
+     * 当用户授权成功后，会跳转至开发者定义的回调页面，支付宝会在回调页面请求中加入参数，包括auth_code、app_id、scope等，需要注意的是支付宝仅保证auth_code、app_id以及scope参数的有效性。
+     * 支付宝请求开发者回调页面示例如下：
+     *
+     * http://example.com/doc/toAuthPage.html?app_id=2014101500013658&source=alipay_wallet&scope=auth_user&auth_code=ca34ea491e7146cc87d25fca24c4cD11
      */
     public function callbackAction()
     {
         try {
-            $redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : '';
+            $app_id = isset($_GET['app_id']) ? ($_GET['app_id']) : '';
+            $userOutputs = isset($_GET['userOutputs']) ? ($_GET['userOutputs']) : '';
+            $redirect = isset($_GET['redirect']) ? urldecode($_GET['redirect']) : '';
+            $auth_code = isset($_GET['auth_code']) ? ($_GET['auth_code']) : '';
+            
+            $source = isset($_GET['source']) ? ($_GET['source']) : '';
+            $alipay_token = isset($_GET['alipay_token']) ? ($_GET['alipay_token']) : '';
+            $readauth = isset($_GET['readauth']) ? ($_GET['readauth']) : '';
             if (empty($redirect)) {
                 throw new \Exception("回调地址未定义");
             }
             
-            $sourceFromUserName = ! empty($_GET['FromUserName']) ? $_GET['FromUserName'] : null;
-            
+            $sourceUserId = ! empty($_GET['sourceUserId']) ? $_GET['sourceUserId'] : '';
             $updateInfoFromWx = false;
-            
-            // 获取accesstoken
-            $arrAccessToken = $this->getAccessToken();
-            
-            if (! isset($arrAccessToken['errcode'])) {
-                // 授权成功后，记录该微信用户的基本信息
-                if ($arrAccessToken['scope'] === 'snsapi_userinfo' || $arrAccessToken['scope'] === 'snsapi_login') {
+            if (! empty($auth_code)) {
+                // 第三步：使用auth_code换取接口access_token及用户userId
+                // 接口名称：alipay.system.oauth.token
+                // 换取授权访问令牌，开发者可通过获取到的auth_code换取access_token和用户userId。auth_code作为换取access_token的票据，每次用户授权完成，回调地址中的auth_code将不一样，auth_code只能使用一次，一天未被使用自动过期。
+                $objiAlipay = new \iAlipay($this->_appConfig['app_id'], $this->_appConfig['merchant_private_key'], $this->_appConfig['merchant_public_key'], $this->_appConfig['alipay_public_key'], $this->_appConfig['charset'], $this->_appConfig['gatewayUrl'], $this->_appConfig['sign_type']);
+                $arrAccessToken = $objiAlipay->alipaySystemOauthTokenRequest($auth_code);
+                
+                // 只有在这个授权方式下获取用户信息
+                $userInfo = array();
+                if ($this->scope == 'auth_user') {
                     // 先判断用户在数据库中是否存在最近一周产生的openid，如果不存在，则再动用网络请求，进行用户信息获取
-                    $userInfo = $this->_user->getUserInfoByIdLastWeek($arrAccessToken['openid']);
-                    if ($userInfo == null) {
+                    $userInfo = $this->_user->getUserInfoByIdLastWeek($arrAccessToken['user_id']);
+                    // $userInfo = $this->_user->getUserInfoByUserId($arrAccessToken['user_id']);
+                    if (empty($userInfo)) {
                         $updateInfoFromWx = true;
-                        $weixin = new \Weixin\Client();
-                        $weixin->setSnsAccessToken($arrAccessToken['access_token']);
-                        $userInfo = $weixin->getSnsManager()->getSnsUserInfo($arrAccessToken['openid']);
-                        if (isset($userInfo['errcode'])) {
-                            throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
-                        }
+                        $userInfo = $objiAlipay->alipayUserInfoRequest($arrAccessToken['access_token']);
+                        $userInfo['access_token'] = $arrAccessToken;
+                        $userInfo['app_id'] = $this->appid;
                     }
-                    $userInfo['access_token'] = $arrAccessToken;
                 }
                 
-                if (isset($arrAccessToken['openid'])) {
+                if (isset($arrAccessToken['user_id'])) {
                     
                     if (! empty($userInfo)) {
-                        if (! empty($userInfo['nickname'])) {
-                            $arrAccessToken['nickname'] = ($userInfo['nickname']);
+                        if (! empty($userInfo['nick_name'])) {
+                            $arrAccessToken['nickname'] = ($userInfo['nick_name']);
                         }
                         
-                        if (! empty($userInfo['headimgurl'])) {
-                            $arrAccessToken['headimgurl'] = stripslashes($userInfo['headimgurl']);
-                        }
-                        
-                        if (! empty($userInfo['unionid'])) {
-                            $arrAccessToken['unionid'] = ($userInfo['unionid']);
+                        if (! empty($userInfo['avatar'])) {
+                            $arrAccessToken['headimgurl'] = stripslashes($userInfo['avatar']);
                         }
                     }
-                    $_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$arrAccessToken['scope']}"] = $arrAccessToken;
-                    $path = '/';
+                    $_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$this->scope}"] = $arrAccessToken;
+                    $path = $this->_config['global']['path'];
                     $expireTime = time() + 1.5 * 3600;
-                    setcookie("__{$this->cookie_session_key}_{$this->appid}_{$arrAccessToken['scope']}__", json_encode($arrAccessToken), $expireTime, $path);
+                    setcookie("__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__", json_encode($arrAccessToken), $expireTime, $path);
                     
                     $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
                     
-                    if ($sourceFromUserName !== null && $sourceFromUserName == $arrAccessToken['openid']) {
+                    if ($sourceUserId !== null && $sourceUserId == $arrAccessToken['user_id']) {
                         $redirect = $this->addUrlParameter($redirect, array(
                             '__self' => true
                         ));
                     }
                 }
                 
-                // die($redirect);
                 header("location:{$redirect}");
                 // 调整数据库操作的执行顺序，优化跳转速度
                 fastcgi_finish_request();
                 if ($updateInfoFromWx) {
                     $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
-                    $this->_user->updateUserInfoBySns($arrAccessToken['openid'], $userInfo);
+                    $this->_user->updateUserInfoBySns($arrAccessToken['user_id'], $userInfo);
                 }
-                $this->_tracking->record($this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
-                
-                $objService = \App\Weixin\Services\Base::getServiceObject();
-                $objService->doSnsCallback($arrAccessToken);
+                $this->_tracking->record($this->appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['user_id']);
                 
                 exit();
             } else {
+                // 循环授权
+                // header("location:{$_SESSION['weixin_sns_url']}");
+                // exit();
                 // 如果用户未授权登录，点击取消，自行设定取消的业务逻辑
                 throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
             }
@@ -213,43 +216,11 @@ class SnsController extends ControllerBase
         }
     }
 
-    public function geturlAction()
-    {
-        // http://www.jizigou.com/weixin/sns/geturl?appid=wxa7f90ea22051777d&scope=snsapi_login&state=wx
-        try {
-            $redirect = "http://{$_SERVER["HTTP_HOST"]}/member/passport/weixinauthorize";
-            
-            $moduleName = 'weixin';
-            $controllerName = 'sns';
-            
-            $redirectUri = 'http://';
-            $redirectUri .= $_SERVER["HTTP_HOST"];
-            $redirectUri .= '/' . $moduleName;
-            $redirectUri .= '/' . $controllerName;
-            $redirectUri .= '/callback';
-            $redirectUri .= '?appid=' . $this->appid;
-            $redirectUri .= '&scope=' . $this->scope;
-            $redirectUri .= '&redirect=' . $redirect;
-            
-            $appid = $this->_appConfig['appid'];
-            $secret = $this->_appConfig['secret'];
-            $sns = new \Weixin\Token\Sns($appid, $secret);
-            $sns->setRedirectUri($redirectUri);
-            $sns->setScope($this->scope);
-            $sns->setState($this->state);
-            $url = $sns->getAuthorizeUrl(false);
-            die($url);
-        } catch (\Exception $e) {
-            var_dump($e);
-            return false;
-        }
-    }
-
     protected function addUrlParameter($url, array $params)
     {
         if (! empty($params)) {
             foreach ($params as $key => $value) {
-                if (strpos($url, $key) === false || ($key == "FromUserName")) {
+                if (strpos($url, $key) === false || ($key == "user_id")) {
                     if (strpos($url, '?') === false)
                         $url .= "?{$key}=" . $value;
                     else
@@ -276,12 +247,12 @@ class SnsController extends ControllerBase
         ));
         
         $redirect = $this->addUrlParameter($redirect, array(
-            'FromUserName' => $arrAccessToken['openid']
+            'user_id' => $arrAccessToken['user_id']
         ));
         
         // 计算signkey
         $timestamp = time();
-        $signkey = $this->getSignKey($arrAccessToken['openid'], $timestamp);
+        $signkey = $this->getSignKey($arrAccessToken['user_id'], $timestamp);
         $redirect = $this->addUrlParameter($redirect, array(
             'signkey' => $signkey
         ));
@@ -300,17 +271,6 @@ class SnsController extends ControllerBase
                 'headimgurl' => urlencode(stripslashes($arrAccessToken['headimgurl']))
             ));
         }
-        
-        if (! empty($arrAccessToken['unionid'])) {
-            $redirect = $this->addUrlParameter($redirect, array(
-                'unionid' => $arrAccessToken['unionid']
-            ));
-            $signkey = $this->getSignKey($arrAccessToken['unionid'], $timestamp);
-            $redirect = $this->addUrlParameter($redirect, array(
-                'signkey2' => $signkey
-            ));
-        }
-        
         return $redirect;
     }
 
@@ -319,32 +279,11 @@ class SnsController extends ControllerBase
      */
     protected function doInitializeLogic()
     {
-        $this->_app = new Application();
         $this->_appConfig = $this->_app->getApplicationInfoByAppId($this->appid);
         
         if (empty($this->_appConfig)) {
             throw new \Exception('appid所对应的记录不存在');
         }
-    }
-
-    protected function getAuthorizeUrl($redirectUri)
-    {
-        $appid = $this->_appConfig['appid'];
-        $secret = $this->_appConfig['secret'];
-        $sns = new \Weixin\Token\Sns($appid, $secret);
-        $sns->setRedirectUri($redirectUri);
-        $sns->setScope($this->scope);
-        $sns->setState($this->state);
-        $sns->getAuthorizeUrl();
-    }
-
-    protected function getAccessToken()
-    {
-        $appid = $this->_appConfig['appid'];
-        $secret = $this->_appConfig['secret'];
-        $sns = new \Weixin\Token\Sns($appid, $secret);
-        $arrAccessToken = $sns->getAccessToken();
-        return $arrAccessToken;
     }
 }
 

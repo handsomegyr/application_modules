@@ -1,33 +1,37 @@
 <?php
-namespace App\Backend\Submodules\Cronjob\Controllers;
+namespace App\Backend\Submodules\Alipay\Controllers;
 
-use App\Backend\Submodules\Cronjob\Models\Job;
+use App\Backend\Submodules\Alipay\Models\Application;
 
 /**
- * @title({name="计划任务管理"})
+ * @title({name="支付宝应用管理"})
  *
- * @name 计划任务管理
+ * @name 支付宝应用管理
  */
-class JobController extends \App\Backend\Controllers\FormController
+class ApplicationController extends \App\Backend\Controllers\FormController
 {
 
-    private $modelJob;
+    private $modelApplication;
 
     public function initialize()
     {
-        $this->modelJob = new Job();
+        $this->modelApplication = new Application();
         parent::initialize();
     }
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        $schemas['name'] = array(
-            'name' => '任务名称',
+        
+        $schemas['_id']['list']['is_show'] = false;
+        $schemas['_id']['search']['is_show'] = false;
+        
+        $schemas['app_id'] = array(
+            'name' => '应用ID',
             'data' => array(
                 'type' => 'string',
                 'defaultValue' => '',
-                'length' => 30
+                'length' => 32
             ),
             'validation' => array(
                 'required' => true
@@ -50,87 +54,12 @@ class JobController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['desc'] = array(
-            'name' => '任务功能描述',
+        $schemas['app_name'] = array(
+            'name' => '应用名称',
             'data' => array(
                 'type' => 'string',
                 'defaultValue' => '',
-                'length' => 100
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['start_time'] = array(
-            'name' => '执行开始时间',
-            'data' => array(
-                'type' => 'datetime',
-                'defaultValue' => getCurrentTime(),
-                'length' => 19
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['end_time'] = array(
-            'name' => '任务结束时间',
-            'data' => array(
-                'type' => 'datetime',
-                'defaultValue' => getCurrentTime(),
-                'length' => 19
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['cmd'] = array(
-            'name' => '任务命令',
-            'data' => array(
-                'type' => 'string',
-                'defaultValue' => '',
-                'length' => 100
+                'length' => 50
             ),
             'validation' => array(
                 'required' => true
@@ -150,90 +79,15 @@ class JobController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['cycle'] = array(
-            'name' => '执行周期(分钟)',
+        $schemas['merchant_private_key'] = array(
+            'name' => '商户私钥',
             'data' => array(
-                'type' => 'integer',
-                'defaultValue' => '0',
-                'length' => 11
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 4096
             ),
             'validation' => array(
                 'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        
-        $schemas['cron'] = array(
-            'name' => 'cron语法',
-            'data' => array(
-                'type' => 'string',
-                'defaultValue' => '',
-                'length' => 20
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        
-        $schemas['last_execute_time'] = array(
-            'name' => '最后一次执行时间',
-            'data' => array(
-                'type' => 'datetime',
-                'defaultValue' => getCurrentTime(),
-                'length' => 19
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['last_execute_result'] = array(
-            'name' => '最后一次执行结果',
-            'data' => array(
-                'type' => 'string',
-                'defaultValue' => '',
-                'length' => 1024
-            ),
-            'validation' => array(
-                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
@@ -250,22 +104,147 @@ class JobController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['script_execute_time'] = array(
-            'name' => '脚本执行时间',
+        $schemas['merchant_public_key'] = array(
+            'name' => '商户应用公钥',
             'data' => array(
-                'type' => 'integer',
-                'defaultValue' => '0',
-                'length' => 11
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 4096
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'textarea',
                 'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['alipay_public_key'] = array(
+            'name' => '支付宝公钥',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 4096
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['charset'] = array(
+            'name' => '编码格式',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => 'utf-8',
+                'length' => 10
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['gatewayUrl'] = array(
+            'name' => '支付宝网关',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 100
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['sign_type'] = array(
+            'name' => '签名方式',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => 'RSA2',
+                'length' => 10
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['secretKey'] = array(
+            'name' => '签名密钥',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 50
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
             ),
             'search' => array(
                 'is_show' => false
@@ -280,25 +259,11 @@ class JobController extends \App\Backend\Controllers\FormController
 
     protected function getName()
     {
-        return '计划任务';
+        return '支付宝应用';
     }
 
     protected function getModel()
     {
-        return $this->modelJob;
-    }
-    
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        //$activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            //$item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : '--';
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-            if (! empty($item['last_execute_time'])) {
-                $item['last_execute_time'] = date("Y-m-d H:i:s", $item['last_execute_time']->sec);
-            }
-        }
-        return $list;
+        return $this->modelApplication;
     }
 }

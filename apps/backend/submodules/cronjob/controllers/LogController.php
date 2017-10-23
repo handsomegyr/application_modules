@@ -51,7 +51,7 @@ class LogController extends \App\Backend\Controllers\FormController
         $schemas['execute_result'] = array(
             'name' => '执行结果',
             'data' => array(
-                'type' => 'text',
+                'type' => 'string',
                 'defaultValue' => '',
                 'length' => 1024
             ),

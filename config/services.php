@@ -423,6 +423,12 @@ function registerServices($di)
                 'action' => 2
             ));
             
+            $router->add("/admin/alipay/:controller/:action", array(
+                'module' => 'admin/alipay',
+                'controller' => 1,
+                'action' => 2
+            ));
+            
             $router->add("/:module/:controller/:action", array(
                 'module' => 1,
                 'controller' => 2,

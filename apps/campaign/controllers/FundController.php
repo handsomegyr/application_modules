@@ -1,17 +1,18 @@
 <?php
+use App\Alipay\Models\Application;
 
 /**
  * 基金财富号
- * https://cloud.huaan.com.cn/campaign/fund/alipayauthorizebefore?operation4cookie=store&user_id=xxx&nickname=xxx&headimgurl=xxx
- * 
- * https://cloud.huaan.com.cn/campaign/fund/alipayauthorizebefore?callbackUrl=https%3A%2F%2Fwww.baidu.com%2F
- * 
- * https://cloud.huaan.com.cn/one/index.html
- * 
- * https://cloud.huaan.com.cn/campaign/fund/alipayauthorizebefore?operation4cookie=clear
- * 
- * @author 郭永荣
+ * http://www.applicationmodule.com/campaign/fund/alipayauthorizebefore?operation4cookie=store&user_id=xxx&nickname=xxx&headimgurl=xxx
  *
+ * http://www.applicationmodule.com/campaign/fund/alipayauthorizebefore?callbackUrl=https%3A%2F%2Fwww.baidu.com%2F
+ *
+ * https://cloud.huaan.com.cn/one/index.html
+ *
+ * http://www.applicationmodule.com/campaign/fund/alipayauthorizebefore?operation4cookie=clear
+ *
+ * @author 郭永荣
+ *        
  */
 class FundController extends ControllerBase
 {
@@ -32,23 +33,19 @@ class FundController extends ControllerBase
     
     // 活动相关
     // 活动1
-    protected $activity1 = '59bf89689fe152002d05b2a8';
-    
-    // 抽奖相关
-    // 抽奖活动1
-    protected $lottery_activity_id1 = '59bf88b6d3df9000dd012a26';
+    protected $activity1 = '59ed93599fff63190a8b4568';
 
     public function initialize()
     {
+        parent::initialize();
+        $this->view->disable();
+        
         $this->now = getCurrentTime();
         
         $this->modelActivity = new \App\Activity\Models\Activity();
         $this->modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $this->modelActivityUser = new \App\Activity\Models\User();
         $this->modelActivityBlackUser = new \App\Activity\Models\BlackUser();
-        
-        parent::initialize();
-        $this->view->disable();
     }
 
     /**
@@ -71,7 +68,7 @@ class FundController extends ControllerBase
             $signkey = trim($userInfo['signkey']);
             
             // 检查cookie的有效性
-            $isValid = true; // $this->validateOpenid($user_id, $timestamp, $this->secretKey, $signkey);
+            $isValid = $this->validateOpenid($user_id, $timestamp, $this->secretKey, $signkey);
             if (! $isValid) {
                 echo $this->error(- 999, "用户信息是伪造的");
                 return false;
@@ -124,7 +121,7 @@ class FundController extends ControllerBase
      */
     public function answerAction()
     {
-        // https://cloud.huaan.com.cn/campaign/fund/answer?user_id=oQWzx0Ek-IteVNwoVbMk-15bVUX4&nickname=xxx&headimgurl=xxx&answer=xxx
+        // http://www.applicationmodule.com/campaign/fund/answer?answer=0
         try {
             $answer = intval($this->get('answer', '0'));
             // 获取活动信息
@@ -184,8 +181,8 @@ class FundController extends ControllerBase
                 return false;
             }
             
-            $config = Zend_Registry::get('config');
-            $modelApliayApplication = new Alipay_Model_Application();
+            $config = $this->getDI()->get('config');
+            $modelApliayApplication = new Application();
             $appConfig = $modelApliayApplication->getApplicationInfoByAppId($config['alipay']['appid']);
             if (empty($appConfig)) {
                 throw new \Exception('appid所对应的记录不存在');
@@ -193,9 +190,9 @@ class FundController extends ControllerBase
             
             // 是否答对题目
             $is_correct = ($answer === 3);
-            $data = array();
-            $data['memo.is_answer'] = true;
-            $data['memo.is_correct'] = $is_correct;
+            $data = $userInfo['memo'];
+            $data['memo']['is_answer'] = true;
+            $data['memo']['is_correct'] = $is_correct;
             $this->modelActivityUser->update(array(
                 '_id' => $userInfo['_id']
             ), array(
@@ -208,12 +205,10 @@ class FundController extends ControllerBase
                 return false;
             }
             
-            // 抽奖
-            $ret = $this->getCoupon($userInfo, '', $appConfig);
-            if (empty($ret)) {
-                echo $this->error(- 20, "来晚了一步");
-                return false;
-            }
+            // 调用支付宝相应接口
+            $camp_id = 'xxxx';
+            $objiAlipay = new \iAlipay($appConfig['app_id'], $appConfig['merchant_private_key'], $appConfig['merchant_public_key'], $appConfig['alipay_public_key'], $appConfig['charset'], $appConfig['gatewayUrl'], $appConfig['sign_type']);
+            $ret = $objiAlipay->alipayMarketingCampaignDrawcampTriggerRequest($userInfo['userid'], $camp_id);
             
             echo $this->result("OK", $ret);
             return true;
@@ -229,7 +224,7 @@ class FundController extends ControllerBase
      */
     public function fundperformancechart2Action()
     {
-        // https://cloud.huaan.com.cn/campaign/fund/fundperformancechart2?fundcodes=040008
+        // http://www.applicationmodule.com/campaign/fund/fundperformancechart2?fundcodes=040008
         try {
             $fundcodes = $this->get('fundcodes', '');
             
@@ -242,8 +237,8 @@ class FundController extends ControllerBase
             $cache = Zend_Registry::get('cache');
             $ret = $cache->load($cacheKey);
             if (empty($ret)) {
-                $config = Zend_Registry::get('config');
-                $modelApliayApplication = new Alipay_Model_Application();
+                $config = $this->getDI()->get('config');
+                $modelApliayApplication = new Application();
                 $appConfig = $modelApliayApplication->getApplicationInfoByAppId($config['alipay']['appid']);
                 if (empty($appConfig)) {
                     throw new \Exception('appid所对应的记录不存在');
@@ -269,12 +264,12 @@ class FundController extends ControllerBase
      */
     public function test1Action()
     {
-        // https://cloud.huaan.com.cn/campaign/fund/test1&camp_id=170921821480493
+        // http://www.applicationmodule.com/campaign/fund/test1&camp_id=170921821480493
         try {
             $user_id = $this->get('user_id', '2088602345138428');
             $camp_id = $this->get('camp_id', '170921821480493');
             
-            $this->_app = new Alipay_Model_Application();
+            $this->_app = new Application();
             $this->_appConfig = $this->_app->getApplicationInfoByAppId('2017071707783020');
             if (empty($this->_appConfig)) {
                 throw new \Exception('appid所对应的记录不存在');
@@ -296,12 +291,12 @@ class FundController extends ControllerBase
      */
     public function test2Action()
     {
-        // https://cloud.huaan.com.cn/campaign/fund/test2?camp_id=170921821480493&prize_id=xx
+        // http://www.applicationmodule.com/campaign/fund/test2?camp_id=170921821480493&prize_id=xx
         try {
             $camp_id = $this->get('camp_id', '170921821480493');
             $prize_id = $this->get('prize_id', '20170921000730018232000BP4C6');
             
-            $this->_app = new Alipay_Model_Application();
+            $this->_app = new Application();
             $this->_appConfig = $this->_app->getApplicationInfoByAppId('2017071707783020');
             if (empty($this->_appConfig)) {
                 throw new \Exception('appid所对应的记录不存在');
@@ -323,11 +318,11 @@ class FundController extends ControllerBase
      */
     public function test3Action()
     {
-        // https://cloud.huaan.com.cn/campaign/fund/test3?camp_id=170921821480493
+        // http://www.applicationmodule.com/campaign/fund/test3?camp_id=170921821480493
         try {
             $camp_id = $this->get('camp_id', '170921821480493');
             
-            $this->_app = new Alipay_Model_Application();
+            $this->_app = new Application();
             $this->_appConfig = $this->_app->getApplicationInfoByAppId('2017071707783020');
             if (empty($this->_appConfig)) {
                 throw new \Exception('appid所对应的记录不存在');
@@ -345,116 +340,21 @@ class FundController extends ControllerBase
     }
 
     /**
-     * 抽奖处理
+     * user_id校验
+     *
+     * @param string $user_id            
+     * @param string $timestamp            
+     * @param string $secretKey            
+     * @param string $signature            
+     * @return boolean
      */
-    private function doLottery($userInfo, $activity_id, $uniqueId, $prize_id = "", array $exclude_prize_ids = array(), array $info = array(), array $identityContact = array())
+    private function validateOpenid($user_id, $timestamp, $secretKey, $signature)
     {
-        $modelLotteryServiceApi = new Lottery_Model_Service_Api("nojson");
-        
-        $prize_ids = array();
-        if (! empty($prize_id)) {
-            $prize_ids[] = $prize_id;
-        }
-        
-        $lotteryResult = $modelLotteryServiceApi->doLottery($activity_id, $uniqueId, Lottery_Model_Identity::SOURCE_WEIXIN, $info, "", $prize_ids, $exclude_prize_ids, $identityContact);
-        return $lotteryResult;
-    }
-
-    private function getCoupon(&$userInfo, $prize_id, $appConfig)
-    {
-        // 抽奖处理
-        $exclude_prize_ids = array();
-        $info = array(
-            'source_data' => array(
-                'user_id' => myMongoId($userInfo['_id']),
-                'alipay_user_id' => $userInfo['userid'],
-                'nickname' => $userInfo['nickname'],
-                'headimgurl' => $userInfo['headimgurl']
-            )
-        );
-        $identityContact = array(
-            'name' => '',
-            'mobile' => '',
-            'address' => ''
-        );
-        
-        // 抽奖
-        $lotteryInfo = $this->doLottery($userInfo, $this->lottery_activity_id1, $userInfo['userid'], $prize_id, $exclude_prize_ids, $info, $identityContact);
-        
-        // 抽奖成功的话
-        if (! empty($lotteryInfo['success']) && ! empty($lotteryInfo['result'])) {
-            
-            $exchangeInfo = $lotteryInfo['result'];
-            $prize_info = $exchangeInfo['prize_info'];
-            $code_info = empty($exchangeInfo['prize_code']) ? array(
-                'code' => '',
-                'pwd' => ''
-            ) : array(
-                'code' => $exchangeInfo['prize_code']['code'],
-                'pwd' => $exchangeInfo['prize_code']['pwd']
-            );
-            $is_virtual = empty($prize_info['is_virtual']) ? false : true;
-            $prize_category = empty($prize_info['category']) ? 0 : $prize_info['category'];
-            $virtual_currency = empty($prize_info['virtual_currency']) ? 0 : $prize_info['virtual_currency'];
-            
-            // 调用支付宝相应接口
-            $camp_id = $prize_info['memo']['camp_id'];
-            $objiAlipay = new \iAlipay($appConfig['app_id'], $appConfig['merchant_private_key'], $appConfig['merchant_public_key'], $appConfig['alipay_public_key'], $appConfig['charset'], $appConfig['gatewayUrl'], $appConfig['sign_type']);
-            $ret2 = $objiAlipay->alipayMarketingCampaignDrawcampTriggerRequest($userInfo['userid'], $camp_id);
-            
-            // 修改活动用户信息
-            $otherIncData = array(
-                'memo.prize_num' => 1
-            );
-            // 更新该用户的已处理标志
-            $otherUpdateData = array(
-                "memo.prize_list.{$exchangeInfo['exchange_id']}" => array(
-                    'exchange_id' => $exchangeInfo['exchange_id'],
-                    'identity_id' => $exchangeInfo['identity_id'],
-                    'exchange_time' => $exchangeInfo['__CREATE_TIME__'],
-                    'identity_contact' => $identityContact,
-                    'prize_info' => $prize_info,
-                    'code_info' => $code_info,
-                    'prize_id' => $exchangeInfo['prize_id']
-                ),
-                "memo.is_got_coupon_{$prize_id}" => true,
-                "memo.alipayMarketingCampaignDrawcampTrigger" => $ret2
-            );
-            
-            $options = array();
-            $options['query'] = array(
-                '_id' => $userInfo['_id']
-            );
-            $update = array(
-                '$inc' => $otherIncData,
-                '$set' => $otherUpdateData
-            );
-            $options['update'] = $update;
-            $options['new'] = true; // 返回更新之后的值
-            $rstTemp2 = $this->modelActivityUser->findAndModify($options);
-            if (empty($rstTemp2['ok'])) {
-                throw new \Exception("用户信息更新失败" . json_encode($rstTemp2));
-            }
-            
-            if (empty($rstTemp2['value'])) {
-                throw new \Exception("用户信息更新失败" . json_encode($rstTemp2));
-            }
-            $userInfo = $rstTemp2['value'];
-            
-            $ret = array();
-            $ret['exchange_id'] = $exchangeInfo['exchange_id'];
-            $ret['identity_id'] = $exchangeInfo['identity_id'];
-            $ret['prize_info']['prize_id'] = $exchangeInfo['prize_id'];
-            $ret['prize_info']['prize_code'] = $prize_info['prize_code'];
-            $ret['prize_info']['prize_name'] = $prize_info['prize_name'];
-            $ret['prize_info']['is_virtual'] = $is_virtual;
-            $ret['code_info'] = $code_info;
-            
-            return $ret;
-        } else {
-            $e = new \Exception($lotteryInfo['error_msg'], $lotteryInfo['error_code']);
-            $this->modelActivityErrorLog->log($this->activity1, $e);
+        $secret = sha1($user_id . "|" . $secretKey . "|" . $timestamp);
+        if ($signature != $secret) {
             return false;
+        } else {
+            return true;
         }
     }
 }

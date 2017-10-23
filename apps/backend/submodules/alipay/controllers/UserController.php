@@ -1,33 +1,67 @@
 <?php
-namespace App\Backend\Submodules\Cronjob\Controllers;
+namespace App\Backend\Submodules\Alipay\Controllers;
 
-use App\Backend\Submodules\Cronjob\Models\Job;
+use App\Backend\Submodules\Alipay\Models\User;
+use App\Backend\Submodules\Alipay\Models\Application;
 
 /**
- * @title({name="计划任务管理"})
+ * @title({name="支付宝用户管理"})
  *
- * @name 计划任务管理
+ * @name 支付宝用户管理
  */
-class JobController extends \App\Backend\Controllers\FormController
+class UserController extends \App\Backend\Controllers\FormController
 {
 
-    private $modelJob;
+    private $modelApplication;
+
+    private $modelUser;
 
     public function initialize()
     {
-        $this->modelJob = new Job();
+        $this->modelApplication = new Application();
+        $this->modelUser = new User();
         parent::initialize();
     }
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        $schemas['name'] = array(
-            'name' => '任务名称',
+        
+        $schemas['app_id'] = array(
+            'name' => '应用ID',
             'data' => array(
                 'type' => 'string',
                 'defaultValue' => '',
-                'length' => 30
+                'length' => 32
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->modelApplication->getAll()
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_data_name' => 'app_name'
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->modelApplication->getAll()
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['user_id'] = array(
+            'name' => '用户ID',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 16
             ),
             'validation' => array(
                 'required' => true
@@ -50,87 +84,12 @@ class JobController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['desc'] = array(
-            'name' => '任务功能描述',
+        $schemas['nick_name'] = array(
+            'name' => '昵称',
             'data' => array(
                 'type' => 'string',
                 'defaultValue' => '',
-                'length' => 100
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['start_time'] = array(
-            'name' => '执行开始时间',
-            'data' => array(
-                'type' => 'datetime',
-                'defaultValue' => getCurrentTime(),
-                'length' => 19
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['end_time'] = array(
-            'name' => '任务结束时间',
-            'data' => array(
-                'type' => 'datetime',
-                'defaultValue' => getCurrentTime(),
-                'length' => 19
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['cmd'] = array(
-            'name' => '任务命令',
-            'data' => array(
-                'type' => 'string',
-                'defaultValue' => '',
-                'length' => 100
+                'length' => 50
             ),
             'validation' => array(
                 'required' => true
@@ -150,18 +109,18 @@ class JobController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['cycle'] = array(
-            'name' => '执行周期(分钟)',
+        $schemas['avatar'] = array(
+            'name' => '头像',
             'data' => array(
-                'type' => 'integer',
-                'defaultValue' => '0',
-                'length' => 11
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 400
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
@@ -175,8 +134,8 @@ class JobController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['cron'] = array(
-            'name' => 'cron语法',
+        $schemas['province'] = array(
+            'name' => '省',
             'data' => array(
                 'type' => 'string',
                 'defaultValue' => '',
@@ -190,7 +149,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -200,18 +159,18 @@ class JobController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['last_execute_time'] = array(
-            'name' => '最后一次执行时间',
+        $schemas['city'] = array(
+            'name' => '市',
             'data' => array(
-                'type' => 'datetime',
-                'defaultValue' => getCurrentTime(),
-                'length' => 19
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 20
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'datetimepicker',
+                'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
@@ -221,14 +180,139 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             ),
             'export' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         
-        $schemas['last_execute_result'] = array(
-            'name' => '最后一次执行结果',
+        $schemas['is_student_certified'] = array(
+            'name' => '是否是学生(T/F)',
             'data' => array(
                 'type' => 'string',
+                'defaultValue' => '',
+                'length' => 1
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['user_type'] = array(
+            'name' => '用户类型（1/2）',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 1
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['user_status'] = array(
+            'name' => '用户状态（Q/T/B/W）',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 1
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['is_certified'] = array(
+            'name' => '是否通过实名认证(T/F)',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 1
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['gender'] = array(
+            'name' => '性别(F/M)',
+            'data' => array(
+                'type' => 'string',
+                'defaultValue' => '',
+                'length' => 1
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['access_token'] = array(
+            'name' => 'Access Token',
+            'data' => array(
+                'type' => 'json',
                 'defaultValue' => '',
                 'length' => 1024
             ),
@@ -250,54 +334,24 @@ class JobController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['script_execute_time'] = array(
-            'name' => '脚本执行时间',
-            'data' => array(
-                'type' => 'integer',
-                'defaultValue' => '0',
-                'length' => 11
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => false
-            )
-        );
-        
         return $schemas;
     }
 
     protected function getName()
     {
-        return '计划任务';
+        return '支付宝用户';
     }
 
     protected function getModel()
     {
-        return $this->modelJob;
+        return $this->modelUser;
     }
-    
+
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
-        //$activityList = $this->modelActivity->getAll();
+        $appliactionList = $this->modelApplication->getAll();
         foreach ($list['data'] as &$item) {
-            //$item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : '--';
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-            if (! empty($item['last_execute_time'])) {
-                $item['last_execute_time'] = date("Y-m-d H:i:s", $item['last_execute_time']->sec);
-            }
+            $item['app_name'] = isset($appliactionList[$item['app_id']]) ? $appliactionList[$item['app_id']] : "--";
         }
         return $list;
     }

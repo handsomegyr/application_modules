@@ -8,7 +8,7 @@ use App\Backend\Submodules\Weixin\Models\MsgType;
  *
  * @name 微信消息类型管理
  */
-class MsgTypeController extends \App\Backend\Controllers\FormController
+class MsgtypeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelMsgType;

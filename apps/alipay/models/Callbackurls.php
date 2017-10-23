@@ -1,10 +1,10 @@
 <?php
-namespace App\Weixin\Models;
+namespace App\Alipay\Models;
 
-class Callbackurls extends \App\Common\Models\Weixin\Callbackurls
+class Callbackurls extends \App\Common\Models\Alipay\Callbackurls
 {
 
-    public function getValidCallbackUrlList()
+    public function getValidCallbackUrlList($appid)
     {
         $cache = $this->getDI()->get('cache');
         $cacheKey = cacheKey(__FILE__, __CLASS__, __METHOD__, __LINE__);
@@ -12,6 +12,7 @@ class Callbackurls extends \App\Common\Models\Weixin\Callbackurls
         // $list = array();
         if (empty($list)) {
             $ret = $this->findAll(array(
+                'app_id' => $appid,
                 'is_valid' => true
             ));
             $list = array();
@@ -27,9 +28,9 @@ class Callbackurls extends \App\Common\Models\Weixin\Callbackurls
         return $list;
     }
 
-    public function isValid($url)
+    public function isValid($appid, $url)
     {
-        $callbackUrls = $this->getValidCallbackUrlList();
+        $callbackUrls = $this->getValidCallbackUrlList($appid);
         if (empty($callbackUrls)) {
             return false;
         }

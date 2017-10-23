@@ -8,7 +8,7 @@ use App\Backend\Submodules\Weixin\Models\MenuType;
  *
  * @name 微信菜单类型管理
  */
-class MenuTypeController extends \App\Backend\Controllers\FormController
+class MenutypeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelMenuType;

@@ -8,7 +8,7 @@ use App\Backend\Submodules\Weixin\Models\SubscribeUser;
  *
  * @name 微信关注用户管理
  */
-class SubscribeUserController extends \App\Backend\Controllers\FormController
+class SubscribeuserController extends \App\Backend\Controllers\FormController
 {
 
     private $modelSubscribeUser;

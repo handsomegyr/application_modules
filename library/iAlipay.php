@@ -1,5 +1,5 @@
 <?php
-require_once APPLICATION_PATH . '/../library/alipay-sdk-PHP-ALL20170926113544/AopSdk.php';
+require_once APP_PATH . 'library/alipay-sdk-PHP-ALL20170926113544/AopSdk.php';
 
 class iAlipay
 {

@@ -8,7 +8,7 @@ use App\Backend\Submodules\Weixin\Models\ReplyType;
  *
  * @name 微信回复类型管理
  */
-class ReplyTypeController extends \App\Backend\Controllers\FormController
+class ReplytypeController extends \App\Backend\Controllers\FormController
 {
 
     private $modelReplyType;

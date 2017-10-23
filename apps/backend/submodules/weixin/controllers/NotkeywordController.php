@@ -8,7 +8,7 @@ use App\Backend\Submodules\Weixin\Models\NotKeyword;
  *
  * @name 微信非关键词管理
  */
-class NotKeywordController extends \App\Backend\Controllers\FormController
+class NotkeywordController extends \App\Backend\Controllers\FormController
 {
 
     private $modelNotKeyword;
