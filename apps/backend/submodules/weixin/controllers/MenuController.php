@@ -42,8 +42,7 @@ class MenuController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelMenu->getList4Tree('');
                 }
             ),
@@ -89,8 +88,7 @@ class MenuController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelMenuType->getAll();
                 }
             ),
@@ -129,6 +127,69 @@ class MenuController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'string',
                 'length' => '30'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['media_id'] = array(
+            'name' => '永久素材媒体ID(media_id类型和view_limited类型必须)',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['appid'] = array(
+            'name' => '小程序的appid(miniprogram类型必须,仅认证公众号可配置)',
+            'data' => array(
+                'type' => 'string',
+                'length' => '20'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['pagepath'] = array(
+            'name' => '小程序的页面路径(miniprogram类型必须)',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
             ),
             'validation' => array(
                 'required' => false

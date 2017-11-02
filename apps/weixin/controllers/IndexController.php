@@ -12,7 +12,6 @@ use App\Weixin\Models\ConditionalMenu;
 use App\Weixin\Models\ConditionalMenuMatchRule;
 use App\Weixin\Models\Qrcode;
 use App\Weixin\Models\Scene;
-use App\Weixin\Models\ComponentApplication;
 use App\Weixin\Models\ScriptTracking;
 
 class IndexController extends ControllerBase

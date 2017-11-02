@@ -1,6 +1,6 @@
 /*
 SQLyog 企业版 - MySQL GUI v8.14 
-MySQL - 5.6.35 : Database - webcms
+MySQL - 5.6.35-log : Database - webcms
 *********************************************************************
 */
 
@@ -161,6 +161,9 @@ CREATE TABLE `iweixin_menu` (
   `name` varchar(30) NOT NULL DEFAULT '',
   `key` varchar(30) NOT NULL DEFAULT '',
   `url` varchar(100) NOT NULL DEFAULT '',
+  `media_id` varchar(100) NOT NULL DEFAULT '',
+  `appid` char(20) NOT NULL DEFAULT '',
+  `pagepath` varchar(100) NOT NULL DEFAULT '',
   `parent` char(24) NOT NULL DEFAULT '',
   `priority` int(11) unsigned NOT NULL DEFAULT '0',
   `__CREATE_TIME__` datetime NOT NULL,
@@ -171,7 +174,7 @@ CREATE TABLE `iweixin_menu` (
 
 /*Data for the table `iweixin_menu` */
 
-insert  into `iweixin_menu`(`_id`,`type`,`name`,`key`,`url`,`parent`,`priority`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560d3787fd4d3d32018b456b','click','远东互通','远东互通','','',1,'2015-10-01 21:39:19','2015-10-01 21:39:19',0),('560d37abfd4d3d7c018b4567','view','留言信箱','留言信箱','http://www.baidu.com/','560d3787fd4d3d32018b456b',1,'2015-10-01 21:39:55','2015-10-01 21:39:55',0),('560d37ccfd4d3d89018b4567','click','活动资讯','活动资讯','','560d3787fd4d3d32018b456b',2,'2015-10-01 21:40:28','2015-10-01 21:40:28',0),('560d3998fd4d3d7d018b4567','click','远东来客','远东来客','','',3,'2015-10-01 21:48:08','2015-10-01 21:48:08',0),('560d3a20fd4d3d87018b4567','view','联系我们','联系我们','http://www.baidu.com/','560d3998fd4d3d7d018b4567',1,'2015-10-01 21:50:24','2015-10-01 21:50:24',0),('560d3a46fd4d3d9b018b4567','click','远东见闻','远东见闻','','',2,'2015-10-01 21:51:02','2015-10-01 21:51:02',0),('560d3a61fd4d3d98018b4567','click','行业快报','行业快报','','560d3a46fd4d3d9b018b4567',1,'2015-10-01 21:51:29','2015-10-01 21:51:29',0);
+insert  into `iweixin_menu`(`_id`,`type`,`name`,`key`,`url`,`media_id`,`appid`,`pagepath`,`parent`,`priority`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560d3787fd4d3d32018b456b','click','远东互通','远东互通','','','','','',1,'2015-10-01 21:39:19','2015-10-01 21:39:19',0),('560d37abfd4d3d7c018b4567','view','留言信箱','留言信箱','http://www.baidu.com/','','','','560d3787fd4d3d32018b456b',1,'2015-10-01 21:39:55','2015-10-01 21:39:55',0),('560d37ccfd4d3d89018b4567','click','活动资讯','活动资讯','','','','','560d3787fd4d3d32018b456b',2,'2015-10-01 21:40:28','2015-10-01 21:40:28',0),('560d3998fd4d3d7d018b4567','click','远东来客','远东来客','','','','','',3,'2015-10-01 21:48:08','2015-10-01 21:48:08',0),('560d3a20fd4d3d87018b4567','view','联系我们','联系我们','http://www.baidu.com/','','','','560d3998fd4d3d7d018b4567',1,'2015-10-01 21:50:24','2015-10-01 21:50:24',0),('560d3a46fd4d3d9b018b4567','click','远东见闻','远东见闻','','','','','',2,'2015-10-01 21:51:02','2015-10-01 21:51:02',0),('560d3a61fd4d3d98018b4567','click','行业快报','行业快报','','','','','560d3a46fd4d3d9b018b4567',1,'2015-10-01 21:51:29','2015-10-01 21:51:29',0);
 
 /*Table structure for table `iweixin_menu_conditional` */
 
@@ -183,6 +186,9 @@ CREATE TABLE `iweixin_menu_conditional` (
   `name` varchar(30) NOT NULL DEFAULT '' COMMENT '名称',
   `key` varchar(30) NOT NULL DEFAULT '' COMMENT '事件名称(英文、数字)(click等点击类型必须)',
   `url` varchar(100) NOT NULL DEFAULT '' COMMENT '链接(类型为view时必填)',
+  `media_id` varchar(100) NOT NULL DEFAULT '' COMMENT '永久素材媒体ID(media_id类型和view_limited类型必须)',
+  `appid` char(20) NOT NULL DEFAULT '' COMMENT '小程序的appid(miniprogram类型必须,仅认证公众号可配置)',
+  `pagepath` varchar(100) DEFAULT '' COMMENT '小程序的页面路径(miniprogram类型必须)',
   `parent` char(24) NOT NULL DEFAULT '' COMMENT '上级菜单',
   `priority` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
   `matchrule` char(24) NOT NULL DEFAULT '' COMMENT '匹配规则',
@@ -196,7 +202,7 @@ CREATE TABLE `iweixin_menu_conditional` (
 
 /*Data for the table `iweixin_menu_conditional` */
 
-insert  into `iweixin_menu_conditional`(`_id`,`type`,`name`,`key`,`url`,`parent`,`priority`,`matchrule`,`menuid`,`menu_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('57cec225887c22a17c8b4574','click','发现惊喜','发现惊喜','','57cec29d887c2223678b458c',1,'','','0000-00-00 00:00:00','2016-09-06 21:18:29','2016-09-06 21:22:26',0),('57cec29d887c2223678b458c','click','测试个性化菜单1','测试个性化菜单1','','',1,'57bc59b2887c226e6a8b578b','','0000-00-00 00:00:00','2016-09-06 21:20:29','2016-09-06 21:20:29',0),('57cec35d887c224f7b8b45c4','view','优惠券','','http://www.baidu.com/','57cec225887c22a17c8b4574',1,'','','0000-00-00 00:00:00','2016-09-06 21:23:41','2016-09-06 21:25:03',0),('57cec3d3887c22a4328b458d','click','购买专区','购买专区','','57cec29d887c2223678b458c',2,'','','0000-00-00 00:00:00','2016-09-06 21:25:39','2016-09-06 21:25:39',0),('57cec3f3887c22d0328b45a4','click','我要赚钱','我要赚钱','','57cec3d3887c22a4328b458d',1,'','','0000-00-00 00:00:00','2016-09-06 21:26:11','2016-09-06 21:26:11',0),('57cec40d887c229a328b4580','click','服务助手','服务助手','','57cec29d887c2223678b458c',3,'','','0000-00-00 00:00:00','2016-09-06 21:26:37','2016-09-06 21:26:37',0),('57cec430887c226e6a8b5794','location_select','附近门店','附近门店','','57cec40d887c229a328b4580',1,'','','0000-00-00 00:00:00','2016-09-06 21:27:12','2016-09-06 21:27:12',0);
+insert  into `iweixin_menu_conditional`(`_id`,`type`,`name`,`key`,`url`,`media_id`,`appid`,`pagepath`,`parent`,`priority`,`matchrule`,`menuid`,`menu_time`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('57cec225887c22a17c8b4574','click','发现惊喜','发现惊喜','','','','','57cec29d887c2223678b458c',1,'','','0000-00-00 00:00:00','2016-09-06 21:18:29','2016-09-06 21:22:26',0),('57cec29d887c2223678b458c','click','测试个性化菜单1','测试个性化菜单1','','','','','',1,'57bc59b2887c226e6a8b578b','','0000-00-00 00:00:00','2016-09-06 21:20:29','2016-09-06 21:20:29',0),('57cec35d887c224f7b8b45c4','view','优惠券','','http://www.baidu.com/','','','','57cec225887c22a17c8b4574',1,'','','0000-00-00 00:00:00','2016-09-06 21:23:41','2016-09-06 21:25:03',0),('57cec3d3887c22a4328b458d','click','购买专区','购买专区','','','','','57cec29d887c2223678b458c',2,'','','0000-00-00 00:00:00','2016-09-06 21:25:39','2016-09-06 21:25:39',0),('57cec3f3887c22d0328b45a4','click','我要赚钱','我要赚钱','','','','','57cec3d3887c22a4328b458d',1,'','','0000-00-00 00:00:00','2016-09-06 21:26:11','2016-09-06 21:26:11',0),('57cec40d887c229a328b4580','click','服务助手','服务助手','','','','','57cec29d887c2223678b458c',3,'','','0000-00-00 00:00:00','2016-09-06 21:26:37','2016-09-06 21:26:37',0),('57cec430887c226e6a8b5794','location_select','附近门店','附近门店','','','','','57cec40d887c229a328b4580',1,'','','0000-00-00 00:00:00','2016-09-06 21:27:12','2016-09-06 21:27:12',0);
 
 /*Table structure for table `iweixin_menu_conditional_matchrule` */
 
@@ -238,7 +244,7 @@ CREATE TABLE `iweixin_menu_type` (
 
 /*Data for the table `iweixin_menu_type` */
 
-insert  into `iweixin_menu_type`(`_id`,`key`,`value`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560d00a8fd4d3d2f018b4567','点击事件','click','2015-10-01 17:45:12','2015-10-01 17:45:12',0),('560d00b9fd4d3d32018b4567','链接跳转','view','2015-10-01 17:45:29','2015-10-01 17:45:29',0),('560d00e2fd4d3d30018b4567','扫码推事件','scancode_push','2015-10-01 17:46:10','2015-10-01 17:46:10',0),('560d00effd4d3d78018b4567','扫码推事件且弹出“消息接收中”提示框','scancode_waitmsg','2015-10-01 17:46:23','2015-10-01 17:46:23',0),('560d00fcfd4d3d77018b4567','弹出系统拍照发图','pic_sysphoto','2015-10-01 17:46:36','2015-10-01 17:46:36',0),('560d0108fd4d3d1d018b4568','弹出拍照或者相册发图','pic_photo_or_album','2015-10-01 17:46:48','2015-10-01 17:46:48',0),('560d0113fd4d3d24018b4567','弹出微信相册发图器','pic_weixin','2015-10-01 17:46:59','2015-10-01 17:46:59',0),('560d011ffd4d3d2f018b4568','弹出地理位置选择器','location_select','2015-10-01 17:47:11','2015-10-01 17:47:11',0);
+insert  into `iweixin_menu_type`(`_id`,`key`,`value`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('560d00a8fd4d3d2f018b4567','点击事件','click','2015-10-01 17:45:12','2015-10-01 17:45:12',0),('560d00b9fd4d3d32018b4567','链接跳转','view','2015-10-01 17:45:29','2015-10-01 17:45:29',0),('560d00e2fd4d3d30018b4567','扫码推事件','scancode_push','2015-10-01 17:46:10','2015-10-01 17:46:10',0),('560d00effd4d3d78018b4567','扫码推事件且弹出“消息接收中”提示框','scancode_waitmsg','2015-10-01 17:46:23','2015-10-01 17:46:23',0),('560d00fcfd4d3d77018b4567','弹出系统拍照发图','pic_sysphoto','2015-10-01 17:46:36','2015-10-01 17:46:36',0),('560d0108fd4d3d1d018b4568','弹出拍照或者相册发图','pic_photo_or_album','2015-10-01 17:46:48','2015-10-01 17:46:48',0),('560d0113fd4d3d24018b4567','弹出微信相册发图器','pic_weixin','2015-10-01 17:46:59','2015-10-01 17:46:59',0),('560d011ffd4d3d2f018b4568','弹出地理位置选择器','location_select','2015-10-01 17:47:11','2015-10-01 17:47:11',0),('59f809989fff631b108b4567','下发消息','media_id','2017-10-31 13:26:48','2017-10-31 13:26:48',0),('59f809a89fff6317108b4567','跳转图文消息URL','view_limited','2017-10-31 13:27:04','2017-10-31 13:27:04',0),('59f809b59fff6319108b4567','小程序','miniprogram','2017-10-31 13:27:17','2017-10-31 13:27:17',0);
 
 /*Table structure for table `iweixin_msg_type` */
 
