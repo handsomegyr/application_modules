@@ -2,7 +2,7 @@
 return new \Phalcon\Config(array(
     'database' => array(
         'adapter' => 'Mysql',
-        'host' => '192.168.81.128',
+        'host' => '192.168.81.129',
         'username' => 'root',
         'password' => 'guotingyu0324',
         'dbname' => 'webcms',
@@ -10,7 +10,7 @@ return new \Phalcon\Config(array(
     ),
     // 'database' => array(
     // 'adapter' => 'Mysql',
-    // 'host' => '192.168.81.128',
+    // 'host' => '192.168.81.129',
     // 'username' => 'root',
     // 'password' => 'guotingyu0324',
     // 'dbname' => 'webcms',
@@ -18,7 +18,7 @@ return new \Phalcon\Config(array(
     // ),
     'databasefrom' => array(
         'adapter' => 'Mysql',
-        'host' => '192.168.81.128',
+        'host' => '192.168.81.129',
         'username' => 'root',
         'password' => 'guotingyu0324',
         'dbname' => 'shopnc',
@@ -51,21 +51,21 @@ return new \Phalcon\Config(array(
         "appid" => '2017071707783020'
     ),
     'memcached' => array(
-        "host" => '192.168.81.128',
+        "host" => '192.168.81.129',
         "port" => 11211,
         "weight" => 1,
         "prefix_key" => 'webcms'
     ),
     'pheanstalk' => array(
-        "host" => '192.168.81.128',
+        "host" => '192.168.81.129',
         "port" => 11300
     ),
     'elasticsearch' => array(
-        "host" => '192.168.81.128',
+        "host" => '192.168.81.129',
         "port" => 11300
     ),
     'redis' => array(
-        "host" => '192.168.81.128',
+        "host" => '192.168.81.129',
         "port" => 6379
     ),
     'errors' => array(
