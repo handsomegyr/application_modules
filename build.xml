@@ -37,11 +37,11 @@
     <target name="composer-install" description="composer install thirdparty library and autoloader code">
     <!--
 		<exec executable="/usr/bin/php" taskname="composer">
-            <arg value="/usr/local/bin/composer"/>
+            <arg value="/usr/bin/composer"/>
             <arg value="install"/>
         </exec>
 	-->   
-		<exec executable="/usr/local/bin/composer" taskname="composer">
+		<exec executable="/usr/bin/composer" taskname="composer">
             <arg value="install"/>
         </exec>
     </target>
@@ -60,16 +60,18 @@
                 <include name="**/*.php"/>
                 <modified/>
             </fileset>
+			<!--
 			<fileset dir="${basedir}/library">
                 <include name="**/*.php"/>
                 <modified/>
             </fileset>
+			-->
         </apply>
     </target>
 
     <target name="phploc" description="Measure project size using PHPLOC">
 		
-        <exec executable="/usr/local/bin/phploc" taskname="phploc">
+        <exec executable="/usr/bin/phploc" taskname="phploc">
             <arg value="--count-tests"/>
             <arg path="${basedir}/apps"/>
         </exec>
@@ -77,7 +79,7 @@
 
     <target name="phploc-ci" depends="prepare"
             description="Measure project size using PHPLOC and log result in CSV and XML format">			
-        <exec executable="/usr/local/bin/phploc" taskname="phploc">
+        <exec executable="/usr/bin/phploc" taskname="phploc">
             <arg value="--count-tests"/>
             <arg value="--log-csv"/>
             <arg path="${basedir}/build/logs/phploc.csv"/>
@@ -88,7 +90,7 @@
     </target>
 
     <target name="pdepend" depends="prepare" description="Calculate software metrics using PHP_Depend">
-        <exec executable="/usr/local/bin/pdepend" taskname="pdepend">
+        <exec executable="/usr/bin/pdepend" taskname="pdepend">
             <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml"/>
             <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg"/>
             <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg"/>
@@ -138,14 +140,14 @@
     </target>
 
     <target name="phpcpd" description="Find duplicate code using PHPCPD">
-        <exec executable="/usr/local/bin/phpcpd" taskname="phpcpd">
+        <exec executable="/usr/bin/phpcpd" taskname="phpcpd">
             <arg path="${basedir}/apps"/>
         </exec>
     </target>
 
     <target name="phpcpd-ci" depends="prepare"
             description="Find duplicate code using PHPCPD and log result in XML format">
-        <exec executable="/usr/local/bin/phpcpd" taskname="phpcpd">
+        <exec executable="/usr/bin/phpcpd" taskname="phpcpd">
             <arg value="--log-pmd"/>
             <arg path="${basedir}/build/logs/pmd-cpd.xml"/>
             <arg path="${basedir}/apps"/>
@@ -153,7 +155,7 @@
     </target>
 
     <target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
-        <exec executable="/usr/local/bin/phpunit" resultproperty="result.phpunit" taskname="phpunit">
+        <exec executable="/usr/bin/phpunit" resultproperty="result.phpunit" taskname="phpunit">
             <arg value="--configuration"/>
             <arg path="${basedir}/build/phpunit.xml"/>
         </exec>
