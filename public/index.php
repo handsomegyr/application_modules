@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 // error_reporting(- 1);
 
 ini_set("session.save_handler", "memcached"); // 是memcached不是memcache
-ini_set("session.save_path", "192.168.81.128:11211"); // 不要tcp:
+ini_set("session.save_path", "192.168.81.129:11211"); // 不要tcp:
 
 try {
     session_start();
