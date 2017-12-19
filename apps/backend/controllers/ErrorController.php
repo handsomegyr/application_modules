@@ -46,6 +46,9 @@ class ErrorController extends \App\Backend\Controllers\ControllerBase
     }
 
     /**
+     * @title({name="显示信息页面"})
+     *
+     * @name 显示信息页面
      */
     public function messageAction()
     {}

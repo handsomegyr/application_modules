@@ -79,7 +79,10 @@ class ColorController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="获取颜色列表"})
      * 从微信公众平台上获取颜色列表到本地的Hook
+     *
+     * @name 获取颜色列表
      */
     public function getcolorsAction()
     {

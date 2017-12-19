@@ -376,7 +376,10 @@ class QrcardController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="生成卡券二维码"})
      * 生成卡券二维码的Hook
+     *
+     * @name 生成卡券二维码
      */
     public function createAction()
     {
@@ -448,7 +451,10 @@ class QrcardController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="生成多张卡券二维码"})
      * 生成多张卡券二维码的Hook
+     *
+     * @name 生成多张卡券二维码
      */
     public function createmultipleAction()
     {

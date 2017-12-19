@@ -212,7 +212,9 @@ class ArticleController extends \App\Backend\Controllers\FormController
     }
 
     /**
-     * 上传文章至elastic
+     * @title({name="上传elasticsearch"})
+     *
+     * @name 上传elasticsearch
      */
     public function elasticAction()
     {

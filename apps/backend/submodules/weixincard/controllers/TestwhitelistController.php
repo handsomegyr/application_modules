@@ -79,7 +79,10 @@ class TestwhitelistController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="设置测试用户白名单"})
      * 设置测试用户白名单的Hook
+     *
+     * @name 设置测试用户白名单
      */
     public function setAction()
     {

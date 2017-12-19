@@ -682,7 +682,9 @@ class CardbagController extends \App\Backend\Controllers\FormController
     }
 
     /**
-     * 查询code
+     * @title({name="查询code"})
+     *
+     * @name 查询code
      */
     public function getcodeAction()
     {
@@ -721,8 +723,11 @@ class CardbagController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="消耗code"})
+     *
      * 卡券核销部分
-     * 消耗code
+     *
+     * @name 消耗code
      */
     public function consumecodeAction()
     {
@@ -765,9 +770,13 @@ class CardbagController extends \App\Backend\Controllers\FormController
     }
 
     /**
-     * 设置卡券失效
-     * 为满足改票、退款等异常情况，可调用卡券失效接口将用户的卡券设置为失效状态。
-     * 注：设置卡券失效的操作不可逆，即无法将设置为失效的卡券调回有效状态，商家须慎重调用该接口
+     * @title({name="设置卡券失效"})
+     *
+     * @name 设置卡券失效
+     *      
+     *       设置卡券失效
+     *       为满足改票、退款等异常情况，可调用卡券失效接口将用户的卡券设置为失效状态。
+     *       注：设置卡券失效的操作不可逆，即无法将设置为失效的卡券调回有效状态，商家须慎重调用该接口
      */
     public function unavailablecodeAction()
     {

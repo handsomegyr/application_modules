@@ -134,7 +134,9 @@ class CategoryController extends \App\Backend\Controllers\FormController
     }
 
     /**
-     * 上传至elastic
+     * @title({name="上传elasticsearch"})
+     *
+     * @name 上传elasticsearch
      */
     public function elasticAction()
     {

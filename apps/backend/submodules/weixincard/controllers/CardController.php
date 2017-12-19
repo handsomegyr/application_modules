@@ -2051,7 +2051,10 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="创建卡券"})
      * 在微信公众平台上创建卡券的Hook
+     *
+     * @name 创建卡券
      */
     public function createcardAction()
     {
@@ -2088,7 +2091,10 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="获取卡券信息"})
      * 从微信公众平台上获取最新的卡券信息
+     *
+     * @name 获取卡券信息
      */
     public function getcardinfoAction()
     {
@@ -2109,7 +2115,9 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
-     * 发送卡券消息的接口
+     * @title({name="发送卡券消息"})
+     *
+     * @name 发送卡券消息
      */
     public function masssendAction()
     {
@@ -2150,7 +2158,11 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="更新卡券消息"})
+     *
      * 从微信公众平台上获取最新的卡券信息更新本地的Hook
+     *
+     * @name 更新卡券消息
      */
     public function updatecardinfoAction()
     {
@@ -2187,9 +2199,9 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
-     * 修改库存接口
+     * @title({name="修改库存"})
      *
-     * @throws \Exception
+     * @name 修改库存
      */
     public function modifystockAction()
     {
@@ -2229,17 +2241,20 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
-     * 导入code
-     * 开发者需调用该接口将自定义code 导入微信卡券后台，由微信侧代理存储并下发
-     * code，本接口仅用于支持微信摇卡券活动。
-     * 注：
-     * 1）单次调用接口传入code 的数量上限为100 个。
-     * 2）每一个 code 均不能为空串，且不能重复填入相同code，否则会导入失败。
-     * 3）导入失败支持重复导入，提示成功为止。
+     * @title({name="导入code"})
      *
-     * 一次性处理,不用计划任务配置
-     * 如果导入的数据量过大,那么可以使用多进程 来导入数据
-     * 可以先用getidsAction获取每个进程的数据处理范围
+     * @name 导入code
+     *      
+     *       开发者需调用该接口将自定义code 导入微信卡券后台，由微信侧代理存储并下发
+     *       code，本接口仅用于支持微信摇卡券活动。
+     *       注：
+     *       1）单次调用接口传入code 的数量上限为100 个。
+     *       2）每一个 code 均不能为空串，且不能重复填入相同code，否则会导入失败。
+     *       3）导入失败支持重复导入，提示成功为止。
+     *      
+     *       一次性处理,不用计划任务配置
+     *       如果导入的数据量过大,那么可以使用多进程 来导入数据
+     *       可以先用getidsAction获取每个进程的数据处理范围
      */
     public function depositecodeAction()
     {
@@ -2271,7 +2286,9 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
-     * 核查code接口
+     * @title({name="核查code"})
+     *
+     * @name 核查code
      */
     public function checkcodeAction()
     {
@@ -2303,7 +2320,11 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="查询导入code数目"})
+     *
      * 从微信公众平台上获取最新的卡券信息
+     *
+     * @name 查询导入code数目
      */
     public function getdepositcodecountAction()
     {

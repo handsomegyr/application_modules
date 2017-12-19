@@ -91,7 +91,7 @@ class RoleController extends \App\Backend\Controllers\FormController
             'name' => '菜单设置',
             'data' => array(
                 'type' => 'array',
-                'length' => '1000'
+                'length' => '4096'
             ),
             'validation' => array(
                 'required' => false
@@ -112,7 +112,7 @@ class RoleController extends \App\Backend\Controllers\FormController
             'name' => '操作设置',
             'data' => array(
                 'type' => 'array',
-                'length' => '1000'
+                'length' => '4096'
             ),
             'validation' => array(
                 'required' => false

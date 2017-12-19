@@ -83,7 +83,10 @@ class LogoController extends \App\Backend\Controllers\FormController
     }
 
     /**
+     * @title({name="上传商户logo"})
      * 上传卡券的商户logo的Hook
+     *
+     * @name 上传商户logo
      */
     public function uploadAction()
     {

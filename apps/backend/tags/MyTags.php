@@ -2,12 +2,14 @@
 namespace App\Backend\Tags;
 
 use App\Backend\Submodules\System\Models\Menu;
+use App\Backend\Submodules\System\Models\Resource;
 
 class MyTags extends \Phalcon\Tag
 {
 
     /**
-     *
+     * 获取权限列表
+     * 
      * @return string
      */
     static public function showPrivilege($menu_list, $operation_list)
@@ -15,70 +17,21 @@ class MyTags extends \Phalcon\Tag
         $privList = array();
         /* 获取菜单数据 */
         $modelMenu = new Menu();
-        die('showPrivilege');
         $menu_priv_arr = $modelMenu->getPrivilege($menu_list);
         $privList['菜单设置'] = array(
             'values' => $menu_priv_arr,
             'field' => 'menu_list'
         );
         /* 获取操作数据 */
-        $operation_priv_arr = self::getPrivilege($operation_list);
+        $modelResource = new Resource();
+        $operation_priv_arr = $modelResource->getPrivilege("admin", $operation_list);
+        // print_r($operation_priv_arr);
+        // die('xxx');
         $privList['操作设置'] = array(
             'values' => $operation_priv_arr,
             'field' => 'operation_list'
         );
         return $privList;
-    }
-
-    private static function getPrivilege($operation_list)
-    {
-        $moduleName = "admin";
-        $resources = self::getList($moduleName);
-        $resources = $resources[$moduleName];
-        
-        /* 获取权限的分组数据 */
-        $priv_arr = array();
-        foreach (array_keys($resources) as $rows) {
-            $infoArr = explode("||", $rows);
-            $priv_arr[$rows] = array(
-                'name' => $infoArr[1],
-                'relevance' => "",
-                'method' => "",
-                'key' => $infoArr[0]
-            );
-        }
-        
-        /* 按权限组查询底级的权限名称 */
-        foreach ($resources as $key => $item) {
-            foreach ($item as $priv) {
-                $priv['relevance'] = "";
-                $priv_arr[$key]["priv"][$priv['key']] = array(
-                    'name' => $priv['name'],
-                    'relevance' => $priv['relevance'],
-                    'method' => $priv['method'],
-                    'key' => $priv['key']
-                );
-            }
-        }
-        
-        // 将同一组的权限使用 "," 连接起来，供JS全选
-        foreach ($priv_arr as $action_id => $action_group) {
-            $priv_arr[$action_id]['priv_list'] = join(',', @array_keys($action_group['priv']));
-            foreach ($action_group['priv'] as $key => $val) {
-                $priv_arr[$action_id]['priv'][$key]['cando'] = in_array($key, $operation_list) ? 1 : 0;
-            }
-            // 去掉错误模块
-            $infoArr = explode("||", $action_id);
-            if (in_array($infoArr[0], array(
-                "admin_error",
-                "admin_form",
-                "admin_index"
-            ))) {
-                unset($priv_arr[$action_id]);
-            }
-        }
-        ksort($priv_arr);
-        return $priv_arr;
     }
 
     /**
@@ -95,12 +48,16 @@ class MyTags extends \Phalcon\Tag
         
         $reader = new \Phalcon\Annotations\Adapter\Memory();
         
+        $subclassList = array();
         foreach (get_declared_classes() as $class) {
             
             if (is_subclass_of($class, 'App\Backend\Controllers\ControllerBase') && substr($class, - 10) == 'Controller') {
                 
-                $c = str_ireplace("App\\Backend\\Controllers\\", 'Admin_', $class);
+                // App\Backend\Submodules\Activity\Controllers\ActivityController
+                $c = preg_replace('/Submodules\\\(.*?)\\\Controllers\\\/i', 'Controllers\\\$1', $class);
+                $c = str_ireplace("App\\Backend\\Controllers\\", 'Admin_', $c);
                 $c = substr($c, 0, strpos($c, "Controller"));
+                $subclassList[] = $c;
                 $c = self::methodToRouter($c);
                 $c = strtolower($c);
                 
@@ -181,6 +138,10 @@ class MyTags extends \Phalcon\Tag
                 }
             }
         }
+        
+        // print_r($subclassList);
+        // die('xxx222333');
+        
         return $resources;
     }
 
@@ -193,24 +154,24 @@ class MyTags extends \Phalcon\Tag
 
     private static function includeControllerFiles($dirpath)
     {
-//         $arrayList = array(
-//             '/home/wwwroot/webcms/apps/backend/submodules/goods/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/lottery/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/mail/controllers',
-//             //'/home/wwwroot/webcms/apps/backend/submodules/member/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/Member/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/payment/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/points/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/shop4b2c/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/sms/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/system/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/tencent/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/message/controllers',
-//             '/home/wwwroot/webcms/apps/backend/submodules/weixin/controllers'
-//         );
-//         if (in_array($dirpath, $arrayList)) {
-//            return; 
-//         }
+        // $arrayList = array(
+        // '/home/wwwroot/webcms/apps/backend/submodules/goods/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/lottery/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/mail/controllers',
+        // //'/home/wwwroot/webcms/apps/backend/submodules/member/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/Member/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/payment/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/points/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/shop4b2c/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/sms/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/system/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/tencent/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/message/controllers',
+        // '/home/wwwroot/webcms/apps/backend/submodules/weixin/controllers'
+        // );
+        // if (in_array($dirpath, $arrayList)) {
+        // return;
+        // }
         // if (in_array($dirpath, $arrayList)) {
         // $files = glob("{$dirpath}/*Controller.php");
         // $fileList = array_merge($fileList,$files);
