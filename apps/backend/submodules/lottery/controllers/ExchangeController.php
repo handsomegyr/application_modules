@@ -203,7 +203,7 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => false,
+                'is_show' => true,
                 'condition_type' => 'period'
             ) // single
 ,

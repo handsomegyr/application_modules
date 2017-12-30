@@ -429,6 +429,12 @@ function registerServices($di)
                 'action' => 2
             ));
             
+            $router->add("/admin/live/:controller/:action", array(
+                'module' => 'admin/live',
+                'controller' => 1,
+                'action' => 2
+            ));
+            
             $router->add("/:module/:controller/:action", array(
                 'module' => 1,
                 'controller' => 2,

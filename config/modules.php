@@ -127,6 +127,10 @@ $application->registerModules(array(
         'className' => 'App\Backend\Alipay\Module',
         'path' => APP_PATH . 'apps/backend/submodules/alipay/Module.php'
     ),
+    'admin/live' => array(
+        'className' => 'App\Backend\Live\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/live/Module.php'
+    ),
     'weixin' => array(
         'className' => 'App\Weixin\Module',
         'path' => APP_PATH . 'apps/weixin/Module.php'
