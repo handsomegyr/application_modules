@@ -19,6 +19,7 @@
         "hellogerard/jobby": "^3.2",
         "handsomegyr/model": "dev-master",
         "monolog/monolog": "^1.22",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "matyhtf/swoole_framework": "dev-master"
     }
 }

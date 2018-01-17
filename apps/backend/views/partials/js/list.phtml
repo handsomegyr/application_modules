@@ -168,9 +168,9 @@ var List = function () {
 			   <?php foreach ($this->view->schemas as $key => $field) {?> 
 			   <?php if(!empty($field['search']['is_show'])){?>
 			   <?php if(!empty($field['search']['condition_type']) && $field['search']['condition_type']=='period'){?>			   
-			   d.<?php echo $key?> = encodeURIComponent($('#search_<?php echo $key?>_from').val()+'|'+$('#search_<?php echo $key?>_to').val());
+			   d.<?php echo $key?> = encodeURIComponent($('#search_<?php echo $key?>_from').val()?$('#search_<?php echo $key?>_from').val():""+'|'+$('#search_<?php echo $key?>_to').val()?$('#search_<?php echo $key?>_to').val():"");
 			   <?php }else{?>
-			   d.<?php echo $key?> = encodeURIComponent($('#search_<?php echo $key?>').val());
+			   d.<?php echo $key?> = encodeURIComponent($('#search_<?php echo $key?>').val()?$('#search_<?php echo $key?>').val():"");
 			   <?php }?>
 			   <?php }?>
 			   <?php }?>
@@ -207,9 +207,9 @@ var List = function () {
            		   	   <?php foreach ($this->view->schemas as $key => $field) {?> 
               		   <?php if(!empty($field['search']['is_show'])){?>
               		   <?php if(!empty($field['search']['condition_type']) && $field['search']['condition_type']=='period'){?>
-    		           d.<?php echo $key?> = encodeURIComponent($('#search_<?php echo $key?>_from').val()+'|'+$('#search_<?php echo $key?>_to').val());
+    		           d.<?php echo $key?> = encodeURIComponent($('#search_<?php echo $key?>_from').val()?$('#search_<?php echo $key?>_from').val():""+'|'+$('#search_<?php echo $key?>_to').val()?$('#search_<?php echo $key?>_to').val():"");
 					   <?php }else{?>
-					   d.<?php echo $key?> = encodeURIComponent($('#search_<?php echo $key?>').val());
+					   d.<?php echo $key?> = encodeURIComponent($('#search_<?php echo $key?>').val()?$('#search_<?php echo $key?>').val():"");
     		           <?php }?>
     		           <?php }?>
     		           <?php }?>

@@ -107,6 +107,39 @@ class RoomController extends \App\Backend\Controllers\FormController
             )
         );
         
+        $schemas['is_open'] = array(
+            'name' => '房间是否开启',
+            'data' => array(
+                'type' => 'boolean',
+                'defaultValue' => true,
+                'length' => 1
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'items' => $this->trueOrFalseDatas,
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'condition_type' => '',
+                'defaultValues' => array(),
+                'cascade' => '',
+                'items' => function () {
+                    return array_column($this->trueOrFalseDatas, 'name', 'value');
+                },
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
         $schemas['headline'] = array(
             'name' => '房间简介',
             'data' => array(
@@ -1114,11 +1147,12 @@ class RoomController extends \App\Backend\Controllers\FormController
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         // $categoryList = array(); // $this->modelCategory->getAll();
-        // foreach ($list['data'] as &$item) {
-        // $item['category_name'] = isset($categoryList[$item['category_id']]) ? $categoryList[$item['category_id']] : '';
-        // $item['article_time'] = date("Y-m-d H:i:s", $item['article_time']->sec);
-        // $item['title'] = $item['title'] . '&nbsp&nbsp<a href="javascript:;" class="btn yellow icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要将本地房间上传到elasticsearch吗？\', \'elastic\')" class="halflings-icon user white"><i></i> elasticsearch</a>';
-        // }
+        foreach ($list['data'] as &$item) {
+            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
+            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
+            $item['live_start_time'] = date("Y-m-d H:i:s", $item['live_start_time']->sec);
+            $item['live_end_time'] = date("Y-m-d H:i:s", $item['live_end_time']->sec);
+        }
         return $list;
     }
 }
