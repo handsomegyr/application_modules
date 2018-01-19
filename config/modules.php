@@ -235,4 +235,8 @@ $application->registerModules(array(
         'className' => 'App\Alipay\Module',
         'path' => APP_PATH . 'apps/alipay/Module.php'
     ),
+    'live' => array(
+        'className' => 'App\Live\Module',
+        'path' => APP_PATH . 'apps/live/Module.php'
+    ),
 ));

@@ -1,5 +1,5 @@
 <?php
-namespace App\Post;
+namespace App\Live;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -16,7 +16,7 @@ class Module
         $loader = new Loader();
         
         $loader->registerNamespaces(array(
-            'App\Post\Controllers' => __DIR__ . '/controllers/'
+            'App\Live\Controllers' => __DIR__ . '/controllers/'
         ));
         $loader->register();
     }
@@ -36,7 +36,7 @@ class Module
         // Registering a dispatcher
         $di->set('dispatcher', function () {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("App\Post\Controllers");
+            $dispatcher->setDefaultNamespace("App\Live\Controllers");
             return $dispatcher;
         });
         

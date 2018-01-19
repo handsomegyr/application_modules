@@ -16,6 +16,7 @@ class RoomController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
+        
         $this->modelRoom = new \App\Live\Models\Room();
         $this->modelUser = new \App\Live\Models\User();
         $this->modelAuchor = new \App\Live\Models\Auchor();
@@ -26,20 +27,20 @@ class RoomController extends ControllerBase
      */
     public function loginAction()
     {
-        // http://www.jizigou.com/live/room/login?room_id=xxx&openid=xxx&nickname=xxx&headimgurl=xxx&authtype=anonymous,weixin,weibo&source=anonymous,weixin&channel=anonymous,weixin
+        // http://www.applicationmodule.com/live/room/login?room_id=xxxxx&FromUserName=xxx&nickname=xxx&headimgurl=xxx&authtype=anonymous,weixin,weibo&source=anonymous,weixin&channel=anonymous,weixin
+        // http://www.applicationmodule.com/live/room/login?room_id=5a4f2686cb6ef462f64ee4a1&FromUserName=xxx&nickname=xxx&headimgurl=xxx&authtype=weixin&source=weixin&channel=weixin
         try {
             $room_id = trim($this->get('room_id', ''));
             $authtype = trim($this->get('authtype', 'anonymous'));
             $source = trim($this->get('source', 'anonymous'));
             $channel = trim($this->get('channel', 'anonymous'));
-            
             $is_superman = intval($this->get('is_superman', '0'));
             
             if (empty($room_id)) {
                 echo $this->error(- 1, "房间ID为空");
                 return false;
             }
-            if (empty($authType)) {
+            if (empty($authtype)) {
                 echo $this->error(- 2, "授权方式错误");
                 return false;
             }
@@ -49,6 +50,7 @@ class RoomController extends ControllerBase
                 echo ($this->error(- 3, 'room_id不正确'));
                 return false;
             }
+            
             // 超级权限直接进入逻辑
             $is_virtual = ! empty($is_superman) ? true : false;
             $roomInfo = $this->modelRoom->getState($roomInfo, $is_virtual);
@@ -61,12 +63,10 @@ class RoomController extends ControllerBase
                 $nickname = trim($this->get('nickname', ''));
                 $headimgurl = trim($this->get('headimgurl', ''));
                 $unionid = trim($this->get('unionid', ''));
-                
                 if (empty($user_id)) {
                     echo $this->error(- 4, "用户ID为空");
                     return false;
                 }
-                
                 // 检查是否锁定，如果没有锁定加锁
                 $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $user_id);
                 $objLock = new \iLock($key);
@@ -75,7 +75,7 @@ class RoomController extends ControllerBase
                     return false;
                 }
                 
-                $userInfo = $this->weixinlogin($user_id, $nickname, $headimgurl, $union_id, $room_id, $authtype, $source, $channel);
+                $userInfo = $this->weixinlogin($user_id, $nickname, $headimgurl, $unionid, $room_id, $authtype, $source, $channel);
             } elseif ($authtype == 'login') {
                 // 登陆方式
             } else {
@@ -107,6 +107,7 @@ class RoomController extends ControllerBase
     {
         // 查找该用户信息
         $userInfo = $this->modelUser->getInfoByUserId($user_id);
+        
         // 如果不存在
         if (empty($userInfo)) {
             $memo = array(
@@ -125,15 +126,6 @@ class RoomController extends ControllerBase
             }
             $userInfo = $this->modelUser->create($user_id, $nickname, $headimgurl, '', $union_id, 0, 0, $room_id, $authtype, $source, $channel, $is_auchor, $is_vip, $is_test, $memo);
         } else {
-            // 如果没有昵称就沿用原来的微信昵称
-            if (strlen(trim($nickname)) === 0) {
-                $nickname = $userInfo['nickname'];
-            }
-            // 如果没有头像就沿用原来的微信头像
-            if (empty($headimgurl)) {
-                $headimgurl = $userInfo['headimgurl'];
-            }
-            
             $otherUpdateData = array(
                 'nickname' => $nickname,
                 'headimgurl' => $headimgurl,
@@ -143,13 +135,20 @@ class RoomController extends ControllerBase
                 'channel' => $channel
             );
             
-            $userInfo = $this->modelUser->incWorth($userInfo, 0, 0 0, array(), $otherUpdateData);
+            // 如果没有昵称就沿用原来的微信昵称
+            if (strlen(trim($nickname)) === 0 || $userInfo['nickname'] == $nickname) {
+                unset($otherUpdateData['nickname']);
+            }
+            // 如果没有头像就沿用原来的微信头像
+            if (empty($headimgurl) || $userInfo['headimgurl'] == $headimgurl) {
+                unset($otherUpdateData['headimgurl']);
+            }
+            $userInfo = $this->modelUser->incWorth($userInfo, 0, 0, array(), $otherUpdateData);
         }
         // 记录用户数据到REDIS里
         $this->modelUser->saveInfoInRedis($userInfo);
         // 生成cookie
         setcookie('live_user_id' . $authtype, $userInfo['_id'], time() + $this->_cookie_expire, '/');
-        
         return $userInfo;
     }
 }
