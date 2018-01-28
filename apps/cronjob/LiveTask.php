@@ -11,6 +11,8 @@ class LiveTask extends \Phalcon\CLI\Task
 
     /**
      * 启动直播任务
+     * ps aux | grep redis
+     * redis-server /etc/redis.conf &
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php live run test
      */
     public function runAction(array $params)
@@ -46,13 +48,13 @@ class LiveTask extends \Phalcon\CLI\Task
             // print_r($config);
             // die('xxx');
             
-            $webim = new \App\Swoole\Live\Server($config);
+            $webim = new \App\Live\Services\Swoole\Server($config);
             $webim->loadSetting(__DIR__ . "/live/swoole/config/swoole.ini"); // 加载配置文件
             
             /**
              * webim必须使用swoole扩展
              */
-            $server = new \App\Swoole\Live\Chat\Server($config['server']['host'], $config['server']['port']);
+            $server = new \App\Live\Services\Swoole\Chat\Server($config['server']['host'], $config['server']['port']);
             $server->setConfig($config);
             $server->setProtocol($webim);
             // echo "server is running\n";

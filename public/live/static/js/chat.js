@@ -3,6 +3,8 @@ var client_id = 0;
 var userlist = {};
 var GET = getRequest();
 var face_count = 19;
+var params;
+var user_id = 1;
 
 $(document).ready(function () {
     //使用原生WebSocket
@@ -25,6 +27,9 @@ $(document).ready(function () {
     {
         ws = new Comet(webim.server);
     }
+	
+	params = getRequest()
+	user_id = params['user_id']
     listenEvent();
 });
 
@@ -36,11 +41,7 @@ function listenEvent() {
         //连接成功
         console.log("connect webim server success.");
         //发送登录信息
-        msg = new Object();
-        msg.cmd = 'login';
-        msg.name = user.nickname;
-        msg.avatar = user.avatar;
-        ws.send($.toJSON(msg));
+		login();
     };
 
     //有消息到来时触发
@@ -51,16 +52,16 @@ function listenEvent() {
         {
             client_id = $.evalJSON(e.data).fd;
             //获取在线列表
-            ws.send($.toJSON({cmd : 'getOnline'}));
+            ws.send($.toJSON({cmd : 'getOnlineList'}));
             //获取历史记录
-            ws.send($.toJSON({cmd : 'getHistory'}));
+            ws.send($.toJSON({cmd : 'getHistoryList'}));
             //alert( "收到消息了:"+e.data );
         }
-        else if (cmd == 'getOnline')
+        else if (cmd == 'getOnlineList')
         {
             showOnlineList(message);
         }
-        else if (cmd == 'getHistory')
+        else if (cmd == 'getHistoryList')
         {
             showHistory(message);
         }
@@ -70,13 +71,25 @@ function listenEvent() {
         }
         else if (cmd == 'fromMsg')
         {
+			if(message.msg_type == 'system_user_online'){
+				message.data = message.userInfo.nickname + "上线了";				
+			}
+			showNewUser(message);
             showNewMsg(message);
         }
         else if (cmd == 'offline')
         {
             var cid = message.fd;
             delUser(cid);
+			if(message.msg_type == 'system_user_offline'){
+				message.data = message.userInfo.nickname + "下线了";
+			}
             showNewMsg(message);
+        }
+        else if (cmd == 'error')
+        {
+			console.log("onerror: " + message.code + message.msg);
+			alert("onerror: " + message.code + message.msg);
         }
     };
 
@@ -116,6 +129,8 @@ function selectUser(userid) {
  * @param dataObj
  */
 function showOnlineList(dataObj) {
+	$(".nav-header").html("Chats:"+dataObj.number+"人数");
+	
     var li = '';
     var option = "<option value='0' id='user_all' >所有人</option>";
 
@@ -123,17 +138,18 @@ function showOnlineList(dataObj) {
         li = li + "<li id='inroom_" + dataObj.list[i].fd + "'>" +
         "<a href=\"javascript:selectUser('"
         + dataObj.list[i].fd + "')\">" + "<img src='" + dataObj.list[i].avatar
-        + "' title='" + dataObj.list[i].name + "' width='50' height='50'></a></li>";
+        + "' title='" + dataObj.list[i].nickname + "' width='50' height='50'></a></li>";
 
-        userlist[dataObj.list[i].fd] = dataObj.list[i].name;
+        userlist[dataObj.list[i].fd] = dataObj.list[i].user_id;
 
         if (dataObj.list[i].fd != client_id) {
             option = option + "<option value='" + dataObj.list[i].fd + "' id='user_" + dataObj.list[i].fd + "'>"
-                + dataObj.list[i].name + "</option>"
+                + dataObj.list[i].nickname + "</option>"
         }
     }
     $('#left-userlist').html(li);
     $('#userlist').html(option);
+	
 }
 
 /**
@@ -165,14 +181,14 @@ function showHistory(dataObj) {
  */
 function showNewUser(dataObj) {
     if (!userlist[dataObj.fd]) {
-        userlist[dataObj.fd] = dataObj.name;
+        userlist[dataObj.fd] = dataObj.userInfo.user_id;
         if (dataObj.fd != client_id) {
-            $('#userlist').append("<option value='" + dataObj.fd + "' id='user_" + dataObj.fd + "'>" + dataObj.name + "</option>");
+            $('#userlist').append("<option value='" + dataObj.fd + "' id='user_" + dataObj.fd + "'>" + dataObj.userInfo.nickname + "</option>");
 
         }
         $('#left-userlist').append(
             "<li id='inroom_" + dataObj.fd + "'>" +
-                '<a href="javascript: selectUser(\'' + dataObj.fd + '\')">' + "<img src='" + dataObj.avatar
+                '<a href="javascript: selectUser(\'' + dataObj.fd + '\')">' + "<img src='" + dataObj.userInfo.avatar
                 + "' width='50' height='50'></a></li>");
     }
 }
@@ -308,6 +324,54 @@ function delUser(userid) {
     $('#user_' + userid).remove();
     $('#inroom_' + userid).remove();
     delete (userlist[userid]);
+}
+
+function login() { 
+	if(user_id == 1){
+		msg = new Object();
+		msg.cmd = 'login';        
+		msg.room_id = user.room_id;
+		msg.user_id = user.user_id;
+		msg.source = user.source;
+		msg.channel = user.channel;
+		msg.authtype = user.authtype;        
+		msg.is_superman = user.is_superman;
+	}else{
+		msg = new Object();
+		msg.cmd = 'login';        
+		msg.room_id = user1.room_id;
+		msg.user_id = user1.user_id;
+		msg.source = user1.source;
+		msg.channel = user1.channel;
+		msg.authtype = user1.authtype;        
+		msg.is_superman = user1.is_superman;
+	}	
+	
+	ws.send($.toJSON(msg));
+}
+
+function offline() {    
+	msg = new Object();
+	msg.cmd = 'offline';	
+	ws.send($.toJSON(msg));
+}
+
+function getOnline() {    
+	//获取在线列表
+	msg = new Object();
+	msg.cmd = 'getOnlineList';        
+	msg.room_id = user.room_id;
+	msg.user_id = user.user_id;		
+    ws.send($.toJSON(msg));
+}
+
+function getHistory() {
+    //获取历史记录
+	msg = new Object();
+	msg.cmd = 'getHistoryList';        
+	msg.room_id = user.room_id;
+	msg.user_id = user.user_id;		
+    ws.send($.toJSON(msg));
 }
 
 function sendMsg(content, type) {

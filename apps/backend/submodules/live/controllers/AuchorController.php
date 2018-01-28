@@ -1,57 +1,54 @@
 <?php
 namespace App\Backend\Submodules\Live\Controllers;
 
-use App\Backend\Submodules\Live\Models\User;
-use App\Backend\Submodules\Live\Models\Room;
+use App\Backend\Submodules\Live\Models\Auchor;
 
 /**
- * @title({name="直播用户管理"})
+ * @title({name="直播主播管理"})
  *
- * @name 直播用户管理
+ * @name 直播主播管理
  */
-class UserController extends \App\Backend\Controllers\FormController
+class AuchorController extends \App\Backend\Controllers\FormController
 {
 
-    private $modelUser;
-
-    private $modelRoom;
+    private $modelAuchor;
 
     public function initialize()
     {
-        $this->modelUser = new User();
-        $this->modelRoom = new Room();
+        $this->modelAuchor = new Auchor();
         parent::initialize();
     }
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        $schemas['room_id'] = array(
-            'name' => '直播间名称',
+        
+        $schemas['name'] = array(
+            'name' => '主播名',
             'data' => array(
                 'type' => 'string',
-                'length' => '24'
+                'length' => 30
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->modelRoom->getAll()
+                'input_type' => 'text',
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => true,
-                'list_data_name' => 'room_name'
+                'is_show' => true
             ),
             'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->modelRoom->getAll()
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
+        
         $schemas['openid'] = array(
-            'name' => '用户ID',
+            'name' => '主播ID',
             'data' => array(
                 'type' => 'string',
                 'length' => 50
@@ -74,7 +71,7 @@ class UserController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['nickname'] = array(
-            'name' => '用户名',
+            'name' => '主播昵称',
             'data' => array(
                 'type' => 'string',
                 'length' => 30
@@ -97,7 +94,7 @@ class UserController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['headimgurl'] = array(
-            'name' => '用户头像',
+            'name' => '主播头像',
             'data' => array(
                 'type' => 'string',
                 'length' => 300
@@ -214,7 +211,7 @@ class UserController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['contact_name'] = array(
-            'name' => '联系用户',
+            'name' => '联系主播',
             'data' => array(
                 'type' => 'string',
                 'length' => 50
@@ -282,43 +279,9 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
-        $schemas['is_auchor'] = array(
-            'name' => '是否是主播',
-            'data' => array(
-                'type' => 'boolean',
-                'defaultValue' => false,
-                'length' => 1
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'items' => $this->trueOrFalseDatas,
-                'is_show' => true
-            ),
-            'list' => array(
-                'list_type' => '1',
-                'is_show' => true
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'condition_type' => '',
-                'defaultValues' => array(),
-                'cascade' => '',
-                'items' => function () {
-                    return array_column($this->trueOrFalseDatas, 'name', 'value');
-                },
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        
+                
         $schemas['is_vip'] = array(
-            'name' => '是否是VIP用户',
+            'name' => '是否是VIP',
             'data' => array(
                 'type' => 'boolean',
                 'defaultValue' => false,
@@ -352,7 +315,7 @@ class UserController extends \App\Backend\Controllers\FormController
         );
         
         $schemas['is_test'] = array(
-            'name' => '是否是测试人员',
+            'name' => '是否是测试主播',
             'data' => array(
                 'type' => 'boolean',
                 'defaultValue' => false,
@@ -410,21 +373,12 @@ class UserController extends \App\Backend\Controllers\FormController
 
     protected function getName()
     {
-        return '直播用户';
+        return '直播主播';
     }
 
     protected function getModel()
     {
-        return $this->modelUser;
+        return $this->modelAuchor;
     }
 
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $roomList = $this->modelRoom->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['room_name'] = isset($roomList[$item['room_id']]) ? $roomList[$item['room_id']] : "--";
-        }
-        
-        return $list;
-    }
 }

@@ -2,7 +2,7 @@
 namespace App\Backend\Submodules\Live\Controllers;
 
 use App\Backend\Submodules\Live\Models\Room;
-
+use App\Backend\Submodules\Live\Models\Auchor;
 /**
  * @title({name="房间管理"})
  *
@@ -12,16 +12,43 @@ class RoomController extends \App\Backend\Controllers\FormController
 {
 
     private $modelRoom;
+    private $modelAuchor;
 
     public function initialize()
     {
         $this->modelRoom = new Room();
+        $this->modelAuchor = new Auchor();
         parent::initialize();
     }
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
+        
+        $schemas['auchor_id'] = array(
+            'name' => '主播名称',
+            'data' => array(
+                'type' => 'string',
+                'length' => '24'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->modelAuchor->getAll()
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_data_name' => 'auchor_name'
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->modelAuchor->getAll()
+            )
+        );
         
         $schemas['name'] = array(
             'name' => '房间名称',
@@ -107,7 +134,7 @@ class RoomController extends \App\Backend\Controllers\FormController
             )
         );
         
-        $schemas['is_open'] = array(
+        $schemas['is_opened'] = array(
             'name' => '房间是否开启',
             'data' => array(
                 'type' => 'boolean',
@@ -315,6 +342,7 @@ class RoomController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
+        
         
         $schemas['live_start_time'] = array(
             'name' => '直播开启时间',
@@ -960,7 +988,7 @@ class RoomController extends \App\Backend\Controllers\FormController
             'name' => '围观人数随机数',
             'data' => array(
                 'type' => 'integer',
-                'defaultValue' => '0',
+                'defaultValue' => '1',
                 'length' => 11
             ),
             'validation' => array(
@@ -1031,11 +1059,61 @@ class RoomController extends \App\Backend\Controllers\FormController
             )
         );
         
+        $schemas['view_num_virtual'] = array(
+            'name' => '虚拟围观人数',
+            'data' => array(
+                'type' => 'integer',
+                'defaultValue' => '0',
+                'length' => 11
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
+        $schemas['view_peak_num'] = array(
+            'name' => '围观峰值',
+            'data' => array(
+                'type' => 'integer',
+                'defaultValue' => '10000',
+                'length' => 11
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
         $schemas['like_random_num'] = array(
             'name' => '点赞随机数',
             'data' => array(
                 'type' => 'integer',
-                'defaultValue' => '0',
+                'defaultValue' => '1',
                 'length' => 11
             ),
             'validation' => array(
@@ -1106,6 +1184,31 @@ class RoomController extends \App\Backend\Controllers\FormController
             )
         );
         
+        $schemas['like_num_virtual'] = array(
+            'name' => '虚拟点赞人数',
+            'data' => array(
+                'type' => 'integer',
+                'defaultValue' => '0',
+                'length' => 11
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
@@ -1114,7 +1217,7 @@ class RoomController extends \App\Backend\Controllers\FormController
                 'length' => 1024
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
@@ -1146,12 +1249,13 @@ class RoomController extends \App\Backend\Controllers\FormController
 
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
-        // $categoryList = array(); // $this->modelCategory->getAll();
+        $auchorList = $this->modelAuchor->getAll();
         foreach ($list['data'] as &$item) {
             $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
             $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
             $item['live_start_time'] = date("Y-m-d H:i:s", $item['live_start_time']->sec);
             $item['live_end_time'] = date("Y-m-d H:i:s", $item['live_end_time']->sec);
+            $item['auchor_name'] = isset($auchorList[$item['auchor_id']]) ? $auchorList[$item['auchor_id']] : "--";
         }
         return $list;
     }

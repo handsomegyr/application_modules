@@ -1,7 +1,7 @@
 <?php
 namespace App\Live\Controllers;
 
-class RoomController extends ControllerBase
+class AuchorController extends ControllerBase
 {
     //http://www.applicationmodule.com/live/index.html
 }
