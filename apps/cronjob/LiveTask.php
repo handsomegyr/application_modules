@@ -11,6 +11,7 @@ class LiveTask extends \Phalcon\CLI\Task
 
     /**
      * 启动直播任务
+     * cd /learn-php/phalcon/application_modules/apps/cronjob
      * ps aux | grep redis
      * redis-server /etc/redis.conf &
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php live run test
@@ -54,7 +55,7 @@ class LiveTask extends \Phalcon\CLI\Task
             /**
              * webim必须使用swoole扩展
              */
-            $server = new \App\Live\Services\Swoole\Chat\Server($config['server']['host'], $config['server']['port']);
+            $server = new \App\Live\Services\Swoole\RobotServer($config['server']['host'], $config['server']['port']);
             $server->setConfig($config);
             $server->setProtocol($webim);
             // echo "server is running\n";

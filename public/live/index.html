@@ -3,39 +3,41 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Swoole网页即时聊天</title>
-    <link href="static/css/bootstrap.css" rel="stylesheet">
-    <link href="static/css/chat.css" rel="stylesheet">
+    <link href="/live/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/live/static/css/chat.css" rel="stylesheet">
 
-    <script src="static/js/jquery.js"></script>
-    <script src="static/js/jquery.json.js"></script>
-    <script src="static/js/console.js"></script>
-    <script src="static/js/config.js" charset="utf-8"></script>
-    <script src="static/js/comet.js" charset="utf-8"></script>
-    <script src="static/js/chat.js" charset="utf-8"></script>
-    <script type="text/javascript" src="static/js/swfupload.js"></script>
-    <script type="text/javascript" src="static/js/swfupload.queue.js"></script>
-    <script type="text/javascript" src="static/js/fileprogress.js"></script>
-    <script type="text/javascript" src="static/js/handlers.js"></script>
-    <script type="text/javascript" src="http://www.swoole.com/static/js/facebox.js"></script>
+    <script src="/live/static/js/jquery.js"></script>
+    <script src="/live/static/js/jquery.json.js"></script>
+    <script src="/live/static/js/console.js"></script>
+    <script src="/live/static/js/config.js" charset="utf-8"></script>
+    <script src="/live/static/js/comet.js" charset="utf-8"></script>
+    <script src="/live/static/js/chat.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/live/static/js/swfupload.js"></script>
+    <script type="text/javascript" src="/live/static/js/swfupload.queue.js"></script>
+    <script type="text/javascript" src="/live/static/js/fileprogress.js"></script>
+    <script type="text/javascript" src="/live/static/js/handlers.js"></script>
+    <script type="text/javascript" src="/live/static/js/facebox.js"></script>
+	
     <script type="text/javascript">
-        $.facebox.settings.closeImage = 'http://www.swoole.com/static//images/closelabel.png';
+        $.facebox.settings.closeImage = 'http://www.swoole.com/static/images/closelabel.png';
         $.facebox.settings.loadingImage = 'http://www.swoole.com/static/images/loading.gif';
         $(document).ready(function($){
             $('a[rel=facebox]').facebox();
         });
         //var user = {"qq_uid":"12EBD57369718EBF0CC9FC352C2969AB","nickname":"\u90ed\u6c38\u8363","avatar":"http:\/\/qzapp.qlogo.cn\/qzapp\/221403\/12EBD57369718EBF0CC9FC352C2969AB\/100","birth_year":"1979","province":"\u4e0a\u6d77","city":"\u6768\u6d66","sex":1,"id":5322};
-        var user = {"room_id":"5a4f2686cb6ef462f64ee4a1","user_id":"5a61bb3fcb6ef40749746631","source":"weixin","channel":"weixin","authtype":"weixin","is_superman":0};
-        var user1 = {"room_id":"5a4f2686cb6ef462f64ee4a1","user_id":"5a69b028cb6ef41adf21b7a1","source":"weixin","channel":"weixin","authtype":"weixin","is_superman":0};
+        var user1 = {"room_id":"5a4f2686cb6ef462f64ee4a1","user_id":"5a61bb3fcb6ef40749746631","source":"weixin","channel":"weixin","authtype":"weixin","is_superman":0};
+        var user2 = {"room_id":"5a4f2686cb6ef462f64ee4a1","user_id":"5a69b028cb6ef41adf21b7a1","source":"weixin","channel":"weixin","authtype":"weixin","is_superman":0};
 		var debug = true;
+		var player;
     </script>
-    <link type="text/css" rel="stylesheet" href="http://www.swoole.com/static/css/facebox.css"/>
+    <link type="text/css" rel="stylesheet" href="/live/static/css/facebox.css"/>
 
     <script type="text/javascript">
         var swfu;
         window.onload = function()
         {
             var settings = {
-                flash_url: "static/swf/swfupload.swf",
+                flash_url: "/live/static/swf/swfupload.swf",
                 upload_url: "/page/upload/",
                 post_params: {"uid": '0', 'post': 1, 'PHPSESSID': "0"},
                 file_size_limit: "2MB",
@@ -51,7 +53,7 @@
                 debug: false,
 
                 //Button settings
-                button_image_url: "static/img/button.png",
+                button_image_url: "/live/static/img/button.png",
                 button_width: "65",
                 button_height: "29",
                 button_placeholder_id: "upload_button",
@@ -78,11 +80,18 @@
             padding-top: 60px;
         }
     </style>
-    <!-- <link href="static/css/bootstrap-responsive.css" rel="stylesheet"> -->
+	
+	<style>
+    video {
+       width: 300px;
+    }
+</style>
+
+    <!-- <link href="/live/static/css/bootstrap-responsive.css" rel="stylesheet"> -->
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <!--[if lt IE 9]> -->
+    <!--<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> -->
+    <!--<![endif]--> 
 </head>
 <body>
 <div class="navbar navbar-fixed-top">
@@ -131,7 +140,7 @@
                         </select>
                         <!-- 聊天表情 -->
                         <a onclick="toggleFace()" id="chat_face" class="chat_face">
-                            <img src="static/img/face/15.gif"/>
+                            <img src="/live/static/img/face/15.gif"/>
                         </a>
                     </div>
                     <div style="float: left; width: 200px;height: 25px;">
@@ -150,20 +159,28 @@
                 <div id="input-msg" style="height:110px;border:0px solid #ccc;">
                     <form id="msgform" class="form-horizontal post-form">
                         <div class="input-append">
-                            <textarea id="msg_content" style="width:480px; height:80px;" rows="3" cols="500" contentEditable="true"></textarea>
-                            <img style="width:80px;height:90px;" onclick="sendMsg($('#msg_content').val(), 'text');"
-                                 src="static/img/button.gif"/>
+                            <textarea id="msg_content" style="width:450px; height:30px;" rows="3" cols="500" contentEditable="true"></textarea>
+							<input id="btnChat" style="height: 25px;" type="button" value="发消息" onclick="sendMsg($('#msg_content').val(), 'chat','text');" />
+							<input id="btnBarrage" style="height: 25px;" type="button" value="发弹幕" onclick="sendMsg($('#msg_content').val(), 'barrage','text');" />
+							<!--
+                            <img style="width:80px;height:90px;" onclick="sendMsg($('#msg_content').val(), 'text');" src="/live/static/img/button.gif"/>
+							-->
 							<br/><h1/>
 							<div>
 								<span>
-								<input id="btn1" style="height: 25px;" type="button" value="登录" onclick="login();" />
+								<input id="btn1" style="height: 25px;" type="button" value="上线" onclick="online();" />
 								<input id="btn2" style="height: 25px;" type="button" value="下线" onclick="offline();" />
 								<input id="btn3" style="height: 25px;" type="button" value="获取在线列表" onclick="getOnline();" />
-								<input id="btn4" style="height: 25px;" type="button" value="获取历史记录" onclick="getHistory();" />
-								<input id="btn5" style="height: 25px;" type="button" value="下线" onclick="offline();" />
-								<input id="btn6" style="height: 25px;" type="button" value="下线" onclick="offline();" />
-								<input id="btn7" style="height: 25px;" type="button" value="下线" onclick="offline();" />
-								<input id="btn8" style="height: 25px;" type="button" value="下线" onclick="offline();" />
+								<input id="btn4" style="height: 25px;" type="button" value="获取聊天历史记录" onclick="getChatHistory();" />
+								<input id="btn4" style="height: 25px;" type="button" value="获取弹幕历史记录" onclick="getBarrageHistory();" />
+								<input id="btn5" style="height: 25px;" type="button" value="获取版本号" onclick="getVersion();" />
+								<input id="btn6" style="height: 25px;" type="button" value="设置VIP用户" onclick="setVip();" />
+								<input id="btn7" style="height: 25px;" type="button" value="发送通知" onclick="notice($('#msg_content').val());" />
+								<input id="btn8" style="height: 25px;" type="button" value="发送欢迎语" onclick="welcome(2);" />
+								<input id="btn8" style="height: 25px;" type="button" value="点赞主播" onclick="like();" />
+								<input id="btn8" style="height: 25px;" type="button" value="关闭直播" onclick="closeLive();" />
+								<input id="btn8" style="height: 25px;" type="button" value="暂停直播" onclick="pauseLive();" />
+								<input id="btn8" style="height: 25px;" type="button" value="继续直播" onclick="resumeLive();" />
 								</span>
 							</div>
                         </div>
@@ -186,8 +203,28 @@
                     </ul>
                     <div style="clear: both"></div>
                 </div>
+				
+				
             </div>
 
+			
+			<div  style="    position: fixed;left: 911px;">
+	<!--
+		<video data-dashjs-player autoplay src="https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd" controls></video>
+	-->
+		<video id="videoPlayer" controls ></video>	
+		<script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script> 
+        <script>
+            (function(){
+                var url = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
+				//var url = "/live/static/video/video.mp4";
+                player = dashjs.MediaPlayer().create();
+                player.initialize(document.querySelector("#videoPlayer"), url, true);
+            })();
+        </script> 
+		
+	</div>
+	
         </div>
     </div>
     <!-- /container -->
@@ -211,6 +248,10 @@
         </div>
     </div>
     <!-- / -->
+	
+	
+	
+		
 </div>
 </body>
 </html>

@@ -3,6 +3,7 @@ namespace App\Backend\Submodules\Live\Controllers;
 
 use App\Backend\Submodules\Live\Models\User;
 use App\Backend\Submodules\Live\Models\Room;
+use App\Backend\Submodules\Live\Models\Auchor;
 
 /**
  * @title({name="直播用户管理"})
@@ -16,10 +17,13 @@ class UserController extends \App\Backend\Controllers\FormController
 
     private $modelRoom;
 
+    private $modelAuchor;
+
     public function initialize()
     {
         $this->modelUser = new User();
         $this->modelRoom = new Room();
+        $this->modelAuchor = new Auchor();
         parent::initialize();
     }
 
@@ -317,6 +321,31 @@ class UserController extends \App\Backend\Controllers\FormController
             )
         );
         
+        $schemas['auchor_id'] = array(
+            'name' => '主播名称',
+            'data' => array(
+                'type' => 'string',
+                'length' => '24'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->modelAuchor->getAll()
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_data_name' => 'auchor_name'
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->modelAuchor->getAll()
+            )
+        );
+        
         $schemas['is_vip'] = array(
             'name' => '是否是VIP用户',
             'data' => array(
@@ -421,8 +450,10 @@ class UserController extends \App\Backend\Controllers\FormController
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         $roomList = $this->modelRoom->getAll();
+        $auchorList = $this->modelAuchor->getAll();
         foreach ($list['data'] as &$item) {
             $item['room_name'] = isset($roomList[$item['room_id']]) ? $roomList[$item['room_id']] : "--";
+            $item['auchor_name'] = isset($roomList[$item['auchor_id']]) ? $roomList[$item['auchor_id']] : "--";
         }
         
         return $list;
