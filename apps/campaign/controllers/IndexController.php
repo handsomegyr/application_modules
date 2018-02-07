@@ -35,7 +35,7 @@ class IndexController extends ControllerBase
     protected $serviceLottery = null;
     
     // 活动ID
-    protected $activity_id = '5861e812887c22015f8b456b-back';
+    protected $activity_id = '5861e812887c22015f8b456b';
     
     // 是否需要微信公众号关注
     private $is_need_subscribed = false;
@@ -429,6 +429,181 @@ class IndexController extends ControllerBase
             $this->modelErrorLog->log($this->activity_id, $e);
             echo $this->error($e->getCode(), $e->getMessage());
             return false;
+        }
+    }
+
+    /**
+     * 抽奖接口2
+     * 压测用的
+     *
+     * 检查是否有重复的code
+     * SELECT CODE,COUNT(*) AS num FROM iprize_code
+     * GROUP BY CODE
+     * HAVING num>1
+     *
+     * 检查是否有重复的code的中奖记录
+     * SELECT prize_virtual_code,COUNT(*) AS num FROM ilottery_exchange
+     * WHERE activity_id='5861e812887c22015f8b456b'
+     * GROUP BY prize_virtual_code
+     * HAVING num>1
+     *
+     * 查看详情
+     * SELECT * FROM ilottery_exchange
+     * WHERE activity_id='5861e812887c22015f8b456b'
+     * AND prize_virtual_code = '10000001'
+     *
+     *
+     *
+     * select count(*) from ilottery_exchange;
+     * SELECT COUNT(*) FROM iprize_code where is_used=1;
+     * SELECT 2002-allow_number FROM ilottery_rule;
+     * select count(*) from ilottery_record;
+     *
+     * 清理数据
+     * UPDATE iprize_code SET activity_id='',is_used=0;
+     * UPDATE ilottery_rule SET allow_number=2002;
+     * DELETE FROM ilottery_record;
+     * DELETE FROM ilottery_exchange;
+     * DELETE FROM iactivity_errorlog;
+     */
+    public function lottery4testAction()
+    {
+        // http://www.applicationmodule.com/campaign/index/lottery4test
+        try {
+            $this->view->disable();
+            // 获取活动信息
+            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity_id, $this->now->sec);
+            
+            // 活动是否开始了
+            if (empty($activityInfo['is_activity_started'])) {
+                echo $this->error(- 40401, "活动未开始");
+                return false;
+            }
+            // 活动是否暂停
+            if (! empty($activityInfo['is_actvity_paused'])) {
+                echo $this->error(- 40402, "活动已暂停");
+                return false;
+            }
+            // 活动是否结束了
+            if (! empty($activityInfo['is_activity_over'])) {
+                echo $this->error(- 40403, "活动已结束");
+                return false;
+            }
+            $uniq = uniqid();
+            $userInfo = array();
+            $userInfo['_id'] = $uniq;
+            $userInfo['FromUserName'] = $uniq;
+            $userInfo['nickname'] = $uniq;
+            $userInfo['headimgurl'] = $uniq;
+            
+            $FromUserName = $userInfo['FromUserName'];
+            $name = trim($this->get('name', ''));
+            $mobile = trim($this->get('mobile', ''));
+            $address = trim($this->get('address', ''));
+            
+            // 根据不同的奖品类别进行处理
+            $nameCheck = false;
+            $mobileCheck = false;
+            $addressCheck = false;
+            if ($nameCheck) {
+                if (empty($name)) {
+                    echo $this->error(- 40411, "姓名不能为空");
+                    return false;
+                }
+            }
+            if ($mobileCheck) {
+                if (empty($mobile)) {
+                    echo $this->error(- 40412, "手机号不能为空");
+                    return false;
+                }
+                if (! isValidMobile($mobile)) {
+                    echo $this->error(- 40413, "手机号格式不正确");
+                    return false;
+                }
+            }
+            if ($addressCheck) {
+                if (empty($address)) {
+                    echo $this->error(- 40414, "地址不能为空");
+                    return false;
+                }
+            }
+            
+            // 检查是否锁定，如果没有锁定加锁
+            $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
+            $objLock = new \iLock($key);
+            if ($objLock->lock()) {
+                echo $this->error(- 40499, "上次操作还未完成,请等待");
+                return false;
+            }
+            
+            // 抽奖处理
+            // 记录抽奖用户的昵称和头像
+            $user_info = array(
+                'user_name' => $userInfo['nickname'],
+                'user_headimgurl' => $userInfo['headimgurl']
+            );
+            // 抽奖用户联系方式
+            $identityContact = array(
+                'name' => '',
+                'mobile' => '',
+                'address' => ''
+            );
+            // 记录活动用户ID
+            $memo = array(
+                'activity_user_id' => $userInfo['_id']
+            );
+            
+            $lotteryResult = $this->serviceLottery->doLottery($this->activity_id, $FromUserName, array(), array(), 'weixin', $user_info, $identityContact, $memo);
+            
+            // 抽奖成功的话
+            if (empty($lotteryResult['error_code']) && ! empty($lotteryResult['result'])) {
+                $successInfo = $lotteryResult['result'];
+                $ret = array();
+                $ret['exchange_id'] = $successInfo['_id'];
+                $ret['identity_id'] = $successInfo['user_id'];
+                $ret['prize_info']['prize_id'] = $successInfo['prize_id'];
+                $ret['prize_info']['prize_code'] = $successInfo['prize_code'];
+                $ret['prize_info']['prize_name'] = $successInfo['prize_name'];
+                $ret['prize_info']['virtual_currency'] = empty($successInfo['prize_virtual_currency']) ? 0 : $successInfo['prize_virtual_currency'];
+                $ret['prize_info']['category'] = empty($successInfo['prize_category']) ? 0 : $successInfo['prize_category'];
+                $ret['prize_info']['is_virtual'] = empty($successInfo['prize_is_virtual']) ? false : true;
+                $ret['code_info']['code'] = $successInfo['prize_virtual_code'];
+                $ret['code_info']['pwd'] = $successInfo['prize_virtual_pwd'];
+                echo ($this->result("OK", $ret));
+                // 发送模版消息
+                return true;
+            } else {
+                // 失败的话
+                $e = new \Exception($lotteryResult['error_msg'], $lotteryResult['error_code']);
+                // $this->modelErrorLog->log($this->activity_id, $e);
+                echo ($this->error($lotteryResult['error_code'], $lotteryResult['error_msg']));
+                return false;
+            }
+        } catch (\Exception $e) {
+            $this->modelErrorLog->log($this->activity_id, $e);
+            echo $this->error($e->getCode(), $e->getMessage());
+            return false;
+        }
+    }
+
+    public function bfAction()
+    {
+        // http://www.applicationmodule.com/campaign/index/bf?name=xxx
+        try {
+            $name = $this->get('name');
+            $cacheKey = cacheKey(__FILE__, __CLASS__, $name);
+            echo $cacheKey;
+            $oLock = new \iLock($cacheKey);
+            $l = $oLock->lock();
+            var_dump($l);
+            if ($l) {
+                die('并发');
+            }
+            sleep(10);
+            die('f');
+        } catch (Exception $e) {
+            var_dump($e);
+            exit();
         }
     }
 

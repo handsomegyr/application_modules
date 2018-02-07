@@ -64,8 +64,9 @@ function registerServices($di)
     /**
      * Database connection is created based in the parameters defined in the configuration file
      */
-    $di['db'] = function () use($config) {
-        // $connection = new DbAdapter(array(
+    //$di->setShared('db', function () use($config) {
+    $di->set('db', function () use($config) {
+        //$connection = new DbAdapter(array(
         $connection = new \App\Common\Models\Base\Mysql\Pdo\DbAdapter(array(
             "host" => $config->database->host,
             "username" => $config->database->username,
@@ -81,7 +82,26 @@ function registerServices($di)
         $connection->setEventsManager($eventsManager);
         
         return $connection;
-    };
+    });
+    
+    // $di['db'] = function () use($config) {
+    // // $connection = new DbAdapter(array(
+    // $connection = new \App\Common\Models\Base\Mysql\Pdo\DbAdapter(array(
+    // "host" => $config->database->host,
+    // "username" => $config->database->username,
+    // "password" => $config->database->password,
+    // "dbname" => $config->database->dbname,
+    // "charset" => $config->database->charset
+    // ));
+    // // $connection->execute("SET NAMES 'utf8';");
+    // $eventsManager = new EventsManager();
+    // $eventsManager->attach('db', function ($event, $conn) {
+    // // echo $conn->getSQLStatement() . '<br />';
+    // });
+    // $connection->setEventsManager($eventsManager);
+    
+    // return $connection;
+    // };
     
     /**
      * Database connection is created based in the parameters defined in the configuration file
