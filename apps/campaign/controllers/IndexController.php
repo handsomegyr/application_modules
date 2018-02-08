@@ -552,7 +552,8 @@ class IndexController extends ControllerBase
             $memo = array(
                 'activity_user_id' => $userInfo['_id']
             );
-            
+            // 测试并发
+            $this->serviceLottery->_isTest4Concurreny = true;
             $lotteryResult = $this->serviceLottery->doLottery($this->activity_id, $FromUserName, array(), array(), 'weixin', $user_info, $identityContact, $memo);
             
             // 抽奖成功的话
