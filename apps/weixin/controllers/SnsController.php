@@ -104,7 +104,7 @@ class SnsController extends ControllerBase
                 $moduleName = 'weixin';
                 $controllerName = $this->controllerName;
                 
-                $redirectUri = 'http://';
+                $redirectUri = $scheme . '://';
                 $redirectUri .= $_SERVER["HTTP_HOST"];
                 $redirectUri .= '/' . $moduleName;
                 $redirectUri .= '/' . $controllerName;
