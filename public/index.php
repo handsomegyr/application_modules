@@ -11,7 +11,10 @@ error_reporting(E_ALL);
 
 ini_set("session.save_handler", "memcached"); // 是memcached不是memcache
 ini_set("session.save_path", "192.168.81.129:11211"); // 不要tcp:
-
+//php7升级后session_start(): Unable to clear session lock record
+if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+    ini_set('session.lazy_write', 0);
+}
 try {
     session_start();
     /**

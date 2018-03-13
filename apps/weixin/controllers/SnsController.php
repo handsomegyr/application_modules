@@ -100,7 +100,9 @@ class SnsController extends ControllerBase
                 fastcgi_finish_request();
                 $this->_tracking->record("授权cookie存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
                 exit();
-            } else {
+            } else {				
+				$_SESSION['sns_redirect'] = $redirect;
+				
                 $moduleName = 'weixin';
                 $controllerName = $this->controllerName;
                 
@@ -110,8 +112,7 @@ class SnsController extends ControllerBase
                 $redirectUri .= '/' . $controllerName;
                 $redirectUri .= '/callback';
                 $redirectUri .= '?appid=' . $this->appid;
-                $redirectUri .= '&scope=' . $this->scope;
-                $redirectUri .= '&redirect=' . $redirect;
+                //$redirectUri .= '&redirect=' . $redirect;
                 
                 $this->getAuthorizeUrl($redirectUri);
             }
@@ -130,7 +131,8 @@ class SnsController extends ControllerBase
     public function callbackAction()
     {
         try {
-            $redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : '';
+            //$redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : '';
+			$redirect = empty($_SESSION['sns_redirect']) ? '' : $_SESSION['sns_redirect'];
             if (empty($redirect)) {
                 throw new \Exception("回调地址未定义");
             }
@@ -249,12 +251,12 @@ class SnsController extends ControllerBase
     {
         if (! empty($params)) {
             foreach ($params as $key => $value) {
-                if (strpos($url, $key) === false || ($key == "FromUserName")) {
-                    if (strpos($url, '?') === false)
-                        $url .= "?{$key}=" . $value;
-                    else
-                        $url .= "&{$key}=" . $value;
-                }
+                //if (strpos($url, $key) === false || ($key == "FromUserName")) {
+				if (strpos($url, '?') === false)
+					$url .= "?{$key}=" . $value;
+				else
+					$url .= "&{$key}=" . $value;
+                //}
             }
         }
         return $url;

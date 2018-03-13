@@ -115,32 +115,32 @@ class SubscribemsgController extends ControllerBase
             // 用户点击动作，”confirm”代表用户确认授权，”cancel”代表用户取消授权
             if ($action == "confirm") {}
             $redirect = $this->addUrlParameter($appid, array(
-                'appid' => $appid
+                'subscribemsg_appid' => $appid
             ));
             $redirect = $this->addUrlParameter($redirect, array(
                 'subscribemsg_action' => $action
             ));
             $redirect = $this->addUrlParameter($redirect, array(
-                'FromUserName' => $openid
+                'subscribemsg_FromUserName' => $openid
             ));
             $redirect = $this->addUrlParameter($redirect, array(
-                'template_id' => $template_id
+                'subscribemsg_template_id' => $template_id
             ));
             $redirect = $this->addUrlParameter($redirect, array(
-                'scene' => $scene
+                'subscribemsg_scene' => $scene
             ));
             $redirect = $this->addUrlParameter($redirect, array(
-                'reserved' => $reserved
+                'subscribemsg_reserved' => $reserved
             ));
             
             // 计算signkey
             $timestamp = time();
             $signkey = $this->getSignKey($openid . "|" . $action . "|" . $template_id . "|" . $scene . "|" . $reserved, $timestamp);
             $redirect = $this->addUrlParameter($redirect, array(
-                'signkey' => $signkey
+                'subscribemsg_signkey' => $signkey
             ));
             $redirect = $this->addUrlParameter($redirect, array(
-                'timestamp' => $timestamp
+                'subscribemsg_timestamp' => $timestamp
             ));
             
             header("location:{$redirect}");
@@ -164,12 +164,12 @@ class SubscribemsgController extends ControllerBase
     {
         if (! empty($params)) {
             foreach ($params as $key => $value) {
-                if (strpos($url, $key) === false || ($key == "FromUserName")) {
-                    if (strpos($url, '?') === false)
-                        $url .= "?{$key}=" . $value;
-                    else
-                        $url .= "&{$key}=" . $value;
-                }
+                //if (strpos($url, $key) === false || ($key == "FromUserName")) {
+				if (strpos($url, '?') === false)
+					$url .= "?{$key}=" . $value;
+				else
+					$url .= "&{$key}=" . $value;
+                //}
             }
         }
         return $url;
