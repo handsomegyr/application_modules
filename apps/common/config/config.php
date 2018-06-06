@@ -24,6 +24,10 @@ return new \Phalcon\Config(array(
         'dbname' => 'shopnc',
         'charset' => 'utf8'
     ),
+    'mongodb' => array(
+        'uri' => '192.168.81.129:27017',
+        'dbname' => 'webcms'
+    ),
     'weixin' => array(
         "appid" => 'wxe735383666834fc9',
         "get_accesstoken_url" => "http://weixinoauth.umaman.com/weixin/index/get-access-token",

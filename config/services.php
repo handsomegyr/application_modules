@@ -129,7 +129,7 @@ function registerServices($di)
             "default" => $default
         );
     });
-    
+        
     /**
      * Setting up the pheanstalk queue component
      */
