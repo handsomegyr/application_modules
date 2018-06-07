@@ -155,7 +155,7 @@ class SignController extends ControllerBase
 
     /**
      * 签到接口
-     */
+     */    
     public function doAction()
     {
         // http://www.applicationmodule.com/campaign/sign/do
