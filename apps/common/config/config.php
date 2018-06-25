@@ -6,7 +6,8 @@ return new \Phalcon\Config(array(
         'username' => 'root',
         'password' => 'guotingyu0324',
         'dbname' => 'webcms',
-        'charset' => 'utf8'
+        //'charset' => 'utf8'
+        'charset' => 'utf8mb4'
     ),
     // 'database' => array(
     // 'adapter' => 'Mysql',
@@ -14,7 +15,8 @@ return new \Phalcon\Config(array(
     // 'username' => 'root',
     // 'password' => 'guotingyu0324',
     // 'dbname' => 'webcms',
-    // 'charset' => 'utf8'
+    // //'charset' => 'utf8'
+    // 'charset' => 'utf8mb4'
     // ),
     'databasefrom' => array(
         'adapter' => 'Mysql',
@@ -22,7 +24,8 @@ return new \Phalcon\Config(array(
         'username' => 'root',
         'password' => 'guotingyu0324',
         'dbname' => 'shopnc',
-        'charset' => 'utf8'
+        //'charset' => 'utf8'
+        'charset' => 'utf8mb4'
     ),
     'mongodb' => array(
         'uri' => '192.168.81.129:27017',
