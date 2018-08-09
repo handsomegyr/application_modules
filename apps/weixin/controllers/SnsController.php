@@ -100,9 +100,9 @@ class SnsController extends ControllerBase
                 fastcgi_finish_request();
                 $this->_tracking->record("授权cookie存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
                 exit();
-            } else {				
-				$_SESSION['sns_redirect'] = $redirect;
-				
+            } else {
+                $_SESSION['sns_redirect'] = $redirect;
+                
                 $moduleName = 'weixin';
                 $controllerName = $this->controllerName;
                 
@@ -112,7 +112,7 @@ class SnsController extends ControllerBase
                 $redirectUri .= '/' . $controllerName;
                 $redirectUri .= '/callback';
                 $redirectUri .= '?appid=' . $this->appid;
-                //$redirectUri .= '&redirect=' . $redirect;
+                // $redirectUri .= '&redirect=' . $redirect;
                 
                 $this->getAuthorizeUrl($redirectUri);
             }
@@ -131,8 +131,8 @@ class SnsController extends ControllerBase
     public function callbackAction()
     {
         try {
-            //$redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : '';
-			$redirect = empty($_SESSION['sns_redirect']) ? '' : $_SESSION['sns_redirect'];
+            // $redirect = isset($_GET['redirect']) ? trim($_GET['redirect']) : '';
+            $redirect = empty($_SESSION['sns_redirect']) ? '' : $_SESSION['sns_redirect'];
             if (empty($redirect)) {
                 throw new \Exception("回调地址未定义");
             }
@@ -141,12 +141,18 @@ class SnsController extends ControllerBase
             
             $updateInfoFromWx = false;
             
+            $microtime_start = microtime(true);
+            
             // 获取accesstoken
             $arrAccessToken = $this->getAccessToken();
+            
+            $t1elapsed = microtime(true) - $microtime_start;
+            $arrAccessToken['t1elapsed'] = $t1elapsed;
             
             if (! isset($arrAccessToken['errcode'])) {
                 // 授权成功后，记录该微信用户的基本信息
                 if ($arrAccessToken['scope'] === 'snsapi_userinfo' || $arrAccessToken['scope'] === 'snsapi_login') {
+                    $microtime_start = microtime(true);
                     // 先判断用户在数据库中是否存在最近一周产生的openid，如果不存在，则再动用网络请求，进行用户信息获取
                     $userInfo = $this->_user->getUserInfoByIdLastWeek($arrAccessToken['openid']);
                     if ($userInfo == null) {
@@ -158,6 +164,8 @@ class SnsController extends ControllerBase
                             throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
                         }
                     }
+                    $t2elapsed = microtime(true) - $microtime_start;
+                    $arrAccessToken['t2elapsed'] = $t2elapsed;
                     $userInfo['access_token'] = $arrAccessToken;
                 }
                 
@@ -251,12 +259,12 @@ class SnsController extends ControllerBase
     {
         if (! empty($params)) {
             foreach ($params as $key => $value) {
-                //if (strpos($url, $key) === false || ($key == "FromUserName")) {
-				if (strpos($url, '?') === false)
-					$url .= "?{$key}=" . $value;
-				else
-					$url .= "&{$key}=" . $value;
-                //}
+                // if (strpos($url, $key) === false || ($key == "FromUserName")) {
+                if (strpos($url, '?') === false)
+                    $url .= "?{$key}=" . $value;
+                else
+                    $url .= "&{$key}=" . $value;
+                // }
             }
         }
         return $url;
@@ -310,6 +318,18 @@ class SnsController extends ControllerBase
             $signkey = $this->getSignKey($arrAccessToken['unionid'], $timestamp);
             $redirect = $this->addUrlParameter($redirect, array(
                 'signkey2' => $signkey
+            ));
+        }
+        
+        if (! empty($arrAccessToken['t1elapsed'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                't1elapsed' => $arrAccessToken['t1elapsed']
+            ));
+        }
+        
+        if (! empty($arrAccessToken['t2elapsed'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                't2elapsed' => $arrAccessToken['t2elapsed']
             ));
         }
         
