@@ -1,6 +1,6 @@
 <?php
 define('CHARSET', 'utf-8');
-define('DBCHARSET', 'utf8');
+define('DBCHARSET', 'utf8mb4');
 
 define('METHOD_UNDEFINED', 255);
 define('ENV_CHECK_RIGHT', 0);
