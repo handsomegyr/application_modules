@@ -4,7 +4,7 @@ MySQL - 5.6.38-log : Database - webcms
 *********************************************************************
 */
 
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 /*!40101 SET SQL_MODE=''*/;
 
@@ -12,7 +12,7 @@ MySQL - 5.6.38-log : Database - webcms
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `webcms`;
 
@@ -30,7 +30,7 @@ CREATE TABLE `activity` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='活动';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动';
 
 /*Data for the table `activity` */
 
@@ -53,7 +53,7 @@ CREATE TABLE `area` (
   PRIMARY KEY (`_id`),
   KEY `NewIndex2` (`parent_code`),
   KEY `NewIndex1` (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='全国行政区划';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='全国行政区划';
 
 /*Data for the table `area` */
 
@@ -74,7 +74,7 @@ CREATE TABLE `enum` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='枚举表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='枚举表';
 
 /*Data for the table `enum` */
 
@@ -93,7 +93,7 @@ CREATE TABLE `errorlog` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='错误日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='错误日志';
 
 /*Data for the table `errorlog` */
 
@@ -114,7 +114,7 @@ CREATE TABLE `menu` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `menu` */
 
@@ -136,7 +136,7 @@ CREATE TABLE `resource` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='资源表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='资源表';
 
 /*Data for the table `resource` */
 
@@ -157,7 +157,7 @@ CREATE TABLE `role` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `role` */
 
@@ -175,7 +175,7 @@ CREATE TABLE `source` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `source` */
 
@@ -197,7 +197,7 @@ CREATE TABLE `user` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `user` */
 

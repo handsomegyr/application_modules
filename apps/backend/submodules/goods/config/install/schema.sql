@@ -4,7 +4,7 @@ MySQL - 5.6.35 : Database - webcms
 *********************************************************************
 */
 
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 /*!40101 SET SQL_MODE=''*/;
 
@@ -12,7 +12,7 @@ MySQL - 5.6.35 : Database - webcms
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `webcms`;
 
@@ -31,7 +31,7 @@ CREATE TABLE `igoods_ad` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品-广告位';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品-广告位';
 
 /*Data for the table `igoods_ad` */
 
@@ -60,7 +60,7 @@ CREATE TABLE `igoods_attr_index` (
   `shopnc_attr_value_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`),
   UNIQUE KEY `key1` (`goods_id`,`gc_id`,`attr_value_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品与属性对应表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品与属性对应表';
 
 /*Data for the table `igoods_attr_index` */
 
@@ -83,7 +83,7 @@ CREATE TABLE `igoods_attribute` (
   `shopnc_attr_id` int(11) DEFAULT NULL,
   `shopnc_type_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品属性表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品属性表';
 
 /*Data for the table `igoods_attribute` */
 
@@ -106,7 +106,7 @@ CREATE TABLE `igoods_attribute_value` (
   `shopnc_attr_id` int(11) DEFAULT NULL,
   `shopnc_type_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品属性值表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品属性值表';
 
 /*Data for the table `igoods_attribute_value` */
 
@@ -135,7 +135,7 @@ CREATE TABLE `igoods_brand` (
   `shopnc_class_id` int(11) DEFAULT NULL,
   `shopnc_store_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='品牌表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='品牌表';
 
 /*Data for the table `igoods_brand` */
 
@@ -159,7 +159,7 @@ CREATE TABLE `igoods_browse` (
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`),
   UNIQUE KEY `key1` (`goods_id`,`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品浏览历史表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品浏览历史表';
 
 /*Data for the table `igoods_browse` */
 
@@ -186,7 +186,7 @@ CREATE TABLE `igoods_category` (
   `shopnc_class_parent_id` int(11) DEFAULT NULL,
   `shopnc_type_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品分类表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品分类表';
 
 /*Data for the table `igoods_category` */
 
@@ -215,7 +215,7 @@ CREATE TABLE `igoods_category_tag` (
   `shopnc_gc_id` int(11) DEFAULT NULL,
   `shopnc_type_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品分类TAG表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品分类TAG表';
 
 /*Data for the table `igoods_category_tag` */
 
@@ -236,7 +236,7 @@ CREATE TABLE `igoods_collect` (
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`user_id`,`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品-关注商品';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品-关注商品';
 
 /*Data for the table `igoods_collect` */
 
@@ -253,7 +253,7 @@ CREATE TABLE `igoods_combo` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品推荐组合表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品推荐组合表';
 
 /*Data for the table `igoods_combo` */
 
@@ -340,7 +340,7 @@ CREATE TABLE `igoods_common` (
   `shopnc_plateid_top` int(11) DEFAULT NULL,
   `shopnc_plateid_bottom` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品公共内容表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品公共内容表';
 
 /*Data for the table `igoods_common` */
 
@@ -361,7 +361,7 @@ CREATE TABLE `igoods_fcode` (
   `shopnc_fc_id` int(11) DEFAULT NULL,
   `shopnc_goods_commonid` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品F码';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品F码';
 
 /*Data for the table `igoods_fcode` */
 
@@ -383,7 +383,7 @@ CREATE TABLE `igoods_gift` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品赠品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品赠品表';
 
 /*Data for the table `igoods_gift` */
 
@@ -480,7 +480,7 @@ CREATE TABLE `igoods_goods` (
   `shopnc_color_id` int(11) DEFAULT NULL,
   `shopnc_transport_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品表';
 
 /*Data for the table `igoods_goods` */
 
@@ -506,7 +506,7 @@ CREATE TABLE `igoods_images` (
   `shopnc_store_id` int(11) DEFAULT NULL,
   `shopnc_color_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品图片';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品图片';
 
 /*Data for the table `igoods_images` */
 
@@ -528,7 +528,7 @@ CREATE TABLE `igoods_spec` (
   `shopnc_sp_id` int(11) DEFAULT NULL,
   `shopnc_class_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品规格表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品规格表';
 
 /*Data for the table `igoods_spec` */
 
@@ -554,7 +554,7 @@ CREATE TABLE `igoods_spec_value` (
   `shopnc_gc_id` int(11) DEFAULT NULL,
   `shopnc_store_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品规格值表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品规格值表';
 
 /*Data for the table `igoods_spec_value` */
 
@@ -576,7 +576,7 @@ CREATE TABLE `igoods_type` (
   `shopnc_type_id` int(11) DEFAULT NULL,
   `shopnc_class_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品类型表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品类型表';
 
 /*Data for the table `igoods_type` */
 
@@ -596,7 +596,7 @@ CREATE TABLE `igoods_type_brand` (
   `shopnc_type_id` int(11) DEFAULT NULL,
   `shopnc_brand_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品类型与品牌对应表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品类型与品牌对应表';
 
 /*Data for the table `igoods_type_brand` */
 
@@ -616,7 +616,7 @@ CREATE TABLE `igoods_type_spec` (
   `shopnc_type_id` int(11) DEFAULT NULL,
   `shopnc_sp_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品类型与规格对应表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品类型与规格对应表';
 
 /*Data for the table `igoods_type_spec` */
 

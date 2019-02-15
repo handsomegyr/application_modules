@@ -4,7 +4,7 @@ MySQL - 5.6.35 : Database - webcms
 *********************************************************************
 */
 
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 /*!40101 SET SQL_MODE=''*/;
 
@@ -12,7 +12,7 @@ MySQL - 5.6.35 : Database - webcms
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `webcms`;
 
@@ -32,7 +32,7 @@ CREATE TABLE `imessage_msg` (
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`from_user_id`),
   KEY `NewIndex2` (`to_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息-消息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息-消息';
 
 /*Data for the table `imessage_msg` */
 
@@ -51,7 +51,7 @@ CREATE TABLE `imessage_msg_count` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息-数量';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息-数量';
 
 /*Data for the table `imessage_msg_count` */
 
@@ -75,7 +75,7 @@ CREATE TABLE `imessage_msg_statistics` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息-消息统计';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息-消息统计';
 
 /*Data for the table `imessage_msg_statistics` */
 
@@ -104,7 +104,7 @@ CREATE TABLE `imessage_replymsg` (
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`reply_user_id`),
   KEY `NewIndex2` (`to_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息-回复';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息-回复';
 
 /*Data for the table `imessage_replymsg` */
 
@@ -123,7 +123,7 @@ CREATE TABLE `imessage_sysmsg` (
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`to_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息-系统消息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息-系统消息';
 
 /*Data for the table `imessage_sysmsg` */
 
@@ -141,7 +141,7 @@ CREATE TABLE `imessage_template` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='消息-模板';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='消息-模板';
 
 /*Data for the table `imessage_template` */
 

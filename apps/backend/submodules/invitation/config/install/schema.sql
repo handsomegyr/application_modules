@@ -4,7 +4,7 @@ MySQL - 5.6.35 : Database - webcms
 *********************************************************************
 */
 
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 /*!40101 SET SQL_MODE=''*/;
 
@@ -12,7 +12,7 @@ MySQL - 5.6.35 : Database - webcms
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `webcms`;
 
@@ -44,7 +44,7 @@ CREATE TABLE `iinvitation_invitation` (
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`user_id`,`activity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='邀请-发起邀请记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='邀请-发起邀请记录';
 
 /*Data for the table `iinvitation_invitation` */
 
@@ -75,7 +75,7 @@ CREATE TABLE `iinvitation_invitationgotdetail` (
   KEY `NewIndex1` (`invitation_id`),
   KEY `NewIndex2` (`got_user_id`,`activity_id`),
   KEY `NewIndex3` (`owner_user_id`,`activity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='邀请-接受邀请记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='邀请-接受邀请记录';
 
 /*Data for the table `iinvitation_invitationgotdetail` */
 
@@ -96,7 +96,7 @@ CREATE TABLE `iinvitation_rule` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='邀请-规则';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='邀请-规则';
 
 /*Data for the table `iinvitation_rule` */
 
@@ -121,7 +121,7 @@ CREATE TABLE `iinvitation_user` (
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`user_id`,`activity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='邀请-邀请用戶';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='邀请-邀请用戶';
 
 /*Data for the table `iinvitation_user` */
 

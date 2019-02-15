@@ -4,7 +4,7 @@ MySQL - 5.6.35-log : Database - webcms
 *********************************************************************
 */
 
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 /*!40101 SET SQL_MODE=''*/;
 
@@ -12,7 +12,7 @@ MySQL - 5.6.35-log : Database - webcms
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `webcms`;
 
@@ -46,7 +46,7 @@ CREATE TABLE `iweixin_application` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_application` */
 
@@ -62,7 +62,7 @@ CREATE TABLE `iweixin_callbackurls` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_callbackurls` */
 
@@ -105,7 +105,7 @@ CREATE TABLE `iweixin_component_application` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `iweixin_component_application` */
 
@@ -123,7 +123,7 @@ CREATE TABLE `iweixin_gender` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_gender` */
 
@@ -145,7 +145,7 @@ CREATE TABLE `iweixin_keyword` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_keyword` */
 
@@ -170,7 +170,7 @@ CREATE TABLE `iweixin_menu` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_menu` */
 
@@ -198,7 +198,7 @@ CREATE TABLE `iweixin_menu_conditional` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_menu_conditional` */
 
@@ -222,7 +222,7 @@ CREATE TABLE `iweixin_menu_conditional_matchrule` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_menu_conditional_matchrule` */
 
@@ -240,7 +240,7 @@ CREATE TABLE `iweixin_menu_type` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_menu_type` */
 
@@ -258,7 +258,7 @@ CREATE TABLE `iweixin_msg_type` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_msg_type` */
 
@@ -276,7 +276,7 @@ CREATE TABLE `iweixin_not_keyword` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_not_keyword` */
 
@@ -295,7 +295,7 @@ CREATE TABLE `iweixin_page` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_page` */
 
@@ -316,7 +316,7 @@ CREATE TABLE `iweixin_qrcode` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_qrcode` */
 
@@ -350,7 +350,7 @@ CREATE TABLE `iweixin_reply` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_reply` */
 
@@ -368,7 +368,7 @@ CREATE TABLE `iweixin_reply_type` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_reply_type` */
 
@@ -394,7 +394,7 @@ CREATE TABLE `iweixin_scene` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_scene` */
 
@@ -415,7 +415,7 @@ CREATE TABLE `iweixin_script_tracking` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_script_tracking` */
 
@@ -441,7 +441,7 @@ CREATE TABLE `iweixin_sence` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_sence` */
 
@@ -485,7 +485,7 @@ CREATE TABLE `iweixin_source` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_source` */
 
@@ -502,7 +502,7 @@ CREATE TABLE `iweixin_subscribe_user` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_subscribe_user` */
 
@@ -534,7 +534,7 @@ CREATE TABLE `iweixin_user` (
   `__MODIFY_TIME__` datetime NOT NULL,
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `iweixin_user` */
 

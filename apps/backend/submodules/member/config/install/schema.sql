@@ -4,7 +4,7 @@ MySQL - 5.6.35 : Database - webcms
 *********************************************************************
 */
 
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 /*!40101 SET SQL_MODE=''*/;
 
@@ -12,7 +12,7 @@ MySQL - 5.6.35 : Database - webcms
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`webcms` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE `webcms`;
 
@@ -37,7 +37,7 @@ CREATE TABLE `imember_consignee` (
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`member_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='收货地址表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='收货地址表';
 
 /*Data for the table `imember_consignee` */
 
@@ -70,7 +70,7 @@ CREATE TABLE `imember_friend` (
   KEY `NewIndex2` (`to_user_id`),
   KEY `NewIndex3` (`from_user_id`,`to_user_id`),
   KEY `NewIndex4` (`to_user_id`,`from_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员-好友';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员-好友';
 
 /*Data for the table `imember_friend` */
 
@@ -89,7 +89,7 @@ CREATE TABLE `imember_grade` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='用户等级表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='用户等级表';
 
 /*Data for the table `imember_grade` */
 
@@ -167,7 +167,7 @@ CREATE TABLE `imember_member` (
   KEY `NewIndex2` (`email`),
   KEY `NewIndex3` (`mobile`),
   KEY `NewIndex4` (`qqopenid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员-会员';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员-会员';
 
 /*Data for the table `imember_member` */
 
@@ -192,7 +192,7 @@ CREATE TABLE `imember_news` (
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员-动态';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员-动态';
 
 /*Data for the table `imember_news` */
 
@@ -223,7 +223,7 @@ CREATE TABLE `imember_report` (
   KEY `NewIndex2` (`to_user_id`),
   KEY `NewIndex3` (`from_user_id`,`to_user_id`),
   KEY `NewIndex4` (`to_user_id`,`from_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员-举报';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员-举报';
 
 /*Data for the table `imember_report` */
 
@@ -242,7 +242,7 @@ CREATE TABLE `imember_visitor` (
   PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`visited_user_id`),
   KEY `NewIndex2` (`visit_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员-访客';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员-访客';
 
 /*Data for the table `imember_visitor` */
 
