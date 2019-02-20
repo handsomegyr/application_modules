@@ -4,7 +4,7 @@ MySQL - 5.6.41-log : Database - webcms
 *********************************************************************
 */
 
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 /*!40101 SET SQL_MODE=''*/;
 
@@ -74,7 +74,7 @@ CREATE TABLE `enum` (
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='枚举表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='枚举表';
 
 /*Data for the table `enum` */
 
