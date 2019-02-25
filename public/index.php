@@ -36,6 +36,9 @@ try {
     
     require __DIR__ . '/../library/MongoRegex.php';
     
+    require __DIR__ . '/../library/EvcardMmp.php';
+	
+    require __DIR__ . '/../library/Saicmobility.php';
     /**
      * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
      */
