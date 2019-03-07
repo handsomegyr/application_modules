@@ -4,7 +4,7 @@ MySQL - 5.6.41-log : Database - webcms
 *********************************************************************
 */
 
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
 
@@ -357,6 +357,7 @@ CREATE TABLE `ibargain_alpha_user` (
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='砍价-砍价用户系数表';
 
@@ -396,6 +397,7 @@ CREATE TABLE `ibargain_bargain` (
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`user_id`,`code`,`activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='砍价-砍价物规则';
 
@@ -416,6 +418,7 @@ CREATE TABLE `ibargain_black_user` (
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='砍价-砍价用户惩罚系数表';
 
@@ -440,6 +443,7 @@ CREATE TABLE `ibargain_log` (
   `__CREATE_TIME__` datetime NOT NULL COMMENT '创建时间',
   `__MODIFY_TIME__` datetime NOT NULL COMMENT '修改时间',
   `__REMOVED__` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`_id`),
   KEY `NewIndex1` (`user_id`,`bargain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='砍价-日志';
 
@@ -4441,7 +4445,7 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','192.168.81.1','2018-09-07 17:01:37',391,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2018-09-07 17:01:37',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:52:39',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
+insert  into `user`(`_id`,`username`,`password`,`lastip`,`lasttime`,`times`,`role`,`__CREATE_TIME__`,`__MODIFY_TIME__`,`__REMOVED__`) values ('1','admin','guotingyu0324','127.0.0.1','2019-03-05 14:53:31',394,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2019-03-05 14:53:31',0),('2','郭永荣','admin','127.0.0.1','2015-08-19 19:13:56',1,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:52:39',0),('5639d567bbcb269f108b4567','dinghaidong','dinghaidong','27.115.13.124','2015-11-04 17:54:25',3,'55d6ed887f50ea380a00005b','2015-11-04 17:52:39','2015-11-04 17:54:25',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
