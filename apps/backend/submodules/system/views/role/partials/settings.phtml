@@ -66,8 +66,10 @@ function check(list, obj)
 		{
 			var regx = new RegExp(frm.elements[i].value + "(?!_)", "i");
 			if (list.search(regx) > -1) {
-				frm.elements[i].checked  = obj.checked ;
-				jQuery.uniform.update(frm.elements[i]);
+				if(list.split(",").indexOf(frm.elements[i].value) > -1){
+    				frm.elements[i].checked=obj.checked ;
+    				jQuery.uniform.update(frm.elements[i]);
+				}
 			}
 		}
 		<?php }?>

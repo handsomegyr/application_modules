@@ -64,6 +64,29 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
+        
+        $schemas['happen_time'] = array(
+            'name' => '发生时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => '19',
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+        
         return $schemas;
     }
 

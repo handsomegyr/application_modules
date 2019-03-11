@@ -127,7 +127,7 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => true
