@@ -284,6 +284,30 @@ class UserController extends \App\Backend\Controllers\FormController
             )
         );
         
+        $schemas['scene'] = array(
+            'name' => '场景值',
+            'data' => array(
+                'type' => 'string',
+                'length' => 50
+            ),
+            'validation' => array(
+                'required' => 1
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
