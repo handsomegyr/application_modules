@@ -56,7 +56,7 @@ class ActivityController extends \App\Backend\Controllers\FormController
             'name' => '活动名称',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '50'
             ),
             'validation' => array(
                 'required' => true

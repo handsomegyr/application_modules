@@ -54,7 +54,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
             'name' => '用户ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 255
             ),
             'validation' => array(
                 'required' => 1

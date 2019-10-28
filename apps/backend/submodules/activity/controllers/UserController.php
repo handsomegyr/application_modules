@@ -54,7 +54,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '用户ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 255
             ),
             'validation' => array(
                 'required' => 1
@@ -77,7 +77,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '用户名',
             'data' => array(
                 'type' => 'string',
-                'length' => 30
+                'length' => 50
             ),
             'validation' => array(
                 'required' => false
@@ -169,7 +169,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '微信红包账号',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -193,7 +193,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '第3方账号',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -304,6 +304,28 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             ),
             'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['log_time'] = array(
+            'name' => '记录时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => '19',
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
                 'is_show' => true
             )
         );
