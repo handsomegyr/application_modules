@@ -71,6 +71,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
     public function signinAction()
     {
         try {
+            $this->view->disable();
             $input = $this->getLoginFilterInput();
             if ($input->isValid()) {
                 /* 检查密码是否正确 */
@@ -87,10 +88,16 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             }
             
             $url = $this->getUrl("index");
-            $this->_redirect($url);
+            //$this->_redirect($url);
+            
+            // 返回信息
+            $ret = array();
+            $ret['redirect'] = $url;
+            $this->makeJsonResult($ret, 'ok');
         } catch (\Exception $e) {
-            die($e->getMessage());
-            throw $e;
+            // die($e->getMessage());
+            // throw $e;
+            $this->makeJsonError($e->getMessage());
         }
     }
 

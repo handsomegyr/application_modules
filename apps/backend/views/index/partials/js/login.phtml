@@ -4,7 +4,6 @@ var Login = function () {
     return {
         //main function to initiate the module
         init: function () {
-        	
            $('.login-form').validate({
 	            errorElement: 'label', //default input error message container
 	            errorClass: 'help-inline', // default input error message class
@@ -49,7 +48,8 @@ var Login = function () {
 	            },
 
 	            submitHandler: function (form) {
-                    form.submit();
+                    //form.submit();
+					Login.login();
 	                //window.location.href = "index.html";
 	            }
 	        });
@@ -57,7 +57,8 @@ var Login = function () {
 	        $('.login-form input').keypress(function (e) {
 	            if (e.which == 13) {
 	                if ($('.login-form').validate().form()) {
-                        $('.login-form').submit();
+                        //$('.login-form').submit();
+						Login.login();
 	                    //window.location.href = "index.html";
 	                }
 	                return false;
@@ -190,8 +191,38 @@ var Login = function () {
 	            jQuery('.login-form').show();
 	            jQuery('.register-form').hide();
 	        });
-        }
+        },
+		// 登录
+		login: function(){
+			//alert("login！");
+			var formData = new FormData(document.getElementById("login_form1"));//
 
+			$.ajax({
+            	//几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+				url: "<?php echo $form_act?>" ,//url
+				contentType: false,//这里
+                processData: false,//这两个一定设置为false
+                data: formData,
+                //data: $('.login-form').serialize(),
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+					// 如果发生了错误的话
+					if (result.error == 1) {
+						$('#spanErrorId4Login').html(result.message);
+						$('.alert-error', $('.login-form')).show();
+					}else{
+						// 跳转url
+						window.location.href = result.content.redirect;
+					}
+                },
+                error : function() {
+                    //alert("异常！");
+					$('.alert-error', $('.login-form')).show();
+                }
+            });
+		}
     };
 
 }();

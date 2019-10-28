@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Prize\Controllers;
 
 use App\Backend\Submodules\Prize\Models\Prize;
@@ -26,7 +27,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['prize_code'] = array(
             'name' => '奖品编码',
             'data' => array(
@@ -47,7 +48,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['prize_name'] = array(
             'name' => '奖品名称',
             'data' => array(
@@ -68,7 +69,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['category'] = array(
             'name' => '奖品类别',
             'data' => array(
@@ -91,7 +92,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         // $schemas['desc'] = array(
         // 'name' => '奖品描述',
         // 'data' => array(
@@ -112,7 +113,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
         // 'is_show' => false
         // )
         // );
-        
+
         $schemas['is_virtual'] = array(
             'name' => '是否虚拟奖品',
             'data' => array(
@@ -135,7 +136,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['virtual_currency'] = array(
             'name' => '虚拟货币',
             'data' => array(
@@ -156,7 +157,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_need_virtual_code'] = array(
             'name' => '是否发放虚拟奖品',
             'data' => array(
@@ -179,7 +180,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-                
+
         $schemas['is_valid'] = array(
             'name' => '是否立即生效',
             'data' => array(
@@ -202,7 +203,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
