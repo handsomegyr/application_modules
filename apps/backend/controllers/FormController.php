@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Controllers;
 
 use App\Backend\Models\Input;
@@ -166,7 +167,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => true
             )
         );
-        
+
         $schemas['__CREATE_TIME__'] = array(
             'name' => '创建时间',
             'data' => array(
@@ -188,7 +189,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => false
             )
         );
-        
+
         $schemas['__MODIFY_TIME__'] = array(
             'name' => '修改时间',
             'data' => array(
@@ -210,7 +211,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => false
             )
         );
-        
+
         $schemas['__REMOVED__'] = array(
             'name' => '是否删除',
             'data' => array(
@@ -233,7 +234,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -246,7 +247,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $files[$file->getKey()] = $file;
             }
         }
-        
+
         $schemas = $this->getSchemas();
         $input = new Input();
         $input->id = $this->request->get('id', array(
@@ -257,7 +258,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if (empty($field['form']['is_show'])) {
                 continue;
             }
-            
+
             $input->addSchema($key, $field);
             // 文件的话,专门处理
             if ($field['data']['type'] == "file") {
@@ -269,7 +270,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     if ($file->isUploadedFile()) {
                         $fileId = $file->getName(); // myMongoId(new \MongoId());
                         $path = "";
-                        if (! empty($field['data']['file'])) {
+                        if (!empty($field['data']['file'])) {
                             $fileInfo = $field['data']['file'];
                             $path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
                         }
@@ -277,7 +278,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                         makeDir($uploadPath);
                         $destination = "{$uploadPath}{$fileId}";
                         // die($destination);
-                        
+
                         $file->moveTo($destination);
                         $input->$key = $fileId;
                     }
@@ -326,36 +327,36 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $input->$key = $this->request->get($key, $filters, $defaultValue);
             }
         }
-        
-        $input->isValid = function ($fieldName = null) use($input, $schemas) {
+
+        $input->isValid = function ($fieldName = null) use ($input, $schemas) {
             $data = $this->request->get();
             $validation = new Validation();
-            
+
             foreach ($schemas as $key => $field) {
                 if (empty($field['form']['is_show'])) {
                     continue;
                 }
-                if (! empty($field['validation']['required'])) {
+                if (!empty($field['validation']['required'])) {
                     $validation->add($key, new PresenceOf(array(
                         'message' => "The {$key} is required"
                     )));
                 }
             }
-            
+
             $messages = $validation->validate($data);
             $messages = $messages->filter($fieldName);
             $input->messages = $messages;
-            if (! empty($messages)) {
+            if (!empty($messages)) {
                 return false;
             } else {
                 return true;
             }
         };
-        
-        $input->getMessages = function () use($input, $schemas) {
+
+        $input->getMessages = function () use ($input, $schemas) {
             return empty($input->messages) ? array() : $input->messages;
         };
-        
+
         return $input;
     }
 
@@ -371,7 +372,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 )
             )
         ));
-        
+
         $draw = $this->request->get('draw', "int", 1);
         $order = $this->request->get('order', null, array(
             0 => array(
@@ -385,21 +386,21 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             'value' => '',
             'regex' => ''
         ));
-        
+
         $input = new Input();
         $input->draw = $draw;
         $input->page = $start / $length + 1;
         $input->page_size = $length;
         $input->sort_by = $columns[$order[0]['column']]['name'];
         $input->sort_order = $order[0]['dir'];
-        
+
         $schemas = $this->getSchemas();
         foreach ($schemas as $key => $field) {
             if (empty($field['search']['is_show'])) {
                 continue;
             }
             $input->addSchema($key, $field);
-            
+
             $filters = array(
                 'trim',
                 'string'
@@ -416,24 +417,24 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 );
                 $defaultValue = "";
             }
-            
+
             $input->$key = $this->request->get($key, $filters, $defaultValue);
         }
         $input->isValid = function () {
             return true;
         };
-        
+
         $input->getMessages = function () {
             return array();
         };
-        
+
         return $input;
     }
 
     public function initialize()
     {
         parent::initialize();
-        
+
         $this->view->setVar('formName', $this->getName());
         $this->view->setVar('schemas', $this->getSchemas());
         $this->view->setVar('partials4List', $this->getPartials4List());
@@ -463,7 +464,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         try {
             $input = $this->getListFilterInput();
-            
+
             // 根据检索条件获取列表
             resetTimeMemLimit();
             $list = $this->getModel()->getAllList($input);
@@ -483,26 +484,26 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         try {
             $this->view->disable();
-            
+
             $input = $this->getListFilterInput();
-            if (! $input->isValid()) {
+            if (!$input->isValid()) {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
-            
+
             // 根据检索条件获取列表
             $list = $this->getList($input);
-            
+
             // 将列表数据按照画面要求进行显示
             $list = $this->getList4Show($input, $list);
-            
+
             $datas = array(
                 'draw' => $input->draw,
                 'recordsTotal' => $list['record_count'],
                 'recordsFiltered' => $list['record_count'],
                 'data' => $list['data']
             );
-            
+
             echo (json_encode($datas));
             return true;
         } catch (\Exception $e) {
@@ -540,6 +541,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function insertAction()
     {
         try {
+            $this->view->disable();
             $input = $this->getFilterInput();
             if ($input->isValid()) {
                 // 在进行插入处理之前进行检查
@@ -550,15 +552,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
             // insert
             $this->insert($input, array());
-            /* 添加链接 */
-            $link[0]['text'] = '继续添加' . $this->getName();
-            $link[0]['href'] = $this->getUrl("add");
-            $link[1]['text'] = '返回' . $this->getName() . '列表';
-            $link[1]['href'] = $this->getUrl("list");
-            $this->sysMsg($this->getName() . '添加成功!', 0, $link);
+            // /* 添加链接 */
+            // $link[0]['text'] = '继续添加' . $this->getName();
+            // $link[0]['href'] = $this->getUrl("add");
+            // $link[1]['text'] = '返回' . $this->getName() . '列表';
+            // $link[1]['href'] = $this->getUrl("list");
+            // $this->sysMsg($this->getName() . '添加成功!', 0, $link);
+            $this->makeJsonResult($this->getUrl("sysmsg4insert"));
         } catch (\Exception $e) {
-            die($e->getMessage());
-            throw $e;
+            $this->makeJsonError($e->getMessage());
+            // die($e->getMessage());
+            // throw $e;
         }
     }
 
@@ -593,6 +597,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function updateAction()
     {
         try {
+            $this->view->disable();
             $input = $this->getFilterInput();
             if ($input->isValid()) {
                 // get exist
@@ -608,13 +613,14 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
             // update
             $this->update($input, $row);
-            /* 添加链接 */
-            $link[0]['text'] = '返回' . $this->getName() . '列表';
-            $link[0]['href'] = $this->getUrl("list");
-            $this->sysMsg($this->getName() . '编辑成功!', 0, $link);
+            // /* 添加链接 */
+            // $link[0]['text'] = '返回' . $this->getName() . '列表';
+            // $link[0]['href'] = $this->getUrl("list");
+            $this->makeJsonResult($this->getUrl("sysmsg4update"));
         } catch (\Exception $e) {
-            die($e->getMessage());
-            throw $e;
+            $this->makeJsonError($e->getMessage());
+            //die($e->getMessage());
+            //throw $e;
         }
     }
 
@@ -627,9 +633,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         try {
             $this->view->disable();
-            
+
             $input = $this->getFilterInput();
-            
+
             if ($input->isValid("id")) {
                 // 在进行删除处理之前进行检查
                 $this->validate4Delete($input, array());
@@ -637,13 +643,51 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
-            
+
             // delete
             $this->delete($input, array());
-            
+
             $this->makeJsonResult();
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="追加成功消息页面"})
+     *
+     * @name 追加成功消息页面
+     */
+    public function sysmsg4insertAction()
+    {
+        try {
+            /* 添加链接 */
+            $link[0]['text'] = '继续添加' . $this->getName();
+            $link[0]['href'] = $this->getUrl("add");
+            $link[1]['text'] = '返回' . $this->getName() . '列表';
+            $link[1]['href'] = $this->getUrl("list");
+            $this->sysMsg($this->getName() . '添加成功!', 0, $link);
+        } catch (\Exception $e) {
+            die($e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * @title({name="更新成功消息页面"})
+     *
+     * @name 更新成功消息页面
+     */
+    public function sysmsg4updateAction()
+    {
+        try {
+            /* 添加链接 */
+            $link[0]['text'] = '返回' . $this->getName() . '列表';
+            $link[0]['href'] = $this->getUrl("list");
+            $this->sysMsg($this->getName() . '编辑成功!', 0, $link);
+        } catch (\Exception $e) {
+            die($e->getMessage());
+            throw $e;
         }
     }
 
@@ -654,7 +698,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $this->view->setVar('filter', $list['filter']);
         $this->view->setVar('record_count', $list['record_count']);
         $this->view->setVar('page_count', $list['page_count']);
-        
+
         return $list;
     }
 
@@ -686,7 +730,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         // do other validation
         // $this->getModel()->checkName($input->id, $input->pid, $input->name);
-        
+
         // /* 还有子菜单，不能更改 */
         // if ($input->pid != $row['pid']) {
         // $this->getModel()->checkIsLeaf($input->id);
@@ -715,7 +759,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     protected function export(array $dataList)
     {
         $excel = array();
-        
+
         $fields = array();
         $schemas = $this->getSchemas();
         foreach ($schemas as $key => $field) {
@@ -738,14 +782,14 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 if ($field['data']['type'] == 'datetime') {
                     $item[] = date("Y-m-d H:i:s", $data[$key]->sec);
                 } elseif ($field['data']['type'] == 'json') {
-                    if (! empty($data[$key])) {
+                    if (!empty($data[$key])) {
                         $values = array();
-                        if (! empty($field['export']) && ! empty($field['export']['fields'])) {
+                        if (!empty($field['export']) && !empty($field['export']['fields'])) {
                             foreach ($field['export']['fields'] as $f) {
                                 $values[] = isset($data[$key][$f]) ? $data[$key][$f] : "";
                             }
                         }
-                        if (! empty($values)) {
+                        if (!empty($values)) {
                             $item[] = implode(" ", $values);
                         } else {
                             $item[] = "";
@@ -760,19 +804,19 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $datas[] = $item;
         }
         $excel['result'] = $datas;
-        
+
         $fileName = date('YmdHis');
         arrayToCVS($fileName, $excel);
-        
+
         // $zip = new \ZipArchive();
         // $filename = "data_export_" . date('YmdHis', time()) . '.zip'; // 随机文件名
         // $zipname = sys_get_temp_dir() . "/" . $filename;
-        
+
         // if (! file_exists($zipname)) {
         // $zip->open($zipname, ZipArchive::OVERWRITE); // 创建一个空的zip文件
         // $zip->addFile($file1, iconv("UTF-8", "GB2312", '订单文件' . $extension));
         // $zip->close();
-        
+
         // ob_end_clean();
         // // 打开文件
         // $file = fopen($zipname, "r");
@@ -819,7 +863,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     protected function getWeixin()
     {
         $appWeixinConfig = $this->getWeixinConfig();
-        
+
         $weixin = new \Weixin\Client();
         $weixin->setAccessToken('5r40in-A3AT16qI_9c6Mg96spYMnEeOim5GraIudD6ArSvI40YEfGyu00Eo_mZXRoOPrIZUibVj14NPdz6DOccc0thB-8mDRWXpV-if5_jJLCJmNWKomdEEPMf4IT-NNXTVhABAPLN');
         // if (! empty($appWeixinConfig['access_token'])) {
@@ -844,24 +888,24 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $appWeixinConfig = $this->getWeixinConfig();
         // $api_ticket = $appWeixinConfig['wx_card_api_ticket'];
         $api_ticket = '';
-        
+
         $timestamp = (string) time();
         $outer_id = (string) $outer_id;
         $balance = (string) $balance;
-        
+
         $objSignature = new \Weixin\Model\Signature();
         $objSignature->add_data($api_ticket);
         $objSignature->add_data($timestamp);
         $objSignature->add_data($card_id);
         $objSignature->add_data($code);
         $objSignature->add_data($openid);
-        if (! empty($balance)) {
+        if (!empty($balance)) {
             $objSignature->add_data($balance);
         }
-        if (! empty($outer_id)) {
+        if (!empty($outer_id)) {
             $objSignature->add_data($outer_id);
         }
-        
+
         $signature = $objSignature->get_signature();
         $card_ext = array(
             "code" => $code,
@@ -869,10 +913,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             "timestamp" => $timestamp,
             "signature" => $signature
         );
-        if (! empty($outer_id)) {
+        if (!empty($outer_id)) {
             $card_ext["outer_id"] = $outer_id;
         }
-        if (! empty($balance)) {
+        if (!empty($balance)) {
             $card_ext["balance"] = $balance;
         }
         return array(

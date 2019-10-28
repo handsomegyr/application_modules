@@ -89,7 +89,10 @@ var FormValidation = function () {
                     success2.show();
                     error2.hide();
                     //alert("OK");
-                    form.submit();
+                    
+                    
+                    //form.submit();
+                    FormValidation.submit();
                 }
 
             });
@@ -104,8 +107,43 @@ var FormValidation = function () {
                 form2.validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input
             });
 
-        }
+        },
+		// 提交
+		submit: function(){
+            //alert("submit！");
+            var formData = new FormData(document.getElementById("form_sample_2"));//
+			$.ajax({
+            	//几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "<?php echo $this->view->form_act?>" ,//url
+                contentType: false,//这里
+                processData: false,//这两个一定设置为false
+                data: formData,
+                //data: $('#form_sample_2').serialize(),
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+					// 如果发生了错误的话
+                    var form2 = $('#form_sample_2');
+                    var error2 = $('.alert-error', form2);
+                    var success2 = $('.alert-success', form2);
 
+					if (result.error == 1) {
+                        $('#resultId4Form').html(result.message);
+                        success2.hide();
+                        error2.show();
+                        App.scrollTo(error2, -200);
+					}else{                        
+                        //$('body').html(result.content);
+						location.href = result.content;
+					}
+                },
+                error : function() {
+                    //alert("异常！");
+					$('.alert-error', $('#form_sample_2')).show();
+                }
+            });
+		}
     };
 
 }();
