@@ -128,8 +128,9 @@ class IndexController extends ControllerBase
             $memo = array(
                 'is_got_prize' => false,
                 'is_record_lottery_user_contact_info' => false
-            );
-            $userInfo = $this->getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, 'redpack_user', 'thirdparty_user', $memo);
+            );            
+            $scene = "";
+            $userInfo = $this->getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, 'redpack_user', 'thirdparty_user', $scene, $memo);
             
             // 是否是黑名单用户
             $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity_id);
@@ -608,10 +609,10 @@ class IndexController extends ControllerBase
         }
     }
 
-    protected function getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, array $memo = array())
+    protected function getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, $scene, array $memo = array())
     {
         // 生成活动用户
-        $userInfo = $this->modelActivityUser->getOrCreateByUserId($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, 1, 0, $this->activity_id, $memo);
+        $userInfo = $this->modelActivityUser->getOrCreateByUserId($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, 1, 0, $this->activity_id, $scene, $memo);
         return $userInfo;
     }
 

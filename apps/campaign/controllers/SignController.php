@@ -98,8 +98,8 @@ class SignController extends ControllerBase
                 // 是否抽奖
                 'is_lottery' => 0
             );
-            
-            $userInfo = $this->modelActivityUser->getOrCreateByUserId($FromUserName, $nickname, $headimgurl, '', '', 0, 0, $this->activity1, $memo);
+            $scene = "";
+            $userInfo = $this->modelActivityUser->getOrCreateByUserId($FromUserName, $nickname, $headimgurl, '', '', 0, 0, $this->activity1, $scene, $memo);
             
             // 是否是黑名单用户
             $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity1);

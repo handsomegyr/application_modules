@@ -87,7 +87,8 @@ class FundController extends ControllerBase
                 'is_correct' => false,
                 'is_answer' => false
             );
-            $userInfo = $this->modelActivityUser->getOrCreateByUserId($user_id, $nickname, $headimgurl, '', '', 0, 0, $this->activity1, $memo);
+            $scene="";
+            $userInfo = $this->modelActivityUser->getOrCreateByUserId($user_id, $nickname, $headimgurl, '', '', 0, 0, $this->activity1, $scene, $memo);
             if (empty($userInfo)) {
                 echo $this->error(- 40491, 'user_id不正确');
                 return false;
