@@ -230,7 +230,7 @@ var List = function () {
                               return '<span <?php if(isset($field['list']['ajax'])){?>onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \''+full['_id']+'\', \'<?php echo $key ?>\')"<?php }?>class="label label-danger">no</span>';
                           };
                       }
-  	  	   	       <?php }elseif($field['data']['type'] == "file" && isset($field['list']['render']) && $field['list']['render'] == 'img'){ ?>
+  	  	   	       <?php }elseif(($field['data']['type'] == "file" || $field['data']['type'] == "image") && isset($field['list']['render']) && $field['list']['render'] == 'img'){ ?>
   	               "render": function ( data, type, full, meta ) {
   	                    //console.info(data);
     	            	<?php 
@@ -250,9 +250,14 @@ var List = function () {
     	            	 <?php 
                          $items = is_callable($field['list']['items'])?$field['list']['items']():$field['list']['items'];
                          ?>
-                         <?php foreach ($items as $item) {?>
+                         <?php foreach ($items as $itemKey=>$item) {?>
+						<?php if(isset($item['value'])){ ?>
                          }else if (data == '<?php echo $item['value']?>') {
                         	 return '<span class="label label-info"><?php echo $item['name']?></span>';
+						<?php }else{ ?>
+						}else if (data == '<?php echo $itemKey?>') {
+                        	 return '<span class="label label-info"><?php echo $item?></span>';
+						<?php } ?> 
                          <?php } ?>               
                          } else {
                         	 return '<span class="label label-info"></span>';

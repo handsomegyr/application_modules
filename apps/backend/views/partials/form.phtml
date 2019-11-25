@@ -157,8 +157,12 @@
                                         <?php }elseif($field['form']['input_type'] == "radio"){?>
                                             <?php 
                                             $items = is_callable($field['form']['items'])?$field['form']['items']():$field['form']['items'];
-                                            foreach ($items as $item) {?>
+                                            foreach ($items as $itemKey=> $item) {?>
+                                            <?php if(isset($item['value'])){ ?>
                                             <label class="radio"><input type="radio" name="<?php echo $key?>" value="<?php echo $item['value']?>" <?php if($this->view->row[$key] == $item['value']){?>checked<?php }?> /><?php echo $item['name']?></label>
+                                            <?php }else{ ?>
+                                            <label class="radio"><input type="radio" name="<?php echo $key?>" value="<?php echo $itemKey?>" <?php if($this->view->row[$key] == $itemKey){?>checked<?php }?> /><?php echo $item?></label>    
+                                            <?php }?>
                                             <?php }?>
 										<?php }elseif($field['form']['input_type'] == "ueditor"){?>
 										    <script type="text/plain" id="<?php echo $key?>" name="<?php echo $key?>" style="width: 100%; height:250px;"><?php echo $this->view->row[$key]?></script>

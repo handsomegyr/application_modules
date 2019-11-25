@@ -103,20 +103,25 @@ class StoreController extends \App\Backend\Controllers\FormController
         );
 
         // 0关闭，1开启，2审核中
-        $stateItems = array(
-            array(
-                'name' => '审核中',
-                'value' => '2'
-            ),
-            array(
-                'name' => '开启',
-                'value' => '1'
-            ),
-            array(
-                'name' => '关闭',
-                'value' => '0'
-            )
-        );
+        // $stateItems = array(
+        //     array(
+        //         'name' => '审核中',
+        //         'value' => '2'
+        //     ),
+        //     array(
+        //         'name' => '开启',
+        //         'value' => '1'
+        //     ),
+        //     array(
+        //         'name' => '关闭',
+        //         'value' => '0'
+        //     )
+        // );
+        $stateItems = array();
+        $stateItems['2'] = '审核中';
+        $stateItems['1'] = '开启';
+        $stateItems['0'] = '关闭';
+
         $schemas['state'] = array(
             'name' => '店铺状态',
             'data' => array(
