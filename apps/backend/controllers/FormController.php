@@ -277,8 +277,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                         $uploadPath = APP_PATH . "public/upload/{$path}";
                         makeDir($uploadPath);
                         $destination = "{$uploadPath}{$fileId}";
-                        // die($destination);
-
                         $file->moveTo($destination);
                         $input->$key = $fileId;
                     }

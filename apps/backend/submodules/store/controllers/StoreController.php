@@ -73,14 +73,17 @@ class StoreController extends \App\Backend\Controllers\FormController
         $schemas['logo'] = array(
             'name' => 'LOGO图',
             'data' => array(
-                'type' => 'string',
-                'length' => 255
+                'type' => 'file',
+                'length' => 255,
+                'file' => array(
+                    'path' => $this->modelStore->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'file',
                 'is_show' => true
             ),
             'list' => array(
