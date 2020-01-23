@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend;
 
 use Phalcon\Loader;
@@ -19,13 +20,13 @@ class Module
     public function registerAutoloaders()
     {
         $loader = new Loader();
-        
+
         $loader->registerNamespaces(array(
             'App\Backend\Controllers' => __DIR__ . '/controllers/',
             'App\Backend\Tags' => __DIR__ . '/tags/',
             'App\Backend\Plugins' => __DIR__ . '/plugins/'
         ));
-        
+
         $loader->register();
     }
 
@@ -40,38 +41,42 @@ class Module
          * Read configuration
          */
         $config = include __DIR__ . "/config/config.php";
-        
+        $di->set('adminConfig', function () use ($config) {
+            return $config;
+        });
+
         // Registering a dispatcher
         $di->set('dispatcher', function () {
             $eventsManager = new EventsManager();
-            
+
             /**
              * Check if the user is allowed to access certain action using the SecurityPlugin
              */
             $eventsManager->attach('dispatch:beforeDispatch', new SecurityPlugin());
-            
+
             /**
              * Handle exceptions and not-found exceptions using NotFoundPlugin
              */
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
-            
+
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace("App\Backend\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
-            
+
             return $dispatcher;
         });
-        
+
         $di['myTag'] = function () {
             return new MyTags();
         };
-        
+
         /**
          * Setting up the view component
          */
         $di['view'] = function () {
             $view = new View();
+            //$view->setViewsDir(__DIR__ . '/views4backend1/');
             $view->setViewsDir(__DIR__ . '/views/');
             $view->registerEngines(array(
                 // ".volt" => 'volt'
@@ -79,21 +84,21 @@ class Module
             ));
             return $view;
         };
-        
+
         /**
          * Setting up volt
          */
         $di->set('volt', function ($view, $di) {
-            
+
             $volt = new VoltEngine($view, $di);
-            
+
             $volt->setOptions(array(
                 "compiledPath" => APP_PATH . "cache/volt/"
             ));
-            
+
             $compiler = $volt->getCompiler();
             $compiler->addFunction('is_a', 'is_a');
-            
+
             return $volt;
         }, true);
     }

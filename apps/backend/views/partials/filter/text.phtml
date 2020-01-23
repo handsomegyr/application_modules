@@ -1,0 +1,22 @@
+<div class="input-group input-group-sm">
+    <?php if (!empty($group)) { ?>
+        <div class="input-group-btn">
+            <input type="hidden" name="<?php echo $key ?>_group" class="<?php echo $group_name ?>-operation" value="0" />
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="min-width: 32px;">
+                <span class="<?php echo $group_name ?>-label"><?php echo $default['label'] ?></span>
+                &nbsp;&nbsp;
+                <span class="fa fa-caret-down"></span>
+            </button>
+            <ul class="dropdown-menu <?php echo $group_name ?>">
+                <?php foreach ($group as $index => $item) { ?>
+                    <li><a href="#" data-index="<?php echo $index ?>"> <?php echo $item['label'] ?> </a></li>
+                <?php } ?>
+            </ul>
+        </div>
+    <?php } ?>
+    <div class="input-group-addon">
+        <i class="fa fa-<?php echo $icon ?>"></i>
+    </div>
+
+    <input type="<?php echo $type ?>" class="form-control <?php echo $key ?>" placeholder="<?php echo $field['search']['placeholder']; ?>" id="<?php echo 'search_' . $key ?>" name="<?php echo 'search_' . $key ?>" value="<?php echo $_SESSION['search_filter'][$key] ?>">
+</div>

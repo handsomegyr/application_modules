@@ -7,6 +7,7 @@ use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength;
 use Phalcon\Validation\Validator\Between;
+use Phalcon\Filter\FilterFactory;
 
 /**
  * @title({name="表管理"})
@@ -133,16 +134,48 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         )
     );
 
+    // protected $trueOrFalseDatas = array(
+    //     array(
+    //         'name' => '是',
+    //         'value' => '1'
+    //     ),
+    //     array(
+    //         'name' => '否',
+    //         'value' => '0'
+    //     )
+    // );
     protected $trueOrFalseDatas = array(
-        array(
-            'name' => '是',
-            'value' => '1'
-        ),
-        array(
-            'name' => '否',
-            'value' => '0'
-        )
+        '1' => '是',
+        '0' => '否',
     );
+
+    protected function sortSchemas($schemas)
+    {
+        //$idSchema = $schemas['_id'];
+        $createTimeSchema = $schemas['__CREATE_TIME__'];
+        $updateTimeSchema = $schemas['__MODIFY_TIME__'];
+        $removeSchema = $schemas['__REMOVED__'];
+
+        if (strtolower($this->actionName) == 'add') {
+            $createTimeSchema['form']['is_show'] = false;
+            $updateTimeSchema['form']['is_show'] = false;
+        } elseif (strtolower($this->actionName) == 'edit') {
+            $createTimeSchema['form']['is_show'] = false;
+            $updateTimeSchema['form']['is_show'] = true;
+            $updateTimeSchema['form']['readonly'] = true;
+        }
+
+        //unset($schemas['_id']);
+        unset($schemas['__CREATE_TIME__']);
+        unset($schemas['__MODIFY_TIME__']);
+        unset($schemas['__REMOVED__']);
+
+        // 放入最后
+        $schemas['__CREATE_TIME__'] = $createTimeSchema;
+        $schemas['__MODIFY_TIME__'] = $updateTimeSchema;
+        $schemas['__REMOVED__'] = $removeSchema;
+        return $schemas;
+    }
 
     protected function getSchemas()
     {
@@ -165,6 +198,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             ),
             'search' => array(
                 'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
 
@@ -183,10 +219,13 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => false
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
 
@@ -202,13 +241,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
+                'readonly' => true,
                 'is_show' => false
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
 
@@ -323,6 +366,16 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     $defaultValue = "";
                 }
                 $input->$key = $this->request->get($key, $filters, $defaultValue);
+
+                // 将元素中空值的排除掉
+                if ($field['data']['type'] == "array") {
+                    if (!empty($input->$key)) {
+                        $input->$key = array_filter($input->$key, function ($element) {
+                            $element = trim($element);
+                            return strlen($element) > 0;
+                        });
+                    }
+                }
             }
         }
 
@@ -426,6 +479,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             return array();
         };
 
+        // 保存在会话中
+        $_SESSION['search_filter'] = $input->getFilter();
         return $input;
     }
 
@@ -434,7 +489,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         parent::initialize();
 
         $this->view->setVar('formName', $this->getName());
-        $this->view->setVar('schemas', $this->getSchemas());
+        $this->view->setVar('schemas', $this->sortSchemas($this->getSchemas()));
         $this->view->setVar('partials4List', $this->getPartials4List());
     }
 
@@ -481,6 +536,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function queryAction()
     {
         try {
+            unset($_SESSION['toastr']);
+
             $this->view->disable();
 
             $input = $this->getListFilterInput();
@@ -494,6 +551,15 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
             // 将列表数据按照画面要求进行显示
             $list = $this->getList4Show($input, $list);
+
+            foreach ($list['data'] as &$item) {
+                if (isset($item['__MODIFY_TIME__'])) {
+                    $item['__MODIFY_TIME__'] = date("Y-m-d H:i:s", $item['__MODIFY_TIME__']->sec);
+                }
+                if (isset($item['__CREATE_TIME__'])) {
+                    $item['__CREATE_TIME__'] = date("Y-m-d H:i:s", $item['__CREATE_TIME__']->sec);
+                }
+            }
 
             $datas = array(
                 'draw' => $input->draw,
@@ -526,6 +592,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $row = $this->getModel()->getEmptyRow($this->getFilterInput());
             $this->view->setVar('row', $row);
             $this->view->setVar('form_act', $this->getUrl("insert"));
+            $this->view->setVar('list_url', $this->getUrl("list"));
         } catch (\Exception $e) {
             throw $e;
         }
@@ -556,6 +623,12 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // $link[1]['text'] = '返回' . $this->getName() . '列表';
             // $link[1]['href'] = $this->getUrl("list");
             // $this->sysMsg($this->getName() . '添加成功!', 0, $link);
+
+            unset($_SESSION['toastr']);
+            $_SESSION['toastr']['type'] = "success";
+            $_SESSION['toastr']['message'] = '添加成功!';
+            $_SESSION['toastr']['options'] = array();
+
             $this->makeJsonResult($this->getUrl("sysmsg4insert"));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -582,6 +655,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
             $this->view->setVar('row', $row);
             $this->view->setVar('form_act', $this->getUrl("update"));
+            $this->view->setVar('list_url', $this->getUrl("list"));
         } catch (\Exception $e) {
             throw $e;
         }
@@ -614,6 +688,12 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // /* 添加链接 */
             // $link[0]['text'] = '返回' . $this->getName() . '列表';
             // $link[0]['href'] = $this->getUrl("list");
+
+            unset($_SESSION['toastr']);
+            $_SESSION['toastr']['type'] = "success";
+            $_SESSION['toastr']['message'] = '保存成功!';
+            $_SESSION['toastr']['options'] = array();
+
             $this->makeJsonResult($this->getUrl("sysmsg4update"));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -648,6 +728,52 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $this->makeJsonResult();
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="删除文件"})
+     *
+     * @name 删除
+     */
+    public function removefileAction()
+    {
+        try {
+            $this->view->disable();
+
+            $id = $this->request->get('id', array(
+                'trim',
+                'string'
+            ), '');
+
+            $field = $this->request->get('_field_del_', array(
+                'trim',
+                'string'
+            ), '');
+
+            //throw new \Exception($messageInfo);
+            $updateData = array();
+            $updateData[$field] = "";
+            $this->getModel()->update(array(
+                '_id' => $id
+            ), array(
+                '$set' => $updateData
+            ));
+
+            // {"status":true,"message":"\u5220\u9664\u6210\u529f !"}
+            $res = array(
+                'status' => true,
+                'message' => "删除文件成功"
+            );
+            $this->response->setJsonContent($res)->send();
+            // $this->makeJsonResult();
+        } catch (\Exception $e) {
+            $res = array(
+                'status' => false,
+                'message' => $e->getMessage()
+            );
+            $this->response->setJsonContent($res)->send();
+            //$this->makeJsonError($e->getMessage());
         }
     }
 

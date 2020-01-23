@@ -85,6 +85,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'ueditor',
+                //'input_type' => 'ckeditor',
                 'is_show' => true
             ),
             'list' => array(

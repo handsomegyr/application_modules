@@ -41,7 +41,9 @@ class Module
          * Read configuration
          */
         $config = include APP_PATH . "apps/backend/config/config.php";
-        
+        $di->set('adminConfig', function () use ($config) {
+            return $config;
+        });
         // Registering a dispatcher
         $di->set('dispatcher', function () {
             $eventsManager = new EventsManager();

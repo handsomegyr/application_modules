@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Weixin\Controllers;
 
 use App\Backend\Submodules\Weixin\Models\ReplyType;
@@ -30,7 +31,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['keyword'] = array(
             'name' => '关键词',
             'data' => array(
@@ -51,7 +52,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['fuzzy'] = array(
             'name' => '模糊匹配?',
             'data' => array(
@@ -73,7 +74,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['reply_type'] = array(
             'name' => '回复类型',
             'data' => array(
@@ -86,8 +87,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelReplyType->getAll();
                 }
             ),
@@ -111,8 +111,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelReply->getAll();
                 },
                 'select' => array(
@@ -127,7 +126,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['priority'] = array(
             'name' => '优先级',
             'data' => array(
@@ -148,7 +147,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['times'] = array(
             'name' => '命中次数',
             'data' => array(
@@ -169,7 +168,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -187,16 +186,18 @@ class KeywordController extends \App\Backend\Controllers\FormController
     {
         $replyTypeList = $this->modelReplyType->getAll();
         $replyList = $this->modelReply->getAll();
-        
+
         foreach ($list['data'] as &$item) {
-            $item['reply_ids_show'] = "";
+            $item['reply_ids_show'] = array();
             foreach ($item['reply_ids'] as $reply_id) {
                 if (isset($replyList[$reply_id])) {
                     $item['reply_ids_show'][] = $replyList[$reply_id];
                 }
             }
+            
             $item['reply_ids_show'] = implode(',', $item['reply_ids_show']);
-            $item['reply_type_name'] = isset($replyTypeList[$item['reply_type']]) ? $replyTypeList[$item['reply_type']] : "--";
+            $item['reply_type_name'] = isset($replyTypeList[$item['reply_type']]) ? $replyTypeList[$item['reply_type']] : "--";            
+
         }
         return $list;
     }

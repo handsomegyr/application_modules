@@ -1,0 +1,14 @@
+<?php if (!empty($_SESSION['toastr'])) { ?>
+    <?php
+    $toastr     = $_SESSION['toastr'];
+    $type       = empty($toastr['type']) ? 'success' : $toastr['type'];
+    $message    = empty($toastr['message']) ? '保存成功' : $toastr['message'];
+    $options    = empty($toastr['options']) ? json_encode([]) : json_encode($toastr['options']);
+    unset($_SESSION['toastr']);
+    ?>
+    <script>
+        $(function() {
+            toastr.<?php echo $type ?>('<?php echo $message ?>', null, <?php echo $options ?>);
+        });
+    </script>
+<?php } ?>

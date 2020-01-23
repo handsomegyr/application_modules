@@ -1,6 +1,6 @@
 <?php
-$url1= "index/index";
-$url2= $this->view->controllerName."/".$this->view->actionName;
+$url1 = "index/index";
+$url2 = $this->view->controllerName . "/" . $this->view->actionName;
 
 $title = "";
 $smalltitle = "";
@@ -9,103 +9,130 @@ if ($this->view->moduleName == "admin/system") {
     $title = "系统管理";
     if ($this->view->controllerName == "menu") {
         $smalltitle .= "菜单";
-    }elseif ($this->view->controllerName == "role") {
+    } elseif ($this->view->controllerName == "role") {
         $smalltitle .= "角色";
-    }elseif ($this->view->controllerName == "user") {
+    } elseif ($this->view->controllerName == "user") {
         $smalltitle .= "用户";
     }
-}elseif ($this->view->moduleName == "admin/lottery") {
+} elseif ($this->view->moduleName == "admin/lottery") {
     $title = "抽奖管理";
     if ($this->view->controllerName == "activity") {
         $smalltitle .= "活动管理";
-    }elseif ($this->view->controllerName == "code") {
+    } elseif ($this->view->controllerName == "code") {
         $smalltitle .= "奖品券码管理";
-    }elseif ($this->view->controllerName == "exchange") {
+    } elseif ($this->view->controllerName == "exchange") {
         $smalltitle .= "中奖管理";
-    }elseif ($this->view->controllerName == "identity") {
+    } elseif ($this->view->controllerName == "identity") {
         $smalltitle .= "参与者管理";
-    }elseif ($this->view->controllerName == "limit") {
+    } elseif ($this->view->controllerName == "limit") {
         $smalltitle .= "限制管理";
-    }elseif ($this->view->controllerName == "prize") {
+    } elseif ($this->view->controllerName == "prize") {
         $smalltitle .= "奖品管理";
-    }elseif ($this->view->controllerName == "rule") {
+    } elseif ($this->view->controllerName == "rule") {
         $smalltitle .= "概率管理";
-    }elseif ($this->view->controllerName == "source") {
+    } elseif ($this->view->controllerName == "source") {
         $smalltitle .= "访问来源管理";
     }
-}elseif ($this->view->moduleName == "admin/weixin") {
+} elseif ($this->view->moduleName == "admin/weixin") {
     $title = "微信管理";
     if ($this->view->controllerName == "keyword") {
         $smalltitle .= "关键词管理";
-    }elseif ($this->view->controllerName == "reply") {
+    } elseif ($this->view->controllerName == "reply") {
         $smalltitle .= "回复管理";
-    }elseif ($this->view->controllerName == "replytype") {
+    } elseif ($this->view->controllerName == "replytype") {
         $smalltitle .= "回复类型管理";
-    }elseif ($this->view->controllerName == "menu") {
+    } elseif ($this->view->controllerName == "menu") {
         $smalltitle .= "自定义菜单管理";
-    }elseif ($this->view->controllerName == "menutype") {
+    } elseif ($this->view->controllerName == "menutype") {
         $smalltitle .= "菜单类型管理";
-    }elseif ($this->view->controllerName == "application") {
+    } elseif ($this->view->controllerName == "application") {
         $smalltitle .= "应用管理";
-    }elseif ($this->view->controllerName == "user") {
+    } elseif ($this->view->controllerName == "user") {
         $smalltitle .= "用户管理";
-    }elseif ($this->view->controllerName == "source") {
+    } elseif ($this->view->controllerName == "source") {
         $smalltitle .= "原始数据管理";
-    }elseif ($this->view->controllerName == "msgtype") {
+    } elseif ($this->view->controllerName == "msgtype") {
         $smalltitle .= "消息类型管理";
-    }elseif ($this->view->controllerName == "qrcode") {
+    } elseif ($this->view->controllerName == "qrcode") {
         $smalltitle .= "二维码推广场景管理";
-    }elseif ($this->view->controllerName == "scene") {
+    } elseif ($this->view->controllerName == "scene") {
         $smalltitle .= "二维码场景管理";
-    }elseif ($this->view->controllerName == "notkeyword") {
+    } elseif ($this->view->controllerName == "notkeyword") {
         $smalltitle .= "非关键字管理";
-    }elseif ($this->view->controllerName == "page") {
+    } elseif ($this->view->controllerName == "page") {
         $smalltitle .= "自定义页面管理";
-    }elseif ($this->view->controllerName == "gender") {
+    } elseif ($this->view->controllerName == "gender") {
         $smalltitle .= "性别管理";
-    }elseif ($this->view->controllerName == "scripttracking") {
+    } elseif ($this->view->controllerName == "scripttracking") {
         $smalltitle .= "执行时间跟踪统计管理";
-    }elseif ($this->view->controllerName == "callbackurls") {
+    } elseif ($this->view->controllerName == "callbackurls") {
         $smalltitle .= "回调地址安全域名管理";
-    }elseif ($this->view->controllerName == "subscribeuser") {
+    } elseif ($this->view->controllerName == "subscribeuser") {
         $smalltitle .= "关注用户管理";
     }
-}else{
+} else {
     if ($this->view->controllerName == "index" && $this->view->actionName == "index") {
         $title = "Dashbord";
         $smalltitle = "";
-    } 
+    }
 }
 
 if ($this->view->actionName == "list") {
     $smalltitle .= "列表";
-}elseif ($this->view->actionName == "add") {
+} elseif ($this->view->actionName == "add") {
     $smalltitle .= "追加";
-}elseif ($this->view->actionName == "edit") {
+} elseif ($this->view->actionName == "edit") {
     $smalltitle .= "编辑";
 }
+
+$request_segments = $this->view->moduleName . "/" . $this->view->controllerName . "/" . $this->view->actionName;
+$request_segments = explode('/', trim($request_segments));
+
+$breadcrumb = array();
+$item = array();
+$item['url'] = "";
+$item['icon'] = "";
+$item['text'] = "";
+$num = count($breadcrumb);
+
 ?>
+<h1>
+    <?php echo $title ?>
+    <?php if (!empty($smalltitle)) { ?><small><?php echo $smalltitle ?></small><?php } ?>
+</h1>
+<!-- breadcrumb start -->
+<?php if (!empty($breadcrumb)) { ?>
+    <ol class="breadcrumb" style="margin-right: 30px;">
+        <li><a href="<?php echo $this->view->baseUrl ?>admin/index/index"><i class="fa fa-dashboard"></i> 管理中心</a></li>
+        <?php foreach ($breadcrumb as $k => $item) { ?>
+            <?php if ($k == ($num - 1)) { ?>
+                <li class="active">
+                    <?php if (!empty($item['icon'])) { ?>
+                        <i class="fa fa-<?php echo $item['icon'] ?>"></i>
+                    <?php } ?>
+                    <?php echo $item['text'] ?>
+                </li>
+            <?php } else { ?>
+                <li>
+                    <a href="<?php echo $this->view->baseUrl . $item['url'] ?>">
+                        <?php if (!empty($item['icon'])) { ?>
+                            <i class="fa fa-<?php echo $item['icon'] ?>"></i>
+                        <?php } ?>
+                        <?php echo $item['text'] ?>
+                    </a>
+                </li>
+            <?php } ?>
+        <?php } ?>
+    </ol>
+<?php } elseif (!empty($this->view->adminConfig->admin->enable_default_breadcrumb)) { ?>
+    <ol class="breadcrumb" style="margin-right: 30px;">
+        <li><a href="<?php echo $this->view->baseUrl ?>admin/index/index"><i class="fa fa-dashboard"></i> 管理中心</a></li>
+        <?php for ($i = 1; $i < count($request_segments); $i++) { ?>
+            <li>
+                <?php echo ucfirst($request_segments[$i]) ?>
+            </li>
+        <?php } ?>
+    </ol>
+<?php } ?>
 
-                        <ul class="breadcrumb">
-
-							<li>
-
-								<i class="icon-home"></i>
-
-								<a href="<?php echo $this->view->baseUrl?>admin/index/index">管理中心</a> 
-                                <?php if(!empty($title)){?>
-								<i class="icon-angle-right"></i>
-                                <?php }?>
-							</li>
-							<?php if(!empty($title)){?>
-							<li>
-								<a href="<?php echo $this->view->baseUrl?><?php echo $this->view->moduleName?>/<?php echo $this->view->url1?>"><?php echo $title?></a>
-                                <?php if(!empty($smalltitle)){?>
-								<i class="icon-angle-right"></i>
-                                <?php }?>
-							</li>
-							<?php if(!empty($smalltitle)){?>
-							<li><a href="<?php echo $this->view->baseUrl?><?php echo $this->view->moduleName?>/<?php echo $this->view->url2?>"><?php echo $smalltitle?></a></li>
-                            <?php }?>
-							<?php }?>
-						</ul>
+<!-- breadcrumb end -->

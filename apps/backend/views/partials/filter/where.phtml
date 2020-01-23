@@ -1,0 +1,42 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label"> <?php echo $field['name'] ?></label>
+    <div class="col-sm-8">
+        <!--@include($presenter->view())-->
+        <?php
+        if (!isset($field['search']['partial'])) {
+            //print_r($field);die('xxx');
+            $type = "text";
+            $icon = "pencil";
+            if ($field['search']['input_type'] == "textarea") {
+                $this->partial('partials/filter/text');
+            } elseif ($field['search']['input_type'] == "ckeditor") {
+                $this->partial('partials/filter/text');
+            } elseif ($field['search']['input_type'] == "ueditor") {
+                $this->partial('partials/filter/text');
+            } elseif ($field['search']['input_type'] == "text") {
+                $this->partial('partials/filter/text');
+            } elseif ($field['search']['input_type'] == "number") {
+                $value = 0;
+                $this->partial('partials/form/input');
+            } elseif ($field['search']['input_type'] == "currency") {
+                $value = 0;
+                $this->partial('partials/form/input');
+            } elseif ($field['search']['input_type'] == "decimal") {
+                $value = 0;
+                $this->partial('partials/form/input');
+            } elseif ($field['search']['input_type'] == "radio") {
+                $inline = true;
+                $options = is_callable($field['search']['items']) ? $field['search']['items']() : $field['search']['items'];
+                //$this->partial('partials/filter/radio');
+                $this->partial('partials/filter/select');
+            } elseif ($field['search']['input_type'] == "select") {
+                $inline = true;
+                $options = is_callable($field['search']['items']) ? $field['search']['items']() : $field['search']['items'];
+                $this->partial('partials/filter/select');
+            }
+        } else {
+            $this->partial($field['search']['partial']);
+        }
+        ?>
+    </div>
+</div>

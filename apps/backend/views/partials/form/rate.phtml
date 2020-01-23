@@ -1,0 +1,17 @@
+<div class="<?php echo $this->view->viewClass['form-group'] ?> <?php echo (empty($errors) || !$errors->has($errorKey)) ? '' : 'has-error' ?>">
+
+    <label for="<?php echo $key ?>" class="<?php echo $this->view->viewClass['label'] ?> control-label"><?php echo $field['name'] ?></label>
+
+    <div class="<?php echo $this->view->viewClass['field'] ?>">
+
+        <?php $this->partial('partials/form/error'); ?>
+
+        <div class="input-group" style="width: 150px">
+            <input type="text" id="<?php echo $key ?>" name="<?php echo $key ?>" value="{{ old($column, $value) }}" class="form-control {{$class}}" placeholder="0" style="text-align:right;" {!! $attributes !!} />
+            <span class="input-group-addon">%</span>
+        </div>
+
+        <?php $this->partial('partials/form/help-block'); ?>
+
+    </div>
+</div>

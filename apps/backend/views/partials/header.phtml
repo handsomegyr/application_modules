@@ -1,0 +1,48 @@
+<!-- Main Header -->
+<header class="main-header">
+
+    <!-- Logo -->
+    <?php $this->partial("partials/header/top_navigation_bar/logo") ?>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <ul class="nav navbar-nav">
+            <!-- {!! Admin::getNavbar()->render('left') !!}-->
+        </ul>
+
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+                <!-- Messages: style can be found in dropdown.less-->
+                <?php //$this->partial("partials/header/top_navigation_bar/top_navigation_menu/inbox_dropdown") 
+                ?>
+
+                <!-- Notifications: style can be found in dropdown.less -->
+                <?php //$this->partial("partials/header/top_navigation_bar/top_navigation_menu/notification_dropdown") 
+                ?>
+
+                <!-- Tasks: style can be found in dropdown.less -->
+                <?php //$this->partial("partials/header/top_navigation_bar/top_navigation_menu/todo_dropdown") 
+                ?>
+
+                <!-- {!! Admin::getNavbar()->render() !!}-->
+                <a href="javascript:void(0);" class="container-refresh">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                
+                <!-- User Account: style can be found in dropdown.less -->
+                <?php $this->partial("partials/header/top_navigation_bar/top_navigation_menu/user_login_dropdown") ?>
+
+                <!-- Control Sidebar Toggle Button -->
+                <?php //$this->partial("partials/header/top_navigation_bar/top_navigation_menu/control_sidebar") 
+                ?>
+            </ul>
+
+        </div>
+    </nav>
+</header>

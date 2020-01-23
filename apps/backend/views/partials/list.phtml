@@ -1,80 +1,93 @@
 <?php echo $this->getContent(); ?>
-<?php //die('partials'); ?>						
-						<?php $this->partial("partials/search") ?>
-						
-						<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<?php //die('list'); 
+?>
 
-						<div class="portlet box light-grey">
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
 
-							<div class="portlet-title">
+			<?php if (isset($title)) { ?>
+				<div class="box-header with-border">
+					<h3 class="box-title"> <?php echo $title ?></h3>
+				</div>
+			<?php } ?>
 
-								<div class="caption"><i class="icon-globe"></i><?php echo $this->view->formName?>列表</div>
+			<?php if (true || $grid->showTools() || $grid->showExportBtn() || $grid->showCreateBtn()) { ?>
+				<div class="box-header with-border">
+					<div class="pull-right">
+						<!--{!! $grid->renderColumnSelector() !!}-->
+						<?php //$this->partial("partials/grid/column_selector"); 
+						?>
 
+						<?php if (true || $grid->showExportBtn()) { ?>
+							<!--{!! $grid->renderExportButton() !!}-->
+							<?php $this->partial("partials/grid/export_button"); ?>
+						<?php } ?>
+
+						<?php if (true || $grid->showCreateBtn()) { ?>
+							<!--{!! $grid->renderCreateButton() !!}-->
+							<?php $this->partial("partials/grid/create_button"); ?>
+						<?php } ?>
+
+					</div>
+
+					<?php if (true || $grid->showTools()) { ?>
+						<div class="pull-left">
+							<!--{!! $grid->renderHeaderTools() !!}-->
+							<div class="btn-group" style="margin-right: 5px" data-toggle="buttons">
+								<label class="btn btn-sm btn-dropbox 5e280b9811ada-filter-btn" title="筛选">
+									<input type="checkbox"><i class="fa fa-filter"></i><span class="hidden-xs">&nbsp;&nbsp;筛选</span>
+								</label>
 							</div>
-
-							<div class="portlet-body">
-
-								<div class="clearfix">
-
-									<div class="btn-group">
-
-										<button id="sample_editable_1_new" class="btn green">
-
-										Add New <i class="icon-plus"></i>
-
-										</button>
-    
-									</div>
-                                    
-                                    <div class="btn-group pull-right">
-
-										<button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i class="icon-angle-down"></i>
-
-										</button>
-
-										<ul class="dropdown-menu pull-right">
-
-											<li><a id="sample_editable_1_export_csv"  href="javascript:;">Export to Csv</a></li>
-
-										</ul>
-
-									</div>
-
-								</div>
-                               
-                                <table id="example" class="display table table-striped table-bordered table-hover table-full-width">
-                                    <thead>
-                                        <tr>
-                                            <?php $idx=$orderIdx=0;$orderBy="desc";$isFirst=false;?>
-                                            <?php foreach ($this->view->schemas as $key => $field) {?>
-                                            <?php if(!empty($field['list']['is_show'])){?>
-                                            <?php
-                                            if(!$isFirst && isset($this->view->defaultSort[$key])){
-                                                $orderIdx = $idx;
-                                                $orderBy = ($this->view->defaultSort[$key] == -1)?'desc':'asc';
-                                                $isFirst = true;
-                                            }
-                                            $idx++;
-                                            ?>
-                                            <th <?php if(!empty($field['list']['width'])){?>width="<?php echo $field['list']['width']?>"<?php }?>><?php echo isset($field['list']['name'])?$field['list']['name']:$field['name'];?></th>
-                                            <?php }?>
-                                            <?php }?>
-                                            <th>操作</th>
-                                        </tr>
-                                    </thead>                             
-                                </table>
-    
-							</div>
-
 						</div>
-						
-						<?php 
-						if(!empty($this->view->partials4List)){
-                            foreach ($this->view->partials4List as $partial) {
-                            	$this->partial($partial);
-                            }
-                        }
-                        ?>
-						
-						<!-- END EXAMPLE TABLE PORTLET-->
-						<?php $this->partial("partials/js/list") ?>
+					<?php } ?>
+				</div>
+			<?php } ?>
+
+			<!--{!! $grid->renderFilter() !!}-->
+			<?php $this->partial("partials/search") 
+			?>
+			<!--{!! $grid->renderHeader() !!}-->
+
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover" style="width:100%" id="example">
+					<thead>
+						<tr>
+							<?php
+							$idx = $orderIdx = 0;
+							$orderBy = "desc";
+							$isFirst = false;
+							?>
+							<?php foreach ($this->view->schemas as $key => $field) { ?>
+								<?php if (!empty($field['list']['is_show'])) { ?>
+									<?php
+									if (!$isFirst && isset($this->view->defaultSort[$key])) {
+										$orderIdx = $idx;
+										$orderBy = ($this->view->defaultSort[$key] == -1) ? 'desc' : 'asc';
+										$isFirst = true;
+									}
+									$idx++;
+									?>
+									<th <?php if (!empty($field['list']['width'])) { ?>width="<?php echo $field['list']['width'] ?>" <?php } ?>><?php echo isset($field['list']['name']) ? $field['list']['name'] : $field['name']; ?></th>
+								<?php } ?>
+							<?php } ?>
+							<th>操作</th>
+						</tr>
+					</thead>
+				</table>
+				<?php $this->partial("partials/js/list")
+				?>
+			</div>
+			<!-- /.box-body -->
+
+			<?php
+			if (!empty($this->view->partials4List)) {
+				foreach ($this->view->partials4List as $partial) {
+					$this->partial($partial);
+				}
+			}
+			?>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,19 @@
+<div class="<?php echo $this->view->viewClass['form-group'] ?> <?php echo (empty($errors) || !$errors->has($errorKey)) ? '' : 'has-error' ?>">
+
+    <label for="<?php echo $key ?>" class="<?php echo $this->view->viewClass['label'] ?> control-label"><?php echo $field['name'] ?></label>
+
+    <div class="<?php echo $this->view->viewClass['field'] ?>">
+
+        <?php $this->partial('partials/form/error'); ?>
+
+        <select class="form-control {{$class}}" style="width: 100%;" name="<?php echo $key ?>[]" multiple="multiple" data-placeholder="<?php echo $field['form']['placeholder']; ?>" {!! $attributes !!} >
+            @foreach($options as $select => $option)
+                <option value="{{$select}}" {{  in_array($select, (array)old($column, $value)) ?'selected':'' }}>{{$option}}</option>
+            @endforeach
+        </select>
+        <input type="hidden" name="<?php echo $key ?>[]" />
+
+        <?php $this->partial('partials/form/help-block'); ?>
+
+    </div>
+</div>

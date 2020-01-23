@@ -1,229 +1,103 @@
 <script>
-var Login = function () {
-    
-    return {
-        //main function to initiate the module
-        init: function () {
-           $('.login-form').validate({
-	            errorElement: 'label', //default input error message container
-	            errorClass: 'help-inline', // default input error message class
-	            focusInvalid: false, // do not focus the last invalid input
-	            rules: {
-	                username: {
-	                    required: true
-	                },
-	                password: {
-	                    required: true
-	                },
-	                remember: {
-	                    required: false
-	                }
-	            },
+	var Login = function() {
 
-	            messages: {
-	                username: {
-	                    required: "Username is required."
-	                },
-	                password: {
-	                    required: "Password is required."
-	                }
-	            },
+		return {
+			//main function to initiate the module
+			init: function() {
+				jQuery('#login_form_error1').hide();
+				jQuery('#login_form_group1').removeClass('has-error');
 
-	            invalidHandler: function (event, validator) { //display error alert on form submit   
-	                $('.alert-error', $('.login-form')).show();
-	            },
+				$('.login-form').validate({
+					errorElement: 'input', //default input error message container
+					errorClass: 'help-inline', // default input error message class
+					focusInvalid: false, // do not focus the last invalid input
+					rules: {
+						username: {
+							required: true
+						},
+						password: {
+							required: true
+						},
+						remember: {
+							required: false
+						}
+					},
 
-	            highlight: function (element) { // hightlight error inputs
-	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
-	            },
+					messages: {
+						username: {
+							required: "Username is required."
+						},
+						password: {
+							required: "Password is required."
+						}
+					},
 
-	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
-	                label.remove();
-	            },
+					invalidHandler: function(event, validator) { //display error alert on form submit   
+						$('#login_form_error1', $('.login-form')).show();
+					},
 
-	            errorPlacement: function (error, element) {
-	                error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
-	            },
+					highlight: function(element) { // hightlight error inputs
+						$(element)
+							.closest('.form-group').addClass('has-error'); // set error class to the control group
+					},
 
-	            submitHandler: function (form) {
-                    //form.submit();
-					Login.login();
-	                //window.location.href = "index.html";
-	            }
-	        });
+					success: function(label) {
+						label.closest('.form-group').removeClass('has-error');
+						//label.remove();
+					},
 
-	        $('.login-form input').keypress(function (e) {
-	            if (e.which == 13) {
-	                if ($('.login-form').validate().form()) {
-                        //$('.login-form').submit();
+					errorPlacement: function(error, element) {
+						error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+					},
+
+					submitHandler: function(form) {
 						Login.login();
-	                    //window.location.href = "index.html";
-	                }
-	                return false;
-	            }
-	        });
-
-	        $('.forget-form').validate({
-	            errorElement: 'label', //default input error message container
-	            errorClass: 'help-inline', // default input error message class
-	            focusInvalid: false, // do not focus the last invalid input
-	            ignore: "",
-	            rules: {
-	                email: {
-	                    required: true,
-	                    email: true
-	                }
-	            },
-
-	            messages: {
-	                email: {
-	                    required: "Email is required."
-	                }
-	            },
-
-	            invalidHandler: function (event, validator) { //display error alert on form submit   
-
-	            },
-
-	            highlight: function (element) { // hightlight error inputs
-	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
-	            },
-
-	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
-	                label.remove();
-	            },
-
-	            errorPlacement: function (error, element) {
-	                error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
-	            },
-
-	            submitHandler: function (form) {
-	                window.location.href = "index.html";
-	            }
-	        });
-
-	        $('.forget-form input').keypress(function (e) {
-	            if (e.which == 13) {
-	                if ($('.forget-form').validate().form()) {
-	                    window.location.href = "index.html";
-	                }
-	                return false;
-	            }
-	        });
-
-	        jQuery('#forget-password').click(function () {
-	            jQuery('.login-form').hide();
-	            jQuery('.forget-form').show();
-	        });
-
-	        jQuery('#back-btn').click(function () {
-	            jQuery('.login-form').show();
-	            jQuery('.forget-form').hide();
-	        });
-
-	        $('.register-form').validate({
-	            errorElement: 'label', //default input error message container
-	            errorClass: 'help-inline', // default input error message class
-	            focusInvalid: false, // do not focus the last invalid input
-	            ignore: "",
-	            rules: {
-	                username: {
-	                    required: true
-	                },
-	                password: {
-	                    required: true
-	                },
-	                rpassword: {
-	                    equalTo: "#register_password"
-	                },
-	                email: {
-	                    required: true,
-	                    email: true
-	                },
-	                tnc: {
-	                    required: true
-	                }
-	            },
-
-	            messages: { // custom messages for radio buttons and checkboxes
-	                tnc: {
-	                    required: "Please accept TNC first."
-	                }
-	            },
-
-	            invalidHandler: function (event, validator) { //display error alert on form submit   
-
-	            },
-
-	            highlight: function (element) { // hightlight error inputs
-	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
-	            },
-
-	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
-	                label.remove();
-	            },
-
-	            errorPlacement: function (error, element) {
-	                if (element.attr("name") == "tnc") { // insert checkbox errors after the container                  
-	                    error.addClass('help-small no-left-padding').insertAfter($('#register_tnc_error'));
-	                } else {
-	                    error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
-	                }
-	            },
-
-	            submitHandler: function (form) {
-	                window.location.href = "index.html";
-	            }
-	        });
-
-	        jQuery('#register-btn').click(function () {
-	            jQuery('.login-form').hide();
-	            jQuery('.register-form').show();
-	        });
-
-	        jQuery('#register-back-btn').click(function () {
-	            jQuery('.login-form').show();
-	            jQuery('.register-form').hide();
-	        });
-        },
-		// 登录
-		login: function(){
-			//alert("login！");
-			var formData = new FormData(document.getElementById("login_form1"));//
-
-			$.ajax({
-            	//几个参数需要注意一下
-                type: "POST",//方法类型
-                dataType: "json",//预期服务器返回的数据类型
-				url: "<?php echo $form_act?>" ,//url
-				contentType: false,//这里
-                processData: false,//这两个一定设置为false
-                data: formData,
-                //data: $('.login-form').serialize(),
-                success: function (result) {
-                    console.log(result);//打印服务端返回的数据(调试用)
-					// 如果发生了错误的话
-					if (result.error == 1) {
-						$('#spanErrorId4Login').html(result.message);
-						$('.alert-error', $('.login-form')).show();
-					}else{
-						// 跳转url
-						window.location.href = result.content.redirect;
 					}
-                },
-                error : function() {
-                    //alert("异常！");
-					$('.alert-error', $('.login-form')).show();
-                }
-            });
-		}
-    };
+				});
 
-}();
+				$('.login-form input').keypress(function(e) {
+					if (e.which == 13) {
+						if ($('.login-form').validate().form()) {
+							Login.login();
+						}
+						return false;
+					}
+				});
+
+			},
+			// 登录
+			login: function() {
+				//alert("login！");
+				var formData = new FormData(document.getElementById("login_form1")); //
+
+				$.ajax({
+					//几个参数需要注意一下
+					type: "POST", //方法类型
+					dataType: "json", //预期服务器返回的数据类型
+					url: "<?php echo $this->view->form_act ?>", //url
+					contentType: false, //这里
+					processData: false, //这两个一定设置为false
+					data: formData,
+					//data: $('.login-form').serialize(),
+					success: function(result) {
+						console.log(result); //打印服务端返回的数据(调试用)
+						// 如果发生了错误的话
+						if (result.error == 1) {
+							$('#login_form_error1').html('<i class="fa fa-times-circle-o"></i>' + result.message);
+							jQuery('#login_form_error1').show();
+							jQuery('#login_form_group1').addClass('has-error');
+						} else {
+							// 跳转url
+							window.location.href = result.content.redirect;
+						}
+					},
+					error: function() {
+						//alert("异常！");
+						$('.alert-error', $('.login-form')).show();
+					}
+				});
+			}
+		};
+
+	}();
 </script>

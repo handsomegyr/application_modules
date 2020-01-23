@@ -1,0 +1,14 @@
+<div class="<?php echo $this->view->viewClass['form-group'] ?> <?php echo (empty($errors) || !$errors->has($errorKey)) ? '' : 'has-error' ?>">
+
+    <label for="<?php echo $key ?>" class="<?php echo $this->view->viewClass['label'] ?> control-label"><?php echo $field['name'] ?></label>
+
+    <div class="<?php echo $this->view->viewClass['field'] ?>">
+
+        <?php $this->partial('partials/form/error'); ?>
+
+        <textarea <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> name="<?php echo $key ?>" class="form-control <?php echo $key ?>" rows="<?php echo $rows ?>" placeholder="<?php echo $field['form']['placeholder']; ?>" ><?php echo $value ?></textarea>
+
+        <?php $this->partial('partials/form/help-block'); ?>
+
+    </div>
+</div>

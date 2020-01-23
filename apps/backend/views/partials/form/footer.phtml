@@ -1,0 +1,32 @@
+<div class="box-footer">
+
+    <input type="hidden" name="_token" value="QbXBriWKlXoDZjvyAtoRxkQ36PBcR7hu3zDEy5Ts">
+
+    <div class="col-md-2">
+    </div>
+
+    <div class="col-md-8">
+
+
+        <?php if (in_array('submit', $buttons)) { ?>
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-primary" onclick="FormComponents.submit();">提交</button>
+            </div>
+
+            <?php foreach ($submit_redirects as $value => $redirect) { ?>
+                <?php if (in_array($redirect, $checkboxes)) { ?>
+                    <label class="pull-right" style="margin: 5px 10px 0 0;">
+                        <input type="checkbox" class="after-submit" name="after-save" value="<?php echo $value ?>" <?php echo ($default_check == $redirect) ? 'checked' : ''  ?>> xxxxx
+                    </label>
+                <?php } ?>
+            <?php } ?>
+
+        <?php } ?>
+
+        <?php if (in_array('reset', $buttons)) { ?>
+            <div class="btn-group pull-left">
+                <button type="reset" class="btn btn-warning">重置</button>
+            </div>
+        <?php } ?>
+    </div>
+</div>

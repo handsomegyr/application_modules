@@ -1,0 +1,14 @@
+<div class="<?php echo $this->view->viewClass['form-group'] ?>">
+    <label class="<?php echo $this->view->viewClass['label'] ?> control-label"><?php echo $field['name'] ?></label>
+    <div class="<?php echo $this->view->viewClass['field'] ?>">
+        <div class="box box-solid box-default no-margin">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <?php echo $this->view->row[$key] ?>&nbsp;
+            </div><!-- /.box-body -->
+        </div>
+
+        <?php $this->partial('partials/form/help-block'); ?>
+
+    </div>
+</div>

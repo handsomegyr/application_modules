@@ -1,0 +1,6 @@
+<select class="form-control <?php echo $key ?>" id="<?php echo 'search_' . $key ?>" name="<?php echo 'search_' . $key ?>" style="width: 100%;">
+    <option value="" <?php if ((empty($_SESSION['search_filter'][$key]))) { ?>selected<?php } ?>></option>
+    <?php foreach ($options as $select => $option) { ?>
+        <option value="<?php echo $select ?>" <?php if (!empty($_SESSION['search_filter'][$key]) && in_array($select, array($_SESSION['search_filter'][$key]))) { ?>selected<?php } ?>><?php echo $option ?></option>
+    <?php } ?>
+</select>

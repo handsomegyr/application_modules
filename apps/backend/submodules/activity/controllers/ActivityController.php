@@ -48,7 +48,10 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'list_data_name' => 'category_name'
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -69,7 +72,10 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -94,7 +100,10 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -116,7 +125,10 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -140,7 +152,10 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'list_type' => '1'
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -164,7 +179,10 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'list_type' => '1'
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         
@@ -185,7 +203,10 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;

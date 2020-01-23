@@ -1,0 +1,27 @@
+<div class="<?php echo $this->view->viewClass['form-group'] ?> <?php echo (empty($errors) || !$errors->has($errorKey)) ? '' : 'has-error' ?>">
+
+    <label for="<?php echo $key ?>" class="<?php echo $this->view->viewClass['label'] ?> control-label"><?php echo $field['name'] ?></label>
+
+    <div class="<?php echo $this->view->viewClass['field'] ?>">
+
+        <?php $this->partial('partials/form/error'); ?>
+        <?php if (!empty($options)) { ?>
+            <?php foreach ($options as $option => $label) { ?>
+
+                <?php echo !empty($inline) ? '<span class="icheck">' : '<div class="radio icheck">'; ?>
+
+                <label <?php if (!empty($inline)) { ?>class="radio-inline" <?php } ?>>
+                    <?php if (isset($label['value'])) { ?>
+                        <input type="radio" name="<?php echo $key ?>" value="<?php echo $label['value'] ?>" class="minimal <?php echo $key ?>" <?php if ($this->view->row[$key] == $label['value']) { ?>checked<?php } ?> />&nbsp;<?php echo $label['name'] ?>&nbsp;&nbsp;
+                    <?php } else { ?>
+                        <input type="radio" name="<?php echo $key ?>" value="<?php echo $option ?>" class="minimal <?php echo $key ?>" <?php if ($this->view->row[$key] == $option) { ?>checked<?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
+                    <?php } ?>
+                </label>
+
+                <?php echo !empty($inline) ? '</span>' : '</div>'; ?>
+            <?php } ?>
+        <?php } ?>
+        <?php $this->partial('partials/form/help-block'); ?>
+
+    </div>
+</div>

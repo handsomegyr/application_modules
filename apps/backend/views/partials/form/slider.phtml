@@ -1,0 +1,14 @@
+<div class="<?php echo $this->view->viewClass['form-group'] ?> <?php echo (empty($errors) || !$errors->has($errorKey)) ? '' : 'has-error' ?>">
+
+    <label for="<?php echo $key ?>" class="<?php echo $this->view->viewClass['label'] ?> control-label"><?php echo $field['name'] ?></label>
+
+    <div class="<?php echo $this->view->viewClass['field'] ?>">
+
+        <?php $this->partial('partials/form/error'); ?>
+
+        <input type="text" class="{{$class}}" name="<?php echo $key ?>" data-from="{{ old($column, $value) }}" {!! $attributes !!} />
+
+        <?php $this->partial('partials/form/help-block'); ?>
+
+    </div>
+</div>

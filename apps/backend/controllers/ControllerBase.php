@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Controllers;
 
 use Phalcon\Mvc\View;
@@ -9,9 +10,25 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     protected function initialize()
     {
         parent::initialize();
-        
-        $this->tag->prependTitle('INVO | ');
-        $this->view->setVar("resourceUrl", "/backend/metronic.bootstrap/");
+
+        // $this->tag->prependTitle('INVO | ');
+        // $this->view->setVar("resourceUrl", "/backend/metronic.bootstrap/");
+        $this->tag->prependTitle('AdminLTE | ');
+        $this->view->setVar("resourceUrl", "/backend2/AdminLTE/");
+
+        try {            
+            $adminConfig = $this->getDI()->get('adminConfig');
+            $this->view->setVar("adminConfig", $adminConfig);
+        } catch (\Exception $th) {
+            die($th->getMessage());
+        }
+
+
+        $viewClass = array();
+        $viewClass['form-group'] = "form-group";
+        $viewClass['label'] = "col-sm-2";
+        $viewClass['field'] = "col-sm-8";
+        $this->view->setVar("viewClass", $viewClass);
     }
 
     protected function _getValidationMessage($input)
@@ -36,7 +53,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             $links[0]['text'] = '返回上一页';
             $links[0]['href'] = 'javascript:history.go(-1)';
         }
-        
+
         $this->view->setVar('ur_here', '系统信息');
         $this->view->setVar('msg_detail', $msg_detail);
         $this->view->setVar('msg_type', $msg_type);
@@ -54,6 +71,10 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
 
     public function makeJsonError($msg)
     {
+        unset($_SESSION['toastr']);
+        // $_SESSION['toastr']['type'] = "success";
+        // $_SESSION['toastr']['message'] = $msg;
+        // $_SESSION['toastr']['options'] = array();
         $this->makeJsonResponse('', 1, $msg);
     }
 
@@ -74,8 +95,8 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             'message' => $message,
             'content' => $content
         );
-        
-        if (! empty($append)) {
+
+        if (!empty($append)) {
             foreach ($append as $key => $val) {
                 $res[$key] = $val;
             }

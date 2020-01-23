@@ -49,7 +49,7 @@ class SecurityPlugin extends Plugin
         ))) {
             return;
         }
-
+        $adminUser = new User();
         try {
             // 如果会话不存在那么就检查cookie
             if (empty($_SESSION['admin_id'])) {
@@ -59,7 +59,6 @@ class SecurityPlugin extends Plugin
                 }
 
                 // 验证cookie信息
-                $adminUser = new User();
                 $user = $adminUser->getInfoById($_COOKIE['ECSCP']['admin_id']);
                 if (empty($user)) {
                     throw new \Exception('用户不存在');

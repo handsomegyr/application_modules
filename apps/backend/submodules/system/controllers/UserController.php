@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\System\Controllers;
 
 use App\Backend\Submodules\System\Models\User;
@@ -26,7 +27,7 @@ class UserController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['username'] = array(
             'name' => '用户名称',
             'data' => array(
@@ -47,7 +48,32 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
+        $schemas['headimgurl'] = array(
+            'name' => '头像',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'file' => array(
+                    'path' => $this->modelUser->getUploadPath()
+                )
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true,
+                'render' => 'img'
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+
         $schemas['password'] = array(
             'name' => '密码',
             'data' => array(
@@ -68,7 +94,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['role'] = array(
             'name' => '角色',
             'data' => array(
@@ -81,8 +107,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelRole->getAll();
                 }
             ),
@@ -93,7 +118,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['lastip'] = array(
             'name' => '最新登录IP',
             'data' => array(
@@ -114,7 +139,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['lasttime'] = array(
             'name' => '最新登录时间',
             'data' => array(
@@ -136,7 +161,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['times'] = array(
             'name' => '登陆次数',
             'data' => array(
@@ -157,7 +182,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

@@ -1,0 +1,36 @@
+<div class="<?php echo $this->view->viewClass['form-group'] ?> <?php echo (empty($errors) || !$errors->has($errorKey)) ? '' : 'has-error' ?>">
+
+    <label for="<?php echo $key ?>" class="<?php echo $this->view->viewClass['label'] ?> control-label"><?php echo $field['name'] ?></label>
+
+    <div class="<?php echo $this->view->viewClass['field'] ?>" id="<?php echo $key ?>">
+
+        <?php if ($canCheckAll) { ?>
+            <span class="icheck">
+                <label class="checkbox-inline">
+                    <input type="checkbox" class="{{ $checkAllClass }}" />&nbsp;全选
+                </label>
+            </span>
+            <hr style="margin-top: 10px;margin-bottom: 0;">
+        <?php } ?>
+
+        <?php $this->partial('partials/form/error'); ?>
+
+        <?php if (!empty($options)) { ?>
+            <?php foreach ($options as $option => $label) { ?>
+
+                <?php echo !empty($inline) ? '<span class="icheck">' : '<div class="checkbox icheck">'; ?>
+
+                <label <?php if (!empty($inline)) { ?>class="checkbox-inline" <?php } ?>>
+                    <input type="checkbox" name="<?php echo $key ?>[]" value="<?php echo $option ?>" class="<?php echo $key ?>" <?php if (in_array($option, array($this->view->row[$key]))) { ?>'checked' <?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
+                </label>
+
+                <?php echo !empty($inline) ? '</span>' : '</div>'; ?>
+            <?php } ?>
+        <?php } ?>
+
+        <input type="hidden" name="<?php echo $key ?>[]">
+
+        <?php $this->partial('partials/form/help-block'); ?>
+
+    </div>
+</div>
