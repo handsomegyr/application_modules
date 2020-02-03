@@ -30,6 +30,8 @@ $filterID = 'filter-box';
                                 $this->partial('partials/filter/between');
                             } elseif ($field['search']['input_type'] == "datetimepicker") {
                                 $this->partial('partials/filter/betweenDatetime');
+                            } elseif ($field['search']['input_type'] == "number") {
+                                $this->partial('partials/filter/between');
                             } else {
                                 $this->partial('partials/filter/where');
                             }

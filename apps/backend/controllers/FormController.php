@@ -291,7 +291,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
         }
 
-        $schemas = $this->getSchemas();
+        $schemas = $this->sortSchemas($this->getSchemas());
         $input = new Input();
         $input->id = $this->request->get('id', array(
             'trim',
@@ -445,7 +445,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $input->sort_by = $columns[$order[0]['column']]['name'];
         $input->sort_order = $order[0]['dir'];
 
-        $schemas = $this->getSchemas();
+        $schemas = $this->sortSchemas($this->getSchemas());
         foreach ($schemas as $key => $field) {
             if (empty($field['search']['is_show'])) {
                 continue;
@@ -553,11 +553,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $list = $this->getList4Show($input, $list);
 
             foreach ($list['data'] as &$item) {
-                if (isset($item['__MODIFY_TIME__'])) {
-                    $item['__MODIFY_TIME__'] = date("Y-m-d H:i:s", $item['__MODIFY_TIME__']->sec);
-                }
-                if (isset($item['__CREATE_TIME__'])) {
-                    $item['__CREATE_TIME__'] = date("Y-m-d H:i:s", $item['__CREATE_TIME__']->sec);
+                foreach ($item as &$value) {
+                    if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
+                        $value = date("Y-m-d H:i:s", $value->sec);
+                    }
                 }
             }
 
@@ -885,8 +884,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $excel = array();
 
         $fields = array();
-        $schemas = $this->getSchemas();
+        $schemas = $this->sortSchemas($this->getSchemas());
         foreach ($schemas as $key => $field) {
+            if (!isset($field['export']['is_show'])) {
+                $field['export']['is_show'] = empty($field['form']['is_show']) ? false : $field['form']['is_show'];
+            }
             if (empty($field['export']['is_show'])) {
                 continue;
             }
@@ -897,9 +899,12 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             die('请设置导出的字段');
         }
         $datas = array();
-        foreach ($dataList as $data) {
+        foreach ($dataList as $data) {            
             $item = array();
             foreach ($schemas as $key => $field) {
+                if (!isset($field['export']['is_show'])) {
+                    $field['export']['is_show'] = empty($field['form']['is_show']) ? false : $field['form']['is_show'];
+                }
                 if (empty($field['export']) || empty($field['export']['is_show'])) {
                     continue;
                 }

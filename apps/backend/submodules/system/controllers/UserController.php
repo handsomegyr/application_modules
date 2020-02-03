@@ -45,7 +45,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -115,7 +115,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -136,7 +136,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -158,7 +158,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -173,13 +173,13 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
