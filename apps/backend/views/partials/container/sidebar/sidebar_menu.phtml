@@ -30,7 +30,7 @@ $icons2 = array(
 <ul class="sidebar-menu tree" data-widget="tree">
 	<li class="header">菜单</li>
 	<li class="active treeview menu-open" style="height: auto;">
-		<a href="#">
+		<a href="javascript:;">
 			<i class="fa fa-dashboard"></i> <span>Dashboard</span>
 			<span class="pull-right-container">
 				<i class="fa fa-angle-left pull-right"></i>
@@ -46,7 +46,7 @@ $icons2 = array(
 	<?php foreach ($menus as $menukey => $menu) { ?>
 		<?php if (true || !empty($menu['cando'])) { ?>
 			<li class="<?php if (!empty($menu['is_active'])) { ?>active<?php } ?> treeview <?php if (!empty($menu['is_active'])) { ?>menu-open<?php } ?>" style="height: auto;">
-				<a href="#">
+				<a href="javascript:;">
 					<i class="fa fa-share"></i> <span><?php echo ($menu['name']) ?></span>
 					<span class="pull-right-container">
 						<i class="fa fa-angle-left pull-right"></i>
@@ -57,24 +57,24 @@ $icons2 = array(
 					<?php foreach ($menu['priv'] as $priv) { ?>
 						<?php if (true || !empty($priv['cando'])) { ?>
 							<?php if (false) { ?>
-								<li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>><a href="#"><i class="fa fa-circle-o"></i> <?php echo ($priv['name']) ?></a></li>
+								<li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>><a href="javascript:;"><i class="fa fa-circle-o"></i> <?php echo ($priv['name']) ?></a></li>
 								<li class="treeview">
-									<a href="#"><i class="fa fa-circle-o"></i> Level One
+									<a href="javascript:;"><i class="fa fa-circle-o"></i> Level One
 										<span class="pull-right-container">
 											<i class="fa fa-angle-left pull-right"></i>
 										</span>
 									</a>
 									<ul class="treeview-menu">
-										<li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
+										<li><a href="javascript:;"><i class="fa fa-circle-o"></i> Level Two</a></li>
 										<li class="treeview">
-											<a href="#"><i class="fa fa-circle-o"></i> Level Two
+											<a href="javascript:;"><i class="fa fa-circle-o"></i> Level Two
 												<span class="pull-right-container">
 													<i class="fa fa-angle-left pull-right"></i>
 												</span>
 											</a>
 											<ul class="treeview-menu">
-												<li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-												<li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+												<li><a href="javascript:;"><i class="fa fa-circle-o"></i> Level Three</a></li>
+												<li><a href="javascript:;"><i class="fa fa-circle-o"></i> Level Three</a></li>
 											</ul>
 										</li>
 									</ul>

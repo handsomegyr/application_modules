@@ -144,30 +144,6 @@
 			//main function to initiate the module
 			init: function() {
 
-				// $('#sample_editable_1_new').click(function (e) {
-				//     e.preventDefault();
-				//     window.location.href = "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/add";           
-				// });
-
-				// $('#sample_editable_1_export_csv').click(function (e) {
-				//     e.preventDefault();
-				// 	var d = {};
-				//    <?php foreach ($this->view->schemas as $key => $field) { ?> 
-				//    <?php if (!empty($field['search']['is_show'])) { ?>
-				//    <?php if (!empty($field['search']['condition_type']) && $field['search']['condition_type'] == 'period') { ?>			   
-				//    d.<?php echo $key ?> = encodeURIComponent($('#search_<?php echo $key ?>_from').val()?$('#search_<?php echo $key ?>_from').val():""+'|'+$('#search_<?php echo $key ?>_to').val()?$('#search_<?php echo $key ?>_to').val():"");
-				//    <?php } else { ?>
-				//    d.<?php echo $key ?> = encodeURIComponent($('#search_<?php echo $key ?>').val()?$('#search_<?php echo $key ?>').val():"");
-				//    <?php } ?>
-				//    <?php } ?>
-				//    <?php } ?>
-				//    var p = "";
-				//    $.each( d, function(i, n){
-				// 	  p +=("&"+i+"="+n);
-				// 	});
-				//     window.location.href = "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/export?m=csv"+p;           
-				// });
-
 				$('.5e280b9811ada-filter-btn').unbind('click');
 				$('.5e280b9811ada-filter-btn').click(function(e) {
 					if ($('#filter-box').is(':visible')) {
@@ -176,6 +152,162 @@
 						$('#filter-box').removeClass('hide');
 					}
 				});
+
+				var actionResolver = function(data) {
+
+					var response = data[0];
+					var target = data[1];
+
+					if (typeof response !== 'object') {
+						return $.admin.swal({
+							type: 'error',
+							title: 'Oops!'
+						});
+					}
+
+					var then = function(then) {
+						if (then.action == 'refresh') {
+							$.admin.reload();
+						}
+
+						if (then.action == 'download') {
+							window.open(then.value, '_blank');
+						}
+
+						if (then.action == 'redirect') {
+							$.admin.redirect(then.value);
+						}
+					};
+
+					if (typeof response.html === 'string') {
+						target.html(response.html);
+					}
+
+					if (typeof response.swal === 'object') {
+						$.admin.swal(response.swal);
+					}
+
+					if (typeof response.toastr === 'object') {
+						$.admin.toastr[response.toastr.type](response.toastr.content, '', response.toastr.options);
+					}
+
+					if (response.then) {
+						then(response.then);
+					}
+				};
+
+				var actionCatcher = function(request) {
+					if (request && typeof request.responseJSON === 'object') {
+						$.admin.toastr.error(request.responseJSON.message, '', {
+							positionClass: "toast-bottom-center",
+							timeOut: 10000
+						}).css("width", "500px")
+					}
+				};
+
+				<?php foreach ($this->view->headerTools as $key => $tool) { ?>
+					$('.header-tool-<?php echo $key ?>').off('click').on('click', function(e) {
+						e.preventDefault();
+						var data = $(this).data();
+						var target = $(this);
+
+						var process = new Promise(function(resolve, reject) {
+							// alert('click');
+							Object.assign(data, {
+								//_token: $.admin.token,
+								_action: '<?php echo $tool['action'] ?>',
+							});
+
+							var formData = new FormData();
+							for (var key in data) {
+								formData.append(key, data[key]);
+							}
+
+							$.ajax({
+								method: 'GET',
+								url: '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>',
+								data: formData,
+								cache: false,
+								contentType: false,
+								processData: false,
+								success: function(data) {
+									// alert('success');
+									console.log(data); //打印服务端返回的数据(调试用)
+									if (!data.error) {
+										resolve([data, target]);
+										$('#app-admin-controllers-modal').html(data.content.content);
+										var modalId = data.content.modal_id;
+										$('#' + modalId).modal('show');
+										$('#' + modalId + ' form').off('submit').on('submit', function(e) {
+											e.preventDefault();
+											alert('form submit');
+											var form = this;
+											var process2 = new Promise(function(resolve, reject) {
+												var data1 = [];
+												Object.assign(data1, {
+													//_token: $.admin.token,
+													_action: '<?php echo $tool['action'] ?>',
+												});
+
+												var formData = new FormData(form);
+												for (var key in data1) {
+													formData.append(key, data1[key]);
+												}
+
+												$.ajax({
+													method: 'POST',
+													url: '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>',
+													data: formData,
+													cache: false,
+													contentType: false,
+													processData: false,
+													success: function(data) {
+														console.log(data); //打印服务端返回的数据(调试用)
+														if (!data.error) {
+															//{"status":true,
+															//"then":{"action":"download","value":"http:\/\/190821fg0463demo.jdytoy.com\/admin\/admin-build\/download-file?file_id=20200203192717.csv"},
+															//"toastr":{"type":"success","content":"Success\uff01","options":{"positionClass":"toast-top-center"}}}
+															var request = {};
+															request.status = true;
+															// request.then = {};
+															request.toastr = {};
+															request.toastr.type = "success";
+															request.toastr.content = "Success\uff01";
+															request.toastr.options = {
+																"positionClass": "toast-top-center"
+															};
+															resolve([request, target]);
+															$('#' + modalId).modal('hide');
+														} else {
+															var request = {};
+															request.responseJSON.message = data.message;
+															reject(request);
+														}
+													},
+													error: function(request) {
+														reject(request);
+													}
+												});
+											});
+											process2.then(actionResolver).catch(actionCatcher);
+										});
+									} else {
+										var request = {};
+										request.responseJSON.message = data.message;
+										reject(request);
+									}
+								},
+								error: function(request) {
+									console.log(request); //打印服务端返回的数据(调试用)
+									alert(request);
+									reject(request);
+								}
+							});
+						});
+						process.then(actionResolver).catch(actionCatcher);
+
+					});
+				<?php } ?>
 
 				//https://datatables.net/reference/option/#Features
 				$('#example').dataTable({
@@ -202,25 +334,9 @@
 						"url": "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/query",
 						"type": 'POST',
 						"data": function(d) {
-							<?php foreach ($this->view->schemas as $key => $field) { ?>
-								<?php if (!empty($field['search']['is_show'])) { ?>
-									<?php
-									$field['search']['input_type'] = empty($field['search']['input_type']) ? $field['form']['input_type'] : $field['search']['input_type'];
-									if ($field['search']['input_type'] == "hidden") {
-										$field['search']['condition_type'] = 'period';
-									} elseif ($field['search']['input_type'] == "datetimepicker") {
-										$field['search']['condition_type'] = 'period';
-									} elseif ($field['search']['input_type'] == "number") {
-										$field['search']['condition_type'] = 'period';
-									}
-									?>
-									<?php if (!empty($field['search']['condition_type']) && $field['search']['condition_type'] == 'period') { ?>
-										d.<?php echo $key ?> = encodeURIComponent(($('#search_<?php echo $key ?>_from').val() ? $('#search_<?php echo $key ?>_from').val() : "") + '|' + ($('#search_<?php echo $key ?>_to').val() ? $('#search_<?php echo $key ?>_to').val() : ""));
-									<?php } else { ?>
-										d.<?php echo $key ?> = encodeURIComponent(($('#search_<?php echo $key ?>').val() ? $('#search_<?php echo $key ?>').val() : ""));
-									<?php } ?>
-								<?php } ?>
-							<?php } ?>
+							// alert('datatable ajax');
+							d = Search.getConditions(d);
+							console.log(d);			
 						}
 					},
 					"columns": [

@@ -73,6 +73,39 @@
                     e.preventDefault();
                     $('#example').DataTable().draw();
                 });
+
+                $('#btnExport').click(function(e) {
+                    e.preventDefault();                    
+                    var d = Search.getConditions({});
+                    var p = "";
+                    $.each(d, function(i, n) {
+                        p += ("&" + i + "=" + n);
+                    });
+                    window.location.href = "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/export?m=csv" + p;
+                    //window.open("<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/export?m=csv" + p, '_blank');
+                });
+            },
+            getConditions: function(d) {                
+                <?php foreach ($this->view->schemas as $key => $field) { ?>
+                    <?php if (!empty($field['search']['is_show'])) { ?>
+                        <?php
+                        $field['search']['input_type'] = empty($field['search']['input_type']) ? $field['form']['input_type'] : $field['search']['input_type'];
+                        if ($field['search']['input_type'] == "hidden") {
+                            $field['search']['condition_type'] = 'period';
+                        } elseif ($field['search']['input_type'] == "datetimepicker") {
+                            $field['search']['condition_type'] = 'period';
+                        } elseif ($field['search']['input_type'] == "number") {
+                            $field['search']['condition_type'] = 'period';
+                        }
+                        ?>
+                        <?php if (!empty($field['search']['condition_type']) && $field['search']['condition_type'] == 'period') { ?>
+                            d.<?php echo $key ?> = encodeURIComponent(($('#search_<?php echo $key ?>_from').val() ? $('#search_<?php echo $key ?>_from').val() : "") + '|' + ($('#search_<?php echo $key ?>_to').val() ? $('#search_<?php echo $key ?>_to').val() : ""));
+                        <?php } else { ?>
+                            d.<?php echo $key ?> = encodeURIComponent(($('#search_<?php echo $key ?>').val() ? $('#search_<?php echo $key ?>').val() : ""));
+                        <?php } ?>
+                    <?php } ?>
+                <?php } ?>
+                return d;
             }
         };
     }();

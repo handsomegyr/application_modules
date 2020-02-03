@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="<?php echo $this->view->resourceUrl ?>../toastr/build/toastr.min.css">
   <link rel="stylesheet" href="<?php echo $this->view->resourceUrl ?>../bootstrap-fileinput/css/fileinput.min.css?v=4.5.2">
   <link rel="stylesheet" href="<?php echo $this->view->resourceUrl ?>../sweetalert2/dist/sweetalert2.css">
-
+  <link rel="stylesheet" href="<?php echo $this->view->resourceUrl ?>../laravel-admin/laravel-admin.css">
   <!-- 
 <link rel="stylesheet" href="<?php echo $this->view->resourceUrl ?>plugins/colorpicker/bootstrap-colorpicker.min.css">
  -->
@@ -60,7 +60,7 @@
 <link rel="stylesheet" href="http://qhdemo.jdytoy.com/vendor/laravel-admin/bootstrap-duallistbox/dist/bootstrap-duallistbox.min.css">
 <link rel="stylesheet" href="<?php echo $this->view->resourceUrl ?>dist/css/skins/skin-blue.min.css">
 <link rel="stylesheet" href="<?php echo $this->view->resourceUrl ?>bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://qhdemo.jdytoy.com/vendor/laravel-admin/laravel-admin/laravel-admin.css">
+
 <link rel="stylesheet" href="http://qhdemo.jdytoy.com/vendor/laravel-admin/nprogress/nprogress.css">
 <link rel="stylesheet" href="http://qhdemo.jdytoy.com/vendor/laravel-admin/nestable/nestable.css">
 <link rel="stylesheet" href="http://qhdemo.jdytoy.com/vendor/laravel-admin/toastr/build/toastr.min.css">
@@ -173,7 +173,7 @@
   <script src="<?php echo $this->view->resourceUrl ?>../bootstrap-fileinput/js/fileinput.min.js?v=4.5.2"></script>
   <script src="<?php echo $this->view->resourceUrl ?>../bootstrap-fileinput/js/plugins/sortable.min.js?v=4.5.2"></script>
   <script src="<?php echo $this->view->resourceUrl ?>../sweetalert2/dist/sweetalert2.min.js"></script>
-
+  <script src="<?php echo $this->view->resourceUrl ?>../laravel-admin/laravel-admin.js"></script>
   <!-- ckeditor start -->
   <script type="text/javascript" charset="utf-8" src="<?php echo $this->view->commonResourceUrl ?>ckeditor/ckeditor.js"></script>
   <!-- ckeditor end -->
@@ -200,7 +200,7 @@
 <script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/nestable/jquery.nestable.js"></script>
 <script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
-<script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/laravel-admin/laravel-admin.js"></script>
+
  -->
   <!-- 
 <script src="<?php echo $this->view->resourceUrl ?>plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
@@ -227,23 +227,11 @@
   <?php $this->partial("partials/js/app") ?>
 
   <script>
-    function LA() {}
-    LA.token = "1mRoCiP8EWJ75UQrQcdimiRGIlr2CdFpT6Wt9E1w";
-  </script>
-
-  <script>
     $(function() {
-      toastr.options = {
-        closeButton: true,
-        progressBar: true,
-        showMethod: 'slideDown',
-        timeOut: 4000
-      };
 
       if (typeof App == 'object') {
         App.init();
       }
-
       //FormValidation.init();
       if (typeof FormComponents == 'object') {
         FormComponents.init();
@@ -254,25 +242,6 @@
       if (typeof List == 'object') {
         List.init();
       }
-
-      $(window).scroll(function() {
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-          $('#totop').fadeIn(500);
-        } else {
-          $('#totop').fadeOut(500);
-        }
-      });
-
-      $('#totop').on('click', function(e) {
-        e.preventDefault();
-        $('html,body').animate({
-          scrollTop: 0
-        }, 500);
-      });
-
-      // $(function() {
-      //   toastr.success('保存成功 !', null, []);
-      // });
     })
   </script>
   <?php $this->partial("partials/toastr") ?>

@@ -177,6 +177,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $schemas;
     }
 
+    protected function getHeaderTools()
+    {
+        $tools = array();
+        return $this->getHeaderTools2($tools);
+    }
+
+    protected function getHeaderTools2($tools)
+    {
+        return $tools;
+    }
+
     protected function getSchemas()
     {
         $schemas = array();
@@ -490,6 +501,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
         $this->view->setVar('formName', $this->getName());
         $this->view->setVar('schemas', $this->sortSchemas($this->getSchemas()));
+        // headerTools
+        $this->view->setVar('headerTools', $this->getHeaderTools());
         $this->view->setVar('partials4List', $this->getPartials4List());
     }
 
@@ -899,7 +912,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             die('请设置导出的字段');
         }
         $datas = array();
-        foreach ($dataList as $data) {            
+        foreach ($dataList as $data) {
             $item = array();
             foreach ($schemas as $key => $field) {
                 if (!isset($field['export']['is_show'])) {
