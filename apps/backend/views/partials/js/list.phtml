@@ -153,160 +153,14 @@
 					}
 				});
 
-				var actionResolver = function(data) {
-
-					var response = data[0];
-					var target = data[1];
-
-					if (typeof response !== 'object') {
-						return $.admin.swal({
-							type: 'error',
-							title: 'Oops!'
-						});
-					}
-
-					var then = function(then) {
-						if (then.action == 'refresh') {
-							$.admin.reload();
-						}
-
-						if (then.action == 'download') {
-							window.open(then.value, '_blank');
-						}
-
-						if (then.action == 'redirect') {
-							$.admin.redirect(then.value);
-						}
-					};
-
-					if (typeof response.html === 'string') {
-						target.html(response.html);
-					}
-
-					if (typeof response.swal === 'object') {
-						$.admin.swal(response.swal);
-					}
-
-					if (typeof response.toastr === 'object') {
-						$.admin.toastr[response.toastr.type](response.toastr.content, '', response.toastr.options);
-					}
-
-					if (response.then) {
-						then(response.then);
-					}
-				};
-
-				var actionCatcher = function(request) {
-					if (request && typeof request.responseJSON === 'object') {
-						$.admin.toastr.error(request.responseJSON.message, '', {
-							positionClass: "toast-bottom-center",
-							timeOut: 10000
-						}).css("width", "500px")
-					}
-				};
-
 				<?php foreach ($this->view->headerTools as $key => $tool) { ?>
-					$('.header-tool-<?php echo $key ?>').off('click').on('click', function(e) {
-						e.preventDefault();
-						var data = $(this).data();
-						var target = $(this);
-
-						var process = new Promise(function(resolve, reject) {
-							// alert('click');
-							Object.assign(data, {
-								//_token: $.admin.token,
-								_action: '<?php echo $tool['action'] ?>',
-							});
-
-							var formData = new FormData();
-							for (var key in data) {
-								formData.append(key, data[key]);
-							}
-
-							$.ajax({
-								method: 'GET',
-								url: '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>',
-								data: formData,
-								cache: false,
-								contentType: false,
-								processData: false,
-								success: function(data) {
-									// alert('success');
-									console.log(data); //打印服务端返回的数据(调试用)
-									if (!data.error) {
-										resolve([data, target]);
-										$('#app-admin-controllers-modal').html(data.content.content);
-										var modalId = data.content.modal_id;
-										$('#' + modalId).modal('show');
-										$('#' + modalId + ' form').off('submit').on('submit', function(e) {
-											e.preventDefault();
-											alert('form submit');
-											var form = this;
-											var process2 = new Promise(function(resolve, reject) {
-												var data1 = [];
-												Object.assign(data1, {
-													//_token: $.admin.token,
-													_action: '<?php echo $tool['action'] ?>',
-												});
-
-												var formData = new FormData(form);
-												for (var key in data1) {
-													formData.append(key, data1[key]);
-												}
-
-												$.ajax({
-													method: 'POST',
-													url: '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>',
-													data: formData,
-													cache: false,
-													contentType: false,
-													processData: false,
-													success: function(data) {
-														console.log(data); //打印服务端返回的数据(调试用)
-														if (!data.error) {
-															//{"status":true,
-															//"then":{"action":"download","value":"http:\/\/190821fg0463demo.jdytoy.com\/admin\/admin-build\/download-file?file_id=20200203192717.csv"},
-															//"toastr":{"type":"success","content":"Success\uff01","options":{"positionClass":"toast-top-center"}}}
-															var request = {};
-															request.status = true;
-															// request.then = {};
-															request.toastr = {};
-															request.toastr.type = "success";
-															request.toastr.content = "Success\uff01";
-															request.toastr.options = {
-																"positionClass": "toast-top-center"
-															};
-															resolve([request, target]);
-															$('#' + modalId).modal('hide');
-														} else {
-															var request = {};
-															request.responseJSON.message = data.message;
-															reject(request);
-														}
-													},
-													error: function(request) {
-														reject(request);
-													}
-												});
-											});
-											process2.then(actionResolver).catch(actionCatcher);
-										});
-									} else {
-										var request = {};
-										request.responseJSON.message = data.message;
-										reject(request);
-									}
-								},
-								error: function(request) {
-									console.log(request); //打印服务端返回的数据(调试用)
-									alert(request);
-									reject(request);
-								}
-							});
+					<?php if (!empty($tool['is_show']) && empty($tool['is_export'])) { ?>
+						$('.header-tool-<?php echo $key ?>').off('click').on('click', function(e) {
+							e.preventDefault();
+							var url = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>';
+							List.process4Modal(url, this);
 						});
-						process.then(actionResolver).catch(actionCatcher);
-
-					});
+					<?php } ?>
 				<?php } ?>
 
 				//https://datatables.net/reference/option/#Features
@@ -336,7 +190,7 @@
 						"data": function(d) {
 							// alert('datatable ajax');
 							d = Search.getConditions(d);
-							console.log(d);			
+							console.log(d);
 						}
 					},
 					"columns": [
@@ -397,11 +251,176 @@
 								var id = full['_id'];
 								var editOp = '<a class="btn btn-sm btn-primary" href="<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/edit?id=' + id + '"><i class="fa fa-edit"></i>编辑</a>';
 								var deleteOp = '<a class="btn btn-sm btn-danger" href="javascript:;" onclick="List.remove(\'' + id + '\', \'你确定要删除这条记录吗？\')"><i class="fa fa-trash"></i>删除</a>';
-								return editOp + '&nbsp;' + deleteOp;
+								var toolOps = [];
+								<?php foreach ($this->view->rowTools as $key => $tool) { ?>
+									<?php if (!empty($tool['is_show'])) { ?>
+										var url = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>?id=' + id;
+										var toolOp = '<a class="btn btn-sm btn-primary row-tool-<?php echo $key ?>" record_id="' + id + '" href="javascript:;" onclick="List.process4Modal(\'' + url + '\',this)" ><i class="fa fa-edit"></i><?php echo $tool['title'] ?></a>';
+										toolOps.push(toolOp);
+									<?php } ?>
+								<?php } ?>
+								var ops = '';
+								$.each(toolOps, function(i, n) {
+									ops += ("&nbsp;" + n);
+								});
+
+								return editOp + '&nbsp;' + deleteOp + '&nbsp;' + ops;
 							}
 						}
 					]
 				});
+			},
+			actionResolver: function(data) {
+				var response = data[0];
+				var target = data[1];
+
+				if (typeof response !== 'object') {
+					return $.admin.swal({
+						type: 'error',
+						title: 'Oops!'
+					});
+				}
+
+				var then = function(then) {
+					alert(then.action);
+					if (then.action == 'refresh') {
+						$.admin.reload();
+					}
+
+					if (then.action == 'download') {
+						window.open(then.value, '_blank');
+					}
+
+					if (then.action == 'redirect') {
+						$.admin.redirect(then.value);
+					}
+				};
+
+				if (typeof response.html === 'string') {
+					target.html(response.html);
+				}
+
+				if (typeof response.swal === 'object') {
+					$.admin.swal(response.swal);
+				}
+
+				if (typeof response.toastr === 'object') {
+					$.admin.toastr[response.toastr.type](response.toastr.content, '', response.toastr.options);
+				}
+
+				if (response.then) {
+					then(response.then);
+				}
+			},
+			actionCatcher: function(request) {
+				if (request && typeof request.responseJSON === 'object') {
+					$.admin.toastr.error(request.responseJSON.message, '', {
+						positionClass: "toast-bottom-center",
+						timeOut: 10000
+					}).css("width", "500px")
+				}
+			},
+			process4Modal: function(url, element) {
+				var data = $(element).data();
+				var target = $(element);
+				var process = new Promise(function(resolve, reject) {
+					// alert('click');
+					Object.assign(data, {
+						//_token: $.admin.token,
+						_action: '<?php echo $tool['action'] ?>',
+					});
+
+					var formData1 = new FormData();
+					for (var key in data) {
+						formData1.append(key, data[key]);
+					}
+
+					$.ajax({
+						type: 'GET',
+						url: url,
+						data: formData1,
+						cache: false,
+						contentType: false,
+						processData: false,
+						success: function(data) {
+							// alert('success');
+							console.log(data); //打印服务端返回的数据(调试用)
+							if (!data.error) {
+								resolve([data, target]);
+								$('#app-admin-controllers-modal').html(data.content.content);
+								var modalId = data.content.modal_id;
+								$('#' + modalId).modal('show');
+								$('#' + modalId + ' form').off('submit').on('submit', function(e) {
+									e.preventDefault();
+									// alert('form submit');
+									var form2 = this;
+									var process2 = new Promise(function(resolve, reject) {
+										var data1 = [];
+										Object.assign(data1, {
+											//_token: $.admin.token,
+											_action: '<?php echo $tool['action'] ?>',
+										});
+
+										var formData2 = new FormData(form2);
+										for (var key in data1) {
+											formData2.append(key, data1[key]);
+										}
+
+										$.ajax({
+											type: "POST", //方法类型
+											dataType: "json", //预期服务器返回的数据类型
+											url: url,
+											cache: false,
+											contentType: false, //这里
+											processData: false, //这两个一定设置为false
+											data: formData2,
+											success: function(data) {
+												console.log(data); //打印服务端返回的数据(调试用)
+												if (!data.error) {
+													//{"status":true,
+													//"then":{"action":"download","value":"http:\/\/190821fg0463demo.jdytoy.com\/admin\/admin-build\/download-file?file_id=20200203192717.csv"},
+													//"toastr":{"type":"success","content":"Success\uff01","options":{"positionClass":"toast-top-center"}}}
+													var request = {};
+													request.status = true;
+													// request.then = {};
+													if (data.content.then) {
+														request.then = data.content.then;
+													}
+													request.toastr = {};
+													request.toastr.type = "success";
+													request.toastr.content = data.message;
+													request.toastr.options = {
+														"positionClass": "toast-top-center"
+													};
+													resolve([request, target]);
+													$('#' + modalId).modal('hide');
+												} else {
+													var request = {};
+													request.responseJSON.message = data.message;
+													reject(request);
+												}
+											},
+											error: function(request) {
+												reject(request);
+											}
+										});
+									});
+									process2.then(List.actionResolver).catch(List.actionCatcher);
+								});
+							} else {
+								var request = {};
+								request.responseJSON.message = data.message;
+								reject(request);
+							}
+						},
+						error: function(request) {
+							console.log(request); //打印服务端返回的数据(调试用)
+							alert(request);
+							reject(request);
+						}
+					});
+				});
+				process.then(List.actionResolver).catch(List.actionCatcher);
 			}
 
 		};

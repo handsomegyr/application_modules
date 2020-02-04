@@ -21,7 +21,8 @@
 
 						<?php if (true || $grid->showExportBtn()) { ?>
 							<!--{!! $grid->renderExportButton() !!}-->
-							<?php //$this->partial("partials/grid/export_button"); ?>
+							<?php //$this->partial("partials/grid/export_button"); 
+							?>
 						<?php } ?>
 
 						<?php if (true || $grid->showCreateBtn()) { ?>
@@ -41,14 +42,17 @@
 							</div>
 
 							<?php foreach ($this->view->headerTools as $key => $tool) { ?>
-								<a class="btn btn-sm btn-default header-tool-<?php echo $key ?>" modal="app-admin-controllers-header-tool-<?php echo $key ?>">
-									<i class="fa fa-export"></i><?php echo $tool['title'] ?></a>
+								<?php if (!empty($tool['is_show']) && empty($tool['is_export'])) { ?>
+									<a class="btn btn-sm btn-default header-tool-<?php echo $key ?>" modal="app-admin-controllers-header-tool-<?php echo $key ?>">
+										<i class="fa <?php echo empty($tool['icon']) ? 'fa-coffee' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>
+								<?php } ?>
 							<?php } ?>
-							<div style="display: block;" id="app-admin-controllers-modal"></div>
 						</div>
 					<?php } ?>
 				</div>
 			<?php } ?>
+
+			<div style="display: block;" id="app-admin-controllers-modal"></div>
 
 			<!--{!! $grid->renderFilter() !!}-->
 			<?php $this->partial("partials/search")

@@ -188,6 +188,28 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $tools;
     }
 
+    protected function getRowTools()
+    {
+        $tools = array();
+        return $this->getRowTools2($tools);
+    }
+
+    protected function getRowTools2($tools)
+    {
+        return $tools;
+    }
+
+    protected function getFormTools()
+    {
+        $tools = array();
+        return $this->getFormTools2($tools);
+    }
+
+    protected function getFormTools2($tools)
+    {
+        return $tools;
+    }
+
     protected function getSchemas()
     {
         $schemas = array();
@@ -503,6 +525,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $this->view->setVar('schemas', $this->sortSchemas($this->getSchemas()));
         // headerTools
         $this->view->setVar('headerTools', $this->getHeaderTools());
+        // RowTools
+        $this->view->setVar('rowTools', $this->getRowTools());
+        // FormTools
+        $this->view->setVar('formTools', $this->getFormTools());
         $this->view->setVar('partials4List', $this->getPartials4List());
     }
 
@@ -986,6 +1012,83 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         // unlink($zipname); // 下载完成后要主动删除
         // exit();
         // }
+    }
+
+    protected function showModal($title, $fields = array(), $row = array())
+    {
+        // die(__DIR__ . '/../../../views/');
+        // $this->view->setViewsDir(__DIR__ . '/../../../views/');
+        // $this->view->setVar('title', 'CSV导出');
+        // $this->view->setVar('modal_id', 'xxx');
+        // $this->view->setVar('fields', array());
+        //ob_start();
+        //$this->view->start();
+        //$this->view->partial("partials/actions/modal");
+        //$this->view->finish();            
+        //$content = ob_get_content();
+        //ob_end_clean();
+
+        // $this->view->start();
+        // //Shows recent posts view (app/views/posts/recent.phtml)
+        // $this->view->render('partials', 'modal');
+        // $this->view->finish();
+
+        // // Printing views output
+        // $content = $this->view->getContent();
+
+        // $this->view->setViewsDir(__DIR__ . '/../../../views/');
+        // $this->disableLayout();
+        // $this->view->disableLevel(array(
+        //     View::LEVEL_LAYOUT => false,
+        //     View::LEVEL_MAIN_LAYOUT => false
+        // ));
+        $this->view->disable();
+        // $this->disableLayout();
+        $viewClass = $this->view->getVar("viewClass");
+        $viewClass['form-group'] = "form-group";
+        $viewClass['label'] = "";
+        $viewClass['field'] = "";
+
+        $data = array(
+            'title' => $title,
+            'modal_id' => \uniqid(),
+            'fields' => $fields,
+            'row' => $row,
+            'viewClass' => $viewClass
+        );
+        $this->view->setVars($data);
+        // $data['content'] = $this->view->getRender('blackuser', 'modal', $data);
+        \ob_start();
+        $this->view->partial("partials/modal");
+        $data['content'] = \ob_get_clean();
+        return $this->makeJsonResult($data, '弹窗显示成功');
+    }
+    /**
+     * 转化为数组
+     *
+     * @param string $CsvString            
+     * @return array
+     */
+    protected function csv2arr($csvString, $delimiter = "\t")
+    {
+        $csvString = $this->characet($csvString);
+        $data = str_getcsv($csvString, "\n"); // parse the rows
+        foreach ($data as &$row) {
+            // $row = str_getcsv($row, ",");
+            $row = str_getcsv($row, $delimiter);
+        }
+        return $data;
+    }
+
+    protected function characet($data)
+    {
+        if (!empty($data)) {
+            $fileType = mb_detect_encoding($data, array('UTF-8', 'GBK', 'LATIN1', 'BIG5'));
+            if ($fileType != 'UTF-8') {
+                $data = mb_convert_encoding($data, 'utf-8', $fileType);
+            }
+        }
+        return $data;
     }
 
     protected function getWeixinConfig()

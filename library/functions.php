@@ -48,7 +48,7 @@ function debugVar()
  */
 function isValidEmail($email, $getmxrr = 0)
 {
-    if ((strpos($email, '..') !== false) or (! preg_match('/^(.+)@([^@]+)$/', $email, $matches))) {
+    if ((strpos($email, '..') !== false) or (!preg_match('/^(.+)@([^@]+)$/', $email, $matches))) {
         return false;
     }
     $_localPart = $matches[1];
@@ -57,13 +57,13 @@ function isValidEmail($email, $getmxrr = 0)
         return false;
     }
     $atext = 'a-zA-Z0-9\x21\x23\x24\x25\x26\x27\x2a\x2b\x2d\x2f\x3d\x3f\x5e\x5f\x60\x7b\x7c\x7d\x7e';
-    if (! preg_match('/^[' . $atext . ']+(\x2e+[' . $atext . ']+)*$/', $_localPart)) {
+    if (!preg_match('/^[' . $atext . ']+(\x2e+[' . $atext . ']+)*$/', $_localPart)) {
         return false;
     }
     if ($getmxrr == 1) {
         $mxHosts = array();
         $result = getmxrr($_hostname, $mxHosts);
-        if (! $result) {
+        if (!$result) {
             return false;
         }
     }
@@ -114,7 +114,7 @@ function convertIp($ip)
  * @param string $name            
  * @param array $datas            
  */
-function arrayToCVS($name, $datas)
+function arrayToCVS($name, $datas, $delimiter = "\t")
 {
     resetTimeMemLimit();
     $result = array_merge(array(
@@ -123,10 +123,10 @@ function arrayToCVS($name, $datas)
     $tmpname = tempnam(sys_get_temp_dir(), 'export_cvs_');
     $fp = fopen($tmpname, 'w');
     foreach ($result as $row) {
-        fputcsv($fp, $row, "\t", '"');
+        fputcsv($fp, $row, $delimiter, '"');
     }
     fclose($fp);
-    
+
     header('Content-type: text/csv;');
     header('Content-Disposition: attachment; filename="' . $name . '.csv"');
     header("Content-Length:" . filesize($tmpname));
@@ -165,7 +165,7 @@ function excelTitle($i)
 function arrayToExcel($name, $datas)
 {
     resetTimeMemLimit();
-    include_once ("PHPExcel/PHPExcel.php");
+    include_once("PHPExcel/PHPExcel.php");
     // 便于处理大的大型excel表格，存储在磁盘缓存中
     $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_discISAM;
     PHPExcel_Settings::setCacheStorageMethod($cacheMethod);
@@ -177,7 +177,7 @@ function arrayToExcel($name, $datas)
     $objPHPExcel->getProperties()->setDescription($name);
     $objPHPExcel->setActiveSheetIndex(0);
     $total = count($datas['title']);
-    for ($i = 0; $i < $total; $i ++) {
+    for ($i = 0; $i < $total; $i++) {
         $objPHPExcel->getActiveSheet()
             ->getColumnDimension(excelTitle($i))
             ->setAutoSize(true);
@@ -225,13 +225,13 @@ function arrayToExcel($name, $datas)
                     ->setTooltip($cellName . ':' . $cellDesc);
             } else 
                 if (is_array($cell)) {
-                    $objPHPExcel->getActiveSheet()->setCellValueExplicit(excelTitle($j) . $i, json_encode($cell), PHPExcel_Cell_DataType::TYPE_STRING);
-                } else {
-                    $objPHPExcel->getActiveSheet()->setCellValueExplicit(excelTitle($j) . $i, $cell, PHPExcel_Cell_DataType::TYPE_STRING);
-                }
-            $j ++;
+                $objPHPExcel->getActiveSheet()->setCellValueExplicit(excelTitle($j) . $i, json_encode($cell), PHPExcel_Cell_DataType::TYPE_STRING);
+            } else {
+                $objPHPExcel->getActiveSheet()->setCellValueExplicit(excelTitle($j) . $i, $cell, PHPExcel_Cell_DataType::TYPE_STRING);
+            }
+            $j++;
         }
-        $i ++;
+        $i++;
     }
     $objPHPExcel->getActiveSheet()->setTitle($name);
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -314,23 +314,23 @@ function sendEmail($to, $subject, $content, $type = 'html')
 function getIp()
 {
     // $config = Zend_Registry::get('config');
-    if (! empty($config['global']['cdn']['status'])) {
+    if (!empty($config['global']['cdn']['status'])) {
         $first = function ($ips) {
             $explode = explode(',', $ips);
             return array_shift($explode);
         };
-        
+
         if (getenv('HTTP_X_FORWARDED_FOR')) {
             return $first(getenv('HTTP_X_FORWARDED_FOR'));
         } elseif (getenv('HTTP_X_REAL_FORWARDED_FOR')) {
             return $first(getenv('HTTP_X_REAL_FORWARDED_FOR'));
         }
     }
-    
+
     // 集群服务器获取真正的IP
     if (getenv('HTTP_X_REAL_IP') != '')
         return getenv('HTTP_X_REAL_IP');
-    
+
     return $_SERVER['REMOTE_ADDR'];
 }
 
@@ -433,7 +433,7 @@ function dealUploadFileBySoap($fileName, $filePath, $outId = 0)
  */
 function convertToPureArray($arr)
 {
-    if (! is_array($arr) || count($arr) == 0)
+    if (!is_array($arr) || count($arr) == 0)
         return array();
     $newArr = array();
     foreach ($arr as $key => $value) {
@@ -517,13 +517,13 @@ function getProbability($percent)
 function rangeDownload($file)
 {
     $fp = @fopen($file, 'rb');
-    
+
     $size = filesize($file); // File size
     $length = $size; // Content length
     $start = 0; // Start byte
     $end = $size - 1; // End byte
-                      // Now that we've gotten so far without errors we send
-                      // the accept range header
+    // Now that we've gotten so far without errors we send
+    // the accept range header
     /*
      * At the moment we only support single ranges. Multiple ranges requires some more work to ensure it works correctly and comply with the spesifications: http://www.w3.org/Protocols/rfc2616/rfc2616-sec19.html#sec19.2 Multirange support annouces itself with: header('Accept-Ranges: bytes'); Multirange content must be sent with multipart/byteranges mediatype, (mediatype = mimetype) as well as a boundry header to indicate the various chunks of data.
      */
@@ -532,14 +532,14 @@ function rangeDownload($file)
     // multipart/byteranges
     // http://www.w3.org/Protocols/rfc2616/rfc2616-sec19.html#sec19.2
     if (isset($_SERVER['HTTP_RANGE'])) {
-        
+
         $c_start = $start;
         $c_end = $end;
         // Extract the range string
-        list (, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+        list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
         // Make sure the client hasn't sent us a multibyte range
         if (strpos($range, ',') !== false) {
-            
+
             // (?) Shoud this be issued here, or should the first
             // range be used? Or should the header be ignored and
             // we output the whole content?
@@ -552,11 +552,11 @@ function rangeDownload($file)
         // If not, we forward the file pointer
         // And make sure to get the end byte if spesified
         if ($range0 == '-') {
-            
+
             // The n-number of the last bytes is requested
             $c_start = $size - substr($range, 1);
         } else {
-            
+
             $range = explode('-', $range);
             $c_start = $range[0];
             $c_end = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $size;
@@ -568,7 +568,7 @@ function rangeDownload($file)
         $c_end = ($c_end > $end) ? $end : $c_end;
         // Validate the requested range and return an error if it's not correct.
         if ($c_start > $c_end || $c_start > $size - 1 || $c_end >= $size) {
-            
+
             header('HTTP/1.1 416 Requested Range Not Satisfiable');
             header("Content-Range: bytes $start-$end/$size");
             // (?) Echo some info to the client?
@@ -583,13 +583,13 @@ function rangeDownload($file)
     // Notify the client the byte range we'll be outputting
     header("Content-Range: bytes $start-$end/$size");
     header("Content-Length: $length");
-    
+
     // Start buffered download
     $buffer = 1024 * 8;
-    while (! feof($fp) && ($p = ftell($fp)) <= $end) {
-        
+    while (!feof($fp) && ($p = ftell($fp)) <= $end) {
+
         if ($p + $buffer > $end) {
-            
+
             // In case we're only outputtin a chunk, make sure we don't
             // read past the length
             $buffer = $end - $p + 1;
@@ -597,9 +597,9 @@ function rangeDownload($file)
         set_time_limit(0); // Reset time limit for big files
         echo fread($fp, $buffer);
         flush(); // Free up memory. Otherwise large files will trigger PHP's
-                     // memory limit.
+        // memory limit.
     }
-    
+
     fclose($fp);
 }
 
@@ -625,18 +625,18 @@ function dealMimeType($mime)
         return 'image/jpg';
     else 
         if (strpos($mime, 'image/jpeg') !== false)
-            return 'image/jpeg';
-        else 
+        return 'image/jpeg';
+    else 
             if (strpos($mime, 'image/pjpeg') !== false)
-                return 'image/pjpeg';
-            else 
+        return 'image/pjpeg';
+    else 
                 if (strpos($mime, 'image/png') !== false)
-                    return 'image/png';
-                else 
+        return 'image/png';
+    else 
                     if (strpos($mime, 'image/gif') !== false)
-                        return 'image/gif';
-                    else
-                        return $mime;
+        return 'image/gif';
+    else
+        return $mime;
 }
 
 /**
@@ -650,7 +650,7 @@ function doGet($url, $params = array())
 {
     try {
         $url = trim($url);
-        if (! filter_var($url, FILTER_VALIDATE_URL)) {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
             throw new \Exception('Invalid URL');
         }
         $client = new \Guzzle\Http\Client($url);
@@ -680,12 +680,12 @@ function doPost($url, $params = array())
 {
     try {
         $url = trim($url);
-        if (! filter_var($url, FILTER_VALIDATE_URL)) {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
             throw new \Exception('Invalid URL');
         }
         $client = new \Guzzle\Http\Client($url);
         $request = $client->post($url, null, $params);
-        
+
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
@@ -710,28 +710,28 @@ function doRequest($url, $get = array(), $post = array())
 {
     try {
         $url = trim($url);
-        if (! filter_var($url, FILTER_VALIDATE_URL)) {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
             throw new Exception('Invalid URL');
             return false;
         }
         $client = new Zend_Http_Client();
         $client->setUri($url);
-        
+
         if (count($get) > 0 && is_array($get))
             $client->setParameterGet($get);
-        
+
         if (count($post) > 0 && is_array($post))
             $client->setParameterPost($post);
-        
+
         $client->setEncType(Zend_Http_Client::ENC_URLENCODED);
         $client->setConfig(array(
             'maxredirects' => 5
         ));
-        if (! empty($post))
+        if (!empty($post))
             $response = $client->request('POST');
         else
             $response = $client->request('GET');
-        
+
         if ($response->isSuccessful()) {
             return $response->getBody();
         } else {
@@ -776,9 +776,9 @@ function addrToGeo($address, $city = '')
         $params = array();
         $params['address'] = $address;
         $params['output'] = 'json';
-        $params['key'] = '6d882b440c48d5e2d6cd11ab88a03eda'; // UMA使用baidu地图api的密钥
+        $params['key'] = 'xxxxx'; // UMA使用baidu地图api的密钥
         $params['city'] = $city;
-        
+
         $body = doGet('http://api.map.baidu.com/geocoder', $params);
         $rst = json_decode($body, true);
         return $rst;
@@ -803,10 +803,10 @@ function getRequestDatas($fields, $onlyOne = false)
     $datas = array();
     if (is_array($fields) && count($fields) > 0) {
         foreach ($fields as $field => $type) {
-            
+
             $field = trim($field);
             $type = strtolower(trim($type));
-            
+
             if (isset($_REQUEST[$field])) {
                 switch ($type) {
                     case 'str':
@@ -882,10 +882,11 @@ function dirmtime($dir)
 /**
  * 对于fastcgi模式加快返回速度
  */
-if (! function_exists("fastcgi_finish_request")) {
+if (!function_exists("fastcgi_finish_request")) {
 
     function fastcgi_finish_request()
-    {}
+    {
+    }
 }
 
 /**
@@ -896,12 +897,12 @@ if (! function_exists("fastcgi_finish_request")) {
  */
 function scws($str)
 {
-    if (! function_exists('scws_open'))
+    if (!function_exists('scws_open'))
         return false;
-    
+
     $rst = array();
     $str = preg_replace("/[\s\t\r\n]+/", '', $str);
-    if (! empty($str)) {
+    if (!empty($str)) {
         $sh = scws_open();
         scws_set_charset($sh, 'utf8');
         scws_set_ignore($sh, true);
@@ -929,12 +930,12 @@ function scws($str)
  */
 function scwsTop($str, $limit = 10, $attr = null)
 {
-    if (! function_exists('scws_open'))
+    if (!function_exists('scws_open'))
         return false;
-    
+
     $rst = array();
     $str = preg_replace("/[\s\t\r\n]+/", '', $str);
-    if (! empty($str)) {
+    if (!empty($str)) {
         $sh = scws_open();
         scws_set_charset($sh, 'utf8');
         scws_set_ignore($sh, true);
@@ -962,13 +963,13 @@ function getWeekRange($week, $year)
         $firstweek = strtotime('+' . (8 - $firstday) . ' days', $timestamp);
     else
         $firstweek = strtotime('-' . ($firstday - 1) . ' days', $timestamp);
-    
+
     $monday = strtotime('+' . ($week - 1) . ' week', $firstweek);
     $sunday = strtotime('+6 days', $monday);
-    
+
     $start = date("Y-m-d", $monday);
     $end = date("Y-m-d", $sunday);
-    
+
     return array(
         $start,
         $end
@@ -982,14 +983,14 @@ function getWeekRange($week, $year)
  */
 function requireDir($dir)
 {
-    if (! is_dir($dir))
+    if (!is_dir($dir))
         return false;
-    
+
     $dir = realpath($dir);
     $files = glob("{$dir}/*.php");
-    if (! is_array($files) || count($files) == 0)
+    if (!is_array($files) || count($files) == 0)
         return false;
-    
+
     foreach ($files as $filename) {
         if (basename($filename) !== basename(__FILE__))
             require_once $filename;
@@ -1005,23 +1006,23 @@ function getScriptExecuteInfo()
     $rst = array();
     $rst['cpuTimeSec'] = 0.000000; // CPU计算时间
     $rst['scriptTimeSec'] = 0.000000; // 脚本运行时间
-    $rst['memoryPeakMb'] = (double) sprintf("%.6f", memory_get_peak_usage() / 1024 / 1024); // 内存使用峰值
-    
+    $rst['memoryPeakMb'] = (float) sprintf("%.6f", memory_get_peak_usage() / 1024 / 1024); // 内存使用峰值
+
     $scriptTime = 0.000000;
     $cpuTime = 0.000000;
-    
+
     if (isset($_SERVER["REQUEST_TIME_FLOAT"]))
         $scriptTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
-        
-        // 计算CPU的使用时间
+
+    // 计算CPU的使用时间
     if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
         $systemInfo = getrusage();
         $cpuTime = ($systemInfo["ru_utime.tv_sec"] + $systemInfo["ru_utime.tv_usec"] / 1e6) - PHP_CPU_RUSAGE;
-        
-        $rst['cpuTimeSec'] = (double) sprintf("%.6f", $cpuTime);
-        $rst['scriptTimeSec'] = (double) sprintf("%.6f", $scriptTime);
+
+        $rst['cpuTimeSec'] = (float) sprintf("%.6f", $cpuTime);
+        $rst['scriptTimeSec'] = (float) sprintf("%.6f", $scriptTime);
     }
-    
+
     return $rst;
 }
 
@@ -1071,7 +1072,7 @@ function getMobileFrom($mobile)
 {
     $url = "http://life.tenpay.com/cgi-bin/mobile/MobileQueryAttribution.cgi?chgmobile=$mobile";
     $back = simplexml_load_file($url);
-    
+
     $result = array();
     if ($back->retmsg == 'OK') {
         $result['mobile'] = $mobile;
@@ -1092,7 +1093,7 @@ function lockForGenerateCache($cacheKey)
 {
     try {
         $lockFile = sys_get_temp_dir() . '/cache_lock_' . md5($_SERVER['HTTP_HOST'] . $cacheKey);
-        if (! file_exists($lockFile)) {
+        if (!file_exists($lockFile)) {
             file_put_contents($lockFile, time());
             return true;
         } else {
@@ -1162,7 +1163,7 @@ function createPager($url, $record_count, $page = 1, $size = 10, $sch = array())
 {
     $url .= "?" . http_build_query($sch);
     $url_format = $url . "&page=";
-    
+
     $page = intval($page);
     if ($page < 1) {
         $page = 1;
@@ -1173,19 +1174,19 @@ function createPager($url, $record_count, $page = 1, $size = 10, $sch = array())
     $pager['record_count'] = $record_count;
     $pager['page_count'] = $page_count;
     $pager['url'] = $url;
-    
+
     /* 分页样式 */
     $pager['styleid'] = 1;
     $page_prev = ($page > 1) ? $page - 1 : 1;
     $page_next = ($page < $page_count) ? $page + 1 : $page_count;
-    
+
     if ($pager['styleid'] == 0) {
         $pager['page_first'] = $url_format . 1;
         $pager['page_prev'] = $url_format . $page_prev;
         $pager['page_next'] = $url_format . $page_next;
         $pager['page_last'] = $url_format . $page_count;
         $pager['page_number'] = array();
-        for ($i = 1; $i <= $page_count; $i ++) {
+        for ($i = 1; $i <= $page_count; $i++) {
             $pager['page_number'][$i] = $i;
         }
     } else {
@@ -1209,14 +1210,14 @@ function createPager($url, $record_count, $page = 1, $size = 10, $sch = array())
                 $_to = $page_count;
             }
         }
-        
+
         $pager['page_first'] = ($page - $_offset > 1 && $_pagenum < $page_count) ? $url_format . 1 : '';
         $pager['page_prev'] = ($page > 1) ? $url_format . $page_prev : '';
         $pager['page_next'] = ($page < $page_count) ? $url_format . $page_next : '';
         $pager['page_last'] = ($_to < $page_count) ? $url_format . $page_count : '';
         $pager['page_kbd'] = ($_pagenum < $page_count) ? true : false;
         $pager['page_number'] = array();
-        for ($i = $_from; $i <= $_to; ++ $i) {
+        for ($i = $_from; $i <= $_to; ++$i) {
             $pager['page_number'][$i] = $url_format . $i;
         }
     }
@@ -1230,13 +1231,13 @@ function createPager($url, $record_count, $page = 1, $size = 10, $sch = array())
  */
 function createRandVCode($n = 4, $session_start = false)
 {
-    $str = Array(); // 用来存储随机码
+    $str = array(); // 用来存储随机码
     $string = "ABCDEFGHIJKLMNPQRSTUVWXY3456789"; // 随机挑选其中4个字符，也可以选择更多，注意循环的时候加上，宽度适当调整
-                                                 // $string =
-                                                 // "1234567890";//随机挑选其中4个字符，也可以选择更多，注意循环的时候加上，宽度适当调整
+    // $string =
+    // "1234567890";//随机挑选其中4个字符，也可以选择更多，注意循环的时候加上，宽度适当调整
     $vcode = "";
     $strlen = strlen($string) - 1;
-    for ($i = 0; $i < $n; $i ++) {
+    for ($i = 0; $i < $n; $i++) {
         $str[$i] = $string[rand(0, $strlen)];
         $vcode .= $str[$i];
     }
@@ -1274,7 +1275,7 @@ function myMongoId($var = null)
         if ($var instanceof \MongoId) {
             return $var->__toString();
         } else {
-            $var = ! empty($var) && strlen($var) == 24 ? $var : null;
+            $var = !empty($var) && strlen($var) == 24 ? $var : null;
             try {
                 return new \MongoId($var);
             } catch (Exception $e) {
@@ -1297,7 +1298,7 @@ function followUrl($body, $extraArray)
     $whiteList = array(
         'mp.weixin.qq.com'
     );
-    
+
     $filters = array(
         'jpg',
         'jpeg',
@@ -1309,19 +1310,19 @@ function followUrl($body, $extraArray)
     ); // 过滤指定后缀名URL
     $regex = "(?:http|https|ftp|ftps)://(?:[a-zA-Z0-9\-]*\.)+[a-zA-Z0-9]{2,4}(?:/[a-zA-Z0-9=.\?&\-\%/_,]*)?";
     // 为外链增加相应的需要传递的微信变量
-    $body = preg_replace_callback("#$regex#im", function ($matchs) use($extraArray, $filters, $whiteList) {
+    $body = preg_replace_callback("#$regex#im", function ($matchs) use ($extraArray, $filters, $whiteList) {
         $url = $matchs[0];
-        
+
         foreach ($whiteList as $domain) {
             if (strpos($url, $domain) !== false) {
                 return $url;
             }
         }
-        
+
         $parseUrl = parse_url($url);
         if (isset($parseUrl['path'])) {
             $tmp = explode('.', $parseUrl['path']);
-            if (! in_array(end($tmp), $filters)) {
+            if (!in_array(end($tmp), $filters)) {
                 $replace = strpos($url, '?') === false ? $url . '?' . http_build_query($extraArray) : $url . '&' . http_build_query($extraArray);
                 return $replace;
             } else {
@@ -1329,15 +1330,15 @@ function followUrl($body, $extraArray)
             }
         } else 
             if (isset($parseUrl['host'])) {
-                return strpos($url, '?') === false ? $url . '?' . http_build_query($extraArray) : $url . '&' . http_build_query($extraArray);
-            } else {
-                return $url;
-            }
+            return strpos($url, '?') === false ? $url . '?' . http_build_query($extraArray) : $url . '&' . http_build_query($extraArray);
+        } else {
+            return $url;
+        }
     }, $body);
     return $body;
 }
 
-if (! function_exists("array_copy")) {
+if (!function_exists("array_copy")) {
 
     /**
      * 效仿数组函数的写法，实现复制数组。目的是为了解除内部变量的引用关系
@@ -1353,9 +1354,9 @@ if (! function_exists("array_copy")) {
                 $newArray[$key] = array_copy($value);
             else 
                 if (is_object($value))
-                    $newArray[$key] = clone $value;
-                else
-                    $newArray[$key] = $value;
+                $newArray[$key] = clone $value;
+            else
+                $newArray[$key] = $value;
         }
         return $newArray;
     }
@@ -1371,7 +1372,7 @@ if (! function_exists("array_copy")) {
  */
 function array_unset_recursive(&$array, $fields, $remove = true)
 {
-    if (! is_array($fields)) {
+    if (!is_array($fields)) {
         $fields = array(
             $fields
         );
@@ -1386,7 +1387,7 @@ function array_unset_recursive(&$array, $fields, $remove = true)
                 }
             }
         } else {
-            if (! in_array($key, $fields, true)) {
+            if (!in_array($key, $fields, true)) {
                 unset($array[$key]);
             } else {
                 if (is_array($value)) {
@@ -1439,7 +1440,7 @@ function getWeixinVersion()
 function jsonpcallback($jsonpcallback = "", $stat = true, $msg = "OK", $result = "")
 {
     if ($stat) {
-        if (! empty($jsonpcallback)) {
+        if (!empty($jsonpcallback)) {
             return $jsonpcallback . '(' . json_encode(array(
                 'success' => $stat,
                 'message' => $msg,
@@ -1453,7 +1454,7 @@ function jsonpcallback($jsonpcallback = "", $stat = true, $msg = "OK", $result =
             ));
         }
     } else {
-        if (! empty($jsonpcallback)) {
+        if (!empty($jsonpcallback)) {
             return $jsonpcallback . '(' . json_encode(array(
                 'success' => false,
                 'error_code' => $result,
@@ -1493,10 +1494,10 @@ function isRequestRestricted($cacheKey, $timeSpanLimit = 60, $numLimit = 10)
     }
     $requestnum = $cacheInfo['requestnum'];
     $cachetime = $cacheInfo['cachetime'];
-    $requestnum ++;
+    $requestnum++;
     $cacheInfo['requestnum'] = $requestnum;
     $cache->save($cacheInfo, $cacheKey, array(), $timeSpanLimit);
-    
+
     // 如果超过$timeSpanLimit秒并且没有达到$numLimit那个阀值
     if (($now - $cachetime) > $timeSpanLimit && $requestnum < $numLimit) {
         // 清除缓存重新计数
@@ -1521,10 +1522,10 @@ function object2Array($object)
  */
 function createRandCode($n = 32)
 {
-    $str = Array(); // 用来存储随机码
+    $str = array(); // 用来存储随机码
     $string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     $code = "";
-    for ($i = 0; $i < $n; $i ++) {
+    for ($i = 0; $i < $n; $i++) {
         $str[$i] = $string[rand(0, $n - 1)];
         $code .= $str[$i];
     }
@@ -1582,7 +1583,7 @@ function GetDistance($lat1, $lng1, $lat2, $lng2)
     $radlat2 = rad($lat2);
     $a = $radlat1 - $radlat2;
     $b = rad($lng1) - rad($lng2);
-    
+
     $s = 2 * asin(sqrt(pow(sin($a / 2), 2) + cos($radlat1) * cos($radlat2) * pow(sin($b / 2), 2)));
     $s = $s * $EARTH_RADIUS;
     $s = round($s * 10000) / 10000;
@@ -1624,12 +1625,12 @@ function invokeResource($module, $controller, $action, $params)
     $action = preg_replace_callback("/-\[a-z]/", function ($match) {
         return strtoupper(str_replace('-', '', $match));
     }, $action);
-    
+
     $loader = new Zend_Application_Module_Autoloader(array(
         'namespace' => $module,
         'basePath' => APPLICATION_PATH . '/modules/' . strtolower($module)
     ));
-    
+
     $__OLD_GET__ = $_GET;
     $_GET = array_merge($_GET, $params);
     ob_start();
@@ -1639,7 +1640,7 @@ function invokeResource($module, $controller, $action, $params)
     $response = ob_get_content();
     ob_end_clean();
     $_GET = $__OLD_GET__;
-    
+
     return $response;
 }
 
@@ -1656,40 +1657,6 @@ function randomFloat($min = 0, $max = 1)
 }
 
 /**
- * 获取来伊份微信的设置信息
- */
-function getLaiyifenWeixinConfig()
-{
-    $laiyifenRet = doPost("http://laiyifen.umaman.com/weixin/index/get-settings", array());
-    if (empty($laiyifenRet)) {
-        throw new Exception("failure to get laiyifen weixin info");
-    }
-    $laiyifenRet = json_decode($laiyifenRet, true);
-    if (empty($laiyifenRet['success'])) {
-        throw new Exception("failure to get laiyifen weixin info");
-    }
-    return $laiyifenRet['result'];
-}
-
-/**
- * 获取来伊份微信jssdk的设置信息
- */
-function getLaiyifenWxJssdkInfo($url)
-{
-    $laiyifenRet = doPost("http://laiyifen.umaman.com/weixin/index/get-jssdk-info", array(
-        'url' => $url
-    ));
-    if (empty($laiyifenRet)) {
-        throw new Exception("failure to get laiyifen weixin jssdk info");
-    }
-    $laiyifenRet = json_decode($laiyifenRet, true);
-    if (empty($laiyifenRet['success'])) {
-        throw new Exception("failure to get laiyifen weixin jssdk info");
-    }
-    return $laiyifenRet['result'];
-}
-
-/**
  * 多项式算法crc16
  *
  * @param string $data            
@@ -1698,7 +1665,7 @@ function getLaiyifenWxJssdkInfo($url)
 function crc16($data)
 {
     $crc = 0xFFFF;
-    for ($i = 0; $i < strlen($data); $i ++) {
+    for ($i = 0; $i < strlen($data); $i++) {
         $x = (($crc >> 8) ^ ord($data[$i])) & 0xFF;
         $x ^= $x >> 4;
         $crc = (($crc << 8) ^ ($x << 12) ^ ($x << 5) ^ $x) & 0xFFFF;
@@ -1729,7 +1696,7 @@ function redisClusterSlot($key)
  */
 function getCookieValue($cookieName)
 {
-    if (! $cookieName) {
+    if (!$cookieName) {
         return false;
     }
     return isset($_COOKIE[$cookieName]) ? unserialize(base64_decode($_COOKIE[$cookieName])) : false;
@@ -1762,7 +1729,7 @@ function setCookieValue($name, $value, $expire = null, $path = null, $domain = n
     if (is_null($path)) {
         $path = '/';
     }
-    
+
     // 数据加密处理.
     $value = base64_encode(serialize($value));
     setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
@@ -1794,7 +1761,7 @@ function getMilliTime()
 
 function getMilliTime4Show($millitime)
 {
-    list ($sec, $msec) = explode(".", $millitime);
+    list($sec, $msec) = explode(".", $millitime);
     return date('Y-m-d H:i:s', $sec) . '.' . $msec;
 }
 
@@ -1863,9 +1830,9 @@ function getDayPeriod()
 
 function makeDir($dir, $mode = 0777)
 {
-    if (! $dir)
+    if (!$dir)
         return false;
-    if (! file_exists($dir)) {
+    if (!file_exists($dir)) {
         mkdir($dir, $mode, true);
         return chmod($dir, $mode);
     } else {
@@ -1876,18 +1843,18 @@ function makeDir($dir, $mode = 0777)
 function is_date($str)
 {
     $stamp = strtotime($str);
-    
-    if (! is_numeric($stamp)) {
+
+    if (!is_numeric($stamp)) {
         return FALSE;
     }
     $month = date('m', $stamp);
     $day = date('d', $stamp);
     $year = date('Y', $stamp);
-    
+
     if (checkdate($month, $day, $year)) {
         return TRUE;
     }
-    
+
     return FALSE;
 }
 
@@ -1895,4 +1862,3 @@ function showPrice($number, $decimals = null)
 {
     return number_format($number / 100, $decimals);
 }
-

@@ -75,7 +75,7 @@
                 });
 
                 $('#btnExport').click(function(e) {
-                    e.preventDefault();                    
+                    e.preventDefault();
                     var d = Search.getConditions({});
                     var p = "";
                     $.each(d, function(i, n) {
@@ -84,8 +84,24 @@
                     window.location.href = "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/export?m=csv" + p;
                     //window.open("<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/export?m=csv" + p, '_blank');
                 });
+
+                <?php foreach ($this->view->headerTools as $key => $tool) { ?>
+                    <?php if (!empty($tool['is_show']) && !empty($tool['is_export'])) { ?>
+                        $('#btnExport-<?php echo $key ?>').click(function(e) {
+                            e.preventDefault();
+                            var d = Search.getConditions({});
+                            var p = "";
+                            $.each(d, function(i, n) {
+                                p += ("&" + i + "=" + n);
+                            });
+                            window.location.href = "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>?m=csv" + p;
+                            //window.open("<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>?m=csv" + p, '_blank');
+                        });
+                    <?php } ?>
+                <?php } ?>
+
             },
-            getConditions: function(d) {                
+            getConditions: function(d) {
                 <?php foreach ($this->view->schemas as $key => $field) { ?>
                     <?php if (!empty($field['search']['is_show'])) { ?>
                         <?php
