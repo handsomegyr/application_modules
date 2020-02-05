@@ -19,13 +19,14 @@
 						<?php //$this->partial("partials/grid/column_selector"); 
 						?>
 
-						<?php if (true || $grid->showExportBtn()) { ?>
+						<?php if (false && $grid->showExportBtn()) { ?>
 							<!--{!! $grid->renderExportButton() !!}-->
 							<?php //$this->partial("partials/grid/export_button"); 
 							?>
 						<?php } ?>
 
-						<?php if (true || $grid->showCreateBtn()) { ?>
+						<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'add') && $this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'insert')) { //|| $grid->showCreateBtn()
+						?>
 							<!--{!! $grid->renderCreateButton() !!}-->
 							<?php $this->partial("partials/grid/create_button"); ?>
 						<?php } ?>
@@ -43,8 +44,10 @@
 
 							<?php foreach ($this->view->headerTools as $key => $tool) { ?>
 								<?php if (!empty($tool['is_show']) && empty($tool['is_export'])) { ?>
-									<a href="javascript:void(0);" class="btn btn-sm btn-primary header-tool-<?php echo $key ?>">
-										<i class="fa <?php echo empty($tool['icon']) ? 'fa-coffee' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>
+									<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action'])) { ?>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary header-tool-<?php echo $key ?>">
+											<i class="fa <?php echo empty($tool['icon']) ? 'fa-coffee' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>
+									<?php } ?>
 								<?php } ?>
 							<?php } ?>
 						</div>

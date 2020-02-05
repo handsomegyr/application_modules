@@ -113,7 +113,7 @@ class SecurityPlugin extends Plugin
                 }
             }
         } catch (\Exception $e) {
-            //die($e->getMessage());
+            // die($e->getMessage());
             if ($this->request->isAjax()) {
                 $this->makeJsonError($e->getMessage());
             } else {
@@ -179,7 +179,7 @@ class SecurityPlugin extends Plugin
             $publicResources = array(
                 'admin_index' => array('index', 'logout', 'login', 'signin'),
                 'admin_error' => array('show404', 'show401', 'show500', 'message'),
-                'admin_form' => array('list', 'export', 'query', 'add', 'insert', 'edit', 'update', 'remove')
+                'admin_form' => array('list', 'export', 'query', 'add', 'insert', 'edit', 'update', 'remove', 'removefile')
             );
             foreach ($publicResources as $resource => $actions) {
                 $acl->addResource(new AclResource($resource), $actions);

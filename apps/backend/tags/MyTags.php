@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Tags;
 
 use App\Backend\Submodules\System\Models\Menu;
@@ -6,6 +7,35 @@ use App\Backend\Submodules\System\Models\Resource;
 
 class MyTags extends \Phalcon\Tag
 {
+
+    static public function isCanDo($module, $controller, $action)
+    {
+        // 角色判断,当用户角色为非超级管理员时，进行权限判断
+        if (isset($_SESSION['admin_id'])) {
+            $roleAlias = $_SESSION['roleInfo']['alias'];
+            $operation_list = $_SESSION['roleInfo']['operation_list'];
+        } else {
+            $roleAlias = 'guest';
+            $operation_list = array();
+        }
+        if ($roleAlias == 'superAdmin') {
+            return true;
+        }
+
+        if (empty($operation_list)) {
+            return false;
+        }
+
+        //admin_activity-activity::query
+        $operation = strtolower(str_replace('/', '_', $module) . '-' . $controller . '::' . $action);
+        // print_r($operation_list);
+        // die($operation);
+        if (in_array($operation, $operation_list)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * 获取权限列表
@@ -43,16 +73,16 @@ class MyTags extends \Phalcon\Tag
     {
         $resources = array();
         $dirbasepath = APP_PATH . "apps/backend";
-        
+
         self::includeControllerFiles($dirbasepath);
-        
+
         $reader = new \Phalcon\Annotations\Adapter\Memory();
-        
+
         $subclassList = array();
         foreach (get_declared_classes() as $class) {
-            
-            if (is_subclass_of($class, 'App\Backend\Controllers\ControllerBase') && substr($class, - 10) == 'Controller') {
-                
+
+            if (is_subclass_of($class, 'App\Backend\Controllers\ControllerBase') && substr($class, -10) == 'Controller') {
+
                 // App\Backend\Submodules\Activity\Controllers\ActivityController
                 $c = preg_replace('/Submodules\\\(.*?)\\\Controllers\\\/i', 'Controllers\\\$1', $class);
                 $c = str_ireplace("App\\Backend\\Controllers\\", 'Admin_', $c);
@@ -60,11 +90,11 @@ class MyTags extends \Phalcon\Tag
                 $subclassList[] = $c;
                 $c = self::methodToRouter($c);
                 $c = strtolower($c);
-                
+
                 // if($class == 'App\Backend\Submodules\Weixin\Controllers\ReplyTypeController'){
                 // die($c);
                 // }
-                
+
                 if (strpos($c, $module) === 0) {
                     try {
                         $className = $c;
@@ -74,14 +104,14 @@ class MyTags extends \Phalcon\Tag
                         $annotations = $reflector->getClassAnnotations();
                         // 读取类的所有方法中注释块中的注释
                         $methodsAnnotations = $reflector->getMethodsAnnotations();
-                        
+
                         if ($annotations) {
                             // 遍历注释
                             foreach ($annotations as $annotation) {
                                 // 打印注释名称
                                 if (strtolower($annotation->getName()) == "title") {
                                     $titleAnnotations = $annotation->getArguments();
-                                    if (! empty($titleAnnotations) && key_exists("name", $titleAnnotations[0])) {
+                                    if (!empty($titleAnnotations) && key_exists("name", $titleAnnotations[0])) {
                                         $className = $titleAnnotations[0]['name'];
                                     }
                                 }
@@ -90,7 +120,7 @@ class MyTags extends \Phalcon\Tag
                     } catch (\Exception $e) {
                         $className = $c;
                     }
-                    
+
                     $functions = array();
                     foreach (get_class_methods($class) as $method) {
                         if (strstr($method, 'Action') != false) {
@@ -99,7 +129,7 @@ class MyTags extends \Phalcon\Tag
                                 $method = self::methodToRouter($method);
                                 $name = $c . '::' . $method;
                                 $key = $c . '::' . $method;
-                                
+
                                 if ($methodsAnnotations) {
                                     $methodkey = $method . "Action";
                                     if (key_exists($methodkey, $methodsAnnotations)) {
@@ -110,7 +140,7 @@ class MyTags extends \Phalcon\Tag
                                                 // 打印注释名称
                                                 if (strtolower($annotation->getName()) == "title") {
                                                     $titleAnnotations = $annotation->getArguments();
-                                                    if (! empty($titleAnnotations) && key_exists("name", $titleAnnotations[0])) {
+                                                    if (!empty($titleAnnotations) && key_exists("name", $titleAnnotations[0])) {
                                                         $name = $titleAnnotations[0]['name'];
                                                     }
                                                 }
@@ -124,7 +154,7 @@ class MyTags extends \Phalcon\Tag
                                 $name = $c . '::' . $method;
                                 $key = $c . '::' . $method;
                             }
-                            
+
                             $function = array(
                                 'name' => $name,
                                 'method' => $method,
@@ -133,15 +163,15 @@ class MyTags extends \Phalcon\Tag
                             array_push($functions, $function);
                         }
                     }
-                    
+
                     $resources[$module][$c . "||" . $className] = $functions;
                 }
             }
         }
-        
+
         // print_r($subclassList);
         // die('xxx222333');
-        
+
         return $resources;
     }
 
@@ -185,7 +215,7 @@ class MyTags extends \Phalcon\Tag
         foreach ($files as $file) {
             include_once $file;
         }
-        
+
         $diritem = new \DirectoryIterator($dirpath);
         foreach ($diritem as $item) {
             if ($item->isDot() || $item->isFile()) {

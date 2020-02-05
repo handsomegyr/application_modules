@@ -27,112 +27,112 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return array();
     }
 
-    protected $firstLetterDatas = array(
-        array(
-            'name' => 'A',
-            'value' => 'A'
-        ),
-        array(
-            'name' => 'B',
-            'value' => 'B'
-        ),
-        array(
-            'name' => 'C',
-            'value' => 'C'
-        ),
-        array(
-            'name' => 'D',
-            'value' => 'D'
-        ),
-        array(
-            'name' => 'E',
-            'value' => 'E'
-        ),
-        array(
-            'name' => 'F',
-            'value' => 'F'
-        ),
-        array(
-            'name' => 'G',
-            'value' => 'G'
-        ),
-        array(
-            'name' => 'H',
-            'value' => 'H'
-        ),
-        array(
-            'name' => 'I',
-            'value' => 'I'
-        ),
-        array(
-            'name' => 'J',
-            'value' => 'J'
-        ),
-        array(
-            'name' => 'K',
-            'value' => 'K'
-        ),
-        array(
-            'name' => 'L',
-            'value' => 'L'
-        ),
-        array(
-            'name' => 'M',
-            'value' => 'M'
-        ),
-        array(
-            'name' => 'N',
-            'value' => 'N'
-        ),
-        array(
-            'name' => 'O',
-            'value' => 'O'
-        ),
-        array(
-            'name' => 'P',
-            'value' => 'P'
-        ),
-        array(
-            'name' => 'Q',
-            'value' => 'Q'
-        ),
-        array(
-            'name' => 'R',
-            'value' => 'R'
-        ),
-        array(
-            'name' => 'S',
-            'value' => 'S'
-        ),
-        array(
-            'name' => 'T',
-            'value' => 'T'
-        ),
-        array(
-            'name' => 'U',
-            'value' => 'U'
-        ),
-        array(
-            'name' => 'V',
-            'value' => 'V'
-        ),
-        array(
-            'name' => 'W',
-            'value' => 'W'
-        ),
-        array(
-            'name' => 'X',
-            'value' => 'X'
-        ),
-        array(
-            'name' => 'Y',
-            'value' => 'Y'
-        ),
-        array(
-            'name' => 'Z',
-            'value' => 'Z'
-        )
-    );
+    // protected $firstLetterDatas = array(
+    //     array(
+    //         'name' => 'A',
+    //         'value' => 'A'
+    //     ),
+    //     array(
+    //         'name' => 'B',
+    //         'value' => 'B'
+    //     ),
+    //     array(
+    //         'name' => 'C',
+    //         'value' => 'C'
+    //     ),
+    //     array(
+    //         'name' => 'D',
+    //         'value' => 'D'
+    //     ),
+    //     array(
+    //         'name' => 'E',
+    //         'value' => 'E'
+    //     ),
+    //     array(
+    //         'name' => 'F',
+    //         'value' => 'F'
+    //     ),
+    //     array(
+    //         'name' => 'G',
+    //         'value' => 'G'
+    //     ),
+    //     array(
+    //         'name' => 'H',
+    //         'value' => 'H'
+    //     ),
+    //     array(
+    //         'name' => 'I',
+    //         'value' => 'I'
+    //     ),
+    //     array(
+    //         'name' => 'J',
+    //         'value' => 'J'
+    //     ),
+    //     array(
+    //         'name' => 'K',
+    //         'value' => 'K'
+    //     ),
+    //     array(
+    //         'name' => 'L',
+    //         'value' => 'L'
+    //     ),
+    //     array(
+    //         'name' => 'M',
+    //         'value' => 'M'
+    //     ),
+    //     array(
+    //         'name' => 'N',
+    //         'value' => 'N'
+    //     ),
+    //     array(
+    //         'name' => 'O',
+    //         'value' => 'O'
+    //     ),
+    //     array(
+    //         'name' => 'P',
+    //         'value' => 'P'
+    //     ),
+    //     array(
+    //         'name' => 'Q',
+    //         'value' => 'Q'
+    //     ),
+    //     array(
+    //         'name' => 'R',
+    //         'value' => 'R'
+    //     ),
+    //     array(
+    //         'name' => 'S',
+    //         'value' => 'S'
+    //     ),
+    //     array(
+    //         'name' => 'T',
+    //         'value' => 'T'
+    //     ),
+    //     array(
+    //         'name' => 'U',
+    //         'value' => 'U'
+    //     ),
+    //     array(
+    //         'name' => 'V',
+    //         'value' => 'V'
+    //     ),
+    //     array(
+    //         'name' => 'W',
+    //         'value' => 'W'
+    //     ),
+    //     array(
+    //         'name' => 'X',
+    //         'value' => 'X'
+    //     ),
+    //     array(
+    //         'name' => 'Y',
+    //         'value' => 'Y'
+    //     ),
+    //     array(
+    //         'name' => 'Z',
+    //         'value' => 'Z'
+    //     )
+    // );
 
     // protected $trueOrFalseDatas = array(
     //     array(
@@ -144,6 +144,35 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     //         'value' => '0'
     //     )
     // );
+
+    protected $firstLetterDatas = array(
+        'A' => 'A',
+        'B' => 'B',
+        'C' => 'C',
+        'D' => 'D',
+        'E' => 'E',
+        'F' => 'F',
+        'G' => 'G',
+        'H' => 'H',
+        'I' => 'I',
+        'J' => 'J',
+        'K' => 'K',
+        'L' => 'L',
+        'M' => 'M',
+        'N' => 'N',
+        'O' => 'O',
+        'P' => 'P',
+        'Q' => 'Q',
+        'R' => 'R',
+        'S' => 'S',
+        'T' => 'T',
+        'U' => 'U',
+        'V' => 'V',
+        'W' => 'W',
+        'X' => 'X',
+        'Y' => 'Y',
+        'Z' => 'Z'
+    );
     protected $trueOrFalseDatas = array(
         '1' => '是',
         '0' => '否',
@@ -669,7 +698,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $_SESSION['toastr']['message'] = '添加成功!';
             $_SESSION['toastr']['options'] = array();
 
-            $this->makeJsonResult($this->getUrl("sysmsg4insert"));
+            $this->makeJsonResult($this->getUrl("list"));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
             // die($e->getMessage());
@@ -734,7 +763,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $_SESSION['toastr']['message'] = '保存成功!';
             $_SESSION['toastr']['options'] = array();
 
-            $this->makeJsonResult($this->getUrl("sysmsg4update"));
+            $this->makeJsonResult($this->getUrl("list"));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
             //die($e->getMessage());
@@ -765,7 +794,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // delete
             $this->delete($input, array());
 
-            $this->makeJsonResult('', '删除成功！');
+            $this->makeJsonResult($this->getUrl("list"), '删除成功！');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -822,7 +851,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
      *
      * @name 追加成功消息页面
      */
-    public function sysmsg4insertAction()
+    protected function sysmsg4insertAction()
     {
         try {
             /* 添加链接 */
@@ -842,7 +871,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
      *
      * @name 更新成功消息页面
      */
-    public function sysmsg4updateAction()
+    protected function sysmsg4updateAction()
     {
         try {
             /* 添加链接 */
@@ -1018,32 +1047,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
     protected function showModal($title, $fields = array(), $row = array())
     {
-        // die(__DIR__ . '/../../../views/');
-        // $this->view->setViewsDir(__DIR__ . '/../../../views/');
-        // $this->view->setVar('title', 'CSV导出');
-        // $this->view->setVar('modal_id', 'xxx');
-        // $this->view->setVar('fields', array());
-        //ob_start();
-        //$this->view->start();
-        //$this->view->partial("partials/actions/modal");
-        //$this->view->finish();            
-        //$content = ob_get_content();
-        //ob_end_clean();
-
-        // $this->view->start();
-        // //Shows recent posts view (app/views/posts/recent.phtml)
-        // $this->view->render('partials', 'modal');
-        // $this->view->finish();
-
-        // // Printing views output
-        // $content = $this->view->getContent();
-
-        // $this->view->setViewsDir(__DIR__ . '/../../../views/');
-        // $this->disableLayout();
-        // $this->view->disableLevel(array(
-        //     View::LEVEL_LAYOUT => false,
-        //     View::LEVEL_MAIN_LAYOUT => false
-        // ));
         $this->view->disable();
         // $this->disableLayout();
         $viewClass = $this->view->getVar("viewClass");
@@ -1065,6 +1068,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $data['content'] = \ob_get_clean();
         return $this->makeJsonResult($data, '弹窗显示成功');
     }
+
     /**
      * 转化为数组
      *

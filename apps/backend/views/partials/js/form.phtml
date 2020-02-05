@@ -60,7 +60,7 @@
                                 },
                                 "deleteUrl": "<?php echo $this->view->baseUrl . $this->view->moduleName . '/' . $this->view->controllerName . '/removefile?id=' . $this->view->row['_id'] . '&_field_del_=' . $key ?>",
                                 "fileActionSettings": {
-                                    "showRemove": true,
+                                    "showRemove": <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'removefile')) { ?>true<?php } else { ?>false<?php } ?>,
                                     "showDrag": false
                                 },
                                 "msgPlaceholder": "选择<?php if ($field['form']['input_type'] == "image") { ?>图片<?php } else { ?>文件<?php } ?>",
