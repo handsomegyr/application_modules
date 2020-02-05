@@ -31,9 +31,12 @@ Core script to handle the entire layout and base functions
 
             //main function to initiate template pages
             init: function() {
-
-                //IMPORTANT!!!: Do not modify the core handlers call order.
-
+                $('.container-refresh').off('click').on('click', function() {
+                    $.admin.reload();
+                    $.admin.toastr.success('刷新成功 !', '', {
+                        positionClass: "toast-top-center"
+                    });
+                });
                 //core handlers
                 handleInit();
             },

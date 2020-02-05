@@ -1,0 +1,101 @@
+       
+<?php foreach ($schemas4Form as $key => $field) { ?>
+    <?php if (!empty($field['form']['is_show']) && !empty($field['form']['input_type'])) { ?>
+        <?php $field['name'] = empty($field['form']['name']) ? $field['name'] : $field['form']['name']; ?>
+        <?php if ($field['form']['input_type'] == "datetimepicker") { ?>
+            $('.<?php echo $key ?>').parent().datetimepicker({
+                "format": "YYYY-MM-DD HH:mm:ss",
+                "allowInputToggle": true,
+                "locale": "zh-CN"
+            });
+        <?php } elseif ($field['form']['input_type'] == "select") { ?>
+            $('.<?php echo $key ?>').select2({
+                "allowClear": true,
+                "placeholder": {
+                    "id": "",
+                    "text": "<?php echo $field['name'] ?>"
+                }
+            });
+        <?php } elseif ($field['form']['input_type'] == "ueditor") { ?>
+            UE.delEditor("<?php echo $key ?>");
+            var ue_<?php echo $key ?> = UE.getEditor('<?php echo $key ?>');
+        <?php } elseif ($field['form']['input_type'] == "ckeditor") { ?>
+            CKEDITOR.replace('<?php echo $key ?>');
+        <?php } elseif ($field['form']['input_type'] == "number") { ?>
+            $('.<?php echo $key ?>:not(.initialized)')
+                .addClass('initialized')
+                .bootstrapNumber({
+                    upClass: 'success',
+                    downClass: 'primary',
+                    center: true
+                });
+        <?php } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") { ?>
+            // $("input.<?php echo $key ?>").fileinput();
+            $("input.<?php echo $key ?>").fileinput({
+                "initialPreviewConfig": [{
+                    // "caption": "faa855d089c01a90574083cb28bd4eea.png",
+                    // "key": 0,
+                    "type": "image",
+                    // "downloadUrl": "http://qiaohuoss.eintone.com/qh/images/faa855d089c01a90574083cb28bd4eea.png"
+                }],
+                "overwriteInitial": true,
+                "initialPreviewAsData": true,
+                "browseLabel": "浏览",
+                "cancelLabel": "取消",
+                "showRemove": false,
+                "showUpload": false,
+                "showCancel": false,
+                "dropZoneEnabled": false,
+                "deleteExtraData": {
+                    "<?php echo $key ?>": "_file_del_",
+                    "_file_del_": "",
+                    "_token": LA.token,
+                    "_method": "PUT"
+                },
+                "deleteUrl": "<?php echo $this->view->baseUrl . $this->view->moduleName . '/' . $this->view->controllerName . '/removefile?id=' . $this->view->row['_id'] . '&_field_del_=' . $key ?>",
+                "fileActionSettings": {
+                    "showRemove": <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'removefile')) { ?>true<?php } else { ?>false<?php } ?>,
+                    "showDrag": false
+                },
+                "msgPlaceholder": "选择<?php if ($field['form']['input_type'] == "image") { ?>图片<?php } else { ?>文件<?php } ?>",
+                <?php if ($field['form']['input_type'] == "image") { ?> "allowedFileTypes": ["image"] <?php } ?>
+            });
+            $("input.<?php echo $key ?>").on('filebeforedelete', function() {
+                return new Promise(function(resolve, reject) {
+
+                    var remove = resolve;
+
+                    swal({
+                        title: "确认删除?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "确认",
+                        showLoaderOnConfirm: true,
+                        cancelButtonText: "取消",
+                        preConfirm: function() {
+                            return new Promise(function(resolve) {
+                                resolve(remove());
+                            });
+                        }
+                    });
+                });
+            });
+        <?php } ?>
+    <?php } ?>
+<?php } ?>
+//iCheck for checkbox and radio inputs
+$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+    checkboxClass: 'icheckbox_minimal-blue',
+    radioClass: 'iradio_minimal-blue'
+});
+//Red color scheme for iCheck
+$('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+    checkboxClass: 'icheckbox_minimal-red',
+    radioClass: 'iradio_minimal-red'
+});
+//Flat red color scheme for iCheck
+$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+    checkboxClass: 'icheckbox_flat-green',
+    radioClass: 'iradio_flat-green'
+});

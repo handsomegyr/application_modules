@@ -1,8 +1,10 @@
 <?php
 $is_show = false;
 foreach ($this->view->schemas as $key => $field) {
+	$field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];
 	if (!empty($field['search']['is_show'])) {
 		$is_show = true;
+		break;
 	}
 }
 ?>

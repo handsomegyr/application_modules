@@ -9,6 +9,7 @@
                     $field['search']['placeholder'] = empty($field['search']['placeholder']) ? "输入 " . $field['name'] : $field['search']['placeholder'];
                     $field['search']['input_type'] = empty($field['search']['input_type']) ? $field['form']['input_type'] : $field['search']['input_type'];
                     $field['search']['items'] = empty($field['search']['items']) ? $field['form']['items'] : $field['search']['items'];
+                    $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];
                     ?>
                     <?php if (!empty($field['search']['is_show']) && !empty($field['search']['input_type'])) { ?>
 
@@ -36,11 +37,6 @@
                                     "text": "<?php echo $field['name'] ?>"
                                 }
                             });
-                        <?php } elseif ($field['search']['input_type'] == "ueditor") { ?>
-                            UE.delEditor("<?php echo $key ?>");
-                            var ue_<?php echo $key ?> = UE.getEditor('<?php echo $key ?>');
-                        <?php } elseif ($field['search']['input_type'] == "ckeditor") { ?>
-                            CKEDITOR.replace('<?php echo $key ?>');
                         <?php } elseif ($field['search']['input_type'] == "number") { ?>
                             $('.<?php echo $key ?>:not(.initialized)')
                                 .addClass('initialized')
@@ -103,6 +99,9 @@
             },
             getConditions: function(d) {
                 <?php foreach ($this->view->schemas as $key => $field) { ?>
+                    <?php
+                    $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];
+                    ?>
                     <?php if (!empty($field['search']['is_show'])) { ?>
                         <?php
                         $field['search']['input_type'] = empty($field['search']['input_type']) ? $field['form']['input_type'] : $field['search']['input_type'];

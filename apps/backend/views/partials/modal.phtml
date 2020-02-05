@@ -7,98 +7,11 @@
             </div>
             <form>
                 <div class="modal-body">
-                    <?php foreach ($this->view->fields as $key => $field) { ?>
-                        <?php
-                        if (empty($field['form']['is_show'])) {
-                            continue;
-                        }
-                        $field['name'] = empty($field['form']['name']) ? $field['name'] : $field['form']['name'];
-                        $field['form']['placeholder'] = empty($field['form']['placeholder']) ? "输入 " . $field['name'] : $field['form']['placeholder'];
-
-                        if (!isset($field['form']['partial'])) {
-                            //print_r($field);die('xxx');
-                            $prepend = "";
-                            $append = "";
-                            $value = "";
-                            if ($field['form']['input_type'] == "hidden") {
-                                $this->partial('partials/form/hidden');
-                                $this->partial('partials/form/display');
-                            } elseif ($field['form']['input_type'] == "textarea") {
-                                if ($field['data']['type'] == "json") {
-                                    $value = empty($this->view->row[$key]) ? "{}" : json_encode($this->view->row[$key]);
-                                } elseif ($field['data']['type'] == "array") {
-                                    $value = empty($this->view->row[$key]) ? "" : implode(',', $this->view->row[$key]);
-                                } else {
-                                    $value = nl2br($this->view->row[$key]);
-                                }
-                                $rows = 5;
-                                $this->partial('partials/form/textarea');
-                            } elseif ($field['form']['input_type'] == "ckeditor") {
-                                $value = $this->view->row[$key];
-                                $this->partial('partials/form/editor');
-                            } elseif ($field['form']['input_type'] == "ueditor") {
-                                $value = $this->view->row[$key];
-                                $this->partial('partials/form/ueditor');
-                            } elseif ($field['form']['input_type'] == "text") {
-                                $prepend = '<i class="fa fa-pencil fa-fw"></i>';
-                                $value = $this->view->row[$key];
-                                $this->partial('partials/form/input');
-                            } elseif ($field['form']['input_type'] == "number") {
-                                $value = intval($this->view->row[$key]);
-                                $this->partial('partials/form/input');
-                            } elseif ($field['form']['input_type'] == "currency") {
-                                $value = $this->view->row[$key];
-                                $this->partial('partials/form/input');
-                            } elseif ($field['form']['input_type'] == "decimal") {
-                                $value = $this->view->row[$key];
-                                $this->partial('partials/form/input');
-                            } elseif ($field['form']['input_type'] == "datetimepicker") {
-                                $prepend = '<i class="fa fa-calendar fa-fw"></i>';
-                                $value = date("Y-m-d H:i:s", $this->view->row[$key]->sec);
-                                $this->partial('partials/form/input');
-                            } elseif ($field['form']['input_type'] == "radio") {
-                                $inline = true;
-                                $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
-                                $this->partial('partials/form/radio');
-                            } elseif ($field['form']['input_type'] == "select") {
-                                $inline = true;
-                                if (!isset($field['form']['select']) || empty($field['form']['select']['multiple'])) {
-                                    if (empty($field['form']['cascade'])) {
-                                        $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
-                                    } else {
-                                        $cascade = $field['form']['cascade'];
-                                        $options = is_callable($field['form']['items']) ? $field['form']['items']($this->view->row[$cascade]) : $field['form']['items'];
-                                    }
-                                } else {
-                                    $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
-                                }
-                                if (empty($field['form']['select']['multiple'])) {
-                                    $this->partial('partials/form/select');
-                                } else {
-                                    $this->partial('partials/form/multipleselect');
-                                }
-                            } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {
-                                $path = "";
-                                if (!empty($field['data'][$field['data']['type']])) {
-                                    $fileInfo = $field['data'][$field['data']['type']];
-                                    $path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
-                                }
-                                $data_initial_preview = "";
-                                $data_initial_caption = "";
-                                if (!empty($this->view->row[$key])) {
-                                    $data_initial_preview = $this->view->baseUrl . "service/file/index?upload_path=" . $path . "&id=" . $this->view->row[$key] . "&s=1";
-                                    $data_initial_caption = basename($this->view->row[$key]);
-                                }
-                                $this->partial('partials/form/file');
-                            } else {
-                                $this->partial('partials/form/input');
-                            }
-                        } else {
-                            $this->partial($field['form']['partial']);
-                        }
-                        ?>
-                    <?php } ?>
-
+                    <?php
+                    $isCando = true;
+                    $schemas4Form = $this->view->fields;
+                    $this->partial('partials/formelement');
+                    ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -112,7 +25,6 @@
 ?>
 <script>
     $(function() {
-
         if (typeof ModalComponents == 'object') {
             ModalComponents.init();
         }
