@@ -67,6 +67,161 @@ Core script to handle the entire layout and base functions
 
             isRTL: function() {
                 return isRTL;
+            },
+
+            actionResolver: function(data) {
+                var response = data[0];
+                var target = data[1];
+
+                if (typeof response !== 'object') {
+                    return $.admin.swal({
+                        type: 'error',
+                        title: 'Oops!'
+                    });
+                }
+
+                var then = function(then) {
+                    // alert(then.action);
+                    if (then.action == 'refresh') {
+                        $.admin.reload();
+                    }
+
+                    if (then.action == 'download') {
+                        window.open(then.value, '_blank');
+                    }
+
+                    if (then.action == 'redirect') {
+                        $.admin.redirect(then.value);
+                    }
+                };
+
+                if (typeof response.html === 'string') {
+                    target.html(response.html);
+                }
+
+                if (typeof response.swal === 'object') {
+                    $.admin.swal(response.swal);
+                }
+
+                if (typeof response.toastr === 'object') {
+                    $.admin.toastr[response.toastr.type](response.toastr.content, '', response.toastr.options);
+                }
+
+                if (response.then) {
+                    then(response.then);
+                }
+            },
+            actionCatcher: function(request) {
+                if (request && typeof request.responseJSON === 'object') {
+                    $.admin.toastr.error(request.responseJSON.message, '', {
+                        positionClass: "toast-bottom-center",
+                        timeOut: 10000
+                    }).css("width", "500px")
+                }
+            },
+            process4Modal: function(url, element) {
+                var data = $(element).data();
+                var target = $(element);
+                var process = new Promise(function(resolve, reject) {
+                    // alert('click');
+                    Object.assign(data, {
+                        _token: LA.token,
+                        _action: '<?php echo $tool['action'] ?>',
+                    });
+
+                    var formData1 = new FormData();
+                    for (var key in data) {
+                        formData1.append(key, data[key]);
+                    }
+
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data: formData1,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function(data) {
+                            // alert('success');
+                            console.log(data); //打印服务端返回的数据(调试用)
+                            if (!data.error) {
+                                resolve([data, target]);
+                                $('#app-admin-controllers-modal').html(data.content.content);
+                                var modalId = data.content.modal_id;
+                                $('#' + modalId).modal('show');
+                                $('#' + modalId + ' form').off('submit').on('submit', function(e) {
+                                    e.preventDefault();
+                                    // alert('form submit');
+                                    var form2 = this;
+                                    var process2 = new Promise(function(resolve, reject) {
+                                        var data1 = [];
+                                        Object.assign(data1, {
+                                            _token: LA.token,
+                                            _action: '<?php echo $tool['action'] ?>',
+                                        });
+
+                                        var formData2 = new FormData(form2);
+                                        for (var key in data1) {
+                                            formData2.append(key, data1[key]);
+                                        }
+
+                                        $.ajax({
+                                            type: "POST", //方法类型
+                                            dataType: "json", //预期服务器返回的数据类型
+                                            url: url,
+                                            cache: false,
+                                            contentType: false, //这里
+                                            processData: false, //这两个一定设置为false
+                                            data: formData2,
+                                            success: function(data) {
+                                                console.log(data); //打印服务端返回的数据(调试用)
+                                                if (!data.error) {
+                                                    //{"status":true,
+                                                    //"then":{"action":"download","value":"http:\/\/190821fg0463demo.jdytoy.com\/admin\/admin-build\/download-file?file_id=20200203192717.csv"},
+                                                    //"toastr":{"type":"success","content":"Success\uff01","options":{"positionClass":"toast-top-center"}}}
+                                                    var request = {};
+                                                    request.status = true;
+                                                    // request.then = {};
+                                                    if (data.content.then) {
+                                                        request.then = data.content.then;
+                                                    }
+                                                    request.toastr = {};
+                                                    request.toastr.type = "success";
+                                                    request.toastr.content = data.message;
+                                                    request.toastr.options = {
+                                                        "positionClass": "toast-top-center"
+                                                    };
+                                                    resolve([request, target]);
+                                                    $('#' + modalId).modal('hide');
+                                                } else {
+                                                    var request = {};
+                                                    request.responseJSON = {};
+                                                    request.responseJSON.message = data.message;
+                                                    reject(request);
+                                                }
+                                            },
+                                            error: function(request) {
+                                                reject(request);
+                                            }
+                                        });
+                                    });
+                                    process2.then(App.actionResolver).catch(App.actionCatcher);
+                                });
+                            } else {
+                                var request = {};
+                                request.responseJSON = {};
+                                request.responseJSON.message = data.message;
+                                reject(request);
+                            }
+                        },
+                        error: function(request) {
+                            console.log(request); //打印服务端返回的数据(调试用)
+                            alert(request);
+                            reject(request);
+                        }
+                    });
+                });
+                process.then(App.actionResolver).catch(App.actionCatcher);
             }
 
         };

@@ -8,7 +8,7 @@
 
         <input type="hidden" name="<?php echo $key ?>" />
 
-        <select class="form-control <?php echo $key ?>" style="width: 100%;" name="<?php echo $key ?>">
+        <select class="form-control <?php echo $key ?>" style="width: 100%;" name="<?php echo $key ?>" <?php if (!empty($field['form']['readonly'])) { ?>disabled <?php } ?>>
             <?php if (!empty($groups)) { ?>
                 <?php foreach ($groups as $group) { ?>
                     <optgroup label="<?php echo $group['label']  ?>">

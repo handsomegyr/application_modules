@@ -9,7 +9,7 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
   <?php $this->partial("partials/styles") ?>
-  
+
 </head>
 
 <body class="hold-transition <?php echo  $this->view->adminConfig->admin->skin ?> <?php echo  $this->view->adminConfig->admin->layout ?>">
@@ -21,22 +21,25 @@
     <?php $this->partial("partials/sidebar") ?>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <?php //$this->partial("partials/container/page/page_container/page_header/page_title") 
-        ?>
-        <?php $this->partial("partials/container/page/page_container/page_header/breadcrumb") ?>
-      </section>
+    <div class="content-wrapper" id="pjax-container">
+      <div id="app">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <?php //$this->partial("partials/container/page/page_container/page_header/page_title") 
+          ?>
+          <?php $this->partial("partials/container/page/page_container/page_header/breadcrumb") ?>
+        </section>
 
-      <!-- Main content -->
-      <section class="content">
-        <!-- @include('admin::partials.alerts')
+        <!-- Main content -->
+        <section class="content">
+          <!-- @include('admin::partials.alerts')
         @include('admin::partials.exception')
         @include('admin::partials.toastr') -->
-        <?php echo $this->getContent(); ?>
-      </section>
-      <!-- /.content -->
+          <div style="display: block;" id="app-admin-controllers-modal"></div>
+          <?php echo $this->getContent(); ?>
+        </section>
+        <!-- /.content -->
+      </div>
     </div>
     <!-- /.content-wrapper -->
 

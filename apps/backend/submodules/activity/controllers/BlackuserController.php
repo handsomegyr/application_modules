@@ -50,7 +50,19 @@ class BlackuserController extends \App\Backend\Controllers\FormController
             'title' => '修改所属活动',
             'action' => 'exchangeactivity',
             'is_show' => true,
-            'icon' => 'fa-upload',
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    protected function getFormTools2($tools)
+    {
+        $tools['exchangeactivity'] = array(
+            'title' => '修改所属活动',
+            'action' => 'exchangeactivity',
+            'is_show' => true,
+            'icon' => 'fa-pencil-square-o',
         );
 
         return $tools;
@@ -340,7 +352,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容
                 $fields = array();
-                $fields['id'] = array(
+                $fields['_id'] = array(
                     'name' => '记录ID',
                     'validation' => array(
                         'required' => true
@@ -357,7 +369,8 @@ class BlackuserController extends \App\Backend\Controllers\FormController
                     ),
                     'form' => array(
                         'input_type' => 'text',
-                        'is_show' => true
+                        'is_show' => true,
+                        'readonly' => true,
                     ),
                 );
                 $fields['activity_id'] = array(
@@ -368,14 +381,27 @@ class BlackuserController extends \App\Backend\Controllers\FormController
                     'form' => array(
                         'input_type' => 'select',
                         'is_show' => true,
+                        'items' => $this->modelActivity->getAll(),
+                        'readonly' => true,
+                    ),
+                );
+                $fields['exchange_activity_id'] = array(
+                    'name' => '变更所属活动',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'select',
+                        'is_show' => true,
                         'items' => $this->modelActivity->getAll()
                     ),
                 );
+
                 $title = "修改所属活动";
                 return $this->showModal($title, $fields, $row);
             } else {
                 // 如果是POST请求的话就是进行具体的处理  
-                $activity_id = trim($this->request->get('activity_id'));
+                $activity_id = trim($this->request->get('exchange_activity_id'));
                 if (empty($activity_id)) {
                     return $this->makeJsonError("活动ID未指定");
                 }

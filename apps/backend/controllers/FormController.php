@@ -407,6 +407,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                             $element = trim($element);
                             return strlen($element) > 0;
                         });
+                    } else {
+                        $input->$key = array();
                     }
                 }
             }
@@ -763,7 +765,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // delete
             $this->delete($input, array());
 
-            $this->makeJsonResult();
+            $this->makeJsonResult('', '删除成功！');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

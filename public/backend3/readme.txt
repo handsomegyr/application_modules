@@ -1,0 +1,1 @@
+使用laravel-admin作为后台的资源js，css，img等

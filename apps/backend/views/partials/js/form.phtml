@@ -106,6 +106,69 @@
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
                 })
+
+                <?php if ($this->view->actionName == 'edit') { ?>
+                    $('.5e217e4051348-delete').unbind('click').click(function() {
+                        var id = "<?php echo $this->view->row['_id'] ?>";
+                        var url = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/remove';
+                        var redirectUrl = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/list';
+
+                        swal({
+                            title: "确认删除?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            showLoaderOnConfirm: true,
+                            cancelButtonText: "取消",
+                            preConfirm: function() {
+                                return new Promise(function(resolve) {
+                                    $.ajax({
+                                        type: 'post',
+                                        url: url,
+                                        dataType: "json",
+                                        data: {
+                                            id: id,
+                                            _method: 'delete',
+                                            _token: LA.token,
+                                        },
+                                        success: function(data) {
+                                            $.pjax({
+                                                container: '#pjax-container',
+                                                url: redirectUrl
+                                            });
+                                            // $.admin.redirect(redirectUrl);
+                                            resolve(data);
+                                        }
+                                    });
+                                });
+                            }
+                        }).then(function(result) {
+                            console.log(result);
+                            var data = result.value;
+                            if (typeof data === 'object') {
+                                if (!data.error) {
+                                    swal(data.message, '', 'success');
+                                } else {
+                                    swal(data.message, '', 'error');
+                                }
+                            }
+                        });
+                    });
+
+
+                    <?php foreach ($this->view->formTools as $key => $tool) { ?>
+                        <?php if (!empty($tool['is_show'])) { ?>
+                            $('.form-tool-<?php echo $key ?>').off('click').on('click', function(e) {
+                                e.preventDefault();
+                                var id = "<?php echo $this->view->row['_id'] ?>";
+                                var url = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>?id=' + id;
+                                // alert('ssssssss');
+                                App.process4Modal(url, this);
+                            });
+                        <?php } ?>
+                    <?php } ?>
+                <?php } ?>
             },
 
             // 提交
@@ -135,9 +198,9 @@
                             // error2.show();
                             // App.scrollTo(error2, -200);
                         } else {
-                            alert(result.message);
-                            //location.href = result.content;
-                            //location.href = "<?php echo $this->view->list_url ?>"
+                            // alert(result.message);
+                            // location.href = result.content;
+                            location.href = "<?php echo $this->view->list_url ?>"
                         }
                     },
                     error: function() {

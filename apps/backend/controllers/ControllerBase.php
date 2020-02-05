@@ -12,11 +12,13 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         parent::initialize();
 
         // $this->tag->prependTitle('INVO | ');
-        // $this->view->setVar("resourceUrl", "/backend/metronic.bootstrap/");
         $this->tag->prependTitle('AdminLTE | ');
-        $this->view->setVar("resourceUrl", "/backend2/AdminLTE/");
 
-        try {            
+        // $this->view->setVar("resourceUrl", "/backend/metronic.bootstrap/");        
+        $this->view->setVar("resourceUrl", "/backend2/AdminLTE/");
+        // $this->view->setVar("resourceUrl", "/backend3/laravel-admin/AdminLTE/");
+
+        try {
             $adminConfig = $this->getDI()->get('adminConfig');
             $this->view->setVar("adminConfig", $adminConfig);
         } catch (\Exception $th) {
