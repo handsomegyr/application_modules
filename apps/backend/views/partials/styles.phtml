@@ -1,3 +1,6 @@
-<?php //$this->partial("partials/laraveladmin/styles") 
-?>
-<?php $this->partial("partials/adminlte/styles") ?>
+<?php
+$style_js_path = 'adminlte';
+if ($this->view->resourceUrl == '/backend3/laravel-admin/AdminLTE/') {
+    $style_js_path = 'laraveladmin';
+}
+$this->partial("partials/{$style_js_path}/styles");

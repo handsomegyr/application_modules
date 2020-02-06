@@ -2,15 +2,16 @@
 <footer class="main-footer">
 	<!-- To the right -->
 	<div class="pull-right hidden-xs">
-		<strong>Env</strong>&nbsp;&nbsp; 开发环境
-
+		<?php if ($this->view->adminConfig->admin->show_environment) { ?>
+			<strong>Env</strong>&nbsp;&nbsp; <?php echo  $this->view->adminConfig->admin->show_environment ?>
+		<?php } ?>
 
 		&nbsp;&nbsp;&nbsp;&nbsp;
-
-		<strong>Version</strong>&nbsp;&nbsp; 1.0.0
-
+		<?php if ($this->view->adminConfig->admin->show_version) { ?>
+			<strong>Version</strong>&nbsp;&nbsp; <?php echo  $this->view->adminConfig->admin->show_version ?>
+		<?php } ?>
 
 	</div>
 	<!-- Default to the left -->
-	<!-- <strong>Powered by <a href="https://github.com/z-song/laravel-admin" target="_blank">laravel-admin</a></strong> -->
+	<strong>Powered by <a href="<?php echo  $this->view->adminConfig->admin->powered_by['url'] ?>" target="_blank"><?php echo  $this->view->adminConfig->admin->powered_by['name'] ?></a></strong>
 </footer>

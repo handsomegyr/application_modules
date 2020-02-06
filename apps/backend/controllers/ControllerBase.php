@@ -14,10 +14,6 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         // $this->tag->prependTitle('INVO | ');
         $this->tag->prependTitle('AdminLTE | ');
 
-        // $this->view->setVar("resourceUrl", "/backend/metronic.bootstrap/");        
-        $this->view->setVar("resourceUrl", "/backend2/AdminLTE/");
-        // $this->view->setVar("resourceUrl", "/backend3/laravel-admin/AdminLTE/");
-
         try {
             $adminConfig = $this->getDI()->get('adminConfig');
             $this->view->setVar("adminConfig", $adminConfig);
@@ -25,6 +21,9 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             die($th->getMessage());
         }
 
+        // $this->view->setVar("resourceUrl", "/backend/metronic.bootstrap/");        
+        // $this->view->setVar("resourceUrl", "/backend2/AdminLTE/");
+        $this->view->setVar("resourceUrl", $adminConfig->admin->resourcePath);
 
         $viewClass = array();
         $viewClass['form-group'] = "form-group";

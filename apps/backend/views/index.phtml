@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="<?php echo $_SESSION['csrf_token'] ?>">
 
-  <title>AdminLTE 2 | Dashboard</title>
+  <title><?php echo  $this->view->adminConfig->admin->title ?> | <?php echo  $this->view->formName ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -16,6 +16,13 @@
 </head>
 
 <body class="hold-transition <?php echo  $this->view->adminConfig->admin->skin ?> <?php echo  $this->view->adminConfig->admin->layout ?>">
+
+  <?php if ($this->view->adminConfig->admin->top_alert) { ?>
+    <div style="text-align: center;padding: 5px;font-size: 12px;background-color: #ffffd5;color: #ff0000;">
+      <?php echo  $this->view->adminConfig->admin->top_alert ?>
+    </div>
+  <?php } ?>
+  
   <div class="wrapper">
 
     <?php $this->partial("partials/header") ?>

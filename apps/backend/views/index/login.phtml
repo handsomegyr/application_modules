@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Log in</title>
+  <title><?php echo  $this->view->adminConfig->admin->name ?> | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -18,7 +18,7 @@
   <![endif]-->
 </head>
 
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" <?php if($this->view->adminConfig->admin->login_background_image){ ?>style="background: <?php echo $this->view->adminConfig->admin->login_background_image ?> no-repeat;background-size: cover;"<?php } ?>>
   <div class="login-box">
     <div class="login-logo">
       <a href="<?php echo $this->view->resourceUrl ?>index2.html"><b>Admin</b>LTE</a>
