@@ -1,6 +1,6 @@
 <script>
   function LA() {}
-  LA.token = "EW0UgtUF5LcaG8KvJ5eGulE0pwxoj9AtLEbpf2LH";
+  LA.token = "<?php echo $_SESSION['csrf_token'] ?>";
 </script>
 <!-- REQUIRED JS SCRIPTS -->
 <script src="<?php echo $this->view->resourceUrl ?>bootstrap/js/bootstrap.min.js"></script>

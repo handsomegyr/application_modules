@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<?php $_SESSION['csrf_token'] = createRandCode(40); ?>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -47,7 +47,7 @@
           </div>
           <!-- /.col -->
           <div class="col-xs-4">
-            <input type="hidden" name="_token" value="9FSxMzExjTIJ1aw3iA8lqQOeXvFrE4haoPdCxT6a">
+            <input type="hidden" name="_token" value="<?php echo $_SESSION['csrf_token'] ?>">
             <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
           </div>
           <!-- /.col -->

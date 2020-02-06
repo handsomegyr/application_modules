@@ -14,7 +14,10 @@ $isCando = $this->myTag->isCanDo($this->view->moduleName, $this->view->controlle
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?php echo $this->view->actionName == 'add' ? "新增" : "编辑"; ?><?php echo $this->view->formName ?></h3>
+                    <h3 class="box-title"><?php echo $this->view->actionName == 'add' ? "创建" : "编辑"; ?>
+                        <?php //echo $this->view->formName 
+                        ?>
+                    </h3>
 
                     <div class="box-tools">
                         <?php if ($this->view->actionName == 'edit') { ?>

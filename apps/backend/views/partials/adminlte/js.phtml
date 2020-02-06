@@ -1,13 +1,13 @@
 <script>
   function LA() {}
-  LA.token = "EW0UgtUF5LcaG8KvJ5eGulE0pwxoj9AtLEbpf2LH";
-
+  LA.token = "<?php echo $_SESSION['csrf_token'] ?>";
 </script>
 <!-- REQUIRED JS SCRIPTS -->
 <!-- jQuery 3 -->
 <!-- <script src="<?php echo $this->view->resourceUrl ?>bower_components/jquery/dist/jquery.min.js"></script> -->
 <script src="<?php echo $this->view->resourceUrl ?>../jQuery/jQuery-2.1.4.min.js"></script>
 <script src="<?php echo $this->view->resourceUrl ?>../jQuery/jquery.uniform.min.js"></script>
+<script src="<?php echo $this->view->resourceUrl ?>../jquery-validation/jquery.validate.min.js"></script>
 
 <!-- Bootstrap 3.3.7 -->
 <script src="<?php echo $this->view->resourceUrl ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -21,16 +21,20 @@
 <script src="<?php echo $this->view->resourceUrl ?>plugins/input-mask/jquery.inputmask.js"></script>
 <script src="<?php echo $this->view->resourceUrl ?>plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="<?php echo $this->view->resourceUrl ?>plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- <script src="<?php echo $this->view->resourceUrl ?>plugins/input-mask/jquery.inputmask.bundle.min.js"></script> -->
 <!-- date-range-picker -->
 <script src="<?php echo $this->view->resourceUrl ?>bower_components/moment/min/moment.min.js"></script>
+<!-- <script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/moment/min/moment-with-locales.min.js"></script> -->
 
-<!-- <script src="<?php echo $this->view->resourceUrl ?>bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>-->
+<script src="<?php echo $this->view->resourceUrl ?>bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
-<!-- <script src="<?php echo $this->view->resourceUrl ?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>-->
+<script src="<?php echo $this->view->resourceUrl ?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- bootstrap color picker -->
-<!-- <script src="<?php echo $this->view->resourceUrl ?>bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>-->
+<script src="<?php echo $this->view->resourceUrl ?>bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+<!-- <script src="<?php echo $this->view->resourceUrl ?>plugins/colorpicker/bootstrap-colorpicker.min.js"></script> -->
+
 <!-- bootstrap time picker -->
-<!-- <script src="<?php echo $this->view->resourceUrl ?>plugins/timepicker/bootstrap-timepicker.min.js"></script>-->
+<script src="<?php echo $this->view->resourceUrl ?>plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $this->view->resourceUrl ?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- DataTables -->
@@ -40,7 +44,6 @@
 <script src="<?php echo $this->view->resourceUrl ?>plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $this->view->resourceUrl ?>bower_components/fastclick/lib/fastclick.js"></script>
-
 <!-- Sparkline -->
 <script src="<?php echo $this->view->resourceUrl ?>bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
 <!-- jvectormap  -->
@@ -49,11 +52,11 @@
 <!-- ChartJS -->
 <script src="<?php echo $this->view->resourceUrl ?>bower_components/chart.js/Chart.js"></script>
 
+<script src="<?php echo $this->view->resourceUrl ?>bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+
 <script src="<?php echo $this->view->resourceUrl ?>../eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="<?php echo $this->view->resourceUrl ?>../toastr/build/toastr.min.js"></script>
 <script src="<?php echo $this->view->resourceUrl ?>../number-input/bootstrap-number-input.js"></script>
-<script src="<?php echo $this->view->resourceUrl ?>../jquery-validation/jquery.validate.min.js"></script>
-
 <script src="<?php echo $this->view->resourceUrl ?>../bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"></script>
 <script src="<?php echo $this->view->resourceUrl ?>../bootstrap-fileinput/js/fileinput.min.js?v=4.5.2"></script>
 <script src="<?php echo $this->view->resourceUrl ?>../bootstrap-fileinput/js/plugins/sortable.min.js?v=4.5.2"></script>
@@ -74,42 +77,11 @@
 <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
 <script type="text/javascript" charset="utf-8" src="<?php echo $this->view->commonResourceUrl ?>ueditor/lang/zh-cn/zh-cn.js"></script>
 <!-- ueditor end -->
-
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<!-- <script src="<?php echo $this->view->resourceUrl ?>dist/js/pages/dashboard2.js"></script> -->
-<!-- AdminLTE for demo purposes -->
-<!-- <script src="<?php echo $this->view->resourceUrl ?>dist/js/demo.js"></script>-->
-
-<!-- REQUIRED JS SCRIPTS -->
-<!-- 
-
-<script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/nestable/jquery.nestable.js"></script>
-<script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-
-
- -->
-<!-- 
-<script src="<?php echo $this->view->resourceUrl ?>plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
-<script src="<?php echo $this->view->resourceUrl ?>plugins/input-mask/jquery.inputmask.bundle.min.js"></script>
- -->
-<!-- 
-<script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/moment/min/moment-with-locales.min.js"></script>
-<script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-
- -->
-<!-- 
-<script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/number-input/bootstrap-number-input.js"></script>
- -->
-<!-- 
-<script src="<?php echo $this->view->resourceUrl ?>plugins/ionslider/ion.rangeSlider.min.js"></script>
--->
-<!-- 
-<script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
-<script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/fontawesome-iconpicker/dist/js/fontawesome-iconpicker.min.js"></script>
-
-<script src="http://qhdemo.jdytoy.com/vendor/laravel-admin/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.min.js"></script>
-
- -->
+<script src="<?php echo $this->view->resourceUrl ?>../nestable/jquery.nestable.js"></script>
+<script src="<?php echo $this->view->resourceUrl ?>../bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="<?php echo $this->view->resourceUrl ?>../bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+<script src="<?php echo $this->view->resourceUrl ?>../fontawesome-iconpicker/dist/js/fontawesome-iconpicker.min.js"></script>
+<script src="<?php echo $this->view->resourceUrl ?>../bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.min.js"></script>
 
 <!-- page script -->
 <?php $this->partial("partials/js/app") ?>
