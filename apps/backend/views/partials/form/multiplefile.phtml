@@ -1,15 +1,15 @@
 <div class="<?php echo $this->view->viewClass['form-group'] ?> <?php echo (empty($errors) || !$errors->has($errorKey)) ? '' : 'has-error' ?>">
 
-    <label for="<?php echo $key ?>" class="<?php echo $this->view->viewClass['label'] ?> control-label"><?php echo $field['name'] ?></label>
+    <label for="<?php echo $key ?>" class="<?php echo $this->view->viewClass['label'] ?> <?php if ($field['validation']['required']) { ?>asterisk<?php } ?> control-label"><?php echo $field['name'] ?></label>
 
     <div class="<?php echo $this->view->viewClass['field'] ?>">
 
         <?php $this->partial('partials/form/error'); ?>
 
-        <input type="file" class="{{$class}}" name="<?php echo $key ?>[]" {!! $attributes !!} />
-        @isset($sortable)
-        <input type="hidden" class="{{$class}}_sort" name="{{ $sort_flag."[$name]" }}"/>
-        @endisset
+        <input type="file" class="<?php echo $key ?>" name="<?php echo $key ?>[]" multiple="1" />
+        <?php if (!empty($sortable)) { ?>
+            <input type="hidden" class="<?php echo $key ?>_sort" name="_file_sort_[<?php echo $key ?>]" />
+        <?php } ?>
 
         <?php $this->partial('partials/form/help-block'); ?>
 

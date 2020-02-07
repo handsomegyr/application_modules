@@ -11,6 +11,7 @@ use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
 use App\Backend\Models\User;
 use App\Common\Models\System\Resource;
+use App\System\Models\OperationLog;
 
 /**
  * SecurityPlugin
@@ -28,6 +29,23 @@ class SecurityPlugin extends Plugin
      */
     public function beforeDispatch(Event $event, Dispatcher $dispatcher)
     {
+        if (isset($_SESSION['admin_id'])) {
+            $moduleName = $dispatcher->getModuleName();
+            $controllerName = $dispatcher->getControllerName();
+            $actionName = $dispatcher->getActionName();
+
+            if ($moduleName == 'admin/system' && $controllerName == 'operationlog') {
+            } else {
+                $method = $this->request->getMethod();
+                $params = $this->request->get();
+                $path = $this->request->getURI();
+                $ip = getIp();
+                // 记录操作日志log
+                $modelOperationLog = new OperationLog();
+                $modelOperationLog->log($_SESSION['admin_id'], $path, $method, $ip, $params);
+            }
+        }
+
         /* 验证管理员身份 */
         $this->validateAdminUserInfo($dispatcher);
     }
