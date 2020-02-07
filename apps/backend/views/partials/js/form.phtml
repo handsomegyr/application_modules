@@ -65,7 +65,11 @@
                                 var id = "<?php echo $this->view->row['_id'] ?>";
                                 var url = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>?id=' + id;
                                 // alert('ssssssss');
-                                App.process4Modal(url, this);
+                                <?php if (empty($tool['process_without_modal'])) { ?>
+                                    App.process4Modal(url, this);
+                                <?php } else { ?>
+                                    App.process4NoModal(url, this);
+                                <?php } ?>
                             });
                         <?php } ?>
                     <?php } ?>

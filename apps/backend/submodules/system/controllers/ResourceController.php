@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\System\Controllers;
 
 use App\Backend\Submodules\System\Models\Resource;
@@ -17,6 +18,19 @@ class ResourceController extends \App\Backend\Controllers\FormController
     {
         $this->modelResource = new Resource();
         parent::initialize();
+    }
+
+    protected function getHeaderTools2($tools)
+    {
+        $tools['resourcecreate'] = array(
+            'title' => '生成资源',
+            'action' => 'create',
+            'is_show' => true,
+            'is_export' => false,
+            'process_without_modal' => true,
+            'icon' => '',
+        );
+        return $tools;
     }
 
     /**
@@ -39,7 +53,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                 throw new \Exception('没有任何资源2');
             }
             $resources = $resourceList[$module];
-            
+
             $this->modelResource->remove(array());
             foreach ($resources as $key => $items) {
                 // $key : admin_form||表管理
@@ -59,7 +73,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                     $this->modelResource->insert($datas);
                 }
             }
-            $this->makeJsonResult('');
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '生成资源成功');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -68,7 +82,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['module'] = array(
             'name' => '模块',
             'data' => array(
@@ -90,7 +104,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                 'placeholder' => '模块...'
             )
         );
-        
+
         $schemas['module_name'] = array(
             'name' => '模块名',
             'data' => array(
@@ -112,7 +126,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                 'placeholder' => '模块名...'
             )
         );
-        
+
         $schemas['controller'] = array(
             'name' => '控制器',
             'data' => array(
@@ -134,7 +148,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                 'placeholder' => '控制器...'
             )
         );
-        
+
         $schemas['controller_name'] = array(
             'name' => '控制器名',
             'data' => array(
@@ -156,7 +170,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                 'placeholder' => '控制器名...'
             )
         );
-        
+
         $schemas['action'] = array(
             'name' => '动作',
             'data' => array(
@@ -178,7 +192,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                 'placeholder' => '动作...'
             )
         );
-        
+
         $schemas['action_name'] = array(
             'name' => '动作名',
             'data' => array(
@@ -200,7 +214,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                 'placeholder' => '动作名...'
             )
         );
-        
+
         return $schemas;
     }
 

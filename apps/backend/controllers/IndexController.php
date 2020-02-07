@@ -26,9 +26,9 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
     }
 
     /**
-     * @title({name="显示Dashboard页面"})
+     * @title({name="显示首页"})
      *
-     * @name 显示Dashboard页面
+     * @name 显示首页
      */
     public function indexAction()
     {

@@ -129,7 +129,7 @@ Core script to handle the entire layout and base functions
                     // alert('click');
                     Object.assign(data, {
                         _token: LA.token,
-                        _action: '<?php echo $tool['action'] ?>',
+                        _action: '',
                     });
 
                     var formData1 = new FormData();
@@ -160,7 +160,7 @@ Core script to handle the entire layout and base functions
                                         var data1 = [];
                                         Object.assign(data1, {
                                             _token: LA.token,
-                                            _action: '<?php echo $tool['action'] ?>',
+                                            _action: '',
                                         });
 
                                         var formData2 = new FormData(form2);
@@ -179,27 +179,11 @@ Core script to handle the entire layout and base functions
                                             success: function(data) {
                                                 console.log(data); //打印服务端返回的数据(调试用)
                                                 if (!data.error) {
-                                                    //{"status":true,
-                                                    //"then":{"action":"download","value":"http:\/\/190821fg0463demo.jdytoy.com\/admin\/admin-build\/download-file?file_id=20200203192717.csv"},
-                                                    //"toastr":{"type":"success","content":"Success\uff01","options":{"positionClass":"toast-top-center"}}}
-                                                    var request = {};
-                                                    request.status = true;
-                                                    // request.then = {};
-                                                    if (data.content.then) {
-                                                        request.then = data.content.then;
-                                                    }
-                                                    request.toastr = {};
-                                                    request.toastr.type = "success";
-                                                    request.toastr.content = data.message;
-                                                    request.toastr.options = {
-                                                        "positionClass": "toast-top-center"
-                                                    };
+                                                    var request = App.buildSuccessResult(data);
                                                     resolve([request, target]);
                                                     $('#' + modalId).modal('hide');
                                                 } else {
-                                                    var request = {};
-                                                    request.responseJSON = {};
-                                                    request.responseJSON.message = data.message;
+                                                    var request = App.buildFailureResult(data);
                                                     reject(request);
                                                 }
                                             },
@@ -225,6 +209,70 @@ Core script to handle the entire layout and base functions
                     });
                 });
                 process.then(App.actionResolver).catch(App.actionCatcher);
+            },
+            process4NoModal: function(url, element) {
+                var data1 = $(element).data();
+                var target = $(element);
+
+                var process2 = new Promise(function(resolve, reject) {
+                    Object.assign(data1, {
+                        _token: LA.token,
+                        _action: '',
+                    });
+
+                    var formData2 = new FormData();
+                    for (var key in data1) {
+                        formData2.append(key, data1[key]);
+                    }
+
+                    $.ajax({
+                        type: "POST", //方法类型
+                        dataType: "json", //预期服务器返回的数据类型
+                        url: url,
+                        cache: false,
+                        contentType: false, //这里
+                        processData: false, //这两个一定设置为false
+                        data: formData2,
+                        success: function(data) {
+                            console.log(data); //打印服务端返回的数据(调试用)
+                            if (!data.error) {
+                                var request = App.buildSuccessResult(data);
+                                resolve([request, target]);
+                            } else {
+                                var request = App.buildFailureResult(data);
+                                reject(request);
+                            }
+                        },
+                        error: function(request) {
+                            reject(request);
+                        }
+                    });
+                });
+                process2.then(App.actionResolver).catch(App.actionCatcher);
+            },
+            buildSuccessResult: function(data) {
+                //{"status":true,
+                //"then":{"action":"download","value":"http:\/\/190821fg0463demo.jdytoy.com\/admin\/admin-build\/download-file?file_id=20200203192717.csv"},
+                //"toastr":{"type":"success","content":"Success\uff01","options":{"positionClass":"toast-top-center"}}}
+                var request = {};
+                request.status = true;
+                // request.then = {};
+                if (data.content.then) {
+                    request.then = data.content.then;
+                }
+                request.toastr = {};
+                request.toastr.type = "success";
+                request.toastr.content = data.message;
+                request.toastr.options = {
+                    "positionClass": "toast-top-center"
+                };
+                return request;
+            },
+            buildFailureResult: function(data) {
+                var request = {};
+                request.responseJSON = {};
+                request.responseJSON.message = data.message;
+                return request;
             }
 
         };

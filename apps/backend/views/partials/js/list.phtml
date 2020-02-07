@@ -197,7 +197,11 @@
 						$('.header-tool-<?php echo $key ?>').off('click').on('click', function(e) {
 							e.preventDefault();
 							var url = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>';
-							App.process4Modal(url, this);
+							<?php if (empty($tool['process_without_modal'])) { ?>
+								App.process4Modal(url, this);
+							<?php } else { ?>
+								App.process4NoModal(url, this);
+							<?php } ?>
 						});
 					<?php } ?>
 				<?php } ?>
@@ -312,7 +316,7 @@
 									<?php if (!empty($tool['is_show'])) { ?>
 										<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action'])) { ?>
 											var url = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>?id=' + id;
-											var toolOp = '<a class="btn btn-sm btn-primary row-tool-<?php echo $key ?>" record_id="' + id + '" href="javascript:;" onclick="App.process4Modal(\'' + url + '\',this)" ><i class="fa <?php echo empty($tool['icon']) ? 'fa-edit' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>';
+											var toolOp = '<a class="btn btn-sm btn-primary row-tool-<?php echo $key ?>" record_id="' + id + '" href="javascript:;" onclick="<?php if (empty($tool['process_without_modal'])) { ?>App.process4Modal<?php } else { ?>App.process4NoModal<?php } ?>(\'' + url + '\',this)" ><i class="fa <?php echo empty($tool['icon']) ? 'fa-edit' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>';
 											toolOps.push(toolOp);
 										<?php } ?>
 									<?php } ?>

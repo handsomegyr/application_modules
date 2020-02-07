@@ -15,24 +15,6 @@ if (isset($_SESSION['admin_id'])) {
 }
 $modelMenu = new Menu();
 $menus = $modelMenu->getPrivilege($menu_list, $requestUrl);
-
-$icons1 = array(
-	0 => "icon-cogs",
-	1 => "icon-bookmark-empty",
-	2 => "icon-briefcase",
-	3 => "icon-table",
-	4 => "icon-sitemap",
-	5 => "icon-user"
-);
-
-$icons2 = array(
-	0 => "icon-comments",
-	1 => "icon-coffee",
-	2 => "icon-time",
-	3 => "icon-envelope-alt",
-	4 => "icon-group",
-	5 => "icon-user"
-);
 ?>
 
 <ul class="sidebar-menu tree" data-widget="tree">
