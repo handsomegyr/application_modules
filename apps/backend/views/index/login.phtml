@@ -21,7 +21,7 @@
 <body class="hold-transition login-page" <?php if($this->view->adminConfig->admin->login_background_image){ ?>style="background: <?php echo $this->view->adminConfig->admin->login_background_image ?> no-repeat;background-size: cover;"<?php } ?>>
   <div class="login-box">
     <div class="login-logo">
-      <a href="<?php echo $this->view->resourceUrl ?>index2.html"><b>Admin</b>LTE</a>
+      <a href="javascript:;"><?php echo !empty($this->view->adminConfig->admin->logo) ? $this->view->adminConfig->admin->logo : $this->view->adminConfig->admin->title ?></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">

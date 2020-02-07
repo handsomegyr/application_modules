@@ -1,7 +1,9 @@
 <div class="row">
-    @foreach($fields as $field)
-    <div class="col-md-{{ $field['width'] }}">
-        {!! $field['element']->render() !!}
-    </div>
-    @endforeach
+    <?php if (!empty($fields4Row)) { ?>
+        <?php foreach ($fields4Row as $field) { ?>
+            <div class="col-md-<?php echo $field['width'] ?>">
+                <?php $this->partial($field['element']) ?>
+            </div>
+        <?php } ?>
+    <?php } ?>
 </div>

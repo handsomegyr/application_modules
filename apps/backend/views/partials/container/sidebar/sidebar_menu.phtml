@@ -5,6 +5,8 @@ use App\Backend\Submodules\System\Models\Menu;
 $requestUrl = $this->view->moduleName . '/' . $this->view->controllerName;
 $menu_list = !empty($_SESSION['roleInfo']) ? $_SESSION['roleInfo']['menu_list'] : array();
 
+$is_active4index = ($requestUrl == 'admin/index') ? true : false;
+
 // 角色判断,当用户角色为非超级管理员时，进行权限判断
 if (isset($_SESSION['admin_id'])) {
 	$roleAlias = $_SESSION['roleInfo']['alias'];
@@ -35,17 +37,10 @@ $icons2 = array(
 
 <ul class="sidebar-menu tree" data-widget="tree">
 	<li class="header">菜单</li>
-	<li class="active treeview menu-open" style="height: auto;">
-		<a href="javascript:;">
-			<i class="fa fa-dashboard"></i> <span>Dashboard</span>
-			<span class="pull-right-container">
-				<i class="fa fa-angle-left pull-right"></i>
-			</span>
+	<li class="<?php if (!empty($is_active4index)) { ?>active<?php } ?> " style=" height: auto;">
+		<a href="<?php echo $this->view->baseUrl ?>admin/index/index">
+			<i class="fa fa-bar-chart"></i> <span>首页</span>
 		</a>
-		<ul class="treeview-menu" style="">
-			<li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-			<li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-		</ul>
 	</li>
 
 	<?php $index = 0; ?>
@@ -53,7 +48,7 @@ $icons2 = array(
 		<?php if (($roleAlias == 'superAdmin') || !empty($menu['cando'])) { ?>
 			<li class="<?php if (!empty($menu['is_active'])) { ?>active<?php } ?> treeview <?php if (!empty($menu['is_active'])) { ?>menu-open<?php } ?>" style="height: auto;">
 				<a href="javascript:;">
-					<i class="fa fa-share"></i> <span><?php echo ($menu['name']) ?></span>
+					<i class="fa <?php echo empty($menu['icon'])?'fa-share':$menu['icon'] ?>"></i> <span><?php echo ($menu['name']) ?></span>
 					<span class="pull-right-container">
 						<i class="fa fa-angle-left pull-right"></i>
 					</span>
@@ -63,9 +58,9 @@ $icons2 = array(
 					<?php foreach ($menu['priv'] as $priv) { ?>
 						<?php if (($roleAlias == 'superAdmin') || !empty($priv['cando'])) { ?>
 							<?php if (false) { ?>
-								<li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>><a href="javascript:;"><i class="fa fa-circle-o"></i> <?php echo ($priv['name']) ?></a></li>
+								<li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>><a href="javascript:;"><i class="fa <?php echo empty($priv['icon'])?'fa-circle-o':$priv['icon'] ?>"></i> <?php echo ($priv['name']) ?></a></li>
 								<li class="treeview">
-									<a href="javascript:;"><i class="fa fa-circle-o"></i> Level One
+									<a href="javascript:;"><i class="fa <?php echo empty($priv['icon'])?'fa-circle-o':$priv['icon'] ?>"></i> Level One
 										<span class="pull-right-container">
 											<i class="fa fa-angle-left pull-right"></i>
 										</span>
@@ -86,7 +81,7 @@ $icons2 = array(
 									</ul>
 								</li>
 							<?php } else { ?>
-								<li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>><a href="<?php echo $this->view->baseUrl ?><?php echo $priv['url'] ?>"><i class="fa fa-circle-o"></i> <?php echo ($priv['name']) ?></a></li>
+								<li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>><a href="<?php echo $this->view->baseUrl ?><?php echo $priv['url'] ?>"><i class="fa <?php echo empty($priv['icon'])?'fa-circle-o':$priv['icon'] ?>"></i> <?php echo ($priv['name']) ?></a></li>
 							<?php } ?>
 						<?php } ?>
 						<?php $index2++ ?>

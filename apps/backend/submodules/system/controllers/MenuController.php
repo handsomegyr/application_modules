@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\System\Controllers;
 
 use App\Backend\Submodules\System\Models\Menu;
@@ -29,12 +30,13 @@ class MenuController extends \App\Backend\Controllers\FormController
         try {
             $this->view->disable();
             $input = $this->getFilterInput();
-            
-            if ($input->isValid("id") && $input->isValid("is_show")) {} else {
+
+            if ($input->isValid("id") && $input->isValid("is_show")) {
+            } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
-            
+
             $is_show = intval($input->is_show);
             $this->modelMenu->update(array(
                 '_id' => $input->id
@@ -43,7 +45,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                     'is_show' => empty($is_show) ? false : true
                 )
             ));
-            
+
             $this->makeJsonResult(stripslashes($is_show));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -59,14 +61,15 @@ class MenuController extends \App\Backend\Controllers\FormController
     {
         try {
             $this->view->disable();
-            
+
             $input = $this->getFilterInput();
-            
-            if ($input->isValid("id") && $input->isValid("show_order")) {} else {
+
+            if ($input->isValid("id") && $input->isValid("show_order")) {
+            } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
-            
+
             $show_order = intval($input->show_order);
             $this->modelMenu->update(array(
                 '_id' => $input->id
@@ -91,10 +94,10 @@ class MenuController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
-        
+
         $schemas['name'] = array(
             'name' => '菜单名称',
             'data' => array(
@@ -116,7 +119,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['url'] = array(
             'name' => '菜单地址',
             'data' => array(
@@ -137,7 +140,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['pid'] = array(
             'name' => '上级菜单',
             'data' => array(
@@ -150,8 +153,7 @@ class MenuController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelMenu->getList4Tree('');
                 }
             ),
@@ -162,7 +164,30 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
+        $schemas['icon'] = array(
+            'name' => '菜单ICON',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'icon',
+                'is_show' => true,
+                'help' => 'For more icons please see <br/><a href="http://fontawesome.io/icons/" target="_blank">http://fontawesome.io/icons/</a>'
+            ),
+            'list' => array(
+                'show_type' => 'icon',                
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+
         $schemas['is_show'] = array(
             'name' => '是否显示',
             'data' => array(
@@ -186,7 +211,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['show_order'] = array(
             'name' => '排序',
             'data' => array(
@@ -208,7 +233,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -240,7 +265,7 @@ class MenuController extends \App\Backend\Controllers\FormController
     {
         // do other validation
         $this->getModel()->checkName($input->id, $input->pid, $input->name);
-        
+
         /* 还有子菜单，不能更改 */
         if ($input->pid != $row['pid']) {
             $this->getModel()->checkIsLeaf($input->id);

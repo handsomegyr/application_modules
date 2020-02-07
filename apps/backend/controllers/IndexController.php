@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Controllers;
 
 use App\Backend\Models\User;
@@ -30,7 +31,89 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
      * @name 显示Dashboard页面
      */
     public function indexAction()
-    {}
+    {
+        $envs = [
+            ['name' => 'PHP version',       'value' => 'PHP/' . PHP_VERSION],
+            ['name' => 'Laravel version',   'value' => '5.8.35'],
+            ['name' => 'CGI',               'value' => php_sapi_name()],
+            ['name' => 'Uname',             'value' => php_uname()],
+            ['name' => 'Server',            'value' => $_SERVER['SERVER_SOFTWARE']],
+
+            ['name' => 'Cache driver',      'value' => 'memcached'],
+            ['name' => 'Session driver',    'value' => 'memcached'],
+            ['name' => 'Queue driver',      'value' => 'redis'],
+
+            ['name' => 'Timezone',          'value' => 'Asia/Shanghai'],
+            ['name' => 'Locale',            'value' => 'zh-CN'],
+            ['name' => 'Env',               'value' => 'local'],
+            ['name' => 'URL',               'value' => '/admin/index/index'],
+        ];
+
+        $this->view->setVar('envs', $envs);
+
+        $extensions = [
+            'helpers' => [
+                'name' => 'laravel-admin-ext/helpers',
+                'link' => 'https://github.com/laravel-admin-extensions/helpers',
+                'icon' => 'gears',
+            ],
+            'log-viewer' => [
+                'name' => 'laravel-admin-ext/log-viewer',
+                'link' => 'https://github.com/laravel-admin-extensions/log-viewer',
+                'icon' => 'database',
+            ],
+            'backup' => [
+                'name' => 'laravel-admin-ext/backup',
+                'link' => 'https://github.com/laravel-admin-extensions/backup',
+                'icon' => 'copy',
+            ],
+            'config' => [
+                'name' => 'laravel-admin-ext/config',
+                'link' => 'https://github.com/laravel-admin-extensions/config',
+                'icon' => 'toggle-on',
+            ],
+            'api-tester' => [
+                'name' => 'laravel-admin-ext/api-tester',
+                'link' => 'https://github.com/laravel-admin-extensions/api-tester',
+                'icon' => 'sliders',
+            ],
+            'media-manager' => [
+                'name' => 'laravel-admin-ext/media-manager',
+                'link' => 'https://github.com/laravel-admin-extensions/media-manager',
+                'icon' => 'file',
+            ],
+            'scheduling' => [
+                'name' => 'laravel-admin-ext/scheduling',
+                'link' => 'https://github.com/laravel-admin-extensions/scheduling',
+                'icon' => 'clock-o',
+            ],
+            'reporter' => [
+                'name' => 'laravel-admin-ext/reporter',
+                'link' => 'https://github.com/laravel-admin-extensions/reporter',
+                'icon' => 'bug',
+            ],
+            'redis-manager' => [
+                'name' => 'laravel-admin-ext/redis-manager',
+                'link' => 'https://github.com/laravel-admin-extensions/redis-manager',
+                'icon' => 'flask',
+            ],
+        ];
+
+        $installedExtensions = array();
+        foreach ($extensions as &$extension) {
+            $name = explode('/', $extension['name']);
+            $extension['installed'] = array_key_exists(end($name), $installedExtensions);
+        }
+        $this->view->setVar('extensions', $extensions);
+
+        $json = file_get_contents(APP_PATH . 'composer.json');
+
+        $dependencies = json_decode($json, true)['require'];
+
+        // Admin::script("$('.dependencies').slimscroll({height:'510px',size:'3px'});");
+
+        $this->view->setVar('dependencies', $dependencies);
+    }
 
     /**
      * @title({name="注销"})
@@ -86,10 +169,10 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             if (intval($input->remember)) {
                 $this->modelUser->storeInCookies($userInfo);
             }
-            
+
             $url = $this->getUrl("index");
             //$this->_redirect($url);
-            
+
             // 返回信息
             $ret = array();
             $ret['redirect'] = $url;
@@ -120,34 +203,33 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             'trim',
             'int'
         ), 0);
-        
-        $input->isValid = function ($fieldName = null) use($input) {
+
+        $input->isValid = function ($fieldName = null) use ($input) {
             $data = $this->request->get();
             $validation = new Validation();
-            
+
             $validation->add('username', new PresenceOf(array(
                 'message' => 'You must enter your username.'
             )));
-            
+
             $validation->add('password', new PresenceOf(array(
                 'message' => 'You must enter your password.'
             )));
-            
+
             $messages = $validation->validate($data);
             $messages = $messages->filter($fieldName);
             $input->messages = $messages;
-            if (! empty($messages)) {
+            if (!empty($messages)) {
                 return false;
             } else {
                 return true;
             }
         };
-        
-        $input->getMessages = function () use($input) {
+
+        $input->getMessages = function () use ($input) {
             return empty($input->messages) ? array() : $input->messages;
         };
-        
+
         return $input;
     }
 }
-

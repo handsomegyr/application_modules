@@ -79,10 +79,10 @@
 				// }
 			},
 			toggle: function(obj, act, id, fieldname) {
-				val = ($(obj).text() == 'yes') ? 0 : 1;
+				val = ($(obj).text() == '是') ? 0 : 1;
 
 				var data = {};
-				data.fieldname = encodeURIComponent(val);
+				data[fieldname] = encodeURIComponent(val);
 				data.id = encodeURIComponent(id);
 
 				$.ajax({
@@ -94,7 +94,7 @@
 							alert(result.message);
 						}
 						if (result.error == 0) {
-							text = (result.content > 0) ? 'yes' : 'no';
+							text = (result.content > 0) ? '是' : '否';
 							css = (result.content > 0) ? 'success' : 'danger';
 							$(obj).text(text);
 							$(obj).attr('class', 'label label-' + css);
@@ -279,6 +279,13 @@
 									<?php } elseif (isset($field['list']['ajax'])) { ?> "render": function(data, type, full, meta) {
 											<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit')) { ?>
 												return '<span onclick="List.edit(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')" >' + data + '</span>';
+											<?php } else { ?>
+												return '<span>' + data + '</span>';
+											<?php } ?>
+										}
+									<?php } elseif (isset($field['list']['show_type'])) { ?> "render": function(data, type, full, meta) {
+											<?php if ($field['list']['show_type'] == 'icon') { ?>
+												return '<span><i class="fa ' + data + '"></i></span>';
 											<?php } else { ?>
 												return '<span>' + data + '</span>';
 											<?php } ?>

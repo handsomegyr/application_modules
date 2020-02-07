@@ -23,6 +23,17 @@ $(document).pjax('a:not(a[target="_blank"])', {
 
 NProgress.configure({ parent: '#app' });
 
+$(document).on('pjax:start', function (e, contents, options) {
+    const freshPaths = [];
+    for (let path of freshPaths) {
+        console.log(path, options.url, options.url.search(path));
+        if (options.url.search(path) !== -1) {
+            location.reload();
+            return false;
+        }
+    }
+});
+
 $(document).on('pjax:timeout', function (event) {
     event.preventDefault();
 })
@@ -108,6 +119,14 @@ $(function () {
 
     $('.sidebar-form .dropdown-menu li a').click(function () {
         $('.sidebar-form .autocomplete').val($(this).text());
+    });
+
+    $('.table-responsive').on('show.bs.dropdown', function () {
+        $('.table-responsive').css("overflow", "inherit");
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css("overflow", "auto");
     });
 });
 

@@ -1,5 +1,5 @@
 <?php foreach ($schemas4Form as $key => $field) { ?>
-<?php
+    <?php
     if (empty($field['form']['is_show'])) {
         continue;
     }
@@ -50,6 +50,10 @@
             $prepend = '<i class="fa fa-calendar fa-fw"></i>';
             $value = date("Y-m-d H:i:s", $this->view->row[$key]->sec);
             $this->partial('partials/form/input');
+        } elseif ($field['form']['input_type'] == "icon") {
+            $prepend = '<i class="fa fa-pencil fa-fw"></i>';
+            $value = $this->view->row[$key];
+            $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "radio") {
             $inline = true;
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
@@ -85,10 +89,10 @@
             }
             $this->partial('partials/form/file');
         } else {
+            $value = $this->view->row[$key];
             $this->partial('partials/form/input');
         }
-    } else {
-        $this->partial($field['form']['partial']);
-    }
-?>
+    } else { ?>
+        <?php $this->partial($field['form']['partial']); ?>
+    <?php } ?>
 <?php } ?>
