@@ -210,6 +210,34 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['imgs'] = array(
+            'name' => '活动图多张',
+            'data' => array(
+                'type' => 'multifile',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'multipleImage',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         return $schemas;
     }
 

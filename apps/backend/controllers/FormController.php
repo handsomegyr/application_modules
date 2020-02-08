@@ -364,7 +364,14 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         // Check if the user has uploaded files
         if ($this->request->hasFiles() == true) {
             foreach ($this->request->getUploadedFiles() as $file) {
-                $files[$file->getKey()] = $file;
+                $key4File = $file->getKey();
+                $key4FileArr = explode('.', $key4File);
+                // 如果没有xxx.0 xxx.1的话
+                if (!isset($key4FileArr[1])) {
+                    $files[$key4File] = $file;
+                } else {
+                    $files[$key4FileArr[0]][str_pad($key4FileArr[1],  3,  "0",  STR_PAD_LEFT)] = $file;
+                }
             }
         }
 
@@ -387,17 +394,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 // print_r($files);
                 if (isset($files[$key])) {
                     $file = $files[$key];
-                    if ($file->isUploadedFile()) {
-                        $fileId = $file->getName(); // myMongoId(new \MongoId());
-                        $path = "";
-                        if (!empty($field['data']['file'])) {
-                            $fileInfo = $field['data']['file'];
-                            $path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
-                        }
-                        $uploadPath = APP_PATH . "public/upload/{$path}";
-                        makeDir($uploadPath);
-                        $destination = "{$uploadPath}{$fileId}";
-                        $file->moveTo($destination);
+                    $fileId = $this->uploadFile($file, $field);
+                    if (!empty($fileId)) {
                         $input->$key = $fileId;
                     }
                 } else {
@@ -408,6 +406,29 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     }
                 }
                 // die('bbbb');
+            } elseif ($field['data']['type'] == "multifile") {
+                // 存在的话
+                unset($input->$key);
+                // print_r($files);
+                if (isset($files[$key])) {
+                    $fileList4Field = array();
+                    foreach ($files[$key] as $idx => $file) {
+                        $fileId = $this->uploadFile($file, $field);
+                        if (!empty($fileId)) {
+                            $fileList4Field[] = $fileId;
+                        }
+                    }
+                    if (!empty($fileList4Field)) {
+                        $input->$key = $fileList4Field;
+                    }
+                } else {
+                    // 检查request中是否有该字段
+                    if ($this->request->has($key)) {
+                        // 如果有的话,说明是删除了文件.
+                        $input->$key = array();
+                    }
+                }
+                // die('cccc');
             } else {
                 $filters = array(
                     'trim',
@@ -563,16 +584,34 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $input;
     }
 
+    protected function uploadFile($file, $field)
+    {
+        if ($file->isUploadedFile()) {
+            $fileId = $file->getName(); // myMongoId(new \MongoId());
+            $path = "";
+            if (!empty($field['data']['file'])) {
+                $fileInfo = $field['data']['file'];
+                $path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
+            }
+            $uploadPath = APP_PATH . "public/upload/{$path}";
+            makeDir($uploadPath);
+            $destination = "{$uploadPath}{$fileId}";
+            $file->moveTo($destination);
+            return $fileId;
+        } else {
+            return '';
+        }
+    }
     public function initialize()
     {
         parent::initialize();
 
-        if ($this->request->isAjax() && $this->request->isPost()) {
-            $token = $this->request->get('_token', array(
-                'trim'
-            ), '');
-            $this->checkToken($token);
-        }
+        // if ($this->request->isAjax() && $this->request->isPost()) {
+        //     $token = $this->request->get('_token', array(
+        //         'trim'
+        //     ), '');
+        //     $this->checkToken($token);
+        // }
 
         $this->view->setVar('formName', $this->getName());
         $this->view->setVar('schemas', $this->sortSchemas($this->getSchemas()));
@@ -845,6 +884,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'string'
             ), '');
 
+            $key = $this->request->get('key', array(
+                'trim',
+                'string'
+            ), '');
+            
             //throw new \Exception($messageInfo);
             $updateData = array();
             $updateData[$field] = "";

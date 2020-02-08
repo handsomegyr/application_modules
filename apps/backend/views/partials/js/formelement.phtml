@@ -31,15 +31,17 @@
                     downClass: 'primary',
                     center: true
                 });
-        <?php } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") { ?>
+        <?php } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file" || 
+                        $field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") { ?>
             // $("input.<?php echo $key ?>").fileinput();
             $("input.<?php echo $key ?>").fileinput({
-                "initialPreviewConfig": [{
-                    // "caption": "faa855d089c01a90574083cb28bd4eea.png",
-                    // "key": 0,
-                    "type": "image",
-                    // "downloadUrl": "http://qiaohuoss.eintone.com/qh/images/faa855d089c01a90574083cb28bd4eea.png"
-                }],
+            <?php if(!empty($initialPreviewConfig)){?>
+                "initialPreviewConfig": <?php echo \json_encode($initialPreviewConfig) ?>,
+            <?php }?>
+            <?php if(!empty($initialPreview)){?>
+                "initialPreview": <?php echo \json_encode($initialPreview) ?>,
+            <?php }?>
+                //"overwriteInitial": false,
                 "overwriteInitial": true,
                 "initialPreviewAsData": true,
                 "browseLabel": "浏览",
@@ -57,10 +59,11 @@
                 "deleteUrl": "<?php echo $this->view->baseUrl . $this->view->moduleName . '/' . $this->view->controllerName . '/removefile?id=' . $this->view->row['_id'] . '&_field_del_=' . $key ?>",
                 "fileActionSettings": {
                     "showRemove": <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'removefile')) { ?>true<?php } else { ?>false<?php } ?>,
-                    "showDrag": false
+                    "showDrag": true
+                    //"showDrag": false 
                 },
-                "msgPlaceholder": "选择<?php if ($field['form']['input_type'] == "image") { ?>图片<?php } else { ?>文件<?php } ?>",
-                <?php if ($field['form']['input_type'] == "image") { ?> "allowedFileTypes": ["image"] <?php } ?>
+                "msgPlaceholder": "选择<?php if ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "multipleImage") { ?>图片<?php } else { ?>文件<?php } ?>",
+                <?php if ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "multipleImage") { ?> "allowedFileTypes": ["image"] <?php } ?>
             });
             $("input.<?php echo $key ?>").on('filebeforedelete', function() {
                 return new Promise(function(resolve, reject) {
@@ -82,6 +85,16 @@
                         }
                     });
                 });
+            });
+            $("input.<?php echo $key ?>").on('filesorted', function(event, params) {
+
+                var order = [];
+
+                params.stack.forEach(function(item) {
+                    order.push(item.key);
+                });
+
+                $("input.<?php echo $key ?>_sort").val(order);
             });
         <?php } ?>
     <?php } ?>

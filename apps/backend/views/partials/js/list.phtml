@@ -253,6 +253,9 @@
 										}
 									<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "image") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?> "render": function(data, type, full, meta) {
 											//console.info(data);
+											if(data==undefined){
+												return '';
+											}
 											<?php
 											$path = "";
 											if (!empty($field['data'][$field['data']['type']])) {

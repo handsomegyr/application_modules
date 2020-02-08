@@ -83,11 +83,57 @@
             }
             $data_initial_preview = "";
             $data_initial_caption = "";
+            $initialPreviewConfig = array();
+            $initialPreview = array();
             if (!empty($this->view->row[$key])) {
                 $data_initial_preview = $this->view->baseUrl . "service/file/index?upload_path=" . $path . "&id=" . $this->view->row[$key] . "&s=1";
                 $data_initial_caption = basename($this->view->row[$key]);
+                // {
+                //     "caption": "faa855d089c01a90574083cb28bd4eea.png",
+                //     "key": 0,
+                //     "type": "image",
+                //     "downloadUrl": "http://qiaohuoss.eintone.com/qh/images/faa855d089c01a90574083cb28bd4eea.png"
+                // }
+                $initialPreviewConfig[] = array(
+                    'caption' => $data_initial_caption,
+                    'key' => $this->view->row[$key],
+                    'type' => 'image',
+                    // 'downloadUrl' => "http://www.applicationmodule.com{$data_initial_preview}"
+                    'downloadUrl' => $data_initial_preview
+                );
+                $initialPreview[] = $data_initial_preview;
             }
             $this->partial('partials/form/file');
+        } elseif ($field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") {
+            $sortable = true;
+            $path = "";
+            if (!empty($field['data'][$field['data']['type']])) {
+                $fileInfo = $field['data'][$field['data']['type']];
+                $path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
+            }
+            $initialPreviewConfig = array();
+            $initialPreview = array();
+            if (!empty($this->view->row[$key])) {
+                foreach ($this->view->row[$key] as $idx => $fileInfo) {
+                    $data_initial_preview = $this->view->baseUrl . "service/file/index?upload_path=" . $path . "&id=" . $fileInfo . "&s=1";
+                    $data_initial_caption = basename($fileInfo);
+                    // {
+                    //     "caption": "faa855d089c01a90574083cb28bd4eea.png",
+                    //     "key": 0,
+                    //     "type": "image",
+                    //     "downloadUrl": "http://qiaohuoss.eintone.com/qh/images/faa855d089c01a90574083cb28bd4eea.png"
+                    // }
+                    $initialPreviewConfig[] = array(
+                        'caption' => $data_initial_caption,
+                        'key' => $fileInfo,
+                        'type' => 'image',
+                        // 'downloadUrl' => "http://www.applicationmodule.com{$data_initial_preview}"
+                        'downloadUrl' => $data_initial_preview
+                    );
+                    $initialPreview[] = $data_initial_preview;
+                }
+            }
+            $this->partial('partials/form/multiplefile');
         } else {
             $value = $this->view->row[$key];
             $this->partial('partials/form/input');
