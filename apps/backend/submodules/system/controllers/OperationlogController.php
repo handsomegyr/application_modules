@@ -60,14 +60,17 @@ class OperationlogController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->methodDatas
             ),
             'list' => array(
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->methodDatas
             )
         );
 
@@ -174,6 +177,10 @@ class OperationlogController extends \App\Backend\Controllers\FormController
         $userList = $this->modelUser->getAll();
         foreach ($list['data'] as &$item) {
             $item['user_id'] = $userList[$item['user_id']];
+            $item['method'] = '<span class="badge bg-blue">' . $item['method'] . '</span>';
+            $item['path'] = '<span class="label label-info">' . $item['path'] . '</span>';
+            $item['ip'] = '<span class="label label-primary">' . $item['ip'] . '</span>';
+            // $item['params'] = '<pre>' . \json_encode($item['params']) . '</pre>';
             $item['params'] = \json_encode($item['params']);
         }
         return $list;

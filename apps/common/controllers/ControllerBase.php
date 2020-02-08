@@ -43,7 +43,7 @@ class ControllerBase extends Controller
 
     protected function getUrl($action)
     {
-        return $this->url->get("{$this->moduleName}/{$this->controllerName}/{$action}");
+        return  $this->url->get("{$this->moduleName}/{$this->controllerName}/{$action}");        
     }
 
     public function get($string, $defaultParam = null, $defaultType = "string")

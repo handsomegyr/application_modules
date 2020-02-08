@@ -34,7 +34,9 @@ class SecurityPlugin extends Plugin
             $controllerName = $dispatcher->getControllerName();
             $actionName = $dispatcher->getActionName();
 
-            if ($moduleName == 'admin/system' && $controllerName == 'operationlog') {
+            if (($moduleName == 'admin/system' && $controllerName == 'operationlog') ||
+                ($moduleName == 'admin' && $controllerName == 'index' && $actionName == 'keep-login')
+            ) {
             } else {
                 $method = $this->request->getMethod();
                 $params = $this->request->get();
@@ -63,7 +65,8 @@ class SecurityPlugin extends Plugin
             'signin',
             'forgetpwd',
             'resetpwd',
-            'captcha'
+            'captcha',
+            'keeplogin'
         ))) {
             return;
         }
@@ -195,7 +198,7 @@ class SecurityPlugin extends Plugin
 
             //添加公有资源
             $publicResources = array(
-                'admin_index' => array('index', 'logout', 'login', 'signin'),
+                'admin_index' => array('index', 'logout', 'login', 'signin', 'keeplogin'),
                 'admin_error' => array('show404', 'show401', 'show500', 'message'),
                 'admin_form' => array('list', 'export', 'query', 'add', 'insert', 'edit', 'update', 'remove', 'removefile')
             );

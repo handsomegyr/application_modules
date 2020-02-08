@@ -22,7 +22,7 @@
       <?php echo  $this->view->adminConfig->admin->top_alert ?>
     </div>
   <?php } ?>
-  
+
   <div class="wrapper">
 
     <?php $this->partial("partials/header") ?>
@@ -65,6 +65,17 @@
   <button id="totop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up"></i></button>
 
   <?php $this->partial("partials/js") ?>
+
+  <script>
+    function keepLogin() {
+      new Image().src = '<?php echo $this->view->baseUrl ?>admin/index/keeplogin?_=' + Math.random()
+    }
+
+    $(function() {
+      setInterval(keepLogin, 1000 * 60 * 5);
+    })
+  </script>
+
 </body>
 
 </html>

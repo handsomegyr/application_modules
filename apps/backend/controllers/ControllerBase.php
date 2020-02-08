@@ -112,4 +112,17 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             View::LEVEL_MAIN_LAYOUT => true
         ));
     }
+
+    protected function checkToken($token)
+    {
+        if (empty($token) || empty($_SESSION['csrf_token'])) {
+            throw new \Exception("token is empty");
+        }
+
+        if ($_SESSION['csrf_token'] != $token) {
+            throw new \Exception("token is not correct");
+        }
+
+        return true;
+    }
 }

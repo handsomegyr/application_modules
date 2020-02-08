@@ -15,7 +15,7 @@ use Phalcon\Validation\Validator\PresenceOf;
 class IndexController extends \App\Backend\Controllers\ControllerBase
 {
 
-    protected $formName = "Dashboard";
+    protected $formName = "首页";
 
     private $modelUser = NULL;
 
@@ -157,6 +157,11 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             $this->view->disable();
             $input = $this->getLoginFilterInput();
             if ($input->isValid()) {
+
+                $token = $this->request->get('_token', array(
+                    'trim'
+                ), '');
+                $this->checkToken($token);
                 /* 检查密码是否正确 */
                 $userInfo = $this->modelUser->checkLogin($input->username, $input->password);
             } else {
@@ -182,6 +187,20 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             // throw $e;
             $this->makeJsonError($e->getMessage());
         }
+    }
+
+    /**
+     * @title({name="会话保持"})
+     *
+     * @name 会话保持
+     */
+    public function keeploginAction()
+    {
+        $this->view->disable();
+        ini_set('default_socket_timeout', -1); // 不超时
+        // 返回信息
+        $ret = array();
+        $this->makeJsonResult($ret, 'ok');
     }
 
     protected function getLoginFilterInput()

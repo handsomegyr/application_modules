@@ -178,6 +178,21 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         '0' => '否',
     );
 
+
+    protected $methodDatas = array(
+        'GET' => 'GET',
+        'POST' => 'POST',
+        'PUT' => 'PUT',
+        'DELETE' => 'DELETE',
+        'OPTIONS' => 'OPTIONS',
+        'PATCH' => 'PATCH',
+        'LINK' => 'LINK',
+        'UNLINK' => 'UNLINK',
+        'COPY' => 'COPY',
+        'HEAD' => 'HEAD',
+        'PURGE' => 'PURGE'
+    );
+
     protected function sortSchemas($schemas)
     {
         //$idSchema = $schemas['_id'];
@@ -552,6 +567,13 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         parent::initialize();
 
+        if ($this->request->isAjax() && $this->request->isPost()) {
+            $token = $this->request->get('_token', array(
+                'trim'
+            ), '');
+            $this->checkToken($token);
+        }
+
         $this->view->setVar('formName', $this->getName());
         $this->view->setVar('schemas', $this->sortSchemas($this->getSchemas()));
         // headerTools
@@ -757,6 +779,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // /* 添加链接 */
             // $link[0]['text'] = '返回' . $this->getName() . '列表';
             // $link[0]['href'] = $this->getUrl("list");
+
+            // Using session flash
+            // $this->flashSession->success('Your information was stored correctly!');
 
             unset($_SESSION['toastr']);
             $_SESSION['toastr']['type'] = "success";

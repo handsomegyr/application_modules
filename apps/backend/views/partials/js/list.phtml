@@ -84,7 +84,7 @@
 				var data = {};
 				data[fieldname] = encodeURIComponent(val);
 				data.id = encodeURIComponent(id);
-
+				data._token = LA.token;
 				$.ajax({
 					type: 'POST',
 					url: List.url + "/" + act,
@@ -136,7 +136,7 @@
 						var data = new Object;
 						data[fieldname] = encodeURIComponent(newval);
 						data.id = encodeURIComponent(id);
-
+						data._token = LA.token;
 						$.ajax({
 							type: 'POST',
 							url: List.url + "/" + act,
@@ -163,6 +163,7 @@
 				if (confirm(cfm)) {
 					var data = List.compileFilter();
 					data.id = encodeURIComponent(id);
+					data._token = LA.token;
 					$.ajax({
 						type: 'POST',
 						url: List.url + "/" + opt,
@@ -233,6 +234,7 @@
 						"data": function(d) {
 							// alert('datatable ajax');
 							d = Search.getConditions(d);
+							d._token = LA.token;
 							console.log(d);
 						}
 					},

@@ -15,6 +15,8 @@ use Phalcon\Mvc\Model\Transaction\Manager as TransactionManager;
 use Phalcon\Events\Manager as EventsManager;
 use Pheanstalk\Pheanstalk;
 use Elasticsearch\ClientBuilder;
+use Phalcon\Flash\Direct as FlashDirect;
+use Phalcon\Flash\Session as FlashSession;
 
 registerAutoloaders();
 
@@ -61,6 +63,22 @@ function registerServices($di)
     $di['errors'] = function () use ($config) {
         return $config['errors'];
     };
+
+    // Set up the flash service
+    $di->set(
+        'flash',
+        function () {
+            return new FlashDirect();
+        }
+    );
+
+    // Set up the flash session service
+    $di->set(
+        'flashSession',
+        function () {
+            return new FlashSession();
+        }
+    );
 
     /**
      * Database connection is created based in the parameters defined in the configuration file

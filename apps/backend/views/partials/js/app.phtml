@@ -126,7 +126,7 @@ Core script to handle the entire layout and base functions
                 var data = $(element).data();
                 var target = $(element);
                 var process = new Promise(function(resolve, reject) {
-                    // alert('click');
+                    alert('process4Modal');
                     Object.assign(data, {
                         _token: LA.token,
                         _action: '',
@@ -140,10 +140,10 @@ Core script to handle the entire layout and base functions
                     $.ajax({
                         type: 'GET',
                         url: url,
-                        data: formData1,
                         cache: false,
                         contentType: false,
                         processData: false,
+                        data: formData1,
                         success: function(data) {
                             // alert('success');
                             console.log(data); //打印服务端返回的数据(调试用)
