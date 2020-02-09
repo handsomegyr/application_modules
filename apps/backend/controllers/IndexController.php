@@ -32,6 +32,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
      */
     public function indexAction()
     {
+        $this->view->setVar('formName', '首页');
         $envs = [
             ['name' => 'PHP version',       'value' => 'PHP/' . PHP_VERSION],
             ['name' => 'Laravel version',   'value' => '5.8.35'],

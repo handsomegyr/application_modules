@@ -1146,17 +1146,31 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     $item[] = date("Y-m-d H:i:s", $data[$key]->sec);
                 } elseif ($field['data']['type'] == 'json') {
                     if (!empty($data[$key])) {
-                        $values = array();
-                        if (!empty($field['export']) && !empty($field['export']['fields'])) {
+                        if (!empty($field['export']['fields'])) {
+                            $values = array();
                             foreach ($field['export']['fields'] as $f) {
                                 $values[] = isset($data[$key][$f]) ? $data[$key][$f] : "";
                             }
-                        }
-                        if (!empty($values)) {
-                            $item[] = implode(" ", $values);
+                            if (!empty($values)) {
+                                $item[] = implode(" ", $values);
+                            } else {
+                                $item[] = "";
+                            }
                         } else {
-                            $item[] = "";
+                            $item[] = \json_encode($data[$key]);
                         }
+                    } else {
+                        $item[] = "";
+                    }
+                } elseif ($field['data']['type'] == 'multifile') {
+                    if (!empty($data[$key])) {
+                        $item[] = implode(",", $data[$key]);
+                    } else {
+                        $item[] = "";
+                    }
+                } elseif ($field['data']['type'] == 'array') {
+                    if (!empty($data[$key])) {
+                        $item[] = implode(",", $data[$key]);
                     } else {
                         $item[] = "";
                     }

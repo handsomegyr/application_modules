@@ -32,7 +32,7 @@ $_SESSION['csrf_token'] = $this->view->csrf_token;
       <p class="login-box-msg">登录</p>
       <form id="login_form1" class="login-form" action="<?php echo $this->view->form_act ?>" method="post">
         <div id="login_form_group1" class="form-group has-feedback">
-          <label id="login_form_error1" class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>These credentials do not match our records.</label><br />
+          <label id="login_form_error1" class="control-label" for="inputError" style="display: none;"><i class="fa fa-times-circle-o"></i>These credentials do not match our records.</label><br />
           <!--<input type="email" class="form-control" placeholder="Email">-->
           <input type="text" class="form-control" placeholder="用户名" name="username" value="" required="1" data-value="">
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>

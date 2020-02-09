@@ -249,15 +249,15 @@
 							?> {
 									"data": "<?php echo isset($field['list']['list_data_name']) ? $field['list']['list_data_name'] : $key ?>",
 									"name": "<?php echo $key ?>",
-									<?php if ($field['data']['type'] == "boolean" && isset($field['list']['list_type']) && $field['list']['list_type'] == 1) { ?> "render": function(data, type, full, meta) {
+									"render": function(data, type, full, meta) {
+										<?php if ($field['data']['type'] == "boolean" && isset($field['list']['list_type']) && $field['list']['list_type'] == 1) { ?>
 											//console.info(data);
 											if (data == 1) {
 												return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && isset($field['list']['ajax'])) { ?>onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-success">是</span>';
 											} else {
 												return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && isset($field['list']['ajax'])) { ?>onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-danger">否</span>';
 											};
-										}
-									<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "image") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?> "render": function(data, type, full, meta) {
+										<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "image") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
 											//console.info(data);
 											if (data == undefined || data == '') {
 												return '';
@@ -270,8 +270,8 @@
 											}
 											?>
 											return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-height: 50px;" alt="">';
-										}
-									<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?> "render": function(data, type, full, meta) {
+
+										<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
 											//console.info(data);
 											if (data == undefined || data == '') {
 												return '';
@@ -288,9 +288,15 @@
 												imgs += '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + n + '&w=50&h=50" style="max-height: 50px;" alt="">';;
 											});
 											return imgs;
-										}
 
-									<?php } elseif (isset($field['list']['items'])) { ?> "render": function(data, type, full, meta) {
+										<?php } elseif (($field['data']['type'] == "json" || $field['data']['type'] == "array")) { ?>
+											// console.info(data);
+											if (data == undefined || data == '') {
+												return '';
+											}
+											return JSON.stringify(data);
+
+										<?php } elseif (isset($field['list']['items'])) { ?>
 											//console.info(data);
 											if (false) {
 												return '<span class="label label-info"></span>';
@@ -309,22 +315,23 @@
 											} else {
 												return '<span class="label label-info"></span>';
 											};
-										}
-									<?php } elseif (isset($field['list']['ajax'])) { ?> "render": function(data, type, full, meta) {
+										<?php } elseif (isset($field['list']['ajax'])) { ?>
 											<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit')) { ?>
 												return '<span onclick="List.edit(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')" >' + data + '</span>';
 											<?php } else { ?>
 												return '<span>' + data + '</span>';
 											<?php } ?>
-										}
-									<?php } elseif (isset($field['list']['show_type'])) { ?> "render": function(data, type, full, meta) {
+
+										<?php } elseif (isset($field['list']['show_type'])) { ?>
 											<?php if ($field['list']['show_type'] == 'icon') { ?>
 												return '<span><i class="fa ' + data + '"></i></span>';
 											<?php } else { ?>
 												return '<span>' + data + '</span>';
 											<?php } ?>
-										}
-									<?php } ?>
+										<?php } else { ?>
+											return data;
+										<?php } ?>
+									}
 								},
 							<?php } ?>
 						<?php } ?> {
