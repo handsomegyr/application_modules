@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Freight\Controllers;
 
 use App\Backend\Submodules\Freight\Models\Express;
@@ -22,7 +23,7 @@ class ExpressController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['name'] = array(
             'name' => '公司名称',
             'data' => array(
@@ -43,7 +44,7 @@ class ExpressController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['code'] = array(
             'name' => '编号',
             'data' => array(
@@ -64,7 +65,7 @@ class ExpressController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['letter'] = array(
             'name' => '首字母',
             'data' => array(
@@ -77,9 +78,9 @@ class ExpressController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return array_column($this->firstLetterDatas, 'value', 'name');
+                'items' => function () {
+                    //return array_column($this->firstLetterDatas, 'value', 'name');
+                    return $this->firstLetterDatas;
                 }
             ),
             'list' => array(
@@ -89,7 +90,7 @@ class ExpressController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['url'] = array(
             'name' => '链接',
             'data' => array(
@@ -110,7 +111,7 @@ class ExpressController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['state'] = array(
             'name' => '状态',
             'data' => array(
@@ -133,7 +134,7 @@ class ExpressController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_order'] = array(
             'name' => '是否常用',
             'data' => array(
@@ -156,7 +157,7 @@ class ExpressController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['zt_state'] = array(
             'name' => '是否支持服务站配送',
             'data' => array(
@@ -179,7 +180,7 @@ class ExpressController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

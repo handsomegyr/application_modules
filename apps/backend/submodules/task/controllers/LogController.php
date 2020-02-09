@@ -79,7 +79,8 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => true,
                 'items' => function ()
                 {
-                    return array_column($this->firstLetterDatas, 'value', 'name');
+                    // return array_column($this->firstLetterDatas, 'value', 'name');
+                    return $this->firstLetterDatas;
                 }
             ),
             'list' => array(

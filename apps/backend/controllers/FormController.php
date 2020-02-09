@@ -214,6 +214,60 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         unset($schemas['__MODIFY_TIME__']);
         unset($schemas['__REMOVED__']);
 
+        foreach ($schemas as &$field) {
+
+            if (empty($field['list']['name'])) {
+                $field['list']['name'] = $field['name'];
+            }
+            if (!isset($field['list']['render'])) {
+                if (
+                    $field['data']['type'] == "file" ||
+                    $field['data']['type'] == "image" ||
+                    $field['data']['type'] == "multifile"
+                ) {
+                    $field['list']['render'] = 'img';
+                }
+            }
+
+            if (empty($field['form']['name'])) {
+                $field['form']['name'] = $field['name'];
+            }
+            if (empty($field['form']['placeholder'])) {
+                $field['form']['placeholder'] = "输入 " . $field['form']['name'];
+            }
+
+            if (empty($field['search']['name'])) {
+                $field['search']['name'] = $field['name'];
+            }
+            if (empty($field['search']['placeholder'])) {
+                $field['search']['placeholder'] =  "输入 " . $field['search']['name'];
+            }
+
+            if (empty($field['search']['input_type'])) {
+                $field['search']['input_type'] =  $field['form']['input_type'];
+            }
+
+            if (empty($field['search']['items'])) {
+                $field['search']['items'] =  $field['form']['items'];
+            }
+            if (!isset($field['search']['is_show'])) {
+                $field['search']['is_show'] = $field['form']['is_show'];
+                if (empty($field['search']['is_show'])) {
+                    $field['search']['is_show'] = $field['list']['is_show'];
+                }
+            }
+
+            if (empty($field['export']['name'])) {
+                $field['export']['name'] = $field['form']['name'];
+            }
+            if (!isset($field['export']['is_show'])) {
+                $field['export']['is_show'] = $field['form']['is_show'];
+                if (empty($field['export']['is_show'])) {
+                    $field['export']['is_show'] = $field['list']['is_show'];
+                }
+            }
+        }
+
         // 放入最后
         $schemas['__CREATE_TIME__'] = $createTimeSchema;
         $schemas['__MODIFY_TIME__'] = $updateTimeSchema;
