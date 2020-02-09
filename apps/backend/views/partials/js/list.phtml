@@ -240,7 +240,13 @@
 					},
 					"columns": [
 						<?php foreach ($this->view->schemas as $key => $field) { ?>
-							<?php if (!empty($field['list']['is_show'])) { ?> {
+							<?php if (!empty($field['list']['is_show'])) {
+								if (($field['data']['type'] == "file" ||
+									$field['data']['type'] == "image" ||
+									$field['data']['type'] == "multifile") && !isset($field['list']['render'])) {
+									$field['list']['render'] = 'img';
+								}
+							?> {
 									"data": "<?php echo isset($field['list']['list_data_name']) ? $field['list']['list_data_name'] : $key ?>",
 									"name": "<?php echo $key ?>",
 									<?php if ($field['data']['type'] == "boolean" && isset($field['list']['list_type']) && $field['list']['list_type'] == 1) { ?> "render": function(data, type, full, meta) {
@@ -253,7 +259,7 @@
 										}
 									<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "image") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?> "render": function(data, type, full, meta) {
 											//console.info(data);
-											if(data==undefined){
+											if (data == undefined) {
 												return '';
 											}
 											<?php
@@ -265,6 +271,25 @@
 											?>
 											return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-height: 50px;" alt="">';
 										}
+									<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?> "render": function(data, type, full, meta) {
+											//console.info(data);
+											if (data == undefined) {
+												return '';
+											}
+											<?php
+											$path = "";
+											if (!empty($field['data'][$field['data']['type']])) {
+												$fileInfo = $field['data'][$field['data']['type']];
+												$path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
+											}
+											?>
+											var imgs = '';
+											$.each(data, function(i, n) {
+												imgs += '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + n + '&w=50&h=50" style="max-height: 50px;" alt="">';;
+											});
+											return imgs;
+										}
+
 									<?php } elseif (isset($field['list']['items'])) { ?> "render": function(data, type, full, meta) {
 											//console.info(data);
 											if (false) {

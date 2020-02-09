@@ -587,7 +587,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     protected function uploadFile($file, $field)
     {
         if ($file->isUploadedFile()) {
-            $fileId = $file->getName(); // myMongoId(new \MongoId());
+            // $fileId = $file->getName();
+            $ext = strtolower($file->getExtension());
+            $fileId = myMongoId(new \MongoId()) . "." . $ext;
+
             $path = "";
             if (!empty($field['data']['file'])) {
                 $fileInfo = $field['data']['file'];
@@ -815,6 +818,42 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
             // update
             $this->update($input, $row);
+
+            // 处理多图片或多文件的排序
+            $filesort = $this->request->get("_file_sort_", array(
+                'trim',
+            ), array());
+            if (!empty($filesort)) {
+                // 获取最新的数据信息
+                $newRow = $this->getModel()->getInfoById($input->id);
+                $updateData = array();
+                foreach ($filesort as $field => $sortvalue) {
+                    if (!empty($sortvalue)) {
+                        $updateValue = explode(',', $sortvalue);
+                        if (!empty($updateValue)) {
+                            // 检查是否还存在这些文件 该情况发生在 用户先进行了文件排序 然后直接删除了文件
+                            $is_exist = true;
+                            foreach ($updateValue as $file) {
+                                if (!in_array($file, $newRow[$field])) {
+                                    $is_exist = false;
+                                    break;
+                                }
+                            }
+                            if ($is_exist) {
+                                $updateData[$field] = $updateValue;
+                            }
+                        }
+                    }
+                }
+                if (!empty($updateData)) {
+                    $this->getModel()->update(array(
+                        '_id' => $input->id
+                    ), array(
+                        '$set' => $updateData
+                    ));
+                }
+            }
+
             // /* 添加链接 */
             // $link[0]['text'] = '返回' . $this->getName() . '列表';
             // $link[0]['href'] = $this->getUrl("list");
@@ -888,15 +927,37 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'trim',
                 'string'
             ), '');
-            
-            //throw new \Exception($messageInfo);
-            $updateData = array();
-            $updateData[$field] = "";
-            $this->getModel()->update(array(
-                '_id' => $id
-            ), array(
-                '$set' => $updateData
-            ));
+
+            if (!empty($key)) {
+                $info = $this->getModel()->getInfoById($id);
+                if (!empty($info) && !empty($info[$field])) {
+                    //throw new \Exception($messageInfo);
+                    // var_dump($info[$field]);
+                    // die($field);
+
+                    if (is_array($info[$field])) {
+                        $updateValue = array_filter($info[$field], function ($v) use ($key) {
+                            return $v != $key;
+                        });
+                        if (!empty($updateValue)) {
+                            $updateValue = array_values($updateValue);
+                        } else {
+                            $updateValue = array();
+                        }
+                        // print_r($updateValue);
+                        // die($field);
+                    } else {
+                        $updateValue  =  str_replace($key,  "",  $info[$field]);
+                    }
+                    $updateData = array();
+                    $updateData[$field] = $updateValue;
+                    $this->getModel()->update(array(
+                        '_id' => $id
+                    ), array(
+                        '$set' => $updateData
+                    ));
+                }
+            }
 
             // {"status":true,"message":"\u5220\u9664\u6210\u529f !"}
             $res = array(
