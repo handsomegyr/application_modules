@@ -584,37 +584,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $input;
     }
 
-    protected function uploadFile($file, $field)
-    {
-        if ($file->isUploadedFile()) {
-            // $fileId = $file->getName();
-            $ext = strtolower($file->getExtension());
-            $fileId = myMongoId(new \MongoId()) . "." . $ext;
-
-            $path = "";
-            if (!empty($field['data']['file'])) {
-                $fileInfo = $field['data']['file'];
-                $path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
-            }
-            $uploadPath = APP_PATH . "public/upload/{$path}";
-            makeDir($uploadPath);
-            $destination = "{$uploadPath}{$fileId}";
-            $file->moveTo($destination);
-            return $fileId;
-        } else {
-            return '';
-        }
-    }
     public function initialize()
     {
         parent::initialize();
 
-        // if ($this->request->isAjax() && $this->request->isPost()) {
-        //     $token = $this->request->get('_token', array(
-        //         'trim'
-        //     ), '');
-        //     $this->checkToken($token);
-        // }
+        // 检查token
+        if ($this->request->isAjax() && $this->request->isPost()) {
+            $token = $this->request->get('_token', array(
+                'trim'
+            ), '');
+            $this->checkToken($token);
+        }
 
         $this->view->setVar('formName', $this->getName());
         $this->view->setVar('schemas', $this->sortSchemas($this->getSchemas()));
@@ -1197,6 +1177,28 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $this->view->partial("partials/modal");
         $data['content'] = \ob_get_clean();
         return $this->makeJsonResult($data, '弹窗显示成功');
+    }
+
+    protected function uploadFile($file, $field)
+    {
+        if ($file->isUploadedFile()) {
+            // $fileId = $file->getName();
+            $ext = strtolower($file->getExtension());
+            $fileId = myMongoId(new \MongoId()) . "." . $ext;
+
+            $path = "";
+            if (!empty($field['data']['file'])) {
+                $fileInfo = $field['data']['file'];
+                $path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
+            }
+            $uploadPath = APP_PATH . "public/upload/{$path}";
+            makeDir($uploadPath);
+            $destination = "{$uploadPath}{$fileId}";
+            $file->moveTo($destination);
+            return $fileId;
+        } else {
+            return '';
+        }
     }
 
     /**

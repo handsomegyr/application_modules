@@ -259,7 +259,7 @@
 										}
 									<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "image") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?> "render": function(data, type, full, meta) {
 											//console.info(data);
-											if (data == undefined) {
+											if (data == undefined || data == '') {
 												return '';
 											}
 											<?php
@@ -273,7 +273,7 @@
 										}
 									<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?> "render": function(data, type, full, meta) {
 											//console.info(data);
-											if (data == undefined) {
+											if (data == undefined || data == '') {
 												return '';
 											}
 											<?php

@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
-<?php $_SESSION['csrf_token'] = createRandCode(40); ?>
+<?php
+if (!$this->request->isAjax() || $this->request->isGet()) {
+  $this->view->csrf_token = createRandCode(40);
+  $_SESSION['csrf_token'] = $this->view->csrf_token;
+}
+?>
 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="csrf-token" content="<?php echo $_SESSION['csrf_token'] ?>">
+  <meta name="csrf-token" content="<?php echo $this->view->csrf_token ?>">
 
   <title><?php echo  $this->view->adminConfig->admin->title ?> | <?php echo  $this->view->formName ?></title>
   <!-- Tell the browser to be responsive to screen width -->

@@ -79,6 +79,7 @@
             submit: function() {
                 //alert("submit！");
                 var formData = new FormData(document.getElementById("form_sample_2")); //
+                formData.append("_token", LA.token);
                 $.ajax({
                     //几个参数需要注意一下
                     type: "POST", //方法类型
