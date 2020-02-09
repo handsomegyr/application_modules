@@ -325,7 +325,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'width' => '27px'
             ),
             'search' => array(
                 'is_show' => true
