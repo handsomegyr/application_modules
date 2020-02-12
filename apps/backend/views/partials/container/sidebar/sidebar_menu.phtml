@@ -15,6 +15,10 @@ if (isset($_SESSION['admin_id'])) {
 }
 $modelMenu = new Menu();
 $menus = $modelMenu->getPrivilege($menu_list, $requestUrl);
+// $menus2 = $modelMenu->buildPrivilegeTree($menu_list, $requestUrl);
+// print_r($menus);
+// print_r($menus2);
+// die('xxx');
 ?>
 
 <ul class="sidebar-menu tree" data-widget="tree">
@@ -27,50 +31,9 @@ $menus = $modelMenu->getPrivilege($menu_list, $requestUrl);
 
 	<?php $index = 0; ?>
 	<?php foreach ($menus as $menukey => $menu) { ?>
-		<?php if (($roleAlias == 'superAdmin') || !empty($menu['cando'])) { ?>
-			<li class="<?php if (!empty($menu['is_active'])) { ?>active<?php } ?> treeview <?php if (!empty($menu['is_active'])) { ?>menu-open<?php } ?>" style="height: auto;">
-				<a href="javascript:;">
-					<i class="fa <?php echo empty($menu['icon'])?'fa-share':$menu['icon'] ?>"></i> <span><?php echo ($menu['name']) ?></span>
-					<span class="pull-right-container">
-						<i class="fa fa-angle-left pull-right"></i>
-					</span>
-				</a>
-				<?php $index2 = 0; ?>
-				<ul class="treeview-menu">
-					<?php foreach ($menu['priv'] as $priv) { ?>
-						<?php if (($roleAlias == 'superAdmin') || !empty($priv['cando'])) { ?>
-							<?php if (false) { ?>
-								<li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>><a href="javascript:;"><i class="fa <?php echo empty($priv['icon'])?'fa-circle-o':$priv['icon'] ?>"></i> <?php echo ($priv['name']) ?></a></li>
-								<li class="treeview">
-									<a href="javascript:;"><i class="fa <?php echo empty($priv['icon'])?'fa-circle-o':$priv['icon'] ?>"></i> Level One
-										<span class="pull-right-container">
-											<i class="fa fa-angle-left pull-right"></i>
-										</span>
-									</a>
-									<ul class="treeview-menu">
-										<li><a href="javascript:;"><i class="fa fa-circle-o"></i> Level Two</a></li>
-										<li class="treeview">
-											<a href="javascript:;"><i class="fa fa-circle-o"></i> Level Two
-												<span class="pull-right-container">
-													<i class="fa fa-angle-left pull-right"></i>
-												</span>
-											</a>
-											<ul class="treeview-menu">
-												<li><a href="javascript:;"><i class="fa fa-circle-o"></i> Level Three</a></li>
-												<li><a href="javascript:;"><i class="fa fa-circle-o"></i> Level Three</a></li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							<?php } else { ?>
-								<li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>><a href="<?php echo $this->view->baseUrl ?><?php echo $priv['url'] ?>"><i class="fa <?php echo empty($priv['icon'])?'fa-circle-o':$priv['icon'] ?>"></i> <?php echo ($priv['name']) ?></a></li>
-							<?php } ?>
-						<?php } ?>
-						<?php $index2++ ?>
-					<?php } ?>
-				</ul>
-			</li>
-		<?php } ?>
+		<?php
+		$this->partial('partials/container/sidebar/menu')
+		?>
 		<?php $index++ ?>
 	<?php } ?>
 </ul>

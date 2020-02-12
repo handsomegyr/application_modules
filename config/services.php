@@ -305,7 +305,11 @@ function registerServices($di)
                 'controller' => 1,
                 'action' => 2
             ));
-
+            $router->add("/admin/weixin2/:controller/:action", array(
+                'module' => 'admin/weixin2',
+                'controller' => 1,
+                'action' => 2
+            ));
             $router->add("/admin/lottery/:controller/:action", array(
                 'module' => 'admin/lottery',
                 'controller' => 1,

@@ -1,0 +1,28 @@
+<?php if (($roleAlias == 'superAdmin') || !empty($menu['cando'])) { ?>
+
+    <li class="<?php if (!empty($menu['is_active'])) { ?>active<?php } ?> treeview <?php if (!empty($menu['is_active'])) { ?>menu-open<?php } ?>">
+
+        <a href="javascript:;">
+            <i class="fa <?php echo empty($menu['icon']) ? 'fa-tasks' : $menu['icon'] ?>"></i>
+            <span><?php echo ($menu['name']) ?></span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+
+        <?php $index2 = 0; ?>
+        <ul class="treeview-menu <?php if (!empty($menu['is_active'])) { ?>menu-open<?php } ?>">
+            <?php foreach ($menu['priv'] as $priv) { ?>
+                <?php if (!empty($priv['priv'])) { ?>
+                    <?php
+                    $menu = $priv;
+                    $this->partial('partials/container/sidebar/menu')
+                    ?>
+                <?php } else { ?>
+                    <li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>><a href="<?php echo empty($priv['url']) ? 'javascript:;' : $this->view->baseUrl . $priv['url'] ?>"><i class="fa <?php echo empty($priv['icon']) ? 'fa-tasks' : $menu['icon'] ?>"></i> <?php echo ($priv['name']) ?></a></li>
+                <?php } ?>
+                <?php $index2++ ?>
+            <?php } ?>
+        </ul>
+    </li>
+<?php } ?>

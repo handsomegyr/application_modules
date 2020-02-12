@@ -635,7 +635,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         };
 
         // 保存在会话中
-        $_SESSION['search_filter'] = $input->getFilter();
+        $_SESSION['search_filter'] = array(); //$input->getFilter();
         return $input;
     }
 

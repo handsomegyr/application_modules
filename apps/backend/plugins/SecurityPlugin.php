@@ -198,6 +198,7 @@ class SecurityPlugin extends Plugin
 
             //添加公有资源
             $publicResources = array(
+                'admin_builder' => array('createmenu', 'createschema', 'createfile', 'createmenuwithfiles', 'downloadfile'),
                 'admin_index' => array('index', 'logout', 'login', 'signin', 'keeplogin'),
                 'admin_error' => array('show404', 'show401', 'show500', 'message'),
                 'admin_form' => array('list', 'export', 'query', 'add', 'insert', 'edit', 'update', 'remove', 'removefile')

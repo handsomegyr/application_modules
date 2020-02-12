@@ -116,7 +116,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'list_data_name' => 'show_name'
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -137,7 +137,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -161,7 +161,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -180,7 +180,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'help' => 'For more icons please see <br/><a href="http://fontawesome.io/icons/" target="_blank">http://fontawesome.io/icons/</a>'
             ),
             'list' => array(
-                'show_type' => 'icon',                
+                'show_type' => 'icon',
                 'is_show' => true
             ),
             'search' => array(
@@ -208,7 +208,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'ajax' => 'toggleisshow'
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -230,7 +230,7 @@ class MenuController extends \App\Backend\Controllers\FormController
                 'ajax' => 'editshoworder'
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
