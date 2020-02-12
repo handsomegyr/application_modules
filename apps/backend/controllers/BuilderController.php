@@ -48,14 +48,14 @@ EOD;
 <?php
 namespace App\Backend\Submodules\#_namespace_#\Controllers;
 
-use App\Backend\Submodules\#_namespace_#\Models\#_model_#Model;
+use #_namespacename_#\#_model_#;
 
 /**
- * @title({name="#_title_#管理"})
+ * @title({name="#_title_#"})
  *
- * @name #_title_#管理
+ * @name #_title_#
  */
-class #_model_#Controller extends \App\Backend\Controllers\FormController
+class #_controllerName_#Controller extends \App\Backend\Controllers\FormController
 {
     private $model#_model_#;
 
@@ -84,16 +84,6 @@ class #_model_#Controller extends \App\Backend\Controllers\FormController
 }
 EOD;
 
-    protected $router_template = <<<'EOD'
-$router->group(['prefix' => '#_prefix_#'], function () use ($router) {
-    #_router_resource_#
-});
-EOD;
-
-    protected $router_source_template = <<<'EOD'
-$router->resource('#_router_url_#', '#_namespace_#\#_model_#Controller');
-EOD;
-
     /**
      * @title({name="创建后台菜单"})
      *
@@ -101,8 +91,6 @@ EOD;
      */
     public function createmenuAction()
     {
-        // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Components\Activity\Settings\Menu
-        // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Components\Cronjob\Settings\Menu        
         // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Weixin2\Settings\Menu
         try {
             $this->view->disable();
@@ -131,7 +119,7 @@ EOD;
      */
     public function createschemaAction()
     {
-        // http://www.applicationmodule.com/admin/builder/createschema?model=\App\Backend\Submodules\Weixin2\language
+        // http://www.applicationmodule.com/admin/builder/createschema?model=\App\Backend\Submodules\Weixin2\Models\Language
         try {
             $this->view->disable();
             $model = $this->get('model', '');
@@ -169,7 +157,7 @@ EOD;
      */
     public function createfileAction()
     {
-        // http://www.applicationmodule.com/admin/builder/createfile?model=\App\Components\Goods\Models\SpuModel&title=商品spu
+        // http://www.applicationmodule.com/admin/builder/createfile?model=\App\Backend\Submodules\Weixin2\Models\Language&title=语言
         try {
             $this->view->disable();
             $model = $this->get('model', '');
@@ -205,19 +193,17 @@ EOD;
      */
     public function createmenuwithfilesAction()
     {
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Components\Activity\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Components\Cronjob\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Components\Weixinopen\Settings\Menu&is_create_menu=1
+        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Weixin2\Settings\Menu&is_create_menu=1
         try {
             $this->view->disable();
             $settings = $this->get('settings', '');
             $is_create_menu = intval($this->get('is_create_menu', 1));
 
             if (empty($settings)) {
-                return Result::fail('40001', null, "菜单settings为空");
+                throw new \Exception("菜单settings为空");
             }
             if (!class_exists($settings)) {
-                return Result::fail('40001', null, "菜单settings所对应的类不存在");
+                throw new \Exception("菜单settings所对应的类不存在");
             }
 
             $menuSettings = new $settings();
@@ -233,58 +219,31 @@ EOD;
                     if (empty($item['model'])) {
                         continue;
                     }
+
                     $menu = $item['menu_name'];
-                    //$menu_model = $item['menu_model'];
                     $model = $item['model'];
 
                     // 获取config内容
-                    $fileStrRet = $this->createFileBySettings($model, $menu);
+                    $fileStrRet = $this->createFileBySettings($model, $menu, $item);
+
                     $filename = tempnam(sys_get_temp_dir(), 'php_' . uniqid() . "_");
                     $fp = fopen($filename, 'w');
                     fwrite($fp,  $fileStrRet['fileStr']);
                     fclose($fp);
                     $zip->addFile($filename, $fileStrRet['fileName'] . '.php');
+                    $zip->addEmptyDir($fileStrRet['folderName']);
                     // unlink($filename);
                 }
-
-                // 获取router内容
-                $fileStrRet = $this->createRouterBySettings($tree);
-                $filename = tempnam(sys_get_temp_dir(), 'php_' . uniqid() . "_");
-                $fp = fopen($filename, 'w');
-                fwrite($fp,  $fileStrRet['fileStr']);
-                fclose($fp);
-                $zip->addFile($filename, $fileStrRet['fileName'] . '.php');
             }
             $zip->close();
-            return response()->download($tmp, 'menusettings_' . date("YmdHis") . '.zip');
-            $this->makeJsonResult("", "create OK");
-        } catch (\Exception $e) {
-            $this->makeJsonError($e->getMessage());
-        }
-    }
 
-
-    /**
-     * @title({name="下载文件"})
-     *
-     * @name 下载文件
-     */
-    public function downloadfileAction()
-    {
-        // http://www.applicationmodule.com/admin/builder/downloadfile?file_id=xxx
-        try {
-            $this->view->disable();
-            $file_id = $this->get('file_id', '');
-            if (empty($file_id)) {
-                return Result::fail('40001', null, "file_id为空");
-            }
-            $path = '/nas/var/logs/www/export/' . $file_id;
-            if (!file_exists($path)) {
-                return Result::fail('40001', null, "file_id不正确");
-            }
-
-            return response()->download($path, $file_id);
-            $this->makeJsonResult("", "create OK");
+            ob_end_clean();
+            header('Content-type: application/octet-stream;');
+            header('Content-Disposition: attachment; filename="' .  'menusettings_' . date("YmdHis") . '.zip"');
+            header("Content-Length:" . filesize($tmp));
+            echo file_get_contents($tmp);
+            unlink($tmp);
+            exit();
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -295,9 +254,9 @@ EOD;
         // $tableInfo = DB::select("SHOW FULL COLUMNS FROM {$table}");
         $di = \Phalcon\DI::getDefault();
         $db = $di['db'];
-        $tableInfo = $db->query("SHOW FULL COLUMNS FROM {$table}", array());
-        $tableInfo->setFetchMode(\Phalcon\Db::FETCH_ASSOC);
-
+        $result = $db->query("SHOW FULL COLUMNS FROM {$table}", array());
+        $result->setFetchMode(\Phalcon\Db::FETCH_ASSOC);
+        $tableInfo = $result->fetchAll();
         return $this->getDisplayColumns($tableInfo);
     }
 
@@ -307,12 +266,12 @@ EOD;
         //$columns['tableInfo'] = $tableInfo;
         foreach ($tableInfo as $col) {
             // 某些字段不用输出显示
-            if (in_array($col->Field, array('_id', '__CREATE_TIME__', '__MODIFY_TIME__', '__REMOVED__'))) {
+            if (in_array($col['Field'], array('_id', '__CREATE_TIME__', '__MODIFY_TIME__', '__REMOVED__'))) {
                 continue;
             }
 
-            $field = $col->Field;
-            $name = (empty($col->Comment) ? $col->Field : $col->Comment);
+            $field = $col['Field'];
+            $name = (empty($col['Comment']) ? $col['Field'] : $col['Comment']);
 
             // 字段类型为text 不用输出显示
             $dataType = "string";
@@ -326,30 +285,31 @@ EOD;
             $listListType = "''";
             $listRender = "";
             // text
-            if ("text" == $col->Type) {
+            if ("text" == $col['Type']) {
                 $dataType = "json";
                 $dataLength = 1024;
                 $formInputType = "textarea";
                 $listIsShow = "false";
                 //注释上如果有图的字的话 认为是图多张
-                if (str::contains($col->Comment, "图多张")) {
+                if (self::contains($col['Comment'], "图多张")) {
+                    $dataType = "multifile";
                     $formInputType = "multipleImage";
                     $listRender = "img";
                 }
                 //注释上如果是备注
-                if (str::contains($col->Comment, "备注")) {
+                if (self::contains($col['Comment'], "备注")) {
                     $dataDefaultValue = "'{}'";
                 }
             }
             //int(11) unsigne
-            elseif (Str::startsWith($col->Type, "int") || Str::startsWith($col->Type, "mediumint") || Str::startsWith($col->Type, "smallint")) {
+            elseif (self::startsWith($col['Type'], "int") || self::startsWith($col['Type'], "mediumint") || self::startsWith($col['Type'], "smallint")) {
                 $dataType = "integer";
                 $dataLength = 11;
                 $formInputType = "number";
                 $dataDefaultValue = "0";
             }
             //tinyint(1) unsigned
-            elseif (Str::startsWith($col->Type, "tinyint")) {
+            elseif (self::startsWith($col['Type'], "tinyint")) {
                 $dataType = "boolean";
                 $dataLength = 1;
                 $dataDefaultValue = "false";
@@ -359,33 +319,33 @@ EOD;
                 $listListType = "'1'";
             }
             //datetime
-            elseif ($col->Type == 'datetime') {
+            elseif ($col['Type'] == 'datetime') {
 
                 $dataType = "datetime";
                 $dataLength = 19;
-                $dataDefaultValue = '$this->getCurrentTime($this->now)';
+                $dataDefaultValue = 'getCurrentTime()';
 
                 $formInputType = "datetimepicker";
             }
             //varchar(255)
-            elseif (Str::startsWith($col->Type, "varchar")) {
-                if (preg_match('/\d+/', $col->Type, $arr)) {
+            elseif (self::startsWith($col['Type'], "varchar")) {
+                if (preg_match('/\d+/', $col['Type'], $arr)) {
                     $dataLength = $arr[0];
                 }
                 //注释上如果有图的字的话 认为是图片
-                if (str::contains($col->Comment, "图")) {
+                if (self::contains($col['Comment'], "图")) {
                     $formInputType = "image";
                     $listRender = "img";
                 }
                 //注释上如果有文件的字的话 认为是文件
-                elseif (str::contains($col->Comment, "文件")) {
+                elseif (self::contains($col['Comment'], "文件")) {
                     $formInputType = "file";
                 }
             }
 
             $schemaStr = sprintf($this->shema_template, $field, $name, $dataType, $dataLength, $dataDefaultValue, $formInputType, $formItems, $listIsShow, $listListType, $listRender);
 
-            $columns[$col->Field] = $schemaStr;
+            $columns[$col['Field']] = $schemaStr;
         }
         return $columns;
     }
@@ -458,60 +418,31 @@ EOD;
         }
     }
 
-    protected function createRouterBySettings($tree)
-    {
-        $routerResources = "";
-        $prefix = "";
-        foreach ($tree as $item) {
-            //'menu_model' => 'weixinopen-component',
-            //'model' => '\App\Components\Weixinopen\Models\ComponentModel'
-            if (!empty($item["menu_model"]) && !empty($item["model"])) {
-                $urlItems = explode('-', $item["menu_model"]);
-                $prefix = array_shift($urlItems);
-                $url = implode('/', $urlItems);
-                $model = $item["model"];
-                $reflectionModel = new \ReflectionClass($model);
-                // 获取model名字
-                $shortName4Class = $reflectionModel->getShortName();
-                //$c = substr($c, 0, strpos($c, "Controller"));
-                $modelName = substr($shortName4Class, 0, -5);
-
-                // 获取namespace名字
-                $namespaceName = $reflectionModel->getNamespaceName();
-                $namespace = preg_replace('/Components\\\(.*?)\\\Models/i', '$1', $namespaceName);
-                $namespace = preg_replace('/App\\\(.*?)/i', '$1', $namespace);
-
-                $itemStr = str_replace("#_namespace_#", $namespace, $this->router_source_template);
-                $itemStr = str_replace("#_model_#", $modelName, $itemStr);
-                $itemStr = str_replace("#_router_url_#", $url, $itemStr);
-
-                $routerResources .= ($itemStr . "\n");
-            }
-        }
-
-        $fileStr = str_replace("#_prefix_#", $prefix, $this->router_template);
-        $fileStr = str_replace("#_router_resource_#", $routerResources, $fileStr);
-        return array('fileStr' => $fileStr, 'fileName' => 'routes');
-    }
-
-    protected function createFileBySettings($model, $title)
+    protected function createFileBySettings($model, $title, $menu = array())
     {
         $obj = new $model();
         $table = $obj->getSource();
         if (empty($table)) {
             throw new \Exception("model:{$model}的表名字为空");
         }
-
         $reflectionModel = new \ReflectionClass($model);
+        // 获取namespace名字 App\Backend\Submodules\Weixin2\Models
+        $namespaceName = $reflectionModel->getNamespaceName();
+        $namespace = preg_replace('/App\\\Backend\\\Submodules\\\(.*?)\\\Models/i', '$1', $namespaceName);
+        $namespaceArr = explode("\\", $namespace);
+        $namespace = $namespaceArr[0];
         // 获取model名字
         $shortName4Class = $reflectionModel->getShortName();
-        //$c = substr($c, 0, strpos($c, "Controller"));
-        $modelName = substr($shortName4Class, 0, -5);
-
-        // 获取namespace名字
-        $namespaceName = $reflectionModel->getNamespaceName();
-        $namespace = preg_replace('/Components\\\(.*?)\\\Models/i', '$1', $namespaceName);
-        $namespace = preg_replace('/App\\\(.*?)/i', '$1', $namespace);
+        $modelName = $shortName4Class;
+        $controllerName = ucfirst(strtolower($modelName));
+        if (!empty($menu)) {
+            $title = $menu['menu_name'];
+            $menu_model_arr = explode('-', $menu["menu_model"]);
+            if (empty($menu_model_arr[1])) {
+                throw new \Exception('menu_model:' . $menu["menu_model"] . '格式不正确');
+            }
+            $controllerName = ucfirst(strtolower($menu_model_arr[1]));
+        }
 
         // 获取config内容
         $fileStr = $this->getConfigContent($table);
@@ -519,11 +450,48 @@ EOD;
         foreach ($fileStr as  $item) {
             $schemas .= ($item . "\n");
         }
-
-        $fileStr = str_replace("#_namespace_#", $namespace, $this->file_template);
+        $fileStr = str_replace("#_namespacename_#", $namespaceName, $this->file_template);
+        $fileStr = str_replace("#_namespace_#", $namespace, $fileStr);
         $fileStr = str_replace("#_model_#", $modelName, $fileStr);
+        $fileStr = str_replace("#_controllerName_#", $controllerName, $fileStr);
         $fileStr = str_replace("#_title_#", $title, $fileStr);
         $fileStr = str_replace("#_schemas_#", $schemas, $fileStr);
-        return array('fileStr' => $fileStr, 'fileName' => $modelName . 'Controller');
+        return array('fileStr' => $fileStr, 'fileName' => $controllerName . 'Controller', 'folderName' => strtolower($controllerName));
+    }
+
+    /**
+     * Determine if a given string contains a given substring.
+     *
+     * @param  string  $haystack
+     * @param  string|array  $needles
+     * @return bool
+     */
+    public static function contains($haystack, $needles)
+    {
+        foreach ((array) $needles as $needle) {
+            if ($needle != '' && mb_strpos($haystack, $needle) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine if a given string starts with a given substring.
+     *
+     * @param  string  $haystack
+     * @param  string|array  $needles
+     * @return bool
+     */
+    public static function startsWith($haystack, $needles)
+    {
+        foreach ((array) $needles as $needle) {
+            if ($needle != '' && mb_strpos($haystack, $needle) === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
