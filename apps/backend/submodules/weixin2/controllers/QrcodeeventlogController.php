@@ -100,7 +100,7 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -127,7 +127,7 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -154,7 +154,7 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -181,7 +181,7 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -201,19 +201,20 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['MsgType'] = array(
-            'name' => '消息类型，event',
+            'name' => '消息类型',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '消息类型，event',
             ),
             'list' => array(
                 'is_show' => true,
@@ -228,7 +229,7 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['Event'] = array(
-            'name' => '事件类型，subscribe，SCAN',
+            'name' => '事件类型',
             'data' => array(
                 'type' => 'string',
                 'length' => 20,
@@ -240,7 +241,8 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '事件类型，subscribe，SCAN',
             ),
             'list' => array(
                 'is_show' => true,
@@ -255,7 +257,7 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['EventKey'] = array(
-            'name' => '事件KEY值，qrscene_为前缀，后面为二维码的参数值',
+            'name' => '事件KEY值',
             'data' => array(
                 'type' => 'string',
                 'length' => 30,
@@ -267,7 +269,8 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '事件KEY值，qrscene_为前缀，后面为二维码的参数值',
             ),
             'list' => array(
                 'is_show' => true,
@@ -282,7 +285,7 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['Ticket'] = array(
-            'name' => '二维码的ticket，可用来换取二维码图片',
+            'name' => '二维码的ticket',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -292,17 +295,22 @@ class QrcodeeventlogController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '二维码的ticket，可用来换取二维码图片',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => 'img',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true

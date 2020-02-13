@@ -100,7 +100,7 @@ class DatacubeuserreadController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -120,19 +120,20 @@ class DatacubeuserreadController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['int_page_read_user'] = array(
-            'name' => '图文页（点击群发图文卡片进入的页面）的阅读人数',
+            'name' => '图文页的阅读人数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '图文页（点击群发图文卡片进入的页面）的阅读人数',
             ),
             'list' => array(
                 'is_show' => true,
@@ -154,7 +155,7 @@ class DatacubeuserreadController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -174,19 +175,20 @@ class DatacubeuserreadController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['ori_page_read_user'] = array(
-            'name' => '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
+            'name' => '原文页的阅读人数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
             ),
             'list' => array(
                 'is_show' => true,
@@ -208,7 +210,7 @@ class DatacubeuserreadController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -235,7 +237,7 @@ class DatacubeuserreadController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -262,7 +264,7 @@ class DatacubeuserreadController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -289,7 +291,7 @@ class DatacubeuserreadController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -316,7 +318,7 @@ class DatacubeuserreadController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

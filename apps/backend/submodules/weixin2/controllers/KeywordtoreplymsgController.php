@@ -3,6 +3,8 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Keyword\KeywordToReplyMsg;
+use App\Backend\Submodules\Weixin2\Models\Keyword\Keyword;
+use App\Backend\Submodules\Weixin2\Models\ReplyMsg\ReplyMsg;
 
 /**
  * @title({name="关键词和回复消息对应设定"})
@@ -13,11 +15,21 @@ class KeywordtoreplymsgController extends \App\Backend\Controllers\FormControlle
 {
     private $modelKeywordToReplyMsg;
 
+    private $modelKeyword;
+    private $modelReplyMsg;
+
     public function initialize()
     {
         $this->modelKeywordToReplyMsg = new KeywordToReplyMsg();
+        $this->modelKeyword = new Keyword();
+        $this->modelReplyMsg = new ReplyMsg();
+
+        $this->keywordItems = $this->modelKeyword->getAll();
+        $this->replyMsgItems = $this->modelReplyMsg->getAllByType("", "_id");
         parent::initialize();
     }
+    private $keywordItems = null;
+    private $replyMsgItems = null;
 
     protected function getSchemas()
     {
@@ -30,20 +42,23 @@ class KeywordtoreplymsgController extends \App\Backend\Controllers\FormControlle
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->keywordItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->keywordItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->keywordItems
             ),
             'export' => array(
                 'is_show' => true
@@ -57,20 +72,23 @@ class KeywordtoreplymsgController extends \App\Backend\Controllers\FormControlle
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->replyMsgItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->replyMsgItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->replyMsgItems
             ),
             'export' => array(
                 'is_show' => true

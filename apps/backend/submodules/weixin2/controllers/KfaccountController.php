@@ -262,7 +262,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => $this->getCurrentTime($this->now)
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
                 'required' => false

@@ -100,7 +100,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -120,24 +120,25 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
             )
         );
         $schemas['msgid'] = array(
-            'name' => '请注意：这里的msgid实际上是由msgid（图文消息id，这也就是群发接口调用后返回的msg_data_id）和index（消息次序索引）组成， 例如12003_3， 其中12003是msgid，即一次群发的消息的id； 3为index，假设该次群发的图文消息共5个文章（因为可能为多图文），3表示5个中的第3个',
+            'name' => 'msgid',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '请注意：这里的msgid实际上是由msgid（图文消息id，这也就是群发接口调用后返回的msg_data_id）和index（消息次序索引）组成， 例如12003_3， 其中12003是msgid，即一次群发的消息的id； 3为index，假设该次群发的图文消息共5个文章（因为可能为多图文），3表示5个中的第3个',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => 'img',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => true
@@ -154,17 +155,17 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => 'img',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => true
@@ -181,7 +182,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -201,19 +202,20 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
             )
         );
         $schemas['target_user'] = array(
-            'name' => '送达人数，一般约等于总粉丝数（需排除黑名单或其他异常情况下无法收到消息的粉丝）',
+            'name' => '送达人数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '送达人数，一般约等于总粉丝数（需排除黑名单或其他异常情况下无法收到消息的粉丝）',
             ),
             'list' => array(
                 'is_show' => true,
@@ -228,19 +230,20 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
             )
         );
         $schemas['int_page_read_user'] = array(
-            'name' => '图文页（点击群发图文卡片进入的页面）的阅读人数',
+            'name' => '图文页的阅读人数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '图文页（点击群发图文卡片进入的页面）的阅读人数',
             ),
             'list' => array(
                 'is_show' => true,
@@ -262,7 +265,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -282,19 +285,20 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
             )
         );
         $schemas['ori_page_read_user'] = array(
-            'name' => '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
+            'name' => '原文页的阅读人数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
             ),
             'list' => array(
                 'is_show' => true,
@@ -316,7 +320,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -343,7 +347,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -370,7 +374,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -397,7 +401,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -424,7 +428,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -451,7 +455,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -478,7 +482,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -505,7 +509,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -532,7 +536,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -559,7 +563,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -586,7 +590,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -613,7 +617,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -640,7 +644,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -667,7 +671,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -694,7 +698,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -721,7 +725,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -748,7 +752,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -775,7 +779,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -802,7 +806,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -829,7 +833,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -856,7 +860,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -883,7 +887,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -910,7 +914,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -937,7 +941,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -964,7 +968,7 @@ class DatacubearticletotalController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

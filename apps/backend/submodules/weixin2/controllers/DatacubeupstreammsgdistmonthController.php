@@ -100,7 +100,7 @@ class DatacubeupstreammsgdistmonthController extends \App\Backend\Controllers\Fo
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -120,19 +120,20 @@ class DatacubeupstreammsgdistmonthController extends \App\Backend\Controllers\Fo
             )
         );
         $schemas['msg_user'] = array(
-            'name' => '上行发送了（向公众号发送了）消息的用户数',
+            'name' => '上行发送了消息的用户数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '上行发送了（向公众号发送了）消息的用户数',
             ),
             'list' => array(
                 'is_show' => true,
@@ -146,28 +147,39 @@ class DatacubeupstreammsgdistmonthController extends \App\Backend\Controllers\Fo
                 'is_show' => true
             )
         );
+        // 当日发送消息量分布的区间，0代表 “0”，1代表“1-5”，2代表“6-10”，3代表“10次以上”
+        $countIntervalOptions = array();
+        $countIntervalOptions["0"] = "0次";
+        $countIntervalOptions["1"] = "1-5次";
+        $countIntervalOptions["2"] = "6-10次";
+        $countIntervalOptions["3"] = "10次以上";
+
         $schemas['count_interval'] = array(
-            'name' => '当日发送消息量分布的区间，0代表 “0”，1代表“1-5”，2代表“6-10”，3代表“10次以上”',
+            'name' => '当日发送消息量分布的区间',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $countIntervalOptions,
+                'help' => '当日发送消息量分布的区间，0代表 “0”，1代表“1-5”，2代表“6-10”，3代表“10次以上”',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $countIntervalOptions,
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $countIntervalOptions,
             ),
             'export' => array(
                 'is_show' => true
@@ -181,7 +193,7 @@ class DatacubeupstreammsgdistmonthController extends \App\Backend\Controllers\Fo
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -201,19 +213,20 @@ class DatacubeupstreammsgdistmonthController extends \App\Backend\Controllers\Fo
             )
         );
         $schemas['ori_page_read_user'] = array(
-            'name' => '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
+            'name' => '原文页的阅读人数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
             ),
             'list' => array(
                 'is_show' => true,

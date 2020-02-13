@@ -100,7 +100,7 @@ class ServiceController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -127,7 +127,7 @@ class ServiceController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -146,28 +146,35 @@ class ServiceController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $requestMethodOptions = array();
+        $requestMethodOptions['POST'] = 'POST请求';
+        $requestMethodOptions['GET'] = 'GET请求';
+
         $schemas['request_method'] = array(
-            'name' => '请求方式,POST,GET',
+            'name' => '请求方式',
             'data' => array(
                 'type' => 'string',
                 'length' => 10,
-                'defaultValue' => ''
+                'defaultValue' => 'POST'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $requestMethodOptions
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $requestMethodOptions
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $requestMethodOptions
             ),
             'export' => array(
                 'is_show' => true

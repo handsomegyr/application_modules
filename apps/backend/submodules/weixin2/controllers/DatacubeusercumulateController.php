@@ -5,6 +5,7 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 use App\Backend\Submodules\Weixin2\Models\DataCube\UserCumulate;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
+use App\Backend\Submodules\Weixin2\Models\User\Source;
 
 /**
  * @title({name="累计用户数据"})
@@ -16,18 +17,22 @@ class DatacubeusercumulateController extends \App\Backend\Controllers\FormContro
     private $modelUserCumulate;
     private $modelAuthorizer;
     private $modelComponent;
+    private $modelUserSource;
     public function initialize()
     {
         $this->modelUserCumulate = new UserCumulate();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
+        $this->modelUserSource = new Source();
 
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
+        $this->userSourceItems = $this->modelUserSource->getAll();
         parent::initialize();
     }
     protected $componentItems = null;
     protected $authorizerItems = null;
+    protected $userSourceItems = null;
 
     protected function getSchemas()
     {
@@ -100,7 +105,7 @@ class DatacubeusercumulateController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -120,27 +125,31 @@ class DatacubeusercumulateController extends \App\Backend\Controllers\FormContro
             )
         );
         $schemas['user_source'] = array(
-            'name' => '用户的渠道，数值代表的含义如下： 0代表其他合计 1代表公众号搜索 17代表名片分享 30代表扫描二维码 43代表图文页右上角菜单 51代表支付后关注（在支付完成页） 57代表图文页内公众号名称 75代表公众号文章广告 78代表朋友圈广告',
+            'name' => '用户的渠道',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->userSourceItems,
+                'help' => '用户的渠道，数值代表的含义如下： 0代表其他合计 1代表公众号搜索 17代表名片分享 30代表扫描二维码 43代表图文页右上角菜单 51代表支付后关注（在支付完成页） 57代表图文页内公众号名称 75代表公众号文章广告 78代表朋友圈广告',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->userSourceItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->userSourceItems
             ),
             'export' => array(
                 'is_show' => true
@@ -154,7 +163,7 @@ class DatacubeusercumulateController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

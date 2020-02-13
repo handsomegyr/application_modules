@@ -100,7 +100,7 @@ class CommentController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -120,19 +120,20 @@ class CommentController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['index'] = array(
-            'name' => '多图文时，用来指定第几篇图文，从0开始，不带默认操作该msg_data_id的第一篇图文',
+            'name' => '第几篇图文',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '多图文时，用来指定第几篇图文，从0开始，不带默认操作该msg_data_id的第一篇图文'
             ),
             'list' => array(
                 'is_show' => true,
@@ -154,7 +155,7 @@ class CommentController extends \App\Backend\Controllers\FormController
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -181,7 +182,7 @@ class CommentController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -208,7 +209,7 @@ class CommentController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',

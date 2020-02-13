@@ -5,6 +5,8 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 use App\Backend\Submodules\Weixin2\Models\Keyword\Keyword;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
+use App\Backend\Submodules\Weixin2\Models\ReplyMsg\Type as ReplyMsgType;
+use App\Backend\Submodules\Weixin2\Models\CustomMsg\Type as CustomMsgType;
 
 /**
  * @title({name="关键字设定"})
@@ -16,18 +18,31 @@ class KeywordController extends \App\Backend\Controllers\FormController
     private $modelKeyword;
     private $modelAuthorizer;
     private $modelComponent;
+
+    private $modelReplyMsgType;
+    private $modelCustomMsgType;
+
     public function initialize()
     {
         $this->modelKeyword = new Keyword();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
 
+        $this->modelReplyMsgType = new ReplyMsgType();
+        $this->modelCustomMsgType = new CustomMsgType();
+
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
+
+        $this->replyMsgTypeItems = $this->modelReplyMsgType->getAll();
+        $this->customMsgTypeItems = $this->modelCustomMsgType->getAll();
+
         parent::initialize();
     }
     protected $componentItems = null;
     protected $authorizerItems = null;
+    protected $replyMsgTypeItems = null;
+    protected $customMsgTypeItems = null;
 
     protected function getSchemas()
     {
@@ -103,17 +118,20 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->replyMsgTypeItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->replyMsgTypeItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->replyMsgTypeItems
             ),
             'export' => array(
                 'is_show' => true
@@ -130,17 +148,20 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->customMsgTypeItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->customMsgTypeItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->customMsgTypeItems
             ),
             'export' => array(
                 'is_show' => true
@@ -154,7 +175,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -181,7 +202,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -208,7 +229,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -235,7 +256,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

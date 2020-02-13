@@ -3,6 +3,8 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Keyword\KeywordToService;
+use App\Backend\Submodules\Weixin2\Models\Keyword\Keyword;
+use App\Backend\Submodules\Weixin2\Models\Service;
 
 /**
  * @title({name="关键词和服务对应设定"})
@@ -12,12 +14,20 @@ use App\Backend\Submodules\Weixin2\Models\Keyword\KeywordToService;
 class KeywordtoserviceController extends \App\Backend\Controllers\FormController
 {
     private $modelKeywordToService;
-
+    private $modelKeyword;
+    private $modelService;
     public function initialize()
     {
         $this->modelKeywordToService = new KeywordToService();
+        $this->modelKeyword = new Keyword();
+        $this->modelService = new Service();
+
+        $this->keywordItems = $this->modelKeyword->getAll();
+        $this->serviceItems = $this->modelService->getAll;
         parent::initialize();
     }
+    private $keywordItems = null;
+    private $serviceItems = null;
 
     protected function getSchemas()
     {
@@ -30,20 +40,23 @@ class KeywordtoserviceController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->keywordItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->keywordItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->keywordItems
             ),
             'export' => array(
                 'is_show' => true
@@ -57,20 +70,23 @@ class KeywordtoserviceController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->serviceItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->serviceItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->serviceItems
             ),
             'export' => array(
                 'is_show' => true

@@ -3,6 +3,8 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Keyword\KeywordToTemplateMsg;
+use App\Backend\Submodules\Weixin2\Models\Keyword\Keyword;
+use App\Backend\Submodules\Weixin2\Models\TemplateMsg\TemplateMsg;
 
 /**
  * @title({name="关键词和模板消息对应设定"})
@@ -12,12 +14,20 @@ use App\Backend\Submodules\Weixin2\Models\Keyword\KeywordToTemplateMsg;
 class KeywordtotemplatemsgController extends \App\Backend\Controllers\FormController
 {
     private $modelKeywordToTemplateMsg;
-
+    private $modelKeyword;
+    private $modelTemplateMsg;
     public function initialize()
     {
         $this->modelKeywordToTemplateMsg = new KeywordToTemplateMsg();
+        $this->modelKeyword = new Keyword();
+        $this->modelTemplateMsg = new TemplateMsg();
+
+        $this->keywordItems = $this->modelKeyword->getAll();
+        $this->templateMsgItems = $this->modelTemplateMsg->getAll();
         parent::initialize();
     }
+    private $keywordItems = null;
+    private $templateMsgItems = null;
 
     protected function getSchemas()
     {
@@ -30,20 +40,23 @@ class KeywordtotemplatemsgController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->keywordItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->keywordItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->keywordItems
             ),
             'export' => array(
                 'is_show' => true
@@ -57,20 +70,23 @@ class KeywordtotemplatemsgController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->templateMsgItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->templateMsgItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->templateMsgItems
             ),
             'export' => array(
                 'is_show' => true

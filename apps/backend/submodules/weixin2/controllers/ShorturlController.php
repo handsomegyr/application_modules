@@ -92,50 +92,58 @@ class ShorturlController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $actionOptions = array();
+        $actionOptions['long2short'] = '长链接转短链接';
+
         $schemas['action'] = array(
-            'name' => '此处填long2short，代表长链接转短链接',
+            'name' => '长链接转短链接',
             'data' => array(
                 'type' => 'string',
                 'length' => 20,
-                'defaultValue' => ''
+                'defaultValue' => 'long2short'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $actionOptions,
+                'help' => '此处填long2short，代表长链接转短链接',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $actionOptions,
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $actionOptions,
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['long_url'] = array(
-            'name' => '需要转换的长链接，支持http://、https://、weixin://wxpay 格式的url',
+            'name' => '需要转换的长链接',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'textarea',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '需要转换的长链接，支持http://、https://、weixin://wxpay 格式的url',
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -154,7 +162,7 @@ class ShorturlController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -181,7 +189,7 @@ class ShorturlController extends \App\Backend\Controllers\FormController
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',

@@ -100,7 +100,7 @@ class DatacubeinterfacesummaryController extends \App\Backend\Controllers\FormCo
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -120,19 +120,20 @@ class DatacubeinterfacesummaryController extends \App\Backend\Controllers\FormCo
             )
         );
         $schemas['callback_count'] = array(
-            'name' => '通过服务器配置地址获得消息后，被动回复用户消息的次数',
+            'name' => '被动回复用户消息的次数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '通过服务器配置地址获得消息后，被动回复用户消息的次数',
             ),
             'list' => array(
                 'is_show' => true,
@@ -154,7 +155,7 @@ class DatacubeinterfacesummaryController extends \App\Backend\Controllers\FormCo
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -174,19 +175,20 @@ class DatacubeinterfacesummaryController extends \App\Backend\Controllers\FormCo
             )
         );
         $schemas['total_time_cost'] = array(
-            'name' => '总耗时，除以callback_count即为平均耗时',
+            'name' => '平均耗时',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '总耗时，除以callback_count即为平均耗时',
             ),
             'list' => array(
                 'is_show' => true,
@@ -208,7 +210,7 @@ class DatacubeinterfacesummaryController extends \App\Backend\Controllers\FormCo
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

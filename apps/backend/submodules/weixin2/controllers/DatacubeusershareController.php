@@ -100,7 +100,7 @@ class DatacubeusershareController extends \App\Backend\Controllers\FormControlle
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -119,28 +119,39 @@ class DatacubeusershareController extends \App\Backend\Controllers\FormControlle
                 'is_show' => true
             )
         );
+        // 分享的场景 1代表好友转发 2代表朋友圈 3代表腾讯微博 255代表其他
+        $shareSceneOptions = array();
+        $shareSceneOptions["1"] = "1:好友转发";
+        $shareSceneOptions["2"] = "2:朋友圈";
+        $shareSceneOptions["3"] = "3:腾讯微博";
+        $shareSceneOptions["255"] = "255:其他";
+
         $schemas['share_scene'] = array(
-            'name' => '分享的场景 1代表好友转发 2代表朋友圈 3代表腾讯微博 255代表其他',
+            'name' => '分享的场景',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $shareSceneOptions,
+                'help' => '分享的场景 1代表好友转发 2代表朋友圈 3代表腾讯微博 255代表其他',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $shareSceneOptions,
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $shareSceneOptions,
             ),
             'export' => array(
                 'is_show' => true
@@ -154,7 +165,7 @@ class DatacubeusershareController extends \App\Backend\Controllers\FormControlle
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -181,7 +192,7 @@ class DatacubeusershareController extends \App\Backend\Controllers\FormControlle
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

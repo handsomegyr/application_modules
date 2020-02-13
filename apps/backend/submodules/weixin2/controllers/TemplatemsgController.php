@@ -5,6 +5,7 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 use App\Backend\Submodules\Weixin2\Models\TemplateMsg\TemplateMsg;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
+use App\Backend\Submodules\Weixin2\Models\Template\Template;
 
 /**
  * @title({name="模板消息"})
@@ -16,18 +17,22 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
     private $modelTemplateMsg;
     private $modelAuthorizer;
     private $modelComponent;
+    private $modelTemplate;
     public function initialize()
     {
         $this->modelTemplateMsg = new TemplateMsg();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
+        $this->modelTemplate = new Template();
 
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
+        $this->templateItems = $this->modelTemplate->getAll();
         parent::initialize();
     }
     protected $componentItems = null;
     protected $authorizerItems = null;
+    protected $templateItems = null;
 
     protected function getSchemas()
     {
@@ -100,7 +105,7 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -127,27 +132,30 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->templateItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->templateItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->templateItems
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['url'] = array(
-            'name' => '模板跳转链接（海外帐号没有跳转能力）',
+            'name' => '模板跳转链接',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -159,7 +167,8 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '模板跳转链接（海外帐号没有跳转能力）',
             ),
             'list' => array(
                 'is_show' => true,
@@ -181,7 +190,7 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'textarea',
@@ -189,9 +198,13 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -201,19 +214,20 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['color'] = array(
-            'name' => '模板内容字体颜色，不填默认为黑色',
+            'name' => '模板内容字体颜色',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => ''
+                'defaultValue' => '#173177'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '模板内容字体颜色，不填默认为黑色',
             ),
             'list' => array(
                 'is_show' => true,
@@ -228,7 +242,7 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['appid'] = array(
-            'name' => '所需跳转到的小程序appid（该小程序appid必须与发模板消息的公众号是绑定关联关系，暂不支持小游戏）',
+            'name' => '所需跳转到的小程序appid',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -240,7 +254,8 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '所需跳转到的小程序appid（该小程序appid必须与发模板消息的公众号是绑定关联关系，暂不支持小游戏）',
             ),
             'list' => array(
                 'is_show' => true,
@@ -255,7 +270,7 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['pagepath'] = array(
-            'name' => '所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar），要求该小程序已发布，暂不支持小游戏',
+            'name' => '所需跳转到小程序的具体页面路径',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -267,7 +282,8 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar），要求该小程序已发布，暂不支持小游戏',
             ),
             'list' => array(
                 'is_show' => true,
@@ -289,7 +305,7 @@ class TemplatemsgController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

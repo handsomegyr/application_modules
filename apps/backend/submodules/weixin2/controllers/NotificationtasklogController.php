@@ -6,6 +6,16 @@ use App\Backend\Submodules\Weixin2\Models\Notification\TaskLog;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
+use App\Backend\Submodules\Weixin2\Models\MassMsg\SendMethod;
+use App\Backend\Submodules\Weixin2\Models\Notification\Task;
+use App\Backend\Submodules\Weixin2\Models\MassMsg\MassMsg;
+use App\Backend\Submodules\Weixin2\Models\TemplateMsg\TemplateMsg;
+use App\Backend\Submodules\Weixin2\Models\CustomMsg\CustomMsg;
+use App\Backend\Submodules\Weixin2\Models\User\Tag;
+use App\Backend\Submodules\Weixin2\Models\Notification\TaskProcess;
+
+
+
 /**
  * @title({name="推送任务日志"})
  *
@@ -16,18 +26,53 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
     private $modelTaskLog;
     private $modelAuthorizer;
     private $modelComponent;
+
+    private $modelSendMethod;
+    private $modelTask;
+    private $modelMassMsg;
+    private $modelTemplateMsg;
+    private $modelCustomMsg;
+    private $modelUserTag;
+    private $modelTaskProcess;
+
     public function initialize()
     {
         $this->modelTaskLog = new TaskLog();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
+        $this->modelSendMethod = new SendMethod();
+        $this->modelTask = new Task();
+        $this->modelMassMsg = new MassMsg();
+        $this->modelTemplateMsg = new TemplateMsg();
+        $this->modelCustomMsg = new CustomMsg();
+        $this->modelUserTag = new Tag();
+        $this->modelTaskProcess = new TaskProcess();
 
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
+
+        $this->userTagItems = $this->modelUserTag->getAllByType("tag_id");
+        $this->taskItems = $this->modelTask->getAll();
+
+        $this->sendMethodItems = $this->modelSendMethod->getAll();
+        $this->massMsgItems = $this->modelMassMsg->getAllByType("", "_id");
+        $this->templateMsgItems = $this->modelTemplateMsg->getAll();
+        $this->customMsgItems = $this->modelCustomMsg->getAllByType("", "_id");
+
+        $this->taskProcessItems = $this->modelTaskProcess->getAll();
+
         parent::initialize();
     }
     protected $componentItems = null;
     protected $authorizerItems = null;
+
+    protected $userTagItems = null;
+    protected $taskItems = null;
+    protected $sendMethodItems = null;
+    protected $massMsgItems = null;
+    protected $templateMsgItems = null;
+    protected $customMsgItems = null;
+    protected $taskProcessItems = null;
 
     protected function getSchemas()
     {
@@ -95,25 +140,28 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['notification_task_process_id'] = array(
             'name' => '推送任务处理ID',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->taskProcessItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->taskProcessItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->taskProcessItems
             ),
             'export' => array(
                 'is_show' => true
@@ -122,15 +170,15 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['notification_task_id'] = array(
             'name' => '所属推送任务',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'number',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -154,7 +202,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -173,28 +221,39 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
                 'is_show' => true
             )
         );
+
+        // 推送方式
+        $notificationMethodOptions = array();
+        $notificationMethodOptions['1'] = "模板消息";
+        $notificationMethodOptions['2'] = "群发消息";
+        $notificationMethodOptions['3'] = "客服消息";
+
         $schemas['notification_method'] = array(
-            'name' => '推送方式 1:模板消息 2:群发消息 3:客服消息',
+            'name' => '推送方式',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 1
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'radio',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $notificationMethodOptions,
+                'help' => '推送方式 1:模板消息 2:群发消息 3:客服消息',
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1',
+                'list_type' => '',
                 'render' => '',
+                'items' => $notificationMethodOptions
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $notificationMethodOptions
             ),
             'export' => array(
                 'is_show' => true
@@ -203,25 +262,28 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['mass_msg_send_method_id'] = array(
             'name' => '群发消息发送方式记录ID',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->sendMethodItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->sendMethodItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->sendMethodItems
             ),
             'export' => array(
                 'is_show' => true
@@ -230,25 +292,28 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['template_msg_id'] = array(
             'name' => '模板消息记录ID',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->templateMsgItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->templateMsgItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->templateMsgItems
             ),
             'export' => array(
                 'is_show' => true
@@ -257,69 +322,77 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['mass_msg_id'] = array(
             'name' => '群发消息记录ID',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->massMsgItems,
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->massMsgItems,
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->massMsgItems,
             ),
             'export' => array(
                 'is_show' => true
             )
         );
+
         $schemas['custom_msg_id'] = array(
             'name' => '客服消息记录ID',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->customMsgItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->customMsgItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->customMsgItems
             ),
             'export' => array(
                 'is_show' => true
             )
         );
+
         $schemas['notification_task_content_id'] = array(
             'name' => '所属推送任务内容',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'number',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -343,7 +416,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -417,7 +490,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
             )
         );
         $schemas['tag_id'] = array(
-            'name' => '群发到的标签的tag_id，参见用户管理中用户分组接口，若is_to_all值为true，可不填写tag_id',
+            'name' => '群发到的标签的tag_id',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
@@ -427,49 +500,65 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->userTagItems,
+                'help' => '群发到的标签的tag_id，参见用户管理中用户分组接口',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->userTagItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->userTagItems
             ),
             'export' => array(
                 'is_show' => true
             )
         );
+        // 推送状态
+        $pushStatusOptions = array();
+        $pushStatusOptions['0'] = "待推送";
+        $pushStatusOptions['1'] = "推送中";
+        $pushStatusOptions['2'] = "推送成功";
+        $pushStatusOptions['3'] = "推送失败";
+
         $schemas['push_status'] = array(
-            'name' => '推送状态 0:待推送 1:推送中 2:推送成功 3:推送失败',
+            'name' => '推送状态',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'radio',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $pushStatusOptions,
+                'help' => '推送状态 0:待推送 1:推送中 2:推送成功 3:推送失败',
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1',
+                'list_type' => '',
                 'render' => '',
+                'items' => $pushStatusOptions
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $pushStatusOptions
             ),
             'export' => array(
                 'is_show' => true
             )
         );
+
         $schemas['push_time'] = array(
             'name' => '推送时间',
             'data' => array(
@@ -478,7 +567,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -505,7 +594,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -532,7 +621,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -586,7 +675,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

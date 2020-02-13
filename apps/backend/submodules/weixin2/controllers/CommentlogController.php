@@ -100,7 +100,7 @@ class CommentlogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -120,19 +120,20 @@ class CommentlogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['index'] = array(
-            'name' => '多图文时，用来指定第几篇图文，从0开始，不带默认操作该msg_data_id的第一篇图文',
+            'name' => '第几篇图文',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '多图文时，用来指定第几篇图文，从0开始，不带默认操作该msg_data_id的第一篇图文'
             ),
             'list' => array(
                 'is_show' => true,
@@ -174,7 +175,7 @@ class CommentlogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['openid'] = array(
-            'name' => '用户的标识，对当前公众号唯一',
+            'name' => '用户的标识',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -186,7 +187,8 @@ class CommentlogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '用户的标识，对当前公众号唯一',
             ),
             'list' => array(
                 'is_show' => true,
@@ -200,15 +202,17 @@ class CommentlogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+
+        //，0为即非精选，1为true，即精选
         $schemas['comment_type'] = array(
-            'name' => '是否精选评论，0为即非精选，1为true，即精选',
+            'name' => '是否精选评论',
             'data' => array(
                 'type' => 'boolean',
                 'length' => 1,
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -235,7 +239,7 @@ class CommentlogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'textarea',
@@ -243,7 +247,7 @@ class CommentlogController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -262,7 +266,7 @@ class CommentlogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -289,7 +293,7 @@ class CommentlogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',

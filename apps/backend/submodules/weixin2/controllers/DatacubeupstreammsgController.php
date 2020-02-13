@@ -100,7 +100,7 @@ class DatacubeupstreammsgController extends \App\Backend\Controllers\FormControl
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -119,47 +119,60 @@ class DatacubeupstreammsgController extends \App\Backend\Controllers\FormControl
                 'is_show' => true
             )
         );
+        // 消息类型，代表含义如下： 1代表文字 2代表图片 3代表语音 4代表视频 6代表第三方应用消息（链接消息）
+        $msgtypeOptions = array();
+        $msgtypeOptions['1'] = "1:文字";
+        $msgtypeOptions['2'] = "2:图片";
+        $msgtypeOptions['3'] = "3:语音";
+        $msgtypeOptions['4'] = "4:视频";
+        $msgtypeOptions['6'] = "6:第三方应用消息（链接消息）";
+
         $schemas['msg_type'] = array(
-            'name' => '消息类型，代表含义如下： 1代表文字 2代表图片 3代表语音 4代表视频 6代表第三方应用消息（链接消息）',
+            'name' => '消息类型',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $msgtypeOptions,
+                'help' => '消息类型，代表含义如下： 1代表文字 2代表图片 3代表语音 4代表视频 6代表第三方应用消息（链接消息）',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $msgtypeOptions,
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $msgtypeOptions,
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['msg_user'] = array(
-            'name' => '上行发送了（向公众号发送了）消息的用户数',
+            'name' => '上行发送了消息的用户数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '上行发送了（向公众号发送了）消息的用户数',
             ),
             'list' => array(
                 'is_show' => true,
@@ -181,7 +194,7 @@ class DatacubeupstreammsgController extends \App\Backend\Controllers\FormControl
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

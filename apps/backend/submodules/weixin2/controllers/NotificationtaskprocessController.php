@@ -3,6 +3,7 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Notification\TaskProcess;
+use App\Backend\Submodules\Weixin2\Models\Notification\Task;
 
 /**
  * @title({name="推送任务处理"})
@@ -12,12 +13,17 @@ use App\Backend\Submodules\Weixin2\Models\Notification\TaskProcess;
 class NotificationtaskprocessController extends \App\Backend\Controllers\FormController
 {
     private $modelTaskProcess;
+    private $modelTask;
 
     public function initialize()
     {
         $this->modelTaskProcess = new TaskProcess();
+        $this->modelTask = new Task();
+
+        $this->taskItems = $this->modelTask->getAll();
         parent::initialize();
     }
+    protected $taskItems = null;
 
     protected function getSchemas()
     {
@@ -30,7 +36,7 @@ class NotificationtaskprocessController extends \App\Backend\Controllers\FormCon
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -52,52 +58,65 @@ class NotificationtaskprocessController extends \App\Backend\Controllers\FormCon
         $schemas['notification_task_id'] = array(
             'name' => '所属推送任务',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->taskItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->taskItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->taskItems
             ),
             'export' => array(
                 'is_show' => true
             )
         );
+        // 推送状态
+        $pushStatusOptions = array();
+        $pushStatusOptions['0'] = "待推送";
+        $pushStatusOptions['1'] = "推送中";
+        $pushStatusOptions['2'] = "推送完成";
+
         $schemas['push_status'] = array(
-            'name' => '推送状态 0:待推送 1:推送中 2:推送完成',
+            'name' => '推送状态',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $pushStatusOptions,
+                'help' => '推送状态 0:待推送 1:推送中 2:推送完成',
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1',
+                'list_type' => '',
                 'render' => '',
+                'items' => $pushStatusOptions
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $pushStatusOptions
             ),
             'export' => array(
                 'is_show' => true
@@ -111,7 +130,7 @@ class NotificationtaskprocessController extends \App\Backend\Controllers\FormCon
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -138,7 +157,7 @@ class NotificationtaskprocessController extends \App\Backend\Controllers\FormCon
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -165,7 +184,7 @@ class NotificationtaskprocessController extends \App\Backend\Controllers\FormCon
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -192,7 +211,7 @@ class NotificationtaskprocessController extends \App\Backend\Controllers\FormCon
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

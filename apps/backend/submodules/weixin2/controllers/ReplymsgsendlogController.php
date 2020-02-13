@@ -42,7 +42,7 @@ class ReplymsgsendlogController extends \App\Backend\Controllers\FormController
 
         $this->typeItems = $this->modelType->getAll();
         $this->mediaItems = $this->modelMedia->getAllByType("", "_id");
-        $this->thumbmediaItems = $this->modelMedia->MediaModel::getAllByType("thumb", "_id");
+        $this->thumbmediaItems = $this->modelMedia->getAllByType("thumb", "_id");
         $this->materialItems = $this->modelMaterial->getAllByType("", "media_id");
         $this->thumbmediaidItems = $this->modelMaterial->getAllByType("thumb", "media_id");
         $this->accountItems = $this->modelAccount->getAll();

@@ -5,7 +5,7 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 use App\Backend\Submodules\Weixin2\Models\DataCube\UserReadHour;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
-
+use App\Backend\Submodules\Weixin2\Models\RefHour;
 /**
  * @title({name="图文统计分时数据"})
  *
@@ -16,14 +16,17 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
     private $modelUserReadHour;
     private $modelAuthorizer;
     private $modelComponent;
+    private $modelRefHour;
     public function initialize()
     {
         $this->modelUserReadHour = new UserReadHour();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
+        $this->modelRefHour = new RefHour();
 
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
+        $this->refHourItems = $this->modelRefHour->getAll();
         parent::initialize();
     }
     protected $componentItems = null;
@@ -100,7 +103,7 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -120,73 +123,94 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
             )
         );
         $schemas['ref_hour'] = array(
-            'name' => '数据的小时，包括从000到2300，分别代表的是[000,100)到[2300,2400)，即每日的第1小时和最后1小时',
+            'name' => '数据的小时',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->refHourItems,
+                'help' => '数据的小时，包括从000到2300，分别代表的是[000,100)到[2300,2400)，即每日的第1小时和最后1小时',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->refHourItems,
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->refHourItems,
             ),
             'export' => array(
                 'is_show' => true
             )
         );
+
+        // 在获取图文阅读分时数据时才有该字段，代表用户从哪里进入来阅读该图文。0:会话;1.好友;2.朋友圈;3.腾讯微博;4.历史消息页;5.其他;6.看一看;7.搜一搜
+        $userSourceOptions = array();
+        $userSourceOptions["0"] = "0:会话";
+        $userSourceOptions["1"] = "1:好友";
+        $userSourceOptions["2"] = "2:朋友圈";
+        $userSourceOptions["3"] = "3:腾讯微博";
+        $userSourceOptions["4"] = "4:历史消息页";
+        $userSourceOptions["5"] = "5:其他";
+        $userSourceOptions["6"] = "6:看一看";
+        $userSourceOptions["7"] = "7:搜一搜";
+
         $schemas['user_source'] = array(
-            'name' => '在获取图文阅读分时数据时才有该字段，代表用户从哪里进入来阅读该图文。0:会话;1.好友;2.朋友圈;3.腾讯微博;4.历史消息页;5.其他;6.看一看;7.搜一搜',
+            'name' => '用户的渠道',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $userSourceOptions,
+                'help' => '在获取图文阅读分时数据时才有该字段，代表用户从哪里进入来阅读该图文。0:会话;1.好友;2.朋友圈;3.腾讯微博;4.历史消息页;5.其他;6.看一看;7.搜一搜',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $userSourceOptions
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $userSourceOptions
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['int_page_read_user'] = array(
-            'name' => '图文页（点击群发图文卡片进入的页面）的阅读人数',
+            'name' => '图文页的阅读人数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '图文页（点击群发图文卡片进入的页面）的阅读人数',
             ),
             'list' => array(
                 'is_show' => true,
@@ -208,7 +232,7 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -228,19 +252,20 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
             )
         );
         $schemas['ori_page_read_user'] = array(
-            'name' => '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
+            'name' => '原文页的阅读人数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
             ),
             'list' => array(
                 'is_show' => true,
@@ -262,7 +287,7 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -289,7 +314,7 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -316,7 +341,7 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -343,7 +368,7 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -370,7 +395,7 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
