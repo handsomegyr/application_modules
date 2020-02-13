@@ -30,7 +30,7 @@ class MiniprogramqrcodetypeController extends \App\Backend\Controllers\FormContr
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -57,7 +57,7 @@ class MiniprogramqrcodetypeController extends \App\Backend\Controllers\FormContr
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -84,7 +84,7 @@ class MiniprogramqrcodetypeController extends \App\Backend\Controllers\FormContr
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'textarea',
@@ -92,9 +92,13 @@ class MiniprogramqrcodetypeController extends \App\Backend\Controllers\FormContr
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:50%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true

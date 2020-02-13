@@ -3,6 +3,9 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Kf\Session;
+use App\Backend\Submodules\Weixin2\Models\Kf\Account;
+use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
+use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="客服会话"})
@@ -12,12 +15,24 @@ use App\Backend\Submodules\Weixin2\Models\Kf\Session;
 class KfsessionController extends \App\Backend\Controllers\FormController
 {
     private $modelSession;
-
+    private $modelAccount;
+    private $modelAuthorizer;
+    private $modelComponent;
     public function initialize()
     {
         $this->modelSession = new Session();
+        $this->modelAccount = new Account();
+        $this->modelAuthorizer = new Authorizer();
+        $this->modelComponent = new Component();
+
+        $this->accountItems = $this->modelAccount->getAll();
+        $this->componentItems = $this->modelComponent->getAll();
+        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
+    protected $accountItems = null;
+    protected $componentItems = null;
+    protected $authorizerItems = null;
 
     protected function getSchemas()
     {
@@ -30,20 +45,23 @@ class KfsessionController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->componentItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->componentItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems
             ),
             'export' => array(
                 'is_show' => true
@@ -57,47 +75,54 @@ class KfsessionController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['kf_account'] = array(
-            'name' => '完整客服账号，格式为：账号前缀@公众号微信号',
+            'name' => '完整客服账号',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->accountItems,
+                'help' => '完整客服账号，格式为：账号前缀@公众号微信号',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->accountItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->accountItems
             ),
             'export' => array(
                 'is_show' => true
@@ -111,7 +136,7 @@ class KfsessionController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',

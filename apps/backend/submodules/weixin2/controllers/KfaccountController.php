@@ -3,6 +3,8 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Kf\Account;
+use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
+use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="客服账号"})
@@ -12,12 +14,20 @@ use App\Backend\Submodules\Weixin2\Models\Kf\Account;
 class KfaccountController extends \App\Backend\Controllers\FormController
 {
     private $modelAccount;
-
+    private $modelAuthorizer;
+    private $modelComponent;
     public function initialize()
     {
         $this->modelAccount = new Account();
+        $this->modelAuthorizer = new Authorizer();
+        $this->modelComponent = new Component();
+
+        $this->componentItems = $this->modelComponent->getAll();
+        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
+    protected $componentItems = null;
+    protected $authorizerItems = null;
 
     protected function getSchemas()
     {
@@ -30,20 +40,23 @@ class KfaccountController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->componentItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->componentItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems
             ),
             'export' => array(
                 'is_show' => true
@@ -57,39 +70,43 @@ class KfaccountController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['kf_account'] = array(
-            'name' => '完整客服账号，格式为：账号前缀@公众号微信号',
+            'name' => '完整客服账号',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '完整客服账号，格式为：账号前缀@公众号微信号',
             ),
             'list' => array(
                 'is_show' => true,
@@ -111,7 +128,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -138,7 +155,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -175,17 +192,17 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
+                'render' => 'img',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['kf_wx'] = array(
-            'name' => '如果客服帐号已绑定了客服人员微信号， 则此处显示微信号',
+            'name' => '微信号',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
@@ -197,7 +214,8 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '如果客服帐号已绑定了客服人员微信号， 则此处显示微信号',
             ),
             'list' => array(
                 'is_show' => true,
@@ -212,7 +230,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['invite_wx'] = array(
-            'name' => '如果客服帐号尚未绑定微信号，但是已经发起了一个绑定邀请， 则此处显示绑定邀请的微信号',
+            'name' => '绑定邀请的微信号',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
@@ -224,7 +242,8 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '如果客服帐号尚未绑定微信号，但是已经发起了一个绑定邀请， 则此处显示绑定邀请的微信号',
             ),
             'list' => array(
                 'is_show' => true,
@@ -239,11 +258,11 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['invite_expire_time'] = array(
-            'name' => '如果客服帐号尚未绑定微信号，但是已经发起过一个绑定邀请， 邀请的过期时间，为unix 时间戳',
+            'name' => '邀请的过期时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime()
+                'defaultValue' => $this->getCurrentTime($this->now)
             ),
             'validation' => array(
                 'required' => false
@@ -251,7 +270,8 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '如果客服帐号尚未绑定微信号，但是已经发起过一个绑定邀请， 邀请的过期时间，为unix 时间戳',
             ),
             'list' => array(
                 'is_show' => true,
@@ -265,8 +285,12 @@ class KfaccountController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $inviteStatusOptions = array();
+        $inviteStatusOptions['waiting'] = '等待确认';
+        $inviteStatusOptions['rejected'] = '被拒绝';
+        $inviteStatusOptions['expired'] = '过期';
         $schemas['invite_status'] = array(
-            'name' => '邀请的状态，有等待确认“waiting”，被拒绝“rejected”， 过期“expired”',
+            'name' => '邀请的状态',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -276,28 +300,34 @@ class KfaccountController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $inviteStatusOptions,
+                'help' => '邀请的状态，有等待确认“waiting”，被拒绝“rejected”， 过期“expired”',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $inviteStatusOptions,
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $inviteStatusOptions,
             ),
             'export' => array(
                 'is_show' => true
             )
         );
+        $statusOption = array();
+        $statusOption['1'] = 'web在线';
         $schemas['status'] = array(
-            'name' => '客服在线状态，目前为：1、web 在线',
+            'name' => '客服在线状态',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => false
@@ -305,15 +335,19 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $statusOption,
+                'help' => '客服在线状态，目前为：1、web 在线',
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1',
+                'list_type' => '',
                 'render' => '',
+                'items' => $statusOption
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $statusOption
             ),
             'export' => array(
                 'is_show' => true
@@ -347,7 +381,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['nickname'] = array(
-            'name' => '昵称，最长6个汉字或12个英文字符',
+            'name' => '昵称',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -359,7 +393,8 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '昵称，最长6个汉字或12个英文字符',
             ),
             'list' => array(
                 'is_show' => true,
@@ -374,7 +409,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['password'] = array(
-            'name' => '客服账号登录密码，格式为密码明文的32位加密MD5值。该密码仅用于在公众平台官网的多客服功能中使用，若不使用多客服功能，则不必设置密码',
+            'name' => '客服账号登录密码',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -386,10 +421,11 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '客服账号登录密码，格式为密码明文的32位加密MD5值。该密码仅用于在公众平台官网的多客服功能中使用，若不使用多客服功能，则不必设置密码',
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -401,7 +437,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['media'] = array(
-            'name' => '该参数仅在设置客服头像时出现，是form-data中媒体文件标识，有filename、filelength、content-type等信息',
+            'name' => '媒体文件',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -413,15 +449,29 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'file',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '该参数仅在设置客服头像时出现，是form-data中媒体文件标识，有filename、filelength、content-type等信息',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    //display()方法来通过传入的回调函数来处理当前列的值：
+                    $column->display(function () use ($column) {
+                        return $column->downloadable();
+                        // // 如果这一列的status字段的值等于1，直接显示title字段
+                        // if ($this->type == 'image' || $this->type == 'thumb') {
+                        //     return $column->image("", 50, 50);
+                        // } else {
+                        //     return $column->downloadable();
+                        // }
+                    });
+                }
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true

@@ -3,6 +3,9 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Msg\Log;
+use App\Backend\Submodules\Weixin2\Models\Msg\Type;
+use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
+use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="消息与事件接收日志"})
@@ -12,12 +15,25 @@ use App\Backend\Submodules\Weixin2\Models\Msg\Log;
 class MsglogController extends \App\Backend\Controllers\FormController
 {
     private $modelLog;
-
+    private $modelType;
+    private $modelAuthorizer;
+    private $modelComponent;
     public function initialize()
     {
         $this->modelLog = new Log();
+        $this->modelType = new Type();
+        $this->modelAuthorizer = new Authorizer();
+        $this->modelComponent = new Component();
+
+        $this->typeItems = $this->modelType->getAll();
+        $this->componentItems = $this->modelComponent->getAll();
+        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
+
+    protected $typeItems = null;
+    protected $componentItems = null;
+    protected $authorizerItems = null;
 
     protected function getSchemas()
     {
@@ -30,20 +46,23 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->componentItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->componentItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems
             ),
             'export' => array(
                 'is_show' => true
@@ -57,25 +76,29 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems
             ),
             'export' => array(
                 'is_show' => true
             )
         );
+
         $schemas['ToUserName'] = array(
             'name' => '开发者微信号',
             'data' => array(
@@ -84,7 +107,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -111,7 +134,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -138,7 +161,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -158,7 +181,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['MsgType'] = array(
-            'name' => '消息类型,文本为text,图片为image,语音为voice,视频为video,小视频为shortvideo,地理位置为location,链接为link,事件为event',
+            'name' => '消息类型',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
@@ -170,15 +193,19 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'image',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->typeItems,
+                'help' => '消息类型,文本为text,图片为image,语音为voice,视频为video,小视频为shortvideo,地理位置为location,链接为link,事件为event',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => 'img',
+                'render' => '',
+                'items' => $this->typeItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->typeItems
             ),
             'export' => array(
                 'is_show' => true
@@ -192,7 +219,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'textarea',
@@ -200,7 +227,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -219,7 +246,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -259,14 +286,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => 'img',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['MediaId'] = array(
-            'name' => '消息媒体id，可以调用获取临时素材接口拉取数据',
+            'name' => '消息媒体id',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -278,12 +305,17 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '消息媒体id，可以调用获取临时素材接口拉取数据',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:5%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -293,7 +325,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['Format'] = array(
-            'name' => '语音格式，如amr,speex等',
+            'name' => '语音格式',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -305,7 +337,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '语音格式，如amr,speex等',
             ),
             'list' => array(
                 'is_show' => true,
@@ -320,7 +353,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['Recognition'] = array(
-            'name' => '语音识别结果，UTF8编码',
+            'name' => '语音识别结果',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
@@ -332,7 +365,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '语音识别结果，UTF8编码',
             ),
             'list' => array(
                 'is_show' => false,
@@ -340,14 +374,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['ThumbMediaId'] = array(
-            'name' => '视频消息缩略图的媒体id,可以调用多媒体文件下载接口拉取数据',
+            'name' => '视频消息缩略图的媒体id',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -359,7 +393,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '视频消息缩略图的媒体id,可以调用多媒体文件下载接口拉取数据',
             ),
             'list' => array(
                 'is_show' => true,
@@ -367,7 +402,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -524,7 +559,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -617,7 +652,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['MenuID'] = array(
-            'name' => '指菜单ID，如果是个性化菜单，则可以通过这个字段，知道是哪个规则的菜单被点击了',
+            'name' => '指菜单ID',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
@@ -629,7 +664,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '指菜单ID，如果是个性化菜单，则可以通过这个字段，知道是哪个规则的菜单被点击了',
             ),
             'list' => array(
                 'is_show' => true,
@@ -664,7 +700,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -691,7 +727,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -718,14 +754,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['Ticket'] = array(
-            'name' => '二维码的ticket，可用来换取二维码图片',
+            'name' => '二维码的ticket',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -737,7 +773,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'image',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '二维码的ticket，可用来换取二维码图片',
             ),
             'list' => array(
                 'is_show' => true,
@@ -745,7 +782,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => 'img',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -887,7 +924,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['TotalCount'] = array(
-            'name' => 'tag_id下粉丝数；或者openid_list中的粉丝数',
+            'name' => 'tag_id下粉丝数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
@@ -899,7 +936,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => 'tag_id下粉丝数；或者openid_list中的粉丝数',
             ),
             'list' => array(
                 'is_show' => true,
@@ -907,14 +945,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['FilterCount'] = array(
-            'name' => '过滤（过滤是指特定地区、性别的过滤、用户设置拒收的过滤，用户接收已超4条的过滤）后，准备发送的粉丝数，原则上，FilterCount = SentCount + ErrorCount',
+            'name' => '过滤后准备发送的粉丝数',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
@@ -926,7 +964,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '过滤（过滤是指特定地区、性别的过滤、用户设置拒收的过滤，用户接收已超4条的过滤）后，准备发送的粉丝数，原则上，FilterCount = SentCount + ErrorCount',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1015,7 +1054,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1076,7 +1115,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['IsGiveByFriend'] = array(
-            'name' => '是否为转赠领取，1代表是，0代表否',
+            'name' => '是否为转赠领取',
             'data' => array(
                 'type' => 'boolean',
                 'length' => 1,
@@ -1088,7 +1127,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $this->trueOrFalseDatas,
+                'help' => '是否为转赠领取，1代表是，0代表否',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1096,14 +1136,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['FriendUserName'] = array(
-            'name' => '当IsGiveByFriend为1时填入的字段，表示发起转赠用户的openid,接收卡券用户的openid',
+            'name' => '发起转赠或接收卡券用户的openid',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -1115,7 +1155,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '当IsGiveByFriend为1时填入的字段，表示发起转赠用户的openid,接收卡券用户的openid',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1157,7 +1198,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['OldUserCardCode'] = array(
-            'name' => '为保证安全，微信会在转赠发生后变更该卡券的code号，该字段表示转赠前的code',
+            'name' => '转赠前的code',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
@@ -1169,7 +1210,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '为保证安全，微信会在转赠发生后变更该卡券的code号，该字段表示转赠前的code',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1177,14 +1219,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['OuterStr'] = array(
-            'name' => '领取场景值，用于领取渠道数据统计。可在生成二维码接口及添加Addcard接口中自定义该字段的字符串值。',
+            'name' => '领取场景值',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
@@ -1196,7 +1238,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '领取场景值，用于领取渠道数据统计。可在生成二维码接口及添加Addcard接口中自定义该字段的字符串值。',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1204,14 +1247,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['IsRestoreMemberCard'] = array(
-            'name' => '用户删除会员卡后可重新找回，当用户本次操作为找回时，该值为1，否则为0',
+            'name' => '用户删除会员卡后可重新找回',
             'data' => array(
                 'type' => 'boolean',
                 'length' => 1,
@@ -1223,7 +1266,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $this->trueOrFalseDatas,
+                'help' => '用户删除会员卡后可重新找回，当用户本次操作为找回时，该值为1，否则为0',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1231,7 +1275,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1265,7 +1309,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['IsReturnBack'] = array(
-            'name' => '是否转赠退回，0代表不是，1代表是',
+            'name' => '是否转赠退回',
             'data' => array(
                 'type' => 'boolean',
                 'length' => 1,
@@ -1277,7 +1321,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $this->trueOrFalseDatas,
+                'help' => '是否转赠退回，0代表不是，1代表是',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1292,7 +1337,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['IsChatRoom'] = array(
-            'name' => '是否是群转赠，0代表不是，1代表是',
+            'name' => '是否是群转赠',
             'data' => array(
                 'type' => 'boolean',
                 'length' => 1,
@@ -1304,7 +1349,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $this->trueOrFalseDatas,
+                'help' => '是否是群转赠，0代表不是，1代表是',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1312,14 +1358,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['ConsumeSource'] = array(
-            'name' => '核销来源。支持开发者统计API核销（FROM_API）、公众平台核销（FROM_MP）、卡券商户助手核销（FROM_MOBILE_HELPER）（核销员微信号）',
+            'name' => '核销来源',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
@@ -1331,7 +1377,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '核销来源。支持开发者统计API核销（FROM_API）、公众平台核销（FROM_MP）、卡券商户助手核销（FROM_MOBILE_HELPER）（核销员微信号）',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1339,14 +1386,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['LocationName'] = array(
-            'name' => '门店名称，当前卡券核销的门店名称（只有通过自助核销和买单核销时才会出现该字段）',
+            'name' => '门店名称',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
@@ -1358,7 +1405,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '门店名称，当前卡券核销的门店名称（只有通过自助核销和买单核销时才会出现该字段）',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1366,14 +1414,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['StaffOpenId'] = array(
-            'name' => '核销该卡券核销员的openid（只有通过卡券商户助手核销时才会出现）',
+            'name' => '核销该卡券核销员的openid',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -1385,7 +1433,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '核销该卡券核销员的openid（只有通过卡券商户助手核销时才会出现）',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1393,14 +1442,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['VerifyCode'] = array(
-            'name' => '自助核销时，用户输入的验证码',
+            'name' => '自助核销时用户输入的验证码',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
@@ -1412,7 +1461,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '自助核销时，用户输入的验证码',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1420,14 +1470,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['RemarkAmount'] = array(
-            'name' => '自助核销 时 ，用户输入的备注金额',
+            'name' => '自助核销时用户输入的备注金额',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
@@ -1439,7 +1489,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'name' => '自助核销时用户输入的备注金额',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1447,14 +1498,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['TransId'] = array(
-            'name' => '微信支付交易订单号（只有使用买单功能核销的卡券才会出现）',
+            'name' => '微信支付交易订单号',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
@@ -1466,7 +1517,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'name' => '微信支付交易订单号（只有使用买单功能核销的卡券才会出现）',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1474,14 +1526,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['LocationId'] = array(
-            'name' => '门店ID，当前卡券核销的门店ID（只有通过卡券商户助手和买单核销时才会出现）',
+            'name' => '门店ID',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
@@ -1493,7 +1545,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '门店ID，当前卡券核销的门店ID（只有通过卡券商户助手和买单核销时才会出现）',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1501,7 +1554,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1528,7 +1581,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1555,7 +1608,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1582,14 +1635,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['ModifyBalance'] = array(
-            'name' => '变动的余额值。',
+            'name' => '变动的余额值',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
@@ -1609,7 +1662,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1636,14 +1689,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['CreateOrderTime'] = array(
-            'name' => '购买券点时，支付二维码的生成时间',
+            'name' => '购买券点时支付二维码的生成时间',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
@@ -1663,14 +1716,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['PayFinishTime'] = array(
-            'name' => '购买券点时，实际支付成功的时间',
+            'name' => '购买券点时实际支付成功的时间',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
@@ -1690,14 +1743,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['Desc'] = array(
-            'name' => '支付方式，一般为微信支付充值',
+            'name' => '支付方式',
             'data' => array(
                 'type' => 'string',
                 'length' => 100,
@@ -1709,7 +1762,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '支付方式，一般为微信支付充值',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1717,7 +1771,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1744,7 +1798,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1771,7 +1825,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1798,7 +1852,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1825,14 +1879,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['OrderType'] = array(
-            'name' => '所要拉取的订单类型 ORDER_TYPE_SYS_ADD 平台赠送券点 ORDER_TYPE_WXPAY 充值券点 ORDER_TYPE_REFUND 库存未使用回退券点 ORDER_TYPE_REDUCE 券点兑换库存 ORDER_TYPE_SYS_REDUCE 平台扣减',
+            'name' => '所要拉取的订单类型',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
@@ -1844,7 +1898,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '所要拉取的订单类型 ORDER_TYPE_SYS_ADD 平台赠送券点 ORDER_TYPE_WXPAY 充值券点 ORDER_TYPE_REFUND 库存未使用回退券点 ORDER_TYPE_REDUCE 券点兑换库存 ORDER_TYPE_SYS_REDUCE 平台扣减',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1852,14 +1907,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['Memo'] = array(
-            'name' => '系统备注，说明此次变动的缘由，如开通账户奖励、门店奖励、核销奖励以及充值、扣减。',
+            'name' => '系统备注',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
@@ -1871,7 +1926,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '系统备注，说明此次变动的缘由，如开通账户奖励、门店奖励、核销奖励以及充值、扣减。',
             ),
             'list' => array(
                 'is_show' => false,
@@ -1879,7 +1935,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1906,7 +1962,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1933,7 +1989,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1960,7 +2016,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -1987,7 +2043,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2014,7 +2070,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2041,14 +2097,14 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['Source'] = array(
-            'name' => '授权来源，web表示来自微信内H5，app标识来自app',
+            'name' => '授权来源',
             'data' => array(
                 'type' => 'string',
                 'length' => 10,
@@ -2060,7 +2116,8 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '授权来源，web表示来自微信内H5，app标识来自app',
             ),
             'list' => array(
                 'is_show' => true,
@@ -2068,7 +2125,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2095,7 +2152,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2122,7 +2179,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2149,7 +2206,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2176,7 +2233,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2203,7 +2260,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2230,7 +2287,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2257,7 +2314,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2284,7 +2341,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2311,7 +2368,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -2338,7 +2395,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true

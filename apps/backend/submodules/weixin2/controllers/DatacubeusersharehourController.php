@@ -3,6 +3,8 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\DataCube\UserShareHour;
+use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
+use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="图文分享转发分时数据"})
@@ -12,12 +14,20 @@ use App\Backend\Submodules\Weixin2\Models\DataCube\UserShareHour;
 class DatacubeusersharehourController extends \App\Backend\Controllers\FormController
 {
     private $modelUserShareHour;
-
+    private $modelAuthorizer;
+    private $modelComponent;
     public function initialize()
     {
         $this->modelUserShareHour = new UserShareHour();
+        $this->modelAuthorizer = new Authorizer();
+        $this->modelComponent = new Component();
+
+        $this->componentItems = $this->modelComponent->getAll();
+        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
+    protected $componentItems = null;
+    protected $authorizerItems = null;
 
     protected function getSchemas()
     {
@@ -30,20 +40,53 @@ class DatacubeusersharehourController extends \App\Backend\Controllers\FormContr
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->componentItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->componentItems
             ),
             'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems
+            ),
+            'export' => array(
                 'is_show' => true
+            )
+        );
+        $schemas['authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->authorizerItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems
             ),
             'export' => array(
                 'is_show' => true

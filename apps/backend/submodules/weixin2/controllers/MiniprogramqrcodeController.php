@@ -2,6 +2,8 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Miniprogram\Qrcode\Qrcode;
+use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
+use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="小程序二维码"})
@@ -11,70 +13,84 @@ use App\Backend\Submodules\Weixin2\Models\Miniprogram\Qrcode\Qrcode;
 class MiniprogramqrcodeController extends \App\Backend\Controllers\FormController
 {
     private $modelQrcode;
-
+    private $modelAuthorizer;
+    private $modelComponent;
     public function initialize()
     {
         $this->modelQrcode = new Qrcode();
+        $this->modelAuthorizer = new Authorizer();
+        $this->modelComponent = new Component();
+
+        $this->componentItems = $this->modelComponent->getAll();
+        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
+    protected $componentItems = null;
+    protected $authorizerItems = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-            $schemas['component_appid'] = array(
-        'name' => '第三方平台应用ID',
-        'data' => array(
-            'type' => 'string',
-            'length' => 255,
-            'defaultValue' => ''
-        ),
-        'validation' => array(
-            'required' => false
-        ),
-        'form' => array(
-            'input_type' => 'text',
-            'is_show' => true,
-            'items' => ''
-        ),
-        'list' => array(
-            'is_show' => true,
-            'list_type' => '',
-            'render' => '',
-        ),
-        'search' => array(
-            'is_show' => true
-        ),
-        'export' => array(
-            'is_show' => true
-        )
-    );
-    $schemas['authorizer_appid'] = array(
-        'name' => '授权方应用ID',
-        'data' => array(
-            'type' => 'string',
-            'length' => 255,
-            'defaultValue' => ''
-        ),
-        'validation' => array(
-            'required' => false
-        ),
-        'form' => array(
-            'input_type' => 'text',
-            'is_show' => true,
-            'items' => ''
-        ),
-        'list' => array(
-            'is_show' => true,
-            'list_type' => '',
-            'render' => '',
-        ),
-        'search' => array(
-            'is_show' => true
-        ),
-        'export' => array(
-            'is_show' => true
-        )
-    );
+        $schemas['component_appid'] = array(
+            'name' => '第三方平台应用ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->componentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->authorizerItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
     $schemas['name'] = array(
         'name' => '二维码名',
         'data' => array(

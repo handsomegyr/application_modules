@@ -3,7 +3,6 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**

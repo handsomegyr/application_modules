@@ -3,6 +3,7 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Event\Event;
+use App\Backend\Submodules\Weixin2\Models\Event\Category;
 
 /**
  * @title({name="事件"})
@@ -12,12 +13,17 @@ use App\Backend\Submodules\Weixin2\Models\Event\Event;
 class EventController extends \App\Backend\Controllers\FormController
 {
     private $modelEvent;
+    private $modelEventCategory;
 
     public function initialize()
     {
         $this->modelEvent = new Event();
+        $this->modelEventCategory = new Category();
+        $this->eventCategoryItems = $this->modelEventCategory->getAll();
         parent::initialize();
     }
+
+    private $eventCategoryItems = null;
 
     protected function getSchemas()
     {
@@ -30,7 +36,7 @@ class EventController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -57,7 +63,7 @@ class EventController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -76,6 +82,7 @@ class EventController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+
         $schemas['category'] = array(
             'name' => '事件分类',
             'data' => array(
@@ -87,17 +94,21 @@ class EventController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->eventCategoryItems
+
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->eventCategoryItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->eventCategoryItems
             ),
             'export' => array(
                 'is_show' => true

@@ -30,7 +30,7 @@ class UsersourceController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -52,21 +52,20 @@ class UsersourceController extends \App\Backend\Controllers\FormController
         $schemas['value'] = array(
             'name' => '用户渠道来源值',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 1
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'input_type' => 'number',
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1',
+                'list_type' => '',
                 'render' => '',
             ),
             'search' => array(
