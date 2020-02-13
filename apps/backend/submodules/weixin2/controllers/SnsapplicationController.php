@@ -3,7 +3,8 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\SnsApplication;
-
+use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
+use App\Backend\Submodules\Weixin2\Models\Component\Component;
 /**
  * @title({name="授权应用设置"})
  *
@@ -11,13 +12,22 @@ use App\Backend\Submodules\Weixin2\Models\SnsApplication;
  */
 class SnsapplicationController extends \App\Backend\Controllers\FormController
 {
-    private $modelSnsApplication;
+    private $modelSnsApplication;    
+    private $modelAuthorizer;
+    private $modelComponent;
 
     public function initialize()
     {
-        $this->modelSnsApplication = new SnsApplication();
+        $this->modelSnsApplication = new SnsApplication();        
+        $this->modelAuthorizer = new Authorizer();
+        $this->modelComponent = new Component();
+
+        $this->componentItems = $this->modelComponent->getAll();
+        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
+    protected $componentItems = null;
+    protected $authorizerItems = null;
 
     protected function getSchemas()
     {
@@ -30,20 +40,23 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->componentItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->componentItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems
             ),
             'export' => array(
                 'is_show' => true
@@ -57,20 +70,23 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems
             ),
             'export' => array(
                 'is_show' => true
@@ -84,7 +100,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -111,7 +127,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -138,7 +154,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -165,7 +181,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -178,7 +194,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -192,7 +208,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -219,7 +235,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -246,7 +262,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -273,7 +289,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -300,7 +316,7 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',

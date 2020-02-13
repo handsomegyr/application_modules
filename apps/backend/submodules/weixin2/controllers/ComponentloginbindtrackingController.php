@@ -3,6 +3,8 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Component\ComponentLoginBindTracking;
+use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
+use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="登录授权发起执行时间跟踪统计"})
@@ -13,11 +15,21 @@ class ComponentloginbindtrackingController extends \App\Backend\Controllers\Form
 {
     private $modelComponentLoginBindTracking;
 
+    private $modelAuthorizer;
+    private $modelComponent;
+
     public function initialize()
     {
         $this->modelComponentLoginBindTracking = new ComponentLoginBindTracking();
+        $this->modelAuthorizer = new Authorizer();
+        $this->modelComponent = new Component();
+
+        $this->componentItems = $this->modelComponent->getAll();
+        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
+    protected $componentItems = null;
+    protected $authorizerItems = null;
 
     protected function getSchemas()
     {
@@ -30,47 +42,53 @@ class ComponentloginbindtrackingController extends \App\Backend\Controllers\Form
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->componentItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->componentItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['authorizer_appid'] = array(
-            'name' => '应用ID',
+            'name' => '授权方应用ID',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems
             ),
             'export' => array(
                 'is_show' => true
@@ -84,7 +102,7 @@ class ComponentloginbindtrackingController extends \App\Backend\Controllers\Form
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -111,7 +129,7 @@ class ComponentloginbindtrackingController extends \App\Backend\Controllers\Form
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -138,7 +156,7 @@ class ComponentloginbindtrackingController extends \App\Backend\Controllers\Form
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
@@ -165,7 +183,7 @@ class ComponentloginbindtrackingController extends \App\Backend\Controllers\Form
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',

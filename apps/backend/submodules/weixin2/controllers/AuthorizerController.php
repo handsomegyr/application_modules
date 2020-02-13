@@ -4,6 +4,8 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 
+use App\Backend\Submodules\Weixin2\Models\Component\Component;
+
 /**
  * @title({name="授权方设置"})
  *
@@ -12,16 +14,21 @@ use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 class AuthorizerController extends \App\Backend\Controllers\FormController
 {
     private $modelAuthorizer;
+    private $modelComponent;
 
     public function initialize()
     {
         $this->modelAuthorizer = new Authorizer();
+        $this->modelComponent = new Component();
+        $this->componentItems = $this->modelComponent->getAll();
         parent::initialize();
     }
+    protected $componentItems = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
+
         $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
@@ -30,20 +37,23 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->componentItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->componentItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems
             ),
             'export' => array(
                 'is_show' => true
@@ -57,7 +67,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -84,7 +94,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -121,10 +131,10 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
+                'render' => 'img',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -138,7 +148,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -188,14 +198,14 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             'name' => '二维码图片的URL',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -205,7 +215,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'render' => 'img',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -227,9 +237,13 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -284,6 +298,10 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -300,7 +318,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -367,7 +385,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -421,7 +439,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -448,7 +466,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -470,9 +488,13 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -551,9 +573,13 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -610,7 +636,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -637,7 +663,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true

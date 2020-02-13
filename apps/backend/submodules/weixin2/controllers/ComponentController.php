@@ -30,7 +30,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -57,7 +57,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -92,12 +92,16 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -119,12 +123,16 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -138,7 +146,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -165,7 +173,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -176,6 +184,10 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -200,9 +212,13 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -230,6 +246,10 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -257,6 +277,10 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -308,12 +332,12 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -367,7 +391,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -394,7 +418,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
@@ -408,7 +432,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -448,7 +472,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
