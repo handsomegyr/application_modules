@@ -13,6 +13,8 @@ use App\Backend\Submodules\Activity\Models\Activity;
 class BlackuserController extends \App\Backend\Controllers\FormController
 {
 
+    // protected $readonly = true;
+
     private $modelBlackUser;
 
     private $modelActivity;

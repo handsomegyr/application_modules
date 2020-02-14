@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Cronjob\Controllers;
 
 use App\Backend\Submodules\Cronjob\Models\Log;
@@ -22,7 +23,7 @@ class LogController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['job_name'] = array(
             'name' => '计划任务',
             'data' => array(
@@ -47,7 +48,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['execute_result'] = array(
             'name' => '执行结果',
             'data' => array(
@@ -72,7 +73,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['script_execute_time'] = array(
             'name' => '脚本执行时间',
             'data' => array(
@@ -97,7 +98,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 

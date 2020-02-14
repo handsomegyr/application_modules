@@ -73,7 +73,7 @@ if (!$this->request->isAjax() || $this->request->isGet()) {
 
   <script>
     function keepLogin() {
-      new Image().src = '<?php echo $this->view->baseUrl ?>admin/index/keeplogin?_=' + Math.random()
+      LA.sessionImage.src = '<?php echo $this->view->baseUrl ?>admin/index/keeplogin?_=' + Math.random()
     }
 
     $(function() {

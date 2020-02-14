@@ -75,6 +75,43 @@ return new \Phalcon\Config(array(
         "host" => '192.168.81.129',
         "port" => 6379
     ),
+    'cronjobdataimport' => [
+        // 订单数据导入
+        "orderDataImput" => [
+            //测试环境
+            'test' => [
+                // 文件所在目录
+                'ftpDirectory' => '/learn-php/phalcon/application_modules/data/upload/',
+                // 程序处理完毕后会将文件移至
+                'backupDirectory' => '/learn-php/phalcon/application_modules/data/bak/',
+            ],
+            //本地环境
+            'local' => [
+                // 文件所在目录
+                'ftpDirectory' => '/learn-php/phalcon/application_modules/data/upload/',
+                // 程序处理完毕后会将文件移至
+                'backupDirectory' => '/learn-php/phalcon/application_modules/data/bak/',
+            ],
+            //正式环境
+            'production' => [
+                // 文件所在目录
+                'ftpDirectory' => '/learn-php/phalcon/application_modules/data/upload/',
+
+                // 程序处理完毕后会将文件移至
+                'backupDirectory' => '/learn-php/phalcon/application_modules/data/bak/',
+            ],
+
+            // csv文件名
+            'csvFile' => 'zhoubiandingdan_%s.csv',
+            // 上传成功标志文件名
+            'successFlagFile' => 'success_%s.flag',
+            // 文件内容类型
+            'content_type' => "order",
+            // 第一行是否是头
+            'firstrow_is_header' => 1,
+
+        ]
+    ],
     'errors' => array(
         'none' => array(
             'error_code' => 0,

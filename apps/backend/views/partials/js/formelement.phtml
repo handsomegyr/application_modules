@@ -58,7 +58,7 @@
                 },
                 "deleteUrl": "<?php echo $this->view->baseUrl . $this->view->moduleName . '/' . $this->view->controllerName . '/removefile?id=' . $this->view->row['_id'] . '&_field_del_=' . $key ?>",
                 "fileActionSettings": {
-                    "showRemove": <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'removefile')) { ?>true<?php } else { ?>false<?php } ?>,
+                    "showRemove": <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'removefile') && !$this->view->readonly) { ?>true<?php } else { ?>false<?php } ?>,
                     "showDrag": true
                     //"showDrag": false 
                 },

@@ -21,7 +21,7 @@ $isCando = $this->myTag->isCanDo($this->view->moduleName, $this->view->controlle
 
                     <div class="box-tools">
                         <?php if ($this->view->actionName == 'edit') { ?>
-                            <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'remove')) { ?>
+                            <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'remove') && !$this->view->readonly) { ?>
                                 <div class="btn-group pull-right" style="margin-right: 5px">
                                     <a href="javascript:void(0);" class="btn btn-sm btn-danger 5e217e4051348-delete" title="删除">
                                         <i class="fa fa-trash"></i><span class="hidden-xs"> 删除</span>
@@ -38,7 +38,7 @@ $isCando = $this->myTag->isCanDo($this->view->moduleName, $this->view->controlle
                         <?php if ($this->view->actionName == 'edit') { ?>
                             <?php foreach ($this->view->formTools as $key => $tool) { ?>
                                 <?php if (!empty($tool['is_show'])) { ?>
-                                    <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action'])) { ?>
+                                    <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
                                         <a style="margin-right: 5px" href="javascript:void(0);" class="btn btn-sm btn-primary form-tool-<?php echo $key ?>">
                                             <i class="fa <?php echo empty($tool['icon']) ? 'fa-coffee' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>
                                     <?php } ?>
@@ -66,7 +66,7 @@ $isCando = $this->myTag->isCanDo($this->view->moduleName, $this->view->controlle
                     <!-- /.box-body -->
                     <?php
                     $buttons = array();
-                    if ($isCando) {
+                    if ($isCando && !$this->view->readonly) {
                         $buttons[] = 'submit';
                         // $buttons[] = 'reset';
                     }

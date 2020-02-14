@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Cronjob\Controllers;
 
 use App\Backend\Submodules\Cronjob\Models\Job;
@@ -49,7 +50,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['desc'] = array(
             'name' => '任务功能描述',
             'data' => array(
@@ -74,7 +75,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['start_time'] = array(
             'name' => '执行开始时间',
             'data' => array(
@@ -99,7 +100,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['end_time'] = array(
             'name' => '任务结束时间',
             'data' => array(
@@ -124,7 +125,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['cmd'] = array(
             'name' => '任务命令',
             'data' => array(
@@ -149,7 +150,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['cycle'] = array(
             'name' => '执行周期(分钟)',
             'data' => array(
@@ -174,7 +175,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['cron'] = array(
             'name' => 'cron语法',
             'data' => array(
@@ -199,7 +200,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['last_execute_time'] = array(
             'name' => '最后一次执行时间',
             'data' => array(
@@ -224,7 +225,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['last_execute_result'] = array(
             'name' => '最后一次执行结果',
             'data' => array(
@@ -249,7 +250,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['script_execute_time'] = array(
             'name' => '脚本执行时间',
             'data' => array(
@@ -274,7 +275,7 @@ class JobController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -287,7 +288,7 @@ class JobController extends \App\Backend\Controllers\FormController
     {
         return $this->modelJob;
     }
-    
+
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         //$activityList = $this->modelActivity->getAll();
@@ -295,7 +296,7 @@ class JobController extends \App\Backend\Controllers\FormController
             //$item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : '--';
             $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
             $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-            if (! empty($item['last_execute_time'])) {
+            if (!empty($item['last_execute_time'])) {
                 $item['last_execute_time'] = date("Y-m-d H:i:s", $item['last_execute_time']->sec);
             }
         }

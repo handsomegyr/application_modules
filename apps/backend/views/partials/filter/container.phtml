@@ -55,7 +55,7 @@ $filterID = 'filter-box';
                             </div>
                         <?php } ?>
 
-                        <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'export')) { ?>
+                        <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'export') && !$this->view->readonly) { ?>
                             <div class="btn-group pull-left" style="margin-left: 10px;">
                                 <button id="btnExport" class="btn btn-info submit btn-sm"><i class="fa fa-download"></i>&nbsp;&nbsp;导出</button>
                             </div>
@@ -63,7 +63,7 @@ $filterID = 'filter-box';
 
                         <?php foreach ($this->view->headerTools as $key => $tool) { ?>
                             <?php if (!empty($tool['is_show']) && !empty($tool['is_export'])) { ?>
-                                <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action'])) { ?>
+                                <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
                                     <div class="btn-group pull-left" style="margin-left: 10px;">
                                         <button id="btnExport-<?php echo $key ?>" class="btn btn-info submit btn-sm header-tool-export-<?php echo $key ?>"><i class="fa <?php echo empty($tool['icon']) ? 'fa-download' : $tool['icon'] ?>"></i>&nbsp;&nbsp;<?php echo $tool['title'] ?></button>
                                     </div>

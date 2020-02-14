@@ -16,6 +16,8 @@ use Phalcon\Filter\FilterFactory;
  */
 class FormController extends \App\Backend\Controllers\ControllerBase
 {
+    // 是否只读
+    protected $readonly = false;
 
     protected function getName()
     {
@@ -232,6 +234,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if (empty($field['form']['name'])) {
                 $field['form']['name'] = $field['name'];
             }
+
+            if (!empty($this->readonly)) {
+                $field['form']['readonly'] = true;
+            }
+
             if (empty($field['form']['placeholder'])) {
                 $field['form']['placeholder'] = "输入 " . $field['form']['name'];
             }
@@ -651,6 +658,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $this->checkToken($token);
         }
 
+        $this->view->setVar('readonly', $this->readonly);
+
         $this->view->setVar('formName', $this->getName());
         $this->view->setVar('schemas', $this->sortSchemas($this->getSchemas()));
         // headerTools
@@ -721,10 +730,23 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // 将列表数据按照画面要求进行显示
             $list = $this->getList4Show($input, $list);
 
+            $schemas = $this->sortSchemas($this->getSchemas());
             foreach ($list['data'] as &$item) {
-                foreach ($item as &$value) {
+                foreach ($item as $field => &$value) {
+                    $column = new \App\Backend\Models\Column($item);
                     if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
                         $value = date("Y-m-d H:i:s", $value->sec);
+                    }
+                    // 扩展设置
+                    if (!empty($schemas[$field])) {
+                        if (!empty($schemas[$field]['list']['is_show'])) {
+                            if (!empty($schemas[$field]['list']['extensionSettings'])) {
+                                if (is_callable($schemas[$field]['list']['extensionSettings'])) {
+                                    $value = call_user_func_array($schemas[$field]['list']['extensionSettings'], [$column, $this]);
+                                    //$value = $schemas[$field]['list']['extensionSettings']($column, null);
+                                }
+                            }
+                        }
                     }
                 }
             }

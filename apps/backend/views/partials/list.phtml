@@ -25,7 +25,7 @@
 							?>
 						<?php } ?>
 
-						<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'add') && $this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'insert')) { //|| $grid->showCreateBtn()
+						<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'add') && $this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'insert') && !$this->view->readonly) { //|| $grid->showCreateBtn()
 						?>
 							<!--{!! $grid->renderCreateButton() !!}-->
 							<?php $this->partial("partials/grid/create_button"); ?>
@@ -44,7 +44,7 @@
 
 							<?php foreach ($this->view->headerTools as $key => $tool) { ?>
 								<?php if (!empty($tool['is_show']) && empty($tool['is_export'])) { ?>
-									<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action'])) { ?>
+									<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
 										<a href="javascript:void(0);" class="btn btn-sm btn-primary header-tool-<?php echo $key ?>">
 											<i class="fa <?php echo empty($tool['icon']) ? 'fa-coffee' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>
 									<?php } ?>
