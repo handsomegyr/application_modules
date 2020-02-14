@@ -129,7 +129,7 @@ class ShorturlController extends \App\Backend\Controllers\FormController
         $schemas['long_url'] = array(
             'name' => '需要转换的长链接',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),

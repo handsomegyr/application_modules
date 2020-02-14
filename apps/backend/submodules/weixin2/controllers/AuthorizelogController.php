@@ -16,11 +16,14 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
     public function initialize()
     {
         $this->modelAuthorizeLog = new AuthorizeLog();
+
         parent::initialize();
     }
 
     protected function getSchemas()
     {
+        $schemas = parent::getSchemas();
+
         $schemas['AppId'] = array(
             'name' => '第三方平台appid',
             'data' => array(
@@ -75,6 +78,12 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $infoTypeItems = array();
+        $infoTypeItems['component_verify_ticket'] = "推送component_verify_ticket";
+        $infoTypeItems['unauthorized'] = "取消授权";
+        $infoTypeItems['updateauthorized'] = "更新授权";
+        $infoTypeItems['authorized'] = "授权成功通知";
+
         $schemas['InfoType'] = array(
             'name' => '事件',
             'data' => array(
@@ -86,18 +95,21 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '事件,component_verify_ticket是推送component_verify_ticket,unauthorized是取消授权，updateauthorized是更新授权，authorized是授权成功通知',
+                'items' => $infoTypeItems,
+                'help' => '',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $infoTypeItems,
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $infoTypeItems,
             ),
             'export' => array(
                 'is_show' => true
@@ -106,7 +118,7 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
         $schemas['ComponentVerifyTicket'] = array(
             'name' => 'ComponentVerifyTicket内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -138,7 +150,7 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -160,7 +172,7 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
         $schemas['AuthorizationCode'] = array(
             'name' => '授权码(code)',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -214,7 +226,7 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
         $schemas['PreAuthCode'] = array(
             'name' => '预授权码',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -270,7 +282,7 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
@@ -295,7 +307,7 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
         $schemas['request_xml'] = array(
             'name' => '原始消息内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -322,7 +334,7 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
         $schemas['response'] = array(
             'name' => '消息返回',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -351,7 +363,7 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false

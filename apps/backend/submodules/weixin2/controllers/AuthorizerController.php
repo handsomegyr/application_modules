@@ -115,7 +115,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['head_img'] = array(
             'name' => '授权方头像',
             'data' => array(
-                'type' => 'string',
+                'type' => 'image',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -196,7 +196,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['qrcode_url'] = array(
             'name' => '二维码图片的URL',
             'data' => array(
-                'type' => 'string',
+                'type' => 'image',
                 'length' => 50,
                 'defaultValue' => ''
             ),
@@ -223,7 +223,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['access_token'] = array(
             'name' => '授权方调用凭据',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -281,7 +281,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['refresh_token'] = array(
             'name' => '授权方刷新令牌',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -420,7 +420,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['cert'] = array(
             'name' => '支付文件',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -447,7 +447,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['certKey'] = array(
             'name' => '支付秘钥文件',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -474,7 +474,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['jsapi_ticket'] = array(
             'name' => 'JSAPI Ticket',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -559,7 +559,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['wx_card_api_ticket'] = array(
             'name' => 'Wxcard Ticket',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -619,7 +619,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false

@@ -308,22 +308,23 @@ class MenuController extends \App\Backend\Controllers\FormController
         $schemas['parent'] = array(
             'name' => '上级菜单',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->modelMenu->getList4Tree('')
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->modelMenu->getList4Tree('')
             ),
             'search' => array(
                 'is_show' => true

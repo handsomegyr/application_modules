@@ -224,9 +224,9 @@
 					"ordering": true,
 					"order": [<?php echo $orderIdx ?>, '<?php echo $orderBy ?>'],
 					"displayStart": 0,
-					"lengthMenu": [1, 5, 10, 15, 100],
+					"lengthMenu": [10, 20, 30, 50, 100],
 					"lengthChange": true,
-					"pageLength": 30,
+					"pageLength": 20,
 					"pagingType": "full_numbers",
 					"ajax": {
 						"url": "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/query",
@@ -262,14 +262,19 @@
 											if (data == undefined || data == '') {
 												return '';
 											}
-											<?php
-											$path = "";
-											if (!empty($field['data'][$field['data']['type']])) {
-												$fileInfo = $field['data'][$field['data']['type']];
-												$path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
+											if (data.indexOf("http") != -1) {
+												// 包含http
+												return '<img src="' + data + '" style="max-height: 50px;" alt="">';
+											} else {
+												<?php
+												$path = "";
+												if (!empty($field['data'][$field['data']['type']])) {
+													$fileInfo = $field['data'][$field['data']['type']];
+													$path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
+												}
+												?>
+												return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-height: 50px;" alt="">';
 											}
-											?>
-											return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-height: 50px;" alt="">';
 
 										<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
 											//console.info(data);

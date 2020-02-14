@@ -19,6 +19,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     // 是否只读
     protected $readonly = false;
 
+    protected $now = 0;
+
     protected function getName()
     {
         return '';
@@ -176,10 +178,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         'Z' => 'Z'
     );
     protected $trueOrFalseDatas = array(
-        '1' => '是',
         '0' => '否',
+        '1' => '是',
     );
-
 
     protected $methodDatas = array(
         'GET' => 'GET',
@@ -229,6 +230,12 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 ) {
                     $field['list']['render'] = 'img';
                 }
+            }
+
+            if ($field['data']['type'] == 'json') {
+                $field['data']['defaultValue'] = '{}';
+            } elseif ($field['data']['type'] == 'array') {
+                $field['data']['defaultValue'] = '';
             }
 
             if (empty($field['form']['name'])) {
@@ -494,7 +501,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             } else {
                 $filters = array(
                     'trim',
-                    'string'
+                    // 'string'
                 );
                 $defaultValue = "";
                 if ($field['data']['type'] == "integer") {
@@ -742,8 +749,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                         if (!empty($schemas[$field]['list']['is_show'])) {
                             if (!empty($schemas[$field]['list']['extensionSettings'])) {
                                 if (is_callable($schemas[$field]['list']['extensionSettings'])) {
-                                    $value = call_user_func_array($schemas[$field]['list']['extensionSettings'], [$column, $this]);
+                                    $value4Show = call_user_func_array($schemas[$field]['list']['extensionSettings'], [$column, $this]);
                                     //$value = $schemas[$field]['list']['extensionSettings']($column, null);
+                                    if (!is_null($value4Show)) {
+                                        $value = $value4Show;
+                                    }
                                 }
                             }
                         }

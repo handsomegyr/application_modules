@@ -268,7 +268,7 @@ class UserController extends \App\Backend\Controllers\FormController
         $schemas['headimgurl'] = array(
             'name' => '用户头像',
             'data' => array(
-                'type' => 'string',
+                'type' => 'image',
                 'length' => 300,
                 'defaultValue' => ''
             ),
@@ -408,7 +408,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => 'UNIONID',
             'data' => array(
                 'type' => 'string',
-                'length' => 50,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -463,9 +463,9 @@ class UserController extends \App\Backend\Controllers\FormController
         $schemas['remark'] = array(
             'name' => '备注',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
-                'defaultValue' => '{}'
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -493,7 +493,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
@@ -520,7 +520,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
@@ -683,7 +683,7 @@ class UserController extends \App\Backend\Controllers\FormController
         $schemas['oss_headimgurl'] = array(
             'name' => 'OSS头像URL',
             'data' => array(
-                'type' => 'string',
+                'type' => 'image',
                 'length' => 255,
                 'defaultValue' => ''
             ),

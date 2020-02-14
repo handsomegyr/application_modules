@@ -179,6 +179,11 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             $url = $this->getUrl("index");
             //$this->_redirect($url);
 
+            unset($_SESSION['toastr']);
+            $_SESSION['toastr']['type'] = "success";
+            $_SESSION['toastr']['message'] = '登录成功!';
+            $_SESSION['toastr']['options'] = array();
+
             // 返回信息
             $ret = array();
             $ret['redirect'] = $url;

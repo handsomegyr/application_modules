@@ -175,6 +175,7 @@ class UsertousertagController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+
         $schemas['tag_time'] = array(
             'name' => '打标签时间',
             'data' => array(

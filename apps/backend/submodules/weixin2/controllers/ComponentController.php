@@ -199,7 +199,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
         $schemas['access_token'] = array(
             'name' => '第三方平台接口调用凭据',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -373,7 +373,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
         $schemas['cert'] = array(
             'name' => '支付文件',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -400,7 +400,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
         $schemas['certKey'] = array(
             'name' => '支付秘钥文件',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),

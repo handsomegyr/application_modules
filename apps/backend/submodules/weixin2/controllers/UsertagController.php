@@ -22,9 +22,10 @@ class UsertagController extends \App\Backend\Controllers\FormController
         $this->modelTag = new Tag();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
-
+        
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
+
         parent::initialize();
     }
     protected $componentItems = null;

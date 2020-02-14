@@ -8,7 +8,8 @@
     // 如果没有编辑或新增的权限 那么所有的form表单上的控件只能只读
     if (!$isCando) {
         $field['form']['readonly'] = true;
-    }
+    }    
+
     if (!isset($field['form']['partial'])) {
         //print_r($field);die('xxx');
         $prepend = "";
@@ -23,7 +24,8 @@
             } elseif ($field['data']['type'] == "array") {
                 $value = empty($this->view->row[$key]) ? '' : (!is_string($this->view->row[$key]) ? implode(',', $this->view->row[$key]) : $this->view->row[$key]);
             } else {
-                $value = nl2br($this->view->row[$key]);
+                //$value = nl2br($this->view->row[$key]);
+                $value = $this->view->row[$key];
             }
             $rows = 5;
             $this->partial('partials/form/textarea');
@@ -46,7 +48,7 @@
         } elseif ($field['form']['input_type'] == "decimal") {
             $value = $this->view->row[$key];
             $this->partial('partials/form/input');
-        } elseif ($field['form']['input_type'] == "datetimepicker") {
+        } elseif ($field['form']['input_type'] == "datetimepicker") {            
             $prepend = '<i class="fa fa-calendar fa-fw"></i>';
             $value = date("Y-m-d H:i:s", $this->view->row[$key]->sec);
             $this->partial('partials/form/input');

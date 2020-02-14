@@ -79,7 +79,7 @@ class MenutypeController extends \App\Backend\Controllers\FormController
         $schemas['desc'] = array(
             'name' => '类型说明',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),

@@ -79,7 +79,7 @@ class MiniprogramqrcodetypeController extends \App\Backend\Controllers\FormContr
         $schemas['desc'] = array(
             'name' => '类型说明',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
