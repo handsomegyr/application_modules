@@ -241,7 +241,7 @@
 					},
 					"columns": [
 						<?php foreach ($this->view->schemas as $key => $field) { ?>
-							<?php if (!empty($field['list']['is_show'])) {?> {
+							<?php if (!empty($field['list']['is_show'])) { ?> {
 									"data": "<?php echo isset($field['list']['list_data_name']) ? $field['list']['list_data_name'] : $key ?>",
 									"name": "<?php echo $key ?>",
 									"render": function(data, type, full, meta) {
@@ -270,7 +270,24 @@
 												?>
 												return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-height: 50px;" alt="">';
 											}
-
+										<?php } elseif (($field['data']['type'] == "file")) { ?>
+											//console.info(data);
+											if (data == undefined || data == '') {
+												return '';
+											}
+											if (data.indexOf("http") != -1) {
+												// 包含http
+												return '<img src="' + data + '" style="max-height: 50px;" alt="">';
+											} else {
+												<?php
+												$path = "";
+												if (!empty($field['data'][$field['data']['type']])) {
+													$fileInfo = $field['data'][$field['data']['type']];
+													$path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
+												}
+												?>
+												return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-height: 50px;" alt="">';
+											}
 										<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
 											//console.info(data);
 											if (data == undefined || data == '') {

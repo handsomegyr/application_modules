@@ -191,7 +191,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->typeItems,
                 'help' => '消息类型,文本为text,图片为image,语音为voice,视频为video,小视频为shortvideo,地理位置为location,链接为link,事件为event',

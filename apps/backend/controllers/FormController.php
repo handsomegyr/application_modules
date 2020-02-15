@@ -739,7 +739,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $schemas = $this->sortSchemas($this->getSchemas());
             foreach ($list['data'] as &$item) {
                 foreach ($item as $field => &$value) {
-                    $column = new \App\Backend\Models\Column($item);
+                    $column = new \App\Backend\Models\Column($field, $value, $schemas, $item, $this->url->getBaseUri());
                     if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
                         $value = date("Y-m-d H:i:s", $value->sec);
                     }

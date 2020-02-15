@@ -3,6 +3,7 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Material\Material;
+use App\Backend\Submodules\Weixin2\Models\Media\Type;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
@@ -14,20 +15,24 @@ use App\Backend\Submodules\Weixin2\Models\Component\Component;
 class MaterialController extends \App\Backend\Controllers\FormController
 {
     private $modelMaterial;
+    private $modelMediaType;
     private $modelAuthorizer;
     private $modelComponent;
     public function initialize()
     {
         $this->modelMaterial = new Material();
+        $this->modelMediaType = new Type();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
 
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
+        $this->mediaTypeItems = $this->modelMediaType->getAll();
         parent::initialize();
     }
     protected $componentItems = null;
     protected $authorizerItems = null;
+    protected $mediaTypeItems = null;
 
     protected function getSchemas()
     {
@@ -100,7 +105,7 @@ class MaterialController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -120,27 +125,31 @@ class MaterialController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['type'] = array(
-            'name' => '媒体文件类型，分别有图片（image）、语音（voice）、视频（video）、缩略图（thumb）和图文（news）',
+            'name' => '媒体文件类型',
             'data' => array(
                 'type' => 'string',
                 'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->mediaTypeItems,
+                'help' => '媒体文件类型，分别有图片（image）、语音（voice）、视频（video）、缩略图（thumb）和图文（news）'
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => 'img',
+                'render' => '',
+                'items' => $this->mediaTypeItems
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->mediaTypeItems
             ),
             'export' => array(
                 'is_show' => true
@@ -149,7 +158,7 @@ class MaterialController extends \App\Backend\Controllers\FormController
         $schemas['media'] = array(
             'name' => '媒体文件',
             'data' => array(
-                'type' => 'string',
+                'type' => 'file',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -165,28 +174,42 @@ class MaterialController extends \App\Backend\Controllers\FormController
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    //display()方法来通过传入的回调函数来处理当前列的值：
+                    return $column->display(function () use ($column) {
+
+                        // 如果这一列的status字段的值等于1，直接显示title字段
+                        if ($this->type == 'image' || $this->type == 'thumb') {
+                            return $column->image("", 50, 50);
+                        } else {
+                            return $column->downloadable();
+                        }
+                    });
+                }
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => true
             )
         );
         $schemas['title'] = array(
-            'name' => '素材的标题，当类型为视频（video）有用',
+            'name' => '素材的标题',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '素材的标题，当类型为视频（video）有用',
             ),
             'list' => array(
                 'is_show' => true,
@@ -201,19 +224,20 @@ class MaterialController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['introduction'] = array(
-            'name' => '素材的描述，当类型为视频（video）有用',
+            'name' => '素材的描述',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '素材的描述，当类型为视频（video）有用',
             ),
             'list' => array(
                 'is_show' => false,
@@ -255,7 +279,7 @@ class MaterialController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['url'] = array(
-            'name' => '图片素材的图片URL（仅新增图片素材时会返回该字段）',
+            'name' => '图片素材的图片URL',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -265,9 +289,10 @@ class MaterialController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '图片素材的图片URL（仅新增图片素材时会返回该字段）',
             ),
             'list' => array(
                 'is_show' => true,

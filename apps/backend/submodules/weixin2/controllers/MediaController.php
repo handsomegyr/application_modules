@@ -158,7 +158,7 @@ class MediaController extends \App\Backend\Controllers\FormController
         $schemas['media'] = array(
             'name' => '媒体文件',
             'data' => array(
-                'type' => 'string',
+                'type' => 'file',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -177,15 +177,17 @@ class MediaController extends \App\Backend\Controllers\FormController
                 // 扩展设置
                 'extensionSettings' => function ($column, $Grid) {
                     //display()方法来通过传入的回调函数来处理当前列的值：
-                    // $column->display(function () use ($column) {
-
-                    //     // 如果这一列的status字段的值等于1，直接显示title字段
-                    //     if ($this->type == 'image' || $this->type == 'thumb') {
-                    //         return $column->image("", 50, 50);
-                    //     } else {
-                    //         return $column->downloadable();
-                    //     }
-                    // });
+                    return $column->display(function () use ($column) {
+                        // return '<a href="http://intonewxcrm.oss-cn-hangzhou.aliyuncs.com/media/PL8xEhxtvJjY1m9JmGmX.mp3" download="PL8xEhxtvJjY1m9JmGmX.mp3" target="_blank" class="text-muted">
+                        //     <i class="fa fa-download"></i> PL8xEhxtvJjY1m9JmGmX.mp3;
+                        // </a>';
+                        // 如果这一列的status字段的值等于1，直接显示title字段
+                        if ($this->type == 'image' || $this->type == 'thumb') {
+                            return $column->image("", 50, 50);
+                        } else {
+                            return $column->downloadable();
+                        }
+                    });
                 }
             ),
             'search' => array(
