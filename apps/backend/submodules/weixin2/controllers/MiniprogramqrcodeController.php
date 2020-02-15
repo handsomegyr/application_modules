@@ -182,7 +182,7 @@ class MiniprogramqrcodeController extends \App\Backend\Controllers\FormControlle
                 'is_show' => true
             )
         );
-        $schemas['page'] = array(
+        $schemas['pagepath'] = array(
             'name' => '小程序页面',
             'data' => array(
                 'type' => 'string',
@@ -196,7 +196,7 @@ class MiniprogramqrcodeController extends \App\Backend\Controllers\FormControlle
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'name' => '小程序页面，接口B所用，必须是已经发布的小程序存在的页面（否则报错），例如 pages/index/index, 根路径前不要填加 /,不能携带参数（参数请放在scene字段里），如果不填写这个字段，默认跳主页面',
+                'help' => '小程序页面，接口B所用，必须是已经发布的小程序存在的页面（否则报错），例如 pages/index/index, 根路径前不要填加 /,不能携带参数（参数请放在scene字段里），如果不填写这个字段，默认跳主页面',
             ),
             'list' => array(
                 'is_show' => true,
@@ -299,7 +299,7 @@ class MiniprogramqrcodeController extends \App\Backend\Controllers\FormControlle
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
@@ -369,7 +369,7 @@ class MiniprogramqrcodeController extends \App\Backend\Controllers\FormControlle
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
+                'render' => 'img',
             ),
             'search' => array(
                 'is_show' => true

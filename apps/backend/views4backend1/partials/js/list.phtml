@@ -230,7 +230,7 @@ var List = function () {
                               return '<span <?php if(isset($field['list']['ajax'])){?>onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \''+full['_id']+'\', \'<?php echo $key ?>\')"<?php }?>class="label label-danger">no</span>';
                           };
                       }
-  	  	   	       <?php }elseif(($field['data']['type'] == "file" || $field['data']['type'] == "image") && isset($field['list']['render']) && $field['list']['render'] == 'img'){ ?>
+  	  	   	       <?php }elseif(($field['data']['type'] == "file") && isset($field['list']['render']) && $field['list']['render'] == 'img'){ ?>
   	               "render": function ( data, type, full, meta ) {
   	                    //console.info(data);
     	            	<?php 

@@ -212,6 +212,7 @@
 					//"dom": '<"top"i>rt<"bottom"flp><"clear">',
 					//"jQueryUI": true,
 					"dom": 'rt<"bottom"ilp>',
+					// "dom": 'rt<"clear"ilp>',
 					//dom: 'Bfrtip',
 					//dom": '<"H"lfr>t<"F"ip>',
 					// "buttons": ['csv', 'excel', 'pdf', 'print'],
@@ -240,13 +241,7 @@
 					},
 					"columns": [
 						<?php foreach ($this->view->schemas as $key => $field) { ?>
-							<?php if (!empty($field['list']['is_show'])) {
-								if (($field['data']['type'] == "file" ||
-									$field['data']['type'] == "image" ||
-									$field['data']['type'] == "multifile") && !isset($field['list']['render'])) {
-									$field['list']['render'] = 'img';
-								}
-							?> {
+							<?php if (!empty($field['list']['is_show'])) {?> {
 									"data": "<?php echo isset($field['list']['list_data_name']) ? $field['list']['list_data_name'] : $key ?>",
 									"name": "<?php echo $key ?>",
 									"render": function(data, type, full, meta) {
@@ -257,7 +252,7 @@
 											} else {
 												return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly && isset($field['list']['ajax'])) { ?>onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-danger">否</span>';
 											};
-										<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "image") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
+										<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "string") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
 											//console.info(data);
 											if (data == undefined || data == '') {
 												return '';

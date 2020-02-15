@@ -225,7 +225,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if (!isset($field['list']['render'])) {
                 if (
                     $field['data']['type'] == "file" ||
-                    $field['data']['type'] == "image" ||
                     $field['data']['type'] == "multifile"
                 ) {
                     $field['list']['render'] = 'img';

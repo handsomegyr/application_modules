@@ -268,7 +268,7 @@ class UserController extends \App\Backend\Controllers\FormController
         $schemas['headimgurl'] = array(
             'name' => '用户头像',
             'data' => array(
-                'type' => 'image',
+                'type' => 'string',
                 'length' => 300,
                 'defaultValue' => ''
             ),
@@ -683,7 +683,7 @@ class UserController extends \App\Backend\Controllers\FormController
         $schemas['oss_headimgurl'] = array(
             'name' => 'OSS头像URL',
             'data' => array(
-                'type' => 'image',
+                'type' => 'string',
                 'length' => 255,
                 'defaultValue' => ''
             ),

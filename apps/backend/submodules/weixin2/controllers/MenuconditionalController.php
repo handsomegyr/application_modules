@@ -6,6 +6,7 @@ use App\Backend\Submodules\Weixin2\Models\Menu\Conditional;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
 use App\Backend\Submodules\Weixin2\Models\Menu\Type;
+use App\Backend\Submodules\Weixin2\Models\Menu\ConditionalMatchrule;
 
 /**
  * @title({name="个性化菜单设置"})
@@ -18,21 +19,25 @@ class MenuconditionalController extends \App\Backend\Controllers\FormController
     private $modelAuthorizer;
     private $modelComponent;
     private $modelMenuType;
+    private $modelConditionalMatchrule;
     public function initialize()
     {
         $this->modelConditional = new Conditional();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
         $this->modelMenuType = new Type();
+        $this->modelConditionalMatchrule = new ConditionalMatchrule();
 
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
         $this->menuTypeItems = $this->modelMenuType->getAll();
+        $this->conditionalMatchruleItems = $this->modelConditionalMatchrule->getAll();
         parent::initialize();
     }
     protected $componentItems = null;
     protected $authorizerItems = null;
     protected $menuTypeItems = null;
+    protected $conditionalMatchruleItems = null;
 
     protected function getSchemas()
     {
@@ -110,7 +115,6 @@ class MenuconditionalController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
                 'items' => $this->menuTypeItems,
                 'help' => '菜单的响应动作类型，view表示网页类型，click表示点击类型，miniprogram表示小程序类型',
             ),
@@ -308,22 +312,23 @@ class MenuconditionalController extends \App\Backend\Controllers\FormController
         $schemas['parent'] = array(
             'name' => '上级菜单',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->modelConditional->getList4Tree('')
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->modelConditional->getList4Tree('')
             ),
             'search' => array(
                 'is_show' => true
@@ -363,22 +368,23 @@ class MenuconditionalController extends \App\Backend\Controllers\FormController
         $schemas['matchrule'] = array(
             'name' => '菜单匹配规则',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->conditionalMatchruleItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => $this->conditionalMatchruleItems
             ),
             'search' => array(
                 'is_show' => true

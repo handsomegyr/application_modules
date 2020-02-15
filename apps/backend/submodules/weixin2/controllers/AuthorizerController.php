@@ -115,7 +115,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['head_img'] = array(
             'name' => '授权方头像',
             'data' => array(
-                'type' => 'image',
+                'type' => 'string',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -196,7 +196,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         $schemas['qrcode_url'] = array(
             'name' => '二维码图片的URL',
             'data' => array(
-                'type' => 'image',
+                'type' => 'string',
                 'length' => 50,
                 'defaultValue' => ''
             ),
