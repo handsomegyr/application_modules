@@ -35,9 +35,9 @@ class KeywordtocustommsgController extends \App\Backend\Controllers\FormControll
         $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -65,9 +65,9 @@ class KeywordtocustommsgController extends \App\Backend\Controllers\FormControll
         $schemas['custom_msg_id'] = array(
             'name' => '客服消息ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true

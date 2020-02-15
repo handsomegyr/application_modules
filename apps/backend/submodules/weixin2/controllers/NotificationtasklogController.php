@@ -262,9 +262,9 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['mass_msg_send_method_id'] = array(
             'name' => '群发消息发送方式记录ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -292,9 +292,9 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['template_msg_id'] = array(
             'name' => '模板消息记录ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -322,9 +322,9 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['mass_msg_id'] = array(
             'name' => '群发消息记录ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -353,9 +353,9 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['custom_msg_id'] = array(
             'name' => '客服消息记录ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -384,15 +384,15 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['notification_task_content_id'] = array(
             'name' => '所属推送任务内容',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),

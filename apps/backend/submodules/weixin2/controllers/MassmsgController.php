@@ -175,9 +175,9 @@ class MassmsgController extends \App\Backend\Controllers\FormController
         $schemas['media'] = array(
             'name' => '临时素材',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -237,9 +237,9 @@ class MassmsgController extends \App\Backend\Controllers\FormController
         $schemas['thumb_media'] = array(
             'name' => '缩略图的临时素材',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -327,7 +327,7 @@ class MassmsgController extends \App\Backend\Controllers\FormController
         $schemas['description'] = array(
             'name' => '描述',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),

@@ -321,6 +321,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
             )
         );
         $statusOption = array();
+        $statusOption['0'] = '非在线';
         $statusOption['1'] = 'web在线';
         $schemas['status'] = array(
             'name' => '客服在线状态',
@@ -439,7 +440,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
         $schemas['media'] = array(
             'name' => '媒体文件',
             'data' => array(
-                'type' => 'string',
+                'type' => 'file',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -459,7 +460,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
                 // 扩展设置
                 'extensionSettings' => function ($column, $Grid) {
                     //display()方法来通过传入的回调函数来处理当前列的值：
-                    $column->display(function () use ($column) {
+                    return $column->display(function () use ($column) {
                         return $column->downloadable();
                         // // 如果这一列的status字段的值等于1，直接显示title字段
                         // if ($this->type == 'image' || $this->type == 'thumb') {

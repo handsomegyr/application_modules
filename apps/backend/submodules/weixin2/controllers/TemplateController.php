@@ -203,9 +203,9 @@ class TemplateController extends \App\Backend\Controllers\FormController
         $schemas['content'] = array(
             'name' => '模板内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => true
@@ -234,7 +234,7 @@ class TemplateController extends \App\Backend\Controllers\FormController
         $schemas['example'] = array(
             'name' => '模板示例',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),

@@ -126,15 +126,15 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['custom_msg_id'] = array(
             'name' => '客服消息ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -212,9 +212,9 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['media'] = array(
             'name' => '临时素材',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -274,9 +274,9 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['thumb_media'] = array(
             'name' => '缩略图的临时素材',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -364,7 +364,7 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['description'] = array(
             'name' => '描述',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -400,7 +400,7 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -411,7 +411,7 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
                 // 扩展设置
                 'extensionSettings' => function ($column, $Grid) {
                     //display()方法来通过传入的回调函数来处理当前列的值：
-                    $column->display(function () use ($column) {
+                    return $column->display(function () use ($column) {
                         return $column->downloadable();
                     });
                 }
@@ -434,7 +434,7 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -445,7 +445,7 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
                 // 扩展设置
                 'extensionSettings' => function ($column, $Grid) {
                     //display()方法来通过传入的回调函数来处理当前列的值：
-                    $column->display(function () use ($column) {
+                    return $column->display(function () use ($column) {
                         return $column->downloadable();
                     });
                 }
@@ -601,15 +601,15 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -741,7 +741,7 @@ class CustommsgsendlogController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => true

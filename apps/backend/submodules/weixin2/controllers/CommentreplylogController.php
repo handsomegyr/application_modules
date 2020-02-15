@@ -204,7 +204,7 @@ class CommentreplylogController extends \App\Backend\Controllers\FormController
         $schemas['content'] = array(
             'name' => '回复内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),

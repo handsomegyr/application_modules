@@ -92,7 +92,7 @@ class StoreController extends \App\Backend\Controllers\FormController
                 // // 扩展设置
                 // 'extensionSettings' => function ($column, $Grid) {
                 //     //display()方法来通过传入的回调函数来处理当前列的值：
-                //     $column->display(function () {
+                //     return $column->display(function () {
                 //         return "<img src=" .  "/" . $this->logo . " height='50'/>";
                 //     });
                 // }

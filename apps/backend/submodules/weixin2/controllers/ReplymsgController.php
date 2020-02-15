@@ -183,9 +183,9 @@ class ReplymsgController extends \App\Backend\Controllers\FormController
         $schemas['media'] = array(
             'name' => '临时素材',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -246,9 +246,9 @@ class ReplymsgController extends \App\Backend\Controllers\FormController
         $schemas['thumb_media'] = array(
             'name' => '缩略图的临时素材',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -336,7 +336,7 @@ class ReplymsgController extends \App\Backend\Controllers\FormController
         $schemas['description'] = array(
             'name' => '描述',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -364,7 +364,7 @@ class ReplymsgController extends \App\Backend\Controllers\FormController
         $schemas['music'] = array(
             'name' => '音乐',
             'data' => array(
-                'type' => 'string',
+                'type' => 'file',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -383,7 +383,7 @@ class ReplymsgController extends \App\Backend\Controllers\FormController
                 // 扩展设置
                 'extensionSettings' => function ($column, $Grid) {
                     //display()方法来通过传入的回调函数来处理当前列的值：
-                    $column->display(function () use ($column) {
+                    return $column->display(function () use ($column) {
                         return $column->downloadable();
                     });
                 }
@@ -398,7 +398,7 @@ class ReplymsgController extends \App\Backend\Controllers\FormController
         $schemas['hqmusic'] = array(
             'name' => '高保真音乐',
             'data' => array(
-                'type' => 'string',
+                'type' => 'file',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -417,7 +417,7 @@ class ReplymsgController extends \App\Backend\Controllers\FormController
                 // 扩展设置
                 'extensionSettings' => function ($column, $Grid) {
                     //display()方法来通过传入的回调函数来处理当前列的值：
-                    $column->display(function () use ($column) {
+                    return $column->display(function () use ($column) {
                         return $column->downloadable();
                     });
                 }

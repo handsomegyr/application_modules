@@ -26,7 +26,6 @@ class CustommsgnewsController extends \App\Backend\Controllers\FormController
         $this->modelComponent = new Component();
 
         $this->customMsgItems = $this->modelCustomMsg->getAllByType("news", "_id");
-
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
@@ -101,9 +100,9 @@ class CustommsgnewsController extends \App\Backend\Controllers\FormController
         $schemas['custom_msg_id'] = array(
             'name' => '所属客服消息ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -158,7 +157,7 @@ class CustommsgnewsController extends \App\Backend\Controllers\FormController
         $schemas['description'] = array(
             'name' => '图文消息描述',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -212,7 +211,7 @@ class CustommsgnewsController extends \App\Backend\Controllers\FormController
         $schemas['big_pic_url'] = array(
             'name' => '大图图片链接',
             'data' => array(
-                'type' => 'string',
+                'type' => 'file',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -240,7 +239,7 @@ class CustommsgnewsController extends \App\Backend\Controllers\FormController
         $schemas['small_pic_url'] = array(
             'name' => '小图图片链接',
             'data' => array(
-                'type' => 'string',
+                'type' => 'file',
                 'length' => 255,
                 'defaultValue' => ''
             ),

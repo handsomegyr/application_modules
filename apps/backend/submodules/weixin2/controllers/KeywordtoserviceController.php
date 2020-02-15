@@ -35,9 +35,9 @@ class KeywordtoserviceController extends \App\Backend\Controllers\FormController
         $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -65,9 +65,9 @@ class KeywordtoserviceController extends \App\Backend\Controllers\FormController
         $schemas['service_id'] = array(
             'name' => '服务ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true

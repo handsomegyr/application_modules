@@ -193,7 +193,7 @@ class MsgrecordController extends \App\Backend\Controllers\FormController
         $schemas['text'] = array(
             'name' => '聊天记录',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),

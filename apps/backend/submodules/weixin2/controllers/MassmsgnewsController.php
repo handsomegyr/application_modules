@@ -105,9 +105,9 @@ class MassmsgnewsController extends \App\Backend\Controllers\FormController
         $schemas['mass_msg_id'] = array(
             'name' => '所属群发消息ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -163,9 +163,9 @@ class MassmsgnewsController extends \App\Backend\Controllers\FormController
         $schemas['thumb_media'] = array(
             'name' => '缩略图的临时素材',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -254,7 +254,7 @@ class MassmsgnewsController extends \App\Backend\Controllers\FormController
         $schemas['digest'] = array(
             'name' => '图文消息的描述',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -309,7 +309,7 @@ class MassmsgnewsController extends \App\Backend\Controllers\FormController
         $schemas['content'] = array(
             'name' => '图文消息页面的内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -396,9 +396,9 @@ class MassmsgnewsController extends \App\Backend\Controllers\FormController
         $schemas['only_fans_can_comment'] = array(
             'name' => '是否粉丝才可评论',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
@@ -438,7 +438,7 @@ class MassmsgnewsController extends \App\Backend\Controllers\FormController
                 'input_type' => 'number',
                 'is_show' => true,
                 'items' => '',
-                'name' => '要更新的文章在图文消息中的位置（多图文消息时，此字段才有意义），第一篇为0',
+                'help' => '要更新的文章在图文消息中的位置（多图文消息时，此字段才有意义），第一篇为0',
             ),
             'list' => array(
                 'is_show' => true,

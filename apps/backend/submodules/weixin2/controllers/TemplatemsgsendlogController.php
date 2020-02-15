@@ -214,7 +214,7 @@ class TemplatemsgsendlogController extends \App\Backend\Controllers\FormControll
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => true
@@ -327,15 +327,15 @@ class TemplatemsgsendlogController extends \App\Backend\Controllers\FormControll
         $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),

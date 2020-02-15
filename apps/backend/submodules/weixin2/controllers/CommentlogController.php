@@ -234,7 +234,7 @@ class CommentlogController extends \App\Backend\Controllers\FormController
         $schemas['content'] = array(
             'name' => '评论内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),

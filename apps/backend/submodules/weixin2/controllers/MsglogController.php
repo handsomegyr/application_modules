@@ -214,7 +214,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['Content'] = array(
             'name' => '消息内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -276,7 +276,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -355,7 +355,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['Recognition'] = array(
             'name' => '语音识别结果',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -546,7 +546,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['Description'] = array(
             'name' => '消息描述',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -682,7 +682,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['ScanCodeInfo'] = array(
             'name' => '扫描信息',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -709,7 +709,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['SendPicsInfo'] = array(
             'name' => '发送的图片信息',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -736,7 +736,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['SendLocationInfo'] = array(
             'name' => '发送的位置信息',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -771,7 +771,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
                 'help' => '二维码的ticket，可用来换取二维码图片',
@@ -1036,7 +1036,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['CopyrightCheckResult'] = array(
             'name' => '图文校验结果',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -1090,7 +1090,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['RefuseReason'] = array(
             'name' => '审核不通过原因',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -1615,7 +1615,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['ModifyBonus'] = array(
-            'name' => '变动的积分值。',
+            'name' => '变动的积分值',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
@@ -1671,7 +1671,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['Detail'] = array(
             'name' => '报警详细信息',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -1916,9 +1916,9 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['Memo'] = array(
             'name' => '系统备注',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
-                'defaultValue' => '{}'
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -1944,7 +1944,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['ReceiptInfo'] = array(
             'name' => '所开发票的详情',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -2188,7 +2188,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['request_xml'] = array(
             'name' => '原始消息内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -2215,7 +2215,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['response'] = array(
             'name' => '消息返回',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -2242,7 +2242,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
         $schemas['encrypt_response'] = array(
             'name' => '加密消息返回',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -2271,7 +2271,7 @@ class MsglogController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false

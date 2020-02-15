@@ -120,15 +120,15 @@ class MassmsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['mass_msg_id'] = array(
             'name' => '群发消息记录ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -204,9 +204,9 @@ class MassmsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['media'] = array(
             'name' => '临时素材',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -266,9 +266,9 @@ class MassmsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['thumb_media'] = array(
             'name' => '缩略图的临时素材',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -356,7 +356,7 @@ class MassmsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['description'] = array(
             'name' => '描述',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -583,7 +583,7 @@ class MassmsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['touser'] = array(
             'name' => '填写图文消息的接收者',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -666,15 +666,15 @@ class MassmsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -801,7 +801,7 @@ class MassmsgsendlogController extends \App\Backend\Controllers\FormController
         $schemas['mass_msg_content'] = array(
             'name' => '群发消息内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),

@@ -189,9 +189,9 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
         $schemas['mass_msg_send_method_id'] = array(
             'name' => '群发消息发送方式记录ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -220,9 +220,9 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
         $schemas['template_msg_id'] = array(
             'name' => '模板消息记录ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -250,9 +250,9 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
         $schemas['mass_msg_id'] = array(
             'name' => '群发消息记录ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -281,9 +281,9 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
         $schemas['custom_msg_id'] = array(
             'name' => '客服消息记录ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
