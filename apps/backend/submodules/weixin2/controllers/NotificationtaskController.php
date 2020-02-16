@@ -160,7 +160,7 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => 1
+                'defaultValue' => 2
             ),
             'validation' => array(
                 'required' => true

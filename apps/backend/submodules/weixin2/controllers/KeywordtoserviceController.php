@@ -23,7 +23,7 @@ class KeywordtoserviceController extends \App\Backend\Controllers\FormController
         $this->modelService = new Service();
 
         $this->keywordItems = $this->modelKeyword->getAll();
-        $this->serviceItems = $this->modelService->getAll;
+        $this->serviceItems = $this->modelService->getAll();
         parent::initialize();
     }
     private $keywordItems = null;

@@ -66,9 +66,9 @@ class NotificationtaskcontentController extends \App\Backend\Controllers\FormCon
         $schemas['notification_task_id'] = array(
             'name' => '所属推送任务',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -98,7 +98,7 @@ class NotificationtaskcontentController extends \App\Backend\Controllers\FormCon
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false

@@ -140,9 +140,9 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['notification_task_process_id'] = array(
             'name' => '推送任务处理ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -170,15 +170,15 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $schemas['notification_task_id'] = array(
             'name' => '所属推送任务',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -233,7 +233,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
             'data' => array(
                 'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => 1
+                'defaultValue' => 2
             ),
             'validation' => array(
                 'required' => true
@@ -440,7 +440,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
@@ -645,7 +645,7 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
