@@ -63,10 +63,15 @@ $filterID = 'filter-box';
 
                         <?php foreach ($this->view->headerTools as $key => $tool) { ?>
                             <?php if (!empty($tool['is_show']) && !empty($tool['is_export'])) { ?>
-                                <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
-                                    <div class="btn-group pull-left" style="margin-left: 10px;">
-                                        <button id="btnExport-<?php echo $key ?>" class="btn btn-info submit btn-sm header-tool-export-<?php echo $key ?>"><i class="fa <?php echo empty($tool['icon']) ? 'fa-download' : $tool['icon'] ?>"></i>&nbsp;&nbsp;<?php echo $tool['title'] ?></button>
-                                    </div>
+                                <?php
+                                $is_show4HeaderTool4Export = is_callable($tool['is_show']) ? $tool['is_show']() : true;
+                                ?>
+                                <?php if (!empty($is_show4HeaderTool4Export)) { ?>
+                                    <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
+                                        <div class="btn-group pull-left" style="margin-left: 10px;">
+                                            <button id="btnExport-<?php echo $key ?>" class="btn btn-info submit btn-sm header-tool-export-<?php echo $key ?>"><i class="fa <?php echo empty($tool['icon']) ? 'fa-download' : $tool['icon'] ?>"></i>&nbsp;&nbsp;<?php echo $tool['title'] ?></button>
+                                        </div>
+                                    <?php } ?>
                                 <?php } ?>
                             <?php } ?>
                         <?php } ?>

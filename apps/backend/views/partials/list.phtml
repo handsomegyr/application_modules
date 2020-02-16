@@ -44,9 +44,14 @@
 
 							<?php foreach ($this->view->headerTools as $key => $tool) { ?>
 								<?php if (!empty($tool['is_show']) && empty($tool['is_export'])) { ?>
-									<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary header-tool-<?php echo $key ?>">
-											<i class="fa <?php echo empty($tool['icon']) ? 'fa-coffee' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>
+									<?php
+									$is_show4HeaderTool4NotExport = is_callable($tool['is_show']) ? $tool['is_show']() : true;
+									?>
+									<?php if (!empty($is_show4HeaderTool4NotExport)) { ?>
+										<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
+											<a href="javascript:void(0);" class="btn btn-sm btn-primary header-tool-<?php echo $key ?>">
+												<i class="fa <?php echo empty($tool['icon']) ? 'fa-coffee' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>
+										<?php } ?>
 									<?php } ?>
 								<?php } ?>
 							<?php } ?>

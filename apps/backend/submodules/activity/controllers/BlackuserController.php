@@ -31,14 +31,20 @@ class BlackuserController extends \App\Backend\Controllers\FormController
         $tools['exportcsv'] = array(
             'title' => 'Csv导出',
             'action' => 'exportcsv',
-            'is_show' => true,
+            // 'is_show' => true,
+            'is_show' => function () {
+                return true;
+            },
             'is_export' => true,
             'icon' => '',
         );
         $tools['importcsv'] = array(
             'title' => 'Csv导入',
             'action' => 'importcsv',
-            'is_show' => true,
+            // 'is_show' => true,
+            'is_show' => function () {
+                return true;
+            },
             'is_export' => false,
             'icon' => 'fa-upload',
         );
@@ -51,7 +57,10 @@ class BlackuserController extends \App\Backend\Controllers\FormController
         $tools['exchangeactivity'] = array(
             'title' => '修改所属活动',
             'action' => 'exchangeactivity',
-            'is_show' => true,
+            // 'is_show' => true,
+            'is_show' => function ($row) {
+                return true;
+            },
             'icon' => 'fa-pencil-square-o',
         );
 
@@ -63,7 +72,10 @@ class BlackuserController extends \App\Backend\Controllers\FormController
         $tools['exchangeactivity'] = array(
             'title' => '修改所属活动',
             'action' => 'exchangeactivity',
-            'is_show' => true,
+            // 'is_show' => true,
+            'is_show' => function ($row) {
+                return true;
+            },
             'icon' => 'fa-pencil-square-o',
         );
 

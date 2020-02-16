@@ -24,6 +24,54 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
     }
     protected $componentItems = null;
 
+    protected function getFormTools2($tools)
+    {
+        $tools['getauthorizerinfo'] = array(
+            'title' => '获取帐号基本信息',
+            'action' => 'getauthorizerinfo',
+            'is_show' => true,
+            // 'is_show' => function ($row) {
+            //     if (!empty($row) &&  !empty($row['authorizer_appid']) && !empty($row['component_appid'])) {
+            //         return true;
+            //     } else {
+            //         return false;
+            //     }
+            // },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="获取帐号基本信息"})
+     *
+     * @name 获取帐号基本信息
+     */
+    public function getauthorizerinfoAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/authorizer/getauthorizerinfo?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAuthorizer->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['appid'], $data['component_appid']);
+            $res = $weixinopenService->getAuthorizerInfo();
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

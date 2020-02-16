@@ -732,6 +732,13 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
             // 根据检索条件获取列表
             $list = $this->getList($input);
+            // 保存一下从数据库中取出的数据行
+            $orginalDataList = array();
+            if (!empty($list['data'])) {
+                foreach ($list['data'] as $row) {
+                    $orginalDataList[$row['id']] = $row;
+                }
+            }
 
             // 将列表数据按照画面要求进行显示
             $list = $this->getList4Show($input, $list);
@@ -756,6 +763,24 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                                 }
                             }
                         }
+                    }
+                }
+
+                // 权限控制相关
+                // 编辑和删除按钮默认都是显示的
+                $item['op']['edit'] = true;
+                $item['op']['remove'] = true;
+
+                // 返回哪些rowtools可以操作
+                $rowTools = $this->getRowTools();
+                if (!empty($rowTools)) {
+                    foreach ($rowTools as $opkey => $tool) {
+                        $is_can = false;
+                        $dataRow = isset($orginalDataList[$item['id']]) ? $orginalDataList[$item['id']] : array();
+                        if (!empty($tool['is_show'])) {
+                            $is_can = is_callable($tool['is_show']) ? $tool['is_show']($dataRow) : true;
+                        }
+                        $item['op'][$opkey] = $is_can;
                     }
                 }
             }
