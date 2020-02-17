@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Questionnaire\Controllers;
 
 use App\Backend\Submodules\Questionnaire\Models\Questionnaire;
@@ -20,13 +21,186 @@ class QuestionnaireController extends \App\Backend\Controllers\FormController
     {
         $this->modelQuestionnaire = new Questionnaire();
         $this->modelActivity = new Activity();
+
+        $this->activityIdItems = $this->modelActivity->getAll();
         parent::initialize();
     }
+    private $activityIdItems = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
+
+        $schemas['name'] = array(
+            'name' => '问卷名',
+            'data' => array(
+                'type' => 'string',
+                'length' => 50,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $now = date('Y-m-d') . " 00:00:00";
+        $now = strtotime($now);
+
+        $schemas['start_time'] = array(
+            'name' => '开始时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => 19,
+                'defaultValue' => getCurrentTime($now)
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['end_time'] = array(
+            'name' => '截止时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => 19,
+                'defaultValue' => getCurrentTime($now + 3600 * 24 * 2 - 1)
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         
+        $schemas['is_rand'] = array(
+            'name' => '是否随机问卷',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['rand_number'] = array(
+            'name' => '随机问卷题目数量',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['show_order'] = array(
+            'name' => '显示顺序',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'is_editable' => true
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['activity_id'] = array(
             'name' => '所属活动',
             'data' => array(
@@ -39,175 +213,49 @@ class QuestionnaireController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
-                    return $this->modelActivity->getAll();
-                }
+                'items' => $this->activityIdItems
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'activity_name'
+                'items' => $this->activityIdItems
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
-            )
-        );
-        
-        $schemas['name'] = array(
-            'name' => '问卷名称',
-            'data' => array(
-                'type' => 'string',
-                'length' => '50'
+                'items' => $this->activityIdItems
             ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
+            'export' => array(
                 'is_show' => true
             )
         );
-        
-        $now = date('Y-m-d') . " 00:00:00";
-        $now = strtotime($now);
-        
-        $schemas['start_time'] = array(
-            'name' => '开始时间',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => '19',
-                'defaultValue' => getCurrentTime($now)
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['end_time'] = array(
-            'name' => '截止时间',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => '19',
-                'defaultValue' => getCurrentTime($now + 3600 * 24 * 2 - 1)
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['is_rand'] = array(
-            'name' => '是否随机获取',
-            'data' => array(
-                'type' => 'boolean',
-                'length' => '1'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => 1
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['rand_number'] = array(
-            'name' => '随机题目数量',
-            'data' => array(
-                'type' => 'integer',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['show_order'] = array(
-            'name' => '排序',
-            'data' => array(
-                'type' => 'integer',
-                'length' => '10'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024,
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 

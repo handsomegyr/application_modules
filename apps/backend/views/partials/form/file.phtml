@@ -6,7 +6,7 @@
 
         <?php $this->partial('partials/form/error'); ?>
 
-        <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="file" class="<?php echo $key ?>" name="<?php echo $key ?>" data-initial-preview="<?php echo $data_initial_preview ?>" data-initial-caption="<?php echo $data_initial_caption ?>" />
+        <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="file" class="<?php echo $key ?>" name="<?php echo $key ?>" />
 
         <?php $this->partial('partials/form/help-block'); ?>
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Common\Controllers;
 
 use Respect\Validation\Validator as v;
@@ -6,6 +7,8 @@ use Phalcon\Mvc\Controller;
 
 class ControllerBase extends Controller
 {
+
+    protected $now = 0;
 
     protected $moduleName = '';
 
@@ -19,6 +22,12 @@ class ControllerBase extends Controller
 
     protected function initialize()
     {
+        if (defined('CURRENT_TIMESTAMP')) {
+            $this->now = CURRENT_TIMESTAMP;
+        } else {
+            $this->now = time();
+        }
+
         $scheme = $this->request->getScheme();
         $httpHost = $this->request->getHttpHost();
         $this->baseUrl = $this->url->getBaseUri();
@@ -28,9 +37,9 @@ class ControllerBase extends Controller
         $this->moduleName = $this->router->getModuleName();
         $this->controllerName = $this->router->getControllerName();
         $this->actionName = $this->router->getActionName();
-        
+
         $this->view->setVar("commonResourceUrl", "/common/");
-        
+
         $this->view->setVar("moduleName", $this->moduleName);
         $this->view->setVar("controllerName", $this->controllerName);
         $this->view->setVar("actionName", $this->actionName);
@@ -43,7 +52,7 @@ class ControllerBase extends Controller
 
     protected function getUrl($action)
     {
-        return  $this->url->get("{$this->moduleName}/{$this->controllerName}/{$action}");        
+        return  $this->url->get("{$this->moduleName}/{$this->controllerName}/{$action}");
     }
 
     public function get($string, $defaultParam = null, $defaultType = "string")
@@ -129,20 +138,20 @@ class ControllerBase extends Controller
     protected function validateEmail($email)
     {
         $isOk = v::notEmpty()->email()->validate($email);
-        if (! $isOk) {
+        if (!$isOk) {
             return $this->errors['e506'];
         }
-        
+
         return $this->errors['none'];
     }
 
     protected function validateMobile($mobile)
     {
         // $isOk = v::notEmpty()->mobile()->validate($mobile);
-        if (empty($mobile) && ! isValidMobile($mobile)) {
+        if (empty($mobile) && !isValidMobile($mobile)) {
             return $this->errors['e508'];
         }
-        
+
         return $this->errors['none'];
     }
 
@@ -150,14 +159,14 @@ class ControllerBase extends Controller
     {
         $vcodeValidator = v::notEmpty()->noWhitespace();
         $isOk = $vcodeValidator->validate($vcode);
-        if (! $isOk) {
+        if (!$isOk) {
             return $this->errors['e513'];
         }
         if (empty($_SESSION['vcode']) || time() > $_SESSION['vcode']['expire_time']) {
             return $this->errors['e513'];
         }
-        
-        if (! ($_SESSION['vcode']['vkey'] == $vkey && $_SESSION['vcode']['vcode'] == $vcode)) {
+
+        if (!($_SESSION['vcode']['vkey'] == $vkey && $_SESSION['vcode']['vcode'] == $vcode)) {
             return $this->errors['e513'];
         }
         return $this->errors['none'];

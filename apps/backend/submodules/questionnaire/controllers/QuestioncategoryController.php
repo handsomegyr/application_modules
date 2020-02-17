@@ -2,28 +2,26 @@
 
 namespace App\Backend\Submodules\Questionnaire\Controllers;
 
-use App\Backend\Submodules\Questionnaire\Models\QuestionType;
+use App\Backend\Submodules\Questionnaire\Models\QuestionCategory;
 
 /**
- * @title({name="问卷题型管理"})
+ * @title({name="题目分类"})
  *
- * @name 问卷题型管理
+ * @name 题目分类
  */
-class QuestiontypeController extends \App\Backend\Controllers\FormController
+class QuestioncategoryController extends \App\Backend\Controllers\FormController
 {
-
-    private $modelQuestionType;
+    private $modelQuestionCategory;
 
     public function initialize()
     {
-        $this->modelQuestionType = new QuestionType();
+        $this->modelQuestionCategory = new QuestionCategory();
         parent::initialize();
     }
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-
         $schemas['code'] = array(
             'name' => '分类值',
             'data' => array(
@@ -75,16 +73,17 @@ class QuestiontypeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+
         return $schemas;
     }
 
     protected function getName()
     {
-        return '问卷题型';
+        return '题目分类';
     }
 
     protected function getModel()
     {
-        return $this->modelQuestionType;
+        return $this->modelQuestionCategory;
     }
 }

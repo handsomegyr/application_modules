@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Controllers;
 
 /**
@@ -40,19 +41,19 @@ class QuestionnaireController extends ControllerBase
         try {
             $userId = $this->get("userId", '');
             if (empty($userId)) {
-                echo ($this->error(- 1, "用户ID不能为空"));
+                echo ($this->error(-1, "用户ID不能为空"));
                 return false;
             }
             $questionnaireId = $this->get("questionnaireId", '');
             if (empty($questionnaireId)) {
-                echo ($this->error(- 2, "问卷ID不能为空"));
+                echo ($this->error(-2, "问卷ID不能为空"));
                 return false;
             }
-            
+
             // 获取问卷信息
             $questionnaireInfo = $this->modelQuestionnaire->getInfoById($questionnaireId);
             if (empty($questionnaireInfo)) {
-                echo ($this->error(- 3, "该问卷ID的问卷不存在"));
+                echo ($this->error(-3, "该问卷ID的问卷不存在"));
                 return false;
             }
             // 获取问卷题目和选项
@@ -68,7 +69,7 @@ class QuestionnaireController extends ControllerBase
                 if (empty($randomInfo)) {
                     // 不存在，重新生成一套随机问卷
                     $questionList = $this->modelQuestion->getRandomListByQuestionnaireId($questionnaireId, $questionnaireInfo['rand_number']);
-                    if (! empty($questionList)) {
+                    if (!empty($questionList)) {
                         $questionIds = array();
                         foreach ($questionList as $quesionInfo) {
                             $questionIds[] = $quesionInfo['_id'];
@@ -83,34 +84,45 @@ class QuestionnaireController extends ControllerBase
                 }
                 $randomId = $randomInfo['_id'];
             }
-            
+
             if (empty($questionList)) {
-                echo ($this->error(- 4, "该问卷的题目未设置"));
+                echo ($this->error(-4, "该问卷的题目未设置"));
                 return false;
             }
             // 获取所有的题目选项
             foreach ($questionList as $questionInfo) {
                 $questionItemList = $this->modelQuestionItem->getListByQuestionId($questionInfo['_id']);
                 if (empty($questionItemList)) {
-                    echo ($this->error(- 5, "该问卷的问卷题目的选项未设置"));
+                    echo ($this->error(-5, "该问卷的问卷题目的选项未设置"));
                     return false;
                 }
                 $items = array();
                 foreach ($questionItemList as $questionItemInfo) {
                     $items[] = array(
+                        'question_item_id' => $questionItemInfo['_id'],
                         'key' => $questionItemInfo['key'],
+                        'score' => $questionItemInfo['score'],
                         'content' => $questionItemInfo['content'],
-                        'is_other' => $questionItemInfo['is_other']
+                        'pic_url' => $questionItemInfo['pic_url'],
+                        'video_url' => $questionItemInfo['video_url'],
+                        'voice_url' => $questionItemInfo['voice_url'],
+                        'is_other' => $questionItemInfo['is_other'],
+                        'next_question_id' => $questionItemInfo['next_question_id'],
                     );
                 }
                 $questions[] = array(
                     'question_id' => $questionInfo['_id'],
                     'name' => $questionInfo['name'],
+                    'correct_answer' => $questionInfo['correct_answer'],
                     'type' => $questionInfo['question_type'],
                     'is_required' => $questionInfo['is_required'],
                     'content' => $questionInfo['content'],
                     'picture' => $questionInfo['picture'],
+                    'video' => $questionInfo['video'],
+                    'voice' => $questionInfo['voice'],
                     'score' => $questionInfo['score'],
+                    'question_category' => intval($questionInfo['question_category']),
+                    'show_style' => intval($questionInfo['show_style']),
                     'next_question_id' => $questionInfo['next_question_id'],
                     'items' => $items
                 );
@@ -140,12 +152,12 @@ class QuestionnaireController extends ControllerBase
             $nickname = $this->get("nickname", '');
             $headimgurl = $this->get("headimgurl", '');
             if (empty($userId)) {
-                echo ($this->error(- 1, "用户ID不能为空"));
+                echo ($this->error(-1, "用户ID不能为空"));
                 return false;
             }
             $questionnaireId = $this->get("questionnaireId", '');
             if (empty($questionnaireId)) {
-                echo ($this->error(- 2, "问卷ID不能为空"));
+                echo ($this->error(-2, "问卷ID不能为空"));
                 return false;
             }
             $randomId = $this->get("randomId", '');
@@ -178,65 +190,65 @@ class QuestionnaireController extends ControllerBase
 }';
             $answers = json_decode($answers, true);
             if (empty($answers)) {
-                echo ($this->error(- 3, "该问卷的答题信息不能为空"));
+                echo ($this->error(-3, "该问卷的答题信息不能为空"));
                 return false;
             }
-            
+
             // 答题
             // 检查是否锁定，如果没有锁定加锁
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $userId, $questionnaireId);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
-                echo $this->error(- 40499, "上次操作还未完成,请等待");
+                echo $this->error(-40499, "上次操作还未完成,请等待");
                 return false;
             }
-            
+
             // 获取问卷信息
             $questionnaireInfo = $this->modelQuestionnaire->getInfoById($questionnaireId);
             if (empty($questionnaireInfo)) {
-                echo ($this->error(- 5, "该问卷ID的问卷不存在"));
+                echo ($this->error(-5, "该问卷ID的问卷不存在"));
                 return false;
             }
-            
+
             // 如果是随机问卷的话
-            if (! empty($questionnaireInfo['is_rand'])) {
+            if (!empty($questionnaireInfo['is_rand'])) {
                 if (empty($randomId)) {
-                    echo ($this->error(- 4, "随机问卷ID不能为空"));
+                    echo ($this->error(-4, "随机问卷ID不能为空"));
                     return false;
                 }
                 $randomInfo = $this->modelRandom->getInfoById($randomId);
                 if (empty($randomInfo)) {
-                    echo ($this->error(- 6, "该随机问卷不存在"));
+                    echo ($this->error(-6, "该随机问卷不存在"));
                     return false;
                 }
                 if ($randomInfo['questionnaire_id'] != $questionnaireId || $randomInfo['user_id'] != $userId) {
-                    echo ($this->error(- 7, "该随机问卷不存在"));
+                    echo ($this->error(-7, "该随机问卷不存在"));
                     return false;
                 }
-                if (! empty($randomInfo['is_finish'])) {
-                    echo ($this->error(- 8, "该随机问卷已答题过了"));
+                if (!empty($randomInfo['is_finish'])) {
+                    echo ($this->error(-8, "该随机问卷已答题过了"));
                     return false;
                 }
             }
-            
+
             // 根据阅卷ID获取题目列表
             $questionList = $this->modelQuestion->getListByQuestionnaireId($questionnaireInfo['_id']);
             if (empty($questionList)) {
-                echo ($this->error(- 9, "该问卷的题目列表不存在"));
+                echo ($this->error(-9, "该问卷的题目列表不存在"));
                 return false;
             }
             // 检查用户答案
             $ret = $this->modelQuestion->checkAnswers($questionList, $answers);
-            
+
             // 完成随机问卷
             if ($randomId) {
-                $this->modelRandom->finish($randomId);
+                $this->modelRandom->finish($randomId, $this->now);
             }
             // 记录答案
-            $answerInfo = $this->modelAnswer->record($userId, $nickname, $headimgurl, $questionnaireId, $randomId, $ret['answer_list'], $ret['score'], $ret['question_num'], $ret['correct_num'], $ret['wrong_num'], $ret['noanswer_num']);
-            
+            $answerInfo = $this->modelAnswer->record($userId, $nickname, $headimgurl, $questionnaireId, $randomId, $ret['answer_list'], $ret['score'], $ret['question_num'], $ret['correct_num'], $ret['wrong_num'], $ret['noanswer_num'], $this->now);
+
             // 进行统计处理
-            if (! empty($ret['answer_list'])) {
+            if (!empty($ret['answer_list'])) {
                 foreach ($ret['answer_list'] as $question) {
                     foreach ($question['answers'] as $item) {
                         $this->modelQuestionItem->incUsedCount($item['item_id'], 1);
@@ -254,4 +266,3 @@ class QuestionnaireController extends ControllerBase
         }
     }
 }
-

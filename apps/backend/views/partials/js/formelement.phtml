@@ -33,6 +33,68 @@
                 });
         <?php } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file" || 
                         $field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") { ?>
+
+        <?php
+            $sortable = true;
+            $path = "";
+            if (!empty($field['data'][$field['data']['type']])) {
+                $fileInfo = $field['data'][$field['data']['type']];
+                $path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '';
+            }
+            $data_initial_preview = "";
+            $data_initial_caption = "";
+            $initialPreviewConfig = array();
+            $initialPreview = array();
+            if (!empty($this->view->row[$key])) {
+                if ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {
+                    $fileList4Upload=array($this->view->row[$key]);
+                }
+                foreach ($fileList4Upload as $idx => $fileInfo) {
+                    $data_initial_preview = $this->view->baseUrl . "service/file/index?upload_path=" . $path . "&id=" . $fileInfo . "&s=1";
+                    // 
+                    $data_initial_caption = basename($fileInfo);
+                    // {
+                    //     "caption": "faa855d089c01a90574083cb28bd4eea.png",
+                    //     "key": 0,
+                    //     "type": "image",
+                    //     "downloadUrl": "http://qiaohuoss.eintone.com/qh/images/faa855d089c01a90574083cb28bd4eea.png"
+                    // }
+                    $initialPreviewConfigItem = array(
+                        'caption' => $data_initial_caption,
+                        'key' => $fileInfo,
+                        // 'downloadUrl' => "http://www.applicationmodule.com{$data_initial_preview}"
+                        'downloadUrl' => $data_initial_preview
+                    );
+                    if ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "multipleImage") {
+                        $initialPreviewConfigItem['type'] = 'image';
+                    }else{
+                        // ,"type":"audio","filetype":"audio\/mp3"
+                        if(!empty($field['form'][$field['form']['input_type']]['type'])){
+                            $initialPreviewConfigItem['type'] = $field['form'][$field['form']['input_type']]['type'];
+                        }
+                        if(!empty($field['form'][$field['form']['input_type']]['filetype'])){
+                            $initialPreviewConfigItem['filetype'] = $field['form'][$field['form']['input_type']]['filetype'];
+                        }
+                        if(empty($initialPreviewConfigItem['type'])){
+                            if(!empty($path)){
+                                $filename = APP_PATH. 'public/upload/' . $path . '/' . $fileInfo;
+                            }else{
+                                $filename = APP_PATH. 'public/upload/' . $fileInfo;
+                            }
+                            // die($filename) ;      
+                            $fi = new finfo(FILEINFO_MIME_TYPE);
+                            $mime_type = $fi->file($filename);
+                            $mime_type_arr = explode('/',$mime_type);
+                            $initialPreviewConfigItem['type'] = $mime_type_arr[0];
+                            $initialPreviewConfigItem['filetype'] = $mime_type;
+                        }                        
+                    }                  
+
+                    $initialPreviewConfig[] = $initialPreviewConfigItem;
+                    $initialPreview[] = $data_initial_preview;
+                }
+            }
+            ?>
             // $("input.<?php echo $key ?>").fileinput();
             $("input.<?php echo $key ?>").fileinput({
             <?php if(!empty($initialPreviewConfig)){?>

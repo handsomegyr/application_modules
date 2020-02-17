@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Questionnaire\Controllers;
 
 use App\Backend\Submodules\Questionnaire\Models\QuestionItem;
@@ -20,18 +21,21 @@ class QuestionitemController extends \App\Backend\Controllers\FormController
     {
         $this->modelQuestionItem = new QuestionItem();
         $this->modelQuestion = new Question();
+        $this->questionIdItems = $this->modelQuestion->getAll();
         parent::initialize();
     }
+    private $questionIdItems = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['question_id'] = array(
             'name' => '所属题目',
             'data' => array(
                 'type' => 'string',
-                'length' => '24'
+                'length' => 24,
+                'defaultValue' => ""
             ),
             'validation' => array(
                 'required' => true
@@ -39,72 +43,210 @@ class QuestionitemController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
-                    return $this->modelQuestion->getAll();
-                }
+                'items' => $this->questionIdItems
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'question_name'
+                'items' => $this->questionIdItems
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelQuestion->getAll()
+                'items' => $this->questionIdItems
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['key'] = array(
             'name' => '选项',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 50,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'is_editable' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['content'] = array(
             'name' => '内容',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'textarea', // 'ueditor',
-                'is_show' => true
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'is_editable' => true
+            ),
+            'search' => array(
                 'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['pic_url'] = array(
+            'name' => '图片URL',
+            'data' => array(
+                'type' => 'file',
+                'length' => 300,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
             )
         );
-                
+        $schemas['video_url'] = array(
+            'name' => '视频URL',
+            'data' => array(
+                'type' => 'file',
+                'length' => 300,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'file',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    //display()方法来通过传入的回调函数来处理当前列的值：
+                    return $column->display(function () use ($column) {
+                        return $column->downloadable();
+                    });
+                }
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['voice_url'] = array(
+            'name' => '音频URL',
+            'data' => array(
+                'type' => 'file',
+                'length' => 300,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'file',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    //display()方法来通过传入的回调函数来处理当前列的值：
+                    return $column->display(function () use ($column) {
+                        return $column->downloadable();
+                    });
+                }
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
+        $schemas['score'] = array(
+            'name' => '分数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'is_editable' => true
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['is_other'] = array(
             'name' => '是否其他',
             'data' => array(
                 'type' => 'boolean',
-                'length' => '1',
+                'length' => 1,
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -113,99 +255,129 @@ class QuestionitemController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => 1
+                'list_type' => '1',
+                'render' => '',
+                'is_editable' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
-        $schemas['used_times'] = array(
-            'name' => '被选次数',
+        $schemas['next_question_id'] = array(
+            'name' => '下一题',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ""
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->questionIdItems
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'items' => $this->questionIdItems
             ),
             'search' => array(
-                'is_show' => false
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->questionIdItems
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
-        $schemas['score'] = array(
-            'name' => '分数',
+
+        $schemas['used_times'] = array(
+            'name' => '被选次数',
             'data' => array(
                 'type' => 'integer',
-                'length' => 11
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'input_type' => 'number',
-                'is_show' => false,
-                // single
-                'condition_type' => 'period'
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['show_order'] = array(
-            'name' => '排序',
+            'name' => '显示顺序',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'is_editable' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024,
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
+
         return $schemas;
     }
 
@@ -217,14 +389,5 @@ class QuestionitemController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelQuestionItem;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $questionList = $this->modelQuestion->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['question_name'] = isset($questionList[$item['question_id']]) ? $questionList[$item['question_id']] : "--";
-        }
-        return $list;
     }
 }

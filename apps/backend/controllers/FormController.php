@@ -19,8 +19,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     // 是否只读
     protected $readonly = false;
 
-    protected $now = 0;
-
     protected function getName()
     {
         return '';
@@ -247,6 +245,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
             if (empty($field['form']['placeholder'])) {
                 $field['form']['placeholder'] = "输入 " . $field['form']['name'];
+            }
+
+            if ($field['form']['input_type'] == 'image' || $field['form']['input_type'] == 'multipleImage') {
+                $field['form'][$field['form']['input_type']]['type'] = 'image';
+                $field['form'][$field['form']['input_type']]['filetype'] = '';
             }
 
             if (empty($field['search']['name'])) {
