@@ -215,7 +215,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         unset($schemas['__MODIFY_TIME__']);
         unset($schemas['__REMOVED__']);
 
-        foreach ($schemas as &$field) {
+        foreach ($schemas as $key => &$field) {
 
             if (empty($field['list']['name'])) {
                 $field['list']['name'] = $field['name'];
@@ -227,6 +227,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 ) {
                     $field['list']['render'] = 'img';
                 }
+            }
+
+            if (!empty($field['list']['is_editable']) && empty($field['list']['ajax'])) {
+                $field['list']['ajax'] = 'update?_field_edt_=' . $key;
             }
 
             if ($field['data']['type'] == 'json') {
@@ -429,7 +433,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $schemas;
     }
 
-    protected function getFilterInput()
+    protected function getFilterInput($fields4change = array())
     {
         $files = array();
         // Check if the user has uploaded files
@@ -452,11 +456,16 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             'trim',
             'string'
         ), '');
+
         foreach ($schemas as $key => $field) {
             if (empty($field['form']['is_show'])) {
                 continue;
             }
-
+            if (!empty($fields4change)) {
+                if (!in_array($key, $fields4change)) {
+                    continue;
+                }
+            }
             $input->addSchema($key, $field);
             // 文件的话,专门处理
             if ($field['data']['type'] == "file") {
@@ -897,7 +906,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         try {
             $this->view->disable();
-            $input = $this->getFilterInput();
+            $fields4change = array();
+
+            // 如果指定了某个字段需要更新的话
+            $field = $this->request->get('_field_edt_', array(
+                'trim',
+                'string'
+            ), '');
+            if (!empty($field)) {
+                $fields4change[] = $field;
+            }
+            $input = $this->getFilterInput($fields4change);
             if ($input->isValid()) {
                 // get exist
                 $row = $this->getModel()->getInfoById($input->id);
@@ -911,56 +930,67 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 throw new \Exception($messageInfo);
             }
             // update
-            $this->update($input, $row);
+            if (empty($field)) {
 
-            // 处理多图片或多文件的排序
-            $filesort = $this->request->get("_file_sort_", array(
-                'trim',
-            ), array());
-            if (!empty($filesort)) {
-                // 获取最新的数据信息
-                $newRow = $this->getModel()->getInfoById($input->id);
-                $updateData = array();
-                foreach ($filesort as $field => $sortvalue) {
-                    if (!empty($sortvalue)) {
-                        $updateValue = explode(',', $sortvalue);
-                        if (!empty($updateValue)) {
-                            // 检查是否还存在这些文件 该情况发生在 用户先进行了文件排序 然后直接删除了文件
-                            $is_exist = true;
-                            foreach ($updateValue as $file) {
-                                if (!in_array($file, $newRow[$field])) {
-                                    $is_exist = false;
-                                    break;
+                $this->update($input, $row);
+                // 处理多图片或多文件的排序
+                $filesort = $this->request->get("_file_sort_", array(
+                    'trim',
+                ), array());
+                if (!empty($filesort)) {
+                    // 获取最新的数据信息
+                    $newRow = $this->getModel()->getInfoById($input->id);
+                    $updateData = array();
+                    foreach ($filesort as $field => $sortvalue) {
+                        if (!empty($sortvalue)) {
+                            $updateValue = explode(',', $sortvalue);
+                            if (!empty($updateValue)) {
+                                // 检查是否还存在这些文件 该情况发生在 用户先进行了文件排序 然后直接删除了文件
+                                $is_exist = true;
+                                foreach ($updateValue as $file) {
+                                    if (!in_array($file, $newRow[$field])) {
+                                        $is_exist = false;
+                                        break;
+                                    }
                                 }
-                            }
-                            if ($is_exist) {
-                                $updateData[$field] = $updateValue;
+                                if ($is_exist) {
+                                    $updateData[$field] = $updateValue;
+                                }
                             }
                         }
                     }
+                    if (!empty($updateData)) {
+                        $this->getModel()->update(array(
+                            '_id' => $input->id
+                        ), array(
+                            '$set' => $updateData
+                        ));
+                    }
                 }
-                if (!empty($updateData)) {
-                    $this->getModel()->update(array(
-                        '_id' => $input->id
-                    ), array(
-                        '$set' => $updateData
-                    ));
-                }
+
+                // /* 添加链接 */
+                // $link[0]['text'] = '返回' . $this->getName() . '列表';
+                // $link[0]['href'] = $this->getUrl("list");
+
+                // Using session flash
+                // $this->flashSession->success('Your information was stored correctly!');
+
+                unset($_SESSION['toastr']);
+                $_SESSION['toastr']['type'] = "success";
+                $_SESSION['toastr']['message'] = '保存成功!';
+                $_SESSION['toastr']['options'] = array();
+
+                $this->makeJsonResult($this->getUrl("list"));
+            } else {
+                $updateData = array();
+                $updateData[$field] = $input->$field;
+                $this->getModel()->update(array(
+                    '_id' => $input->id
+                ), array(
+                    '$set' => $updateData
+                ));
+                $this->makeJsonResult(stripslashes($input->$field));
             }
-
-            // /* 添加链接 */
-            // $link[0]['text'] = '返回' . $this->getName() . '列表';
-            // $link[0]['href'] = $this->getUrl("list");
-
-            // Using session flash
-            // $this->flashSession->success('Your information was stored correctly!');
-
-            unset($_SESSION['toastr']);
-            $_SESSION['toastr']['type'] = "success";
-            $_SESSION['toastr']['message'] = '保存成功!';
-            $_SESSION['toastr']['options'] = array();
-
-            $this->makeJsonResult($this->getUrl("list"));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
             //die($e->getMessage());
