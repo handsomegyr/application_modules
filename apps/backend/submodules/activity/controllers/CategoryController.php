@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Activity\Controllers;
 
 use App\Backend\Submodules\Activity\Models\Category;
@@ -24,7 +25,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
         $schemas = parent::getSchemas();
         $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
-        
+
         $schemas['code'] = array(
             'name' => '标识码',
             'data' => array(
@@ -36,16 +37,32 @@ class CategoryController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                // // 扩展设置
+                // 'extensionSettings' => function ($formItem, $form) {
+                //     //设置autofocus
+                //     $formItem->autofocus();
+                //     $formItem->placeholder('请输入数字型标识码');
+                // }
             ),
             'list' => array(
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true,
+                // // 扩展设置
+                // 'extensionSettings' => function ($filterItem, $filter) {
+                //     //设置placeholder
+                //     $filterItem->placeholder('请输入。。。');
+                //     //限制用户输入格式
+                //     $filterItem->integer();
+                // }
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['name'] = array(
             'name' => '分类名称',
             'data' => array(
@@ -61,13 +78,24 @@ class CategoryController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'show_name'
+                'list_data_name' => 'show_name',
+                // // 扩展设置
+                // 'extensionSettings' => function ($column, $Grid) {
+                //     //display()方法来通过传入的回调函数来处理当前列的值：
+                //     $column->display(function () {
+                //         $value = $this->name;
+                //         return "<span style='color:blue'>$value</span>";
+                //     });
+                // }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['sort'] = array(
             'name' => '排序',
             'data' => array(
@@ -82,13 +110,17 @@ class CategoryController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'is_editable' => true
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

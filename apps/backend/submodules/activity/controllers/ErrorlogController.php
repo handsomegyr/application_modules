@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Activity\Controllers;
 
 use App\Backend\Submodules\Activity\Models\ErrorLog;
@@ -20,13 +21,16 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
     {
         $this->modelErrorLog = new ErrorLog();
         $this->modelActivity = new Activity();
+        $this->activityList = $this->modelActivity->getAll();
         parent::initialize();
     }
+
+    private $activityList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['activity_id'] = array(
             'name' => '活动名称',
             'data' => array(
@@ -39,19 +43,21 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'activity_name'
+                'items' => $this->activityList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['error_code'] = array(
             'name' => '错误代号',
             'data' => array(
@@ -69,28 +75,38 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['error_message'] = array(
             'name' => '错误内容',
             'data' => array(
-                'type' => 'text',
+                'type' => 'string',
                 'length' => '1024'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
+                'input_type' => 'textarea',
+                'is_show' => true,
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:70%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
 
@@ -113,6 +129,9 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
 
@@ -127,14 +146,5 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelErrorLog;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : "--";
-        }
-        return $list;
     }
 }

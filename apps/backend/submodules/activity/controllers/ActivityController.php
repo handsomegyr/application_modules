@@ -21,8 +21,13 @@ class ActivityController extends \App\Backend\Controllers\FormController
     {
         $this->modelActivity = new Activity();
         $this->modelCategory = new Category();
+
+        $this->categoryList = $this->modelCategory->getAll();
+
         parent::initialize();
     }
+
+    private $categoryList = null;
 
     protected function getSchemas()
     {
@@ -40,16 +45,16 @@ class ActivityController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
-                    return $this->modelCategory->getAll();
-                }
+                'items' => $this->categoryList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'category_name'
+                'items' => $this->categoryList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
             ),
             'export' => array(
                 'is_show' => true
@@ -60,7 +65,7 @@ class ActivityController extends \App\Backend\Controllers\FormController
             'name' => '活动名称',
             'data' => array(
                 'type' => 'string',
-                'length' => '50'
+                'length' => '30'
             ),
             'validation' => array(
                 'required' => true
@@ -141,7 +146,7 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'defaultValue' => true
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -168,7 +173,7 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -191,7 +196,8 @@ class ActivityController extends \App\Backend\Controllers\FormController
             'name' => '活动配置',
             'data' => array(
                 'type' => 'json',
-                'length' => '1000'
+                'length' => '1024',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
@@ -201,42 +207,43 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['imgs'] = array(
-            'name' => '活动图多张',
-            'data' => array(
-                'type' => 'multifile',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'multipleImage',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => 'img',
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
             ),
             'export' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
+
+        // $schemas['imgs'] = array(
+        //     'name' => '活动图多张',
+        //     'data' => array(
+        //         'type' => 'multifile',
+        //         'length' => 1024,
+        //         'defaultValue' => ''
+        //     ),
+        //     'validation' => array(
+        //         'required' => false
+        //     ),
+        //     'form' => array(
+        //         'input_type' => 'multipleImage',
+        //         'is_show' => true,
+        //         'items' => ''
+        //     ),
+        //     'list' => array(
+        //         'is_show' => true,
+        //         'list_type' => '',
+        //         'render' => 'img',
+        //     ),
+        //     'search' => array(
+        //         'is_show' => false
+        //     ),
+        //     'export' => array(
+        //         'is_show' => true
+        //     )
+        // );
 
         return $schemas;
     }
@@ -249,16 +256,5 @@ class ActivityController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelActivity;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $categoryList = $this->modelCategory->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['category_name'] = isset($categoryList[$item['category']]) ? $categoryList[$item['category']] : '';
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-        }
-        return $list;
     }
 }

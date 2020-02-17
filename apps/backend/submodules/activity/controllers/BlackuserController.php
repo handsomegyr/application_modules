@@ -23,8 +23,12 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     {
         $this->modelBlackUser = new BlackUser();
         $this->modelActivity = new Activity();
+
+        $this->activityList = $this->modelActivity->getAll();
         parent::initialize();
     }
+
+    private $activityList = null;
 
     protected function getHeaderTools2($tools)
     {
@@ -97,16 +101,19 @@ class BlackuserController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'activity_name'
+                'items' => $this->activityList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['user_id'] = array(
@@ -127,6 +134,9 @@ class BlackuserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;
@@ -141,16 +151,6 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     {
         return $this->modelBlackUser;
     }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : "--";
-        }
-        return $list;
-    }
-
 
     /**
      * @title({name="csv导出"})

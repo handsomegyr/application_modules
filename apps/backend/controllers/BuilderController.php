@@ -196,6 +196,7 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Weixin2\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Cronjob\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Questionnaire\Settings\Menu&is_create_menu=1
+        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Activity\Settings\Menu&is_create_menu=1
         
         try {
             $this->view->disable();

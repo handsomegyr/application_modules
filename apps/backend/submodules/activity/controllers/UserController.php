@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Activity\Controllers;
 
 use App\Backend\Submodules\Activity\Models\User;
@@ -20,8 +21,11 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         $this->modelUser = new User();
         $this->modelActivity = new Activity();
+        $this->activityList = $this->modelActivity->getAll();
         parent::initialize();
     }
+
+    private $activityList = null;
 
     protected function getSchemas()
     {
@@ -38,16 +42,19 @@ class UserController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'activity_name'
+                'items' => $this->activityList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['user_id'] = array(
@@ -64,7 +71,11 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
                 'is_show' => true
@@ -77,7 +88,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '用户名',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 30
             ),
             'validation' => array(
                 'required' => false
@@ -90,7 +101,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
@@ -110,7 +121,8 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'render' => 'img'
             ),
             'search' => array(
                 'is_show' => false
@@ -136,7 +148,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
@@ -159,7 +171,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
@@ -169,7 +181,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '微信红包账号',
             'data' => array(
                 'type' => 'string',
-                'length' => 255
+                'length' => 50
             ),
             'validation' => array(
                 'required' => false
@@ -179,21 +191,25 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
+
         $schemas['thirdparty_user'] = array(
             'name' => '第3方账号',
             'data' => array(
                 'type' => 'string',
-                'length' => 255
+                'length' => 50
             ),
             'validation' => array(
                 'required' => false
@@ -203,16 +219,20 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
+
 
         $schemas['contact_name'] = array(
             'name' => '联系用户',
@@ -221,7 +241,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'length' => 50
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -244,7 +264,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'length' => 20
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -254,7 +274,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
@@ -267,7 +287,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'length' => 200
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -277,13 +297,13 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
+
         $schemas['scene'] = array(
             'name' => '场景值',
             'data' => array(
@@ -291,7 +311,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'length' => 50
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -301,13 +321,13 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
+
         $schemas['log_time'] = array(
             'name' => '记录时间',
             'data' => array(
@@ -327,14 +347,88 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
+
+        // $schemas['mission_complete_num'] = array(
+        //     'name' => '任务完成数',
+        //     'data' => array(
+        //         'type' => 'string',
+        //         'length' => 50
+        //     ),
+        //     'validation' => array(
+        //         'required' => false
+        //     ),
+        //     'form' => array(
+        //         'input_type' => 'number',
+        //         'is_show' => false
+        //     ),
+        //     'list' => array(
+        //         'is_show' => true,
+        //         // 扩展设置
+        //         'extensionSettings' => function ($column, $Grid) {
+        //             //display()方法来通过传入的回调函数来处理当前列的值：
+        //             $column->display(function () {
+        //                 $mission_num = 0;
+        //                 $memo = \json_decode($this->memo, true);
+        //                 $is_mission_finish_list = empty($memo['is_mission_finish_list']) ? array() : $memo['is_mission_finish_list'];
+        //                 if (!empty($is_mission_finish_list)) {
+        //                     if (!empty($is_mission_finish_list['is_mission1_finished'])) {
+        //                         $mission_num++;
+        //                     }
+        //                     if (!empty($is_mission_finish_list['is_mission2_finished'])) {
+        //                         $mission_num++;
+        //                     }
+        //                     if (!empty($is_mission_finish_list['is_mission3_finished'])) {
+        //                         $mission_num++;
+        //                     }
+        //                     if (!empty($is_mission_finish_list['is_mission4_finished'])) {
+        //                         $mission_num++;
+        //                     }
+        //                 }
+
+        //                 return $mission_num;
+        //             });
+        //         }
+        //     ),
+        //     'search' => array(
+        //         'is_show' => false
+        //     ),
+        //     'export' => array(
+        //         'is_show' => true,
+        //         // 扩展设置
+        //         'getFormattedValue' => function ($record) {
+        //             $mission_num = 0;
+        //             $memo = \json_decode($record->memo, true);
+        //             $is_mission_finish_list = empty($memo['is_mission_finish_list']) ? array() : $memo['is_mission_finish_list'];
+        //             if (!empty($is_mission_finish_list)) {
+        //                 if (!empty($is_mission_finish_list['is_mission1_finished'])) {
+        //                     $mission_num++;
+        //                 }
+        //                 if (!empty($is_mission_finish_list['is_mission2_finished'])) {
+        //                     $mission_num++;
+        //                 }
+        //                 if (!empty($is_mission_finish_list['is_mission3_finished'])) {
+        //                     $mission_num++;
+        //                 }
+        //                 if (!empty($is_mission_finish_list['is_mission4_finished'])) {
+        //                     $mission_num++;
+        //                 }
+        //             }
+        //             return $mission_num;
+        //         }
+        //     )
+        // );
 
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
                 'type' => 'json',
-                'length' => '1000'
+                'length' => '1024',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
@@ -348,6 +442,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;
@@ -361,15 +458,5 @@ class UserController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelUser;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : "--";
-        }
-        
-        return $list;
     }
 }
