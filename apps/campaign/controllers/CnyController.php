@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Controllers;
 
 /**
@@ -28,15 +29,15 @@ class CnyController extends ControllerBase
     protected $modelActivityUser = null;
     // 活动黑名单用户
     protected $modelActivityBlackUser = null;
-    
+
     // 抽奖中奖
     protected $modelLotteryExchange = null;
     // 抽奖服务
     protected $serviceLottery = null;
-    
+
     // 活动ID
     protected $activity_id = '5861e812887c22015f8b456b';
-    
+
     // 是否需要微信公众号关注
     private $is_need_subscribed = false;
 
@@ -49,14 +50,14 @@ class CnyController extends ControllerBase
         die('CnyController');
         $this->now = getCurrentTime();
         $this->today = date('Ymd', $this->now->sec);
-        
+
         $this->modelErrorLog = new \App\Activity\Models\ErrorLog();
         $this->modelActivity = new \App\Activity\Models\Activity();
         $this->modelActivityUser = new \App\Activity\Models\User();
         $this->modelActivityBlackUser = new \App\Activity\Models\BlackUser();
         $this->modelLotteryExchange = new \App\Lottery\Models\Exchange();
         $this->serviceLottery = new \App\Lottery\Services\Api();
-        
+
         try {
             parent::initialize();
         } catch (\Exception $e) {
@@ -84,47 +85,47 @@ class CnyController extends ControllerBase
         // http://www.applicationmodule.com/campaign/cny/getcampaignuserinfo
         try {
             $this->view->disable();
-            
+
             // 获取活动信息
             $activityInfo = $this->modelActivity->getActivityInfo2($this->activity_id, $this->now->sec);
-            
+
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {
-                echo $this->error(- 40401, "活动未开始");
+                echo $this->error(-40401, "活动未开始");
                 return false;
             }
             // 活动是否暂停
-            if (! empty($activityInfo['is_actvity_paused'])) {
-                echo $this->error(- 40402, "活动已暂停");
+            if (!empty($activityInfo['is_actvity_paused'])) {
+                echo $this->error(-40402, "活动已暂停");
                 return false;
             }
             // 活动是否结束了
-            if (! empty($activityInfo['is_activity_over'])) {
-                echo $this->error(- 40403, "活动已结束");
+            if (!empty($activityInfo['is_activity_over'])) {
+                echo $this->error(-40403, "活动已结束");
                 return false;
             }
-            
+
             // 从cookie中直接获取
             $userInfo = empty($_COOKIE['Weixin_userInfo']) ? array() : json_decode($_COOKIE['Weixin_userInfo'], true);
             if (empty($userInfo)) {
-                echo $this->error(- 40498, "用户信息为空");
+                echo $this->error(-40498, "用户信息为空");
                 return false;
             }
-            
+
             $FromUserName = trim($userInfo['FromUserName']);
             $nickname = trim($userInfo['nickname']);
             $headimgurl = trim($userInfo['headimgurl']);
             $timestamp = trim($userInfo['timestamp']);
             $signkey = trim($userInfo['signkey']);
-            
+
             // 检查是否锁定，如果没有锁定加锁
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
-                echo $this->error(- 40499, "上次操作还未完成,请等待");
+                echo $this->error(-40499, "上次操作还未完成,请等待");
                 return false;
             }
-            
+
             // 记录该用户
             $memo = array(
                 'is_got_prize' => false,
@@ -132,14 +133,14 @@ class CnyController extends ControllerBase
             );
             $scene = "";
             $userInfo = $this->getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, 'redpack_user', 'thirdparty_user', $scene, $memo);
-            
+
             // 是否是黑名单用户
             $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity_id);
-            
+
             // 根据具体的业务返回相应的信息
             // 获取从奖池数量
             $prizeRemainNum = 0; // $this->getPrizeRemainNum();
-                                 
+
             // 返回值
             $ret = array(
                 // 活动信息
@@ -181,92 +182,92 @@ class CnyController extends ControllerBase
             $this->view->disable();
             // 获取活动信息
             $activityInfo = $this->modelActivity->getActivityInfo2($this->activity_id, $this->now->sec);
-            
+
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {
-                echo $this->error(- 40401, "活动未开始");
+                echo $this->error(-40401, "活动未开始");
                 return false;
             }
             // 活动是否暂停
-            if (! empty($activityInfo['is_actvity_paused'])) {
-                echo $this->error(- 40402, "活动已暂停");
+            if (!empty($activityInfo['is_actvity_paused'])) {
+                echo $this->error(-40402, "活动已暂停");
                 return false;
             }
             // 活动是否结束了
-            if (! empty($activityInfo['is_activity_over'])) {
-                echo $this->error(- 40403, "活动已结束");
+            if (!empty($activityInfo['is_activity_over'])) {
+                echo $this->error(-40403, "活动已结束");
                 return false;
             }
-            
+
             // 从cookie中直接获取
             $userInfo = empty($_COOKIE['Weixin_userInfo']) ? array() : json_decode($_COOKIE['Weixin_userInfo'], true);
             if (empty($userInfo)) {
-                echo $this->error(- 40498, "用户信息为空");
+                echo $this->error(-40498, "用户信息为空");
                 return false;
             }
-            
+
             $FromUserName = trim($userInfo['FromUserName']);
             $name = trim($this->get('name', ''));
             $mobile = trim($this->get('mobile', ''));
             $address = trim($this->get('address', ''));
-            
+
             // 根据不同的奖品类别进行处理
             $nameCheck = false;
             $mobileCheck = false;
             $addressCheck = false;
             if ($nameCheck) {
                 if (empty($name)) {
-                    echo $this->error(- 40411, "请填写姓名");
+                    echo $this->error(-40411, "请填写姓名");
                     return false;
                 }
             }
             if ($mobileCheck) {
                 if (empty($mobile)) {
-                    echo $this->error(- 40412, "请填写手机号");
+                    echo $this->error(-40412, "请填写手机号");
                     return false;
                 }
-                if (! isValidMobile($mobile)) {
-                    echo $this->error(- 40413, "手机号格式不正确");
+                if (!isValidMobile($mobile)) {
+                    echo $this->error(-40413, "手机号格式不正确");
                     return false;
                 }
             }
             if ($addressCheck) {
                 if (empty($address)) {
-                    echo $this->error(- 40414, "请填写地址");
+                    echo $this->error(-40414, "请填写地址");
                     return false;
                 }
             }
-            
+
             // 检查是否锁定，如果没有锁定加锁
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
-                echo $this->error(- 40499, "请等待");
+                echo $this->error(-40499, "请等待");
                 return false;
             }
-            
+
             $userInfo = $this->modelActivityUser->getInfoByUserId($FromUserName, $this->activity_id);
             if (empty($userInfo)) {
-                echo $this->error(- 40421, 'FromUserName不正确');
+                echo $this->error(-40421, 'FromUserName不正确');
                 return false;
             }
-            
+
             // 是否是黑名单用户
             $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity_id);
-            if (! empty($blankUserInfo)) {
-                echo $this->error(- 40422, '该用户已经禁用');
+            if (!empty($blankUserInfo)) {
+                echo $this->error(-40422, '该用户已经禁用');
                 return false;
             }
-            
+
             // 检查是否已经领取了奖品
-            if (! empty($userInfo['memo']['is_got_prize'])) {
-                echo $this->error(- 40431, '该用户已领取');
+            if (!empty($userInfo['memo']['is_got_prize'])) {
+                echo $this->error(-40431, '该用户已领取');
                 return false;
             }
-            
+
             // 先将抽奖机会次数减一
             // $this->modelActivityUser->incWorth($userInfo, - 1);
-            
+
             // 抽奖处理
             // 记录抽奖用户的昵称和头像
             $user_info = array(
@@ -284,14 +285,14 @@ class CnyController extends ControllerBase
                 'activity_user_id' => $userInfo['_id']
             );
             $lotteryResult = $this->serviceLottery->doLottery($this->activity_id, $FromUserName, array(), array(), 'weixin', $user_info, $identityContact, $memo);
-            
+
             // 抽奖成功的话
-            if (empty($lotteryResult['error_code']) && ! empty($lotteryResult['result'])) {
+            if (empty($lotteryResult['error_code']) && !empty($lotteryResult['result'])) {
                 $successInfo = $lotteryResult['result'];
                 $ret = $this->getPrizeInfo($successInfo);
                 echo ($this->result("OK", $ret));
                 fastcgi_finish_request();
-                
+
                 // // 记录中奖信息
                 // $query = array(
                 // '_id' => $userInfo['_id']
@@ -312,7 +313,7 @@ class CnyController extends ControllerBase
                 // 失败的话
                 $e = new \Exception($lotteryResult['error_msg'], $lotteryResult['error_code']);
                 $this->modelErrorLog->log($this->activity_id, $e);
-                echo ($this->error(- 40432, '没有中奖'));
+                echo ($this->error(-40432, '没有中奖'));
                 return false;
             }
         } catch (\Exception $e) {
@@ -330,92 +331,92 @@ class CnyController extends ControllerBase
         // http://www.applicationmodule.com/campaign/cny/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
         try {
             $this->view->disable();
-            
+
             $name = trim($this->get('name', ''));
             $mobile = trim($this->get('mobile', ''));
             $address = trim($this->get('address', ''));
             $exchange_id = trim($this->get('exchange_id', ''));
             $identity_id = trim($this->get('identity_id', ''));
-            
+
             if (empty($exchange_id)) {
-                echo $this->error(- 40451, "中奖ID不能为空");
+                echo $this->error(-40451, "中奖ID不能为空");
                 return false;
             }
-            
+
             if (empty($identity_id)) {
-                echo $this->error(- 40452, "身份ID不能为空");
+                echo $this->error(-40452, "身份ID不能为空");
                 return false;
             }
-            
+
             // 根据不同的奖品类别进行处理
             $nameCheck = true;
             $mobileCheck = true;
             $addressCheck = true;
             if ($nameCheck) {
                 if (empty($name)) {
-                    echo $this->error(- 40453, "请填写姓名");
+                    echo $this->error(-40453, "请填写姓名");
                     return false;
                 }
             }
             if ($mobileCheck) {
                 if (empty($mobile)) {
-                    echo $this->error(- 40454, "请填写手机号");
+                    echo $this->error(-40454, "请填写手机号");
                     return false;
                 }
-                if (! isValidMobile($mobile)) {
-                    echo $this->error(- 40455, "手机号格式不正确");
+                if (!isValidMobile($mobile)) {
+                    echo $this->error(-40455, "手机号格式不正确");
                     return false;
                 }
             }
             if ($addressCheck) {
                 if (empty($address)) {
-                    echo $this->error(- 40456, "请填写地址");
+                    echo $this->error(-40456, "请填写地址");
                     return false;
                 }
             }
             $info = array(
                 'is_valid' => true
             );
-            
-            if (! empty($name))
+
+            if (!empty($name))
                 $info['contact_name'] = $name;
-            
-            if (! empty($mobile))
+
+            if (!empty($mobile))
                 $info['contact_mobile'] = $mobile;
-            
-            if (! empty($address))
+
+            if (!empty($address))
                 $info['contact_address'] = $address;
-            
+
             if (empty($info)) {
-                echo $this->error(- 40457, "用户信息不能为空");
+                echo $this->error(-40457, "用户信息不能为空");
                 return false;
             }
-            
+
             // 判断是否中奖
             $exchangeInfo = $this->modelLotteryExchange->checkExchangeBy($identity_id, $exchange_id);
             if (empty($exchangeInfo)) {
-                echo $this->error(- 40458, "该用户无此兑换信息");
+                echo $this->error(-40458, "该用户无此兑换信息");
                 return false;
             }
             // 获取活动用户信息
             $userInfo = $this->modelActivityUser->getInfoById($exchangeInfo['memo']['activity_user_id']);
             if (empty($userInfo)) {
-                echo $this->error(- 40458, "该用户无此兑换信息");
+                echo $this->error(-40458, "该用户无此兑换信息");
                 return false;
             }
-            
+
             // 检查手机号是否使用过了
             $isMobileExist = $this->modelLotteryExchange->findOne(array(
                 'contact_mobile' => $mobile,
                 'prize_is_virtual' => false
             ));
-            if (! empty($isMobileExist)) {
-                echo $this->error(- 40461, "手机号已存在");
+            if (!empty($isMobileExist)) {
+                echo $this->error(-40461, "手机号已存在");
                 return false;
             }
             // 记录中奖用户的信息
             $this->modelLotteryExchange->updateExchangeInfo($exchange_id, $info);
-            
+
             // // 更新活动用户的是否填写抽奖联系信息
             // $query = array(
             // '_id' => $userInfo['_id']
@@ -444,58 +445,58 @@ class CnyController extends ControllerBase
         // http://www.applicationmodule.com/campaign/cny/sendsms?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&mobile=13564100096
         try {
             $this->view->disable();
-            
+
             $mobile = trim($this->get('mobile', ''));
             $exchange_id = trim($this->get('exchange_id', ''));
             $identity_id = trim($this->get('identity_id', ''));
-            
+
             if (empty($exchange_id)) {
-                echo $this->error(- 40451, "中奖ID不能为空");
+                echo $this->error(-40451, "中奖ID不能为空");
                 return false;
             }
-            
+
             if (empty($identity_id)) {
-                echo $this->error(- 40452, "身份ID不能为空");
+                echo $this->error(-40452, "身份ID不能为空");
                 return false;
             }
-            
+
             if (empty($mobile)) {
-                echo $this->error(- 40454, "手机号不能为空");
+                echo $this->error(-40454, "手机号不能为空");
                 return false;
             }
-            if (! isValidMobile($mobile)) {
-                echo $this->error(- 40455, "手机号格式不正确");
+            if (!isValidMobile($mobile)) {
+                echo $this->error(-40455, "手机号格式不正确");
                 return false;
             }
-            
+
             // 判断是否中奖
             $exchangeInfo = $this->modelLotteryExchange->checkExchangeBy($identity_id, $exchange_id);
             if (empty($exchangeInfo)) {
-                echo $this->error(- 40458, "该用户无此兑换信息");
+                echo $this->error(-40458, "该用户无此兑换信息");
                 return false;
             }
             // 获取活动用户信息
             $userInfo = $this->modelActivityUser->getInfoById($exchangeInfo['memo']['activity_user_id']);
             if (empty($userInfo)) {
-                echo $this->error(- 40458, "该用户无此兑换信息");
+                echo $this->error(-40458, "该用户无此兑换信息");
                 return false;
             }
-            
+
             // 发送短信
             // {"code":200,"name":"OK","description":"message queued, status=waiting"}
             $ret = $this->doSendSms($mobile, $exchangeInfo['prize_virtual_code']);
-            if (! (isset($ret['code']) && $ret['code'] == 200)) {
-                echo $this->error(- 40471, "无法发送短信");
+            if (!(isset($ret['code']) && $ret['code'] == 200)) {
+                echo $this->error(-40471, "无法发送短信");
                 return false;
             }
-            
+
             // 记录中奖用户的信息
             $info = array(
                 'is_valid' => true
             );
             $info['contact_mobile'] = $mobile;
             $this->modelLotteryExchange->updateExchangeInfo($exchange_id, $info);
-            
+
             // // 更新活动用户的是否填写抽奖联系信息
             // $query = array(
             // '_id' => $userInfo['_id']
@@ -507,15 +508,15 @@ class CnyController extends ControllerBase
             // $this->modelActivityUser->update($query, array(
             // '$set' => $data
             // ));
-            
+
             // 发送短信
             echo ($this->result('处理完成'));
             return true;
-            
+
             $universe = 'customer';
             $pass = '954ac5fbfab5760dc62b04238b1157027e65a599';
             $service_url = 'https://s3s.fr/api/triggersms/nph-3.pl';
-            
+
             // Build a JSON array of recipient using data from DB or CSV file
             $rcpts = array(
                 array(
@@ -539,16 +540,16 @@ class CnyController extends ControllerBase
                 'message' => '6HIb4XwaP', // Spring message id
                 'rcpts' => json_encode($rcpts)
             ); // recipients
-               
+
             // Trigger SMS API documentation Splio development team
-               
+
             // Encode all parameters including JSON array
             $params_str = http_build_query($params);
-            
+
             // API call using curl library
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $service_url);
-            
+
             // Turn of SSL check just for the example.
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -559,21 +560,21 @@ class CnyController extends ControllerBase
             // Setup POST request
             curl_setopt($curl, CURLOPT_POST, count($params));
             curl_setopt($curl, CURLOPT_POSTFIELDS, $params_str);
-            
+
             // Actual call
             $curl_response = curl_exec($curl);
             curl_close($curl); // Print the server response
-                               
+
             // var_dump($curl_response);
-                               
+
             // And the JSON received
-                               
+
             // var_dump(json_decode($curl_response, true));
-                               
+
             // {"status":"ok","message":"ok","code":200}
-                               
+
             // {"status":"error","message":"incorrect/missing parameters","code":400}
-            
+
             $ret = json_decode($curl_response, true);
             if ($ret['status'] == 'ok') {
                 echo ($this->result('处理完成'));
@@ -597,24 +598,24 @@ class CnyController extends ControllerBase
         // http://www.applicationmodule.com/campaign/cny/testsendsms?code=xxxx&mobile=13564100096
         try {
             $this->view->disable();
-            
+
             $mobile = trim($this->get('mobile', ''));
             $code = trim($this->get('code', uniqid()));
-            
+
             if (empty($mobile)) {
-                echo $this->error(- 40454, "请填写手机号");
+                echo $this->error(-40454, "请填写手机号");
                 return false;
             }
-            if (! isValidMobile($mobile)) {
-                echo $this->error(- 40455, "手机号格式错误");
+            if (!isValidMobile($mobile)) {
+                echo $this->error(-40455, "手机号格式错误");
                 return false;
             }
-            
+
             // 发送短信
             $ret = $this->doSendSms($mobile, $code);
             echo ($this->result('处理完成', $ret));
             return true;
-            
+
             $ret = json_decode($curl_response, true);
             if ($ret['status'] == 'ok') {
                 echo ($this->result('处理完成'));
@@ -633,7 +634,7 @@ class CnyController extends ControllerBase
     protected function getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, $scene, array $memo = array())
     {
         // 生成活动用户
-        $userInfo = $this->modelActivityUser->getOrCreateByUserId($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, 1, 0, $this->activity_id, $scene, $memo);
+        $userInfo = $this->modelActivityUser->getOrCreateByUserId($this->activity_id, $FromUserName, $this->now, $nickname, $headimgurl, $redpack_user, $thirdparty_user, 1, 0,  $scene, $memo);
         return $userInfo;
     }
 
@@ -668,7 +669,7 @@ class CnyController extends ControllerBase
                 "value" => "点击详情，领取兑换券。",
                 "color" => "#0A0A0A"
             );
-            
+
             // asyncSendTpl($openid, $template_id, $url, $data);
         } catch (\Exception $e) {
             $this->modelErrorLog->log($this->activity_id, $e);
@@ -697,12 +698,12 @@ class CnyController extends ControllerBase
         $phone = '0086' . $phone; // 手机号码前面必须带0086
         $message = '【YOOX】恭喜您获得一份来自意大利YOOX.CN的时尚新年礼，您的专属折上折优惠码' . $code . '！即日起至2017年1月20日前往YOOX.CN（http://t.cn/RMIDxxW）选购心仪单品，结算时输入该代码，季末特惠商品除外。感谢您的参与！';
         $url = 'https://api.spl4cn.com/api/forwardsms/1.php?universe=yoox_cn&key=29ef24d1b10b352939268cbf1a593a7e5dab8672&recipient=' . $phone . '&message=' . $message . '&unicode=1&long=1'; // 链接地址
-        
+
         $client = new \GuzzleHttp\Client();
         $response = $client->get($url, array());
         $statusCode = $response->getStatusCode();
         $isSuccessful = ($statusCode >= 200 && $statusCode < 300) || $statusCode == 304;
-        
+
         if ($isSuccessful) {
             $body = $response->getBody();
             $json = json_decode($body, true);
@@ -714,7 +715,7 @@ class CnyController extends ControllerBase
             throw new \Exception("服务器未有效的响应请求");
         }
         return;
-        
+
         // 初始化
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -728,4 +729,3 @@ class CnyController extends ControllerBase
         return $data;
     }
 }
-

@@ -1,4 +1,5 @@
 <?php
+
 use App\Alipay\Models\Application;
 
 /**
@@ -18,10 +19,10 @@ class FundController extends ControllerBase
 {
     // 用于签名认证
     protected $secretKey = "170908fg0353";
-    
+
     // 当前时间
     protected $now = null;
-    
+
     // 活动
     protected $modelActivity = null;
     // 活动错误日志
@@ -30,7 +31,7 @@ class FundController extends ControllerBase
     protected $modelActivityUser = null;
     // 活动黑名单用户
     protected $modelActivityBlackUser = null;
-    
+
     // 活动相关
     // 活动1
     protected $activity1 = '59ed93599fff63190a8b4568';
@@ -39,9 +40,9 @@ class FundController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        
+
         $this->now = getCurrentTime();
-        
+
         $this->modelActivity = new \App\Activity\Models\Activity();
         $this->modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $this->modelActivityUser = new \App\Activity\Models\User();
@@ -57,40 +58,40 @@ class FundController extends ControllerBase
         try {
             $userInfo = empty($_COOKIE['Alipay_userInfo']) ? array() : json_decode($_COOKIE['Alipay_userInfo'], true);
             if (empty($userInfo)) {
-                echo $this->error(- 999, "用户信息为空");
+                echo $this->error(-999, "用户信息为空");
                 return false;
             }
-            
+
             $user_id = trim($userInfo['user_id']);
             $nickname = trim($userInfo['nickname']);
             $headimgurl = trim($userInfo['headimgurl']);
             $timestamp = trim($userInfo['timestamp']);
             $signkey = trim($userInfo['signkey']);
-            
+
             // 检查cookie的有效性
             $isValid = $this->validateOpenid($user_id, $timestamp, $this->secretKey, $signkey);
-            if (! $isValid) {
-                echo $this->error(- 999, "用户信息是伪造的");
+            if (!$isValid) {
+                echo $this->error(-999, "用户信息是伪造的");
                 return false;
             }
-            
+
             // 检查是否锁定，如果没有锁定加锁
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $user_id);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
-                echo $this->error(- 888, "上次操作还未完成,请等待");
+                echo $this->error(-888, "上次操作还未完成,请等待");
                 return false;
             }
-            
+
             // 获取活动用户
             $memo = array(
                 'is_correct' => false,
                 'is_answer' => false
             );
-            $scene="";
-            $userInfo = $this->modelActivityUser->getOrCreateByUserId($user_id, $nickname, $headimgurl, '', '', 0, 0, $this->activity1, $scene, $memo);
+            $scene = "";
+            $userInfo = $this->modelActivityUser->getOrCreateByUserId($this->activity1, $user_id, $this->now, $nickname, $headimgurl, '', '', 0, 0,  $scene, $memo);
             if (empty($userInfo)) {
-                echo $this->error(- 40491, 'user_id不正确');
+                echo $this->error(-40491, 'user_id不正确');
                 return false;
             }
             if (empty($nickname)) {
@@ -99,7 +100,7 @@ class FundController extends ControllerBase
             if (empty($headimgurl)) {
                 $headimgurl = $userInfo['headimgurl'];
             }
-            
+
             $ret = array();
             // 活动用户信息
             $ret['userInfo'] = array(
@@ -127,68 +128,68 @@ class FundController extends ControllerBase
             $answer = intval($this->get('answer', '0'));
             // 获取活动信息
             $activityInfo = $this->modelActivity->getActivityInfo($this->activity1, $this->now->sec);
-            
+
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {
-                echo $this->error(- 40401, "活动未开始");
+                echo $this->error(-40401, "活动未开始");
                 return false;
             }
             // 活动是否暂停
-            if (! empty($activityInfo['is_actvity_paused'])) {
-                echo $this->error(- 40402, "活动已暂停");
+            if (!empty($activityInfo['is_actvity_paused'])) {
+                echo $this->error(-40402, "活动已暂停");
                 return false;
             }
             // 活动是否结束了
-            if (! empty($activityInfo['is_activity_over'])) {
-                echo $this->error(- 40403, "活动已结束");
+            if (!empty($activityInfo['is_activity_over'])) {
+                echo $this->error(-40403, "活动已结束");
                 return false;
             }
-            
+
             $userInfo = empty($_COOKIE['Alipay_userInfo']) ? array() : json_decode($_COOKIE['Alipay_userInfo'], true);
             if (empty($userInfo)) {
-                echo $this->error(- 40497, "用户信息为空");
+                echo $this->error(-40497, "用户信息为空");
                 return false;
             }
-            
+
             $user_id = trim($userInfo['user_id']);
             $nickname = trim($userInfo['nickname']);
             $headimgurl = trim($userInfo['headimgurl']);
             $timestamp = trim($userInfo['timestamp']);
             $signkey = trim($userInfo['signkey']);
-            
+
             // 检查cookie的有效性
             $isValid = $this->validateOpenid($user_id, $timestamp, $this->secretKey, $signkey);
-            if (! $isValid) {
-                echo $this->error(- 40498, "用户信息是伪造的");
+            if (!$isValid) {
+                echo $this->error(-40498, "用户信息是伪造的");
                 return false;
             }
-            
+
             // 检查是否锁定，如果没有锁定加锁
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $user_id);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
-                echo $this->error(- 40499, "上次操作还未完成,请等待");
+                echo $this->error(-40499, "上次操作还未完成,请等待");
                 return false;
             }
-            
+
             $userInfo = $this->modelActivityUser->getInfoByUserId($user_id, $this->activity1);
             if (empty($userInfo)) {
-                echo $this->error(- 40491, 'user_id不正确');
+                echo $this->error(-40491, 'user_id不正确');
                 return false;
             }
             // 检查是否已经回答过问题
-            if (! empty($userInfo['memo']['is_answer'])) {
-                echo $this->error(- 40492, '该用户已做过');
+            if (!empty($userInfo['memo']['is_answer'])) {
+                echo $this->error(-40492, '该用户已做过');
                 return false;
             }
-            
+
             $config = $this->getDI()->get('config');
             $modelApliayApplication = new Application();
             $appConfig = $modelApliayApplication->getApplicationInfoByAppId($config['alipay']['appid']);
             if (empty($appConfig)) {
                 throw new \Exception('appid所对应的记录不存在');
             }
-            
+
             // 是否答对题目
             $is_correct = ($answer === 3);
             $data = $userInfo['memo'];
@@ -199,18 +200,18 @@ class FundController extends ControllerBase
             ), array(
                 '$set' => $data
             ));
-            
+
             // 检查是否答对题目
-            if (! $is_correct) {
-                echo $this->error(- 10, "回答不正确");
+            if (!$is_correct) {
+                echo $this->error(-10, "回答不正确");
                 return false;
             }
-            
+
             // 调用支付宝相应接口
             $camp_id = 'xxxx';
             $objiAlipay = new \iAlipay($appConfig['app_id'], $appConfig['merchant_private_key'], $appConfig['merchant_public_key'], $appConfig['alipay_public_key'], $appConfig['charset'], $appConfig['gatewayUrl'], $appConfig['sign_type']);
             $ret = $objiAlipay->alipayMarketingCampaignDrawcampTriggerRequest($userInfo['userid'], $camp_id);
-            
+
             echo $this->result("OK", $ret);
             return true;
         } catch (\Exception $e) {
@@ -228,12 +229,12 @@ class FundController extends ControllerBase
         // http://www.applicationmodule.com/campaign/fund/fundperformancechart2?fundcodes=040008
         try {
             $fundcodes = $this->get('fundcodes', '');
-            
+
             if (empty($fundcodes)) {
-                echo $this->error(- 3, 'fundcodes未指定');
+                echo $this->error(-3, 'fundcodes未指定');
                 return false;
             }
-            
+
             $cacheKey = cacheKey(__FILE__, __CLASS__, __METHOD__, $fundcodes);
             $cache = Zend_Registry::get('cache');
             $ret = $cache->load($cacheKey);
@@ -244,11 +245,11 @@ class FundController extends ControllerBase
                 if (empty($appConfig)) {
                     throw new \Exception('appid所对应的记录不存在');
                 }
-                
+
                 // 调用支付宝相应接口
                 $objiAlipay = new \iAlipay($appConfig['app_id'], $appConfig['merchant_private_key'], $appConfig['merchant_public_key'], $appConfig['alipay_public_key'], $appConfig['charset'], $appConfig['gatewayUrl'], $appConfig['sign_type']);
                 $ret = $objiAlipay->alipayFinanceFundFundquotationQueryRequest($fundcodes);
-                
+
                 $cache->save($ret, $cacheKey, array(), 60 * 5);
             }
             echo $this->result("OK", $ret);
@@ -269,13 +270,13 @@ class FundController extends ControllerBase
         try {
             $user_id = $this->get('user_id', '2088602345138428');
             $camp_id = $this->get('camp_id', '170921821480493');
-            
+
             $this->_app = new Application();
             $this->_appConfig = $this->_app->getApplicationInfoByAppId('2017071707783020');
             if (empty($this->_appConfig)) {
                 throw new \Exception('appid所对应的记录不存在');
             }
-            
+
             $objiAlipay = new \iAlipay($this->_appConfig['app_id'], $this->_appConfig['merchant_private_key'], $this->_appConfig['merchant_public_key'], $this->_appConfig['alipay_public_key'], $this->_appConfig['charset'], $this->_appConfig['gatewayUrl'], $this->_appConfig['sign_type']);
             $ret = $objiAlipay->alipayMarketingCampaignDrawcampTriggerRequest($user_id, $camp_id);
             echo $this->result("OK", $ret);
@@ -296,13 +297,13 @@ class FundController extends ControllerBase
         try {
             $camp_id = $this->get('camp_id', '170921821480493');
             $prize_id = $this->get('prize_id', '20170921000730018232000BP4C6');
-            
+
             $this->_app = new Application();
             $this->_appConfig = $this->_app->getApplicationInfoByAppId('2017071707783020');
             if (empty($this->_appConfig)) {
                 throw new \Exception('appid所对应的记录不存在');
             }
-            
+
             $objiAlipay = new \iAlipay($this->_appConfig['app_id'], $this->_appConfig['merchant_private_key'], $this->_appConfig['merchant_public_key'], $this->_appConfig['alipay_public_key'], $this->_appConfig['charset'], $this->_appConfig['gatewayUrl'], $this->_appConfig['sign_type']);
             $ret = $objiAlipay->alipayMarketingCampaignPrizeAmountQueryRequest($camp_id, $prize_id);
             echo $this->result("OK", $ret);
@@ -322,13 +323,13 @@ class FundController extends ControllerBase
         // http://www.applicationmodule.com/campaign/fund/test3?camp_id=170921821480493
         try {
             $camp_id = $this->get('camp_id', '170921821480493');
-            
+
             $this->_app = new Application();
             $this->_appConfig = $this->_app->getApplicationInfoByAppId('2017071707783020');
             if (empty($this->_appConfig)) {
                 throw new \Exception('appid所对应的记录不存在');
             }
-            
+
             $objiAlipay = new \iAlipay($this->_appConfig['app_id'], $this->_appConfig['merchant_private_key'], $this->_appConfig['merchant_public_key'], $this->_appConfig['alipay_public_key'], $this->_appConfig['charset'], $this->_appConfig['gatewayUrl'], $this->_appConfig['sign_type']);
             $ret = $objiAlipay->alipayMarketingCampaignDrawcampQueryRequest($camp_id);
             echo $this->result("OK", $ret);
@@ -359,4 +360,3 @@ class FundController extends ControllerBase
         }
     }
 }
-
