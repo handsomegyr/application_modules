@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Prize\Controllers;
 
 use App\Backend\Submodules\Prize\Models\Category;
@@ -23,10 +24,11 @@ class CategoryController extends \App\Backend\Controllers\FormController
     {
         $schemas = parent::getSchemas();
         $schemas['code'] = array(
-            'name' => '分类编码',
+            'name' => '分类码',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => 1,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
@@ -36,31 +38,42 @@ class CategoryController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['name'] = array(
-            'name' => '分类名称',
+            'name' => '名称',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => 50,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;

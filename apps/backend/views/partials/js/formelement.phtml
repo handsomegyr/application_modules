@@ -48,6 +48,8 @@
             if (!empty($this->view->row[$key])) {
                 if ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {
                     $fileList4Upload=array($this->view->row[$key]);
+                }else{
+                    $fileList4Upload=$this->view->row[$key];
                 }
                 foreach ($fileList4Upload as $idx => $fileInfo) {
                     $data_initial_preview = $this->view->baseUrl . "service/file/index?upload_path=" . $path . "&id=" . $fileInfo . "&s=1";

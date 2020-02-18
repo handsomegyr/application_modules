@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Prize\Controllers;
 
 use App\Backend\Submodules\Prize\Models\Code;
@@ -24,18 +25,26 @@ class CodeController extends \App\Backend\Controllers\FormController
         $this->modelCode = new Code();
         $this->modelPrize = new Prize();
         $this->modelActivity = new Activity();
+
+        $this->prizeList = $this->modelPrize->getAll();
+        $this->activityList = $this->modelActivity->getAll();
+
         parent::initialize();
     }
+
+    private $prizeList = null;
+    private $activityList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['prize_id'] = array(
-            'name' => '奖品名称',
+            'name' => '奖品ID',
             'data' => array(
-                'type' => 'string',
-                'length' => '24'
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
@@ -43,117 +52,142 @@ class CodeController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return $this->modelPrize->getAll();
-                }
+                'items' => $this->prizeList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'prize_name'
+                'items' => $this->prizeList
             ),
             'search' => array(
-                'is_show' => false
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->prizeList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['code'] = array(
-            'name' => '券码',
+            'name' => '虚拟卡编号',
             'data' => array(
                 'type' => 'string',
-                'length' => '10'
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['pwd'] = array(
-            'name' => '券密码',
+            'name' => '虚拟卡密码',
             'data' => array(
                 'type' => 'string',
-                'length' => '10'
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
-        
+
         $schemas['start_time'] = array(
             'name' => '开始有效期',
             'data' => array(
                 'type' => 'datetime',
-                'length' => '19',
-                'defaultValue' => getCurrentTime($now)
+                'length' => 19,
+                'defaultValue' => getCurrentTime($this->now)
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['end_time'] = array(
-            'name' => '截止有效期',
+            'name' => '结束有效期',
             'data' => array(
                 'type' => 'datetime',
-                'length' => '19',
-                'defaultValue' => getCurrentTime($now + 3600 * 24 * 2 - 1)
+                'length' => 19,
+                'defaultValue' => getCurrentTime($this->now)
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['is_used'] = array(
             'name' => '是否使用',
             'data' => array(
                 'type' => 'boolean',
-                'length' => '1'
+                'length' => 1,
+                'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -162,18 +196,22 @@ class CodeController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => 1
+                'list_type' => '1',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['activity_id'] = array(
-            'name' => '活动名称',
+            'name' => '所属活动',
             'data' => array(
-                'type' => 'string',
-                'length' => '24'
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => false
@@ -181,19 +219,22 @@ class CodeController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'activity_name'
+                'items' => $this->activityList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 
@@ -205,19 +246,5 @@ class CodeController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelCode;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $prizeList = $this->modelPrize->getAll();
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : "--";
-            $item['prize_name'] = isset($prizeList[$item['prize_id']]) ? $prizeList[$item['prize_id']] : "--";
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-        }
-        
-        return $list;
     }
 }

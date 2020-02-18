@@ -21,107 +21,106 @@ class PrizeController extends \App\Backend\Controllers\FormController
     {
         $this->modelPrize = new Prize();
         $this->modelCategory = new Category();
+        $this->categoryList = $this->modelCategory->getAll();
         parent::initialize();
     }
+
+    private $categoryList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
 
-        $schemas['prize_code'] = array(
-            'name' => '奖品编码',
-            'data' => array(
-                'type' => 'string',
-                'length' => '24'
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-
         $schemas['prize_name'] = array(
-            'name' => '奖品名称',
+            'name' => '奖品名',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => 50,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-
-        $schemas['category'] = array(
-            'name' => '奖品类别',
+        $schemas['prize_desc'] = array(
+            'name' => '奖品描述',
             'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'select',
+                'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => $this->modelCategory->getAll()
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true,
-                'list_data_name' => 'category_name'
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-
-        // $schemas['desc'] = array(
-        // 'name' => '奖品描述',
-        // 'data' => array(
-        // 'type' => 'string',
-        // 'length' => '100'
-        // ),
-        // 'validation' => array(
-        // 'required' => false
-        // ),
-        // 'form' => array(
-        // 'input_type' => 'textarea',
-        // 'is_show' => true
-        // ),
-        // 'list' => array(
-        // 'is_show' => true
-        // ),
-        // 'search' => array(
-        // 'is_show' => false
-        // )
-        // );
-
+        $schemas['prize_code'] = array(
+            'name' => '奖品代码',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['is_virtual'] = array(
-            'name' => '是否虚拟奖品',
+            'name' => '是否是虚拟奖品',
             'data' => array(
                 'type' => 'boolean',
-                'length' => '1'
+                'length' => 1,
+                'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -130,42 +129,52 @@ class PrizeController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1'
+                'list_type' => '1',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-
         $schemas['virtual_currency'] = array(
-            'name' => '虚拟货币',
+            'name' => '虚拟价值',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-
         $schemas['is_need_virtual_code'] = array(
-            'name' => '是否发放虚拟奖品',
+            'name' => '是否发放奖品券码',
             'data' => array(
                 'type' => 'boolean',
-                'length' => '1'
+                'length' => 1,
+                'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -174,21 +183,25 @@ class PrizeController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1'
+                'list_type' => '1',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-
         $schemas['is_valid'] = array(
             'name' => '是否立即生效',
             'data' => array(
                 'type' => 'boolean',
-                'length' => '1'
+                'length' => 1,
+                'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -197,10 +210,530 @@ class PrizeController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1'
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['category'] = array(
+            'name' => '奖品类别',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+                'items' => $this->categoryList
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['list_img'] = array(
+            'name' => '列表图',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['img1'] = array(
+            'name' => '详情图1',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['img2'] = array(
+            'name' => '详情图2',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['img3'] = array(
+            'name' => '详情图3',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['img4'] = array(
+            'name' => '详情图4',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['img5'] = array(
+            'name' => '详情图5',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['ad_imgs'] = array(
+            'name' => '广告图多张',
+            'data' => array(
+                'type' => 'multifile',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'multipleImage',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['cover_imgs'] = array(
+            'name' => '封面图多张',
+            'data' => array(
+                'type' => 'multifile',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'multipleImage',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['desc_imgs'] = array(
+            'name' => '详情图多张',
+            'data' => array(
+                'type' => 'multifile',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'multipleImage',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['carousel_imgs'] = array(
+            'name' => '轮播图多张',
+            'data' => array(
+                'type' => 'multifile',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'multipleImage',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['share_content'] = array(
+            'name' => '分享内容',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['share_img'] = array(
+            'name' => '分享图片',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['share_imgs'] = array(
+            'name' => '分享图多张',
+            'data' => array(
+                'type' => 'multifile',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'multipleImage',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['video_url'] = array(
+            'name' => '视频文件',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'file',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['video_cover_imgs'] = array(
+            'name' => '视频封面图多张',
+            'data' => array(
+                'type' => 'multifile',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'multipleImage',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['icon'] = array(
+            'name' => 'ICON图',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['thirdpart_code'] = array(
+            'name' => '第3方code',
+            'data' => array(
+                'type' => 'string',
+                'length' => 100,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['thirdpart_code2'] = array(
+            'name' => '第3方code2',
+            'data' => array(
+                'type' => 'string',
+                'length' => 100,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
 
@@ -215,14 +748,5 @@ class PrizeController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelPrize;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $categoryList = $this->modelCategory->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['category_name'] = isset($categoryList[$item['category']]) ? $categoryList[$item['category']] : "--";
-        }
-        return $list;
     }
 }
