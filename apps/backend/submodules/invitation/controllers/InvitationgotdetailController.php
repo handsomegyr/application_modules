@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Invitation\Controllers;
 
 use App\Backend\Submodules\Invitation\Models\InvitationGotDetail;
@@ -18,241 +19,340 @@ class InvitationgotdetailController extends \App\Backend\Controllers\FormControl
     {
         $this->modelInvitationGotDetail = new InvitationGotDetail();
         $this->modelActivity = new Activity();
+        $this->activityList = $this->modelActivity->getAll();
         parent::initialize();
     }
+    private $activityList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
         $schemas['activity_id'] = array(
-            'name' => '活动名称',
+            'name' => '所属活动',
             'data' => array(
                 'type' => 'string',
-                'length' => '24'
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->activityList
+            ),
+            'list' => array(
+                'is_show' => true,
+                'items' => $this->activityList
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->activityList
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['invitation_id'] = array(
+            'name' => '邀请ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['owner_user_id'] = array(
+            'name' => '发送邀请的用户ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['owner_user_name'] = array(
+            'name' => '发送邀请的用户名称',
+            'data' => array(
+                'type' => 'string',
+                'length' => 50,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->modelActivity->getAll()
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_data_name' => 'activity_name'
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->modelActivity->getAll()
-            )
-        );
-        $schemas['invitation_id'] = array(
-            'name' => '邀请函ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 24
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => true
-            )
-        );
-        $schemas['owner_user_id'] = array(
-            'name' => '发送邀请的微信ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 50
             ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
-                'input_type' => 'text',
+            'export' => array(
                 'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['owner_user_name'] = array(
-            'name' => '发送邀请的微信用户名',
-            'data' => array(
-                'type' => 'string',
-                'length' => 30
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
             )
         );
         $schemas['owner_user_headimgurl'] = array(
-            'name' => '发送邀请的微信头像',
+            'name' => '发送邀请的用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 300,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['got_user_id'] = array(
-            'name' => '接受邀请的微信ID',
+            'name' => '接受邀请的用户ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => 1
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
                 'is_show' => true
             )
         );
         $schemas['got_user_name'] = array(
-            'name' => '接受邀请的微信用户名',
+            'name' => '接受邀请的用户名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 30
+                'length' => 50,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['got_user_headimgurl'] = array(
-            'name' => '接受邀请的微信头像',
+            'name' => '接受邀请的用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 300,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['got_time'] = array(
             'name' => '接受时间',
             'data' => array(
                 'type' => 'datetime',
-                'length' => '19',
+                'length' => 19,
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => 1
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'condition_type' => 'period' // single
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['got_worth'] = array(
             'name' => '获取价值',
             'data' => array(
                 'type' => 'integer',
-                'length' => 11
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => 1
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['got_worth2'] = array(
+            'name' => '获取价值2',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024,
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 
@@ -264,16 +364,5 @@ class InvitationgotdetailController extends \App\Backend\Controllers\FormControl
     protected function getModel()
     {
         return $this->modelInvitationGotDetail;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : "--";
-            $item['got_time'] = date("Y-m-d H:i:s", $item['got_time']->sec);
-        }
-        
-        return $list;
     }
 }

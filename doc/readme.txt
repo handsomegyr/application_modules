@@ -1,3 +1,20 @@
+后台管理系统
+因为需要上传文件 语音 视频 图片等操作
+所以需要放开一些限制
+
+编辑php.ini
+upload_max_filesize = 200M
+max_file_uploads = 200
+post_max_size = 1024M
+
+编辑nginx.ini
+client_max_body_size 200M;
+
+重启php和nginx
+service nginx restart
+service php-fpm restart
+
+
 目前实现的组件有
 001 砍价组件(bargain)
 002 投票组件(vote)

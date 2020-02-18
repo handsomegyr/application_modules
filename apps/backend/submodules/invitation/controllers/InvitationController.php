@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Invitation\Controllers;
 
 use App\Backend\Submodules\Invitation\Models\Invitation;
@@ -20,225 +21,396 @@ class InvitationController extends \App\Backend\Controllers\FormController
     {
         $this->modelInvitation = new Invitation();
         $this->modelActivity = new Activity();
+
+        $this->activityList = $this->modelActivity->getAll();
         parent::initialize();
     }
+    private $activityList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
+
         $schemas['activity_id'] = array(
-            'name' => '活动名称',
+            'name' => '所属活动',
             'data' => array(
                 'type' => 'string',
-                'length' => '24'
+                'length' => '24',
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->activityList
+            ),
+            'list' => array(
+                'is_show' => true,
+                'items' => $this->activityList
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->activityList
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['user_id'] = array(
+            'name' => '用户微信号',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['url'] = array(
+            'name' => '邀请函URL',
+            'data' => array(
+                'type' => 'string',
+                'length' => 300,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->modelActivity->getAll()
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_data_name' => 'activity_name'
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->modelActivity->getAll()
-            )
-        );
-        $schemas['user_id'] = array(
-            'name' => '用户ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 50
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
                 'is_show' => true
             )
         );
         $schemas['user_name'] = array(
-            'name' => '用户名',
+            'name' => '昵称',
             'data' => array(
                 'type' => 'string',
-                'length' => 30
+                'length' => 50,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['user_headimgurl'] = array(
-            'name' => '用户头像',
+            'name' => '头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 300,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
             ),
             'search' => array(
                 'is_show' => false
-            )
-        );
-        
-        $schemas['url'] = array(
-            'name' => '邀请URL',
-            'data' => array(
-                'type' => 'string',
-                'length' => 300
             ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
-                'input_type' => 'text',
+            'export' => array(
                 'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
             )
         );
-        
         $schemas['desc'] = array(
             'name' => '说明',
             'data' => array(
                 'type' => 'string',
-                'length' => 500
+                'length' => 1024,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['worth'] = array(
             'name' => '价值',
             'data' => array(
                 'type' => 'integer',
-                'length' => 10
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => 1
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['worth2'] = array(
+            'name' => '价值2',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'condition_type' => 'period' // single
-                        )
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
         );
         $schemas['invited_num'] = array(
             'name' => '接受邀请次数',
             'data' => array(
                 'type' => 'integer',
-                'length' => 11
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => 1
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'input_type' => 'number',
-                'is_show' => true,
-                'condition_type' => 'period' // single
-                        )
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
         );
         $schemas['invited_total'] = array(
             'name' => '邀请总次数限制，0为无限制',
             'data' => array(
                 'type' => 'integer',
-                'length' => 11
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => 0
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['send_time'] = array(
             'name' => '发送时间',
             'data' => array(
                 'type' => 'datetime',
-                'length' => '19',
+                'length' => 19,
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => 0
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'condition_type' => 'period' // single
-                        )
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
         );
+        $schemas['is_need_subscribed'] = array(
+            'name' => '是否需要关注',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['subscibe_hint_url'] = array(
+            'name' => '关注提示页面链接',
+            'data' => array(
+                'type' => 'string',
+                'length' => 300,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['personal_receive_num'] = array(
+            'name' => '每人领取次数限制，0为无限制',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['lock'] = array(
             'name' => '是否LOCK',
             'data' => array(
@@ -282,89 +454,35 @@ class InvitationController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        $schemas['is_need_subscribed'] = array(
-            'name' => '是否需要关注',
+
+        $schemas['memo'] = array(
+            'name' => '备注',
             'data' => array(
-                'type' => 'boolean',
-                'length' => '1'
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => 1
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['subscibe_hint_url'] = array(
-            'name' => '关注提示页面链接',
-            'data' => array(
-                'type' => 'string',
-                'length' => 300
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => false
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['personal_receive_num'] = array(
-            'name' => '每人领取次数限制，0为无限制',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 5
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['memo'] = array(
-            'name' => '备注',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1000
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
                 'input_type' => 'textarea',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 
@@ -376,17 +494,5 @@ class InvitationController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelInvitation;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : "--";
-            $item['send_time'] = date("Y-m-d H:i:s", $item['send_time']->sec);
-            $item['expire'] = date("Y-m-d H:i:s", $item['expire']->sec);
-        }
-        
-        return $list;
     }
 }

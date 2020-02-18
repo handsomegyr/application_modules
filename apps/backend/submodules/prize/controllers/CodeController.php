@@ -42,9 +42,9 @@ class CodeController extends \App\Backend\Controllers\FormController
         $schemas['prize_id'] = array(
             'name' => '奖品ID',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -209,9 +209,9 @@ class CodeController extends \App\Backend\Controllers\FormController
         $schemas['activity_id'] = array(
             'name' => '所属活动',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false

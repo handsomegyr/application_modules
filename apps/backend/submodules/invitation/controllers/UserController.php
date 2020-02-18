@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Invitation\Controllers;
 
 use App\Backend\Submodules\Invitation\Models\User;
@@ -20,8 +21,10 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         $this->modelUser = new User();
         $this->modelActivity = new Activity();
+        $this->activityList = $this->modelActivity->getAll();
         parent::initialize();
     }
+    private $activityList = null;
 
     protected function getSchemas()
     {
@@ -38,7 +41,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
             ),
             'list' => array(
                 'is_show' => true,
@@ -47,7 +50,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
             )
         );
         $schemas['user_id'] = array(
@@ -196,7 +199,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
@@ -228,17 +231,5 @@ class UserController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelUser;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : "--";
-            $item['log_time'] = date("Y-m-d H:i:s", $item['log_time']->sec);
-            $item['expire'] = date("Y-m-d H:i:s", $item['expire']->sec);
-        }
-        
-        return $list;
     }
 }

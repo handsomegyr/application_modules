@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Invitation\Controllers;
 
 use App\Backend\Submodules\Invitation\Models\Rule;
@@ -20,8 +21,10 @@ class RuleController extends \App\Backend\Controllers\FormController
     {
         $this->modelRule = new Rule();
         $this->modelActivity = new Activity();
+        $this->activityList = $this->modelActivity->getAll();
         parent::initialize();
     }
+    private $activityList = null;
 
     protected function getSchemas()
     {
@@ -38,25 +41,22 @@ class RuleController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return $this->modelActivity->getAll();
-                }
+                'items' => $this->activityList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'activity_name'
+                'items' => $this->activityList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
             )
         );
-        
+
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
-        
+
         $schemas['start_time'] = array(
             'name' => '开始时间',
             'data' => array(
@@ -78,7 +78,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['end_time'] = array(
             'name' => '截止时间',
             'data' => array(
@@ -100,7 +100,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['worth'] = array(
             'name' => '价值',
             'data' => array(
@@ -121,7 +121,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['probability'] = array(
             'name' => '概率(N/10000)',
             'data' => array(
@@ -142,7 +142,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -154,16 +154,5 @@ class RuleController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelRule;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = $activityList[$item['activity_id']];
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-        }
-        return $list;
     }
 }

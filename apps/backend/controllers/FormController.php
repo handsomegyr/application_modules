@@ -450,6 +450,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
         }
 
+        // print_r($files);
+        // die('xxxxxx');
         $schemas = $this->sortSchemas($this->getSchemas());
         $input = new Input();
         $input->id = $this->request->get('id', array(
