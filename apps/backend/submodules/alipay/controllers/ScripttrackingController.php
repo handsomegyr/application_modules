@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Alipay\Controllers;
 
 use App\Backend\Submodules\Alipay\Models\Application;
@@ -20,19 +21,21 @@ class ScripttrackingController extends \App\Backend\Controllers\FormController
     {
         $this->modelApplication = new Application();
         $this->modelScriptTracking = new ScriptTracking();
+        $this->appliactionList = $this->modelApplication->getAll();
         parent::initialize();
     }
+    private $appliactionList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['app_id'] = array(
             'name' => '应用ID',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 32
+                'length' => 32,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -40,147 +43,157 @@ class ScripttrackingController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelApplication->getAll()
+                'items' => $this->appliactionList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'app_name'
+                'items' => $this->appliactionList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelApplication->getAll()
+                'items' => $this->appliactionList
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['type'] = array(
             'name' => '监控类型',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 10
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['start_time'] = array(
             'name' => '开始时间',
             'data' => array(
                 'type' => 'integer',
-                'defaultValue' => '0',
-                'length' => 11
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
-        
         $schemas['end_time'] = array(
             'name' => '截止时间',
             'data' => array(
                 'type' => 'integer',
-                'defaultValue' => '0',
-                'length' => 11
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
-        
         $schemas['execute_time'] = array(
             'name' => '执行计算',
             'data' => array(
                 'type' => 'integer',
-                'defaultValue' => '0',
-                'length' => 11
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
-        
         $schemas['who'] = array(
             'name' => 'who',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 30
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 
@@ -192,14 +205,5 @@ class ScripttrackingController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelScriptTracking;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $appliactionList = $this->modelApplication->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['app_name'] = isset($appliactionList[$item['app_id']]) ? $appliactionList[$item['app_id']] : "--";
-        }
-        return $list;
     }
 }

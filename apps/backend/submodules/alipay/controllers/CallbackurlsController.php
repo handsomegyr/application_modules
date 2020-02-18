@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Alipay\Controllers;
 
 use App\Backend\Submodules\Alipay\Models\Application;
@@ -20,19 +21,21 @@ class CallbackurlsController extends \App\Backend\Controllers\FormController
     {
         $this->modelApplication = new Application();
         $this->modelCallbackurls = new Callbackurls();
+        $this->appliactionList = $this->modelApplication->getAll();
         parent::initialize();
     }
+    private $appliactionList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['app_id'] = array(
             'name' => '应用ID',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 32
+                'length' => 32,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -40,74 +43,76 @@ class CallbackurlsController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelApplication->getAll()
+                'items' => $this->appliactionList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'app_name'
+                'items' => $this->appliactionList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelApplication->getAll()
+                'items' => $this->appliactionList
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['url'] = array(
             'name' => '回调地址安全域名',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 100
+                'length' => 100,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['is_valid'] = array(
             'name' => '是否有效',
             'data' => array(
                 'type' => 'boolean',
-                'defaultValue' => '0',
-                'length' => 1
+                'length' => 1,
+                'defaultValue' => true
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
-                'items' => $this->trueOrFalseDatas,
-                'is_show' => true
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
+                'is_show' => true,
                 'list_type' => '1',
-                'is_show' => true
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 
@@ -119,14 +124,5 @@ class CallbackurlsController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelCallbackurls;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $appliactionList = $this->modelApplication->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['app_name'] = isset($appliactionList[$item['app_id']]) ? $appliactionList[$item['app_id']] : "--";
-        }
-        return $list;
     }
 }

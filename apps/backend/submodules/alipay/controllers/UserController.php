@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Alipay\Controllers;
 
 use App\Backend\Submodules\Alipay\Models\User;
@@ -20,19 +21,21 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         $this->modelApplication = new Application();
         $this->modelUser = new User();
+        $this->appliactionList = $this->modelApplication->getAll();
         parent::initialize();
     }
+    private $appliactionList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['app_id'] = array(
             'name' => '应用ID',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 32
+                'length' => 32,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -40,300 +43,319 @@ class UserController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelApplication->getAll()
+                'items' => $this->appliactionList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'app_name'
+                'items' => $this->appliactionList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelApplication->getAll()
+                'items' => $this->appliactionList
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['user_id'] = array(
             'name' => '用户ID',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 16
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'input_type' => 'text',
-                'condition_type' => '',
-                'defaultValues' => array(),
                 'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['nick_name'] = array(
             'name' => '昵称',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 50
+                'length' => 50,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['avatar'] = array(
             'name' => '头像',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 400
+                'length' => 300,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['province'] = array(
             'name' => '省',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 20
+                'length' => 20,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['city'] = array(
             'name' => '市',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 20
+                'length' => 20,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['is_student_certified'] = array(
             'name' => '是否是学生(T/F)',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 1
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['user_type'] = array(
             'name' => '用户类型（1/2）',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 1
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['user_status'] = array(
             'name' => '用户状态（Q/T/B/W）',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 1
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['is_certified'] = array(
             'name' => '是否通过实名认证(T/F)',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 1
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['gender'] = array(
             'name' => '性别(F/M)',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 1
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        
         $schemas['access_token'] = array(
             'name' => 'Access Token',
             'data' => array(
                 'type' => 'json',
-                'defaultValue' => '',
-                'length' => 1024
+                'length' => 1024,
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 
@@ -345,14 +367,5 @@ class UserController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelUser;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $appliactionList = $this->modelApplication->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['app_name'] = isset($appliactionList[$item['app_id']]) ? $appliactionList[$item['app_id']] : "--";
-        }
-        return $list;
     }
 }

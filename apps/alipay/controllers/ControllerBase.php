@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Alipay\Controllers;
 
 class ControllerBase extends \App\Common\Controllers\ControllerBase

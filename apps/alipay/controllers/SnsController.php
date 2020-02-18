@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Alipay\Controllers;
 
 use App\Alipay\Models\User;
@@ -35,17 +36,17 @@ class SnsController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        
+
         $this->_config = $this->getDI()->get('config');
         $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : $this->_config['alipay']['appid'];
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'auth_user';
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : '';
-        
+
         $this->_app = new Application();
         $this->_user = new User();
         $this->_tracking = new ScriptTracking();
         $this->_callbackurls = new Callbackurls();
-        
+
         $this->doInitializeLogic();
     }
 
@@ -64,7 +65,7 @@ class SnsController extends ControllerBase
             $redirect = isset($_GET['redirect']) ? trim(trim($_GET['redirect'])) : ''; // 附加参数存储跳转地址
             $dc = isset($_GET['dc']) ? intval($_GET['dc']) : 0; // 是否检查回调域名
             $refresh = isset($_GET['refresh']) ? intval($_GET['refresh']) : 0; // 是否刷新
-            
+
             if ($dc) {
                 // 添加重定向域的检查
                 $isValid = $this->_callbackurls->isValid($this->appid, $redirect);
@@ -72,29 +73,29 @@ class SnsController extends ControllerBase
                     die('回调地址不合法');
                 }
             }
-            
-            if (! $refresh && ! empty($_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$this->scope}"])) {
-                
+
+            if (!$refresh && !empty($_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$this->scope}"])) {
+
                 $arrAccessToken = $_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$this->scope}"];
-                
+
                 $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
-                
+
                 // print_r($arrAccessToken);
                 // die('session:' . $redirect);
-                
+
                 header("location:{$redirect}");
                 fastcgi_finish_request();
                 $this->_tracking->record($this->appid, "授权session存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['user_id']);
                 exit();
-            } elseif (! $refresh && ! empty($_COOKIE["__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__"])) {
-                
+            } elseif (!$refresh && !empty($_COOKIE["__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__"])) {
+
                 $arrAccessToken = json_decode($_COOKIE["__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__"], true);
-                
+
                 $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
-                
+
                 // print_r($arrAccessToken);
                 // die('cookie:' . $redirect);
-                
+
                 header("location:{$redirect}");
                 fastcgi_finish_request();
                 $this->_tracking->record($this->appid, "授权cookie存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['user_id']);
@@ -108,7 +109,7 @@ class SnsController extends ControllerBase
                 $redirectUri .= '?appid=' . $this->appid;
                 $redirectUri .= '&scope=' . $this->scope;
                 $redirectUri .= '&redirect=' . $redirect;
-                
+
                 // 授权处理
                 $redirectUri = \iAlipay::getAuthorizeUrl($redirectUri, $this->appid, $this->scope, $this->state);
                 header("location:{$redirectUri}");
@@ -136,23 +137,23 @@ class SnsController extends ControllerBase
             $userOutputs = isset($_GET['userOutputs']) ? ($_GET['userOutputs']) : '';
             $redirect = isset($_GET['redirect']) ? urldecode($_GET['redirect']) : '';
             $auth_code = isset($_GET['auth_code']) ? ($_GET['auth_code']) : '';
-            
+
             $source = isset($_GET['source']) ? ($_GET['source']) : '';
             $alipay_token = isset($_GET['alipay_token']) ? ($_GET['alipay_token']) : '';
             $readauth = isset($_GET['readauth']) ? ($_GET['readauth']) : '';
             if (empty($redirect)) {
                 throw new \Exception("回调地址未定义");
             }
-            
-            $sourceUserId = ! empty($_GET['sourceUserId']) ? $_GET['sourceUserId'] : '';
+
+            $sourceUserId = !empty($_GET['sourceUserId']) ? $_GET['sourceUserId'] : '';
             $updateInfoFromWx = false;
-            if (! empty($auth_code)) {
+            if (!empty($auth_code)) {
                 // 第三步：使用auth_code换取接口access_token及用户userId
                 // 接口名称：alipay.system.oauth.token
                 // 换取授权访问令牌，开发者可通过获取到的auth_code换取access_token和用户userId。auth_code作为换取access_token的票据，每次用户授权完成，回调地址中的auth_code将不一样，auth_code只能使用一次，一天未被使用自动过期。
                 $objiAlipay = new \iAlipay($this->_appConfig['app_id'], $this->_appConfig['merchant_private_key'], $this->_appConfig['merchant_public_key'], $this->_appConfig['alipay_public_key'], $this->_appConfig['charset'], $this->_appConfig['gatewayUrl'], $this->_appConfig['sign_type']);
                 $arrAccessToken = $objiAlipay->alipaySystemOauthTokenRequest($auth_code);
-                
+
                 // 只有在这个授权方式下获取用户信息
                 $userInfo = array();
                 if ($this->scope == 'auth_user') {
@@ -166,15 +167,15 @@ class SnsController extends ControllerBase
                         $userInfo['app_id'] = $this->appid;
                     }
                 }
-                
+
                 if (isset($arrAccessToken['user_id'])) {
-                    
-                    if (! empty($userInfo)) {
-                        if (! empty($userInfo['nick_name'])) {
+
+                    if (!empty($userInfo)) {
+                        if (!empty($userInfo['nick_name'])) {
                             $arrAccessToken['nickname'] = ($userInfo['nick_name']);
                         }
-                        
-                        if (! empty($userInfo['avatar'])) {
+
+                        if (!empty($userInfo['avatar'])) {
                             $arrAccessToken['headimgurl'] = stripslashes($userInfo['avatar']);
                         }
                     }
@@ -182,16 +183,16 @@ class SnsController extends ControllerBase
                     $path = $this->_config['global']['path'];
                     $expireTime = time() + 1.5 * 3600;
                     setcookie("__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__", json_encode($arrAccessToken), $expireTime, $path);
-                    
+
                     $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
-                    
+
                     if ($sourceUserId !== null && $sourceUserId == $arrAccessToken['user_id']) {
                         $redirect = $this->addUrlParameter($redirect, array(
                             '__self' => true
                         ));
                     }
                 }
-                
+
                 header("location:{$redirect}");
                 // 调整数据库操作的执行顺序，优化跳转速度
                 fastcgi_finish_request();
@@ -200,7 +201,7 @@ class SnsController extends ControllerBase
                     $this->_user->updateUserInfoBySns($arrAccessToken['user_id'], $userInfo);
                 }
                 $this->_tracking->record($this->appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['user_id']);
-                
+
                 exit();
             } else {
                 // 循环授权
@@ -218,7 +219,7 @@ class SnsController extends ControllerBase
 
     protected function addUrlParameter($url, array $params)
     {
-        if (! empty($params)) {
+        if (!empty($params)) {
             foreach ($params as $key => $value) {
                 if (strpos($url, $key) === false || ($key == "user_id")) {
                     if (strpos($url, '?') === false)
@@ -241,15 +242,15 @@ class SnsController extends ControllerBase
         $redirect = $this->addUrlParameter($redirect, array(
             'userToken' => urlencode($arrAccessToken['access_token'])
         ));
-        
+
         $redirect = $this->addUrlParameter($redirect, array(
             'refreshToken' => urlencode($arrAccessToken['refresh_token'])
         ));
-        
+
         $redirect = $this->addUrlParameter($redirect, array(
             'user_id' => $arrAccessToken['user_id']
         ));
-        
+
         // 计算signkey
         $timestamp = time();
         $signkey = $this->getSignKey($arrAccessToken['user_id'], $timestamp);
@@ -259,14 +260,14 @@ class SnsController extends ControllerBase
         $redirect = $this->addUrlParameter($redirect, array(
             'timestamp' => $timestamp
         ));
-        
-        if (! empty($arrAccessToken['nickname'])) {
+
+        if (!empty($arrAccessToken['nickname'])) {
             $redirect = $this->addUrlParameter($redirect, array(
                 'nickname' => urlencode($arrAccessToken['nickname'])
             ));
         }
-        
-        if (! empty($arrAccessToken['headimgurl'])) {
+
+        if (!empty($arrAccessToken['headimgurl'])) {
             $redirect = $this->addUrlParameter($redirect, array(
                 'headimgurl' => urlencode(stripslashes($arrAccessToken['headimgurl']))
             ));
@@ -280,10 +281,9 @@ class SnsController extends ControllerBase
     protected function doInitializeLogic()
     {
         $this->_appConfig = $this->_app->getApplicationInfoByAppId($this->appid);
-        
+
         if (empty($this->_appConfig)) {
             throw new \Exception('appid所对应的记录不存在');
         }
     }
 }
-

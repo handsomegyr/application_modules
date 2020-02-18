@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Alipay\Controllers;
 
 use App\Alipay\Models\User;
@@ -41,16 +42,16 @@ class AppauthController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        
+
         $this->_config = $this->getDI()->get('config');
-        
+
         $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : $this->_config['alipay']['appid'];
-        
+
         $this->_app = new Application();
         $this->_user = new User();
         $this->_tracking = new ScriptTracking();
         $this->_callbackurls = new Callbackurls();
-        
+
         $this->doInitializeLogic();
     }
 
@@ -65,7 +66,7 @@ class AppauthController extends ControllerBase
     public function indexAction()
     {
         $scheme = $this->getRequest()->getScheme();
-        
+
         try {
             $redirect = isset($_GET['redirect']) ? urlencode(trim($_GET['redirect'])) : ''; // 附加参数存储跳转地址
             $redirectUri = 'http://';
@@ -103,7 +104,7 @@ class AppauthController extends ControllerBase
             $userOutputs = isset($_GET['userOutputs']) ? ($_GET['userOutputs']) : '';
             $redirect = isset($_GET['redirect']) ? urldecode($_GET['redirect']) : '';
             $auth_code = isset($_GET['auth_code']) ? ($_GET['auth_code']) : '';
-            
+
             $source = isset($_GET['source']) ? ($_GET['source']) : '';
             $alipay_token = isset($_GET['alipay_token']) ? ($_GET['alipay_token']) : '';
             $readauth = isset($_GET['readauth']) ? ($_GET['readauth']) : '';
@@ -131,4 +132,3 @@ class AppauthController extends ControllerBase
         }
     }
 }
-
