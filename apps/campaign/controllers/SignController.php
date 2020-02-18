@@ -27,9 +27,6 @@ class SignController extends ControllerBase
     // 用于签名认证
     protected $secretKey = "guoyongrong";
 
-    // 当前时间
-    protected $now = null;
-
     // 活动
     protected $modelActivity = null;
     // 活动错误日志
@@ -40,16 +37,14 @@ class SignController extends ControllerBase
     protected $modelActivityBlackUser = null;
 
     // 签到
-    protected $modelSign;
+    protected $modelSignUser;
 
-    protected $modelLog;
+    protected $modelSignLog;
 
     public function initialize()
     {
-        $this->now = getCurrentTime();
-
-        $this->modelSign = new \App\Sign\Models\Sign();
-        $this->modelLog = new \App\Sign\Models\Log();
+        $this->modelSignUser = new \App\Sign\Models\Sign();
+        $this->modelSignLog = new \App\Sign\Models\Log();
 
         $this->modelActivity = new \App\Activity\Models\Activity();
         $this->modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
@@ -116,11 +111,11 @@ class SignController extends ControllerBase
             // 连续签到天数
             $continue_sign_count = 0;
             // 根据userid获取上次签到信息
-            $info = $this->modelSign->getLastInfoByUserId($this->activity1, $FromUserName);
+            $info = $this->modelSignUser->getLastInfoByUserId($FromUserName, $this->activity1);
             // 如果找到上次的签到数据
             if (!empty($info)) {
                 // 检查签到的结果
-                $judgeResult = $this->modelSign->judgeSignTime($info['last_sign_time'], $this->now);
+                $judgeResult = $this->modelSignUser->judgeSignTime(strtotime($info['last_sign_time']), $this->now);
                 // 今天是否已签到
                 $isTodaySigned = ($judgeResult === -1);
                 // 连续签到天数
@@ -226,11 +221,11 @@ class SignController extends ControllerBase
             // 判断今天是否已签到
             $isTodaySigned = false;
             // 根据userid获取上次签到信息
-            $info = $this->modelSign->getLastInfoByUserId($this->activity1, $FromUserName);
+            $info = $this->modelSignUser->getLastInfoByUserId($FromUserName, $this->activity1);
             // 如果找到上次的签到数据
             if (!empty($info)) {
                 // 检查签到的结果
-                $judgeResult = $this->modelSign->judgeSignTime($info['last_sign_time'], $this->now);
+                $judgeResult = $this->modelSignUser->judgeSignTime(strtotime($info['last_sign_time']), $this->now);
                 // 今天是否已签到
                 $isTodaySigned = ($judgeResult === -1);
                 // 如果今天没有签过的话
@@ -245,16 +240,23 @@ class SignController extends ControllerBase
                 $judgeResult = 1;
             }
 
+            // 如果不需要签到的话
+            if (!$is_need_sign) {
+                return $this->error(-4, "你已经签到过");
+            }
+
             // 如果需要签到的话
             if ($is_need_sign) {
+                $scene = "";
                 // 签到处理
                 $memo = array(
-                    'xxx' => ''
+                    'scene' => $scene
                 );
+                $ip = getIp();
                 // 记录流水
-                $signLog = $this->modelLog->log($this->activity1, $FromUserName, $nickname, $headimgurl, $this->now, $memo);
+                $signLog = $this->modelSignLog->log($this->activity1, $FromUserName, $nickname, $headimgurl, $this->now, $ip, $scene, $memo);
                 // 处理签到信息
-                $info = $this->modelSign->process($this->activity1, $FromUserName, $nickname, $headimgurl, $this->now, $signLog['_id'], $judgeResult, $info, $memo);
+                $info = $this->modelSignUser->process($this->activity1, $FromUserName, $nickname, $headimgurl, $this->now, $ip, $signLog['id'], $judgeResult, $info, $memo);
             }
 
             // 发送成功
