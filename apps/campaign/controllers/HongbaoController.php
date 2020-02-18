@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Controllers;
 
 /**
@@ -36,17 +37,17 @@ class HongbaoController extends ControllerBase
     {
         $this->now = getCurrentTime();
         $this->today = date('Ymd', $this->now->sec);
-        
+
         $this->modelErrorLog = new \App\System\Models\ErrorLog();
-        
+
         $this->modelHongbao = new \App\Campaign\Models\Hongbao();
-        
+
         $this->modelHongbaoUser = new \App\Weixinredpack\Models\User();
-        
+
         $this->modelWeixinApplication = new \App\Weixin\Models\Application();
-        
+
         $this->modelWeixinredpack = new \App\Weixinredpack\Models\Redpack();
-        
+
         $this->servicesApi = new \App\Weixinredpack\Services\Api(array(), 'nojson');
         try {
             parent::initialize();
@@ -71,11 +72,11 @@ class HongbaoController extends ControllerBase
             }
             $hongbaoInfo = $this->modelHongbao->getInfoByFromUserName($userInfo['FromUserName']);
             $money = 0;
-            if (! empty($hongbaoInfo)) {
+            if (!empty($hongbaoInfo)) {
                 $money = $hongbaoInfo['money'] - $hongbaoInfo['get_money'];
             }
             $this->assign('money', $money);
-            
+
             // 检查今天是否已经提现过了
             $is_withdraw_today = false;
             if ($hongbaoUserInfo['withdraw_date'] == $this->today) {
@@ -95,59 +96,59 @@ class HongbaoController extends ControllerBase
         // http://www.applicationmodule.com/hongbao/index/withdraw?FromUserName=xxxx&money=100
         try {
             $this->view->disable();
-            
+
             $money = intval($this->get('money', '0')); // 红包
             if (empty($money) || $money < 100) {
-                echo $this->error(- 95, "提现金额不满足要求");
+                echo $this->error(-95, "提现金额不满足要求");
                 return false;
             }
-            
+
             $FromUserName = $this->get('FromUserName', '');
             if (empty($FromUserName)) {
-                echo ($this->error(- 91, "微信ID为空或不正确"));
+                echo ($this->error(-91, "微信ID为空或不正确"));
                 return false;
             }
-            
+
             // 检查是否锁定，如果没有锁定加锁
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
-                echo $this->error(- 99, "上次操作还未完成,请等待");
+                echo $this->error(-99, "上次操作还未完成,请等待");
                 return false;
             }
-            
+
             $hongbaoInfo = $this->modelHongbao->getInfoByFromUserName($FromUserName);
-            
+
             if (empty($hongbaoInfo)) {
-                echo ($this->error(- 93, '微信用户ID不正确'));
+                echo ($this->error(-93, '微信用户ID不正确'));
                 return false;
             }
-            
+
             // 账户里面的红包金额够用于提现吗
             if (($hongbaoInfo['money'] - $hongbaoInfo['get_money']) < $money) {
-                echo $this->error(- 96, "帐号的金额不足，无法提现");
+                echo $this->error(-96, "帐号的金额不足，无法提现");
                 return false;
             }
-            
+
             $hongbaoUserInfo = $this->modelHongbaoUser->getInfoByFromUserName($FromUserName);
             if (empty($hongbaoUserInfo) || empty($hongbaoUserInfo['re_openid'])) {
-                echo ($this->error(- 97, '微信红包用户ID不正确'));
+                echo ($this->error(-97, '微信红包用户ID不正确'));
                 return false;
             }
-            
+
             // 进行红包提现操作
             // 检查今天是否已经提现过了
             if ($hongbaoUserInfo['withdraw_date'] == $this->today) {
-                echo $this->error(- 98, "今天已经成功提现过了");
+                echo $this->error(-98, "今天已经成功提现过了");
                 return false;
             }
-            
+
             $redpackInfo = $this->modelWeixinredpack->getInfo4Today($this->now);
             if (empty($redpackInfo)) {
-                echo ($this->error(- 89, "微信红包没有设置"));
+                echo ($this->error(-89, "微信红包没有设置"));
                 return false;
             }
-            
+
             $redpack_id = $redpackInfo['_id'];
             $re_openid = $hongbaoUserInfo['re_openid'];
             $amount = intval($money);
@@ -158,10 +159,10 @@ class HongbaoController extends ControllerBase
                 're_nickname' => $hongbaoInfo['nickname'],
                 're_headimgurl' => $hongbaoInfo['headimgurl']
             );
-            
+
             $config = $this->getDI()->get('config');
             $token = $this->modelWeixinApplication->getTokenByAppid($config['weixin']['appid']);
-            
+
             // 当正式上线的时候改成true
             $this->servicesApi->isNeedSendRedpack = true;
             $this->servicesApi->weixinRedpackSettings = array(
@@ -175,7 +176,7 @@ class HongbaoController extends ControllerBase
                 'key.pem' => APP_PATH . "cache/apiclient_key.pem"
             );
             $gotInfo = $this->servicesApi->sendRedpack($this->activity_id, $this->customer_id, $redpack_id, $re_openid, $amount, $info);
-            if (empty($gotInfo['error_code']) && ! empty($gotInfo['result'])) {
+            if (empty($gotInfo['error_code']) && !empty($gotInfo['result'])) {
                 $exchangeInfo = $gotInfo['result'];
                 // 更新红包信息
                 $this->modelHongbao->incAmount($FromUserName, $amount);
@@ -204,28 +205,28 @@ class HongbaoController extends ControllerBase
             // http://www.applicationmodule.com/hongbao/index/hongbaoauthorize?callbackUrl=xxx
             $callbackUrl = trim($this->get('callbackUrl', ''));
             $callbackUrl = urldecode($callbackUrl);
-            
+
             $FromUserName = trim($this->get('FromUserName', ''));
             $nickname = trim($this->get('nickname', ''));
             $headimgurl = trim($this->get('headimgurl', ''));
             $timestamp = trim($this->get('timestamp', ''));
             $signkey = trim($this->get('signkey', ''));
-            
+
             // url的参数上已经有了FromUserName参数并且不是空的时候
-            if (! empty($FromUserName)) {
+            if (!empty($FromUserName)) {
                 $secretKey = "160418fg0095";
                 // 校验微信id,上线测试时需要加上去
                 if ($this->validateOpenid4Guotai($FromUserName, $timestamp, $secretKey, $signkey)) {
-                    
+
                     $key = cacheKey(__FILE__, __CLASS__, $FromUserName);
                     $objLock = new \iLock($key);
                     if ($objLock->lock()) {
                         $this->refreshPage(5);
                     }
-                    
+
                     // 获取用户个人信息
                     $userInfo = empty($_SESSION['Weixin_userInfo']) ? array() : $_SESSION['Weixin_userInfo'];
-                    if (! empty($userInfo)) {
+                    if (!empty($userInfo)) {
                         if (isset($userInfo['user_id'])) {
                             $userInfo['FromUserName'] = $userInfo['user_id'];
                         }
@@ -244,7 +245,7 @@ class HongbaoController extends ControllerBase
                     }
                 }
             }
-            
+
             // 跳转地址
             if (empty($callbackUrl)) {
                 $callbackUrl = $this->getUrl("index");
@@ -276,7 +277,7 @@ class HongbaoController extends ControllerBase
                 're_headimgurl' => 'http://wx.qlogo.cn/mmopen/gXzibx1VXR1Y8rPYKW6vWLYbEON8zdZ3P4DnZeEHNY6Jib6eT9wjEBqwibtUSuLMqYnviakoop11iadZeP4xnoSTNGRqZltajjib78/0',
                 'client_ip' => getIp()
             );
-            
+
             // 发红包
             $amount = 100; // 1元
             $config = $this->getDI()->get('config');
@@ -296,7 +297,7 @@ class HongbaoController extends ControllerBase
             // print_r($this->servicesApi->weixinRedpackSettings);
             // die('xxxxxxxx');
             $gotInfo = $this->servicesApi->sendRedpack($this->activity_id, $this->customer_id, $redpack_id, $re_openid, $amount, $defaultInfo);
-            
+
             echo ($this->result('处理完成', $gotInfo));
             return true;
         } catch (\Exception $e) {
@@ -305,12 +306,12 @@ class HongbaoController extends ControllerBase
             return false;
         }
     }
-    
+
     // 获取用户信息
     private function getUserInfo($is_need_subscribed = true)
     {
         $userInfo = empty($_SESSION['Weixin_userInfo']) ? array() : $_SESSION['Weixin_userInfo'];
-        if (! empty($userInfo)) {
+        if (!empty($userInfo)) {
             $userInfo['FromUserName'] = $userInfo['user_id'];
             $userInfo['nickname'] = $userInfo['user_name'];
             $userInfo['headimgurl'] = $userInfo['user_headimgurl'];
@@ -320,7 +321,7 @@ class HongbaoController extends ControllerBase
             return $userInfo;
         } else {
             // 不是接口调用的话
-            if (! $this->getRequest()->isAjax()) {
+            if (!$this->getRequest()->isAjax()) {
                 unset($_SESSION['isWeixinAuthorizing']);
                 unset($_SESSION['Weixin_userInfo']);
                 $this->refreshPage(5);
@@ -340,18 +341,18 @@ class HongbaoController extends ControllerBase
         $path = '/';
         $moduleName = 'hongbao';
         $controllerName = 'index';
-        
+
         $callbackUrl = "{$scheme}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
         $callbackUrl = urlencode($callbackUrl);
-        
+
         $redirectUrl = "{$scheme}://{$_SERVER['HTTP_HOST']}{$path}{$moduleName}/{$controllerName}/hongbaoauthorize?callbackUrl={$callbackUrl}";
         $redirectUrl = urlencode($redirectUrl);
-        
+
         // 玩具筋斗云的授权
         $authorizeUrl = "http://160418fg0095.intonead.com/weixin/sns/index";
         $scope = "snsapi_base";
         $url = "{$authorizeUrl}?scope={$scope}&redirect={$redirectUrl}";
-        
+
         header("Location:{$url}");
         exit();
     }
@@ -375,4 +376,3 @@ class HongbaoController extends ControllerBase
         }
     }
 }
-

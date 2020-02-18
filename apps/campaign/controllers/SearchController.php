@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Controllers;
 
 /**
@@ -28,14 +29,14 @@ class SearchController extends ControllerBase
         // http://www.applicationmodule.com/campaign/search/elastic?keyword=xxxx
         try {
             $keyword = $this->get('keyword', '');
-            
+
             $client = $this->getDI()->get('elasticsearch');
-            
+
             // $deleteParams = [
             // 'index' => 'application_modules'
             // ];
             // $response = $client->indices()->delete($deleteParams);
-            
+
             // $params = [
             // 'index' => 'application_modules',
             // 'body' => [
@@ -46,7 +47,7 @@ class SearchController extends ControllerBase
             // ]
             // ];
             // $response = $client->indices()->create($params);
-            
+
             // 检索
             $params = [
                 'index' => 'application_modules',
@@ -59,7 +60,7 @@ class SearchController extends ControllerBase
                 ]
             ];
             $response = $client->search($params);
-            
+
             echo $this->result("OK", $response);
             return true;
         } catch (\Exception $e) {
@@ -77,9 +78,9 @@ class SearchController extends ControllerBase
         // http://www.applicationmodule.com/campaign/search/elastic?keyword=xxxx
         try {
             $keyword = $this->get('keyword', '');
-            
+
             $client = $this->getDI()->get('elasticsearch');
-            
+
             // 检索
             $params = [
                 'index' => 'application_modules',
@@ -92,7 +93,7 @@ class SearchController extends ControllerBase
                 ]
             ];
             $response = $client->search($params);
-            
+
             echo $this->result("OK", $response);
             return true;
         } catch (\Exception $e) {
@@ -102,4 +103,3 @@ class SearchController extends ControllerBase
         }
     }
 }
-

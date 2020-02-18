@@ -2,43 +2,40 @@
 
 namespace App\Backend\Submodules\Lottery\Controllers;
 
-use App\Backend\Submodules\Lottery\Models\Limit;
-use App\Backend\Submodules\Prize\Models\Prize;
+use App\Backend\Submodules\Lottery\Models\Record;
 use App\Backend\Submodules\Activity\Models\Activity;
+use App\Backend\Submodules\System\Models\Source;
 
 /**
- * @title({name="抽奖限制管理"})
+ * @title({name="抽奖日志管理"})
  *
- * @name 抽奖限制管理
+ * @name 抽奖日志管理
  */
-class LimitController extends \App\Backend\Controllers\FormController
+class RecordController extends \App\Backend\Controllers\FormController
 {
 
-    private $modelLimit;
-
-    private $modelPrize;
+    private $modelRecord;
 
     private $modelActivity;
 
+    private $modelSource;
+
     public function initialize()
     {
-        $this->modelLimit = new Limit();
-        $this->modelPrize = new Prize();
+        $this->modelRecord = new Record();
         $this->modelActivity = new Activity();
-        $this->prizeList = $this->modelPrize->getAll();
+        $this->modelSource = new Source();
         $this->activityList = $this->modelActivity->getAll();
+        // $this->sourceList = $this->modelSource->getAll();
 
         parent::initialize();
     }
-    private $prizeList = null;
     private $activityList = null;
+    // private $sourceList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-
-        $now = date('Y-m-d') . " 00:00:00";
-        $now = strtotime($now);
 
         $schemas['activity_id'] = array(
             'name' => '所属活动',
@@ -68,36 +65,62 @@ class LimitController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['prize_id'] = array(
-            'name' => '奖品ID',
+        $schemas['user_id'] = array(
+            'name' => '用户ID',
             'data' => array(
                 'type' => 'string',
-                'length' => '24',
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'select',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => $this->prizeList
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
-                'items' => $this->prizeList
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->prizeList
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        $schemas['limit'] = array(
-            'name' => '限制数量',
+        $schemas['source'] = array(
+            'name' => '来源',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['result_id'] = array(
+            'name' => '结果ID',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
@@ -123,18 +146,18 @@ class LimitController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['start_time'] = array(
-            'name' => '限制开始时间',
+        $schemas['result_msg'] = array(
+            'name' => '结果说明',
             'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime($now)
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'datetimepicker',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -150,18 +173,45 @@ class LimitController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['end_time'] = array(
-            'name' => '限制结束时间',
+        $schemas['rule_id'] = array(
+            'name' => '抽奖规则ID',
             'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime($now + 3600 * 24)
+                'type' => 'string',
+                'length' => '24',
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'datetimepicker',
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['exchange_id'] = array(
+            'name' => '中奖记录ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => '24',
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -183,11 +233,11 @@ class LimitController extends \App\Backend\Controllers\FormController
 
     protected function getName()
     {
-        return '抽奖限制';
+        return '抽奖日志';
     }
 
     protected function getModel()
     {
-        return $this->modelLimit;
+        return $this->modelRecord;
     }
 }

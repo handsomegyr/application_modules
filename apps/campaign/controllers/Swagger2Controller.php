@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Controllers;
 
 use App\Sign\Models\Log;
@@ -82,7 +83,7 @@ class Swagger2Controller extends ControllerBase
         $this->view->disable();
     }
 
-    
+
     /**
      * @SWG\Get(
      *     path="/campaign/swagger2/findbytags",
@@ -112,13 +113,13 @@ class Swagger2Controller extends ControllerBase
     {
         $tags = $this->get("tags", '');
         if (empty($tags)) {
-            echo $this->error(- 1, 'tags is empty');
+            echo $this->error(-1, 'tags is empty');
             return false;
         }
-        echo $this->result("OK", array('tags'=>$tags));
+        echo $this->result("OK", array('tags' => $tags));
         return true;
     }
-    
+
     /**
      * @SWG\Get(
      *     path="/campaign/swagger2/findbystatus",
@@ -152,13 +153,13 @@ class Swagger2Controller extends ControllerBase
     {
         $status = $this->get("status", '');
         if (empty($status)) {
-            echo $this->error(- 1, 'status is empty');
+            echo $this->error(-1, 'status is empty');
             return false;
         }
-        echo $this->result("OK", array('status'=>$status));
+        echo $this->result("OK", array('status' => $status));
         return true;
     }
-    
+
     /**
      * @SWG\Get(
      *     path="/campaign/swagger2/getbyid",
@@ -187,13 +188,13 @@ class Swagger2Controller extends ControllerBase
     {
         $petId = $this->get("petId", '');
         if (empty($petId)) {
-            echo $this->error(- 1, 'petId is empty');
+            echo $this->error(-1, 'petId is empty');
             return false;
         }
-        echo $this->result("OK", array('petId'=>$petId));
+        echo $this->result("OK", array('petId' => $petId));
         return true;
     }
-    
+
     /**
      * @SWG\Post(
      *     path="/campaign/swagger2/add",
@@ -222,13 +223,13 @@ class Swagger2Controller extends ControllerBase
     {
         $body = $this->get("body", '');
         if (empty($body)) {
-            echo $this->error(- 1, 'body is empty');
+            echo $this->error(-1, 'body is empty');
             return false;
         }
-        echo $this->result("OK", array('body'=>$body));
+        echo $this->result("OK", array('body' => $body));
         return true;
     }
-    
+
     /**
      * @SWG\Post(
      *     path="/campaign/swagger2/update",
@@ -257,13 +258,13 @@ class Swagger2Controller extends ControllerBase
     {
         $body = $this->get("body", '');
         if (empty($body)) {
-            echo $this->error(- 1, 'body is empty');
+            echo $this->error(-1, 'body is empty');
             return false;
         }
-        echo $this->result("OK", array('tags'=>$tags));
+        echo $this->result("OK", array('tags' => $tags));
         return true;
     }
-    
+
     /**
      * @SWG\Post(
      *     path="/campaign/swagger2/delete",
@@ -298,13 +299,13 @@ class Swagger2Controller extends ControllerBase
     {
         $petId = $this->get("petId", '');
         if (empty($petId)) {
-            echo $this->error(- 1, 'petId is empty');
+            echo $this->error(-1, 'petId is empty');
             return false;
         }
-        echo $this->result("OK", array('petId'=>$petId));
+        echo $this->result("OK", array('petId' => $petId));
         return true;
     }
-    
+
     /**
      * @SWG\Post(
      *   path="/campaign/swagger2/updatewithform",
@@ -348,13 +349,13 @@ class Swagger2Controller extends ControllerBase
     {
         $petId = $this->get("petId", '');
         if (empty($petId)) {
-            echo $this->error(- 1, 'petId is empty');
+            echo $this->error(-1, 'petId is empty');
             return false;
         }
-        echo $this->result("OK", array('petId'=>$petId));
+        echo $this->result("OK", array('petId' => $petId));
         return true;
     }
-    
+
     /**
      * @SWG\Post(
      *     path="/campaign/swagger2/uploadfile",
@@ -399,10 +400,10 @@ class Swagger2Controller extends ControllerBase
     public function uploadfileAction()
     {
         if (empty($_FILES['file'])) {
-            echo $this->error(- 1, 'file is empty');
+            echo $this->error(-1, 'file is empty');
             return false;
         }
-        echo $this->result("OK", array('file'=>$_FILES['file']));
+        echo $this->result("OK", array('file' => $_FILES['file']));
         return true;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Controllers;
 
 /**
@@ -38,7 +39,7 @@ class WeixincardController extends ControllerBase
             // 回调地址
             $cb_url = $this->get('cb_url', '');
             $cb_url = urldecode($cb_url);
-            
+
             $openid = $this->get('openid', '');
             $card_id = $this->get('card_id', '');
             $card_code = $this->get('card_code', '');
@@ -46,31 +47,31 @@ class WeixincardController extends ControllerBase
             $outer_id = intval($this->get('outer_id', '0'));
             // 签名
             $sign = trim($this->get('sign', ''));
-            
+
             // 计算签名
             $calcSign = $this->getSignKey4WeixinCard($openid, $card_code, $card_id);
             if ($sign != $calcSign) {
                 $this->assign("error", array(
-                    'error_code' => - 999,
+                    'error_code' => -999,
                     'error_msg' => "签名不正确，非法访问"
                 ));
                 return false;
             }
-            
+
             // 检查该卡券是否存在
             $cardInfo = $this->modelCard->getInfoById($card_id);
             if (empty($cardInfo)) {
                 $this->assign("error", array(
-                    'error_code' => - 1,
+                    'error_code' => -1,
                     'error_msg' => "对应的卡券ID不存在"
                 ));
                 return false;
             }
             $wx_card_id = $weixinCardInfo['card_id']; // 微信卡券的卡券ID
-                                                      
+
             // 获取签名
             $signature = $this->getSignature($wx_card_id, $card_code, $openid, $outer_id, $balance);
-            
+
             $result = array();
             $result['signatureInfo'] = $signature;
             $result['wx_card_id'] = $wx_card_id;
@@ -99,25 +100,25 @@ class WeixincardController extends ControllerBase
         // api_ticket、timestamp、card_id、code、openid、balance
         $config = $this->getDI()->get('config');
         $token = $this->modelWeixinApplication->getTokenByAppid($config['weixin']['appid']);
-        
+
         $api_ticket = $token['wx_card_api_ticket'];
         $timestamp = (string) time();
         $outer_id = (string) $outer_id;
         $balance = (string) $balance;
-        
+
         $objSignature = new \Weixin\Model\Signature();
         $objSignature->add_data($api_ticket);
         $objSignature->add_data($timestamp);
         $objSignature->add_data($card_id);
         $objSignature->add_data($code);
         $objSignature->add_data($openid);
-        if (! empty($balance)) {
+        if (!empty($balance)) {
             $objSignature->add_data($balance);
         }
-        if (! empty($outer_id)) {
+        if (!empty($outer_id)) {
             $objSignature->add_data($outer_id);
         }
-        
+
         $signature = $objSignature->get_signature();
         $card_ext = array(
             "code" => $code,
@@ -125,10 +126,10 @@ class WeixincardController extends ControllerBase
             "timestamp" => $timestamp,
             "signature" => $signature
         );
-        if (! empty($outer_id)) {
+        if (!empty($outer_id)) {
             $card_ext["outer_id"] = $outer_id;
         }
-        if (! empty($balance)) {
+        if (!empty($balance)) {
             $card_ext["balance"] = $balance;
         }
         return array(
@@ -179,10 +180,10 @@ class WeixincardController extends ControllerBase
 <IsRecommendByFriend>0</IsRecommendByFriend>
 <SourceScene><![CDATA[SOURCE_SCENE_QRCODE]]></SourceScene>
 </xml>';
-            
+
             $datas = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $datas = $this->object2array($datas);
-            
+
             $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
             $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
             $CreateTime = isset($datas['CreateTime']) ? intval($datas['CreateTime']) : time();
@@ -197,16 +198,16 @@ class WeixincardController extends ControllerBase
             $IsRestoreMemberCard = isset($datas['IsRestoreMemberCard']) ? intval($datas['IsRestoreMemberCard']) : 0;
             $IsRecommendByFriend = isset($datas['IsRecommendByFriend']) ? intval($datas['IsRecommendByFriend']) : 0;
             $SourceScene = isset($datas['SourceScene']) ? trim($datas['SourceScene']) : '';
-            
+
             $encrypt_code = isset($datas['encrypt_code']) ? trim($datas['encrypt_code']) : '';
             $new_code = isset($datas['new_code']) ? trim($datas['new_code']) : '';
-            
+
             // 领取卡券处理
             $newCardBag = $this->modelCardBag->userGetCard($CardId, $UserCardCode, $FromUserName, $CreateTime, $IsGiveByFriend, $FriendUserName, $OuterId, $OldUserCardCode, $IsRestoreMemberCard, $IsRecommendByFriend, $SourceScene, $encrypt_code, $new_code, $datas);
-            
+
             // 增加该卡券的领取数量
             $this->modelCard->incReceivedNum($CardId, 1);
-            
+
             echo $this->result("OK");
             return true;
         } catch (\Exception $e) {
@@ -252,10 +253,10 @@ class WeixincardController extends ControllerBase
 <OldUserCardCode><![CDATA[395079429012]]></OldUserCardCode>
 <OutetStr><![CDATA[]]></OutetStr>
 </xml>';
-            
+
             $datas = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $datas = $this->object2array($datas);
-            
+
             $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
             $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
             $CreateTime = isset($datas['CreateTime']) ? intval($datas['CreateTime']) : time();
@@ -270,15 +271,15 @@ class WeixincardController extends ControllerBase
             $IsRestoreMemberCard = isset($datas['IsRestoreMemberCard']) ? intval($datas['IsRestoreMemberCard']) : 0;
             $IsRecommendByFriend = isset($datas['IsRecommendByFriend']) ? intval($datas['IsRecommendByFriend']) : 0;
             $SourceScene = isset($datas['SourceScene']) ? trim($datas['SourceScene']) : '';
-            
+
             $encrypt_code = isset($datas['encrypt_code']) ? trim($datas['encrypt_code']) : '';
             $new_code = isset($datas['new_code']) ? trim($datas['new_code']) : '';
-            
+
             // 领取卡券处理
             $newCardBag = $this->modelCardBag->userGetCard($CardId, $UserCardCode, $FromUserName, $CreateTime, $IsGiveByFriend, $FriendUserName, $OuterId, $OldUserCardCode, $IsRestoreMemberCard, $IsRecommendByFriend, $SourceScene, $encrypt_code, $new_code, $datas);
             // 增加该卡券的领取数量
             $this->modelCard->incReceivedNum($CardId, 1);
-            
+
             // 如果是转赠朋友的话
             if ($IsGiveByFriend) {
                 // 更新原来的卡包的信息
@@ -287,7 +288,7 @@ class WeixincardController extends ControllerBase
                 // 增加转赠朋友数
                 $this->modelCard->incGiveByFriendNum($CardId, 1);
             }
-            
+
             echo $this->result("OK");
             return true;
         } catch (\Exception $e) {
@@ -337,10 +338,10 @@ class WeixincardController extends ControllerBase
 <OuterStr><![CDATA[]]></OuterStr>
 <LocationId>0</LocationId>
 </xml>';
-            
+
             $datas = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $datas = $this->object2array($datas);
-            
+
             $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
             $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
             $CreateTime = isset($datas['CreateTime']) ? intval($datas['CreateTime']) : time();
@@ -355,21 +356,21 @@ class WeixincardController extends ControllerBase
             $IsRestoreMemberCard = isset($datas['IsRestoreMemberCard']) ? intval($datas['IsRestoreMemberCard']) : 0;
             $IsRecommendByFriend = isset($datas['IsRecommendByFriend']) ? intval($datas['IsRecommendByFriend']) : 0;
             $SourceScene = isset($datas['SourceScene']) ? trim($datas['SourceScene']) : '';
-            
+
             $encrypt_code = isset($datas['encrypt_code']) ? trim($datas['encrypt_code']) : '';
             $new_code = isset($datas['new_code']) ? trim($datas['new_code']) : '';
-            
+
             $ConsumeSource = isset($datas['ConsumeSource']) ? trim($datas['ConsumeSource']) : '';
             $StaffOpenId = isset($datas['StaffOpenId']) ? trim($datas['StaffOpenId']) : '';
             $LocationId = isset($datas['LocationId']) ? trim($datas['LocationId']) : '';
             $LocationName = isset($datas['LocationName']) ? trim($datas['LocationName']) : '';
-            
+
             // 核销卡券处理
             $this->modelCardBag->userConsumeCard($CardId, $UserCardCode, $FromUserName, $CreateTime, $ConsumeSource, $StaffOpenId, $LocationId, $LocationName, $datas);
-            
+
             // 增加该卡券的核销数量
             $this->modelCard->incConsumedNum($CardId, 1);
-            
+
             echo $this->result("OK");
             return true;
         } catch (\Exception $e) {
@@ -407,10 +408,10 @@ class WeixincardController extends ControllerBase
 <CardId><![CDATA[p4ELSv5DoUT4SxCgIJ7_tUVRTfx8]]></CardId>
 <UserCardCode><![CDATA[247249135439]]></UserCardCode>
 </xml>';
-            
+
             $datas = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $datas = $this->object2array($datas);
-            
+
             $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
             $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
             $CreateTime = isset($datas['CreateTime']) ? intval($datas['CreateTime']) : time();
@@ -425,21 +426,21 @@ class WeixincardController extends ControllerBase
             $IsRestoreMemberCard = isset($datas['IsRestoreMemberCard']) ? intval($datas['IsRestoreMemberCard']) : 0;
             $IsRecommendByFriend = isset($datas['IsRecommendByFriend']) ? intval($datas['IsRecommendByFriend']) : 0;
             $SourceScene = isset($datas['SourceScene']) ? trim($datas['SourceScene']) : '';
-            
+
             $encrypt_code = isset($datas['encrypt_code']) ? trim($datas['encrypt_code']) : '';
             $new_code = isset($datas['new_code']) ? trim($datas['new_code']) : '';
-            
+
             $ConsumeSource = isset($datas['ConsumeSource']) ? trim($datas['ConsumeSource']) : '';
             $StaffOpenId = isset($datas['StaffOpenId']) ? trim($datas['StaffOpenId']) : '';
             $LocationId = isset($datas['LocationId']) ? trim($datas['LocationId']) : '';
             $LocationName = isset($datas['LocationName']) ? trim($datas['LocationName']) : '';
-            
+
             // 删除卡券处理
             $this->modelCardBag->userDelCard($CardId, $UserCardCode, $FromUserName, $CreateTime, $datas);
-            
+
             // 增加该卡券的删除数量
             $this->modelCard->incDeletedNum($CardId, 1);
-            
+
             echo $this->result("OK");
             return true;
         } catch (\Exception $e) {
@@ -458,4 +459,3 @@ class WeixincardController extends ControllerBase
         return @json_decode(preg_replace('/{}/', '""', @json_encode($object)), 1);
     }
 }
-

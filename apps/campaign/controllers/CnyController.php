@@ -284,7 +284,7 @@ class CnyController extends ControllerBase
             $memo = array(
                 'activity_user_id' => $userInfo['_id']
             );
-            $lotteryResult = $this->serviceLottery->doLottery($this->activity_id, $FromUserName, array(), array(), 'weixin', $user_info, $identityContact, $memo);
+            $lotteryResult = $this->serviceLottery->doLottery($this->activity_id, $FromUserName, $this->now, array(), array(), 'weixin', $user_info, $identityContact, $memo);
 
             // 抽奖成功的话
             if (empty($lotteryResult['error_code']) && !empty($lotteryResult['result'])) {

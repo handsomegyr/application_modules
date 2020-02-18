@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Controllers;
 
 /**
@@ -67,7 +68,7 @@ class RedisController extends ControllerBase
         try {
             // 获取所有的key
             $allkeys = $this->redis->keys('*');
-            if (! empty($allkeys)) {
+            if (!empty($allkeys)) {
                 foreach ($allkeys as $key) {
                     $this->redis->del($key);
                     // // 检查key中是否有以下的字符串
@@ -89,8 +90,8 @@ class RedisController extends ControllerBase
             return false;
         }
     }
-    
-    
+
+
     /**
      * 直播用
      * http://www.applicationmodule.com/campaign/redis/deletekeys
@@ -102,4 +103,3 @@ class RedisController extends ControllerBase
      * http://www.applicationmodule.com/live/index.html?user_id=2
      */
 }
-

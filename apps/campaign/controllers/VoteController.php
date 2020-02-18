@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Controllers;
 
 /**
@@ -40,11 +41,11 @@ class VoteController extends ControllerBase
     public function indexAction()
     {
         // http://www.applicationmodule.com/campaign/vote/index
-        
+
         // 获取某活动下的所有投票主题
         $activityId = YUNGOU_ACTIVITY_ID;
         $subjectList = $this->modelSubject->getListByActivityId($activityId);
-        
+
         // 根据主题获取该主题下的所有投票选项
         $itemList = array();
         foreach ($subjectList as $subject) {
@@ -66,34 +67,34 @@ class VoteController extends ControllerBase
             $itemId = $this->get("itemId", '56dea0517f50ea3812000029');
             $FromUserName = trim($this->get('FromUserName', ''));
             if (empty($FromUserName)) {
-                echo ($this->error(- 1, "微信ID不能为空"));
+                echo ($this->error(-1, "微信ID不能为空"));
                 return false;
             }
             if (empty($activityId)) {
-                echo ($this->error(- 2, "活动ID不能为空"));
+                echo ($this->error(-2, "活动ID不能为空"));
                 return false;
             }
             if (empty($subjectId)) {
-                echo ($this->error(- 3, "主题ID不能为空"));
+                echo ($this->error(-3, "主题ID不能为空"));
                 return false;
             }
             if (empty($itemId)) {
-                echo ($this->error(- 4, "选项ID不能为空"));
+                echo ($this->error(-4, "选项ID不能为空"));
                 return false;
             }
-            
+
             $subjectInfo = $this->modelSubject->getInfoById($subjectId);
             if (empty($subjectInfo)) {
-                echo ($this->error(- 6, "主题ID无效"));
+                echo ($this->error(-6, "主题ID无效"));
                 return false;
             }
-            
+
             $itemInfo = $this->modelItem->getInfoById($itemId);
             if (empty($itemInfo)) {
-                echo ($this->error(- 7, "投票选项ID无效"));
+                echo ($this->error(-7, "投票选项ID无效"));
                 return false;
             }
-            
+
             // 限制检查
             $this->modelLimit->setLogModel($this->modelLog);
             $isPassed = $this->modelLimit->checkLimit($activityId, $subjectId, $itemId, $FromUserName, 1, array(
@@ -101,16 +102,16 @@ class VoteController extends ControllerBase
             ), array(
                 $subjectId
             ));
-            if (! $isPassed) { // 未通过
-                echo ($this->error(- 8, "无法再次投票"));
+            if (!$isPassed) { // 未通过
+                echo ($this->error(-8, "无法再次投票"));
                 return false;
             }
-            
+
             // 增加投票log
             $this->modelLog->log($activityId, $subjectId, $itemId, $FromUserName);
             $this->modelItem->incVoteCount($itemId);
             $this->modelSubject->incVoteCount($subjectId);
-            
+
             // 发送成功
             echo ($this->result("OK"));
         } catch (\Exception $e) {
@@ -130,21 +131,21 @@ class VoteController extends ControllerBase
             $subject_id = $this->get('subject_id', "56de9e0a7f50ea8411000029");
             $limit = $this->get('limit', 20);
             if (empty($subject_id)) {
-                echo ($this->error(- 3, "主题ID不能为空"));
+                echo ($this->error(-3, "主题ID不能为空"));
                 return false;
             }
-            
+
             $num = 0;
             $isPeriodGot = 0;
             $nameList = array();
             $list = array();
-            
+
             do {
                 // $this->modelRankPeriod->setDebug(true);
                 // $this->modelRankPeriod->setPhql(true);
                 $rankNameList = $this->modelRankPeriod->distinct("name", array());
                 $sort = array(
-                    'vote_count' => - 1
+                    'vote_count' => -1
                 );
                 $otherConditon = $this->modelItem->getQuery();
                 $otherConditon['subject_id'] = $subject_id;
@@ -153,15 +154,15 @@ class VoteController extends ControllerBase
                 );
                 $otherConditon['rank_period'] = 0;
                 $ret = $this->modelItem->find($otherConditon, $sort, 0, 200);
-                if (! empty($ret['datas'])) {
+                if (!empty($ret['datas'])) {
                     if (empty($isPeriodGot)) {
                         $period = $this->modelPeriod->getLatestPeriod($subject_id);
                         $isPeriodGot = 1;
                     }
                     foreach ($ret['datas'] as $item) {
-                        if (! in_array($item['name'], $nameList)) {
+                        if (!in_array($item['name'], $nameList)) {
                             $nameList[] = $item['name'];
-                            $num ++;
+                            $num++;
                             $this->modelRankPeriod->create($subject_id, $period, $item['name'], $item['desc'], $item['vote_count'], $item['show_order'], $item['memo']);
                             // $modelItem->updateRankPeriod(($item['_id']), $period);
                             $this->modelItem->updateRankPeriodByName($item['name'], $period);
@@ -185,4 +186,3 @@ class VoteController extends ControllerBase
         }
     }
 }
-

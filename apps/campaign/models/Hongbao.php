@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Models;
 
 class Hongbao
@@ -9,7 +10,7 @@ class Hongbao
     public function getConnection()
     {
         $di = \Phalcon\DI::getDefault();
-        if (! $di->has('dbfrom')) {
+        if (!$di->has('dbfrom')) {
             throw new \Exception('dbfrom未正确初始化');
         }
         return $di['dbfrom'];

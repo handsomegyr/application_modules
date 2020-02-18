@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Campaign\Controllers;
 
 /**
@@ -39,18 +40,18 @@ class BargainController extends ControllerBase
         try {
             // 活动
             $activity_id = $this->get('activity_id', '');
-            
+
             // 用户
             $FromUserName = $this->get('FromUserName', '');
             $nickname = $this->get('nickname', '');
             $headimgurl = $this->get('headimgurl', '');
-            
+
             // 砍价物
             $bargain_code = $this->get('bargain_code', '');
             $bargain_name = $this->get('bargain_name', '');
             $worth = intval($this->get('worth', '0'));
             $quantity = intval($this->get('quantity', '1'));
-            
+
             // 砍价设置
             $bargain_from = intval($this->get('bargain_from', '0'));
             $bargain_to = intval($this->get('bargain_to', '0'));
@@ -58,16 +59,16 @@ class BargainController extends ControllerBase
             $bargain_max = intval($this->get('bargain_max', '0'));
             $bargain_num_limit = intval($this->get('bargain_num_limit', '0'));
             $bargain_period = intval($this->get('bargain_period', '0')); // 时间间隔
-                                                                         
+
             // 以下信息都是待定的
             $is_both_bargain = $this->get('is_both_bargain', '0');
             $is_both_bargain = empty($is_both_bargain) ? false : true;
-            
+
             $start_time = intval($this->get('start_time', '0'));
             $start_time = new \MongoDate($start_time);
             $end_time = intval($this->get('end_time', '0'));
             $end_time = new \MongoDate($end_time);
-            
+
             // 以微信号作为发起人的唯一标识,发起砍价，获取砍价物ID
             $memo = array(
                 'test' => 'xxx'
@@ -95,18 +96,18 @@ class BargainController extends ControllerBase
         try {
             $bargain_id = $this->get("bargain_id", '');
             if (empty($bargain_id)) {
-                echo $this->error(- 1, '砍价物ID为空');
+                echo $this->error(-1, '砍价物ID为空');
                 return false;
             }
             $bargainInfo = $this->modelBargain->getInfoById($bargain_id);
             if (empty($bargainInfo)) {
-                echo $this->error(- 2, '砍价物ID不正确');
+                echo $this->error(-2, '砍价物ID不正确');
                 return false;
             }
-            
+
             $ret = array();
             $ret['bargainInfo'] = $bargainInfo; // 砍价信息
-                                                
+
             // 是否能再砍
             $isCanBargain = false;
             $bargainCheckResult = $this->modelApi->checkBargain($bargainInfo);
@@ -114,7 +115,7 @@ class BargainController extends ControllerBase
                 $isCanBargain = true;
             }
             $ret['isCanBargain'] = $isCanBargain;
-            
+
             echo $this->result('OK', $ret);
             return true;
         } catch (Exception $e) {
@@ -132,17 +133,17 @@ class BargainController extends ControllerBase
         try {
             $bargain_id = $this->get("bargain_id", '');
             if (empty($bargain_id)) {
-                echo $this->error(- 1, '砍价物ID为空');
+                echo $this->error(-1, '砍价物ID为空');
                 return false;
             }
-            
+
             // 获取砍价物的砍价日志列表
             $otherCondition = array();
             $otherCondition['bargain_id'] = $bargain_id;
             $logList = $this->modelLog->getList(1, 10, $otherCondition);
             $ret = array();
             $ret['logList'] = $logList; // 砍价日志列表信息
-            
+
             echo $this->result('OK', $ret);
             return true;
         } catch (Exception $e) {
@@ -161,29 +162,29 @@ class BargainController extends ControllerBase
             $FromUserName = $this->get('FromUserName', ''); // 砍价者微信号
             $nickname = $this->get('nickname', ''); // 砍价者微信昵称
             $headimgurl = $this->get('headimgurl', ''); // 砍价者微信头像
-            
+
             $bargain_id = $this->get('bargain_id', ''); // 砍价物ID
             if (empty($bargain_id)) {
-                echo $this->error(- 1, 'bargain_id为空');
+                echo $this->error(-1, 'bargain_id为空');
                 return false;
             }
             if (empty($FromUserName)) {
-                echo $this->error(- 2, 'FromUserName为空');
+                echo $this->error(-2, 'FromUserName为空');
                 return false;
             }
-            
+
             $bargainInfo = $this->modelBargain->getInfoById($bargain_id);
             if (empty($bargainInfo)) {
-                echo $this->error(- 3, 'bargain_id不正确');
+                echo $this->error(-3, 'bargain_id不正确');
                 return false;
             }
-            
+
             // 砍价物的发起者 和砍价者是同一个人的时候,这个跟实际业务有关.
             if ($bargainInfo['user_id'] == $FromUserName) {
-                echo $this->error(- 4, '自己不能对自己的砍价物进行砍价');
+                echo $this->error(-4, '自己不能对自己的砍价物进行砍价');
                 return false;
             }
-            
+
             // 砍价处理
             $memo = array();
             $ret = $this->modelApi->bargain($FromUserName, $nickname, $headimgurl, $bargain_id, $memo);
@@ -210,27 +211,27 @@ class BargainController extends ControllerBase
         // http://www.applicationmodule.com/campaign/bargain/close?bargain_id=58d4dd2af3b9530d008b4568&FromUserName=guoyongrong
         try {
             $FromUserName = $this->get('FromUserName', ''); // 砍价者微信号
-            
+
             $bargain_id = $this->get('bargain_id', ''); // 砍价物ID
             if (empty($bargain_id)) {
-                echo $this->error(- 1, 'bargain_id为空');
+                echo $this->error(-1, 'bargain_id为空');
                 return false;
             }
             if (empty($FromUserName)) {
-                echo $this->error(- 2, 'FromUserName为空');
+                echo $this->error(-2, 'FromUserName为空');
                 return false;
             }
             $bargainInfo = $this->modelBargain->getInfoById($bargain_id);
             if (empty($bargainInfo)) {
-                echo $this->error(- 3, 'bargain_id不正确');
+                echo $this->error(-3, 'bargain_id不正确');
                 return false;
             }
             // 砍价物的发起者 和砍价者是同一个人的时候,这个跟实际业务有关.
             if ($bargainInfo['user_id'] != $FromUserName) {
-                echo $this->error(- 4, '他人不能对自己的砍价物进行关闭');
+                echo $this->error(-4, '他人不能对自己的砍价物进行关闭');
                 return false;
             }
-            
+
             // 关闭砍价物信息
             $bargainInfo = $this->modelBargain->doClosed($bargainInfo['_id']);
             echo $this->result('OK');
@@ -241,4 +242,3 @@ class BargainController extends ControllerBase
         }
     }
 }
-
