@@ -9,6 +9,7 @@ class ControllerBase extends Controller
 {
 
     protected $now = 0;
+    protected $today = '';
 
     protected $moduleName = '';
 
@@ -27,6 +28,7 @@ class ControllerBase extends Controller
         } else {
             $this->now = time();
         }
+        $this->today = date('Ymd', $this->now);
 
         $scheme = $this->request->getScheme();
         $httpHost = $this->request->getHttpHost();

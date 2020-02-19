@@ -17,12 +17,11 @@ class BargainController extends ControllerBase
 
     protected $modelApi = null;
 
-    public function initialize()
+    protected function doCampaignInitialize()
     {
         $this->modelBargain = new \App\Bargain\Models\Bargain();
         $this->modelLog = new \App\Bargain\Models\Log();
         $this->modelApi = new \App\Bargain\Services\Api();
-        parent::initialize();
         $this->view->disable();
     }
 

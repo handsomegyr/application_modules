@@ -27,31 +27,15 @@ class SignController extends ControllerBase
     // 用于签名认证
     protected $secretKey = "guoyongrong";
 
-    // 活动
-    protected $modelActivity = null;
-    // 活动错误日志
-    protected $modelActivityErrorLog = null;
-    // 活动用户
-    protected $modelActivityUser = null;
-    // 活动黑名单用户
-    protected $modelActivityBlackUser = null;
-
     // 签到
     protected $modelSignUser;
 
     protected $modelSignLog;
 
-    public function initialize()
+    protected function doCampaignInitialize()
     {
         $this->modelSignUser = new \App\Sign\Models\Sign();
         $this->modelSignLog = new \App\Sign\Models\Log();
-
-        $this->modelActivity = new \App\Activity\Models\Activity();
-        $this->modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
-        $this->modelActivityUser = new \App\Activity\Models\User();
-        $this->modelActivityBlackUser = new \App\Activity\Models\BlackUser();
-
-        parent::initialize();
         $this->view->disable();
     }
 

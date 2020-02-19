@@ -78,7 +78,6 @@ class Swagger2Controller extends ControllerBase
 {
     public function initialize()
     {
-        $this->now = getCurrentTime();
         parent::initialize();
         $this->view->disable();
     }

@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Backend\Submodules\Lottery\Controllers;
+namespace App\Backend\Submodules\Exchange\Controllers;
 
-use App\Backend\Submodules\Lottery\Models\Exchange;
+use App\Backend\Submodules\Exchange\Models\Exchange;
 use App\Backend\Submodules\Prize\Models\Prize;
 use App\Backend\Submodules\Prize\Models\Category;
 use App\Backend\Submodules\Activity\Models\Activity;
 use App\Backend\Submodules\System\Models\Source;
 
 /**
- * @title({name="抽奖中奖管理"})
+ * @title({name="兑换记录"})
  *
- * @name 抽奖中奖管理
+ * @name 兑换记录
  */
 class ExchangeController extends \App\Backend\Controllers\FormController
 {
-
     private $modelExchange;
 
     private $modelPrize;
@@ -49,13 +48,11 @@ class ExchangeController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-
         $schemas['activity_id'] = array(
-            'name' => '所属活动',
+            'name' => '活动名称',
             'data' => array(
                 'type' => 'string',
-                'length' => '24',
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
                 'required' => true
@@ -324,7 +321,7 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['prize_is_virtual'] = array(
-            'name' => '奖品信息.是否虚拟奖',
+            'name' => '奖品信息.是否实物奖',
             'data' => array(
                 'type' => 'boolean',
                 'length' => 1,
@@ -648,7 +645,7 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['win_code'] = array(
-            'name' => '中奖码',
+            'name' => '兑换码',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
@@ -674,8 +671,88 @@ class ExchangeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['quantity'] = array(
+            'name' => '兑换数量',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['score_category'] = array(
+            'name' => '积分分类',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['score'] = array(
+            'name' => '兑换花费积分',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['rule_id'] = array(
-            'name' => '抽奖规则ID',
+            'name' => '兑换规则ID',
             'data' => array(
                 'type' => 'string',
                 'length' => '24',
@@ -728,12 +805,13 @@ class ExchangeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+
         return $schemas;
     }
 
     protected function getName()
     {
-        return '抽奖中奖';
+        return '兑换记录';
     }
 
     protected function getModel()

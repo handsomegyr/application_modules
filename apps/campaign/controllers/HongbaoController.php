@@ -17,8 +17,6 @@ class HongbaoController extends ControllerBase
 
     private $is_need_subscribed = false;
 
-    private $modelErrorLog = null;
-
     private $modelHongbao = null;
 
     private $modelHongbaoUser = null;
@@ -29,17 +27,8 @@ class HongbaoController extends ControllerBase
 
     private $servicesApi = null;
 
-    private $today = '';
-
-    private $now = null;
-
-    public function initialize()
+    protected function doCampaignInitialize()
     {
-        $this->now = getCurrentTime();
-        $this->today = date('Ymd', $this->now->sec);
-
-        $this->modelErrorLog = new \App\System\Models\ErrorLog();
-
         $this->modelHongbao = new \App\Campaign\Models\Hongbao();
 
         $this->modelHongbaoUser = new \App\Weixinredpack\Models\User();
@@ -49,11 +38,6 @@ class HongbaoController extends ControllerBase
         $this->modelWeixinredpack = new \App\Weixinredpack\Models\Redpack();
 
         $this->servicesApi = new \App\Weixinredpack\Services\Api(array(), 'nojson');
-        try {
-            parent::initialize();
-        } catch (\Exception $e) {
-            $this->modelErrorLog->log($e);
-        }
     }
 
     /**

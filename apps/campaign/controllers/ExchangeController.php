@@ -3,37 +3,36 @@
 namespace App\Campaign\Controllers;
 
 /**
- * 例子
+ * 兑换例子
  *
  * 授权地址
- * http://www.applicationmodule.com/campaign/cny/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
+ * http://www.applicationmodule.com/campaign/exchange/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
  *
- * http://www.applicationmodule.com/campaign/cny/weixinauthorizebefore?operation4cookie=clear
+ * http://www.applicationmodule.com/campaign/exchange/weixinauthorizebefore?operation4cookie=clear
  *
- * http://www.applicationmodule.com/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
+ * http://www.applicationmodule.com/campaign/exchange/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
- * http://www.applicationmodule.com/html/cny/index.html
+ * http://www.applicationmodule.com/html/exchange/index.html
  *
- * http://www.applicationmodule.com/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=ok0K2vystcQkKolNr3anJd-soVuI&nickname=郭永荣&headimgurl=xx
+ * http://www.applicationmodule.com/campaign/exchange/weixinauthorizebefore?operation4cookie=store&FromUserName=ok0K2vystcQkKolNr3anJd-soVuI&nickname=郭永荣&headimgurl=xx
  *
  * @author 郭永荣
  *        
  */
-class CnyController extends ControllerBase
+class LotteryController extends ControllerBase
 {
     // 抽奖中奖
-    protected $modelLotteryExchange = null;
+    protected $modelExchangeExchange = null;
     // 抽奖服务
-    protected $serviceLottery = null;
+    protected $serviceExchane = null;
 
     // 活动ID
     protected $activity_id = '5861e812887c22015f8b456b';
 
     protected function doCampaignInitialize()
     {
-        die('CnyController');
-        $this->modelLotteryExchange = new \App\Lottery\Models\Exchange();
-        $this->serviceLottery = new \App\Lottery\Services\Api();
+        $this->modelExchangeExchange = new \App\Exchange\Models\Exchange();
+        $this->serviceExchane = new \App\Exchange\Services\Api();
     }
 
     /**
@@ -53,7 +52,7 @@ class CnyController extends ControllerBase
      */
     public function getcampaignuserinfoAction()
     {
-        // http://www.applicationmodule.com/campaign/cny/getcampaignuserinfo
+        // http://www.applicationmodule.com/campaign/exchange/getcampaignuserinfo
         try {
             $this->view->disable();
 
@@ -148,7 +147,7 @@ class CnyController extends ControllerBase
      */
     public function lotteryAction()
     {
-        // http://www.applicationmodule.com/campaign/cny/lottery?name=guoyongrong&mobile=13564100096&address=xxx
+        // http://www.applicationmodule.com/campaign/exchange/lottery?name=guoyongrong&mobile=13564100096&address=xxx
         try {
             $this->view->disable();
             // 获取活动信息
@@ -255,7 +254,7 @@ class CnyController extends ControllerBase
             $memo = array(
                 'activity_user_id' => $userInfo['_id']
             );
-            $lotteryResult = $this->serviceLottery->doLottery($this->activity_id, $FromUserName, $this->now, array(), array(), 'weixin', $user_info, $identityContact, $memo);
+            $lotteryResult = $this->serviceExchane->doLottery($this->activity_id, $FromUserName, $this->now, array(), array(), 'weixin', $user_info, $identityContact, $memo);
 
             // 抽奖成功的话
             if (empty($lotteryResult['error_code']) && !empty($lotteryResult['result'])) {
@@ -299,7 +298,7 @@ class CnyController extends ControllerBase
      */
     public function recorduserinfoAction()
     {
-        // http://www.applicationmodule.com/campaign/cny/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
+        // http://www.applicationmodule.com/campaign/exchange/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
         try {
             $this->view->disable();
 
@@ -364,7 +363,7 @@ class CnyController extends ControllerBase
             }
 
             // 判断是否中奖
-            $exchangeInfo = $this->modelLotteryExchange->checkExchangeBy($identity_id, $exchange_id);
+            $exchangeInfo = $this->modelExchangeExchange->checkExchangeBy($identity_id, $exchange_id);
             if (empty($exchangeInfo)) {
                 echo $this->error(-40458, "该用户无此兑换信息");
                 return false;
@@ -377,7 +376,7 @@ class CnyController extends ControllerBase
             }
 
             // 检查手机号是否使用过了
-            $isMobileExist = $this->modelLotteryExchange->findOne(array(
+            $isMobileExist = $this->modelExchangeExchange->findOne(array(
                 'contact_mobile' => $mobile,
                 'prize_is_virtual' => false
             ));
@@ -386,7 +385,7 @@ class CnyController extends ControllerBase
                 return false;
             }
             // 记录中奖用户的信息
-            $this->modelLotteryExchange->updateExchangeInfo($exchange_id, $info);
+            $this->modelExchangeExchange->updateExchangeInfo($exchange_id, $info);
 
             // // 更新活动用户的是否填写抽奖联系信息
             // $query = array(
@@ -413,7 +412,7 @@ class CnyController extends ControllerBase
      */
     public function sendsmsAction()
     {
-        // http://www.applicationmodule.com/campaign/cny/sendsms?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&mobile=13564100096
+        // http://www.applicationmodule.com/campaign/exchange/sendsms?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&mobile=13564100096
         try {
             $this->view->disable();
 
@@ -441,7 +440,7 @@ class CnyController extends ControllerBase
             }
 
             // 判断是否中奖
-            $exchangeInfo = $this->modelLotteryExchange->checkExchangeBy($identity_id, $exchange_id);
+            $exchangeInfo = $this->modelExchangeExchange->checkExchangeBy($identity_id, $exchange_id);
             if (empty($exchangeInfo)) {
                 echo $this->error(-40458, "该用户无此兑换信息");
                 return false;
@@ -466,7 +465,7 @@ class CnyController extends ControllerBase
                 'is_valid' => true
             );
             $info['contact_mobile'] = $mobile;
-            $this->modelLotteryExchange->updateExchangeInfo($exchange_id, $info);
+            $this->modelExchangeExchange->updateExchangeInfo($exchange_id, $info);
 
             // // 更新活动用户的是否填写抽奖联系信息
             // $query = array(
@@ -566,7 +565,7 @@ class CnyController extends ControllerBase
      */
     public function testsendsmsAction()
     {
-        // http://www.applicationmodule.com/campaign/cny/testsendsms?code=xxxx&mobile=13564100096
+        // http://www.applicationmodule.com/campaign/exchange/testsendsms?code=xxxx&mobile=13564100096
         try {
             $this->view->disable();
 
@@ -602,19 +601,12 @@ class CnyController extends ControllerBase
         }
     }
 
-    protected function getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, $scene, array $memo = array())
-    {
-        // 生成活动用户
-        $userInfo = $this->modelActivityUser->getOrCreateByUserId($this->activity_id, $FromUserName, $this->now, $nickname, $headimgurl, $redpack_user, $thirdparty_user, 1, 0,  $scene, $memo);
-        return $userInfo;
-    }
-
     private function sendTemplateMsg($openid, $prize_name, $code)
     {
         try {
             // 模版消息
             $template_id = "q3VV4Pk_amMCmZbAoegVFCxxQrcEUrhgrJKjFQoU1G0";
-            $url = "{$this->webPath}tuanyuan/cny/coupon";
+            $url = "{$this->webPath}tuanyuan/exchange/coupon";
             $topcolor = "#FF0000";
             $data = array();
             $data['first'] = array(

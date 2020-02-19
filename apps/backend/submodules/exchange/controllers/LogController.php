@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Exchange\Controllers;
 
 use App\Backend\Submodules\Exchange\Models\Log;
@@ -122,7 +123,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['quantity'] = array(
             'name' => '兑换数量',
             'data' => array(
@@ -143,7 +144,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['score'] = array(
             'name' => '兑换积分',
             'data' => array(
@@ -164,7 +165,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['success_id'] = array(
             'name' => '兑换成功ID',
             'data' => array(
@@ -205,7 +206,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

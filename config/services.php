@@ -315,7 +315,11 @@ function registerServices($di)
                 'controller' => 1,
                 'action' => 2
             ));
-
+            $router->add("/admin/exchange/:controller/:action", array(
+                'module' => 'admin/exchange',
+                'controller' => 1,
+                'action' => 2
+            ));
             $router->add("/admin/system/:controller/:action", array(
                 'module' => 'admin/system',
                 'controller' => 1,

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Exchange\Controllers;
 
 use App\Backend\Submodules\Exchange\Models\Success;
@@ -149,7 +150,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['score'] = array(
             'name' => '兑换积分',
             'data' => array(
@@ -173,7 +174,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['is_valid'] = array(
             'name' => '是否有效',
             'data' => array(
@@ -199,7 +200,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['exchange_time'] = array(
             'name' => '兑换时间',
             'data' => array(
@@ -222,12 +223,12 @@ class SuccessController extends \App\Backend\Controllers\FormController
                 'is_show' => true,
                 'condition_type' => 'period'
             ) // single
-,
+            ,
             'export' => array(
                 'is_show' => true
             )
         );
-        
+
         $schemas['rule_id'] = array(
             'name' => '兑换规则ID',
             'data' => array(
@@ -463,7 +464,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['memo'] = array(
             'name' => '备注信息',
             'data' => array(
@@ -487,7 +488,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -507,7 +508,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
         foreach ($list['data'] as &$item) {
             $item['prize_name'] = isset($prizeList[$item['prize_id']]) ? $prizeList[$item['prize_id']] : '--';
             $item['exchange_time'] = date("Y-m-d H:i:s", $item['exchange_time']->sec);
-            
+
             $item['identity_contact_info'] = array();
             if (isset($item['user_info']['name'])) {
                 $item['identity_contact_info'][] = $item['user_info']['name'];

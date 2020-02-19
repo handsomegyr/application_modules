@@ -21,14 +21,13 @@ class QuestionnaireController extends ControllerBase
 
     private $modelRandom;
 
-    public function initialize()
+    protected function doCampaignInitialize()
     {
         $this->modelQuestionnaire = new \App\Questionnaire\Models\Questionnaire();
         $this->modelQuestionItem = new \App\Questionnaire\Models\QuestionItem();
         $this->modelQuestion = new \App\Questionnaire\Models\Question();
         $this->modelAnswer = new \App\Questionnaire\Models\Answer();
         $this->modelRandom = new \App\Questionnaire\Models\Random();
-        parent::initialize();
         $this->view->disable();
     }
 

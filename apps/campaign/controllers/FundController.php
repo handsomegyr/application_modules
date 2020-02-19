@@ -20,33 +20,13 @@ class FundController extends ControllerBase
     // 用于签名认证
     protected $secretKey = "170908fg0353";
 
-    // 当前时间
-    protected $now = null;
-
-    // 活动
-    protected $modelActivity = null;
-    // 活动错误日志
-    protected $modelActivityErrorLog = null;
-    // 活动用户
-    protected $modelActivityUser = null;
-    // 活动黑名单用户
-    protected $modelActivityBlackUser = null;
-
     // 活动相关
     // 活动1
     protected $activity1 = '59ed93599fff63190a8b4568';
 
-    public function initialize()
+    protected function doCampaignInitialize()
     {
-        parent::initialize();
         $this->view->disable();
-
-        $this->now = getCurrentTime();
-
-        $this->modelActivity = new \App\Activity\Models\Activity();
-        $this->modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
-        $this->modelActivityUser = new \App\Activity\Models\User();
-        $this->modelActivityBlackUser = new \App\Activity\Models\BlackUser();
     }
 
     /**

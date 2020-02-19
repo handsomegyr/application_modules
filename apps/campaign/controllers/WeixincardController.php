@@ -19,12 +19,11 @@ class WeixincardController extends ControllerBase
 
     private $modelWeixinApplication = null;
 
-    public function initialize()
+    protected function doCampaignInitialize()
     {
         $this->modelCard = new \App\Weixincard\Models\Card();
         $this->modelCardBag = new \App\Weixincard\Models\CardBag();
         $this->modelWeixinApplication = new \App\Weixin\Models\Application();
-        parent::initialize();
     }
 
     /**

@@ -2,52 +2,35 @@
 
 namespace App\Backend\Submodules\Exchange\Controllers;
 
-use App\Backend\Submodules\Exchange\Models\Rule;
-use App\Backend\Submodules\Prize\Models\Prize;
-use App\Backend\Submodules\Points\Models\Category;
+use App\Backend\Submodules\Exchange\Models\Record;
 use App\Backend\Submodules\Activity\Models\Activity;
 
 /**
- * @title({name="兑换规则"})
+ * @title({name="兑换日志"})
  *
- * @name 兑换规则
+ * @name 兑换日志
  */
-class RuleController extends \App\Backend\Controllers\FormController
+class RecordController extends \App\Backend\Controllers\FormController
 {
-
-    private $modelRule;
-
-    private $modelPrize;
-
-    private $modelCategory;
+    private $modelRecord;
 
     private $modelActivity;
 
     public function initialize()
     {
-        $this->modelRule = new Rule();
-        $this->modelPrize = new Prize();
-        $this->modelCategory = new Category();
+        $this->modelRecord = new Record();
         $this->modelActivity = new Activity();
 
-        $this->categoryList = $this->modelCategory->getAll();
-        $this->prizeList = $this->modelPrize->getAll();
         $this->activityList = $this->modelActivity->getAll();
 
         parent::initialize();
     }
 
     private $activityList = null;
-    private $categoryList = null;
-    private $prizeList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-
-        $now = date('Y-m-d') . " 00:00:00";
-        $now = strtotime($now);
-
         $schemas['activity_id'] = array(
             'name' => '活动名称',
             'data' => array(
@@ -75,8 +58,116 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['prize_id'] = array(
-            'name' => '奖品ID',
+        $schemas['user_id'] = array(
+            'name' => '用户ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['source'] = array(
+            'name' => '来源',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['result_id'] = array(
+            'name' => '结果ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['result_msg'] = array(
+            'name' => '结果说明',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['rule_id'] = array(
+            'name' => '兑换规则ID',
             'data' => array(
                 'type' => 'string',
                 'length' => '24',
@@ -86,35 +177,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->prizeList
-            ),
-            'list' => array(
-                'is_show' => true,
-                'items' => $this->prizeList
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->prizeList
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['allow_start_time'] = array(
-            'name' => '开始时间',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime($now)
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -130,152 +193,18 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['allow_end_time'] = array(
-            'name' => '结束时间',
+        $schemas['exchange_id'] = array(
+            'name' => '兑换成功记录ID',
             'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime($now + 3600 * 24 * 2 - 1)
+                'type' => 'string',
+                'length' => '24',
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['allow_number'] = array(
-            'name' => '奖品数量',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['score_category'] = array(
-            'name' => '积分分类',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 1,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true,
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['score'] = array(
-            'name' => '积分',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['exchange_quantity'] = array(
-            'name' => '已兑换数量',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['sort'] = array(
-            'name' => '排序',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -297,11 +226,11 @@ class RuleController extends \App\Backend\Controllers\FormController
 
     protected function getName()
     {
-        return '兑换规则';
+        return '兑换日志';
     }
 
     protected function getModel()
     {
-        return $this->modelRule;
+        return $this->modelRecord;
     }
 }

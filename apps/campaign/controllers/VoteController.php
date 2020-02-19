@@ -23,7 +23,7 @@ class VoteController extends ControllerBase
 
     private $modelRankPeriod;
 
-    public function initialize()
+    protected function doCampaignInitialize()
     {
         $this->modelSubject = new \App\Vote\Models\Subject();
         $this->modelItem = new \App\Vote\Models\Item();
@@ -31,7 +31,6 @@ class VoteController extends ControllerBase
         $this->modelLimit = new \App\Vote\Models\Limit();
         $this->modelPeriod = new \App\Vote\Models\Period();
         $this->modelRankPeriod = new \App\Vote\Models\RankPeriod();
-        parent::initialize();
         $this->view->disable();
     }
 

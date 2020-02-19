@@ -1,12 +1,48 @@
 <?php
+
 namespace App\Common\Controllers;
 
 class CampaignController extends ControllerBase
 {
 
+    // 活动ID
+    protected $activity_id = '';
+
+    // 错误日志
+    protected $modelErrorLog = null;
+    // 活动相关
+    protected $modelActivity = null;
+    // 活动用户
+    protected $modelActivityUser = null;
+    // 活动黑名单用户
+    protected $modelActivityBlackUser = null;
+
     protected function initialize()
     {
-        parent::initialize();
+        try {
+            $this->modelErrorLog = new \App\Activity\Models\ErrorLog();
+            $this->modelActivity = new \App\Activity\Models\Activity();
+            $this->modelActivityUser = new \App\Activity\Models\User();
+            $this->modelActivityBlackUser = new \App\Activity\Models\BlackUser();
+
+            parent::initialize();
+
+            // 做具体的初始化操作
+            $this->doCampaignInitialize();
+        } catch (\Exception $e) {
+            $this->modelErrorLog->log($this->activity_id, $e);
+        }
+    }
+
+    protected function doCampaignInitialize()
+    {
+    }
+
+    protected function getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, $scene, array $memo = array())
+    {
+        // 生成活动用户
+        $userInfo = $this->modelActivityUser->getOrCreateByUserId($this->activity_id, $FromUserName, $this->now, $nickname, $headimgurl, $redpack_user, $thirdparty_user, 1, 0, $scene, $memo);
+        return $userInfo;
     }
 
     /**
@@ -27,17 +63,17 @@ class CampaignController extends ControllerBase
         $cacheKey = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
         $cache = $this->getDI()->get("cache");
         $is_subscribe = false; // $cache->get($cacheKey);
-        
+
         if (empty($is_subscribe)) {
             $access_token = $this->getAccessToken();
             $weixin = new \Weixin\Client();
             $weixin->setAccessToken($access_token);
             $userInfo = $weixin->getUserManager()->getUserInfo($FromUserName);
-            if (! empty($userInfo['errcode'])) {
+            if (!empty($userInfo['errcode'])) {
                 $e = new \Exception($userInfo['errmsg'], $userInfo['errcode']);
                 throw $e;
             } else {
-                if (! empty($userInfo['subscribe'])) {
+                if (!empty($userInfo['subscribe'])) {
                     $is_subscribe = true;
                     $cache->save($cacheKey, $is_subscribe, 2 * 60); // 2分钟
                 }
@@ -51,7 +87,7 @@ class CampaignController extends ControllerBase
         $this->view->disable();
         $cache = $this->getDI()->get("cache");
         $key = $this->get('key', '');
-        if (! empty($key)) {
+        if (!empty($key)) {
             $cache->delete($key);
         } else {
             // Delete all items from the cache
@@ -86,18 +122,18 @@ class CampaignController extends ControllerBase
                 die('callbackurl 不能为空');
             }
             $userInfo = empty($_COOKIE['Weixin_userInfo']) ? array() : json_decode($_COOKIE['Weixin_userInfo'], true);
-            
+
             if (empty($userInfo)) {
                 // 如果在进行授权处理中的话
-                if (! empty($_SESSION['isAuthorizing'])) {
+                if (!empty($_SESSION['isAuthorizing'])) {
                     $FromUserName = trim($this->get('FromUserName', ''));
                     $nickname = trim($this->get('nickname', ''));
                     $headimgurl = trim($this->get('headimgurl', ''));
                     $timestamp = trim($this->get('timestamp', ''));
                     $signkey = trim($this->get('signkey', ''));
-                    
+
                     // url的参数上已经有了FromUserName参数并且不是空的时候
-                    if (! empty($FromUserName)) {
+                    if (!empty($FromUserName)) {
                         $secretKey = $this->getSecretKey();
                         // 校验微信id,上线测试时需要加上去
                         if (empty($secretKey) || $this->validateOpenid($FromUserName, $timestamp, $secretKey, $signkey)) {
@@ -113,7 +149,7 @@ class CampaignController extends ControllerBase
                             );
                             setcookie('Weixin_userInfo', json_encode($userInfo), time() + 3600 * 24 * 30, '/');
                             $_COOKIE['Weixin_userInfo'] = json_encode($userInfo);
-                            
+
                             // 授权成功之后的处理
                             $this->authorize();
                         }
@@ -131,7 +167,7 @@ class CampaignController extends ControllerBase
     public function getcookiesAction()
     {
         $this->view->disable();
-        
+
         var_dump($_COOKIE['Weixin_userInfo']);
     }
 
@@ -143,7 +179,8 @@ class CampaignController extends ControllerBase
     }
 
     public function authorize()
-    {}
+    {
+    }
 
     /**
      * 支付宝授权页面
@@ -158,19 +195,19 @@ class CampaignController extends ControllerBase
                 die('callbackurl 不能为空');
             }
             $userInfo = empty($_COOKIE['Alipay_userInfo']) ? array() : json_decode($_COOKIE['Alipay_userInfo'], true);
-            
+
             if (empty($userInfo)) {
                 // 如果在进行授权处理中的话
-                if (! empty($_SESSION['Alipay_isAuthorizing'])) {
-                    
+                if (!empty($_SESSION['Alipay_isAuthorizing'])) {
+
                     $user_id = trim($this->get('user_id', ''));
                     $nickname = trim($this->get('nickname', ''));
                     $headimgurl = trim($this->get('headimgurl', ''));
                     $timestamp = trim($this->get('timestamp', ''));
                     $signkey = trim($this->get('signkey', ''));
-                    
+
                     // url的参数上已经有了user_id参数并且不是空的时候
-                    if (! empty($user_id)) {
+                    if (!empty($user_id)) {
                         $config = $this->getDI()->get('config');
                         $secretKey = $config['alipayAuthorize']['secretKey'];
                         // 校验微信id,上线测试时需要加上去
@@ -187,7 +224,7 @@ class CampaignController extends ControllerBase
                             );
                             setcookie('Alipay_userInfo', json_encode($userInfo), time() + 3600 * 24 * 30, '/');
                             $_COOKIE['Alipay_userInfo'] = json_encode($userInfo);
-                            
+
                             // 授权成功之后的处理
                             $this->alipayauthorize();
                         }
@@ -203,5 +240,6 @@ class CampaignController extends ControllerBase
     }
 
     public function alipayauthorize()
-    {}
+    {
+    }
 }

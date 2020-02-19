@@ -11,14 +11,9 @@ namespace App\Campaign\Controllers;
 class SearchController extends ControllerBase
 {
 
-    public function initialize()
+    protected function doCampaignInitialize()
     {
-        try {
-            parent::initialize();
-            $this->view->disable();
-        } catch (\Exception $e) {
-            $this->modelErrorLog->log($e);
-        }
+        $this->view->disable();
     }
 
     /**
