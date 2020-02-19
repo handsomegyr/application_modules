@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Vote\Controllers;
 
 use App\Backend\Submodules\Vote\Models\Limit;
@@ -32,65 +33,60 @@ class LimitController extends \App\Backend\Controllers\FormController
         $this->modelSubject = new Subject();
         $this->modelItem = new Item();
         $this->modelActivity = new Activity();
+
+        $this->categoryList = $this->modelLimitCategory->getAll();
+        $this->subjectList = $this->modelSubject->getAll();
+        $this->activityList = $this->modelActivity->getAll();
+        $this->itemList = $this->modelItem->getAll();
+
         parent::initialize();
     }
+
+    private $categoryList = null;
+    private $subjectList = null;
+    private $activityList = null;
+    private $itemList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
+        $now = date('Y-m-d') . " 00:00:00";
+        $now = strtotime($now);
+
         $schemas['category'] = array(
-            'name' => '投票限制类型',
+            'name' => '限制类别',
             'data' => array(
                 'type' => 'integer',
-                'length' => '1'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->modelLimitCategory->getAll()
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_data_name' => 'category_name'
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['limit_count'] = array(
-            'name' => '次数限制',
-            'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'length' => 1,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'items' => $this->categoryList
             ),
             'search' => array(
-                'is_show' => false
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
-        $now = date('Y-m-d') . " 00:00:00";
-        $now = strtotime($now);
-        
         $schemas['start_time'] = array(
             'name' => '开始时间',
             'data' => array(
                 'type' => 'datetime',
-                'length' => '19',
+                'length' => 19,
                 'defaultValue' => getCurrentTime($now)
             ),
             'validation' => array(
@@ -98,21 +94,26 @@ class LimitController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['end_time'] = array(
-            'name' => '截止时间',
+            'name' => '结束时间',
             'data' => array(
                 'type' => 'datetime',
-                'length' => '19',
+                'length' => 19,
                 'defaultValue' => getCurrentTime($now + 3600 * 24 * 2 - 1)
             ),
             'validation' => array(
@@ -120,49 +121,82 @@ class LimitController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
-        $schemas['activity'] = array(
-            'name' => '活动',
+        $schemas['limit_count'] = array(
+            'name' => '限制次数',
             'data' => array(
-                'type' => 'string',
-                'length' => '24'
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'select',
+                'input_type' => 'number',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return $this->modelActivity->getAll();
-                }
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'activity_name'
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['activity'] = array(
+            'name' => '活动',
+            'data' => array(
+                'type' => 'string',
+                'length' => '24',
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->activityList
+            ),
+            'list' => array(
+                'is_show' => true,
+                'items' => $this->activityList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelActivity->getAll()
+                'items' => $this->activityList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['subject'] = array(
-            'name' => '投票主题',
+            'name' => '主题',
             'data' => array(
                 'type' => 'string',
-                'length' => '24'
+                'length' => '24',
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -170,25 +204,27 @@ class LimitController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return $this->modelSubject->getAll();
-                }
+                'items' => $this->subjectList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'subject_name'
+                'items' => $this->subjectList
             ),
             'search' => array(
-                'is_show' => false
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->subjectList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['item'] = array(
-            'name' => '投票选项',
+            'name' => '选项',
             'data' => array(
                 'type' => 'string',
-                'length' => '24'
+                'length' => '24',
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -196,20 +232,22 @@ class LimitController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return $this->modelItem->getAll();
-                }
+                'items' => $this->itemList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'item_name'
+                'items' => $this->itemList
             ),
             'search' => array(
-                'is_show' => false
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->itemList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 
@@ -221,22 +259,5 @@ class LimitController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelLimit;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $categoryList = $this->modelLimitCategory->getAll();
-        $subjectList = $this->modelSubject->getAll();
-        $activityList = $this->modelActivity->getAll();
-        $itemList = $this->modelItem->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['category_name'] = isset($categoryList[$item['category']]) ? $categoryList[$item['category']] : "--";
-            $item['activity_name'] = $activityList[$item['activity']];
-            $item['subject_name'] = $subjectList[$item['subject']];
-            $item['item_name'] = $itemList[$item['item']];
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-        }
-        return $list;
     }
 }

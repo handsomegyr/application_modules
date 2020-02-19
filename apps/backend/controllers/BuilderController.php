@@ -203,6 +203,7 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Sign\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Lottery\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Exchange\Settings\Menu&is_create_menu=1
+        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Vote\Settings\Menu&is_create_menu=1
 
         try {
             $this->view->disable();

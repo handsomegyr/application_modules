@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Vote\Controllers;
 
 use App\Backend\Submodules\Vote\Models\RankPeriod;
@@ -20,18 +21,21 @@ class RankperiodController extends \App\Backend\Controllers\FormController
     {
         $this->modelRankPeriod = new RankPeriod();
         $this->modelSubject = new Subject();
+        $this->subjectList = $this->modelSubject->getAll();
         parent::initialize();
     }
+    private $subjectList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['subject_id'] = array(
-            'name' => '所属主题',
+            'name' => '投票主题ID',
             'data' => array(
                 'type' => 'string',
-                'length' => '24'
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -39,147 +43,181 @@ class RankperiodController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return $this->modelSubject->getAll();
-                }
+                'items' => $this->subjectList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'subject_name'
+                'items' => $this->subjectList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelSubject->getAll()
+                'items' => $this->subjectList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['period'] = array(
-            'name' => '排行期数',
+            'name' => '当前期数',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => 1,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ""
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['name'] = array(
             'name' => '名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['desc'] = array(
-            'name' => '内容',
+            'name' => '详细',
             'data' => array(
-                'type' => 'html',
-                'length' => 1000
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'ueditor',
-                'is_show' => true
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['vote_count'] = array(
             'name' => '投票数',
             'data' => array(
                 'type' => 'integer',
-                'length' => 11
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => 1
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'input_type' => 'number',
-                'is_show' => false,
-                'condition_type' => 'period' // single
-                        )
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
         );
-        
         $schemas['show_order'] = array(
-            'name' => '排序',
+            'name' => '显示顺序',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['memo'] = array(
+            'name' => '备注',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['memo'] = array(
-            'name' => '备注',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1000
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
                 'input_type' => 'textarea',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;
@@ -193,14 +231,5 @@ class RankperiodController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelRankPeriod;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $subjectList = $this->modelSubject->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['subject_name'] = $subjectList[$item['subject_id']];
-        }
-        return $list;
     }
 }

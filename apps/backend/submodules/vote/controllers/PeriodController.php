@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Vote\Controllers;
 
 use App\Backend\Submodules\Vote\Models\Period;
@@ -20,18 +21,20 @@ class PeriodController extends \App\Backend\Controllers\FormController
     {
         $this->modelPeriod = new Period();
         $this->modelSubject = new Subject();
+        $this->subjectList = $this->modelSubject->getAll();
         parent::initialize();
     }
-
+    private $subjectList = null;
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['subject_id'] = array(
-            'name' => '所属主题',
+            'name' => '投票主题ID',
             'data' => array(
                 'type' => 'string',
-                'length' => '24'
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -39,40 +42,46 @@ class PeriodController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return $this->modelSubject->getAll();
-                }
+                'items' => $this->subjectList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'subject_name'
+                'items' => $this->subjectList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'Periods' => $this->modelSubject->getAll()
+                'items' => $this->subjectList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['period'] = array(
             'name' => '当前期数',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => 1,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ""
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;
@@ -86,14 +95,5 @@ class PeriodController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelPeriod;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $subjectList = $this->modelSubject->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['subject_name'] = $subjectList[$item['subject_id']];
-        }
-        return $list;
     }
 }

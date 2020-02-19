@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Backend\Submodules\Vote\Controllers;
 
 use App\Backend\Submodules\Vote\Models\Item;
 use App\Backend\Submodules\Vote\Models\Subject;
 
 /**
- * @title({name="投票选项管理"})
+ * @title({name="投票主题选项管理"})
  *
- * @name 投票选项管理
+ * @name 投票主题选项管理
  */
 class ItemController extends \App\Backend\Controllers\FormController
 {
@@ -20,18 +21,22 @@ class ItemController extends \App\Backend\Controllers\FormController
     {
         $this->modelItem = new Item();
         $this->modelSubject = new Subject();
+
+        $this->subjectList = $this->modelSubject->getAll();
         parent::initialize();
     }
+    private $subjectList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['subject_id'] = array(
             'name' => '所属主题',
             'data' => array(
                 'type' => 'string',
-                'length' => '24'
+                'length' => 24,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
@@ -39,72 +44,221 @@ class ItemController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    return $this->modelSubject->getAll();
-                }
+                'items' => $this->subjectList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'subject_name'
+                'items' => $this->subjectList
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelSubject->getAll()
+                'items' => $this->subjectList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['name'] = array(
-            'name' => '选项名',
+            'name' => '名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 50,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['desc'] = array(
-            'name' => '内容',
+            'name' => '说明',
             'data' => array(
-                'type' => 'html',
-                'length' => 1000
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'ueditor',
-                'is_show' => true
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['img_url'] = array(
+            'name' => '图片',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
             )
         );
-        
+        $schemas['publish_time'] = array(
+            'name' => '发布时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => 19,
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['vote_count'] = array(
+            'name' => '投票次数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['view_count'] = array(
+            'name' => '浏览次数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['share_count'] = array(
+            'name' => '分享次数',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['is_closed'] = array(
             'name' => '是否关闭',
             'data' => array(
                 'type' => 'boolean',
-                'length' => '1'
+                'length' => 1,
+                'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
@@ -113,117 +267,108 @@ class ItemController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => 1
+                'list_type' => '1',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['show_order'] = array(
-            'name' => '排序',
+            'name' => '显示顺序',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
         $schemas['rank_period'] = array(
             'name' => '排行期数',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => 1,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ""
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['memo'] = array(
+            'name' => '备注',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        
-        $schemas['vote_count'] = array(
-            'name' => '投票次数',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'input_type' => 'number',
-                'is_show' => true,
-                'condition_type' => 'period' // single
-                        )
-        );
-        
-        $schemas['memo'] = array(
-            'name' => '备注',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1000
-            ),
-            'validation' => array(
-                'required' => 1
-            ),
-            'form' => array(
                 'input_type' => 'textarea',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
+
         return $schemas;
     }
 
     protected function getName()
     {
-        return '投票选项';
+        return '投票主题选项';
     }
 
     protected function getModel()
     {
         return $this->modelItem;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $subjectList = $this->modelSubject->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['subject_name'] = $subjectList[$item['subject_id']];
-        }
-        return $list;
     }
 }

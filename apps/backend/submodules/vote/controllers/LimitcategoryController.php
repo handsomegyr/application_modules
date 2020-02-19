@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Vote\Controllers;
 
 use App\Backend\Submodules\Vote\Models\LimitCategory;
@@ -22,45 +23,59 @@ class LimitcategoryController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['category'] = array(
             'name' => '限制类别值',
             'data' => array(
                 'type' => 'integer',
-                'length' => 1
+                'length' => 1,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['name'] = array(
-            'name' => '限制名',
+            'name' => '名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 30
+                'length' => 30,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;

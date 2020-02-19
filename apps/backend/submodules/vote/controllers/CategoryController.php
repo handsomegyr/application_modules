@@ -1,12 +1,13 @@
 <?php
+
 namespace App\Backend\Submodules\Vote\Controllers;
 
 use App\Backend\Submodules\Vote\Models\Category;
 
 /**
- * @title({name="投票类型管理"})
+ * @title({name="投票分类"})
  *
- * @name 投票类型管理
+ * @name 投票分类
  */
 class CategoryController extends \App\Backend\Controllers\FormController
 {
@@ -22,45 +23,59 @@ class CategoryController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['code'] = array(
-            'name' => '分类值',
+            'name' => '类型值',
             'data' => array(
                 'type' => 'integer',
-                'length' => 1
+                'length' => 1,
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['name'] = array(
-            'name' => '分类名',
+            'name' => '类型名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 30
+                'length' => 30,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;
@@ -68,7 +83,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
 
     protected function getName()
     {
-        return '投票类型';
+        return '投票分类';
     }
 
     protected function getModel()
