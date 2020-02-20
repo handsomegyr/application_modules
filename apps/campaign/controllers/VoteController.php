@@ -94,20 +94,25 @@ class VoteController extends ControllerBase
                 return false;
             }
 
+            $ip = getIp();
+            $session_id = session_id();
+
             // 限制检查
             $this->modelLimit->setLogModel($this->modelLog);
-            $isPassed = $this->modelLimit->checkLimit($activityId, $subjectId, $itemId, $FromUserName, 1, array(
+            // 限制检查
+            $isPassed = $this->modelLimit->checkLimit($this->now, $activityId, $subjectId, $itemId, $FromUserName, $ip, $session_id, 1, array(
                 $activityId
             ), array(
                 $subjectId
             ));
+
             if (!$isPassed) { // 未通过
                 echo ($this->error(-8, "无法再次投票"));
                 return false;
             }
 
             // 增加投票log
-            $this->modelLog->log($activityId, $subjectId, $itemId, $FromUserName);
+            $this->modelLog->log($activityId, $subjectId, $itemId, $FromUserName, $ip, $session_id, $this->now, 1, 0, 0);
             $this->modelItem->incVoteCount($itemId);
             $this->modelSubject->incVoteCount($subjectId);
 
