@@ -5,13 +5,13 @@
 
 ?>
 <?php foreach ($privList as $key => $item) { ?>
+	<?php if ($key == "操作设置22") { ?>
+		<!-- BEGIN SAMPLE TABLE PORTLET-->
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-cogs"></i><?php echo $key ?></div>
+			</div>
 
-	<!-- BEGIN SAMPLE TABLE PORTLET-->
-	<div class="portlet box blue">
-		<div class="portlet-title">
-			<div class="caption"><i class="icon-cogs"></i><?php echo $key ?></div>
-		</div>
-		<?php if ($key == "操作设置") { ?>
 			<div class="box-body table-responsive no-padding">
 				<table class="table-bordered table-striped table-condensed cf">
 					<?php foreach ($item['values'] as $priv) { ?>
@@ -35,21 +35,88 @@
 					<?php } ?>
 				</table>
 			</div>
-		<?php  } else { ?>
-			<div class="box-body table-responsive no-padding">
-				<div class="dd" id="tree-5e4e4941e8398">
-					<?php foreach ($item['values'] as $priv) { ?>
-						<?php
-						echo $this->myTag->getMenuTree($priv, $item['field']);
-						?>
-					<?php } ?>
-				</div>
+
+		</div>
+		<!-- END SAMPLE TABLE PORTLET-->
+	<?php  } else { ?>
+		<div class="form-group ">
+
+			<label for="desc" class="col-sm-2  control-label"><?php echo $key ?></label>
+
+			<div class="col-sm-8">
+
+				<?php if ($key == "操作设置") { ?>
+
+					<div class="box-body table-responsive no-padding">
+						<table class="table table-hover">
+							<?php foreach ($item['values'] as $priv) { ?>
+								<tr>
+									<td width="25%">
+										<!-- <label class="checkbox"> -->
+										<input name="chkGroup" type="checkbox" value="checkbox" onclick="check('<?php echo $priv["priv_list"]; ?>',this);" /> <?php echo $priv['name']; ?>
+										<!-- </label> -->
+									</td>
+									<td width="75%">
+										<?php foreach ($priv['priv'] as $priv_list => $list) { ?>
+											<div style="width:25%;float:left;">
+												<!-- <label class="checkbox" for="<?php echo $priv_list; ?>"> -->
+												<input name="<?php echo $item['field'] ?>[]" type="checkbox" value="<?php echo $priv_list; ?>" id="<?php echo $priv_list; ?>" <?php if ($list['cando'] == 1) { ?> checked <?php } ?> onclick="checkrelevance('<?php echo $list['relevance']; ?>', '<?php echo $priv_list; ?>')" title="<?php echo $list['relevance']; ?>" /><?php echo $list['name']; ?>
+												<!-- </label> -->
+											</div>
+										<?php } ?>
+									</td>
+								</tr>
+							<?php } ?>
+						</table>
+					</div>
+				<?php  } else { ?>
+					<div class="box">
+
+						<div class="box-header">
+
+							<div class="btn-group">
+								<a class="btn btn-primary btn-sm tree-5e4fe9eb06844-tree-tools" data-action="expand" title="展开">
+									<i class="fa fa-plus-square-o"></i>&nbsp;展开
+								</a>
+								<a class="btn btn-primary btn-sm tree-5e4fe9eb06844-tree-tools" data-action="collapse" title="收起">
+									<i class="fa fa-minus-square-o"></i>&nbsp;收起
+								</a>
+							</div>
+
+							<div class="btn-group">
+
+							</div>
+
+
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body table-responsive no-padding">
+							<div class="dd" id="tree-5e4e4941e8398">
+								<?php foreach ($item['values'] as $priv) { ?>
+									<?php
+									echo $this->myTag->getMenuTree($priv, $item['field']);
+									?>
+								<?php } ?>
+							</div>
+						</div>
+						<!-- /.box-body -->
+					</div>
+				<?php  } ?>
+
 			</div>
-		<?php  } ?>
-	</div>
-	<!-- END SAMPLE TABLE PORTLET-->
+		</div>
+	<?php  } ?>
+
 <?php } ?>
-<input type="checkbox" name="checkall" value="checkbox" onclick="checkAll(this.form, this);" class="checkbox" />全选&nbsp;&nbsp;&nbsp;&nbsp;
+<div class="form-group ">
+
+	<label for="desc" class="col-sm-2  control-label"></label>
+
+	<div class="col-sm-8">
+
+		<input type="checkbox" name="checkall" value="checkbox" onclick="checkAll(this.form, this);" class="checkbox" />全选&nbsp;&nbsp;&nbsp;&nbsp;
+	</div>
+</div>
 <script>
 	function checkAll(frm, checkbox) {
 		console.info(frm);
@@ -71,45 +138,52 @@
 		for (i = 0; i < frm.elements.length; i++) {
 			<?php if (!empty($privList)) { ?>
 				<?php foreach ($privList as $key => $item) { ?>
-					<?php if (true || $key == 'menu_list') { ?>
-						if (frm.elements[i] && (frm.elements[i].name == "<?php echo $item['field'] ?>[]" || frm.elements[i].name == 'chkGroup')) {
-						<?php } else { ?>
-							if (frm.elements[i] && frm.elements[i].name == "<?php echo $item['field'] ?>[]") {
-							<?php } ?>
-							var regx = new RegExp(frm.elements[i].value + "(?!_)", "i");
-							if (list.search(regx) > -1) {
-								if (list.split(",").indexOf(frm.elements[i].value) > -1) {
-									frm.elements[i].checked = obj.checked;
-
-									if(frm.elements[i] && frm.elements[i].name == 'chkGroup'){
-										var priv_list = $("#"+frm.elements[i].id).attr("priv_list");
-										check(priv_list, frm.elements[i]);
-										//$("#"+frm.elements[i].id).click();
-									}
-									jQuery.uniform.update(frm.elements[i]);
-								}
+					if (frm.elements[i].name == "<?php echo $item['field'] ?>[]" || frm.elements[i].name == 'chkGroup') {
+						var regx = new RegExp(frm.elements[i].value + "(?!_)", "i");
+						if (list.search(regx) > -1) {
+							if (list.split(",").indexOf(frm.elements[i].value) > -1) {
+								frm.elements[i].checked = obj.checked;
+								jQuery.uniform.update(frm.elements[i]);
 							}
-							}
-						<?php } ?>
-						<?php } ?>
 						}
-		}
-
-		function checkrelevance(relevance, priv_list) {
-			if (document.getElementById(priv_list).checked && relevance != '') {
-				document.getElementById(relevance).checked = true;
-				jQuery.uniform.update(document.getElementById(relevance));
-			} else {
-				var ts = document.getElementsByTagName("input");
-
-				for (var i = 0; i < ts.length; i++) {
-					var text = ts[i].getAttribute("title");
-
-					if (text == priv_list) {
-						document.getElementById(ts[i].value).checked = false;
-						jQuery.uniform.update(document.getElementById(ts[i].value));
 					}
+				<?php } ?>
+			<?php } ?>
+		}
+	}
+
+	function checkrelevance(relevance, priv_list) {
+		if (document.getElementById(priv_list).checked && relevance != '') {
+			document.getElementById(relevance).checked = true;
+			jQuery.uniform.update(document.getElementById(relevance));
+		} else {
+			var ts = document.getElementsByTagName("input");
+
+			for (var i = 0; i < ts.length; i++) {
+				var text = ts[i].getAttribute("title");
+
+				if (text == priv_list) {
+					document.getElementById(ts[i].value).checked = false;
+					jQuery.uniform.update(document.getElementById(ts[i].value));
 				}
 			}
 		}
+	}
+
+	$(function() {
+		$('#tree-5e4e4941e8398').nestable([]);
+
+		$('.tree-5e4fe9eb06844-tree-tools').on('click', function(e) {
+			var action = $(this).data('action');
+			// alert(action);
+			if (action === 'expand') {
+				// $('.dd').nestable('expandAll');
+				$('#tree-5e4e4941e8398').nestable('expandAll');
+			}
+			if (action === 'collapse') {
+				// $('.dd').nestable('collapseAll');
+				$('#tree-5e4e4941e8398').nestable('collapseAll');
+			}
+		});
+	})
 </script>

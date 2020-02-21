@@ -18,19 +18,28 @@ class MyTags extends \Phalcon\Tag
         }
         // print_r($priv);
         $priv_list = empty($priv['_id']) ? "" : $priv['_id'];
+
+        $checked = "";
+        if ($priv['cando'] == 1) {
+            $checked = "checked";
+        }
         if (!empty($sub_menus)) {
             $checkBox = <<<EOT
-<input name="chkGroup" type="checkbox" value="{$priv_list}" id="{$priv_list}" priv_list="{$priv["priv_list"]}" onclick="check('{$priv["priv_list"]}',this);" />
+<input name="chkGroup" type="checkbox" value="{$priv_list}" id="{$priv_list}" {$checked} onclick="check('{$priv["priv_list"]}',this);" />
 EOT;
         } else {
             $checkBox = <<<EOT
-<input name="{$field}[]" type="checkbox" value="{$priv_list}" id="{$priv_list}"  onclick="checkrelevance('{$priv['relevance']}', '{$priv_list}')" title="{$priv['relevance']}" />
+<input name="{$field}[]" type="checkbox" value="{$priv_list}" id="{$priv_list}" {$checked} onclick="checkrelevance('{$priv['relevance']}', '{$priv_list}')" title="{$priv['relevance']}" />
 EOT;
         }
 
+        
+    // <button data-action="collapse" type="button" style="display: block;">Collapse</button>
+    // <button data-action="expand" type="button" style="display: none;">Expand</button>
+
         $str = <<<EOT
 <ol class="dd-list">
-    <li class="dd-item" data-id="34"><button data-action="collapse" type="button" style="display: block;">Collapse</button><button data-action="expand" type="button" style="display: none;">Expand</button>
+    <li class="dd-item" data-id="{$priv_list}">
         <div class="dd-handle">
             <i class="fa fa-tasks"></i>&nbsp;<strong>{$priv['name']}</strong>
             <span class="pull-right dd-nodrag">
