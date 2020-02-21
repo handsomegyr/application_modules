@@ -8,6 +8,42 @@ use App\Backend\Submodules\System\Models\Resource;
 class MyTags extends \Phalcon\Tag
 {
 
+    static public function getMenuTree($priv, $field)
+    {
+        $sub_menus = "";
+        if (!empty($priv['priv'])) {
+            foreach ($priv['priv'] as $priv_list => $list) {
+                $sub_menus .= self::getMenuTree($list, $field);
+            }
+        }
+        // print_r($priv);
+        $priv_list = empty($priv['_id']) ? "" : $priv['_id'];
+        if (!empty($sub_menus)) {
+            $checkBox = <<<EOT
+<input name="chkGroup" type="checkbox" value="{$priv_list}" id="{$priv_list}" priv_list="{$priv["priv_list"]}" onclick="check('{$priv["priv_list"]}',this);" />
+EOT;
+        } else {
+            $checkBox = <<<EOT
+<input name="{$field}[]" type="checkbox" value="{$priv_list}" id="{$priv_list}"  onclick="checkrelevance('{$priv['relevance']}', '{$priv_list}')" title="{$priv['relevance']}" />
+EOT;
+        }
+
+        $str = <<<EOT
+<ol class="dd-list">
+    <li class="dd-item" data-id="34"><button data-action="collapse" type="button" style="display: block;">Collapse</button><button data-action="expand" type="button" style="display: none;">Expand</button>
+        <div class="dd-handle">
+            <i class="fa fa-tasks"></i>&nbsp;<strong>{$priv['name']}</strong>
+            <span class="pull-right dd-nodrag">
+                {$checkBox}
+            </span>
+        </div>
+    </li>
+    {$sub_menus}
+</ol>
+EOT;
+        return $str;
+    }
+
     static public function isCanDo($module, $controller, $action)
     {
         // 角色判断,当用户角色为非超级管理员时，进行权限判断
