@@ -5,9 +5,9 @@ namespace App\Backend\Submodules\Store\Controllers;
 use App\Backend\Submodules\Store\Models\Store;
 
 /**
- * @title({name="店铺管理"})
+ * @title({name="店铺"})
  *
- * @name 店铺管理
+ * @name 店铺
  */
 class StoreController extends \App\Backend\Controllers\FormController
 {
