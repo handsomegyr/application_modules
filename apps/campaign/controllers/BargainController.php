@@ -64,15 +64,13 @@ class BargainController extends ControllerBase
             $is_both_bargain = empty($is_both_bargain) ? false : true;
 
             $start_time = intval($this->get('start_time', '0'));
-            $start_time = new \MongoDate($start_time);
             $end_time = intval($this->get('end_time', '0'));
-            $end_time = new \MongoDate($end_time);
 
             // 以微信号作为发起人的唯一标识,发起砍价，获取砍价物ID
             $memo = array(
                 'test' => 'xxx'
             );
-            $ret = $this->modelApi->launchBargain($activity_id, $FromUserName, $nickname, $headimgurl, $bargain_code, $bargain_name, $worth, $quantity, $bargain_from, $bargain_to, $worth_min, $bargain_max, $bargain_num_limit, $is_both_bargain, $start_time, $end_time, $bargain_period, $memo);
+            $ret = $this->modelApi->launchBargain($activity_id, $FromUserName, $nickname, $headimgurl, $bargain_code, $bargain_name, $worth, $quantity, $bargain_from, $bargain_to, $worth_min, $bargain_max, $bargain_num_limit, $is_both_bargain, $start_time, $end_time, $bargain_period, $this->now, $memo);
             if (empty($ret['error_code'])) {
                 echo $this->result('OK', $ret['result']);
                 return true;
@@ -109,7 +107,7 @@ class BargainController extends ControllerBase
 
             // 是否能再砍
             $isCanBargain = false;
-            $bargainCheckResult = $this->modelApi->checkBargain($bargainInfo);
+            $bargainCheckResult = $this->modelApi->checkBargain($bargainInfo, $this->now);
             if (empty($bargainCheckResult['error_code'])) {
                 $isCanBargain = true;
             }
@@ -186,7 +184,8 @@ class BargainController extends ControllerBase
 
             // 砍价处理
             $memo = array();
-            $ret = $this->modelApi->bargain($FromUserName, $nickname, $headimgurl, $bargain_id, $memo);
+            $client_ip = getIp();
+            $ret = $this->modelApi->bargain($FromUserName, $nickname, $headimgurl, $bargain_id, $client_ip, $this->now, $memo);
             if (empty($ret['error_code'])) {
                 echo $this->result('OK', $ret['result']);
                 return true;
@@ -232,7 +231,7 @@ class BargainController extends ControllerBase
             }
 
             // 关闭砍价物信息
-            $bargainInfo = $this->modelBargain->doClosed($bargainInfo['_id']);
+            $bargainInfo = $this->modelBargain->doClosed($bargainInfo['_id'], $this->now);
             echo $this->result('OK');
             return true;
         } catch (\Exception $e) {
