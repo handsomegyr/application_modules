@@ -1,12 +1,13 @@
 <?php
+
 namespace App\Backend\Submodules\Weixincard\Controllers;
 
 use App\Backend\Submodules\Weixincard\Models\Logo;
 
 /**
- * @title({name="商户logo管理"})
+ * @title({name="商户LOGO"})
  *
- * @name 商户logo管理
+ * @name 商户LOGO
  */
 class LogoController extends \App\Backend\Controllers\FormController
 {
@@ -22,59 +23,99 @@ class LogoController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['logo'] = array(
-            'name' => '商户logo图片',
+            'name' => '卡券的商户logo图片文件',
             'data' => array(
                 'type' => 'file',
                 'length' => 128,
+                'defaultValue' => '',
                 'file' => array(
                     'path' => $this->modelLogo->getUploadPath()
                 )
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'file',
-                'is_show' => true
+                'input_type' => 'image',
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
-                'render' => 'img'
+                'list_type' => '',
+                'render' => 'img',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['logo_url'] = array(
-            'name' => '商户logo的url',
+            'name' => '卡券的商户logo的url',
             'data' => array(
                 'type' => 'string',
-                'length' => '128'
+                'length' => 128,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+        $schemas['is_uploaded'] = array(
+            'name' => '是否已上传',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         return $schemas;
     }
 
     protected function getName()
     {
-        return '商户logo';
+        return '商户LOGO';
     }
 
     protected function getModel()
@@ -94,23 +135,23 @@ class LogoController extends \App\Backend\Controllers\FormController
         try {
             $this->view->disable();
             $weixin = $this->getWeixin();
-            
+
             $logoList = $this->modelLogo->getAll();
             foreach ($logoList as $item) {
-                if (! empty($item['is_uploaded'])) {
+                if (!empty($item['is_uploaded'])) {
                     continue;
                 }
                 $uploadPath = $this->modelLogo->getUploadPath();
                 $logo = APP_PATH . "public/upload/{$uploadPath}/{$item['logo']}";
                 // die($logo);
                 $ret = $weixin->getCardManager()->uploadLogoUrl($logo);
-                if (! empty($ret['errcode'])) {
+                if (!empty($ret['errcode'])) {
                     throw new \Exception($ret['errmsg'], $ret['errcode']);
                 }
                 $logo_url = $ret['url'];
                 $this->modelLogo->updateIsUploaded(myMongoId($item['_id']), $logo_url);
             }
-            
+
             $this->makeJsonResult();
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
