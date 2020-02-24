@@ -248,9 +248,9 @@
 										<?php if ($field['data']['type'] == "boolean" && isset($field['list']['list_type']) && $field['list']['list_type'] == 1) { ?>
 											//console.info(data);
 											if (data == 1) {
-												return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly && isset($field['list']['ajax'])) { ?>onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-success">是</span>';
+												return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly && isset($field['list']['ajax'])) { ?> class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-success">是</span>';
 											} else {
-												return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly && isset($field['list']['ajax'])) { ?>onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-danger">否</span>';
+												return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly && isset($field['list']['ajax'])) { ?> class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-danger">否</span>';
 											};
 										<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "string") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
 											//console.info(data);
@@ -316,7 +316,7 @@
 											};
 										<?php } elseif (isset($field['list']['ajax'])) { ?>
 											<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly) { ?>
-												return '<span onclick="List.edit(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')" >' + data + '</span>';
+												return '<span class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.edit(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')" >' + data + '</span>';
 											<?php } else { ?>
 												return '<span>' + data + '</span>';
 											<?php } ?>
