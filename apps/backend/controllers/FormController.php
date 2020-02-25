@@ -749,55 +749,33 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // 保存一下从数据库中取出的数据行
             $orginalDataList = array();
             if (!empty($list['data'])) {
-                foreach ($list['data'] as $row) {
-                    $orginalDataList[$row['id']] = $row;
+                $schemas = $this->sortSchemas($this->getSchemas());
+                foreach ($list['data'] as &$item) {
+                    $orginalDataList[$item['id']] = $item;
+                    $item = $this->returnRecord4ListShow($item, $schemas);
+
+                    // 权限控制相关
+                    // 编辑和删除按钮默认都是显示的
+                    $item['op']['edit'] = true;
+                    $item['op']['remove'] = true;
+
+                    // 返回哪些rowtools可以操作
+                    $rowTools = $this->getRowTools();
+                    if (!empty($rowTools)) {
+                        foreach ($rowTools as $opkey => $tool) {
+                            $is_can = false;
+                            $dataRow = isset($orginalDataList[$item['id']]) ? $orginalDataList[$item['id']] : array();
+                            if (!empty($tool['is_show'])) {
+                                $is_can = is_callable($tool['is_show']) ? $tool['is_show']($dataRow) : true;
+                            }
+                            $item['op'][$opkey] = $is_can;
+                        }
+                    }
                 }
             }
 
             // 将列表数据按照画面要求进行显示
             $list = $this->getList4Show($input, $list);
-
-            $schemas = $this->sortSchemas($this->getSchemas());
-            foreach ($list['data'] as &$item) {
-                foreach ($item as $field => &$value) {
-                    $column = new \App\Backend\Models\Column($field, $value, $schemas, $item, $this->url->getBaseUri());
-                    if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
-                        $value = date("Y-m-d H:i:s", $value->sec);
-                    }
-                    // 扩展设置
-                    if (!empty($schemas[$field])) {
-                        if (!empty($schemas[$field]['list']['is_show'])) {
-                            if (!empty($schemas[$field]['list']['extensionSettings'])) {
-                                if (is_callable($schemas[$field]['list']['extensionSettings'])) {
-                                    $value4Show = call_user_func_array($schemas[$field]['list']['extensionSettings'], [$column, $this]);
-                                    //$value = $schemas[$field]['list']['extensionSettings']($column, null);
-                                    if (!is_null($value4Show)) {
-                                        $value = $value4Show;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // 权限控制相关
-                // 编辑和删除按钮默认都是显示的
-                $item['op']['edit'] = true;
-                $item['op']['remove'] = true;
-
-                // 返回哪些rowtools可以操作
-                $rowTools = $this->getRowTools();
-                if (!empty($rowTools)) {
-                    foreach ($rowTools as $opkey => $tool) {
-                        $is_can = false;
-                        $dataRow = isset($orginalDataList[$item['id']]) ? $orginalDataList[$item['id']] : array();
-                        if (!empty($tool['is_show'])) {
-                            $is_can = is_callable($tool['is_show']) ? $tool['is_show']($dataRow) : true;
-                        }
-                        $item['op'][$opkey] = $is_can;
-                    }
-                }
-            }
 
             $datas = array(
                 'draw' => $input->draw,
@@ -1203,6 +1181,45 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $this->getModel()->remove(array(
             '_id' => $input->id
         ));
+    }
+
+    // 将数据库的一行转换成画面显示所需的一行
+    protected function returnRecord4ListShow($item, $schemas)
+    {
+        foreach ($item as $field => $value) {
+            if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
+                $value = date("Y-m-d H:i:s", $value->sec);
+                $item[$field] = $value;
+            }
+            // 如果是数组或对象
+            if (is_array($value) || is_object($value)) {
+                // 如果是空值那么就是空字符串
+                if (empty($value)) {
+                    $value = "";
+                } else {
+                    $value = \json_encode($value);
+                }
+                $item[$field] = $value;
+            }
+            $column = new \App\Backend\Models\Column($field, $value, $schemas, $item, $this->url->getBaseUri());
+            // 扩展设置
+            if (!empty($schemas[$field])) {
+                if (!empty($schemas[$field]['list']['is_show'])) {
+                    if (!empty($schemas[$field]['list']['extensionSettings'])) {
+                        if (is_callable($schemas[$field]['list']['extensionSettings'])) {
+                            $value4Show = call_user_func_array($schemas[$field]['list']['extensionSettings'], [$column, $this]);
+                            //$value = $schemas[$field]['list']['extensionSettings']($column, null);
+                            if (!is_null($value4Show)) {
+                                $value = $value4Show;
+                                $item[$field] = $value;
+                            }
+                        }
+                    }
+                }
+            }
+            // $value = htmlentities($value, ENT_QUOTES, "UTF-8");
+        }
+        return $item;
     }
 
     protected function export(array $dataList)

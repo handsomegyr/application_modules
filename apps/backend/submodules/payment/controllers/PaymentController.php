@@ -1,12 +1,13 @@
 <?php
+
 namespace App\Backend\Submodules\Payment\Controllers;
 
 use App\Backend\Submodules\Payment\Models\Payment;
 
 /**
- * @title({name="支付方式管理"})
+ * @title({name="支付方式"})
  *
- * @name 支付方式管理
+ * @name 支付方式
  */
 class PaymentController extends \App\Backend\Controllers\FormController
 {
@@ -22,7 +23,7 @@ class PaymentController extends \App\Backend\Controllers\FormController
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
-        
+
         $schemas['code'] = array(
             'name' => '支付方式',
             'data' => array(
@@ -40,7 +41,10 @@ class PaymentController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['name'] = array(
@@ -60,14 +64,18 @@ class PaymentController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
+
         $schemas['config'] = array(
             'name' => '接口配置信息',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1
@@ -80,6 +88,9 @@ class PaymentController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
                 'is_show' => false
             )
         );
@@ -102,7 +113,10 @@ class PaymentController extends \App\Backend\Controllers\FormController
                 'list_type' => 1
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;
@@ -116,13 +130,5 @@ class PaymentController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelPayment;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            $item['config'] = json_encode($item['config']);
-        }
-        return $list;
     }
 }

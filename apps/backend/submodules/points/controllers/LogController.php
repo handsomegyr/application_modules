@@ -31,10 +31,7 @@ class LogController extends \App\Backend\Controllers\FormController
         $this->modelActivity = new Activity();
 
         $this->categoryList = $this->modelCategory->getAll();
-
-        // $this->ruleList = $this->modelRule->getAll2222('_id');
-        $this->ruleList = array();
-        // die('sssssss4444444');
+        $this->ruleList = $this->modelRule->getAll('_id');
         $this->activityList = $this->modelActivity->getAll();
         parent::initialize();
     }
