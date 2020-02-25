@@ -2,8 +2,6 @@
 
 namespace App\Campaign\Controllers;
 
-use App\Sign\Models\Log;
-
 /**
  * 签到事例
  * http://www.applicationmodule.com/campaign/sign/weixinauthorizebefore?operation4cookie=store&FromUserName=oFTgHwbw1xwUz8MgIBLW74kXcqnY&nickname=xxx&headimgurl=xxx

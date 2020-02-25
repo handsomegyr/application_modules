@@ -487,6 +487,12 @@ function registerServices($di)
                 'action' => 2
             ));
 
+            $router->add("/admin/game/:controller/:action", array(
+                'module' => 'admin/game',
+                'controller' => 1,
+                'action' => 2
+            ));
+
             $router->add("/:module/:controller/:action", array(
                 'module' => 1,
                 'controller' => 2,

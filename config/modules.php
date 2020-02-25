@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Register application modules
  */
@@ -134,6 +135,10 @@ $application->registerModules(array(
     'admin/live' => array(
         'className' => 'App\Backend\Live\Module',
         'path' => APP_PATH . 'apps/backend/submodules/live/Module.php'
+    ),
+    'admin/game' => array(
+        'className' => 'App\Backend\Game\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/game/Module.php'
     ),
     'weixin' => array(
         'className' => 'App\Weixin\Module',
