@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Member\Controllers;
 
 use Respect\Validation\Validator as v;
@@ -11,11 +12,12 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     protected $modelConsignee = null;
 
     protected $modelPointsUser = null;
+    protected $modelPointsService = null;
 
     protected $modelPointsRule = null;
 
     protected $modelMember = null;
-    
+
     // 是否需要检查token
     protected $is_need_check_token = false;
     // 是否需要检查captcha
@@ -26,26 +28,27 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     protected function initialize()
     {
         parent::initialize();
-        
+
         $this->modelConsignee = new \App\Member\Models\Consignee();
         $this->modelPointsUser = new \App\Points\Models\User();
         $this->modelPointsRule = new \App\Points\Models\Rule();
         $this->modelMember = new \App\Member\Models\Member();
-        
+        $this->modelPointsService = new \App\Points\Service\Api();
+
         $this->errors = $this->getDI()->get('errors');
         $this->view->setVar("resourceUrl", "/member/");
         // token
         $formhash = $this->getToken();
         $this->assign('formhash', $formhash);
-        
-        if (! in_array($this->controllerName, array(
+
+        if (!in_array($this->controllerName, array(
             'passport',
             'service'
         ))) {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
             $this->doLogin($isLogin);
-            
+
             // 获取会员信息
             $this->memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             $isLogin = empty($this->memberInfo) || empty($this->memberInfo['state']) ? false : true;
@@ -84,7 +87,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         } else {
             $isOk = true;
         }
-        if (! $isOk) {
+        if (!$isOk) {
             return $this->errors['e597'];
         }
         return $this->errors['none'];
@@ -108,7 +111,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         } else {
             $isOk = true;
         }
-        if (! $isOk) {
+        if (!$isOk) {
             return $this->errors['e597'];
         }
         return $this->errors['none'];
@@ -130,8 +133,8 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
 
     protected function doLogin($isLogin)
     {
-        if (! $isLogin) {
-            if (! $this->getRequest()->isAjax()) {
+        if (!$isLogin) {
+            if (!$this->getRequest()->isAjax()) {
                 $loginUrl = $this->url->get("member/passport/login");
                 $this->_redirect($loginUrl);
                 exit();
@@ -142,7 +145,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             }
         }
     }
-    
+
     // -----------------------------------------------------检查----------------------------------------------------------------
     protected function validateAccount($name, $email, $mobile)
     {
@@ -156,10 +159,10 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     {
         $nameValidator = v::notEmpty()->noWhitespace();
         $isOk = $nameValidator->validate($name);
-        if (! $isOk) {
+        if (!$isOk) {
             return $this->errors['e501'];
         }
-        
+
         return $this->errors['none'];
     }
 
@@ -167,13 +170,13 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     {
         $pwdValidator = v::notEmpty();
         $isOk = $pwdValidator->validate($password);
-        if (! $isOk) {
+        if (!$isOk) {
             return $this->errors['e503'];
         }
-        
-        if (! empty($password_confirm)) {
+
+        if (!empty($password_confirm)) {
             $isOk = $pwdValidator->validate($password_confirm);
-            if (! $isOk) {
+            if (!$isOk) {
                 return $this->errors['e504'];
             }
             if ($password_confirm != $password) {
@@ -187,7 +190,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     {
         // 验证用户名是否重复
         $checkMemberInfo = $this->modelMember->getInfoByName($name);
-        if ($checkMemberInfo && ! empty($checkMemberInfo['state'])) {
+        if ($checkMemberInfo && !empty($checkMemberInfo['state'])) {
             return $this->errors['e502'];
         }
         $ret = $this->errors['none'];
@@ -199,7 +202,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     {
         // 验证邮箱地址是否重复
         $checkMemberInfo = $this->modelMember->getInfoByEmail($email);
-        if ($checkMemberInfo && ! empty($checkMemberInfo['state'])) {
+        if ($checkMemberInfo && !empty($checkMemberInfo['state'])) {
             return $this->errors['e507'];
         }
         $ret = $this->errors['none'];
@@ -211,7 +214,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     {
         // 验证手机号是否重复
         $checkMemberInfo = $this->modelMember->getInfoByMobile($mobile);
-        if ($checkMemberInfo && ! empty($checkMemberInfo['state'])) {
+        if ($checkMemberInfo && !empty($checkMemberInfo['state'])) {
             return $this->errors['e509'];
         }
         $ret = $this->errors['none'];
@@ -222,11 +225,11 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     protected function weixinauthorize()
     {
         $userInfo = empty($_SESSION['Weixin_userInfo']) ? array() : $_SESSION['Weixin_userInfo'];
-        if (! empty($userInfo)) {
+        if (!empty($userInfo)) {
             $openid = $userInfo['user_id'];
             $nickname = $userInfo['user_name'];
             $headimgurl = $userInfo['user_headimgurl'];
-            
+
             // 加锁
             $key = cacheKey(__FILE__, __CLASS__, $openid);
             $objLock = new \iLock($key);
@@ -235,7 +238,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             }
             // 获取
             $userInfo = $this->modelMember->getInfoByWeixinOpenid($openid);
-            if (! empty($userInfo)) {
+            if (!empty($userInfo)) {
                 // 登录处理
                 $this->modelMember->login($userInfo);
                 // 跳转地址
@@ -254,15 +257,15 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         try {
             // http://www./member/xxxx/weixinauthorize?callbackUrl=xxx
             $callbackUrl = trim($this->get('callbackUrl', ''));
-            
+
             $FromUserName = trim($this->get('FromUserName', ''));
             $nickname = trim($this->get('nickname', ''));
             $headimgurl = trim($this->get('headimgurl', ''));
             $timestamp = trim($this->get('timestamp', ''));
             $signkey = trim($this->get('signkey', ''));
-            
+
             // url的参数上已经有了FromUserName参数并且不是空的时候
-            if (! empty($FromUserName)) {
+            if (!empty($FromUserName)) {
                 $config = $this->getDI()->get('config');
                 $secretKey = $config['weixinAuthorize']['secretKey'];
                 // 校验微信id,上线测试时需要加上去
@@ -279,29 +282,29 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
                     // 存储微信id到session
                     $_SESSION['Weixin_userInfo'] = $userInfo;
                     $_SESSION['login_from'] = 'weixin';
-                    
+
                     // 授权成功之后的处理
                     $this->weixinauthorize();
                 }
             }
-            
+
             // 跳转地址
             if (empty($callbackUrl)) {
                 $callbackUrl = $this->url->get("member/passport/qcbind");
             }
-            
+
             $this->_redirect($callbackUrl);
             exit();
         } catch (\Exception $e) {
             die($e->getMessage());
         }
     }
-    
+
     // 获取用户信息
     protected function getWeixinUserInfo()
     {
         $userInfo = empty($_SESSION['Weixin_userInfo']) ? array() : $_SESSION['Weixin_userInfo'];
-        if (! empty($userInfo)) {
+        if (!empty($userInfo)) {
             $this->assign('user_id', $userInfo['user_id']);
             $this->assign('user_name', $userInfo['user_name']);
             $this->assign('user_headimgurl', str_replace('/0', '/64', $userInfo['user_headimgurl']));
@@ -315,11 +318,11 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     protected function tencentauthorize()
     {
         $userInfo = empty($_SESSION['Tencent_userInfo']) ? array() : $_SESSION['Tencent_userInfo'];
-        if (! empty($userInfo)) {
+        if (!empty($userInfo)) {
             $openid = $userInfo['user_id'];
             $nickname = $userInfo['user_name'];
             $headimgurl = $userInfo['user_headimgurl'];
-            
+
             // 加锁
             $key = cacheKey(__FILE__, __CLASS__, $openid);
             $objLock = new \iLock($key);
@@ -328,7 +331,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             }
             // 获取
             $userInfo = $this->modelMember->getInfoByQQOpenid($openid);
-            if (! empty($userInfo)) {
+            if (!empty($userInfo)) {
                 // 登录处理
                 $this->modelMember->login($userInfo);
                 // 跳转地址
@@ -347,15 +350,15 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         try {
             // http://www./member/xxxx/tencentauthorize?callbackUrl=xxx
             $callbackUrl = trim($this->get('callbackUrl', ''));
-            
+
             $FromUserName = trim($this->get('FromUserName', ''));
             $nickname = trim($this->get('nickname', ''));
             $headimgurl = trim($this->get('headimgurl', ''));
             $timestamp = trim($this->get('timestamp', ''));
             $signkey = trim($this->get('signkey', ''));
-            
+
             // url的参数上已经有了FromUserName参数并且不是空的时候
-            if (! empty($FromUserName)) {
+            if (!empty($FromUserName)) {
                 $config = $this->getDI()->get('config');
                 $secretKey = $config['tencentAuthorize']['secretKey'];
                 // 校验微信id,上线测试时需要加上去
@@ -376,12 +379,12 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
                     $this->tencentauthorize();
                 }
             }
-            
+
             // 跳转地址
             if (empty($callbackUrl)) {
                 $callbackUrl = $this->url->get("member/passport/qcbind");
             }
-            
+
             $this->_redirect($callbackUrl);
             exit();
         } catch (\Exception $e) {
@@ -392,14 +395,14 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     protected function getTencentUserInfo()
     {
         $userInfo = empty($_SESSION['Tencent_userInfo']) ? array() : $_SESSION['Tencent_userInfo'];
-        if (! empty($userInfo)) {
+        if (!empty($userInfo)) {
             $this->assign('FromUserName', $userInfo['user_id']);
             $this->assign('nickname', $userInfo['user_name']);
             $this->assign('headimgurl', str_replace('/0', '/64', $userInfo['user_headimgurl']));
             return $userInfo;
         } else {
             // 不是接口调用的话
-            if (! $this->getRequest()->isAjax()) {
+            if (!$this->getRequest()->isAjax()) {
                 unset($_SESSION['isTencentAuthorizing']);
                 unset($_SESSION['Tencent_userInfo']);
                 $this->refreshPage(5);

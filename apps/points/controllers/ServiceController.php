@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Points\Controllers;
 
 /**
@@ -16,6 +17,8 @@ class ServiceController extends ControllerBase
 
     private $modelMember = null;
 
+    private $modelPointsService = null;
+
     public function initialize()
     {
         parent::initialize();
@@ -23,6 +26,8 @@ class ServiceController extends ControllerBase
         $this->modelPointUser = new \App\Points\Models\User();
         $this->modelPointLog = new \App\Points\Models\Log();
         $this->modelMember = new \App\Member\Models\Member();
+
+        $this->modelPointsService = new \App\Points\Service\Api();
     }
 
     /**
@@ -39,12 +44,12 @@ class ServiceController extends ControllerBase
         try {
             $beginTime = $this->get('beginTime', '');
             if (empty($beginTime)) {
-                echo ($this->error(- 1, '开始时间为空'));
+                echo ($this->error(-1, '开始时间为空'));
                 return false;
             }
             $endTime = $this->get('endTime', '');
             if (empty($endTime)) {
-                echo ($this->error(- 2, '结束时间为空'));
+                echo ($this->error(-2, '结束时间为空'));
                 return false;
             }
             $page = intval($this->get('page', '1'));
@@ -53,25 +58,25 @@ class ServiceController extends ControllerBase
                 'total' => 0,
                 'datas' => array()
             );
-            
-            if (! empty($_SESSION['member_id'])) {
+
+            if (!empty($_SESSION['member_id'])) {
                 $otherConditions = array();
-                if (! empty($beginTime)) {
+                if (!empty($beginTime)) {
                     $beginTime = strtotime($beginTime . " 00:00:00");
                 }
-                if (! empty($endTime)) {
+                if (!empty($endTime)) {
                     $endTime = strtotime($endTime . " 23:59:59");
                 }
                 $logList = $this->modelPointLog->getUserPointsDetailList($_SESSION['member_id'], POINTS_CATEGORY1, $page, $limit, $beginTime, $endTime, $otherConditions);
                 $datas = array();
-                if (! empty($logList['datas'])) {
+                if (!empty($logList['datas'])) {
                     foreach ($logList['datas'] as $log) {
                         // "logTime":"2015.12.27 00:30:01",
                         // "logPointNum":"3",
                         // "logDescript":"2015-12-25评论获得福分"
                         $datas[] = array(
                             'logTime' => date('Y-m-d H:i:s', $log['add_time']->sec),
-                            'logPointNum' => empty($log['is_consumed']) ? abs($log['points']) : - abs($log['points']),
+                            'logPointNum' => empty($log['is_consumed']) ? abs($log['points']) : -abs($log['points']),
                             'logDescript' => $log['desc']
                         );
                     }
@@ -101,35 +106,35 @@ class ServiceController extends ControllerBase
         try {
             $predeposit = intval($this->get('predeposit', '0'));
             if (empty($predeposit)) {
-                echo ($this->error(- 1, '金额为空'));
+                echo ($this->error(-1, '金额为空'));
                 return false;
             }
             if (empty($_SESSION['member_id'])) {
-                echo ($this->error(- 2, '用户为空'));
+                echo ($this->error(-2, '用户为空'));
                 return false;
             }
-            
+
             $memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             if (empty($memberInfo)) {
-                echo ($this->error(- 5, '用户不存在'));
+                echo ($this->error(-5, '用户不存在'));
                 return false;
             }
-            
+
             // 福分账户
             $pointUserInfo = $this->modelPointUser->getInfoByUserId($_SESSION['member_id'], POINTS_CATEGORY1);
             if (empty($pointUserInfo)) {
-                echo ($this->error(- 3, '福分账户不存在'));
+                echo ($this->error(-3, '福分账户不存在'));
                 return false;
             }
-            
+
             if (empty($pointUserInfo['current']) || $pointUserInfo['current'] < $predeposit * 100) {
-                echo ($this->error(- 4, '用户福分不足'));
+                echo ($this->error(-4, '用户福分不足'));
                 return false;
             }
-            
+
             // 充值处理
             $this->rechargePredeposit($memberInfo, $predeposit);
-            
+
             echo $this->result('OK');
             return true;
         } catch (\Exception $e) {
@@ -149,18 +154,18 @@ class ServiceController extends ControllerBase
         try {
             $beginTime = $this->get('beginTime', '');
             if (empty($beginTime)) {
-                echo ($this->error(- 1, '开始时间为空'));
+                echo ($this->error(-1, '开始时间为空'));
                 return false;
             }
             $endTime = $this->get('endTime', '');
             if (empty($endTime)) {
-                echo ($this->error(- 2, '结束时间为空'));
+                echo ($this->error(-2, '结束时间为空'));
                 return false;
             }
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '10'));
-            
-            if (! empty($_SESSION['member_id'])) {
+
+            if (!empty($_SESSION['member_id'])) {
                 $logList = array(
                     'total' => 0,
                     'datas' => array()
@@ -190,16 +195,16 @@ class ServiceController extends ControllerBase
                 '__FOR_UPDATE__' => true
             ));
             $memo = array();
-            
+
             $register_name = $this->modelMember->getRegisterName($memberInfo);
-            
+
             $uniqueId = getNewId();
             // 福分账户减
-            $points = predeposit * 100;
-            $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $memberInfo['_id'], $register_name, $memberInfo['avatar'], $uniqueId, 0, - $points, "提取", "已提取{$points}福分");
+            $points = $predeposit * 100;
+            $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $memberInfo['_id'], $register_name, $memberInfo['avatar'], $uniqueId, $this->now, -$points, "提取", "已提取{$points}福分");
             // 预付款账户增加
-            $this->modelPointsUser->addOrReduce(POINTS_CATEGORY3, $memberInfo['_id'], $register_name, $memberInfo['avatar'], $uniqueId, 0, predeposit * 100, "充值", "已充值￥{$predeposit}已到您的云购账户");
-            
+            $this->modelPointsService->addOrReduce(POINTS_CATEGORY3, $memberInfo['_id'], $register_name, $memberInfo['avatar'], $uniqueId, $this->now, $predeposit * 100, "充值", "已充值￥{$predeposit}已到您的云购账户");
+
             $this->modelPointUser->commit();
         } catch (\Exception $e) {
             $this->modelMember->rollback();
@@ -207,4 +212,3 @@ class ServiceController extends ControllerBase
         }
     }
 }
-

@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Backend\Submodules\Points\Controllers;
 
 use App\Backend\Submodules\Points\Models\Category;
 use App\Backend\Submodules\Points\Models\User;
 
 /**
- * @title({name="积分用户管理"})
+ * @title({name="积分用户"})
  *
- * @name 积分用户管理
+ * @name 积分用户
  */
 class UserController extends \App\Backend\Controllers\FormController
 {
@@ -20,8 +21,10 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         $this->modelUser = new User();
         $this->modelCategory = new Category();
+        $this->categoryList = $this->modelCategory->getAll();
         parent::initialize();
     }
+    private $categoryList = null;
 
     protected function getSchemas()
     {
@@ -30,29 +33,35 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '积分分类',
             'data' => array(
                 'type' => 'integer',
-                'length' => '1'
+                'length' => 1
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->modelCategory->getAll()
+                'items' => $this->categoryList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'category_name'
+                'items' => $this->categoryList
             ),
             'search' => array(
-                'is_show' => false
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
+
         $schemas['user_id'] = array(
             'name' => '用户ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 24
+                'length' => 255
             ),
             'validation' => array(
                 'required' => 1
@@ -65,6 +74,9 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
                 'is_show' => true
             )
         );
@@ -85,10 +97,13 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['user_headimgurl'] = array(
             'name' => '用户头像',
             'data' => array(
@@ -96,16 +111,20 @@ class UserController extends \App\Backend\Controllers\FormController
                 'length' => 300
             ),
             'validation' => array(
-                'required' => 1
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'render' => 'img'
             ),
             'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
                 'is_show' => false
             )
         );
@@ -126,10 +145,13 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['total'] = array(
             'name' => '获得积分总数',
             'data' => array(
@@ -147,10 +169,13 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['freeze'] = array(
             'name' => '冻结积分',
             'data' => array(
@@ -168,10 +193,13 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['consume'] = array(
             'name' => '消耗积分',
             'data' => array(
@@ -189,10 +217,13 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['expire'] = array(
             'name' => '过期积分',
             'data' => array(
@@ -210,10 +241,13 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['point_time'] = array(
             'name' => '变动时间',
             'data' => array(
@@ -235,14 +269,18 @@ class UserController extends \App\Backend\Controllers\FormController
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
                 'condition_type' => 'period' // single
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
                 'type' => 'json',
-                'length' => '1000'
+                'length' => '1024',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => 0
@@ -256,6 +294,9 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         return $schemas;
@@ -269,16 +310,5 @@ class UserController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelUser;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $categoryList = $this->modelCategory->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['category_name'] = isset($categoryList[$item['category']]) ? $categoryList[$item['category']] : "--";
-            $item['point_time'] = date("Y-m-d H:i:s", $item['point_time']->sec);
-        }
-        
-        return $list;
     }
 }

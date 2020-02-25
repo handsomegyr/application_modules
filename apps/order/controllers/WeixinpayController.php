@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Order\Controllers;
 
 /**
@@ -69,19 +70,19 @@ class WeixinpayController extends ControllerBase
             '_id' => $out_trade_no,
             '__FOR_UPDATE__' => true
         ));
-        
+
         if (empty($orderPayInfo)) {
-            throw new \Exception("$out_trade_no对应的支付数据不存在");
+            throw new \Exception("{$out_trade_no}对应的支付数据不存在");
         }
-        
+
         // 进行支付处理
         if ($orderPayInfo['api_pay_state'] == \App\Order\Models\Pay::STATE0) {
             $this->modelOrderPay->changeToPaid($out_trade_no);
         }
-        
+
         // 记录通知的数据
-        $this->modelPaymentNotify->recordLog($out_trade_no, $GLOBALS['HTTP_RAW_POST_DATA']);
-        
+        $this->modelPaymentNotify->recordLog($out_trade_no, $GLOBALS['HTTP_RAW_POST_DATA'], $this->now);
+
         // 后续的操作由队列处理
         \iQueue::enqueue4OrderPay(array(
             'out_trade_no' => $out_trade_no

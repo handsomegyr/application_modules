@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Member\Controllers;
 
 use Imagine\Image\Box;
@@ -59,17 +60,17 @@ class ServiceController extends ControllerBase
         // http://www.jizigou.com/member/service/checkname?username=xxx
         try {
             $username = $this->get('username', '');
-            
+
             // 用户名检查
             $validateRet = $this->validateName($username);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 验证用户名是否已注册
             $validateRet = $this->checkNameIsExist($username);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
@@ -89,21 +90,21 @@ class ServiceController extends ControllerBase
         // http://www.jizigou.com/member/service/checkemail?email=xxx
         try {
             $email = $this->get('email', '');
-            
+
             // 邮箱地址检查
             $validateRet = $this->validateEmail($email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 验证邮箱地址是否已注册
             $validateRet = $this->checkEmailIsExist($email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -120,21 +121,21 @@ class ServiceController extends ControllerBase
         // http://www.jizigou.com/member/service/checkmobile?mobile=1356410096
         try {
             $mobile = $this->get('mobile', '');
-            
+
             // 手机号检查
             $validateRet = $this->validateMobile($mobile);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 验证手机号码是否已注册
             $validateRet = $this->checkMobileIsExist($mobile);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -153,13 +154,13 @@ class ServiceController extends ControllerBase
     {
         // http://www.jizigou.com/member/service/logininfo
         try {
-            if (! empty($_SESSION['member_id'])) {
+            if (!empty($_SESSION['member_id'])) {
                 $memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             } else {
                 $memberInfo = array();
             }
             if (empty($memberInfo)) {
-                echo ($this->error(- 1, '未登录'));
+                echo ($this->error(-1, '未登录'));
                 return false;
             } else {
                 // 返回结果
@@ -192,85 +193,85 @@ class ServiceController extends ControllerBase
             $mobile = $this->get('mobile', '');
             $email = $this->get('email', '');
             $password = $this->get('password', '');
-            
+
             // 帐号检查
             $validateRet = $this->validateAccount($username, $mobile, $email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 姓名检查
-            if (! empty($username)) {
+            if (!empty($username)) {
                 $validateRet = $this->validateName($username);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
             }
             // Email检查
-            if (! empty($email)) {
+            if (!empty($email)) {
                 $validateRet = $this->validateEmail($email);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
             }
-            
+
             // 手机号检查
-            if (! empty($mobile)) {
+            if (!empty($mobile)) {
                 $validateRet = $this->validateMobile($mobile);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
             }
-            
+
             // 密码检查
             $validateRet = $this->validatePassword($password);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查Token
             $validateRet = $this->validateToken();
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查验证码
             $validateRet = $this->validateCaptcha();
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查操作是否已锁定
             $objLock = new \iLock('login');
             $validateRet = $this->lock($objLock);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查数据库是否有相应的数据
             // 用户名
-            if (! empty($username)) {
+            if (!empty($username)) {
                 $memberInfo = $this->modelMember->getInfoByName($username);
-            }            
+            }
 
             // email
-            elseif (! empty($email)) {
+            elseif (!empty($email)) {
                 $memberInfo = $this->modelMember->getInfoByEmail($email);
-            }            
+            }
 
             // mobile
-            elseif (! empty($mobile)) {
+            elseif (!empty($mobile)) {
                 $memberInfo = $this->modelMember->getInfoByMobile($mobile);
             }
-            
+
             if (empty($memberInfo) || empty($memberInfo['state'])) {
                 $errorInfo = $this->errors['e510'];
                 echo ($this->error($errorInfo['error_code'], $errorInfo['error_msg']));
@@ -281,17 +282,17 @@ class ServiceController extends ControllerBase
                     echo ($this->error($errorInfo['error_code'], $errorInfo['error_msg']));
                     return false;
                 }
-                
-                if (! $memberInfo['state']) {
+
+                if (!$memberInfo['state']) {
                     $errorInfo = $this->errors['e511'];
                     echo ($this->error($errorInfo['error_code'], $errorInfo['error_msg']));
                     return false;
                 }
             }
-            
+
             // 登录处理
             $this->loginMember($memberInfo);
-            
+
             // 返回结果
             echo ($this->result("登录成功"));
             return true;
@@ -317,104 +318,104 @@ class ServiceController extends ControllerBase
             $password = $this->get('password', '');
             $password_confirm = $this->get('password_confirm', '');
             $vcode = $this->get('vcode', '');
-            
+
             // 帐号检查
             $validateRet = $this->validateAccount($username, $mobile, $email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 姓名检查
-            if (! empty($username)) {
+            if (!empty($username)) {
                 $validateRet = $this->validateName($username);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
-            }            
+            }
 
             // Email检查
-            elseif (! empty($email)) {
+            elseif (!empty($email)) {
                 $validateRet = $this->validateEmail($email);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
                 // 验证码检查
                 $validateRet = $this->validateVcode($vcode, $email);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
-            }            
+            }
 
             // 手机号检查
-            elseif (! empty($mobile)) {
+            elseif (!empty($mobile)) {
                 $validateRet = $this->validateMobile($mobile);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
                 // 验证码检查
                 $validateRet = $this->validateVcode($vcode, $mobile);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
             }
-            
+
             // 密码检查
             $validateRet = $this->validatePassword($password, $password_confirm);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查Token
             $validateRet = $this->validateToken();
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查验证码
             $validateRet = $this->validateCaptcha();
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 验证用户名是否重复
-            if (! empty($username)) {
+            if (!empty($username)) {
                 $validateRet = $this->checkNameIsExist($username);
-                if (! empty($validateRet['error_code'])) {
-                    echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
-                    return false;
-                }
-            }            
-
-            // 验证email是否重复
-            elseif (! empty($email)) {
-                $validateRet = $this->checkEmailIsExist($email);
-                if (! empty($validateRet['error_code'])) {
-                    echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
-                    return false;
-                }
-            }            
-
-            // 验证mobile是否重复
-            elseif (! empty($mobile)) {
-                $validateRet = $this->checkMobileIsExist($mobile);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
             }
-            
+
+            // 验证email是否重复
+            elseif (!empty($email)) {
+                $validateRet = $this->checkEmailIsExist($email);
+                if (!empty($validateRet['error_code'])) {
+                    echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
+                    return false;
+                }
+            }
+
+            // 验证mobile是否重复
+            elseif (!empty($mobile)) {
+                $validateRet = $this->checkMobileIsExist($mobile);
+                if (!empty($validateRet['error_code'])) {
+                    echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
+                    return false;
+                }
+            }
+
             // 会员注册
             $this->registerMember($username, $email, $mobile, $password);
-            
+
             echo ($this->result("注册成功"));
             return true;
         } catch (\Exception $e) {
@@ -432,61 +433,61 @@ class ServiceController extends ControllerBase
         try {
             $mobile = $this->get('mobile', '');
             $email = $this->get('email', '');
-            
+
             // 帐号检查
             $validateRet = $this->validateAccount('', $mobile, $email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // Email检查
-            if (! empty($email)) {
+            if (!empty($email)) {
                 $validateRet = $this->validateEmail($email);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
             }
-            
+
             // 手机号检查
-            if (! empty($mobile)) {
+            if (!empty($mobile)) {
                 $validateRet = $this->validateMobile($mobile);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
             }
-            
+
             // // 重复注册验证
             // if (process::islock('forget')) {
             // echo ($this->error(599, "您的操作过于频繁，请稍后再试"));
             // return false;
             // }
-            
+
             // 检查Token
             $validateRet = $this->validateToken();
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查验证码
             $validateRet = $this->validateCaptcha();
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查用户是否存在
-            if (! empty($email)) {
+            if (!empty($email)) {
                 $member = $this->modelMember->getInfoByEmail($email);
                 if (empty($member)) {
                     $validateRet = $this->errors['512'];
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
-            } elseif (! empty($mobile)) {
+            } elseif (!empty($mobile)) {
                 $member = $this->modelMember->getInfoByMobile($email);
                 if (empty($member)) {
                     $validateRet = $this->errors['512'];
@@ -494,19 +495,19 @@ class ServiceController extends ControllerBase
                     return false;
                 }
             }
-            
+
             echo ($this->result("新密码已经发送至您的邮箱地址，请尽快登录并更改密码！"));
             fastcgi_finish_request();
-            
+
             // 通过邮件或短信发送验证码
             // $email = $this->get('email', '');
             // $code = $this->get('code', '');
             // $contents = $this->get('contents', '');
             // doPost("http://{$_SERVER['HTTP_HOST']}/service/mail/send-by-template");
-            
+
             // 重置密码
             // $newPassword = $this->modelMember->resetPwd($member['_id']);
-            
+
             return true;
         } catch (\Exception $e) {
             echo ($this->error($e->getCode(), $e->getMessage()));
@@ -524,13 +525,13 @@ class ServiceController extends ControllerBase
     {
         // http://www.jizigou.com/member/service/checklogin
         try {
-            if (! empty($_SESSION['member_id'])) {
+            if (!empty($_SESSION['member_id'])) {
                 $memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             } else {
                 $memberInfo = array();
             }
             if (empty($memberInfo)) {
-                echo ($this->error(- 1, '未登录'));
+                echo ($this->error(-1, '未登录'));
                 return false;
             } else {
                 // 返回结果
@@ -554,32 +555,32 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 获取会员信息
             $memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             $isLogin = empty($memberInfo) ? false : true;
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $userOldPwd = $this->get('userOldPwd', ''); // 原有密码
             $userNewPwd = $this->get('userNewPwd', ''); // 新密码
             $password_confirm = $this->get('password_confirm', ''); // 确认密码
-                                                                    
+
             // 密码检查
             $validateRet = $this->validatePassword($userNewPwd, $password_confirm);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查原有的密码是否正确
             if ($memberInfo['passwd'] != md5($userOldPwd)) {
                 $validateRet = $this->errors['e514'];
@@ -608,39 +609,39 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $member_id = $_SESSION['member_id'];
             $mobile = $this->get('mobile', '');
             $vcode = $this->get('vcode', '');
-            
+
             // Mobile检查
             $validateRet = $this->validateMobile($mobile);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
             // 验证码检查
             $validateRet = $this->validateVcode($vcode, $mobile);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 验证mobile是否重复
             $validateRet = $this->checkMobileIsExist($mobile);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 绑定mobile操作
             $this->modelMember->bindMobile($member_id, $mobile);
-            
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -660,23 +661,23 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $vcode = ($this->get('vcode', ''));
             $key = ($this->get('key', ''));
             $paypwd = $this->get('paypwd', ''); // 新的支付密码
-                                                
+
             // 验证码检查
             $validateRet = $this->validateVcode($vcode, $key);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 会员密码修改
             $this->modelMember->updatePaypwd($_SESSION['member_id'], $paypwd);
             // 增加积分处理
@@ -699,39 +700,39 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $member_id = $_SESSION['member_id'];
             $email = $this->get('email', '');
             $vcode = $this->get('vcode', '');
-            
+
             // Email检查
             $validateRet = $this->validateEmail($email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
             // 验证码检查
             $validateRet = $this->validateVcode($vcode, $email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 验证email是否重复
             $validateRet = $this->checkEmailIsExist($email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 绑定email操作
             $this->modelMember->bindEmail($member_id, $email);
-            
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -751,29 +752,29 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $member_id = $_SESSION['member_id'];
             $is_open = intval($this->get('is_open', '0'));
             $is_open = empty($is_open) ? false : true;
             $money = intval($this->get('money', '0'));
             $vcode = ($this->get('vcode', ''));
             $key = ($this->get('key', ''));
-            
+
             // 验证码检查
             $validateRet = $this->validateVcode($vcode, $key);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 开启和关闭登录保护
             $this->modelMember->setSmallMoney($member_id, $is_open, $money);
-            
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -794,19 +795,19 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $member_id = $_SESSION['member_id'];
             $is_open = intval($this->get('is_open', '0'));
             $is_open = empty($is_open) ? false : true;
-            
+
             // 开启和关闭登录保护
             $this->modelMember->setLoginTip($member_id, $is_open);
-            
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -834,48 +835,48 @@ class ServiceController extends ControllerBase
             $qq = $this->get('qq', ''); // QQ号码
             $monthly_income = $this->get('monthly_income', ''); // 月收入
             $signature = $this->get('signature', ''); // 签名
-                                                      
+
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 获取会员信息
             $memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             $isLogin = empty($memberInfo) ? false : true;
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 会员修改
             $memo = $memberInfo['memo'];
             $data = array();
-            if (! empty($nickname)) {
+            if (!empty($nickname)) {
                 $data['nickname'] = $nickname;
                 $memo['nickname_unique'] = empty($memo['nickname_unique']) ? getNewId() : $memo['nickname_unique'];
             }
-            if (! empty($tel_mobile)) {
+            if (!empty($tel_mobile)) {
                 $data['tel_mobile'] = $tel_mobile;
                 $memo['tel_mobile_unique'] = empty($memo['tel_mobile_unique']) ? getNewId() : $memo['tel_mobile_unique'];
             }
-            if (! empty($sex)) {
+            if (!empty($sex)) {
                 $data['sex'] = $sex;
                 $memo['sex_unique'] = empty($memo['sex_unique']) ? getNewId() : $memo['sex_unique'];
             }
-            if (! empty($birthday)) {
+            if (!empty($birthday)) {
                 // 检查是否是有效的日期格式
-                if (! is_date($birthday)) {
-                    echo ($this->error(- 1, '生日的日期格式不正确'));
+                if (!is_date($birthday)) {
+                    echo ($this->error(-1, '生日的日期格式不正确'));
                     return false;
                 }
                 // 检查是否是在一年内修改的
-                if (! empty($memberInfo['memo']['birthday_change_time']) && (time() - $memberInfo['memo']['birthday_change_time']) <= 3600 * 24 * 365) {
-                    echo ($this->error(- 2, '一年后才能再次编辑'));
+                if (!empty($memberInfo['memo']['birthday_change_time']) && (time() - $memberInfo['memo']['birthday_change_time']) <= 3600 * 24 * 365) {
+                    echo ($this->error(-2, '一年后才能再次编辑'));
                     return false;
                 }
                 // 转换成YYYY-MM-DD的格式
@@ -886,76 +887,76 @@ class ServiceController extends ControllerBase
                     $memo['birthday_change_time'] = time();
                 }
             }
-            if (! empty($constellation)) {
+            if (!empty($constellation)) {
                 $data['constellation'] = $constellation;
                 $memo['constellation_unique'] = empty($memo['constellation_unique']) ? getNewId() : $memo['constellation_unique'];
             }
-            if (! empty($location)) {
+            if (!empty($location)) {
                 $data['location'] = $location;
                 $memo['location_unique'] = empty($memo['location_unique']) ? getNewId() : $memo['location_unique'];
             }
-            if (! empty($hometown)) {
+            if (!empty($hometown)) {
                 $data['hometown'] = $hometown;
                 $memo['hometown_unique'] = empty($memo['hometown_unique']) ? getNewId() : $memo['hometown_unique'];
             }
-            if (! empty($qq)) {
+            if (!empty($qq)) {
                 $data['qq'] = $qq;
                 $memo['qq_unique'] = empty($memo['qq_unique']) ? getNewId() : $memo['qq_unique'];
             }
-            if (! empty($monthly_income)) {
+            if (!empty($monthly_income)) {
                 $data['monthly_income'] = $monthly_income;
                 $memo['monthly_income_unique'] = empty($memo['monthly_income_unique']) ? getNewId() : $memo['monthly_income_unique'];
             }
-            if (! empty($signature)) {
+            if (!empty($signature)) {
                 $data['signature'] = $signature;
                 $memo['signature_unique'] = empty($memo['signature_unique']) ? getNewId() : $memo['signature_unique'];
             }
-            if (! empty($data)) {
+            if (!empty($data)) {
                 $data['memo'] = $memo;
                 // 更新处理
                 $this->modelMember->updateMemberInfo($_SESSION['member_id'], $data);
                 // 增加积分处理
                 $headimgurl = empty($_SESSION['avatar']) ? '' : $_SESSION['avatar'];
-                $nickname = ! empty($nickname) ? $nickname : (empty($_SESSION['nickname']) ? '' : $_SESSION['nickname']);
+                $nickname = !empty($nickname) ? $nickname : (empty($_SESSION['nickname']) ? '' : $_SESSION['nickname']);
                 // 增加昵称的积分
-                if (! empty($nickname)) {
+                if (!empty($nickname)) {
                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'member_nickname');
-                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['nickname_unique'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                    $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['nickname_unique'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                 }
                 // 增加性别的积分
-                if (! empty($sex)) {
+                if (!empty($sex)) {
                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'member_sex');
-                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['sex_unique'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                    $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['sex_unique'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                 }
                 // 增加生日的积分
-                if (! empty($birthday)) {
+                if (!empty($birthday)) {
                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'member_birthday');
-                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['birthday_unique'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                    $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['birthday_unique'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                 }
                 // 增加现居地的积分
-                if (! empty($location)) {
+                if (!empty($location)) {
                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'member_location');
-                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['location_unique'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                    $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['location_unique'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                 }
                 // 增加家乡的积分
-                if (! empty($hometown)) {
+                if (!empty($hometown)) {
                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'member_hometown');
-                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['hometown_unique'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                    $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['hometown_unique'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                 }
                 // 增加QQ的积分
-                if (! empty($qq)) {
+                if (!empty($qq)) {
                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'member_qq');
-                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['qq_unique'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                    $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['qq_unique'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                 }
                 // 增加月收入的积分
-                if (! empty($monthly_income)) {
+                if (!empty($monthly_income)) {
                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'member_monthly_income');
-                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['monthly_income_unique'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                    $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['monthly_income_unique'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                 }
                 // 增加签名的积分
-                if (! empty($signature)) {
+                if (!empty($signature)) {
                     $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'member_signature');
-                    $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['signature_unique'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+                    $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $_SESSION['member_id'], $nickname, $headimgurl, $memo['signature_unique'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
                 }
             }
             echo ($this->result("修改成功"));
@@ -977,27 +978,27 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $avatar = $this->get('avatar', '');
             if (empty($avatar)) {
                 echo ($this->error('-2', '头像图片未指定'));
                 return false;
             }
-            
+
             $x = $this->get('x', '0');
             $y = $this->get('y', '0');
             $width = $this->get('width', '336');
             $height = $this->get('height', '336');
-            
+
             $uploadPath = $this->modelMember->getUploadPath();
             makeDir(APP_PATH . "public/upload/{$uploadPath}");
             $filename = APP_PATH . "public/upload/{$uploadPath}/{$avatar}";
-            if (! file_exists($filename)) {
+            if (!file_exists($filename)) {
                 echo ($this->error('-1', '头像图片未找到'));
                 return false;
             }
@@ -1028,7 +1029,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -1043,7 +1044,7 @@ class ServiceController extends ControllerBase
             $telephone = $this->get('telephone', '');
             $mobile = $this->get('mobile', '');
             $is_default = intval($this->get('is_default', '0'));
-            if (! empty($id)) {
+            if (!empty($id)) {
                 $consignee = $this->modelConsignee->getInfoById($id);
                 if (empty($consignee)) {
                     echo ($this->error('-2', 'id不正确'));
@@ -1057,7 +1058,7 @@ class ServiceController extends ControllerBase
             // 增加和修改收货人处理
             $consignee = $this->modelConsignee->insertOrUpdate($id, $_SESSION['member_id'], $name, $province, $city, $district, $address, $zipcode, $telephone, $mobile, $is_default);
             // 如果是否默认为true的话
-            if (! empty($is_default)) {
+            if (!empty($is_default)) {
                 if (empty($id)) {
                     $id = $consignee['_id'];
                 }
@@ -1082,7 +1083,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -1122,7 +1123,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -1163,7 +1164,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -1177,7 +1178,7 @@ class ServiceController extends ControllerBase
             $rafShowNum = $this->get('rafShowNum', '0'); // 个人主页-获得的商品 显示
             $postSet = $this->get('postSet', '0'); // 个人主页-晒单 0:所有人可见 1:好友可见 2:仅自己可见
             $postShowNum = $this->get('postShowNum', '0'); // 个人主页-晒单 显示
-                                                           
+
             // 更新处理
             $data['privacy'] = $this->modelMember->getPrivacyInfo($msgSet, $areaSet, $searchSet, $buySet, $buyShowNum, $rafSet, $rafShowNum, $postSet, $postShowNum);
             $this->modelMember->updateMemberInfo($_SESSION['member_id'], $data);
@@ -1198,12 +1199,12 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $sysMsgSet = $this->get('sysMsgSet', '0');
             $wxMailSet = $this->get('wxMailSet', '0');
             // 更新处理
@@ -1231,7 +1232,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -1247,7 +1248,7 @@ class ServiceController extends ControllerBase
             );
             // 排除已经是朋友的会员
             $friend_ids = $this->modelMemberFriend->getMyFriendIds($_SESSION['member_id'], 1, 1000);
-            if (! empty($friend_ids)) {
+            if (!empty($friend_ids)) {
                 $friend_ids = array_merge($friend_ids, array(
                     $_SESSION['member_id']
                 ));
@@ -1259,7 +1260,7 @@ class ServiceController extends ControllerBase
             $query['privacy'] = array(
                 '$like' => '%"searchSet":0%'
             );
-            if (! empty($key)) {
+            if (!empty($key)) {
                 $query['__OR__'] = array(
                     'mobile' => $key,
                     'email' => $key,
@@ -1268,28 +1269,28 @@ class ServiceController extends ControllerBase
                     )
                 );
             }
-            
+
             $sort = array();
             if (empty($type)) { // 搜索
                 $sort['__RANDOM__'] = 1;
             } elseif ($type == 1) { // 获得商品最多
-                $sort['prized_num'] = - 1;
+                $sort['prized_num'] = -1;
             } elseif ($type == 2) { // 活跃会员??怎么算活跃
-                $sort['buy_num'] = - 1;
+                $sort['buy_num'] = -1;
             } elseif ($type == 3) { // 最新加入
-                $sort['_id'] = - 1;
+                $sort['_id'] = -1;
             }
             $list = $this->modelMember->getSearchFriendsList($page, $limit, $query, $sort);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     $user_ids[] = $item['_id'];
                 }
                 $pointUserList = $this->modelPointsUser->getListByUserIds($user_ids, POINTS_CATEGORY2);
-                
+
                 foreach ($list['datas'] as $item) {
                     // address: ""
                     // grade: "01"
@@ -1299,12 +1300,12 @@ class ServiceController extends ControllerBase
                     // userName: "郭永荣"
                     // userPhoto: "20151106195125381.jpg"
                     // userWeb: "1010381532"
-                    if (! isset($pointUserList[$item['_id']])) {
+                    if (!isset($pointUserList[$item['_id']])) {
                         throw new \Exception("{$item['_id']}对应的积分账户不存在");
                     }
                     $exp = $pointUserList[$item['_id']]['current'];
                     $gradeInfo = $this->modelMemberGrade->getGradeInfo($exp);
-                    
+
                     $datas[] = array(
                         'address' => '',
                         'grade' => str_pad($gradeInfo['current']['level'], 2, '0', STR_PAD_LEFT),
@@ -1337,7 +1338,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -1346,11 +1347,11 @@ class ServiceController extends ControllerBase
             $limit = intval($this->get('limit', '9'));
             $key = urldecode($this->get('key', ''));
             $query1 = array();
-            if (! empty($_SESSION['member_id'])) {
+            if (!empty($_SESSION['member_id'])) {
                 $query1['to_user_id'] = $_SESSION['member_id']; // '56757a39887c22034a8b4596';
             }
             $query1['state'] = \App\Member\Models\Friend::STATE1;
-            if (! empty($key)) {
+            if (!empty($key)) {
                 $query1['__OR__'] = array(
                     'from_user_mobile' => $key,
                     'from_user_email' => $key,
@@ -1359,13 +1360,13 @@ class ServiceController extends ControllerBase
                     )
                 );
             }
-            
+
             $query2 = array();
-            if (! empty($_SESSION['member_id'])) {
+            if (!empty($_SESSION['member_id'])) {
                 $query2['from_user_id'] = $_SESSION['member_id']; // '56761153887c22184e8b45b5'; // ;
             }
             $query2['state'] = \App\Member\Models\Friend::STATE1;
-            if (! empty($key)) {
+            if (!empty($key)) {
                 $query2['__OR__'] = array(
                     'to_user_mobile' => $key,
                     'to_user_email' => $key,
@@ -1382,11 +1383,11 @@ class ServiceController extends ControllerBase
             );
             $sort = array();
             $list = $this->modelMemberFriend->getAgreeList($page, $limit, $query, $sort);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     if ($item['from_user_id'] != $_SESSION['member_id']) {
                         $user_ids[] = $item['from_user_id'];
@@ -1396,7 +1397,7 @@ class ServiceController extends ControllerBase
                 }
                 $pointUserList = $this->modelPointsUser->getListByUserIds($user_ids, POINTS_CATEGORY2);
                 $memberList = $this->modelMember->getListByIds($user_ids);
-                
+
                 foreach ($list['datas'] as $item) {
                     // address: ""
                     // grade: "01"
@@ -1412,11 +1413,11 @@ class ServiceController extends ControllerBase
                     } elseif ($item['to_user_id'] != $_SESSION['member_id']) {
                         $user_id = $item['to_user_id'];
                     }
-                    
-                    if (! isset($pointUserList[$user_id])) {
+
+                    if (!isset($pointUserList[$user_id])) {
                         throw new \Exception("{$user_id}对应的积分账户不存在");
                     }
-                    if (! isset($memberList[$user_id])) {
+                    if (!isset($memberList[$user_id])) {
                         throw new \Exception("{$user_id}对应的会员信息不存在");
                     }
                     $exp = $pointUserList[$user_id]['current'];
@@ -1454,30 +1455,30 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $userID = $this->get('userID', '');
             if (empty($userID)) {
-                echo ($this->error(- 2, '会员ID为空'));
+                echo ($this->error(-2, '会员ID为空'));
                 return false;
             }
-            
+
             $toMemberInfo = $this->modelMember->getInfoById($userID);
             if (empty($toMemberInfo)) {
-                echo ($this->error(- 3, '会员ID不正确'));
+                echo ($this->error(-3, '会员ID不正确'));
                 return false;
             }
-            
+
             $fromMemberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             if (empty($fromMemberInfo)) {
-                echo ($this->error(- 4, '会员ID不正确'));
+                echo ($this->error(-4, '会员ID不正确'));
                 return false;
             }
-            
+
             $friendInfo = $this->modelMemberFriend->check($_SESSION['member_id'], $userID);
             if (empty($friendInfo)) {
                 $this->modelMemberFriend->apply($_SESSION['member_id'], $fromMemberInfo['nickname'], $fromMemberInfo['email'], $fromMemberInfo['mobile'], $fromMemberInfo['register_by'], $userID, $toMemberInfo['nickname'], $toMemberInfo['email'], $toMemberInfo['mobile'], $toMemberInfo['register_by']);
@@ -1503,7 +1504,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -1511,10 +1512,10 @@ class ServiceController extends ControllerBase
             $applyID = $this->get('applyID', '');
             $friendInfo = $this->modelMemberFriend->getInfoById($applyID);
             if (empty($friendInfo)) {
-                echo ($this->error(- 1, 'applyId不正确'));
+                echo ($this->error(-1, 'applyId不正确'));
                 return false;
             }
-            
+
             $this->modelMemberFriend->agree($_SESSION['member_id'], $applyID);
             // 发送系统消息
             $friend = array();
@@ -1522,7 +1523,7 @@ class ServiceController extends ControllerBase
             $friend['mobile'] = $friendInfo['to_user_mobile'];
             $friend['email'] = $friendInfo['to_user_email'];
             $friend['register_by'] = $friendInfo['to_user_register_by'];
-            
+
             $name = $this->modelMember->getLoginName($friend);
             $content = "<a href=\"{$this->baseUrl}yungou/member/index?id={$_SESSION['member_id']}\" class=\"blue\" target=\"_blank\">{$name}</a> 已通过您的好友请求。";
             $this->modelSysMsg->log($friendInfo['from_user_id'], $content);
@@ -1548,7 +1549,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -1576,14 +1577,14 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
             $userID = $this->get('userID', '');
             if (empty($userID)) {
-                echo ($this->error(- 2, '用户ID为空'));
+                echo ($this->error(-2, '用户ID为空'));
                 return false;
             }
             $friendInfo = $this->modelMemberFriend->check($_SESSION['member_id'], $userID);
@@ -1611,31 +1612,31 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '5'));
             $query = array();
-            if (! empty($_SESSION['member_id'])) {
+            if (!empty($_SESSION['member_id'])) {
                 $query['to_user_id'] = $_SESSION['member_id'];
             }
             $sort = array();
             $list = $this->modelMemberFriend->getApplyList($page, $limit, $query, $sort);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     $user_ids[] = $item['from_user_id'];
                 }
                 $pointUserList = $this->modelPointsUser->getListByUserIds($user_ids, POINTS_CATEGORY2);
                 $memberList = $this->modelMember->getListByIds($user_ids);
-                
+
                 foreach ($list['datas'] as $item) {
                     // address: ""
                     // applyID: "37233515"
@@ -1647,16 +1648,16 @@ class ServiceController extends ControllerBase
                     // userName: "18917****57"
                     // userPhoto: "00000000000000000.jpg"
                     // userWeb: "1011789946"
-                    if (! isset($pointUserList[$item['from_user_id']])) {
+                    if (!isset($pointUserList[$item['from_user_id']])) {
                         throw new \Exception("{$item['from_user_id']}对应的积分账户不存在");
                     }
-                    if (! isset($memberList[$item['from_user_id']])) {
+                    if (!isset($memberList[$item['from_user_id']])) {
                         throw new \Exception("{$item['from_user_id']}对应的会员信息不存在");
                     }
                     $exp = $pointUserList[$item['from_user_id']]['current'];
                     $gradeInfo = $this->modelMemberGrade->getGradeInfo($exp);
                     $memberInfo = $memberList[$item['from_user_id']];
-                    
+
                     $datas[] = array(
                         'address' => '',
                         'applyID' => $item['_id'],
@@ -1691,15 +1692,15 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $friendID = $this->get('friendID', '');
             if (empty($friendID)) {
-                echo ($this->error(- 2, 'ID为空'));
+                echo ($this->error(-2, 'ID为空'));
                 return false;
             }
             $this->modelMemberFriend->delete($_SESSION['member_id'], $friendID);
@@ -1736,29 +1737,29 @@ class ServiceController extends ControllerBase
             );
             $sort = array();
             $list = $this->modelMemberVisitor->getList($userId, $page, $limit, $query, $sort);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     $user_ids[] = $item['visit_user_id'];
                 }
                 $pointUserList = $this->modelPointsUser->getListByUserIds($user_ids, POINTS_CATEGORY2);
                 $memberList = $this->modelMember->getListByIds($user_ids);
-                
+
                 foreach ($list['datas'] as $item) {
-                    
-                    if (! isset($pointUserList[$item['visit_user_id']])) {
+
+                    if (!isset($pointUserList[$item['visit_user_id']])) {
                         throw new \Exception("{$item['visit_user_id']}对应的积分账户不存在");
                     }
-                    if (! isset($memberList[$item['visit_user_id']])) {
+                    if (!isset($memberList[$item['visit_user_id']])) {
                         throw new \Exception("{$item['visit_user_id']}对应的会员信息不存在");
                     }
                     $exp = $pointUserList[$item['visit_user_id']]['current'];
                     $gradeInfo = $this->modelMemberGrade->getGradeInfo($exp);
                     $memberInfo = $memberList[$item['visit_user_id']];
-                    
+
                     // userID: "10605005"
                     // userName: "18917****57"
                     // userPhoto: "00000000000000000.jpg"
@@ -1767,7 +1768,7 @@ class ServiceController extends ControllerBase
                     // browserTime":"16分钟前",
                     // birthAreaNameState":" hidden",
                     // gradeLevel":"01"
-                    
+
                     $datas[] = array(
                         'browserTime' => date('Y-m-d H:i:s', $item['browser_time']->sec),
                         'gradeLevel' => str_pad($gradeInfo['current']['level'], 2, '0', STR_PAD_LEFT),
@@ -1805,29 +1806,29 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
             $userWeb = $this->get('userWeb', '');
             if (empty($userWeb)) {
-                echo ($this->error(- 2, '用户ID为空'));
+                echo ($this->error(-2, '用户ID为空'));
                 return false;
             }
-            
+
             $toMemberInfo = $this->modelMember->getInfoById($userWeb);
             if (empty($toMemberInfo)) {
-                echo ($this->error(- 3, '用户ID不正确'));
+                echo ($this->error(-3, '用户ID不正确'));
                 return false;
             }
-            
+
             $fromMemberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             if (empty($fromMemberInfo)) {
-                echo ($this->error(- 4, '会员ID不正确'));
+                echo ($this->error(-4, '会员ID不正确'));
                 return false;
             }
-            
+
             $friendInfo = $this->modelMemberFriend->check($_SESSION['member_id'], $userWeb);
             if (empty($friendInfo)) {
                 $this->modelMemberFriend->apply($fromMemberInfo['_id'], $fromMemberInfo['nickname'], $fromMemberInfo['email'], $fromMemberInfo['mobile'], $fromMemberInfo['register_by'], $toMemberInfo['_id'], $toMemberInfo['nickname'], $toMemberInfo['email'], $toMemberInfo['mobile'], $toMemberInfo['register_by']);
@@ -1855,7 +1856,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -1864,29 +1865,29 @@ class ServiceController extends ControllerBase
             $content = $this->get('content', '');
             if ($type == 4) {
                 if (empty($content)) {
-                    echo ($this->error(- 1, '举报内容为空'));
+                    echo ($this->error(-1, '举报内容为空'));
                     return false;
                 }
             }
-            
+
             $userWeb = $this->get('userWeb', '');
             if (empty($userWeb)) {
-                echo ($this->error(- 2, '用户ID为空'));
+                echo ($this->error(-2, '用户ID为空'));
                 return false;
             }
-            
+
             $toMemberInfo = $this->modelMember->getInfoById($userWeb);
             if (empty($toMemberInfo)) {
-                echo ($this->error(- 3, '用户ID不正确'));
+                echo ($this->error(-3, '用户ID不正确'));
                 return false;
             }
-            
+
             $fromMemberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             if (empty($fromMemberInfo)) {
-                echo ($this->error(- 4, '会员ID不正确'));
+                echo ($this->error(-4, '会员ID不正确'));
                 return false;
             }
-            
+
             $this->modelMemberReport->log($fromMemberInfo['_id'], $fromMemberInfo['nickname'], $fromMemberInfo['email'], $fromMemberInfo['mobile'], $fromMemberInfo['register_by'], $toMemberInfo['_id'], $toMemberInfo['nickname'], $toMemberInfo['email'], $toMemberInfo['mobile'], $toMemberInfo['register_by'], $type, $content);
             echo ($this->result("OK"));
         } catch (\Exception $e) {
@@ -1909,27 +1910,27 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '10'));
-            
+
             // 获取邀请记录
             $invitationInfo = $this->modelInvitation->getInfoByUserId($_SESSION['member_id'], YUNGOU_ACTIVITY_ID);
             if (empty($invitationInfo)) {
-                echo ($this->error(- 1, '未找到邀请记录'));
+                echo ($this->error(-1, '未找到邀请记录'));
                 return false;
             }
             // 获取邀请明细
             $list = $this->modelInvitationGotDetail->getListByPage($invitationInfo['_id'], $page, $limit);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // "userName":"18917****57",
                     // "regTime":"2015.12.17 23:50:38",
@@ -1976,82 +1977,82 @@ class ServiceController extends ControllerBase
             $password = $this->get('password', '');
             $password_confirm = $this->get('password_confirm', '');
             $vcode = $this->get('vcode', '');
-            
+
             // 帐号检查
             $validateRet = $this->validateAccount($username, $mobile, $email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 姓名检查
-            if (! empty($username)) {
+            if (!empty($username)) {
                 $validateRet = $this->validateName($username);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
-            }            
+            }
 
             // Email检查
-            elseif (! empty($email)) {
+            elseif (!empty($email)) {
                 $validateRet = $this->validateEmail($email);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
                 // 验证码检查
                 $validateRet = $this->validateVcode($vcode, $email);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
-            }            
+            }
 
             // 手机号检查
-            elseif (! empty($mobile)) {
+            elseif (!empty($mobile)) {
                 $validateRet = $this->validateMobile($mobile);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
                 // 验证码检查
                 $validateRet = $this->validateVcode($vcode, $mobile);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
             }
-            
+
             // 密码检查
             $validateRet = $this->validatePassword($password, $password_confirm);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查数据库是否有相应的数据
             // 用户名
-            if (! empty($username)) {
+            if (!empty($username)) {
                 $memberInfo = $this->modelMember->getInfoByName($username);
-            }            
+            }
 
             // email
-            elseif (! empty($email)) {
+            elseif (!empty($email)) {
                 $memberInfo = $this->modelMember->getInfoByEmail($email);
-            }            
+            }
 
             // mobile
-            elseif (! empty($mobile)) {
+            elseif (!empty($mobile)) {
                 $memberInfo = $this->modelMember->getInfoByMobile($mobile);
             }
-            
+
             if (empty($memberInfo) || empty($memberInfo['state'])) {
                 $errorInfo = $this->errors['e510'];
                 echo ($this->error($errorInfo['error_code'], $errorInfo['error_msg']));
                 return false;
             } else {
-                if (! $memberInfo['state']) {
+                if (!$memberInfo['state']) {
                     $errorInfo = $this->errors['e511'];
                     echo ($this->error($errorInfo['error_code'], $errorInfo['error_msg']));
                     return false;
@@ -2085,139 +2086,139 @@ class ServiceController extends ControllerBase
             $password = $this->get('password', '');
             $password_confirm = $this->get('password_confirm', '');
             $vcode = $this->get('vcode', '');
-            
+
             if (empty($_SESSION['Tencent_userInfo']) && empty($_SESSION['Weixin_userInfo'])) {
-                echo ($this->error(- 1, '非法访问'));
+                echo ($this->error(-1, '非法访问'));
                 return false;
             }
-            
+
             // 检查QQ号是否使用了
-            if (! empty($_SESSION['Tencent_userInfo'])) {
+            if (!empty($_SESSION['Tencent_userInfo'])) {
                 $openid = $_SESSION['Tencent_userInfo']['user_id'];
                 $userInfo = $this->modelMember->getInfoByQQOpenid($openid);
-                if (! empty($userInfo)) {
-                    echo ($this->error(- 1, '非法访问,QQ号已经绑定了其他账号了'));
+                if (!empty($userInfo)) {
+                    echo ($this->error(-1, '非法访问,QQ号已经绑定了其他账号了'));
                     return false;
                 }
             }
-            
+
             // 检查微信号是否使用了
-            if (! empty($_SESSION['Weixin_userInfo'])) {
+            if (!empty($_SESSION['Weixin_userInfo'])) {
                 $openid = $_SESSION['Weixin_userInfo']['user_id'];
                 $userInfo = $this->modelMember->getInfoByWeixinOpenid($openid);
-                if (! empty($userInfo)) {
-                    echo ($this->error(- 1, '非法访问,微信号已经绑定了其他账号了'));
+                if (!empty($userInfo)) {
+                    echo ($this->error(-1, '非法访问,微信号已经绑定了其他账号了'));
                     return false;
                 }
             }
-            
+
             // 帐号检查
             $validateRet = $this->validateAccount($username, $mobile, $email);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 姓名检查
-            if (! empty($username)) {
+            if (!empty($username)) {
                 $validateRet = $this->validateName($username);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
             }
             // Email检查
-            if (! empty($email)) {
+            if (!empty($email)) {
                 $validateRet = $this->validateEmail($email);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
-                if (! empty($vcode)) {
+                if (!empty($vcode)) {
                     // 验证码检查
                     $validateRet = $this->validateVcode($vcode, $email);
-                    if (! empty($validateRet['error_code'])) {
+                    if (!empty($validateRet['error_code'])) {
                         echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                         return false;
                     }
                 }
             }
-            
+
             // 手机号检查
-            if (! empty($mobile)) {
+            if (!empty($mobile)) {
                 $validateRet = $this->validateMobile($mobile);
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
-                if (! empty($vcode)) {
+                if (!empty($vcode)) {
                     // 验证码检查
                     $validateRet = $this->validateVcode($vcode, $mobile);
-                    if (! empty($validateRet['error_code'])) {
+                    if (!empty($validateRet['error_code'])) {
                         echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                         return false;
                     }
                 }
             }
-            
+
             // 密码检查
             $validateRet = $this->validatePassword($password, $password_confirm);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             // 检查数据库是否有相应的数据
             // 用户名
-            if (! empty($username)) {
+            if (!empty($username)) {
                 $memberInfo = $this->modelMember->getInfoByName($username);
-            }            
+            }
 
             // email
-            elseif (! empty($email)) {
+            elseif (!empty($email)) {
                 $memberInfo = $this->modelMember->getInfoByEmail($email);
-            }            
+            }
 
             // mobile
-            elseif (! empty($mobile)) {
+            elseif (!empty($mobile)) {
                 $memberInfo = $this->modelMember->getInfoByMobile($mobile);
             }
-            
+
             if (empty($memberInfo)) {
                 // 检查验证码
                 $validateRet = $this->validateCaptcha();
-                if (! empty($validateRet['error_code'])) {
+                if (!empty($validateRet['error_code'])) {
                     echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                     return false;
                 }
-                
+
                 // 验证用户名是否重复
-                if (! empty($username)) {
+                if (!empty($username)) {
                     $validateRet = $this->checkNameIsExist($username);
-                    if (! empty($validateRet['error_code'])) {
-                        echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
-                        return false;
-                    }
-                }                
-
-                // 验证email是否重复
-                elseif (! empty($email)) {
-                    $validateRet = $this->checkEmailIsExist($email);
-                    if (! empty($validateRet['error_code'])) {
-                        echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
-                        return false;
-                    }
-                }                
-
-                // 验证mobile是否重复
-                elseif (! empty($mobile)) {
-                    $validateRet = $this->checkMobileIsExist($mobile);
-                    if (! empty($validateRet['error_code'])) {
+                    if (!empty($validateRet['error_code'])) {
                         echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                         return false;
                     }
                 }
-                
+
+                // 验证email是否重复
+                elseif (!empty($email)) {
+                    $validateRet = $this->checkEmailIsExist($email);
+                    if (!empty($validateRet['error_code'])) {
+                        echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
+                        return false;
+                    }
+                }
+
+                // 验证mobile是否重复
+                elseif (!empty($mobile)) {
+                    $validateRet = $this->checkMobileIsExist($mobile);
+                    if (!empty($validateRet['error_code'])) {
+                        echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
+                        return false;
+                    }
+                }
+
                 // 会员注册
                 $memberInfo = $this->registerMember($username, $email, $mobile, $password);
             } else {
@@ -2226,20 +2227,20 @@ class ServiceController extends ControllerBase
                     echo ($this->error($errorInfo['error_code'], $errorInfo['error_msg']));
                     return false;
                 }
-                
-                if (! $memberInfo['state']) {
+
+                if (!$memberInfo['state']) {
                     $errorInfo = $this->errors['e511'];
                     echo ($this->error($errorInfo['error_code'], $errorInfo['error_msg']));
                     return false;
                 }
             }
-            
+
             // 绑定QQ操作
-            if (! empty($_SESSION['Tencent_userInfo']) && empty($memberInfo['qqopenid'])) {
+            if (!empty($_SESSION['Tencent_userInfo']) && empty($memberInfo['qqopenid'])) {
                 $this->modelMember->bindQQOpenid($memberInfo['_id'], $_SESSION['Tencent_userInfo']['user_id'], $_SESSION['Tencent_userInfo']);
             }
             // 绑定微信操作
-            if (! empty($_SESSION['Weixin_userInfo']) && empty($memberInfo['weixinopenid'])) {
+            if (!empty($_SESSION['Weixin_userInfo']) && empty($memberInfo['weixinopenid'])) {
                 $this->modelMember->bindWeixinOpenid($memberInfo['_id'], $_SESSION['Weixin_userInfo']['user_id'], $_SESSION['Weixin_userInfo']);
             }
             // 登录处理
@@ -2257,18 +2258,18 @@ class ServiceController extends ControllerBase
             return;
         }
         $invitationId = $invitationInfo['_id'];
-        
+
         // 是否发起者和领取者是同一个人
         $isSame = $this->modelInvitation->isSame($invitationInfo, $userInfo['_id']);
-        
+
         // 检查是否已经领完了
         $isOver = $this->modelInvitation->isOver($invitationInfo);
-        
+
         // 检查是否已经领取过了
         $invitationInfoGotDetail = $this->modelInvitationGotDetail->getInfoByInvitationIdAndGotUserId($invitationId, $userInfo['_id']);
         $isGot = empty($invitationInfoGotDetail) ? false : true;
-        
-        if (! $isSame && ! $isOver && ! $isGot) {
+
+        if (!$isSame && !$isOver && !$isGot) {
             // 如果没有领取过并且领取者不是发起人的话,就进行领邀请函处理
             // 领取一下
             $register_name = $this->modelMember->getRegisterName($userInfo);
@@ -2287,25 +2288,25 @@ class ServiceController extends ControllerBase
         // 检查邀请ID存在否
         $invited_id = getCookieValue('invited_id');
         $invitationInfo = array();
-        if (! empty($invited_id)) {
+        if (!empty($invited_id)) {
             $invitationInfo = $this->modelInvitation->getInfoById($invited_id);
             if (empty($invitationInfo)) {
                 $invited_id = '';
                 setCookieValue('invited_id', '', time() - 3600, '/');
             }
         }
-        
+        $now = time();
         try {
             $this->modelMember->begin();
-            
+
             // 会员添加
             $memberInfo = $this->modelMember->register($username, $email, $mobile, $password, $invited_id);
             if (empty($memberInfo)) {
-                throw new \Exception('会员生成失败', - 80);
+                throw new \Exception('会员生成失败', -80);
             }
             // 登录处理
             $this->loginMember($memberInfo, false);
-            
+
             // 注册3个积分用户
             $memo = array(
                 'member_id' => $memberInfo['_id'],
@@ -2319,14 +2320,14 @@ class ServiceController extends ControllerBase
             $this->modelPointsUser->create(POINTS_CATEGORY1, $memberInfo['_id'], $register_name, $memberInfo['avatar'], 0, 0, 0, 0, $memo);
             $this->modelPointsUser->create(POINTS_CATEGORY2, $memberInfo['_id'], $register_name, $memberInfo['avatar'], 0, 0, 0, 0, $memo);
             $this->modelPointsUser->create(POINTS_CATEGORY3, $memberInfo['_id'], $register_name, $memberInfo['avatar'], 0, 0, 0, 0, $memo);
-            
+
             // 注册获得福分
             $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'register');
-            $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $memberInfo['_id'], $register_name, $memberInfo['avatar'], $memberInfo['_id'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
-            
+            $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $memberInfo['_id'], $register_name, $memberInfo['avatar'], $memberInfo['_id'], $now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+
             // 生成邀请用户
             $invitationUserInfo = $this->modelInvitationUser->getOrCreateByUserId($memberInfo['_id'], $register_name, $memberInfo['avatar'], 0, 0, YUNGOU_ACTIVITY_ID, $memo);
-            
+
             // 生成自己的邀请函
             $invitation_memo = array_merge($memo, array(
                 'invitation_user_id' => $invitationUserInfo['_id']
@@ -2334,10 +2335,10 @@ class ServiceController extends ControllerBase
             $myInvitationInfo = $this->modelInvitation->getOrCreateByUserId($memberInfo['_id'], $register_name, $memberInfo['avatar'], "", '云购', 0, 0, 0, 1, false, '', YUNGOU_ACTIVITY_ID, $invitation_memo);
             // 生成个人消息记录
             $this->modelMsgCount->log($memberInfo['_id']);
-            
+
             // 接受他人邀请处理
             $this->getInvitation($invitationInfo, $memberInfo);
-            
+
             $this->modelMember->commit();
             return $memberInfo;
         } catch (\Exception $e) {
@@ -2349,7 +2350,7 @@ class ServiceController extends ControllerBase
     private function loginMember($memberInfo, $isLogin = true)
     {
         $this->modelMember->login($memberInfo, $isLogin);
-        
+
         // 如果是登录的话,送积分
         if (true) {
             // // 添加会员积分
@@ -2357,9 +2358,8 @@ class ServiceController extends ControllerBase
             // // 添加会员经验值
             // $this->addExppoint($memberInfo);
         }
-        
+
         // cookie中的cart存入数据库
         $this->serviceCart->mergeCart($memberInfo['_id']);
     }
 }
-

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Payment\Controllers;
 
 /**
@@ -37,31 +38,31 @@ class ServiceController extends ControllerBase
             $limit = intval($this->get('limit', '10'));
             $beginTime = $this->get('beginTime', '');
             if (empty($beginTime)) {
-                echo ($this->error(- 1, '开始时间为空'));
+                echo ($this->error(-1, '开始时间为空'));
                 return false;
             }
             $endTime = $this->get('endTime', '');
             if (empty($endTime)) {
-                echo ($this->error(- 2, '结束时间为空'));
+                echo ($this->error(-2, '结束时间为空'));
                 return false;
             }
-            
+
             $ret = array();
             if (empty($_SESSION['member_id'])) {
                 $ret['total'] = 0;
                 $ret['datas'] = array();
             } else {
-                if (! empty($beginTime)) {
+                if (!empty($beginTime)) {
                     $beginTime = strtotime($beginTime . " 00:00:00");
                 }
-                if (! empty($endTime)) {
+                if (!empty($endTime)) {
                     $endTime = strtotime($endTime . " 23:59:59");
                 }
-                
+
                 $list = $this->modelLog->getuserbcrecord($_SESSION['member_id'], $page, $limit, $type, $beginTime, $endTime);
-                
+
                 $datas = array();
-                if (! empty($list['datas'])) {
+                if (!empty($list['datas'])) {
                     foreach ($list['datas'] as $item) {
                         // "logMoeny":"-1",
                         // "typeName":"云购商品",
@@ -86,4 +87,3 @@ class ServiceController extends ControllerBase
         }
     }
 }
-

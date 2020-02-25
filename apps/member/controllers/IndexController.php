@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Member\Controllers;
 
 use Phalcon\Mvc\View;
@@ -40,7 +41,7 @@ class IndexController extends ControllerBase
         $this->modelPost = new \App\Post\Models\Post();
         $this->modelGoods = new \App\Goods\Models\Goods();
         $this->modelOrderLog = new \App\Order\Models\Log();
-        
+
         $this->modelOrderGoods = new \App\Order\Models\Goods();
         $this->modelMsgStatistics = new \App\Message\Models\MsgStatistics();
         $this->modelMsgCount = new \App\Message\Models\MsgCount();
@@ -58,7 +59,7 @@ class IndexController extends ControllerBase
         // 消息数
         $msgCountInfo = $this->modelMsgCount->getInfoByUserId($_SESSION['member_id']);
         $this->assign('msgCount', $msgCountInfo['sysMsgCount'] + $msgCountInfo['privMsgCount'] + $msgCountInfo['friendMsgCount'] + $msgCountInfo['replyMsgCount']);
-        
+
         $myInvitationInfo = $this->modelInvitation->getInfoByUserId($_SESSION['member_id'], YUNGOU_ACTIVITY_ID);
         $this->assign('invitationInfo', $myInvitationInfo);
         // 待确认
@@ -67,22 +68,22 @@ class IndexController extends ControllerBase
         $otherConditions['order_state'] = \App\Order\Models\Goods::ORDER_STATE1;
         $confirmNum4Wait = $this->modelOrderGoods->getOrderCountByBuyerId($_SESSION['member_id'], $otherConditions);
         $this->assign('confirmNum4Wait', $confirmNum4Wait);
-        
+
         // 待发货
         $otherConditions = array();
         $otherConditions['order_state'] = \App\Order\Models\Goods::ORDER_STATE2;
         $deliveryNum4Wait = $this->modelOrderGoods->getOrderCountByBuyerId($_SESSION['member_id'], $otherConditions);
         $this->assign('deliveryNum4Wait', $deliveryNum4Wait);
-        
+
         // 待收货
         $otherConditions = array();
         $otherConditions['order_state'] = \App\Order\Models\Goods::ORDER_STATE3;
         $receiveNum4Wait = $this->modelOrderGoods->getOrderCountByBuyerId($_SESSION['member_id'], $otherConditions);
         $this->assign('receiveNum4Wait', $receiveNum4Wait);
-        
+
         // 好友动态
         $friend_ids = $this->modelMemberFriend->getMyFriendIds($_SESSION['member_id'], 1, 1000);
-        if (! empty($friend_ids)) {
+        if (!empty($friend_ids)) {
             $otherConditions = array();
             $otherConditions['user_id'] = array(
                 '$in' => $friend_ids
@@ -90,10 +91,10 @@ class IndexController extends ControllerBase
             $newsList = $this->modelMemberNews->getNewsList(1, 10, $otherConditions);
             $this->assign('newsList', $newsList['datas']);
         }
-        
+
         // 获得的商品
         $list = $this->modelOrderGoods->getUserWinList($_SESSION['member_id'], 1, 1);
-        if (! empty($list['datas'])) {
+        if (!empty($list['datas'])) {
             $this->assign('orderInfo', $list['datas'][0]);
         }
     }
@@ -158,7 +159,7 @@ class IndexController extends ControllerBase
         }
         $orderInfo = $this->modelOrderGoods->getInfoByOrderNo($orderno);
         $this->assign('orderInfo', $orderInfo);
-        if (! empty($orderInfo['post_id'])) {
+        if (!empty($orderInfo['post_id'])) {
             $postInfo = $this->modelPost->getInfoById($orderInfo['post_id']);
             $this->assign('postInfo', $postInfo);
         }
@@ -246,13 +247,13 @@ class IndexController extends ControllerBase
         // 充值总额：￥1.00 消费总额：￥1.00 转入总额：￥0.00 转出总额：￥0.00
         $summaryMoney4Type1 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE1);
         $this->assign('summaryMoney4Type1', $summaryMoney4Type1);
-        
+
         $summaryMoney4Type2 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE2);
         $this->assign('summaryMoney4Type2', $summaryMoney4Type2);
-        
+
         $summaryMoney4Type3 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE3);
         $this->assign('summaryMoney4Type3', $summaryMoney4Type3);
-        
+
         // $summaryMoney4Type4 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE4);
         // $this->assign('summaryMoney4Type4', $summaryMoney4Type4);
     }
@@ -372,12 +373,12 @@ class IndexController extends ControllerBase
         // http://www.jizigou.com/member/index/userprivmsgdetail?senderUserID=xxx
         $user_id = $this->get('senderUserID', '');
         $this->assign('user_id', $user_id);
-        
-        if (! empty($user_id)) {
+
+        if (!empty($user_id)) {
             // 获取用户信息
             $toMsgUserInfo = $this->modelMember->getInfoById($user_id);
             $this->assign('userName', $this->modelMember->getRegisterName($toMsgUserInfo, true));
-            
+
             $msgStatisticsInfo = $this->modelMsgStatistics->getInfoBy2UserId($_SESSION['member_id'], $user_id);
             $this->assign('msg_num', $msgStatisticsInfo['msg_num']);
             // 更新已读
@@ -385,4 +386,3 @@ class IndexController extends ControllerBase
         }
     }
 }
-

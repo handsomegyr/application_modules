@@ -134,7 +134,8 @@
 					var newval = $.trim($(event.target).val());
 					if (newval.length > 0 && newval != val) {
 						var data = new Object;
-						data[fieldname] = encodeURIComponent(newval);
+						// data[fieldname] = encodeURIComponent(newval);
+						data[fieldname] = newval;
 						data.id = encodeURIComponent(id);
 						data._token = LA.token;
 						$.ajax({

@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Backend\Submodules\Points\Controllers;
 
 use App\Backend\Submodules\Points\Models\Rule;
 use App\Backend\Submodules\Points\Models\Category;
 
 /**
- * @title({name="积分规则管理"})
+ * @title({name="积分规则"})
  *
- * @name 积分规则管理
+ * @name 积分规则
  */
 class RuleController extends \App\Backend\Controllers\FormController
 {
@@ -20,17 +21,46 @@ class RuleController extends \App\Backend\Controllers\FormController
     {
         $this->modelRule = new Rule();
         $this->modelCategory = new Category();
+        $this->categoryList = $this->modelCategory->getAll();
         parent::initialize();
     }
+    private $categoryList = null;
 
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
+        $schemas['category'] = array(
+            'name' => '积分分类',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 1
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
+            ),
+            'list' => array(
+                'is_show' => true,
+                'items' => $this->categoryList
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['code'] = array(
             'name' => '规则码',
             'data' => array(
                 'type' => 'string',
-                'length' => 10
+                'length' => 30
             ),
             'validation' => array(
                 'required' => 1
@@ -43,14 +73,17 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['item'] = array(
             'name' => '项目',
             'data' => array(
                 'type' => 'string',
-                'length' => 30
+                'length' => 100
             ),
             'validation' => array(
                 'required' => 1
@@ -60,20 +93,24 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'is_editable' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['item_category'] = array(
             'name' => '项目分类',
             'data' => array(
                 'type' => 'string',
-                'length' => 30
+                'length' => 100
             ),
             'validation' => array(
-                'required' => 0
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -83,29 +120,10 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['category'] = array(
-            'name' => '积分分类',
-            'data' => array(
-                'type' => 'integer',
-                'length' => '1'
+                'is_show' => true
             ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->modelCategory->getAll()
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_data_name' => 'category_name'
-            ),
-            'search' => array(
-                'is_show' => false
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['points'] = array(
@@ -125,17 +143,20 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        $schemas['memo'] = array(
-            'name' => '备注',
+        $schemas['desc'] = array(
+            'name' => '描述',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 255
             ),
             'validation' => array(
-                'required' => 0
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -146,9 +167,12 @@ class RuleController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 
@@ -160,15 +184,5 @@ class RuleController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelRule;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $categoryList = $this->modelCategory->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['category_name'] = isset($categoryList[$item['category']]) ? $categoryList[$item['category']] : "--";
-        }
-        
-        return $list;
     }
 }

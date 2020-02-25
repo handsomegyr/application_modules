@@ -1,12 +1,13 @@
 <?php
+
 namespace App\Backend\Submodules\Points\Controllers;
 
 use App\Backend\Submodules\Points\Models\Category;
 
 /**
- * @title({name="积分分类管理"})
+ * @title({name="积分分类"})
  *
- * @name 积分分类管理
+ * @name 积分分类
  */
 class CategoryController extends \App\Backend\Controllers\FormController
 {
@@ -39,14 +40,18 @@ class CategoryController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
+
         $schemas['name'] = array(
-            'name' => '分类名',
+            'name' => '分类名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 30
+                'length' => 50
             ),
             'validation' => array(
                 'required' => true
@@ -59,10 +64,38 @@ class CategoryController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        
+
+        $schemas['sort'] = array(
+            'name' => '排序',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 1
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true,
+                'is_editable' => true
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         return $schemas;
     }
 

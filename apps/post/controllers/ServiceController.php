@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Post\Controllers;
 
 class ServiceController extends ControllerBase
@@ -26,6 +27,8 @@ class ServiceController extends ControllerBase
 
     private $modelOrderGoods = null;
 
+    private $modelPointsService = null;
+
     public function initialize()
     {
         parent::initialize();
@@ -41,6 +44,8 @@ class ServiceController extends ControllerBase
         $this->modelOrderGoods = new \App\Order\Models\Goods();
         $this->modelReplyMsg = new \App\Message\Models\ReplyMsg();
         $this->modelMsgCount = new \App\Message\Models\MsgCount();
+
+        $this->modelPointsService = new \App\Points\Service\Api();
     }
 
     /**
@@ -56,19 +61,19 @@ class ServiceController extends ControllerBase
         try {
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '9'));
-            
+
             $ret = array();
             $ret['total'] = 0;
             $ret['datas'] = array();
-            
+
             $otherConditions = array();
             $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
-                    
+
                     // 'postID':131317,
                     // 'postTitle':'裸车提宝马，方便！',
                     // 'userWeb':1008122257,
@@ -77,7 +82,7 @@ class ServiceController extends ControllerBase
                     // 'postTime':'今天 17:28',
                     // 'postImg':'20151231172821873.jpg',
                     // 'postContent':'首先感谢云购还有云友们，有你们我才有机会中宝马，中宝马那天下午，收到云购发的中奖短信，简直太神奇了，我真的…'
-                    
+
                     $picArr = explode(',', $item['pic']);
                     foreach ($picArr as &$pic) {
                         $pic = $this->modelPost->getImagePath($this->baseUrl, $pic);
@@ -117,29 +122,29 @@ class ServiceController extends ControllerBase
         try {
             $codeID = ($this->get('codeID', ''));
             if (empty($codeID)) {
-                echo ($this->error(- 1, 'codeID为空'));
+                echo ($this->error(-1, 'codeID为空'));
                 return false;
             }
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '5'));
-            
+
             $goodsInfo = $this->modelGoods->getInfoById($codeID);
             if (empty($goodsInfo)) {
-                echo ($this->error(- 2, 'codeID不正确'));
+                echo ($this->error(-2, 'codeID不正确'));
                 return false;
             }
-            
+
             $ret = array();
             $ret['total'] = 0;
             $ret['datas'] = array();
-            
+
             $otherConditions = array();
             $otherConditions['goods_commonid'] = $goodsInfo['goods_commonid'];
             $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // "codePeriod":2230,
                     // "userName":"中奖就OK",
@@ -186,21 +191,21 @@ class ServiceController extends ControllerBase
         try {
             $postid = ($this->get('postid', ''));
             if (empty($postid)) {
-                echo ($this->error(- 1, 'postid为空'));
+                echo ($this->error(-1, 'postid为空'));
                 return false;
             }
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '5'));
-            
+
             $postInfo = $this->modelPost->getInfoById($postid);
             if (empty($postid)) {
-                echo ($this->error(- 2, 'postid不正确'));
+                echo ($this->error(-2, 'postid不正确'));
                 return false;
             }
             $ret = array();
             $ret['total'] = 0;
             $ret['datas'] = array();
-            
+
             $otherConditions = array();
             $otherConditions['_id'] = array(
                 '$ne' => $postid
@@ -210,7 +215,7 @@ class ServiceController extends ControllerBase
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // "codePeriod":2230,
                     // "userName":"中奖就OK",
@@ -263,15 +268,15 @@ class ServiceController extends ControllerBase
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '5'));
             if (empty($_SESSION['member_id'])) {
-                echo ($this->error(- 1, '非法访问'));
+                echo ($this->error(-1, '非法访问'));
                 return false;
             }
             $ret = array();
             $ret['total'] = 0;
             $ret['datas'] = array();
-            
+
             $otherConditions = array();
-            
+
             if ($state == 1) {
                 // 已晒单
                 $otherConditions['state'] = \App\Post\Models\Post::STATE2;
@@ -288,11 +293,11 @@ class ServiceController extends ControllerBase
                 // 审核通过
                 $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             }
-            
+
             $list = $this->modelPost->getPageListByBuyerId($_SESSION['member_id'], $page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // "codeID":"2489811",
                     // "codePeriod":"74",
@@ -359,13 +364,13 @@ class ServiceController extends ControllerBase
         try {
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '9'));
-            
+
             $ret = array();
             $ret['total'] = 0;
             $ret['datas'] = array();
-            
+
             $otherConditions = array();
-            if (! empty($_SESSION['member_id'])) {
+            if (!empty($_SESSION['member_id'])) {
                 $otherConditions['buyer_id'] = array(
                     '$ne' => $_SESSION['member_id']
                 );
@@ -374,7 +379,7 @@ class ServiceController extends ControllerBase
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // "postID":135141,
                     // "postTitle":"小米充电宝",
@@ -386,7 +391,7 @@ class ServiceController extends ControllerBase
                     // "userName":"2016年新款3系BMW",
                     // "userWeb":"1010292566",
                     // "userPhoto":"20151126044505718.jpg"
-                    
+
                     $picArr = explode(',', $item['pic']);
                     foreach ($picArr as &$pic) {
                         $pic = $this->modelPost->getImagePath($this->baseUrl, $pic);
@@ -425,34 +430,34 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
-            
+
             $postCodeID = ($this->get('postCodeID', ''));
             $postTitle = urldecode($this->get('postTitle', ''));
             $postContent = urldecode($this->get('postContent', ''));
             $postAllPic = ($this->get('postAllPic', ''));
-            
+
             $goodsInfo = $this->modelGoods->getInfoById($postCodeID);
             if (empty($goodsInfo)) {
                 echo ($this->error('-1', 'postCodeID不正确'));
                 return false;
             }
-            
+
             $postInfo = $this->modelPost->getInfoByBuyerIdAndGoodsId($_SESSION['member_id'], $postCodeID);
             if (empty($postInfo)) {
                 echo ($this->error('-2', '记录不存在'));
                 return false;
             }
-            
+
             if ($postInfo['state'] == \App\Post\Models\Post::STATE2) {
                 echo ($this->error('-3', '该记录已审核通过，无法在修改'));
                 return false;
             }
-            
+
             $list = $this->modelPost->insertPostSingle($postInfo['_id'], $postTitle, $postContent, $postAllPic, $goodsInfo);
             echo ($this->result("OK", $list));
         } catch (\Exception $e) {
@@ -475,7 +480,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -487,7 +492,7 @@ class ServiceController extends ControllerBase
             $refFloor = intval($this->get('refFloor', '0'));
             $floor = 0;
             $postInfo = $this->modelPost->getInfoById($postid);
-            if (! empty($refReplyId) && $refFloor) {
+            if (!empty($refReplyId) && $refFloor) {
                 $info = $this->modelReply->getInfoById($refReplyId);
                 if (empty($info)) {
                     echo ($this->error('-1', '回复ID不正确'));
@@ -496,8 +501,8 @@ class ServiceController extends ControllerBase
             }
             $memberInfo = $this->modelMember->getInfoById($_SESSION['member_id']);
             $user_name = $this->modelMember->getRegisterName($memberInfo);
-            
-            if (! empty($info)) {
+
+            if (!empty($info)) {
                 // 增加回复数量
                 $newReplyInfo = $this->modelReply->incNum($info['ref_reply_id']);
                 $floor = $newReplyInfo['num'];
@@ -528,7 +533,7 @@ class ServiceController extends ControllerBase
             $replyId = ($this->get('replyId', ''));
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -543,8 +548,8 @@ class ServiceController extends ControllerBase
                 return false;
             }
             $this->modelReply->setIsDel($replyId);
-            
-            if (! empty($info['ref_reply_id'])) {
+
+            if (!empty($info['ref_reply_id'])) {
                 $this->modelReply->incDelNum($info['ref_reply_id']);
             }
             echo ($this->result("OK"));
@@ -574,16 +579,16 @@ class ServiceController extends ControllerBase
             );
             $sort = array();
             $list = $this->modelReply->getPageListByPostId($postid, $page, $limit, $query, $sort);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     $user_ids[] = $item['user_id'];
                 }
                 $memberList = $this->modelMember->getListByIds($user_ids);
-                
+
                 foreach ($list['datas'] as $item) {
                     // "replyUserName": "郭永荣",
                     // "replyUserWeb": "1010381532",
@@ -592,11 +597,11 @@ class ServiceController extends ControllerBase
                     // "replyID": "1655353",
                     // "replyCount": "0",
                     // "userPhoto": "20151106195125381.jpg"
-                    if (! isset($memberList[$item['user_id']])) {
+                    if (!isset($memberList[$item['user_id']])) {
                         throw new \Exception("{$item['user_id']}对应的会员信息不存在");
                     }
                     $memberInfo = $memberList[$item['user_id']];
-                    
+
                     $datas[] = array(
                         'replyUserName' => $this->modelMember->getRegisterName($memberInfo, true),
                         'replyUserWeb' => $memberInfo['_id'],
@@ -631,18 +636,18 @@ class ServiceController extends ControllerBase
         try {
             $replyId = ($this->get('replyId', ''));
             $list = $this->modelReply->getListByReplyId($replyId);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     $user_ids[] = $item['user_id'];
                 }
                 $memberList = $this->modelMember->getListByIds($user_ids);
-                
+
                 foreach ($list['datas'] as $item) {
-                    
+
                     // floorID: 1
                     // isDel: 1
                     // replyContent: "看来我也要去买一个"
@@ -653,11 +658,11 @@ class ServiceController extends ControllerBase
                     // replyUserName: "郭永荣"
                     // replyUserWeb: "1010381532"
                     // userPhoto: "20151106195125381.jpg"
-                    if (! isset($memberList[$item['user_id']])) {
+                    if (!isset($memberList[$item['user_id']])) {
                         throw new \Exception("{$item['user_id']}对应的会员信息不存在");
                     }
                     $memberInfo = $memberList[$item['user_id']];
-                    
+
                     $datas[] = array(
                         'userID' => $memberInfo['_id'],
                         'replyUserName' => $this->modelMember->getRegisterName($memberInfo, true),
@@ -667,7 +672,7 @@ class ServiceController extends ControllerBase
                         'floorID' => $item['floor'],
                         'replyTime' => date('Y-m-d H:i:s', $item['reply_time']->sec),
                         'replyContent' => $item['user_content'],
-                        'isDel' => (! empty($_SESSION['member_id']) && $item['user_id'] == $_SESSION['member_id']), // 可以删除
+                        'isDel' => (!empty($_SESSION['member_id']) && $item['user_id'] == $_SESSION['member_id']), // 可以删除
                         'replyRefFloor' => $item['ref_floor']
                     );
                 }
@@ -691,7 +696,7 @@ class ServiceController extends ControllerBase
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
-            if (! $isLogin) {
+            if (!$isLogin) {
                 $validateRet = $this->errors['e595'];
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
@@ -702,7 +707,7 @@ class ServiceController extends ControllerBase
                 return false;
             }
             $voteInfo = $this->modelVote->getInfoByPostIdAndUserId($postid, $_SESSION['member_id']);
-            if (! empty($voteInfo)) {
+            if (!empty($voteInfo)) {
                 echo ($this->error('-2', '已经投票过了'));
                 return false;
             } else {
@@ -735,27 +740,27 @@ class ServiceController extends ControllerBase
             $goodsID = ($this->get('goodsID', ''));
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '10'));
-            
+
             $ret = array();
             $ret['total'] = 0;
             $ret['CountEx'] = 6643;
             $ret['Count'] = 1240;
-            
+
             $ret['datas'] = array();
             $otherConditions = array();
             $otherConditions['state'] = \App\Post\Models\Post::STATE2;
             $list = $this->modelPost->getPageList($page, $limit, $otherConditions);
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
-                
+            if (!empty($list['datas'])) {
+
                 foreach ($list['datas'] as $item) {
                     $user_ids[] = $item['buyer_id'];
                 }
                 $pointUserList = $this->modelPointsUser->getListByUserIds($user_ids, POINTS_CATEGORY2);
-                
+
                 foreach ($list['datas'] as $item) {
-                    
+
                     // "userWeb":"1011714446",
                     // "userPhoto":"20151231205835150.jpg",
                     // "userName":"A6还给我啊",
@@ -769,13 +774,13 @@ class ServiceController extends ControllerBase
                     // "grade":"03",
                     // "gradeName":"云购中将",
                     // "postTimeEx":"昨天 23:08"
-                    
-                    if (! isset($pointUserList[$item['buyer_id']])) {
+
+                    if (!isset($pointUserList[$item['buyer_id']])) {
                         throw new \Exception("{$item['buyer_id']}对应的积分账户不存在");
                     }
                     $exp = $pointUserList[$item['buyer_id']]['current'];
                     $gradeInfo = $this->modelMemberGrade->getGradeInfo($exp);
-                    
+
                     $picArr = explode(',', $item['pic']);
                     foreach ($picArr as &$pic) {
                         $pic = $this->modelPost->getImagePath($this->baseUrl, $pic);
@@ -816,40 +821,40 @@ class ServiceController extends ControllerBase
         try {
             $post_id = ($this->get('post_id', ''));
             if (empty($post_id)) {
-                echo ($this->error(- 1, '晒单ID为空'));
+                echo ($this->error(-1, '晒单ID为空'));
                 return false;
             }
             $user_id = ($this->get('user_id', ''));
             if (empty($user_id)) {
-                echo ($this->error(- 2, '操作者ID为空'));
+                echo ($this->error(-2, '操作者ID为空'));
                 return false;
             }
             $user_name = ($this->get('user_name', ''));
             $point = intval($this->get('point', '0'));
             if (empty($point)) {
-                echo ($this->error(- 3, '福分为空'));
+                echo ($this->error(-3, '福分为空'));
                 return false;
             }
             $is_recommend = intval($this->get('is_recommend', '0'));
-            
+
             $postInfo = $this->modelPost->getInfoById($post_id);
             if (empty($postInfo)) {
-                echo ($this->error(- 4, '晒单信息不存在'));
+                echo ($this->error(-4, '晒单信息不存在'));
                 return false;
             }
             if ($postInfo['state'] == \App\Post\Models\Post::STATE2) {
-                echo ($this->error(- 5, '晒单已审核通过'));
+                echo ($this->error(-5, '晒单已审核通过'));
                 return false;
             }
             // 审核通过
             $this->modelPost->pass($post_id, $point, $is_recommend, $user_id, $user_name);
-            
+
             // 记录会员动态
             $this->modelMemberNews->log($postInfo['goods_info']['prize_buyer_id'], $postInfo['goods_info']['prize_buyer_name'], $postInfo['goods_info']['prize_buyer_avatar'], $postInfo['goods_info']['prize_buyer_register_by'], \App\Member\Models\News::ACTION2, $postInfo['_id'], $postInfo);
-            
+
             // 订单的状态改成已完成
             $this->modelOrderGoods->finishOrder($postInfo['order_no']);
-            
+
             // 增加积分
             // 成功晒单 400-1500 500
             $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY1, 'suc_list');
@@ -859,10 +864,10 @@ class ServiceController extends ControllerBase
             if ($point > 1500) {
                 $point = 1500;
             }
-            $this->modelPointsUser->addOrReduce(POINTS_CATEGORY1, $postInfo['buyer_id'], $postInfo['goods_info']['prize_buyer_name'], $postInfo['goods_info']['prize_buyer_avatar'], $postInfo['_id'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+            $this->modelPointsService->addOrReduce(POINTS_CATEGORY1, $postInfo['buyer_id'], $postInfo['goods_info']['prize_buyer_name'], $postInfo['goods_info']['prize_buyer_avatar'], $postInfo['_id'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
             $pointsRuleInfo = $this->modelPointsRule->getInfoByCategoryAndCode(POINTS_CATEGORY2, 'suc_list');
-            $this->modelPointsUser->addOrReduce(POINTS_CATEGORY2, $postInfo['buyer_id'], $postInfo['goods_info']['prize_buyer_name'], $postInfo['goods_info']['prize_buyer_avatar'], $postInfo['_id'], null, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
-            
+            $this->modelPointsService->addOrReduce(POINTS_CATEGORY2, $postInfo['buyer_id'], $postInfo['goods_info']['prize_buyer_name'], $postInfo['goods_info']['prize_buyer_avatar'], $postInfo['_id'], $this->now, $pointsRuleInfo['points'], $pointsRuleInfo['item_category'], $pointsRuleInfo['item']);
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -880,33 +885,33 @@ class ServiceController extends ControllerBase
         try {
             $post_id = ($this->get('post_id', ''));
             if (empty($post_id)) {
-                echo ($this->error(- 1, '晒单ID为空'));
+                echo ($this->error(-1, '晒单ID为空'));
                 return false;
             }
             $user_id = ($this->get('user_id', ''));
             if (empty($user_id)) {
-                echo ($this->error(- 2, '操作者ID为空'));
+                echo ($this->error(-2, '操作者ID为空'));
                 return false;
             }
             $user_name = ($this->get('user_name', ''));
             $fail_reason = ($this->get('fail_reason', ''));
             if (empty($fail_reason)) {
-                echo ($this->error(- 3, '不通过的原因为空'));
+                echo ($this->error(-3, '不通过的原因为空'));
                 return false;
             }
-            
+
             $postInfo = $this->modelPost->getInfoById($post_id);
             if (empty($postInfo)) {
-                echo ($this->error(- 4, '晒单信息不存在'));
+                echo ($this->error(-4, '晒单信息不存在'));
                 return false;
             }
             if ($postInfo['state'] == \App\Post\Models\Post::STATE2) {
-                echo ($this->error(- 5, '晒单已审核通过'));
+                echo ($this->error(-5, '晒单已审核通过'));
                 return false;
             }
             // 审核未通过
             $this->modelPost->unpass($post_id, $fail_reason, $user_id, $user_name);
-            
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
