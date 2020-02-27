@@ -5,9 +5,9 @@ namespace App\Backend\Submodules\Freight\Controllers;
 use App\Backend\Submodules\Freight\Models\Express;
 
 /**
- * @title({name="快递公司管理"})
+ * @title({name="快递公司"})
  *
- * @name 快递公司管理
+ * @name 快递公司
  */
 class ExpressController extends \App\Backend\Controllers\FormController
 {

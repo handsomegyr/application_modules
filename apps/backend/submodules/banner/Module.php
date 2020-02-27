@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Backend\Freight;
+namespace App\Backend\Banner;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -25,7 +25,7 @@ class Module
             'App\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
             'App\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
-            'App\Backend\Submodules\Freight\Controllers' => __DIR__ . '/controllers/'
+            'App\Backend\Submodules\Banner\Controllers' => __DIR__ . '/controllers/'
         ));
 
         $loader->register();
@@ -60,7 +60,7 @@ class Module
             $eventsManager->attach('dispatch:beforeException', new NotFoundPlugin());
 
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace("App\Backend\Submodules\Freight\Controllers");
+            $dispatcher->setDefaultNamespace("App\Backend\Submodules\Banner\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
             // var_dump($dispatcher);

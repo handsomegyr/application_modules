@@ -210,6 +210,8 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Game\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Points\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Payment\Settings\Menu&is_create_menu=1
+        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Banner\Settings\Menu&is_create_menu=1
+        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Search\Settings\Menu&is_create_menu=1
 
         try {
             $this->view->disable();

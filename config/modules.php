@@ -140,6 +140,14 @@ $application->registerModules(array(
         'className' => 'App\Backend\Game\Module',
         'path' => APP_PATH . 'apps/backend/submodules/game/Module.php'
     ),
+    'admin/banner' => array(
+        'className' => 'App\Backend\Banner\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/banner/Module.php'
+    ),
+    'admin/search' => array(
+        'className' => 'App\Backend\Search\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/search/Module.php'
+    ),
     'weixin' => array(
         'className' => 'App\Weixin\Module',
         'path' => APP_PATH . 'apps/weixin/Module.php'

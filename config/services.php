@@ -493,6 +493,18 @@ function registerServices($di)
                 'action' => 2
             ));
 
+            $router->add("/admin/banner/:controller/:action", array(
+                'module' => 'admin/banner',
+                'controller' => 1,
+                'action' => 2
+            ));
+
+            $router->add("/admin/search/:controller/:action", array(
+                'module' => 'admin/search',
+                'controller' => 1,
+                'action' => 2
+            ));
+
             $router->add("/:module/:controller/:action", array(
                 'module' => 1,
                 'controller' => 2,
