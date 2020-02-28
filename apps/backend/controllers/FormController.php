@@ -564,7 +564,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $input->isValid = function ($fieldName = null) use ($input, $schemas) {
             $data = $this->request->get();
             $validation = new Validation();
-
             foreach ($schemas as $key => $field) {
                 if (empty($field['form']['is_show'])) {
                     continue;
@@ -577,7 +576,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
 
             $messages = $validation->validate($data);
-            $messages = $messages->filter($fieldName);
+            if (!empty($fieldName)) {
+                $messages = $messages->filter($fieldName);
+            }
             $input->messages = $messages;
             if (!empty($messages)) {
                 return false;

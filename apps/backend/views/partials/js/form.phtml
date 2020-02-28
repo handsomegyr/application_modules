@@ -74,6 +74,73 @@
                         <?php } ?>
                     <?php } ?>
                 <?php } ?>
+
+                var form2 = $('#form_sample_2');
+                form2.validate({
+                    errorElement: 'span', //default input error message container
+                    errorClass: 'control-label', // default input error message class
+                    focusInvalid: false, // do not focus the last invalid input
+                    ignore: "",
+                    rules: {
+                        <?php foreach ($this->view->schemas as $key => $field) { ?>
+                            <?php if (!empty($field['validation']['required']) && !empty($field['form']['is_show'])) { ?>
+                                <?php echo $key ?>: {
+                                    //minlength: 2,
+                                    required: true,
+                                },
+                            <?php } ?>
+                        <?php } ?>
+                    },
+
+                    messages: { // custom messages for radio buttons and checkboxes
+                        <?php foreach ($this->view->schemas as $key => $field) { ?>
+                            <?php if (!empty($field['validation']['required']) && !empty($field['form']['is_show'])) { ?>
+                                <?php echo $key ?>: {
+                                    required: '<i class="fa fa-times-circle-o"></i><?php echo $field['form']['name'] ?>是必填项.'
+                                },
+                            <?php } ?>
+                        <?php } ?>
+                    },
+
+                    errorPlacement: function(error, element) { // render error placement for each input type
+                        // var ele1 = $(element).closest('.input-group');
+                        // // $(error).prepend('<i class="fa fa-times-circle-o"></i>');
+                        // error.insertBefore(ele1);
+                        error.insertBefore(element.closest('.input-group')); // for other inputs, just perform default behavoir
+
+                    },
+
+                    invalidHandler: function(event, validator) { //display error alert on form submit   
+                        //success2.hide();
+                        //error2.show();
+                        // App.scrollTo(error2, -200);
+                    },
+
+                    highlight: function(element) { // hightlight error inputs
+                        $(element)
+                            .closest('.form-group').removeClass('success').addClass('has-error'); // set error class to the control group
+                    },
+
+                    unhighlight: function(element) { // revert the change dony by hightlight
+                        $(element)
+                            .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    },
+
+                    success: function(label) {
+                        label
+                            .closest('.form-group').removeClass('has-error').addClass('success'); // set success class to the control group
+                    },
+
+                    submitHandler: function(form) {
+                        //success2.show();
+                        //error2.hide();
+                        alert("OK");
+                        //form.submit();
+                        FormComponents.submit();
+                    }
+
+                });
+
             },
             // 提交
             submit: function() {
@@ -113,6 +180,11 @@
                         //$('.alert-error', $('#form_sample_2')).show();
                     }
                 });
+            },
+            validateAndSubmit: function() {
+                if ($('#form_sample_2').validate().form()) {
+                    FormComponents.submit();
+                }
             }
         };
 

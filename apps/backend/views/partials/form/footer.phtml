@@ -10,7 +10,7 @@
 
         <?php if (in_array('submit', $buttons)) { ?>
             <div class="btn-group pull-right">
-                <button type="button" class="btn btn-primary" onclick="FormComponents.submit();">提交</button>
+                <button type="button" class="btn btn-primary" onclick="FormComponents.validateAndSubmit();">提交</button>
             </div>
 
             <?php foreach ($submit_redirects as $value => $redirect) { ?>
