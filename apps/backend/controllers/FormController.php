@@ -577,10 +577,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
             $messages = $validation->validate($data);
             if (!empty($fieldName)) {
-                $messages = $messages->filter($fieldName);
+                $errmsglist = $messages->filter($fieldName);
+            } else {
+                $errmsglist = array();
+                if (!empty($messages)) {
+                    foreach ($messages as $key => $message) {
+                        $errmsglist[$key] = $message;
+                    }
+                }
             }
-            $input->messages = $messages;
-            if (!empty($messages)) {
+            $input->messages = $errmsglist;
+            if (!empty($errmsglist)) {
                 return false;
             } else {
                 return true;
