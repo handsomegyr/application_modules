@@ -34,17 +34,21 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
 
     protected function _getValidationMessage($input)
     {
+        $errorMsgList = array();
         $messageInfo = "";
         foreach ($input->getMessages() as $messageID => $message) {
             if (is_array($message)) {
                 $messageInfo .= "Validation failure '$messageID':<br/>";
                 foreach ($message as $key => $value) {
                     $messageInfo .= "Validation failure '$key': $value<br/>";
+                    $errorMsgList[] = '' . $value;
                 }
             } else {
                 $messageInfo .= "Validation failure '$messageID': $message<br/>";
+                $errorMsgList[] = '' . $message;
             }
         }
+        $messageInfo = implode('||', $errorMsgList);
         return $messageInfo;
     }
 

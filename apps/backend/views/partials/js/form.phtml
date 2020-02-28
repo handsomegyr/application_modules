@@ -96,7 +96,7 @@
                         <?php foreach ($this->view->schemas as $key => $field) { ?>
                             <?php if (!empty($field['validation']['required']) && !empty($field['form']['is_show'])) { ?>
                                 <?php echo $key ?>: {
-                                    required: '<i class="fa fa-times-circle-o"></i><?php echo $field['form']['name'] ?>是必填项.'
+                                    required: '<i class="fa fa-times-circle-o"></i>【<?php echo $field['form']['name'] ?>】字段是必填项.'
                                 },
                             <?php } ?>
                         <?php } ?>
@@ -134,6 +134,8 @@
                     submitHandler: function(form) {
                         //success2.show();
                         //error2.hide();
+                        $('#app-admin-alerts-errs').html("");
+                        // $('#app-admin-alerts-div').hide();
                         alert("OK");
                         //form.submit();
                         FormComponents.submit();
@@ -157,14 +159,24 @@
                     data: formData,
                     //data: $('#form_sample_2').serialize(),
                     success: function(result) {
-                        console.log(result); //打印服务端返回的数据(调试用)
+                        // console.log(result); //打印服务端返回的数据(调试用)
                         // 如果发生了错误的话
                         // var form2 = $('#form_sample_2');
                         // var error2 = $('.alert-error', form2);
                         // var success2 = $('.alert-success', form2);
 
                         if (result.error == 1) {
-                            alert(result.message);
+                            // alert(result.message);
+                            var str = result.message;
+                            var arr = str.split('||');
+                            $errmsg = "";
+                            $.each(arr, function(i, n) {
+                                $errmsg += ("<p>" + n + "</p>");
+                            });
+                            $errmsg = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i>系统发生错误</h4>' + $errmsg + '</div>';
+                            $('#app-admin-alerts-errs').html($errmsg);
+                            // $('#app-admin-alerts-div').show();
+
                             // $('#resultId4Form').html(result.message);
                             // success2.hide();
                             // error2.show();
@@ -175,8 +187,12 @@
                             location.href = "<?php echo $this->view->list_url ?>"
                         }
                     },
-                    error: function() {
-                        alert("异常！");
+                    error: function(errormsg) {
+                        // alert("异常！");
+                        $errmsg += ("<p>" + errormsg + "</p>");
+                        $errmsg = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i>系统发生错误</h4>' + errormsg + '</div>';
+                        $('#app-admin-alerts-errs').html($errmsg);
+                        // $('#app-admin-alerts-div').show();
                         //$('.alert-error', $('#form_sample_2')).show();
                     }
                 });

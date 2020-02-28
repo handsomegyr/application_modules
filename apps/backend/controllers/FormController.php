@@ -570,7 +570,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 }
                 if (!empty($field['validation']['required'])) {
                     $validation->add($key, new PresenceOf(array(
-                        'message' => "The {$key} is required"
+                        'message' => "【{$field['form']['name']}】字段是必填项!"
                     )));
                 }
             }
