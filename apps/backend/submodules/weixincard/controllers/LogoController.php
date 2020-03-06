@@ -20,6 +20,41 @@ class LogoController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
+    protected function getFormTools2($tools)
+    {
+        $tools['upload'] = array(
+            'title' => '上传商户logo',
+            'action' => 'upload',
+            'is_show' => function ($row) {
+                // 没有数据
+                if (empty($row)) {
+                    return false;
+                } else {
+                    // 已经上传
+                    if (!empty($row['is_uploaded'])) {
+                        return false;
+                    }
+                    // 没有图片
+                    if (empty($row['logo'])) {
+                        return false;
+                    }
+                }
+                return true;
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    protected function isCanUpload($logoInfo)
+    {
+        if (!empty($logoInfo->is_uploaded)) {
+            return false;
+        }
+        return true;
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
@@ -131,12 +166,22 @@ class LogoController extends \App\Backend\Controllers\FormController
      */
     public function uploadAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/logo/upload
+        // http://www.applicationmodule.com/admin/weixincard/logo/upload?id=xxxx
         try {
             $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $item = $this->modelLogo->getInfoById($id);
+            if (empty($item)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
             $weixin = $this->getWeixin();
 
-            $logoList = $this->modelLogo->getAll();
+            $logoList = array($item); //$this->modelLogo->getAll();
             foreach ($logoList as $item) {
                 if (!empty($item['is_uploaded'])) {
                     continue;
@@ -151,8 +196,7 @@ class LogoController extends \App\Backend\Controllers\FormController
                 $logo_url = $ret['url'];
                 $this->modelLogo->updateIsUploaded(myMongoId($item['_id']), $logo_url);
             }
-
-            $this->makeJsonResult();
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功上传卡券的商户logo');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
