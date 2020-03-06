@@ -568,7 +568,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 if (empty($field['form']['is_show'])) {
                     continue;
                 }
-                if (!empty($field['validation']['required'])) {
+                if (!empty($field['validation']['required']) && !in_array($field['data']['type'], array('file', 'multifile'))) {
                     $validation->add($key, new PresenceOf(array(
                         'message' => "【{$field['form']['name']}】字段是必填项!"
                     )));

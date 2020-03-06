@@ -8,7 +8,7 @@
     // 如果没有编辑或新增的权限 那么所有的form表单上的控件只能只读
     if (!$isCando) {
         $field['form']['readonly'] = true;
-    }    
+    }
 
     if (!isset($field['form']['partial'])) {
         //print_r($field);die('xxx');
@@ -48,7 +48,7 @@
         } elseif ($field['form']['input_type'] == "decimal") {
             $value = $this->view->row[$key];
             $this->partial('partials/form/input');
-        } elseif ($field['form']['input_type'] == "datetimepicker") {            
+        } elseif ($field['form']['input_type'] == "datetimepicker") {
             $prepend = '<i class="fa fa-calendar fa-fw"></i>';
             $value = date("Y-m-d H:i:s", $this->view->row[$key]->sec);
             $this->partial('partials/form/input');
@@ -77,9 +77,11 @@
             } else {
                 $this->partial('partials/form/multipleselect');
             }
-        } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {            
+        } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {
+            $value = $this->view->row[$key];
             $this->partial('partials/form/file');
         } elseif ($field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") {
+            // $value = $this->view->row[$key];
             $sortable = true;
             $this->partial('partials/form/multiplefile');
         } else {
