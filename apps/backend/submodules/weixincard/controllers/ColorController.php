@@ -20,6 +20,19 @@ class ColorController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['getcolors'] = array(
+            'title' => '获取颜色列表',
+            'action' => 'getcolors',
+            'is_show' => function () {
+                return true;
+            },
+            'icon' => '',
+        );
+        return $tools;
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
@@ -118,7 +131,7 @@ class ColorController extends \App\Backend\Controllers\FormController
                     $this->modelColor->record($color['value'], $color['name']);
                 }
             }
-            $this->makeJsonResult();
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功获取颜色列表');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

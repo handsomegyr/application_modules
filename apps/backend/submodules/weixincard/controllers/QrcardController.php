@@ -27,6 +27,31 @@ class QrcardController extends \App\Backend\Controllers\FormController
 
     private $cardList = null;
 
+    protected function getFormTools2($tools)
+    {
+        $tools['create'] = array(
+            'title' => '生成卡券二维码',
+            'action' => 'create',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (empty($item['expire_seconds']) && !empty($item['is_created'])) { // 如果是永久并且已生成的话
+                        return false;
+                    }
+                    if (!empty($item['expire_seconds']) && !empty($item['is_created']) && ($item['ticket_time']->sec + $item['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
+                        return false;
+                    }
+                }
+                return true;
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
@@ -432,29 +457,6 @@ class QrcardController extends \App\Backend\Controllers\FormController
         return $this->modelQrcard;
     }
 
-    // protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    // {
-    //     $cardList = $this->modelCard->getAllWithCardId();
-    //     foreach ($list['data'] as &$item) {
-    //         $item['card_name'] = isset($cardList[$item['card_id']]) ? $cardList[$item['card_id']] : "--";
-    //         if (isset($cardList[$item['card_id']])) {
-    //             $isCanCreate = true;
-    //             if ($isCanCreate && empty($item['expire_seconds']) && !empty($item['is_created'])) { // 如果是永久并且已生成的话
-    //                 $isCanCreate = false;
-    //             }
-    //             if ($isCanCreate && !empty($item['expire_seconds']) && !empty($item['is_created']) && ($item['ticket_time']->sec + $item['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
-    //                 $isCanCreate = false;
-    //             }
-    //             if ($isCanCreate) {
-    //                 $item['card_name'] = $item['card_name'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要在微信公众平台上生成卡券二维码吗？\', \'create\')" class="halflings-icon user white"><i></i> 创建</a>';
-    //             }
-    //         }
-    //         $item['ticket_time'] = date("Y-m-d H:i:s", $item['ticket_time']->sec);
-    //     }
-
-    //     return $list;
-    // }
-
     /**
      * @title({name="生成卡券二维码"})
      * 生成卡券二维码的Hook
@@ -524,7 +526,7 @@ class QrcardController extends \App\Backend\Controllers\FormController
                 // );
                 // $cardbagInfo = $this->_cardBag->addCard($card_id, $code, $openid, $outer_id, $memo);
             }
-            $this->makeJsonResult();
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功生成卡券二维码');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

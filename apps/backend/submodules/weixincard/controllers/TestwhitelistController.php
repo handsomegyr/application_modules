@@ -20,6 +20,19 @@ class TestwhitelistController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['set'] = array(
+            'title' => '设置测试用户白名单',
+            'action' => 'set',
+            'is_show' => function () {
+                return true;
+            },
+            'icon' => '',
+        );
+        return $tools;
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
@@ -155,7 +168,7 @@ class TestwhitelistController extends \App\Backend\Controllers\FormController
                 $this->modelTestwhitelist->updateIsset($ids, true);
             }
 
-            $this->makeJsonResult();
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功设置测试用户白名单');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

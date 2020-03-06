@@ -4,7 +4,6 @@ namespace App\Backend\Submodules\Weixincard\Controllers;
 
 use App\Backend\Submodules\Weixincard\Models\CardBag;
 use App\Backend\Submodules\Weixincard\Models\Card;
-use function GuzzleHttp\json_encode;
 
 /**
  * @title({name="卡包"})
@@ -27,6 +26,59 @@ class CardbagController extends \App\Backend\Controllers\FormController
     }
 
     private $cardList = null;
+
+    protected function getFormTools2($tools)
+    {
+        $tools['getcode'] = array(
+            'title' => '查询code',
+            'action' => 'getcode',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['UserCardCode'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['consumecode'] = array(
+            'title' => '消耗code',
+            'action' => 'consumecode',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['UserCardCode']) && empty($item['is_consumed']) && empty($item['is_deleted'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['unavailablecode'] = array(
+            'title' => '设置卡券失效',
+            'action' => 'unavailablecode',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['UserCardCode']) && empty($item['is_unavailable']) && empty($item['is_deleted'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
 
     protected function getSchemas()
     {
@@ -808,27 +860,6 @@ class CardbagController extends \App\Backend\Controllers\FormController
         return $this->modelCardBag;
     }
 
-    // protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    // {
-    //     $cardList = $this->modelCard->getAllWithCardId();
-    //     foreach ($list['data'] as &$item) {
-    //         $item['card_name'] = isset($cardList[$item['card_id']]) ? $cardList[$item['card_id']] : "--";
-    //         $item['got_time'] = date("Y-m-d H:i:s", $item['got_time']->sec);
-    //         $item['consume_time'] = date("Y-m-d H:i:s", $item['consume_time']->sec);
-    //         $item['delete_time'] = date("Y-m-d H:i:s", $item['delete_time']->sec);
-    //         $item['unavailable_time'] = date("Y-m-d H:i:s", $item['unavailable_time']->sec);
-    //         if (!empty($item['UserCardCode'])) {
-    //             if (empty($item['is_consumed']) && empty($item['is_deleted'])) {
-    //                 $item['UserCardCode'] = $item['UserCardCode'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要从微信公众平台上查询卡券code信息吗？\', \'getcode\')" class="halflings-icon user white"><i></i> 查询</a>';
-    //                 $item['UserCardCode'] = $item['UserCardCode'] . '&nbsp&nbsp<br/><a href="javascript:;" class="btn yellow icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要进行卡券核销吗？\', \'consumecode\')" class="halflings-icon user white"><i></i> 核销</a>';
-    //                 // $item['UserCardCode'] = $item['UserCardCode'] . '&nbsp&nbsp<a href="javascript:;" class="btn red icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要进行设置卡券失效吗？\', \'unavailablecode\')" class="halflings-icon user white"><i></i> 设置失效code</a>';
-    //             }
-    //         }
-    //     }
-
-    //     return $list;
-    // }
-
     /**
      * @title({name="查询code"})
      *
@@ -864,7 +895,8 @@ class CardbagController extends \App\Backend\Controllers\FormController
             if (!empty($info['errcode'])) {
                 throw new \Exception($info['errmsg'], $info['errcode']);
             }
-            $this->makeJsonResult(json_encode($info), 'OK');
+            // $this->makeJsonResult(json_encode($info), 'OK');
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功查询code:' . \json_encode($info));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -911,7 +943,8 @@ class CardbagController extends \App\Backend\Controllers\FormController
             if (!empty($info['errcode'])) {
                 throw new \Exception($info['errmsg'], $info['errcode']);
             }
-            $this->makeJsonResult(json_encode($info), 'OK');
+            // $this->makeJsonResult(json_encode($info), 'OK');
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功核销code:' . \json_encode($info));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -961,10 +994,10 @@ class CardbagController extends \App\Backend\Controllers\FormController
                 throw new \Exception($info['errmsg'], $info['errcode']);
             }
 
-            print_r($info);
-            die('');
-
-            $this->makeJsonResult(json_encode($info), 'OK');
+            // print_r($info);
+            // die('');
+            // $this->makeJsonResult(json_encode($info), 'OK');
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功设置卡券失效:' . \json_encode($info));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

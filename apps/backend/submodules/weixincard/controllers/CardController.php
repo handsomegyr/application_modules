@@ -55,6 +55,142 @@ class CardController extends \App\Backend\Controllers\FormController
     private $colorList = null;
     private $dateInfoTypeList = null;
 
+
+    protected function getFormTools2($tools)
+    {
+
+        $tools['createcard'] = array(
+            'title' => '创建卡券',
+            'action' => 'createcard',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (empty($item['card_id'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['getcardinfo'] = array(
+            'title' => '获取卡券信息',
+            'action' => 'getcardinfo',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['card_id'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['masssend'] = array(
+            'title' => '发送卡券消息',
+            'action' => 'masssend',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['card_id'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['updatecardinfo'] = array(
+            'title' => '更新卡券',
+            'action' => 'updatecardinfo',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['card_id'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['modifystock'] = array(
+            'title' => '修改库存',
+            'action' => 'modifystock',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['card_id'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['depositecode'] = array(
+            'title' => '导入自定义code',
+            'action' => 'depositecode',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['card_id'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['checkcode'] = array(
+            'title' => '核查自定义code',
+            'action' => 'checkcode',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['card_id'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['getdepositcodecount'] = array(
+            'title' => '查询导入code数目',
+            'action' => 'getdepositcodecount',
+            'is_show' => function ($item) {
+                // 没有数据
+                if (empty($item)) {
+                    return false;
+                } else {
+                    if (!empty($item['card_id'])) {
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
