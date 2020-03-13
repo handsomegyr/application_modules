@@ -52,7 +52,8 @@
                     $fileList4Upload=$this->view->row[$key];
                 }
                 foreach ($fileList4Upload as $idx => $fileInfo) {
-                    $data_initial_preview = $this->view->baseUrl . "service/file/index?upload_path=" . $path . "&id=" . $fileInfo . "&s=1";
+                    // $data_initial_preview = $this->view->baseUrl . "service/file/index?upload_path=" . $path . "&id=" . $fileInfo . "&s=1";
+                    $data_initial_preview = $this->myTag->getUploadFilePath($path,$fileInfo);
                     // 
                     $data_initial_caption = basename($fileInfo);
                     // {

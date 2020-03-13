@@ -283,7 +283,8 @@
 													$path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
 												}
 												?>
-												return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+												// return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+												return '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + data + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
 											}
 										<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
 											//console.info(data);
@@ -299,7 +300,8 @@
 											?>
 											var imgs = '';
 											$.each(data, function(i, n) {
-												imgs += '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + n + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+												// imgs += '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + n + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+												imgs += '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + n + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
 											});
 											return imgs;
 

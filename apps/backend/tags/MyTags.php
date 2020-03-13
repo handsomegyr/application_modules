@@ -8,6 +8,21 @@ use App\Backend\Submodules\System\Models\Resource;
 class MyTags extends \Phalcon\Tag
 {
 
+    static public function getUploadFilePath($path, $fileName = "")
+    {
+        $arr = array();
+        $arr[] = 'upload';
+
+        $path = trim($path, '/');
+        if (!empty($path)) {
+            $arr[] = $path;
+        }
+        if (!empty($fileName)) {
+            $arr[] = $fileName;
+        }
+        return "/" . implode('/', $arr);
+    }
+
     static public function getMenuTree($priv, $field)
     {
         $sub_menus = "";
@@ -33,9 +48,9 @@ EOT;
 EOT;
         }
 
-        
-    // <button data-action="collapse" type="button" style="display: block;">Collapse</button>
-    // <button data-action="expand" type="button" style="display: none;">Expand</button>
+
+        // <button data-action="collapse" type="button" style="display: block;">Collapse</button>
+        // <button data-action="expand" type="button" style="display: none;">Expand</button>
 
         $str = <<<EOT
 <ol class="dd-list">
