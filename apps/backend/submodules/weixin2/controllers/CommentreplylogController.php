@@ -29,6 +29,95 @@ class CommentreplylogController extends \App\Backend\Controllers\FormController
     protected $componentItems = null;
     protected $authorizerItems = null;
 
+    protected function getFormTools2($tools)
+    {
+        $tools['deletecommentreply'] = array(
+            'title' => '删除回复',
+            'action' => 'deletecommentreply',
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && !empty($row['content']) && !empty($row['is_created'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['addcommentreply'] = array(
+            'title' => '标记精选',
+            'action' => 'addcommentreply',
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && empty($row['content']) && empty($row['is_created'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
+
+    /**
+     * @title({name="删除回复"})
+     *
+     * @name 删除回复
+     */
+    public function deletecommentreplyAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/commentlog/deletecommentreply?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelReplyLog->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->deleteCommentReply($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="回复评论"})
+     *
+     * @name 回复评论
+     */
+    public function addcommentreplyAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/commentlog/addcommentreply?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelReplyLog->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->addCommentReply($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

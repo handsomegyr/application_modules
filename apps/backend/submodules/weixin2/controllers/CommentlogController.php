@@ -29,6 +29,137 @@ class CommentlogController extends \App\Backend\Controllers\FormController
     protected $componentItems = null;
     protected $authorizerItems = null;
 
+    protected function getFormTools2($tools)
+    {
+        $tools['unmarkelectcomment'] = array(
+            'title' => '取消精选',
+            'action' => 'unmarkelectcomment',
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && !empty($row['comment_type'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['markelectcomment'] = array(
+            'title' => '标记精选',
+            'action' => 'markelectcomment',
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && empty($row['comment_type'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['deletecommentlog'] = array(
+            'title' => '删除评论',
+            'action' => 'deletecommentlog',
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && !empty($row['is_created'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
+
+    /**
+     * @title({name="取消精选"})
+     *
+     * @name 取消精选
+     */
+    public function unmarkelectcommentAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/commentlog/unmarkelectcomment?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelLog->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->unmarkelectComment($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="标记精选"})
+     *
+     * @name 标记精选
+     */
+    public function markelectcommentAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/commentlog/markelectcomment?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelLog->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->markelectComment($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="删除评论"})
+     *
+     * @name 删除评论
+     */
+    public function deletecommentlogAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/commentlog/deletecommentlog?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelLog->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->deleteCommentLog($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
