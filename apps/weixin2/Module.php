@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Weixin2;
 
 use Phalcon\Loader;
@@ -14,9 +15,9 @@ class Module
     public function registerAutoloaders()
     {
         $loader = new Loader();
-        
+
         $loader->registerNamespaces(array(
-            'App\Weixin\Controllers' => __DIR__ . '/controllers/'
+            'App\Weixin2\Controllers' => __DIR__ . '/controllers/'
         ));
         $loader->register();
     }
@@ -28,26 +29,26 @@ class Module
      */
     public function registerServices($di)
     {
-        
+
         /**
          * Read configuration
          */
         $config = include __DIR__ . "/config/config.php";
-        
+
         // Registering a dispatcher
         $di->set('dispatcher', function () {
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace("App\Weixin2\Controllers");
             return $dispatcher;
         });
-        
+
         /**
          * Setting up the view component
          */
         $di['view'] = function () {
             $view = new View();
             $view->setViewsDir(__DIR__ . '/views/');
-            
+
             return $view;
         };
     }

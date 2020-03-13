@@ -2710,28 +2710,6 @@ class CardController extends \App\Backend\Controllers\FormController
         return $this->modelCard;
     }
 
-    // protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    // {
-    //     $cardTypeList = $this->modelCardType->getAll();
-    //     $codeTypeList = $this->modelCodeType->getAll();
-    //     $colorList = $this->modelColor->getAll();
-    //     $dateInfoTypeList = $this->modelDateInfoType->getAll();
-    //     foreach ($list['data'] as &$item) {
-    //         $item['card_type_name'] = isset($cardTypeList[$item['card_type']]) ? $cardTypeList[$item['card_type']] : '';
-    //         $item['code_type_name'] = isset($codeTypeList[$item['code_type']]) ? $codeTypeList[$item['code_type']] : '';
-    //         $item['color_name'] = isset($colorList[$item['color']]) ? $colorList[$item['color']] : '';
-    //         $item['date_info_type'] = isset($dateInfoTypeList[$item['date_info_type']]) ? $dateInfoTypeList[$item['date_info_type']] : '';
-    //         if (empty($item['card_id'])) {
-    //             $item['card_id'] = $item['card_id'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要将本地卡券信息上传，在微信公众平台上生成卡券吗？\', \'createcard\')" class="halflings-icon user white"><i></i> 创建</a>';
-    //         } else {
-    //             $item['card_id'] = $item['card_id'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要从微信公众平台上拉取最新的卡券信息更新到本地吗？\', \'updatecardinfo\')" class="halflings-icon user white"><i></i> 拉取</a>';
-    //             $item['card_id'] = $item['card_id'] . '&nbsp&nbsp<a href="javascript:;" class="btn yellow icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要将本地自定义code上传到微信公众平台上吗？\', \'depositecode\')" class="halflings-icon user white"><i></i> 上传自定义code</a>';
-    //         }
-    //         // $item['article_time'] = date("Y-m-d H:i:s", $item['article_time']->sec);
-    //     }
-    //     return $list;
-    // }
-
     /**
      * @title({name="创建卡券"})
      * 在微信公众平台上创建卡券的Hook
@@ -2766,7 +2744,8 @@ class CardController extends \App\Backend\Controllers\FormController
                     $this->modelCard->create($card, $colors);
                 }
             }
-            $this->makeJsonResult();
+            // $this->makeJsonResult();
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功创建卡券');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -2787,10 +2766,22 @@ class CardController extends \App\Backend\Controllers\FormController
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
 
-            $card_id = $this->get('card_id', '');
+            $id = $this->get('id', '');
+            if (empty($id)) {
+                throw new \Exception("id未指定", -1);
+            }
+            $cardInfo = $this->modelCard->getInfoById($id);
+            if (empty($cardInfo)) {
+                throw new \Exception("id不正确", -2);
+            }
+            if (empty($cardInfo['card_id'])) {
+                throw new \Exception("card_id未生成", -3);
+            }
+            $card_id = $cardInfo['card_id'];
 
             $ret = $weixin->getCardManager()->get($card_id);
-            $this->makeJsonResult($ret);
+            // $this->makeJsonResult($ret);
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功获取卡券信息:' . \json_encode($ret));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -2809,31 +2800,95 @@ class CardController extends \App\Backend\Controllers\FormController
 
             $weixin = $this->getWeixin();
 
-            $card_id = $this->get('card_id', '');
-            $toUsers = $this->get('toUsers', '');
-            $preview = $this->get('preview', '');
-            $toUsers = explode(',', $toUsers);
-
-            if ($preview) {
-                $signature = $this->getSignature($card_id, '', $toUsers[0]);
-                $params = array(
-                    'touser' => $toUsers[0],
-                    'wxcard' => array(
-                        'card_id' => $card_id,
-                        'card_ext' => $signature['card_ext']
-                    ),
-                    'msgtype' => 'wxcard'
-                );
-                $ret = $weixin->getMsgManager()
-                    ->getMassSender()
-                    ->preview($params);
-            } else {
-                $ret = $weixin->getMsgManager()
-                    ->getMassSender()
-                    ->sendWxcardByOpenid($toUsers, $card_id);
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $row = $this->modelCard->getInfoById($id);
+            if (empty($row)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $this->makeJsonResult($ret);
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = array();
+                $fields['_id'] = array(
+                    'name' => '记录ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'hidden',
+                        'is_show' => true
+                    ),
+                );
+                $fields['card_id'] = array(
+                    'name' => '微信卡券ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+
+                $fields['toUsers'] = array(
+                    'name' => '发送的微信openid列表,逗号分隔',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'textarea',
+                        'is_show' => true,
+                        // 'readonly' => true,
+                    ),
+                );
+                $fields['preview'] = array(
+                    'name' => '是否预览',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'radio',
+                        'is_show' => true,
+                        'items' => $this->trueOrFalseDatas
+                        // 'readonly' => true,
+                    ),
+                );
+
+                $title = "修改所属活动";
+                return $this->showModal($title, $fields, $row);
+            } else {
+
+                $card_id = $row['card_id']; //$this->get('card_id', '');
+                $toUsers = $this->get('toUsers', '');
+                $preview = intval($this->get('preview', '1'));
+                $toUsers = explode(',', $toUsers);
+
+                if ($preview) {
+                    $signature = $this->getSignature($card_id, '', $toUsers[0]);
+                    $params = array(
+                        'touser' => $toUsers[0],
+                        'wxcard' => array(
+                            'card_id' => $card_id,
+                            'card_ext' => $signature['card_ext']
+                        ),
+                        'msgtype' => 'wxcard'
+                    );
+                    $ret = $weixin->getMsgManager()
+                        ->getMassSender()
+                        ->preview($params);
+                } else {
+                    $ret = $weixin->getMsgManager()
+                        ->getMassSender()
+                        ->sendWxcardByOpenid($toUsers, $card_id);
+                }
+
+                // $this->makeJsonResult($ret);
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改库存:' . \json_encode($ret));
+            }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -2874,7 +2929,8 @@ class CardController extends \App\Backend\Controllers\FormController
                     $this->modelCard->getAndUpdateCardInfo($item["card_id"]);
                 }
             }
-            $this->makeJsonResult();
+            // $this->makeJsonResult();
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功更新卡券消息');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -2893,30 +2949,93 @@ class CardController extends \App\Backend\Controllers\FormController
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
 
-            $card_id = $this->get('card_id', '');
-            $increase_stock_value = intval($this->get('increase_stock_value', '0'));
-            $reduce_stock_value = intval($this->get('reduce_stock_value', '0'));
-            if (empty($card_id)) {
-                throw new \Exception("card_id未指定", -1);
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
             }
-            if ($increase_stock_value < 0) {
-                throw new \Exception("increase_stock_value未指定", -2);
-            }
-            if ($reduce_stock_value < 0) {
-                throw new \Exception("reduce_stock_value未指定", -2);
-            }
-            $cardManager = $weixin->getCardManager();
-            $rst = $cardManager->modifyStock($card_id, $increase_stock_value, $reduce_stock_value);
-
-            if (!empty($rst['errcode'])) {
-                // 如果有异常，会在errcode 和errmsg 描述出来。
-                throw new \Exception($rst['errmsg'], $rst['errcode']);
+            $row = $this->modelCard->getInfoById($id);
+            if (empty($row)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            // 获取最新的卡券信息并且更新本地的信息
-            $this->modelCard->getAndUpdateCardInfo($card_id);
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = array();
+                $fields['_id'] = array(
+                    'name' => '记录ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'hidden',
+                        'is_show' => true
+                    ),
+                );
+                $fields['card_id'] = array(
+                    'name' => '微信卡券ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
 
-            $this->makeJsonResult(json_encode($rst));
+                $fields['increase_stock_value'] = array(
+                    'name' => '增加的库存数',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'number',
+                        'is_show' => true,
+                        // 'readonly' => true,
+                    ),
+                );
+                $fields['reduce_stock_value'] = array(
+                    'name' => '减少的库存数',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'number',
+                        'is_show' => true,
+                        // 'readonly' => true,
+                    ),
+                );
+
+                $title = "修改所属活动";
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $card_id = $row['card_id']; //$this->get('card_id', '');
+                $increase_stock_value = intval($this->get('increase_stock_value', '0'));
+                $reduce_stock_value = intval($this->get('reduce_stock_value', '0'));
+                if (empty($card_id)) {
+                    throw new \Exception("card_id未指定", -1);
+                }
+                if ($increase_stock_value < 0) {
+                    throw new \Exception("increase_stock_value未指定", -2);
+                }
+                if ($reduce_stock_value < 0) {
+                    throw new \Exception("reduce_stock_value未指定", -2);
+                }
+                $cardManager = $weixin->getCardManager();
+                $rst = $cardManager->modifyStock($card_id, $increase_stock_value, $reduce_stock_value);
+
+                if (!empty($rst['errcode'])) {
+                    // 如果有异常，会在errcode 和errmsg 描述出来。
+                    throw new \Exception($rst['errmsg'], $rst['errcode']);
+                }
+
+                // 获取最新的卡券信息并且更新本地的信息
+                $this->modelCard->getAndUpdateCardInfo($card_id);
+
+                // $this->makeJsonResult(json_encode($rst));
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改库存:' . \json_encode($rst));
+            }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -2959,9 +3078,10 @@ class CardController extends \App\Backend\Controllers\FormController
             }
 
             // 导入自定义卡券code处理
-            $this->modelCodeDeposit->depositeCode($cardInfo['card_id']);
+            $rst = $this->modelCodeDeposit->depositeCode($cardInfo['card_id']);
 
-            $this->makeJsonResult();
+            // $this->makeJsonResult();
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改库存:' . \json_encode($rst));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -2993,9 +3113,10 @@ class CardController extends \App\Backend\Controllers\FormController
             }
 
             // 核查code处理
-            $this->modelCodeDeposit->checkCode($cardInfo['card_id']);
+            $rst = $this->modelCodeDeposit->checkCode($cardInfo['card_id']);
 
-            $this->makeJsonResult();
+            // $this->makeJsonResult();
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功核查code:' . \json_encode($rst));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -3010,17 +3131,30 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function getdepositcodecountAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/card/getdepositcodecount?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
+        // http://www.applicationmodule.com/admin/weixincard/card/getdepositcodecount?card_id=xxx
         try {
             $this->view->disable();
 
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
 
-            $card_id = $this->get('card_id', '');
+            $id = $this->get('id', '');
+            if (empty($id)) {
+                throw new \Exception("id未指定", -1);
+            }
+            $cardInfo = $this->modelCard->getInfoById($id);
+            if (empty($cardInfo)) {
+                throw new \Exception("id不正确", -2);
+            }
+            if (empty($cardInfo['card_id'])) {
+                throw new \Exception("card_id未生成", -3);
+            }
+
+            $card_id = $cardInfo['card_id'];
 
             $ret = $weixin->getCardManager()->codeGetDepositCount($card_id);
-            $this->makeJsonResult($ret);
+            // $this->makeJsonResult($ret);
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功查询导入code数目' . \json_encode($ret));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

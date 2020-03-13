@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Weixin2\Controllers;
 
 class ControllerBase extends \App\Common\Controllers\ControllerBase

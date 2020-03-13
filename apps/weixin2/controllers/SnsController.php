@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Weixin2\Controllers;
 
 use App\Weixin2\Models\User;
@@ -39,16 +40,16 @@ class SnsController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        
+
         $this->_user = new User();
         $this->_tracking = new ScriptTracking();
         $this->_callbackurls = new Callbackurls();
-        
+
         $this->_config = $this->getDI()->get('config');
         $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : $this->_config['weixin']['appid'];
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_userinfo';
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : 'wx';
-        
+
         $this->doInitializeLogic();
     }
 
@@ -65,7 +66,7 @@ class SnsController extends ControllerBase
             $redirect = isset($_GET['redirect']) ? trim(trim($_GET['redirect'])) : ''; // 附加参数存储跳转地址
             $dc = isset($_GET['dc']) ? intval($_GET['dc']) : 0; // 是否检查回调域名
             $refresh = isset($_GET['refresh']) ? intval($_GET['refresh']) : 0; // 是否刷新
-            
+
             if ($dc) {
                 // 添加重定向域的检查
                 $isValid = $this->_callbackurls->isValid($redirect);
@@ -73,39 +74,39 @@ class SnsController extends ControllerBase
                     die('回调地址不合法');
                 }
             }
-            
-            if (! $refresh && ! empty($_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$this->scope}"])) {
-                
+
+            if (!$refresh && !empty($_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$this->scope}"])) {
+
                 $arrAccessToken = $_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$this->scope}"];
-                
+
                 $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
-                
+
                 // print_r($arrAccessToken);
                 // die('session:' . $redirect);
-                
+
                 header("location:{$redirect}");
                 fastcgi_finish_request();
                 $this->_tracking->record("授权session存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
                 exit();
-            } elseif (! $refresh && ! empty($_COOKIE["__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__"])) {
-                
+            } elseif (!$refresh && !empty($_COOKIE["__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__"])) {
+
                 $arrAccessToken = json_decode($_COOKIE["__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__"], true);
-                
+
                 $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
-                
+
                 // print_r($arrAccessToken);
                 // die('cookie:' . $redirect);
-                
+
                 header("location:{$redirect}");
                 fastcgi_finish_request();
                 $this->_tracking->record("授权cookie存在", $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
                 exit();
             } else {
                 $_SESSION['sns_redirect'] = $redirect;
-                
+
                 $moduleName = 'weixin';
                 $controllerName = $this->controllerName;
-                
+
                 $redirectUri = $scheme . '://';
                 $redirectUri .= $_SERVER["HTTP_HOST"];
                 $redirectUri .= '/' . $moduleName;
@@ -113,7 +114,7 @@ class SnsController extends ControllerBase
                 $redirectUri .= '/callback';
                 $redirectUri .= '?appid=' . $this->appid;
                 // $redirectUri .= '&redirect=' . $redirect;
-                
+
                 $this->getAuthorizeUrl($redirectUri);
             }
         } catch (\Exception $e) {
@@ -136,20 +137,20 @@ class SnsController extends ControllerBase
             if (empty($redirect)) {
                 throw new \Exception("回调地址未定义");
             }
-            
-            $sourceFromUserName = ! empty($_GET['FromUserName']) ? $_GET['FromUserName'] : null;
-            
+
+            $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : null;
+
             $updateInfoFromWx = false;
-            
+
             $microtime_start = microtime(true);
-            
+
             // 获取accesstoken
             $arrAccessToken = $this->getAccessToken();
-            
+
             $t1elapsed = microtime(true) - $microtime_start;
             $arrAccessToken['t1elapsed'] = $t1elapsed;
-            
-            if (! isset($arrAccessToken['errcode'])) {
+
+            if (!isset($arrAccessToken['errcode'])) {
                 // 授权成功后，记录该微信用户的基本信息
                 if ($arrAccessToken['scope'] === 'snsapi_userinfo' || $arrAccessToken['scope'] === 'snsapi_login') {
                     $microtime_start = microtime(true);
@@ -168,19 +169,19 @@ class SnsController extends ControllerBase
                     $arrAccessToken['t2elapsed'] = $t2elapsed;
                     $userInfo['access_token'] = $arrAccessToken;
                 }
-                
+
                 if (isset($arrAccessToken['openid'])) {
-                    
-                    if (! empty($userInfo)) {
-                        if (! empty($userInfo['nickname'])) {
+
+                    if (!empty($userInfo)) {
+                        if (!empty($userInfo['nickname'])) {
                             $arrAccessToken['nickname'] = ($userInfo['nickname']);
                         }
-                        
-                        if (! empty($userInfo['headimgurl'])) {
+
+                        if (!empty($userInfo['headimgurl'])) {
                             $arrAccessToken['headimgurl'] = stripslashes($userInfo['headimgurl']);
                         }
-                        
-                        if (! empty($userInfo['unionid'])) {
+
+                        if (!empty($userInfo['unionid'])) {
                             $arrAccessToken['unionid'] = ($userInfo['unionid']);
                         }
                     }
@@ -188,16 +189,16 @@ class SnsController extends ControllerBase
                     $path = '/';
                     $expireTime = time() + 1.5 * 3600;
                     setcookie("__{$this->cookie_session_key}_{$this->appid}_{$arrAccessToken['scope']}__", json_encode($arrAccessToken), $expireTime, $path);
-                    
+
                     $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
-                    
+
                     if ($sourceFromUserName !== null && $sourceFromUserName == $arrAccessToken['openid']) {
                         $redirect = $this->addUrlParameter($redirect, array(
                             '__self' => true
                         ));
                     }
                 }
-                
+
                 // die($redirect);
                 header("location:{$redirect}");
                 // 调整数据库操作的执行顺序，优化跳转速度
@@ -207,10 +208,10 @@ class SnsController extends ControllerBase
                     $this->_user->updateUserInfoBySns($arrAccessToken['openid'], $userInfo);
                 }
                 $this->_tracking->record($this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
-                
+
                 $objService = \App\Weixin\Services\Base::getServiceObject();
                 $objService->doSnsCallback($arrAccessToken);
-                
+
                 exit();
             } else {
                 // 如果用户未授权登录，点击取消，自行设定取消的业务逻辑
@@ -228,10 +229,10 @@ class SnsController extends ControllerBase
         // http://www.jizigou.com/weixin/sns/geturl?appid=wxa7f90ea22051777d&scope=snsapi_login&state=wx
         try {
             $redirect = "http://{$_SERVER["HTTP_HOST"]}/member/passport/weixinauthorize";
-            
+
             $moduleName = 'weixin';
             $controllerName = 'sns';
-            
+
             $redirectUri = 'http://';
             $redirectUri .= $_SERVER["HTTP_HOST"];
             $redirectUri .= '/' . $moduleName;
@@ -240,7 +241,7 @@ class SnsController extends ControllerBase
             $redirectUri .= '?appid=' . $this->appid;
             $redirectUri .= '&scope=' . $this->scope;
             $redirectUri .= '&redirect=' . $redirect;
-            
+
             $appid = $this->_appConfig['appid'];
             $secret = $this->_appConfig['secret'];
             $sns = new \Weixin\Token\Sns($appid, $secret);
@@ -257,7 +258,7 @@ class SnsController extends ControllerBase
 
     protected function addUrlParameter($url, array $params)
     {
-        if (! empty($params)) {
+        if (!empty($params)) {
             foreach ($params as $key => $value) {
                 // if (strpos($url, $key) === false || ($key == "FromUserName")) {
                 if (strpos($url, '?') === false)
@@ -280,15 +281,15 @@ class SnsController extends ControllerBase
         $redirect = $this->addUrlParameter($redirect, array(
             'userToken' => urlencode($arrAccessToken['access_token'])
         ));
-        
+
         $redirect = $this->addUrlParameter($redirect, array(
             'refreshToken' => urlencode($arrAccessToken['refresh_token'])
         ));
-        
+
         $redirect = $this->addUrlParameter($redirect, array(
             'FromUserName' => $arrAccessToken['openid']
         ));
-        
+
         // 计算signkey
         $timestamp = time();
         $signkey = $this->getSignKey($arrAccessToken['openid'], $timestamp);
@@ -298,20 +299,20 @@ class SnsController extends ControllerBase
         $redirect = $this->addUrlParameter($redirect, array(
             'timestamp' => $timestamp
         ));
-        
-        if (! empty($arrAccessToken['nickname'])) {
+
+        if (!empty($arrAccessToken['nickname'])) {
             $redirect = $this->addUrlParameter($redirect, array(
                 'nickname' => urlencode($arrAccessToken['nickname'])
             ));
         }
-        
-        if (! empty($arrAccessToken['headimgurl'])) {
+
+        if (!empty($arrAccessToken['headimgurl'])) {
             $redirect = $this->addUrlParameter($redirect, array(
                 'headimgurl' => urlencode(stripslashes($arrAccessToken['headimgurl']))
             ));
         }
-        
-        if (! empty($arrAccessToken['unionid'])) {
+
+        if (!empty($arrAccessToken['unionid'])) {
             $redirect = $this->addUrlParameter($redirect, array(
                 'unionid' => $arrAccessToken['unionid']
             ));
@@ -320,19 +321,19 @@ class SnsController extends ControllerBase
                 'signkey2' => $signkey
             ));
         }
-        
-        if (! empty($arrAccessToken['t1elapsed'])) {
+
+        if (!empty($arrAccessToken['t1elapsed'])) {
             $redirect = $this->addUrlParameter($redirect, array(
                 't1elapsed' => $arrAccessToken['t1elapsed']
             ));
         }
-        
-        if (! empty($arrAccessToken['t2elapsed'])) {
+
+        if (!empty($arrAccessToken['t2elapsed'])) {
             $redirect = $this->addUrlParameter($redirect, array(
                 't2elapsed' => $arrAccessToken['t2elapsed']
             ));
         }
-        
+
         return $redirect;
     }
 
@@ -343,7 +344,7 @@ class SnsController extends ControllerBase
     {
         $this->_app = new Application();
         $this->_appConfig = $this->_app->getApplicationInfoByAppId($this->appid);
-        
+
         if (empty($this->_appConfig)) {
             throw new \Exception('appid所对应的记录不存在');
         }
@@ -369,4 +370,3 @@ class SnsController extends ControllerBase
         return $arrAccessToken;
     }
 }
-

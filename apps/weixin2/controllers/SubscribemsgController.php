@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Weixin\Controllers;
 
 use App\Weixin2\Models\Application;
@@ -26,13 +27,13 @@ class SubscribemsgController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        
+
         $this->_tracking = new ScriptTracking();
         $this->_callbackurls = new Callbackurls();
-        
+
         $this->_config = $this->getDI()->get('config');
         $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : $this->_config['weixin']['appid'];
-        
+
         $this->doInitializeLogic();
     }
 
@@ -49,15 +50,15 @@ class SubscribemsgController extends ControllerBase
             $reserved = isset($_GET['reserved']) ? trim($_GET['reserved']) : uniqid();
             $scene = isset($_GET['scene']) ? trim($_GET['scene']) : '0';
             $template_id = isset($_GET['template_id']) ? trim($_GET['template_id']) : '';
-            
+
             if (empty($redirect)) {
                 die('回调地址未指定');
             }
-            
+
             if (empty($template_id)) {
                 die('模板消息未指定');
             }
-            
+
             if ($dc) {
                 // 添加重定向域的检查
                 $isValid = $this->_callbackurls->isValid($redirect);
@@ -65,12 +66,12 @@ class SubscribemsgController extends ControllerBase
                     die('回调地址不合法');
                 }
             }
-            
+
             $_SESSION['subscribemsg_redirect'] = $redirect;
-            
+
             $moduleName = 'weixin';
             $controllerName = $this->controllerName;
-            
+
             $scheme = $this->getRequest()->getScheme();
             $redirectUri = $scheme . '://';
             $redirectUri .= $_SERVER["HTTP_HOST"];
@@ -78,12 +79,12 @@ class SubscribemsgController extends ControllerBase
             $redirectUri .= '/' . $controllerName;
             $redirectUri .= '/callback';
             $redirectUri .= '?appid=' . $this->appid;
-            
+
             $client = new \Weixin\Client();
             $url = $client->getMsgManager()
                 ->getTemplateSender()
                 ->getAuthorizeUrl4Subscribemsg($this->appid, $template_id, $scene, $redirectUri, $reserved, 'get_confirm');
-            
+
             header("location:{$url}");
             exit();
         } catch (\Exception $e) {
@@ -105,15 +106,16 @@ class SubscribemsgController extends ControllerBase
             if (empty($redirect)) {
                 throw new \Exception("回调地址未定义");
             }
-            
-            $openid = ! empty($_GET['openid']) ? $_GET['openid'] : null;
-            $template_id = ! empty($_GET['template_id']) ? $_GET['template_id'] : null;
-            $action = ! empty($_GET['action']) ? $_GET['action'] : null;
-            $scene = ! empty($_GET['scene']) ? $_GET['scene'] : null;
-            $reserved = ! empty($_GET['reserved']) ? $_GET['reserved'] : null;
-            
+
+            $openid = !empty($_GET['openid']) ? $_GET['openid'] : null;
+            $template_id = !empty($_GET['template_id']) ? $_GET['template_id'] : null;
+            $action = !empty($_GET['action']) ? $_GET['action'] : null;
+            $scene = !empty($_GET['scene']) ? $_GET['scene'] : null;
+            $reserved = !empty($_GET['reserved']) ? $_GET['reserved'] : null;
+
             // 用户点击动作，”confirm”代表用户确认授权，”cancel”代表用户取消授权
-            if ($action == "confirm") {}
+            if ($action == "confirm") {
+            }
             $redirect = $this->addUrlParameter($appid, array(
                 'subscribemsg_appid' => $appid
             ));
@@ -132,7 +134,7 @@ class SubscribemsgController extends ControllerBase
             $redirect = $this->addUrlParameter($redirect, array(
                 'subscribemsg_reserved' => $reserved
             ));
-            
+
             // 计算signkey
             $timestamp = time();
             $signkey = $this->getSignKey($openid . "|" . $action . "|" . $template_id . "|" . $scene . "|" . $reserved, $timestamp);
@@ -142,16 +144,16 @@ class SubscribemsgController extends ControllerBase
             $redirect = $this->addUrlParameter($redirect, array(
                 'subscribemsg_timestamp' => $timestamp
             ));
-            
+
             header("location:{$redirect}");
             // 调整数据库操作的执行顺序，优化跳转速度
             fastcgi_finish_request();
-            
+
             $this->_tracking->record($this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
-            
+
             $objService = \App\Weixin\Services\Base::getServiceObject();
             $objService->doSnsCallback($arrAccessToken);
-            
+
             exit();
         } catch (\Exception $e) {
             print_r($e->getFile());
@@ -162,13 +164,13 @@ class SubscribemsgController extends ControllerBase
 
     protected function addUrlParameter($url, array $params)
     {
-        if (! empty($params)) {
+        if (!empty($params)) {
             foreach ($params as $key => $value) {
                 //if (strpos($url, $key) === false || ($key == "FromUserName")) {
-				if (strpos($url, '?') === false)
-					$url .= "?{$key}=" . $value;
-				else
-					$url .= "&{$key}=" . $value;
+                if (strpos($url, '?') === false)
+                    $url .= "?{$key}=" . $value;
+                else
+                    $url .= "&{$key}=" . $value;
                 //}
             }
         }
@@ -187,10 +189,9 @@ class SubscribemsgController extends ControllerBase
     {
         $this->_app = new Application();
         $this->_appConfig = $this->_app->getApplicationInfoByAppId($this->appid);
-        
+
         if (empty($this->_appConfig)) {
             throw new \Exception('appid所对应的记录不存在');
         }
     }
 }
-

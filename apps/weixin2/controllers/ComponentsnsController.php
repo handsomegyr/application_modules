@@ -5,6 +5,7 @@
  * @author Administrator
  *
  */
+
 namespace App\Weixin2\Controllers;
 
 use App\Weixin2\Models\ComponentApplication;
@@ -32,7 +33,7 @@ class ComponentsnsController extends SnsController
         $component_appid = $this->_appConfig['appid'];
         $component_access_token = $this->_appConfig['component_access_token'];
         $appid = $this->appid;
-        
+
         $sns = new \Weixin\Token\Component($appid, $component_appid, $component_access_token);
         $sns->setRedirectUri($redirectUri);
         $sns->setScope($this->scope);
@@ -49,4 +50,3 @@ class ComponentsnsController extends SnsController
         return $arrAccessToken;
     }
 }
-
