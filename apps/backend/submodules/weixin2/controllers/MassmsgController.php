@@ -52,6 +52,79 @@ class MassmsgController extends \App\Backend\Controllers\FormController
     protected $materialItems = null;
     protected $thumbmediaidItems = null;
 
+    protected function getFormTools2($tools)
+    {
+        $tools['previewmass'] = array(
+            'title' => '预览',
+            'action' => 'previewmass',
+            'is_show' => function ($row) {
+                if ($this->isCanPreviewMassMsg($row)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="预览"})
+     *
+     * @name 预览
+     */
+    public function previewmassAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/massmsg/previewmass?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelMassMsg->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $match = array();
+            $match['id'] = 0;
+            $match['keyword'] = "";
+            $match['mass_msg_type'] = $data['msg_type'];
+            $res = $weixinopenService->sendMassMsg(0, array(), $data, array(), $match, false);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function isCanPreviewMassMsg($model)
+    {
+        if ($model['msg_type'] == "text" && empty($model['description'])) {
+            return false;
+        }
+        if ($model['msg_type'] == "mpvideo" && (empty($model['title']) || empty($model['description']) || (empty($model['media_id']) && empty($model['media'])))) {
+            return false;
+        }
+        if ($model['msg_type'] == "wxcard" && (empty($model['card_id']))) {
+            return false;
+        }
+        if (in_array($model['msg_type'], array(
+            "voice",
+            "music",
+            "image",
+            "mpnews"
+        )) && ((empty($model['media_id']) && empty($model['media'])))) {
+            return false;
+        }
+        return !empty($model['authorizer_appid']) && !empty($model['component_appid']) && !empty($model['msg_type']);
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

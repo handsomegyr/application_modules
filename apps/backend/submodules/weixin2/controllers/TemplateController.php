@@ -29,6 +29,239 @@ class TemplateController extends \App\Backend\Controllers\FormController
     protected $componentItems = null;
     protected $authorizerItems = null;
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['synctemplatelist'] = array(
+            'title' => '获取模板列表',
+            'action' => 'synctemplatelist',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['getindustry'] = array(
+            'title' => '获取设置的行业信息',
+            'action' => 'getindustry',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    protected function getFormTools2($tools)
+    {
+        $tools['deletetemplate'] = array(
+            'title' => '删除模板',
+            'action' => 'deletetemplate',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['template_id'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['addtemplate'] = array(
+            'title' => '增加模板',
+            'action' => 'addtemplate',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && empty($row['template_id'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="获取模板列表"})
+     *
+     * @name 获取模板列表
+     */
+    public function synctemplatelistAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/template/synctemplatelist?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "获取模板列表";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('template_component_appid'));
+                $authorizer_appid = trim($this->request->get('template_authorizer_appid'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->syncTemplateList();
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="获取设置的行业信息"})
+     *
+     * @name 获取设置的行业信息
+     */
+    public function getindustryAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/template/getindustry?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "获取设置的行业信息";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('template_component_appid'));
+                $authorizer_appid = trim($this->request->get('template_authorizer_appid'));
+                $user_id = trim($this->request->get('template_user_id'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->getWeixinObject()
+                    ->getMsgManager()
+                    ->getTemplateSender()
+                    ->getIndustry();
+                // if (empty($res['errcode'])) {
+                //     return print_r($res); // true;
+                // }
+                // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
+                if (empty($res['errcode'])) {
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                } else {
+                    return $this->makeJsonError($res['errmsg']);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="删除模板"})
+     *
+     * @name 删除模板
+     */
+    public function deletetemplateAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/template/deletetemplate?id=xxx
+        try {
+            $this->view->disable();
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelTemplate->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->deleteTemplate($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="增加模板"})
+     *
+     * @name 增加模板
+     */
+    public function addtemplateAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/template/addtemplate?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelTemplate->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $template_id_short = "";
+            $res = $weixinopenService->getWeixinObject()
+                ->getMsgManager()
+                ->getTemplateSender()
+                ->addTemplate($template_id_short);
+            if (empty($res['errcode'])) {
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            } else {
+                return $this->makeJsonError($res['errmsg']);
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function getFields4HeaderTool()
+    {
+        $fields = array();
+        $fields['template_component_appid'] = array(
+            'name' => '第三方平台应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+            ),
+        );
+        $fields['template_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+            ),
+        );
+        return $fields;
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

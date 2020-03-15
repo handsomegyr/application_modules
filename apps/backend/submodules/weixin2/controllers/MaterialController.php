@@ -34,6 +34,416 @@ class MaterialController extends \App\Backend\Controllers\FormController
     protected $authorizerItems = null;
     protected $mediaTypeItems = null;
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['batchgetmaterial'] = array(
+            'title' => '获取素材列表',
+            'action' => 'batchgetmaterial',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['getmaterialcount'] = array(
+            'title' => '获取素材总数',
+            'action' => 'getmaterialcount',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    protected function getFormTools2($tools)
+    {
+        $tools['addmaterial'] = array(
+            'title' => '生成永久素材',
+            'action' => 'addmaterial',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row['type']) && !empty($row['media']) && empty($row['media_id']) && ($row['type'] != "news")
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['addnews'] = array(
+            'title' => '新增永久图文素材',
+            'action' => 'addnews',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row['type']) && empty($row['media_id']) && ($row['type'] == "news")
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['updatenews'] = array(
+            'title' => '修改永久图文素材',
+            'action' => 'updatenews',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row['type']) && !empty($row['media_id']) && ($row['type'] == "news")
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['deletematerial'] = array(
+            'title' => '删除永久素材',
+            'action' => 'deletematerial',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['media_id'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['getmaterial'] = array(
+            'title' => '获取永久素材',
+            'action' => 'getmaterial',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['media_id'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="获取素材列表"})
+     *
+     * @name 获取素材列表
+     */
+    public function batchgetmaterialAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/material/batchgetmaterial?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+
+                // 单选框 type 是 素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
+                $fields['material_type'] = array(
+                    'name' => '媒体文件类型',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'select',
+                        'is_show' => true,
+                        'items' => $this->mediaTypeItems
+                    ),
+                );
+                //offset 是 从全部素材的该偏移位置开始返回，0表示从第一个素材 返回
+                $fields['material_offset'] = array(
+                    'name' => '偏移位置开始返回,0表示从第一个素材',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'number',
+                        'is_show' => true
+                    ),
+                );
+                //count 是 返回素材的数量，取值在1到20之间
+                //$this->text('material_count', '返回素材的数量,取值在1到20之间')->value(20);
+
+                $title = "获取素材列表";
+                $row = array();
+                // 初始值
+                $row['material_offset'] = 0;
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('material_component_appid'));
+                $authorizer_appid = trim($this->request->get('material_authorizer_appid'));
+                $type = trim($this->request->get('material_type'));
+                $offset = intval($this->request->get('material_offset'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+                if (empty($type)) {
+                    return $this->makeJsonError("媒体文件类型未设定");
+                }
+                if ($offset < 0) {
+                    return $this->makeJsonError("偏移位置未设定");
+                }
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->getWeixinObject()
+                    ->getMaterialManager()
+                    ->batchGetMaterial($type, $offset, 20);
+                // if (empty($res['errcode'])) {
+                //     return print_r($res);
+                //     return true;
+                // }
+                // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
+                if (empty($res['errcode'])) {
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                } else {
+                    return $this->makeJsonError($res['errmsg']);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="获取素材总数"})
+     *
+     * @name 获取素材总数
+     */
+    public function getmaterialcountAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/material/getmaterialcount?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "获取素材总数";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('material_component_appid'));
+                $authorizer_appid = trim($this->request->get('material_authorizer_appid'));
+                $user_id = trim($this->request->get('material_user_id'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->getWeixinObject()
+                    ->getMaterialManager()
+                    ->getMaterialCount();
+                // if (empty($res['errcode'])) {
+                //     return print_r($res);
+                //     return true;
+                // }
+                // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
+                if (empty($res['errcode'])) {
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                } else {
+                    return $this->makeJsonError($res['errmsg']);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="生成永久素材"})
+     *
+     * @name 生成永久素材
+     */
+    public function addmaterialAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/material/addmaterial?id=xxx
+        try {
+            $this->view->disable();
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelMaterial->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->addMaterial($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="新增永久图文素材"})
+     *
+     * @name 新增永久图文素材
+     */
+    public function addnewsAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/material/addnews?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelMaterial->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->addNews($id);
+            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="修改永久图文素材"})
+     *
+     * @name 修改永久图文素材
+     */
+    public function updatenewsAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/material/updatenews?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelMaterial->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->updateNews($id);
+            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="删除永久素材"})
+     *
+     * @name 删除永久素材
+     */
+    public function deletematerialAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/material/deletematerial?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelMaterial->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->deleteMaterial($id);
+            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="获取永久素材"})
+     *
+     * @name 获取永久素材
+     */
+    public function getmaterialAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/material/getmaterial?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelMaterial->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->getWeixinObject()
+                ->getMaterialManager()
+                ->getMaterial($data->media_id);
+            if (empty($res['errcode'])) {
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            } else {
+                return $this->makeJsonError($res['errmsg']);
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function getFields4HeaderTool()
+    {
+        $fields = array();
+        $fields['material_component_appid'] = array(
+            'name' => '第三方平台应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+            ),
+        );
+        $fields['material_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+            ),
+        );
+        return $fields;
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

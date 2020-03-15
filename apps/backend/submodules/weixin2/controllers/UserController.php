@@ -31,6 +31,142 @@ class UserController extends \App\Backend\Controllers\FormController
     protected $componentItems = null;
     protected $authorizerItems = null;
 
+    protected function getFormTools2($tools)
+    {
+        $tools['updateremark'] = array(
+            'title' => '设置用户备注名',
+            'action' => 'updateremark',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['getuserinfo'] = array(
+            'title' => '获取用户基本信息',
+            'action' => 'getuserinfo',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['getusertagidlist'] = array(
+            'title' => '获取用户身上的标签列表',
+            'action' => 'getusertagidlist',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
+    /**
+     * @title({name="设置用户备注名"})
+     *
+     * @name 设置用户备注名
+     */
+    public function updateremarkAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/user/updateremark?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelUser->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->getWeixinObject()
+                ->getUserManager()
+                ->updateRemark($data['openid'], $data['remark']);
+            if (empty($res['errcode'])) {
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            } else {
+                return $this->makeJsonError($res['errmsg']);
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+    /**
+     * @title({name="获取用户基本信息"})
+     *
+     * @name 获取用户基本信息
+     */
+    public function getuserinfoAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/user/getuserinfo?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelUser->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->getUserInfo($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+    /**
+     * @title({name="获取用户身上的标签列表"})
+     *
+     * @name 获取用户身上的标签列表
+     */
+    public function getusertagidlistAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/user/getusertagidlist?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelUser->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->getUserTagIdList($id);
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

@@ -34,6 +34,74 @@ class QrcodeController extends \App\Backend\Controllers\FormController
     protected $authorizerItems = null;
     protected $qrcodeTypeItems = null;
 
+    protected function isCanCreateQrcode($model)
+    {
+        // 如果是永久并且已生成的话
+        if (in_array($model['action_name'], array(
+            "QR_LIMIT_SCENE",
+            "QR_LIMIT_STR_SCENE"
+        )) && !empty($model['is_created'])) {
+            // throw new \Exception("二维码记录ID:{$qrcode_id}所对应的二维码是永久二维码并且已生成");
+            return false;
+        }
+        // 如果是临时并且已生成并且没有过期
+        if (in_array($model['action_name'], array(
+            "QR_SCENE",
+            "QR_STR_SCENE"
+        )) && !empty($model['is_created']) && ($model['ticket_time']->sec + $model['expire_seconds']) > time()) {
+            // throw new \Exception("二维码记录ID:{$qrcode_id}所对应的二维码是临时二维码并且已生成并且没有过期");
+            return false;
+        }
+        return !empty($model['authorizer_appid']) && !empty($model['component_appid']);
+    }
+
+    protected function getFormTools2($tools)
+    {
+        $tools['createqrcode'] = array(
+            'title' => '生成二维码',
+            'action' => 'createqrcode',
+            'is_show' => function ($row) {
+                if ($this->isCanCreateQrcode($row)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="生成二维码"})
+     *
+     * @name 生成二维码
+     */
+    public function createqrcodeAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/qrcode/createqrcode?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelQrcode->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->createQrcode($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

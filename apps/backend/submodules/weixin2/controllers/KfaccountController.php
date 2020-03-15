@@ -29,6 +29,353 @@ class KfaccountController extends \App\Backend\Controllers\FormController
     protected $componentItems = null;
     protected $authorizerItems = null;
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['syncaccountlist'] = array(
+            'title' => '获取所有客服账号',
+            'action' => 'syncaccountlist',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['synconlineaccountlist'] = array(
+            'title' => '获取所有线上客服账号',
+            'action' => 'synconlineaccountlist',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
+    protected function getFormTools2($tools)
+    {
+        $tools['updateaccount'] = array(
+            'title' => '修改客服帐号',
+            'action' => 'updateaccount',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row['kf_account']) && !empty($row['nickname']) && !empty($row['is_created'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['addaccount'] = array(
+            'title' => '添加客服帐号',
+            'action' => 'addaccount',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row['kf_account']) && !empty($row['nickname']) && empty($row['is_created'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['uploadheadimg'] = array(
+            'title' => '设置客服帐号的头像',
+            'action' => 'uploadheadimg',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row['kf_account']) && !empty($row['is_created'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['deleteaccount'] = array(
+            'title' => '删除客服帐号',
+            'action' => 'deleteaccount',
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['kf_account']) && !empty($row['is_created'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['inviteworker'] = array(
+            'title' => '邀请绑定客服帐号',
+            'action' => 'inviteworker',
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['kf_account']) && !empty($row['invite_wx'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="获取所有客服账号"})
+     *
+     * @name 获取所有客服账号
+     */
+    public function syncaccountlistAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/kfaccount/syncaccountlist?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "获取所有客服账号";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('kfaccount_component_appid'));
+                $authorizer_appid = trim($this->request->get('kfaccount_authorizer_appid'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->syncKfAccountList();
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="获取所有线上客服账号"})
+     *
+     * @name 获取所有线上客服账号
+     */
+    public function synconlineaccountlistAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/kfaccount/synconlineaccountlist?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "获取所有线上客服账号";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('kfaccount_component_appid'));
+                $authorizer_appid = trim($this->request->get('kfaccount_authorizer_appid'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->syncOnlineKfAccountList();
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="修改客服帐号"})
+     *
+     * @name 修改客服帐号
+     */
+    public function updateaccountAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/kfaccount/updateaccount?id=xxx
+        try {
+            $this->view->disable();
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAccount->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->addOrUpdateKfAccount($id, false);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="添加客服帐号"})
+     *
+     * @name 添加客服帐号
+     */
+    public function addaccountAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/kfaccount/addaccount?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAccount->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->addOrUpdateKfAccount($id, true);
+            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="设置客服帐号的头像"})
+     *
+     * @name 设置客服帐号的头像
+     */
+    public function uploadheadimgAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/kfaccount/uploadheadimg?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAccount->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->getWeixinObject()
+                ->getCustomServiceManager()
+                ->kfacountUploadheadimg($data->kf_account, \config('oss.url') . $data->media);
+            // if (empty($res['errcode'])) {
+            //     return print_r($res);
+            //     return true;
+            // }
+            // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
+            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="删除客服帐号"})
+     *
+     * @name 删除客服帐号
+     */
+    public function deleteaccountAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/kfaccount/deleteaccount?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAccount->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->deleteKfAccount($id, false);
+            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="邀请绑定客服帐号"})
+     *
+     * @name 邀请绑定客服帐号
+     */
+    public function inviteworkerAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/kfaccount/inviteworker?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAccount->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->inviteWorker($id);
+            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function getFields4HeaderTool()
+    {
+        $fields = array();
+        $fields['kfaccount_component_appid'] = array(
+            'name' => '第三方平台应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+            ),
+        );
+        $fields['kfaccount_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+            ),
+        );
+        return $fields;
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

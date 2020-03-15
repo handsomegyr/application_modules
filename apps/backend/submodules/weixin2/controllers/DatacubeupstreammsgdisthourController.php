@@ -6,6 +6,7 @@ use App\Backend\Submodules\Weixin2\Models\DataCube\UpstreamMsgDistHour;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
 use App\Backend\Submodules\Weixin2\Models\RefHour;
+
 /**
  * @title({name="消息发送分布分时数据"})
  *
@@ -31,6 +32,122 @@ class DatacubeupstreammsgdisthourController extends \App\Backend\Controllers\For
     }
     protected $componentItems = null;
     protected $authorizerItems = null;
+
+    protected function getHeaderTools2($tools)
+    {
+        $tools['syncupstreammsgdisthour'] = array(
+            'title' => '获取消息发送分布月数据',
+            'action' => 'syncupstreammsgdisthour',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="获取消息发送分布月数据"})
+     *
+     * @name 获取消息发送分布月数据
+     */
+    public function syncupstreammsgdisthourAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/datacubeupstreammsgdisthour/syncupstreammsgdisthour?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+
+                // 起始日期
+                $fields['upstreammsgdisthour_start_ref_date'] = array(
+                    'name' => '起始日期',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'datetimepicker',
+                        'is_show' => true
+                    ),
+                );
+
+                // 结束日期
+                $fields['upstreammsgdisthour_end_ref_date'] = array(
+                    'name' => '结束日期',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'datetimepicker',
+                        'is_show' => true
+                    ),
+                );
+                $title = "获取消息发送分布月数据";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('upstreammsgdisthour_component_appid'));
+                $authorizer_appid = trim($this->request->get('upstreammsgdisthour_authorizer_appid'));
+                $start_ref_date = trim($this->request->get('upstreammsgdisthour_start_ref_date'));
+                $end_ref_date = trim($this->request->get('upstreammsgdisthour_end_ref_date'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+
+                if (empty($start_ref_date)) {
+                    return $this->makeJsonError("起始日期未设定");
+                }
+                if (empty($end_ref_date)) {
+                    return $this->makeJsonError("结束日期未设定");
+                }
+                $start_ref_date = strtotime($start_ref_date);
+                $end_ref_date = strtotime($end_ref_date);
+                if ($end_ref_date < $start_ref_date) {
+                    return $this->makeJsonError("结束日期小于起始日期");
+                }
+
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->syncUpstreamMsgDistMonth($start_ref_date, $end_ref_date);
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function getFields4HeaderTool()
+    {
+        $fields = array();
+        $fields['upstreammsgdisthour_component_appid'] = array(
+            'name' => '第三方平台应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+            ),
+        );
+        $fields['upstreammsgdisthour_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+            ),
+        );
+        return $fields;
+    }
 
     protected function getSchemas()
     {

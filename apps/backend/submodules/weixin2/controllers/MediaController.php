@@ -113,9 +113,8 @@ class MediaController extends \App\Backend\Controllers\FormController
                     // [bytes] => {"video_url":"http://203.205.158.72/vweixinp.tc.qq.com/1007_7fad4951eb4a4a1da466a78355446f4f.f10.mp4?vkey=788BC4E9CB3FC5CCF876C0CCBE669C043EDF5999ED9AE8831B6FEE3EC057B41A11E815C640B0391C87BC5C1691DF96C8B5C8EFBB7D6E45EB37D5AB0127DA0C010D4039D0258E012DBEE0136E4A3BBF3BCE75D71B17B78674&sha=0&save=1"}
                     $res['bytes'] = \json_decode($res['bytes'], true);
                     // $fileContent = file_get_contents($res['bytes']['video_url']);
-
-                    return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
-                    return $this->response()->success('Success！')->download($res['bytes']['video_url']);
+                    //"then":{"action":"download","value":"http:\/\/190821fg0463demo.jdytoy.com\/admin\/admin-build\/download-file?file_id=20200203192717.csv"},
+                    return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $res['bytes']['video_url'])), '操作成功:' . \json_encode($res));
                     //return Response::redirectTo($res['bytes']['video_url'], 302);
                 } else {
                     $path = APP_PATH . '/upload/media/' . 'media_' . \uniqid();
@@ -125,8 +124,8 @@ class MediaController extends \App\Backend\Controllers\FormController
                     fwrite($fp, $fileContent);
                     fclose($fp);
                     $fileName = basename($path);
-                    $url = url("admin/admin-build/download-file?file_id={$fileName}");
-                    return $this->response()->success('Success！')->download($url);
+                    $url = $this->url->get("service/file/index") . '?upload_path=media&id=' . $fileName;
+                    return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $url)), '操作成功:' . \json_encode($res));
                     //return Response::download($path, $filename);
                 }
             } else {

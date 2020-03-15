@@ -34,6 +34,122 @@ class MsgrecordController extends \App\Backend\Controllers\FormController
     protected $authorizerItems = null;
     protected $accountItems = null;
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['syncmsgrecordlist'] = array(
+            'title' => '获取聊天记录',
+            'action' => 'syncmsgrecordlist',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="获取聊天记录"})
+     *
+     * @name 获取聊天记录
+     */
+    public function syncmsgrecordlistAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/msgrecord/syncmsgrecordlist?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+
+                // 日期选择
+                $fields['msgrecord_msgrecord_start_time'] = array(
+                    'name' => '聊天开始日期',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'datetimepicker',
+                        'is_show' => true
+                    ),
+                );
+
+                // 日期选择
+                $fields['msgrecord_msgrecord_end_time'] = array(
+                    'name' => '聊天结束日期',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'datetimepicker',
+                        'is_show' => true
+                    ),
+                );
+                $title = "获取聊天记录";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('msgrecord_component_appid'));
+                $authorizer_appid = trim($this->request->get('msgrecord_authorizer_appid'));
+                $msgrecord_start_time = trim($this->request->get('msgrecord_msgrecord_start_time'));
+                $msgrecord_end_time = trim($this->request->get('msgrecord_msgrecord_end_time'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+
+                if (empty($msgrecord_start_time)) {
+                    return $this->makeJsonError("聊天开始日期未设定");
+                }
+                if (empty($msgrecord_end_time)) {
+                    return $this->makeJsonError("聊天结束日期未设定");
+                }
+                $msgrecord_start_time = strtotime($msgrecord_start_time);
+                $msgrecord_end_time = strtotime($msgrecord_end_time);
+                if ($msgrecord_end_time < $msgrecord_start_time) {
+                    return $this->makeJsonError("聊天结束日期小于聊天开始日期");
+                }
+
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->syncMsgRecordList($msgrecord_start_time, $msgrecord_end_time);
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function getFields4HeaderTool()
+    {
+        $fields = array();
+        $fields['msgrecord_component_appid'] = array(
+            'name' => '第三方平台应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+            ),
+        );
+        $fields['msgrecord_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+            ),
+        );
+        return $fields;
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

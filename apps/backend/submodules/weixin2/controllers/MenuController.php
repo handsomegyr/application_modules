@@ -34,6 +34,247 @@ class MenuController extends \App\Backend\Controllers\FormController
     protected $authorizerItems = null;
     protected $menuTypeItems = null;
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['createmenu'] = array(
+            'title' => '生成菜单',
+            'action' => 'createmenu',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['deletemenu'] = array(
+            'title' => '删除菜单',
+            'action' => 'deletemenu',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['getcurrentselfmenuinfo'] = array(
+            'title' => '获取自定义菜单配置',
+            'action' => 'getcurrentselfmenuinfo',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['getmenu'] = array(
+            'title' => '查询菜单',
+            'action' => 'getmenu',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
+    /**
+     * @title({name="生成菜单"})
+     *
+     * @name 生成菜单
+     */
+    public function createmenuAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/menu/createmenu?id=xxx
+        try {
+            $this->view->disable();
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "生成菜单";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('mmenu_component_appid'));
+                $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->createMenu();
+
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="删除菜单"})
+     *
+     * @name 删除菜单
+     */
+    public function deletemenuAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/menu/deletemenu?id=xxx
+        try {
+            $this->view->disable();
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "删除菜单";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('mmenu_component_appid'));
+                $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->getWeixinObject()
+                    ->getMenuManager()
+                    ->delete(array());
+                // if (empty($res['errcode'])) {
+                //     return print_r($res); // true;
+                // }
+                // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
+                if (empty($res['errcode'])) {
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                } else {
+                    return $this->makeJsonError($res['errmsg']);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="获取自定义菜单配置"})
+     *
+     * @name 获取自定义菜单配置
+     */
+    public function getcurrentselfmenuinfoAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/menu/getcurrentselfmenuinfo?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "获取自定义菜单配置";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('mmenu_component_appid'));
+                $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->getWeixinObject()
+                    ->getMenuManager()
+                    ->getCurrentSelfMenuInfo();
+                // if (empty($res['errcode'])) {
+                //     return print_r($res); // true;
+                // }
+                // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
+                if (empty($res['errcode'])) {
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                } else {
+                    return $this->makeJsonError($res['errmsg']);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="查询菜单"})
+     *
+     * @name 查询菜单
+     */
+    public function getmenuAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/menu/getmenu?id=xxx
+        try {
+            $this->view->disable();
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "查询菜单";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $component_appid = trim($this->request->get('mmenu_component_appid'));
+                $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
+                if (empty($component_appid)) {
+                    return $this->makeJsonError("第三方平台应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+
+                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $res = $weixinopenService->getWeixinObject()
+                    ->getMenuManager()
+                    ->get();
+                // if (empty($res['errcode'])) {
+                //     return print_r($res); // true;
+                // }
+                // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
+                if (empty($res['errcode'])) {
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                } else {
+                    return $this->makeJsonError($res['errmsg']);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function getFields4HeaderTool()
+    {
+        $fields = array();
+        $fields['mmenu_component_appid'] = array(
+            'name' => '第三方平台应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+            ),
+        );
+        $fields['mmenu_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+            ),
+        );
+        return $fields;
+    }
+    
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();

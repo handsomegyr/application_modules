@@ -5,6 +5,7 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 use App\Backend\Submodules\Weixin2\Models\SnsApplication;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
+
 /**
  * @title({name="授权应用设置"})
  *
@@ -12,13 +13,13 @@ use App\Backend\Submodules\Weixin2\Models\Component\Component;
  */
 class SnsapplicationController extends \App\Backend\Controllers\FormController
 {
-    private $modelSnsApplication;    
+    private $modelSnsApplication;
     private $modelAuthorizer;
     private $modelComponent;
 
     public function initialize()
     {
-        $this->modelSnsApplication = new SnsApplication();        
+        $this->modelSnsApplication = new SnsApplication();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
 
@@ -28,6 +29,136 @@ class SnsapplicationController extends \App\Backend\Controllers\FormController
     }
     protected $componentItems = null;
     protected $authorizerItems = null;
+
+    protected function getFormTools2($tools)
+    {
+        $tools['encodehexappid'] = array(
+            'title' => '生成应用ID',
+            'action' => 'encodehexappid',
+            'is_show' => function ($row) {
+                if (!empty($row) && empty($row['appid'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['encodehexappkey'] = array(
+            'title' => '重新生成应用密钥',
+            'action' => 'encodehexappkey',
+            'is_show' => function ($row) {
+                if (!empty($row)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['encodehexsecretkey'] = array(
+            'title' => '重新生成签名密钥',
+            'action' => 'encodehexsecretkey',
+            'is_show' => function ($row) {
+                if (!empty($row)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
+    /**
+     * @title({name="生成应用ID"})
+     *
+     * @name 生成应用ID
+     */
+    public function encodehexappidAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/snsapplication/encodehexappid?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelSnsApplication->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $appid = \iHashids::encodeHex($id);
+            $updateData = array();
+            $updateData['appid'] = $appid;
+            $this->modelSnsApplication->update(array('_id' => $id), array('$set' => $updateData));
+            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+    /**
+     * @title({name="重新生成应用密钥"})
+     *
+     * @name 重新生成应用密钥
+     */
+    public function encodehexappkeyAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/snsapplication/encodehexappkey?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelSnsApplication->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $appkey = \iHashids::encodeHex(time());
+            $updateData = array();
+            $updateData['appkey'] = $appkey;
+            $this->modelSnsApplication->update(array('_id' => $id), array('$set' => $updateData));
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+    /**
+     * @title({name="重新生成签名密钥"})
+     *
+     * @name 重新生成签名密钥
+     */
+    public function encodehexsecretkeyAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/snsapplication/encodehexsecretkey?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelSnsApplication->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $secretKey = \iHashids::encodeHex(\uniqid());
+            $updateData = array();
+            $updateData['secretKey'] = $secretKey;
+            $this->modelSnsApplication->update(array('_id' => $id), array('$set' => $updateData));
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
 
     protected function getSchemas()
     {

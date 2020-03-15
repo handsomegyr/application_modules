@@ -54,6 +54,93 @@ class MassmsgsendlogController extends \App\Backend\Controllers\FormController
     protected $thumbmediaidItems = null;
     protected $tagItems = null;
 
+    protected function getFormTools2($tools)
+    {
+        $tools['getmass'] = array(
+            'title' => '查询群发消息发送状态',
+            'action' => 'getmass',
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_id'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['deletemass'] = array(
+            'title' => '删除群发',
+            'action' => 'deletemass',
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_id']) && ($row['msg_type'] == "mpvideo" || $row['msg_type'] == "mpnews")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
+    /**
+     * @title({name="查询群发消息发送状态"})
+     *
+     * @name 查询群发消息发送状态
+     */
+    public function getmassAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/massmsgsendlog/getmass?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelSendLog->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->getMassMsg($data->id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="删除群发"})
+     *
+     * @name 删除群发
+     */
+    public function deletemassAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/massmsgsendlog/deletemass?id=xxx
+        try {
+            $this->view->disable();
+
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelSendLog->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->deleteMassMsg($id);
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getSchemas()
     {
         $schemas = parent::getSchemas();
