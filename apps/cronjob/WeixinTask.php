@@ -1,0 +1,48 @@
+<?php
+class WeixinTask extends \Phalcon\CLI\Task
+{
+    // 监控任务
+    private $activity_id = 6;
+
+    /**
+     * 获取accesstoken
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixin getaccesstoken
+     * @param array $params            
+     */
+    public function getaccesstokenAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+
+        try {
+            $modelAuthorizer = new \App\Weixin2\Models\Authorize\Authorizer();
+            $query = array();
+            $sort = array('_id' => 1);
+            $authorizerList = $modelAuthorizer->findAll($query, $sort);
+
+            if (!empty($authorizerList)) {
+                foreach ($authorizerList as $authorizerItem) {
+
+                    // 进行锁定处理
+                    $component_appid = $authorizerItem['component_appid'];
+                    $appid = $authorizerItem['appid'];
+
+                    $lock = new \iLock('component_appid:' . $component_appid . ' appid:' . $appid);
+                    $lock->setExpire(3600);
+                    if ($lock->lock()) {
+                        continue;
+                    }
+
+                    try {
+                        // 更新
+                        $modelAuthorizer->getTokenByAppid($component_appid, $appid);
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+}
