@@ -181,7 +181,7 @@ class SignController extends ControllerBase
             $data['memo'] = array_merge($userInfo['memo'], array(
                 'is_view_novice_guide' => 1
             ));
-            $this->modelActivityUser->update(array('_id' => $userInfo['id']), array('$set' => $data));
+            $this->modelActivityUser->update(array('_id' => $userInfo['_id']), array('$set' => $data));
             return $this->result("OK", array());
         } catch (\Exception $e) {
             $this->modelErrorLog->log($this->activity_id, $e, $this->now);
@@ -323,7 +323,7 @@ class SignController extends ControllerBase
             }
 
             // 获取排名信息
-            $gameUserInfo = $this->modelGameUser->getInfoById($gameUserInfo['id']);
+            $gameUserInfo = $this->modelGameUser->getInfoById($gameUserInfo['_id']);
             $myRankInfo = $this->modelGameUser->getMyRank($gameUserInfo, $gameInfo);
 
             $ret = array();

@@ -238,7 +238,7 @@ class SignController extends ControllerBase
                 // 记录流水
                 $signLog = $this->modelSignLog->log($this->activity1, $FromUserName, $nickname, $headimgurl, $this->now, $ip, $scene, $memo);
                 // 处理签到信息
-                $info = $this->modelSignUser->process($this->activity1, $FromUserName, $nickname, $headimgurl, $this->now, $ip, $signLog['id'], $judgeResult, $info, $memo);
+                $info = $this->modelSignUser->process($this->activity1, $FromUserName, $nickname, $headimgurl, $this->now, $ip, $signLog['_id'], $judgeResult, $info, $memo);
             }
 
             // 发送成功

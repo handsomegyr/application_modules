@@ -121,7 +121,7 @@ class SyncthirdpartyorderTask extends \Phalcon\CLI\Task
                     //     $memo['belong_to_cronjob_id'] = $current_cronjob_id;
                     //     $orderInfo = $modelOrder->createOrder($ucode, $order_id, $goodsList, $order_amount, $goods_amount, $goods_num, $order_time, $memo);
 
-                    //     $process_desc =  "已成功创建订单ID:{$orderInfo['id']}的订单";
+                    //     $process_desc =  "已成功创建订单ID:{$orderInfo['_id']}的订单";
                     // } else {
                     //     // 更新订单
                     //     // 商品
@@ -153,8 +153,8 @@ class SyncthirdpartyorderTask extends \Phalcon\CLI\Task
                     //     if ($memo['belong_to_cronjob_id'] == $current_cronjob_id) {
                     //         $memo['cronjob_ids'][] = array('cronjob_id' => $current_cronjob_id, 'file_content_item_id' => $itemId);
                     //         $updateData['memo'] = $memo;
-                    //         $orderInfo = $modelOrder->updateById($orderInfo['id'], $updateData);
-                    //         $process_desc =  "已成功更新订单ID:{$orderInfo['id']}的订单，增加了商品信息:{$sku['name']}|{$sku['num']}";
+                    //         $orderInfo = $modelOrder->updateById($orderInfo['_id'], $updateData);
+                    //         $process_desc =  "已成功更新订单ID:{$orderInfo['_id']}的订单，增加了商品信息:{$sku['name']}|{$sku['num']}";
                     //     } else {
                     //         $status = \App\Cronjob\Models\DataImport\FileContent::PROCESS_STATUS_FAIL;
                     //         $process_desc =  "current_cronjob_id:{$current_cronjob_id}和订单ID:{$order_id}所对应的订单所记录的belong_to_cronjob_id:{$memo['belong_to_cronjob_id']}不一致";
