@@ -291,7 +291,10 @@ class MediaController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
-                'defaultValue' => ''
+                'defaultValue' => '',
+                'file' => array(
+                    'path' => $this->modelMedia->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false

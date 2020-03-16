@@ -570,7 +570,10 @@ class MaterialController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
-                'defaultValue' => ''
+                'defaultValue' => '',
+                'file' => array(
+                    'path' => $this->modelMaterial->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false

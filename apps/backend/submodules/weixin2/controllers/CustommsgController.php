@@ -367,7 +367,10 @@ class CustommsgController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
-                'defaultValue' => ''
+                'defaultValue' => '',
+                'file' => array(
+                    'path' => $this->modelCustomMsg->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
@@ -401,7 +404,10 @@ class CustommsgController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
-                'defaultValue' => ''
+                'defaultValue' => '',
+                'file' => array(
+                    'path' => $this->modelCustomMsg->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false

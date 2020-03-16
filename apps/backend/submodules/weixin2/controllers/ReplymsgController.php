@@ -366,7 +366,10 @@ class ReplymsgController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
-                'defaultValue' => ''
+                'defaultValue' => '',
+                'file' => array(
+                    'path' => $this->modelReplyMsg->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
@@ -400,7 +403,10 @@ class ReplymsgController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
-                'defaultValue' => ''
+                'defaultValue' => '',
+                'file' => array(
+                    'path' => $this->modelReplyMsg->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
