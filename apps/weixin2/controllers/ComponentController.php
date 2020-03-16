@@ -356,7 +356,7 @@ class ComponentController extends ControllerBase
                 $componentToken = $this->objWeixinComponent->apiComponentToken($componentVerifyTicket);
 
                 // 更新component_access_token
-                $this->modelWeixinopenComponent->updateAccessToken($this->appConfig['id'], $componentToken['component_access_token'], $componentToken['expires_in'], $componentVerifyTicket);
+                $this->modelWeixinopenComponent->updateAccessToken($this->appConfig['_id'], $componentToken['component_access_token'], $componentToken['expires_in'], $componentVerifyTicket);
 
                 // 消息解密
             } elseif ($InfoType == 'unauthorized') { // 取消授权通知
@@ -611,7 +611,7 @@ class ComponentController extends ControllerBase
             $authorizerTokenInfo = $this->objWeixinComponent->apiAuthorizerToken($authorizer_appid, $authorizerInfo['refresh_token']);
 
             // 更新accesstoken
-            $ret = $this->modelWeixinopenAuthorizer->updateAccessToken($authorizerInfo['id'], $authorizerTokenInfo['authorizer_access_token'], $authorizerTokenInfo['authorizer_refresh_token'], $authorizerTokenInfo['expires_in'], null);
+            $ret = $this->modelWeixinopenAuthorizer->updateAccessToken($authorizerInfo['_id'], $authorizerTokenInfo['authorizer_access_token'], $authorizerTokenInfo['authorizer_refresh_token'], $authorizerTokenInfo['expires_in'], null);
 
             return $this->result("OK", $ret);
         } catch (\Exception $e) {
@@ -1735,9 +1735,9 @@ class ComponentController extends ControllerBase
                 $match = $this->modelWeixinopenKeyword->matchKeyWord('默认回复', "", $component_appid, false);
             }
         }
-        $match['reply_msg_ids'] = $this->modelWeixinopenKeywordToReplyMsg->getReplyMsgIdsByKeywordId($match['id']);
-        $match['custom_msg_ids'] = $this->modelWeixinopenKeywordToCustomMsg->getCustomMsgIdsByKeywordId($match['id']);
-        $match['template_msg_ids'] = $this->modelWeixinopenKeywordToTemplateMsg->getTemplateMsgIdsByKeywordId($match['id']);
+        $match['reply_msg_ids'] = $this->modelWeixinopenKeywordToReplyMsg->getReplyMsgIdsByKeywordId($match['_id']);
+        $match['custom_msg_ids'] = $this->modelWeixinopenKeywordToCustomMsg->getCustomMsgIdsByKeywordId($match['_id']);
+        $match['template_msg_ids'] = $this->modelWeixinopenKeywordToTemplateMsg->getTemplateMsgIdsByKeywordId($match['_id']);
         $this->weixinopenService->answerCustomMsgs($FromUserName, $ToUserName, $match);
         $this->weixinopenService->answerTemplateMsgs($FromUserName, $ToUserName, $match);
         return $this->weixinopenService->answerReplyMsgs($FromUserName, $ToUserName, $match);

@@ -217,7 +217,7 @@ class SubscribemsgController extends ControllerBase
             ));
             if (!empty($msgInfo)) {
                 $redirect = $this->addUrlParameter($redirect, array(
-                    'it_subscribemsg_id' => $msgInfo['id']
+                    'it_subscribemsg_id' => $msgInfo['_id']
                 ));
             }
             // 计算signkey
@@ -229,7 +229,7 @@ class SubscribemsgController extends ControllerBase
             $redirect = $this->addUrlParameter($redirect, array(
                 'it_subscribemsg_ts' => $timestamp
             ));
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $openid, $this->appConfig['id']);
+            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $openid, $this->appConfig['_id']);
             header("location:{$redirect}");
             exit();
         } catch (\Exception $e) {
