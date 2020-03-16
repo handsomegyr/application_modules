@@ -11,32 +11,32 @@ class ApplicationsnsController extends ControllerBase
     protected $activity_id = 4;
 
     /**
-     * @var \App\Weixin2\Models\User\UserModel
+     * @var \App\Weixin2\Models\User\User
      */
     private $modelWeixinopenUser;
 
     /**
-     * @var \App\Weixin2\Models\Component\ComponentModel
+     * @var \App\Weixin2\Models\Component\Component
      */
     private $modelWeixinopenComponent;
 
     /**
-     * @var \App\Weixin2\Models\Authorize\AuthorizerModel
+     * @var \App\Weixin2\Models\Authorize\Authorizer
      */
     private $modelWeixinopenAuthorizer;
 
     /**
-     * @var \App\Weixin2\Models\ScriptTrackingModel
+     * @var \App\Weixin2\Models\ScriptTracking
      */
     private $modelWeixinopenScriptTracking;
 
     /**
-     * @var \App\Weixin2\Models\CallbackurlsModel
+     * @var \App\Weixin2\Models\Callbackurls
      */
     private $modelWeixinopenCallbackurls;
 
     /**
-     * @var \App\Weixin2\Models\SnsApplicationModel
+     * @var \App\Weixin2\Models\SnsApplication
      */
     private $modelWeixinopenSnsApplication;
 

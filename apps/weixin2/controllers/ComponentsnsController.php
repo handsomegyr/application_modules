@@ -6,7 +6,7 @@ namespace App\Weixin2\Controllers;
  * 代公众号发起网页授权
  * https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318590&token=&lang=
  */
-class ComponentsnsController extends SnsController
+class ComponentsnsController extends ControllerBase
 {
 
     // 活动ID
