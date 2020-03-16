@@ -1862,3 +1862,9 @@ function showPrice($number, $decimals = null)
 {
     return number_format($number / 100, $decimals);
 }
+
+function abort($code, $message = '', array $headers = [])
+{
+    header('HTTP/1.1 ' . $code . ' ' . $message);
+    exit();
+}

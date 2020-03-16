@@ -3,33 +3,55 @@
 namespace App\Weixin2\Controllers;
 
 /**
- * 代公众号发起网页授权
- * https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318590&token=&lang=
+ * 应用授权
  */
-class ComponentsnsController extends SnsController
+class ApplicationsnsController extends ControllerBase
 {
-
     // 活动ID
-    protected $activity_id = 3;
+    protected $activity_id = 4;
 
+    /**
+     * @var \App\Weixin2\Models\User\UserModel
+     */
     private $modelWeixinopenUser;
 
+    /**
+     * @var \App\Weixin2\Models\Component\ComponentModel
+     */
     private $modelWeixinopenComponent;
 
+    /**
+     * @var \App\Weixin2\Models\Authorize\AuthorizerModel
+     */
     private $modelWeixinopenAuthorizer;
 
+    /**
+     * @var \App\Weixin2\Models\ScriptTrackingModel
+     */
     private $modelWeixinopenScriptTracking;
 
+    /**
+     * @var \App\Weixin2\Models\CallbackurlsModel
+     */
     private $modelWeixinopenCallbackurls;
 
-    // lock key
-    private $lock_key_prefix = 'weixinopen_component_sns_';
+    /**
+     * @var \App\Weixin2\Models\SnsApplicationModel
+     */
+    private $modelWeixinopenSnsApplication;
 
-    private $cookie_session_key = 'weixinopen_component_sns_';
+    // lock key
+    private $lock_key_prefix = 'weixinopen_application_sns_';
+
+    private $cookie_session_key = 'weixinopen_application_sns_';
 
     private $sessionKey;
 
-    private $trackingKey = "第三方平台SNS授权";
+    private $trackingKey = "授权应用SNS授权";
+
+    private $appid;
+
+    private $appConfig;
 
     private $component_appid;
 
@@ -47,12 +69,12 @@ class ComponentsnsController extends SnsController
     {
         parent::initialize();
         $this->view->disable();
-
         $this->modelWeixinopenUser = new \App\Weixin2\Models\User\User();
         $this->modelWeixinopenComponent = new \App\Weixin2\Models\Component\Component();
         $this->modelWeixinopenAuthorizer = new \App\Weixin2\Models\Authorize\Authorizer();
         $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
         $this->modelWeixinopenCallbackurls = new \App\Weixin2\Models\Callbackurls();
+        $this->modelWeixinopenSnsApplication = new \App\Weixin2\Models\SnsApplication();
     }
 
     /**
@@ -75,19 +97,26 @@ class ComponentsnsController extends SnsController
      */
     public function indexAction()
     {
-        // http://wxcrmdemo.jdytoy.com/weixinopen/api/componentsns/index?appid=wxb4c2aa76686ea8f4&component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://wxcrm.eintone.com/weixinopen/api/componentsns/index?appid=wxb4c2aa76686ea8f4&component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://wxcrmdemo.jdytoy.com/weixinopen/api/applicationsns/index?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://wxcrm.intonead.com/weixinopen/api/applicationsns/index?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://wxcrm.eintone.com/weixinopen/api/applicationsns/index?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
             $this->doInitializeLogic();
 
             $redirect = isset($_GET['redirect']) ? (trim($_GET['redirect'])) : ''; // 附加参数存储跳转地址
-            $dc = isset($_GET['dc']) ? intval($_GET['dc']) : 1; // 是否检查回调域名
+
+            // $dc = isset($_GET['dc']) ? intval($_GET['dc']) : 1; // 是否检查回调域名
+            $dc = empty($this->appConfig['is_cb_url_check']) ? 0 : 1; // 是否检查回调域名
+
             $refresh = isset($_GET['refresh']) ? intval($_GET['refresh']) : 0; // 是否刷新
 
             if ($dc) {
                 // 添加重定向域的检查
+                // $list = $this->modelWeixinopenCallbackurls->getValidCallbackUrlList($this->authorizer_appid, $this->component_appid, true);
+                // $hostret = $this->modelWeixinopenCallbackurls->getHost($redirect);
+                // return Result::success($hostret);
                 $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $redirect);
                 if (empty($isValid)) {
                     throw new \Exception("回调地址不合法");
@@ -97,14 +126,14 @@ class ComponentsnsController extends SnsController
             if (!$refresh && !empty($_SESSION[$this->sessionKey])) {
                 $arrAccessToken = $_SESSION[$this->sessionKey];
                 $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
-                $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+                $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
                 header("location:{$redirect}");
                 exit();
             } else {
                 // 存储跳转地址
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
-                $_SESSION['component_appid'] = $this->component_appid;
+                $_SESSION['appid'] = $this->appid;
 
                 $moduleName = 'weixin2';
                 $controllerName = $this->controllerName;
@@ -114,11 +143,6 @@ class ComponentsnsController extends SnsController
                 $redirectUri .= '/' . $moduleName;
                 $redirectUri .= '/' . $controllerName;
                 $redirectUri .= '/callback';
-
-                // $redirectUri .= '?component_appid=' . $this->component_appid;
-                // $redirectUri .= '?appid=' . $this->authorizer_appid;
-                // $redirectUri .= '&state=' . $this->state;
-                // $redirectUri .= '&scope=' . $this->scope;
 
                 // 授权处理
                 $objComponent = new \Weixin\Token\Component($this->authorizer_appid, $this->component_appid, $this->componentConfig['access_token']);
@@ -153,13 +177,13 @@ class ComponentsnsController extends SnsController
      */
     public function callbackAction()
     {
-        // http://wxcrmdemo.jdytoy.com/weixinopen/api/componentsns/callback?appid=xxx&code=xxx&scope=auth_user&state=xxx
+        // http://wxcrmdemo.jdytoy.com/weixinopen/api/applicationsns/callback?appid=xxx&code=xxx&scope=auth_user&state=xxx
         try {
-            $component_appid = empty($_SESSION['component_appid']) ? "" : $_SESSION['component_appid'];
-            if (empty($component_appid)) {
-                throw new \Exception("component_appid未定义");
+            $appid = empty($_SESSION['appid']) ? "" : $_SESSION['appid'];
+            if (empty($appid)) {
+                throw new \Exception("appid未定义");
             }
-            $_GET['component_appid'] = $component_appid;
+            $_GET['appid'] = $appid;
 
             // 初始化
             $this->doInitializeLogic();
@@ -173,6 +197,7 @@ class ComponentsnsController extends SnsController
             if (empty($redirect)) {
                 throw new \Exception("回调地址未定义");
             }
+
             $state = empty($_SESSION['state']) ? "" : $_SESSION['state'];
             if ($state != $this->state) {
                 throw new \Exception("state发生了改变");
@@ -222,7 +247,6 @@ class ComponentsnsController extends SnsController
             }
 
             $_SESSION[$this->sessionKey] = $arrAccessToken;
-
             $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
 
             if ($sourceFromUserName !== null && $sourceFromUserName == $arrAccessToken['openid']) {
@@ -239,8 +263,7 @@ class ComponentsnsController extends SnsController
                     $this->modelWeixinopenUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $userInfo);
                 }
             }
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
-
+            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['id']);
             header("location:{$redirect}");
             exit();
         } catch (\Exception $e) {
@@ -266,11 +289,14 @@ class ComponentsnsController extends SnsController
 
     protected function getSignKey($openid, $timestamp = 0)
     {
-        return $this->modelWeixinopenAuthorizer->getSignKey($openid, $this->authorizerConfig['secretKey'], $timestamp);
+        return $this->modelWeixinopenSnsApplication->getSignKey($openid, $this->appConfig['secretKey'], $timestamp);
     }
 
     protected function getRedirectUrl4Sns($redirect, $arrAccessToken)
     {
+        // $redirect = $this->addUrlParameter($redirect, array(
+        // 'it_appid' => $this->appid
+        // ));
         $redirect = $this->addUrlParameter($redirect, array(
             'it_userToken' => urlencode($arrAccessToken['access_token'])
         ));
@@ -323,8 +349,22 @@ class ComponentsnsController extends SnsController
      */
     protected function doInitializeLogic()
     {
+        // 应用ID
+        $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : "";
+        if (empty($this->appid)) {
+            throw new \Exception("appid为空");
+        }
+        $this->appConfig = $this->modelWeixinopenSnsApplication->getInfoByAppid($this->appid);
+        if (empty($this->appConfig)) {
+            throw new \Exception("appid:{$this->appid}所对应的记录不存在");
+        }
+
+        $isValid = $this->modelWeixinopenSnsApplication->checkIsValid($this->appConfig, $this->now);
+        if (empty($isValid)) {
+            throw new \Exception("appid:{$this->appid}所对应的记录已无效");
+        }
         // 第三方平台运用ID
-        $this->component_appid = isset($_GET['component_appid']) ? trim($_GET['component_appid']) : "";
+        $this->component_appid = $this->appConfig['component_appid'];
         if (empty($this->component_appid)) {
             throw new \Exception("component_appid为空");
         }
@@ -334,9 +374,9 @@ class ComponentsnsController extends SnsController
         }
 
         // 授权方ID
-        $this->authorizer_appid = isset($_GET['appid']) ? trim($_GET['appid']) : "";
+        $this->authorizer_appid = $this->appConfig['authorizer_appid'];
         if (empty($this->authorizer_appid)) {
-            throw new \Exception("appid为空");
+            throw new \Exception("authorizer_appid为空");
         }
         $this->authorizerConfig = $this->modelWeixinopenAuthorizer->getInfoByAppid($this->component_appid, $this->authorizer_appid);
         if (empty($this->authorizerConfig)) {
@@ -345,6 +385,6 @@ class ComponentsnsController extends SnsController
 
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : uniqid();
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_userinfo';
-        $this->sessionKey = $this->cookie_session_key . "_accessToken_{$this->component_appid}_{$this->authorizer_appid}_{$this->scope}";
+        $this->sessionKey = $this->cookie_session_key . "_accessToken_{$this->appid}_{$this->component_appid}_{$this->authorizer_appid}_{$this->scope}";
     }
 }
