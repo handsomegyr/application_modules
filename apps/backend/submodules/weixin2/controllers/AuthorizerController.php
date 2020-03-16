@@ -133,6 +133,37 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['appsecret'] = array(
+            'name' => '授权方应用秘钥',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['nick_name'] = array(
             'name' => '授权方昵称',
             'data' => array(
