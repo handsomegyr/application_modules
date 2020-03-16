@@ -329,7 +329,7 @@ class ComponentController extends ControllerBase
             $uniqueKey = $AppId . "-" . $CreateTime . "-" . $InfoType;
             $this->requestLogDatas['lock_uniqueKey'] = $uniqueKey;
             if (!empty($uniqueKey)) {
-                $objLock = new \iLock(md5($uniqueKey), false);
+                $objLock = new \iLock(md5($uniqueKey));
                 if ($objLock->lock()) {
                     return "success";
                 }
@@ -517,7 +517,7 @@ class ComponentController extends ControllerBase
             }
             $this->requestLogDatas['lock_uniqueKey'] = $uniqueKey;
             if (!empty($uniqueKey)) {
-                $objLock = new \iLock(md5($uniqueKey), false);
+                $objLock = new \iLock(md5($uniqueKey));
                 if ($objLock->lock()) {
                     return "success";
                 }

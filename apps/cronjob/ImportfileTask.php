@@ -17,12 +17,12 @@ class ImportfileTask extends \Phalcon\CLI\Task
     protected $description = '文件导入';
 
     /**
-     * @var \App\Components\Cronjob\Services\Models\DataImport\FileModel
+     * @var \App\Cronjob\Models\DataImport\File
      */
     private $modelFile = null;
 
     /**
-     * @var \App\Components\Cronjob\Services\Models\DataImport\LogModel
+     * @var \App\Cronjob\Models\DataImport\Log
      */
     private $modelLog = null;
 

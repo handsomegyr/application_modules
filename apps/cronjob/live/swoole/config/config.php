@@ -26,7 +26,7 @@ $config['webim'] = array(
     // 聊天记录存储的目录
     'data_dir' => LIVEPATH . '/live/swoole/data/',
     'log_file' => LIVEPATH . '/live/swoole/log/webim.log',
-    'c' => LIVEPATH . '/live/blackword.tree'
+    'blackword_file' => LIVEPATH . '/live/blackword.tree'
 );
 
 return $config;

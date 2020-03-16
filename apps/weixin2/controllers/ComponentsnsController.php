@@ -234,7 +234,7 @@ class ComponentsnsController extends ControllerBase
             // 调整数据库操作的执行顺序，优化跳转速度
             if ($updateInfoFromWx) {
                 $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
-                $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['openid'] . $this->authorizer_appid . $this->component_appid, false);
+                $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['openid'] . $this->authorizer_appid . $this->component_appid);
                 if (!$lock->lock()) {
                     $this->modelWeixinopenUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $userInfo);
                 }
