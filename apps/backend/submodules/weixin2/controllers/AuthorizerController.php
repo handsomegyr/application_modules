@@ -720,6 +720,34 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['preview_openid'] = array(
+            'name' => '预览用微信用户ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '发送微信消息时有用',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
