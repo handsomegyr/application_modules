@@ -237,6 +237,14 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $field['data']['defaultValue'] = '{}';
             } elseif ($field['data']['type'] == 'array') {
                 $field['data']['defaultValue'] = '';
+            } elseif ($field['data']['type'] == 'file') {
+                $field['data']['length'] = 255;
+                if (!isset($field['data']['file']) || !isset($field['data']['file']['path'])) {
+                    $objModel = $this->getModel();
+                    if (!empty($objModel)) {
+                        $field['data']['file']['path'] = $objModel->getUploadPath();
+                    }
+                }
             }
 
             if (empty($field['form']['name'])) {
