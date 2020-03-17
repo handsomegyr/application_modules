@@ -335,6 +335,65 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+
+        $schemas['openids_sql'] = array(
+            'name' => '获取openid的sql文',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
+        $schemas['openids_file'] = array(
+            'name' => 'openid列表CSV文件',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => '',
+                'file' => array(
+                    'path' => $this->modelTask->getUploadPath()
+                )
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'file',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => ''
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         // 推送状态
         $pushStatusOptions = array();
         $pushStatusOptions['0'] = "待推送";
