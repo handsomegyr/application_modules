@@ -78,7 +78,7 @@ class WeixinTask extends \Phalcon\CLI\Task
                     try {
                         // 获取
                         $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
-                        $res = $weixinopenService->syncSubscribeUserList($now, '');
+                        $weixinopenService->syncSubscribeUserList($now, $authorizerItem['preview_openid']);
                     } catch (\Exception $e) {
                         $modelActivityErrorLog->log($this->activity_id, $e, $now);
                     }
