@@ -84,10 +84,12 @@
                     rules: {
                         <?php foreach ($this->view->schemas as $key => $field) { ?>
                             <?php if (!empty($field['validation']['required']) && !empty($field['form']['is_show']) && !in_array($field['data']['type'], array('file', 'multifile'))) { ?>
-                                <?php echo $key ?>: {
-                                    //minlength: 2,
-                                    required: true,
-                                },
+                                <?php if (!in_array($field['form']['input_type'], array('select', 'radio'))) { ?>
+                                    <?php echo $key ?>: {
+                                        //minlength: 2,
+                                        required: true,
+                                    },
+                                <?php } ?>
                             <?php } ?>
                         <?php } ?>
                     },
@@ -95,9 +97,11 @@
                     messages: { // custom messages for radio buttons and checkboxes
                         <?php foreach ($this->view->schemas as $key => $field) { ?>
                             <?php if (!empty($field['validation']['required']) && !empty($field['form']['is_show']) && !in_array($field['data']['type'], array('file', 'multifile'))) { ?>
-                                <?php echo $key ?>: {
-                                    required: '<i class="fa fa-times-circle-o"></i>【<?php echo $field['form']['name'] ?>】字段是必填项.'
-                                },
+                                <?php if (!in_array($field['form']['input_type'], array('select', 'radio'))) { ?>
+                                    <?php echo $key ?>: {
+                                        required: '<i class="fa fa-times-circle-o"></i>【<?php echo $field['form']['name'] ?>】字段是必填项.'
+                                    },
+                                <?php } ?>
                             <?php } ?>
                         <?php } ?>
                     },
