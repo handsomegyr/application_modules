@@ -1738,6 +1738,7 @@ function setCookieValue($name, $value, $expire = null, $path = null, $domain = n
 
 function getCurrentTime($time = 0)
 {
+    return \App\Common\Utils\Helper::getCurrentTime($time);
     if (empty($time)) {
         if (defined('CURRENT_TIMESTAMP')) {
             return new \MongoDate(CURRENT_TIMESTAMP);
