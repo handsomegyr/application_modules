@@ -21,7 +21,7 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
 
     /**
      * 处理
-     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixinnotificationprepare handle 5e46128f69dc0a0f8415fe8f.csv
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixinnotificationprepare handle
      * @param array $params            
      */
     public function handleAction(array $params)
@@ -32,6 +32,7 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
         try {
             // 1 获取未推送的任务并且进行锁住
             $modelTask = new \App\Weixin2\Models\Notification\Task();
+            $modelUser = new \App\Weixin2\Models\User\User();
             $this->modelTask->begin();
 
             $taskInfo = $modelTask->getAndLockOneTask4ByPushStatus(\App\Weixin2\Models\Notification\TaskProcess::UNPUSH, $now);
@@ -71,7 +72,49 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
             $taskContentList = $modelTaskContent->getAndLockListByTaskId($taskInfo['_id']);
             // 如果没有 说明设置有问题
             if (empty($taskContentList)) {
-                throw new \Exception("未找到任务ID:{$taskInfo['_id']}的推送任务所对应的推送任务内容");
+
+                // 做一些其他的检查
+                if (empty($taskInfo['openids_sql']) && empty($taskInfo['openids_file'])) {
+                    throw new \Exception("未找到任务ID:{$taskInfo['_id']}的推送任务所对应的推送任务内容");
+                } else {
+                    if (!empty($taskInfo['openids_sql'])) {
+                        // 根据sql文获取openids
+                        $openidList4Sql = $modelUser->selectRaw($taskInfo['openids_sql']);
+                        if (empty($openidList4Sql)) {
+                            throw new \Exception("任务ID:{$taskInfo['_id']}的sql文:{$taskInfo['openids_sql']}未获取到数据");
+                        }
+                        $openidList = array();
+                        foreach ($openidList4Sql as $key => $item) {
+                            if (empty($item['openid'])) {
+                                throw new \Exception("任务ID:{$taskInfo['_id']}的sql文:{$taskInfo['openids_sql']}未指定openid字段");
+                            }
+                            $openidList[] = $item['openid'];
+                        }
+                    } elseif (!empty($taskInfo['openids_file'])) {
+                        // 根据文件获取openids
+                        $fileCsv = $modelTask->getPhysicalFilePath($taskInfo['openids_file']);
+                        if (!file_exists($fileCsv)) {
+                            throw new \Exception("任务ID:{$taskInfo['_id']}的上传文件:{$fileCsv}不存在");
+                        }
+                        $csv = file_get_contents($fileCsv);
+                        if (empty($csv)) {
+                            throw new \Exception("任务ID:{$taskInfo['_id']}的上传文件:{$fileCsv} is empty");
+                        }
+                        // csv to array
+                        $openidList = csv2arr($csv);
+                        unset($csv); // 释放内存
+                        //print_r($arr);
+                        if (empty($openidList)) {
+                            throw new \Exception("任务ID:{$taskInfo['_id']}的上传文件:{$fileCsv}'s content is not correct");
+                        }
+                    }
+                    // 每一万条生成一条taskcontent的记录
+                    $openidList = array_values(array_unique($openidList));
+                    $openidChunkList = array_chunk($openidList, 10000);
+                    foreach ($openidChunkList as $openids) {
+                        $taskContentList[] = $modelTaskContent->logon($taskInfo['name'] . \uniqid(), $taskInfo['_id'], $openids, $taskInfo['tag_id'], $now);
+                    }
+                }
             }
 
             // 5 循环处理任务内容生成对应的日志记录

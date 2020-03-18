@@ -158,7 +158,7 @@ class ImportfileTask extends \Phalcon\CLI\Task
                     if ($cronjobInfo['status'] < \App\Cronjob\Models\DataImport\File::STATUS_UPLOAD) {
                         $csv = file_get_contents($fileCsv);
                         // csv to array
-                        $arr = $this->csv2arr($csv);
+                        $arr = csv2arr($csv);
                         unset($csv); // 释放内存
                         //print_r($arr);
                         if (empty($arr)) {
@@ -231,33 +231,6 @@ class ImportfileTask extends \Phalcon\CLI\Task
             echo '发送邮件失败，错误原因：' . $th->getMessage();
             return false;
         }
-    }
-
-    /**
-     * 转化为数组
-     *
-     * @param string $CsvString            
-     * @return array
-     */
-    private function csv2arr($csvString)
-    {
-        $csvString = $this->characet($csvString);
-        $data = str_getcsv($csvString, "\n"); // parse the rows
-        foreach ($data as &$row) {
-            $row = str_getcsv($row, ",");
-        }
-        return $data;
-    }
-
-    private function characet($data)
-    {
-        if (!empty($data)) {
-            $fileType = mb_detect_encoding($data, array('UTF-8', 'GBK', 'LATIN1', 'BIG5'));
-            if ($fileType != 'UTF-8') {
-                $data = mb_convert_encoding($data, 'utf-8', $fileType);
-            }
-        }
-        return $data;
     }
 
     private function dataUpload($content_type, $arr, $cronjobInfo, $settings)

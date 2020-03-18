@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 class Test2Controller extends ControllerBase
@@ -18,7 +19,7 @@ class Test2Controller extends ControllerBase
             $modelMsgCount = new \App\Message\Models\MsgCount(\App\Common\Models\Base\Base::MONGODB);
             // $modelMsgCount->setDebug(true);
             $modelMsgCount->setPhql(false);
-            
+
             echo ("<br/>save start:<br/>");
             $datas = array(
                 'user_id' => 'guoyongrong' . uniqid(),
@@ -27,12 +28,12 @@ class Test2Controller extends ControllerBase
                 'friendMsgCount' => 3,
                 'replyMsgCount' => 4
             );
-            
+
             $ret = $modelMsgCount->save($datas);
             print_r($ret);
             $id = $ret['_id'];
             echo ("<br/>save end <br/>");
-            
+
             echo ("<br/>insert start:<br/>");
             $datas = array(
                 'user_id' => 'guoyongrong' . uniqid(),
@@ -41,12 +42,12 @@ class Test2Controller extends ControllerBase
                 'friendMsgCount' => 3,
                 'replyMsgCount' => 4
             );
-            
+
             $ret = $modelMsgCount->insert($datas);
             print_r($ret);
             $id = $ret['_id'];
             echo ("<br/>insert end <br/>");
-            
+
             echo ("<br/>update start:<br/>");
             $query = array(
                 '_id' => $id
@@ -62,7 +63,7 @@ class Test2Controller extends ControllerBase
             ));
             print_r($ret);
             echo ("<br/>update end <br/>");
-            
+
             echo ("<br/>count start:<br/>");
             $num = $modelMsgCount->count(array());
             echo ('count1:' . $num . "<br/>");
@@ -71,7 +72,7 @@ class Test2Controller extends ControllerBase
             ));
             echo ('count2:' . $num . "<br/>");
             echo ("<br/>count end <br/>");
-            
+
             echo ("<br/>findOne start:<br/>");
             $info = $modelMsgCount->findOne(array(
                 '_id' => $id
@@ -85,70 +86,70 @@ class Test2Controller extends ControllerBase
             echo ("findOne2:<br/>");
             print_r($info);
             echo ("<br/>findOne end <br/>");
-            
+
             echo ("<br/>find start:<br/>");
             $list = $modelMsgCount->find(array(
                 '_id' => $id
             ), array(
-                '_id' => - 1,
+                '_id' => -1,
                 '__MODIFY_TIME__' => 1
             ), 0, 1);
-            
+
             echo ("find1:<br/>");
             print_r($list);
             echo ("<br/>");
-            
+
             $list = $modelMsgCount->find(array(
                 '_id' => 'xxxxxxx'
             ), array(
-                '_id' => - 1,
+                '_id' => -1,
                 '__MODIFY_TIME__' => 1
             ), 0, 1);
-            
+
             echo ("find2:<br/>");
             print_r($list);
             echo ("<br/>find end <br/>");
-            
+
             echo ("<br/>findAll start:<br/>");
             $list = $modelMsgCount->findAll(array(
                 '_id' => $id
             ), array(
-                '_id' => - 1,
+                '_id' => -1,
                 '__MODIFY_TIME__' => 1
             ));
-            
+
             echo ("findAll1:<br/>");
             print_r($list);
             echo ("<br/>");
-            
+
             $list = $modelMsgCount->findAll(array(
                 '_id' => 'xxxxxxx'
             ), array(
-                '_id' => - 1,
+                '_id' => -1,
                 '__MODIFY_TIME__' => 1
             ));
-            
+
             echo ("findAll2:<br/>");
             print_r($list);
             echo ("<br/>findAll end <br/>");
-            
+
             echo ("<br/>distinct start:<br/>");
             $list = $modelMsgCount->distinct('user_id', array(
                 '_id' => $id
             ));
-            
+
             echo ("distinct1:<br/>");
             print_r($list);
             echo ("<br/>");
-            
+
             $list = $modelMsgCount->distinct('user_id', array(
                 '_id' => 'xxxxxxx'
             ));
-            
+
             echo ("distinct2:<br/>");
             print_r($list);
             echo ("<br/>distinct end <br/>");
-            
+
             echo ("<br/>sum start:<br/>");
             $fields = array(
                 'sysMsgCount'
@@ -156,23 +157,23 @@ class Test2Controller extends ControllerBase
             $groups = array(
                 '_id'
             );
-            
+
             $list = $modelMsgCount->sum(array(
                 '_id' => $id
             ), $fields, $groups);
-            
+
             echo ("sum1:<br/>");
             print_r($list);
             echo ("<br/>");
-            
+
             $list = $modelMsgCount->sum(array(
                 '_id' => 'xxxxxxx'
             ), $fields, $groups);
-            
+
             echo ("sum2:<br/>");
             print_r($list);
             echo ("<br/>sum end <br/>");
-            
+
             echo ("<br/>findAndModify start:<br/>");
             $total_amount = 2;
             $options = array();
@@ -185,7 +186,7 @@ class Test2Controller extends ControllerBase
             $options['update'] = array(
                 '$inc' => array(
                     'privMsgCount' => $total_amount,
-                    'sysMsgCount' => - $total_amount
+                    'sysMsgCount' => -$total_amount
                 )
             );
             $options['new'] = true; // 返回更新之后的值
@@ -200,7 +201,7 @@ class Test2Controller extends ControllerBase
             print_r($ret);
             echo ("<br/>");
             echo ("<br/>findAndModify end<br/>");
-            
+
             echo ("<br/>remove start:<br/>");
             $query = array(
                 '_id' => $id
@@ -213,4 +214,3 @@ class Test2Controller extends ControllerBase
         }
     }
 }
-

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 class TestController extends ControllerBase
@@ -17,7 +18,7 @@ class TestController extends ControllerBase
             $modelMsgCount = new \App\Message\Models\MsgCount();
             // $modelMsgCount->setDebug(true);
             $modelMsgCount->setPhql(false);
-            
+
             echo ("<br/>insert start:<br/>");
             $datas = array(
                 'user_id' => 'guoyongrong' . uniqid(),
@@ -26,12 +27,12 @@ class TestController extends ControllerBase
                 'friendMsgCount' => 3,
                 'replyMsgCount' => 4
             );
-            
+
             $ret = $modelMsgCount->insert($datas);
             print_r($ret);
             $id = $ret['_id'];
             echo ("<br/>insert end <br/>");
-            
+
             echo ("<br/>update start:<br/>");
             $query = array(
                 '_id' => $id
@@ -47,7 +48,7 @@ class TestController extends ControllerBase
             ));
             print_r($ret);
             echo ("<br/>update end <br/>");
-            
+
             echo ("<br/>count start:<br/>");
             $num = $modelMsgCount->count(array());
             echo ('count1:' . $num . "<br/>");
@@ -56,7 +57,7 @@ class TestController extends ControllerBase
             ));
             echo ('count2:' . $num . "<br/>");
             echo ("<br/>count end <br/>");
-            
+
             echo ("<br/>findOne start:<br/>");
             $info = $modelMsgCount->findOne(array(
                 '_id' => $id
@@ -70,70 +71,70 @@ class TestController extends ControllerBase
             echo ("findOne2:<br/>");
             print_r($info);
             echo ("<br/>findOne end <br/>");
-            
+
             echo ("<br/>find start:<br/>");
             $list = $modelMsgCount->find(array(
                 '_id' => $id
             ), array(
-                '_id' => - 1,
+                '_id' => -1,
                 '__MODIFY_TIME__' => 1
             ), 0, 1);
-            
+
             echo ("find1:<br/>");
             print_r($list);
             echo ("<br/>");
-            
+
             $list = $modelMsgCount->find(array(
                 '_id' => 'xxxxxxx'
             ), array(
-                '_id' => - 1,
+                '_id' => -1,
                 '__MODIFY_TIME__' => 1
             ), 0, 1);
-            
+
             echo ("find2:<br/>");
             print_r($list);
             echo ("<br/>find end <br/>");
-            
+
             echo ("<br/>findAll start:<br/>");
             $list = $modelMsgCount->findAll(array(
                 '_id' => $id
             ), array(
-                '_id' => - 1,
+                '_id' => -1,
                 '__MODIFY_TIME__' => 1
             ));
-            
+
             echo ("findAll1:<br/>");
             print_r($list);
             echo ("<br/>");
-            
+
             $list = $modelMsgCount->findAll(array(
                 '_id' => 'xxxxxxx'
             ), array(
-                '_id' => - 1,
+                '_id' => -1,
                 '__MODIFY_TIME__' => 1
             ));
-            
+
             echo ("findAll2:<br/>");
             print_r($list);
             echo ("<br/>findAll end <br/>");
-            
+
             echo ("<br/>distinct start:<br/>");
             $list = $modelMsgCount->distinct('user_id', array(
                 '_id' => $id
             ));
-            
+
             echo ("distinct1:<br/>");
             print_r($list);
             echo ("<br/>");
-            
+
             $list = $modelMsgCount->distinct('user_id', array(
                 '_id' => 'xxxxxxx'
             ));
-            
+
             echo ("distinct2:<br/>");
             print_r($list);
             echo ("<br/>distinct end <br/>");
-            
+
             echo ("<br/>sum start:<br/>");
             $fields = array(
                 'sysMsgCount'
@@ -141,23 +142,23 @@ class TestController extends ControllerBase
             $groups = array(
                 '_id'
             );
-            
+
             $list = $modelMsgCount->sum(array(
                 '_id' => $id
             ), $fields, $groups);
-            
+
             echo ("sum1:<br/>");
             print_r($list);
             echo ("<br/>");
-            
+
             $list = $modelMsgCount->sum(array(
                 '_id' => 'xxxxxxx'
             ), $fields, $groups);
-            
+
             echo ("sum2:<br/>");
             print_r($list);
             echo ("<br/>sum end <br/>");
-            
+
             echo ("<br/>findAndModify start:<br/>");
             $total_amount = 2;
             $options = array();
@@ -170,7 +171,7 @@ class TestController extends ControllerBase
             $options['update'] = array(
                 '$inc' => array(
                     'privMsgCount' => $total_amount,
-                    'sysMsgCount' => - $total_amount
+                    'sysMsgCount' => -$total_amount
                 )
             );
             $options['new'] = true; // 返回更新之后的值
@@ -185,7 +186,7 @@ class TestController extends ControllerBase
             print_r($ret);
             echo ("<br/>");
             echo ("<br/>findAndModify end<br/>");
-            
+
             echo ("<br/>remove start:<br/>");
             $query = array(
                 '_id' => $id
@@ -197,5 +198,33 @@ class TestController extends ControllerBase
             die($e->getMessage());
         }
     }
-}
 
+    public function selectrawAction()
+    {
+        try {
+            // http://www.jizigou.com/service/test/selectraw
+            // http://www.applicationmodule.com/service/test/selectraw
+            $modelMsgCount = new \App\Message\Models\MsgCount();
+            // $modelMsgCount->setDebug(true);
+            $modelMsgCount->setPhql(false);
+
+            echo ("<br/>select raw1:<br/>");
+
+            $ret = $modelMsgCount->selectRaw('select `openid` from `iweixin2_user` where `sex`= 1');
+            echo \json_encode($ret);
+
+
+            echo ("<br/>select raw2:<br/>");
+
+            $ret = $modelMsgCount->selectRaw('select `openid` from `iweixin2_user` where `sex`= ?', array(1));
+            echo \json_encode($ret);
+
+            echo ("<br/>select raw3:<br/>");
+
+            $ret = $modelMsgCount->selectRaw('select count(*) as num from `iweixin2_user`');
+            echo \json_encode($ret);
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+    }
+}

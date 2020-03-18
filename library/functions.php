@@ -1869,3 +1869,30 @@ function abort($code, $message = '', array $headers = [])
     header('HTTP/1.1 ' . $code . ' ' . $message);
     exit();
 }
+
+/**
+ * 转化为数组
+ *
+ * @param string $CsvString            
+ * @return array
+ */
+function csv2arr($csvString)
+{
+    $csvString = convertCharacet($csvString);
+    $data = str_getcsv($csvString, "\n"); // parse the rows
+    foreach ($data as &$row) {
+        $row = str_getcsv($row, ",");
+    }
+    return $data;
+}
+
+function convertCharacet($data)
+{
+    if (!empty($data)) {
+        $fileType = mb_detect_encoding($data, array('UTF-8', 'GBK', 'LATIN1', 'BIG5'));
+        if ($fileType != 'UTF-8') {
+            $data = mb_convert_encoding($data, 'utf-8', $fileType);
+        }
+    }
+    return $data;
+}

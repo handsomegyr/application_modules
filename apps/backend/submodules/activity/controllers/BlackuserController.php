@@ -277,7 +277,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
                     //return $this->makeJsonError("文件path:" . $file->getPath());
                     $csv = file_get_contents($file->getTempName());
                     // csv to array
-                    $arr = $this->csv2arr($csv);
+                    $arr = csv2arr($csv);
                     unset($csv); // 释放内存
 
                     //return $this->makeJsonError(\json_encode($arr));

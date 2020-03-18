@@ -1394,34 +1394,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         }
     }
 
-    /**
-     * 转化为数组
-     *
-     * @param string $CsvString            
-     * @return array
-     */
-    protected function csv2arr($csvString, $delimiter = "\t")
-    {
-        $csvString = $this->characet($csvString);
-        $data = str_getcsv($csvString, "\n"); // parse the rows
-        foreach ($data as &$row) {
-            // $row = str_getcsv($row, ",");
-            $row = str_getcsv($row, $delimiter);
-        }
-        return $data;
-    }
-
-    protected function characet($data)
-    {
-        if (!empty($data)) {
-            $fileType = mb_detect_encoding($data, array('UTF-8', 'GBK', 'LATIN1', 'BIG5'));
-            if ($fileType != 'UTF-8') {
-                $data = mb_convert_encoding($data, 'utf-8', $fileType);
-            }
-        }
-        return $data;
-    }
-
     protected function getWeixinConfig()
     {
         $config = $this->getDI()->get('config');

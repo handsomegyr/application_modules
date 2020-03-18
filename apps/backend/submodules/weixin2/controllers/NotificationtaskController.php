@@ -10,7 +10,7 @@ use App\Backend\Submodules\Weixin2\Models\MassMsg\SendMethod;
 use App\Backend\Submodules\Weixin2\Models\MassMsg\MassMsg;
 use App\Backend\Submodules\Weixin2\Models\TemplateMsg\TemplateMsg;
 use App\Backend\Submodules\Weixin2\Models\CustomMsg\CustomMsg;
-
+use App\Backend\Submodules\Weixin2\Models\User\Tag;
 
 
 /**
@@ -39,6 +39,7 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
         $this->modelMassMsg = new MassMsg();
         $this->modelTemplateMsg = new TemplateMsg();
         $this->modelCustomMsg = new CustomMsg();
+        $this->modelUserTag = new Tag();
 
         $this->componentItems = $this->modelComponent->getAll();
         $this->authorizerItems = $this->modelAuthorizer->getAll();
@@ -48,6 +49,7 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
         $this->massMsgItems = $this->modelMassMsg->getAllByType("", "_id");
         $this->templateMsgItems = $this->modelTemplateMsg->getAll();
         $this->customMsgItems = $this->modelCustomMsg->getAllByType("", "_id");
+        $this->userTagItems = $this->modelUserTag->getAllByType("tag_id");
 
         parent::initialize();
     }
@@ -58,6 +60,7 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
     protected $massMsgItems = null;
     protected $templateMsgItems = null;
     protected $customMsgItems = null;
+    protected $userTagItems = null;
 
     protected function getSchemas()
     {
@@ -336,6 +339,38 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
             )
         );
 
+        $schemas['tag_id'] = array(
+            'name' => '群发到的标签的tag_id',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->userTagItems,
+                'help' => '群发到的标签的tag_id，参见用户管理中用户分组接口',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->userTagItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->userTagItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['openids_sql'] = array(
             'name' => '获取openid的sql文',
             'data' => array(
@@ -349,7 +384,8 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '当不是按照tag_id进行群发消息时必须指定',
             ),
             'list' => array(
                 'is_show' => false,
@@ -380,7 +416,8 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'file',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '当不是按照tag_id进行群发消息时必须指定',
             ),
             'list' => array(
                 'is_show' => true,
