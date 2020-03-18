@@ -2,7 +2,7 @@
     <label for="<?php echo $key ?>" class="<?php echo $this->view->viewClass['label'] ?> <?php if ($field['validation']['required']) { ?>asterisk<?php } ?> control-label"><?php echo $field['name'] ?></label>
 
     <div class="<?php echo $this->view->viewClass['field'] ?>">
-        <input type="text" id="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $value ?>" class="form-control" readonly />
+        <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="text" id="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $value ?>" class="form-control" readonly />
 
         <?php $this->partial('partials/form/help-block'); ?>
 

@@ -7,7 +7,7 @@
         <?php $this->partial('partials/form/error'); ?>
 
         <div class="input-group" style="width: 150px">
-            <input type="text" id="<?php echo $key ?>" name="<?php echo $key ?>" value="{{ old($column, $value) }}" class="form-control {{$class}}" placeholder="0" style="text-align:right;" {!! $attributes !!} />
+            <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="text" id="<?php echo $key ?>" name="<?php echo $key ?>" value="{{ old($column, $value) }}" class="form-control {{$class}}" placeholder="0" style="text-align:right;" {!! $attributes !!} />
             <span class="input-group-addon">%</span>
         </div>
 

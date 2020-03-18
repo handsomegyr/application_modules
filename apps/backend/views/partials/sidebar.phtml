@@ -7,8 +7,8 @@
 
         <div class="user-panel">
             <div class="pull-left image">
-                <!-- <img src="<?php echo empty($_SESSION['admin_user_info']['headimgurl']) ? $this->view->adminConfig->admin->default_avatar : $this->view->baseUrl . "service/file/index?upload_path=systemuser&id={$_SESSION['admin_user_info']['headimgurl']}&w=50&h=50"; ?>" class="img-circle" alt="User Image"> -->
-                <img src="<?php echo empty($_SESSION['admin_user_info']['headimgurl']) ? $this->view->adminConfig->admin->default_avatar : $this->myTag->getUploadFilePath('systemuser',$_SESSION['admin_user_info']['headimgurl']); ?>" class="img-circle" alt="User Image">
+                <!-- <img src="<?php echo empty($_SESSION['admin_user_info']['headimgurl']) ? $this->view->adminConfig->admin->default_avatar : $this->view->baseUrl . "service/file/index?upload_path=system/user&id={$_SESSION['admin_user_info']['headimgurl']}&w=50&h=50"; ?>" class="img-circle" alt="User Image"> -->
+                <img src="<?php echo empty($_SESSION['admin_user_info']['headimgurl']) ? $this->view->adminConfig->admin->default_avatar : $this->myTag->getUploadFilePath('system/user',$_SESSION['admin_user_info']['headimgurl']); ?>" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p><?php echo $_SESSION['admin_name'] ?></p>

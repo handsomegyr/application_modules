@@ -75,6 +75,7 @@
                     <?php } ?>
                 <?php } ?>
 
+
                 var form2 = $('#form_sample_2');
                 form2.validate({
                     errorElement: 'span', //default input error message container
@@ -97,7 +98,7 @@
                     messages: { // custom messages for radio buttons and checkboxes
                         <?php foreach ($this->view->schemas as $key => $field) { ?>
                             <?php if (!empty($field['validation']['required']) && !empty($field['form']['is_show']) && !in_array($field['data']['type'], array('file', 'multifile'))) { ?>
-                                <?php if (!in_array($field['form']['input_type'], array('select', 'radio'))) { ?>
+                                <?php if (true || !in_array($field['form']['input_type'], array('select', 'radio'))) { ?>
                                     <?php echo $key ?>: {
                                         required: '<i class="fa fa-times-circle-o"></i>【<?php echo $field['form']['name'] ?>】字段是必填项.'
                                     },
@@ -110,8 +111,9 @@
                         // var ele1 = $(element).closest('.input-group');
                         // // $(error).prepend('<i class="fa fa-times-circle-o"></i>');
                         // error.insertBefore(ele1);
-                        error.insertBefore(element.closest('.input-group')); // for other inputs, just perform default behavoir
-
+                        // error.insertBefore(element.closest('.input-group')); // for other inputs, just perform default behavoir
+                        // error.insertAfter(element.closest('.col-sm-8')); // for other inputs, just perform default behavoir
+                        element.closest('.col-sm-8').prepend(error); // for other inputs, just perform default behavoir                        
                     },
 
                     invalidHandler: function(event, validator) { //display error alert on form submit   
@@ -140,7 +142,7 @@
                         //error2.hide();
                         $('#app-admin-alerts-errs').html("");
                         // $('#app-admin-alerts-div').hide();
-                        alert("OK");
+                        // alert("OK");
                         //form.submit();
                         FormComponents.submit();
                     }
@@ -150,7 +152,7 @@
             },
             // 提交
             submit: function() {
-                //alert("submit！");
+                // alert("submit！");
                 var formData = new FormData(document.getElementById("form_sample_2")); //
                 formData.append("_token", LA.token);
                 $.ajax({
