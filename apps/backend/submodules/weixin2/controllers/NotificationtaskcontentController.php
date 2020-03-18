@@ -96,9 +96,9 @@ class NotificationtaskcontentController extends \App\Backend\Controllers\FormCon
         $schemas['openids'] = array(
             'name' => 'openid列表',
             'data' => array(
-                'type' => 'json',
+                'type' => 'array',
                 'length' => 1024,
-                'defaultValue' => '{}'
+                'defaultValue' => '[]'
             ),
             'validation' => array(
                 'required' => false

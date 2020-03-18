@@ -558,6 +558,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 // 将元素中空值的排除掉
                 if ($field['data']['type'] == "array") {
                     if (!empty($input->$key)) {
+                        if (is_string($input->$key)) {
+                            $input->$key = \json_decode($input->$key, true);
+                        }
+                        // var_dump($input->$key);
+                        // die($key);
                         $input->$key = array_filter($input->$key, function ($element) {
                             $element = trim($element);
                             return strlen($element) > 0;

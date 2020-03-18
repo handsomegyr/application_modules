@@ -20,9 +20,9 @@
             $this->partial('partials/form/display');
         } elseif ($field['form']['input_type'] == "textarea") {
             if ($field['data']['type'] == "json") {
-                $value = empty($this->view->row[$key]) ? '{}' : (!is_string($this->view->row[$key]) ? json_encode($this->view->row[$key]) : $this->view->row[$key]);
+                $value = empty($this->view->row[$key]) ? '{}' : (!is_string($this->view->row[$key]) ? \json_encode($this->view->row[$key]) : $this->view->row[$key]);
             } elseif ($field['data']['type'] == "array") {
-                $value = empty($this->view->row[$key]) ? '' : (!is_string($this->view->row[$key]) ? implode(',', $this->view->row[$key]) : $this->view->row[$key]);
+                $value = empty($this->view->row[$key]) ? '[]' : (!is_string($this->view->row[$key]) ? \json_encode($this->view->row[$key]) : $this->view->row[$key]);
             } else {
                 //$value = nl2br($this->view->row[$key]);
                 $value = $this->view->row[$key];
