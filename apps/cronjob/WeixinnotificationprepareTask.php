@@ -137,7 +137,8 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         throw new \Exception("任务ID:{$taskInfo['_id']},任务内容ID:{$taskContent['_id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段值为空");
                     }
 
-                    $openids = explode(',', $taskContent['openids']);
+                    // $openids = explode(',', $taskContent['openids']);
+                    $openids = $taskContent['openids'];
                     if (empty($openids)) {
                         throw new \Exception("任务ID:{$taskInfo['_id']},任务内容ID:{$taskContent['_id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段格式不正确");
                     }
@@ -173,7 +174,8 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                             throw new \Exception("任务ID:{$taskInfo['_id']},任务内容ID:{$taskContent['_id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段值为空");
                         }
 
-                        $openids = explode(',', $taskContent['openids']);
+                        // $openids = explode(',', $taskContent['openids']);
+                        $openids = $taskContent['openids'];
                         if (empty($openids)) {
                             throw new \Exception("任务ID:{$taskInfo['_id']},任务内容ID:{$taskContent['_id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段格式不正确");
                         }
@@ -193,7 +195,8 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         throw new \Exception("任务ID:{$taskInfo['_id']},任务内容ID:{$taskContent['_id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段值为空");
                     }
 
-                    $openids = explode(',', $taskContent['openids']);
+                    // $openids = explode(',', $taskContent['openids']);
+                    $openids = $taskContent['openids'];
                     if (empty($openids)) {
                         throw new \Exception("任务ID:{$taskInfo['_id']},任务内容ID:{$taskContent['_id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段格式不正确");
                     }
