@@ -147,7 +147,7 @@ class UserController extends ControllerBase
             if (empty($headimgurl) || $userInfo['headimgurl'] == $headimgurl) {
                 unset($otherUpdateData['headimgurl']);
             }
-            $userInfo = $this->modelUser->incWorth($userInfo, 0, 0, array(), $otherUpdateData);
+            $this->modelUser->incWorth($userInfo, 0, 0, array(), $otherUpdateData);
         }
         // 记录用户数据到REDIS里
         $this->modelUser->saveInfoInRedis($userInfo);
