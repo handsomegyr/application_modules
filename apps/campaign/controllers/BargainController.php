@@ -115,7 +115,7 @@ class BargainController extends ControllerBase
 
             echo $this->result('OK', $ret);
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo $this->error($e->getCode(), $e->getMessage());
             return false;
         }
@@ -143,7 +143,7 @@ class BargainController extends ControllerBase
 
             echo $this->result('OK', $ret);
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo $this->error($e->getCode(), $e->getMessage());
             return false;
         }
@@ -231,7 +231,7 @@ class BargainController extends ControllerBase
             }
 
             // 关闭砍价物信息
-            $bargainInfo = $this->modelBargain->doClosed($bargainInfo['_id'], $this->now);
+            $this->modelBargain->doClosed($bargainInfo['_id'], $this->now);
             echo $this->result('OK');
             return true;
         } catch (\Exception $e) {

@@ -2279,7 +2279,7 @@ class ServiceController extends ControllerBase
             // 邀請函领取次数也加1,同时价值加$worth
             $otherIncData = array();
             $otherUpdateData = array();
-            $invitationInfo = $this->modelInvitation->incInvitedNum($invitationInfo, 1, 0, 0, $otherIncData, $otherUpdateData);
+            $this->modelInvitation->incInvitedNum($invitationInfo, 1, 0, 0, $otherIncData, $otherUpdateData);
         }
     }
 

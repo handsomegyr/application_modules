@@ -504,7 +504,8 @@ class ServiceController extends ControllerBase
 
             if (!empty($info)) {
                 // 增加回复数量
-                $newReplyInfo = $this->modelReply->incNum($info['ref_reply_id']);
+                $this->modelReply->incNum($info['ref_reply_id']);
+                $newReplyInfo =  $this->modelReply->getInfoById($info['ref_reply_id']);
                 $floor = $newReplyInfo['num'];
                 $list = $this->modelReply->insertpostreply($postid, $memberInfo['_id'], $user_name, $memberInfo['avatar'], $memberInfo['register_by'], $originalContent, $info['user_id'], $info['user_name'], $info['user_avatar'], $info['user_register_by'], $info['user_content'], $info['ref_reply_id'], $floor, $refFloor);
                 $this->modelReplyMsg->log($postid, $memberInfo['_id'], $user_name, $memberInfo['avatar'], $memberInfo['register_by'], $originalContent, $info['user_id'], $info['user_name'], $info['user_avatar'], $info['user_register_by'], $info['user_content']);
