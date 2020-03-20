@@ -78,7 +78,7 @@ class SignController extends ControllerBase
                 'is_lottery' => 0
             );
             $scene = "";
-            $userInfo = $this->modelActivityUser->getOrCreateByUserId($this->activity1, $FromUserName, $this->now, $nickname, $headimgurl, '', '', 0, 0, $scene, $memo);
+            $userInfo = $this->modelActivityUser->getOrCreateByUserId($this->activity1, $FromUserName, $this->now, $nickname, $headimgurl, '', '', 0, 0, $scene, array(), $memo);
 
             // 是否是黑名单用户
             $blankUserInfo = $this->modelActivityBlackUser->getInfoByUser($FromUserName, $this->activity1);
