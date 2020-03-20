@@ -602,13 +602,6 @@ class CnyController extends ControllerBase
         }
     }
 
-    protected function getOrCreateActivityUser($FromUserName, $nickname, $headimgurl, $redpack_user, $thirdparty_user, $scene, array $extendFields = array(), array $memo = array())
-    {
-        // 生成活动用户
-        $userInfo = $this->modelActivityUser->getOrCreateByUserId($this->activity_id, $FromUserName, $this->now, $nickname, $headimgurl, $redpack_user, $thirdparty_user, 1, 0,  $scene, $extendFields, $memo);
-        return $userInfo;
-    }
-
     private function sendTemplateMsg($openid, $prize_name, $code)
     {
         try {
