@@ -827,6 +827,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         try {
             /* 初始化、取得 菜单信息 */
             $row = $this->getModel()->getEmptyRow($this->getFilterInput());
+            foreach ($row as $field => $value) {
+                $row[$field] = $this->adjustDataTime4Show($value);
+            }
             $this->view->setVar('row', $row);
             $this->view->setVar('form_act', $this->getUrl("insert"));
             $this->view->setVar('list_url', $this->getUrl("list"));
@@ -889,6 +892,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
+            }
+            foreach ($row as $field => $value) {
+                $row[$field] = $this->adjustDataTime4Show($value);
             }
             $this->view->setVar('row', $row);
             $this->view->setVar('form_act', $this->getUrl("update"));
@@ -1209,7 +1215,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         foreach ($item as $field => $value) {
             if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
-                $value = date("Y-m-d H:i:s", $value->sec);
+                $value = $this->adjustDataTime4Show($value);
                 $item[$field] = $value;
             }
             // 如果是数组或对象
@@ -1273,7 +1279,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     continue;
                 }
                 if ($field['data']['type'] == 'datetime') {
-                    $item[] = date("Y-m-d H:i:s", $data[$key]->sec);
+                    $item[] = $this->adjustDataTime4Show($data[$key]);
                 } elseif ($field['data']['type'] == 'json') {
                     if (!empty($data[$key])) {
                         if (!empty($field['export']['fields'])) {
@@ -1477,5 +1483,16 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             'timestamp' => $timestamp,
             'card_ext' => json_encode($card_ext)
         );
+    }
+
+    protected function adjustDataTime4Show($value)
+    {
+        if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
+            $value = date("Y-m-d H:i:s", $value->sec);
+        }
+        if ($value == '0000-00-00 00:00:00' || $value == '0001-01-01 00:00:00') {
+            $value = "";
+        }
+        return $value;
     }
 }

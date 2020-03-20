@@ -50,7 +50,11 @@
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "datetimepicker") {
             $prepend = '<i class="fa fa-calendar fa-fw"></i>';
-            $value = date("Y-m-d H:i:s", $this->view->row[$key]->sec);
+            $value = $this->view->row[$key];
+            // $value = date("Y-m-d H:i:s", $this->view->row[$key]->sec);
+            // if ($value == '0001-01-01 00:00:00' || $value == '0000-00-00 00:00:00') {
+            //     $value = '';
+            // }
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "icon") {
             $prepend = '<i class="fa fa-pencil fa-fw"></i>';
