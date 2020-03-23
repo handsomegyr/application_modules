@@ -930,6 +930,18 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 if (empty($row)) {
                     throw new \Exception("更新的数据为空");
                 }
+
+                $__MODIFY_TIME__ = $this->request->get('__MODIFY_TIME__', array(
+                    'trim',
+                    'string'
+                ), '');
+                if (!empty($__MODIFY_TIME__)) {
+                    // 检查更新时间是否已经改变 避免并发
+                    if (date('Y-m-d H:i:s', $row['__MODIFY_TIME__']->sec) != $__MODIFY_TIME__) {
+                        throw new \Exception("该数据已被他人修改过");
+                    }
+                }
+
                 // 在进行更新处理之前进行检查
                 $this->validate4Update($input, $row);
             } else {
@@ -1205,9 +1217,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
     protected function delete(\App\Backend\Models\Input $input, $row)
     {
-        $this->getModel()->remove(array(
-            '_id' => $input->id
-        ));
+        $this->getModel()->processDelete($input, $row);
     }
 
     // 将数据库的一行转换成画面显示所需的一行
