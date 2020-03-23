@@ -198,8 +198,15 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         //$idSchema = $schemas['_id'];
         $createTimeSchema = $schemas['__CREATE_TIME__'];
+        $createUserIdSchema = $schemas['__CREATE_USER_ID__'];
+        $createUserNameSchema = $schemas['__CREATE_USER_NAME__'];
         $updateTimeSchema = $schemas['__MODIFY_TIME__'];
+        $updateUserIdSchema = $schemas['__MODIFY_USER_ID__'];
+        $updateUserNameSchema = $schemas['__MODIFY_USER_NAME__'];
         $removeSchema = $schemas['__REMOVED__'];
+        $removeTimeSchema = $schemas['__REMOVE_TIME__'];
+        $removeUserIdSchema = $schemas['__REMOVE_USER_ID__'];
+        $removeUserNameSchema = $schemas['__REMOVE_USER_NAME__'];
 
         if (strtolower($this->actionName) == 'add') {
             $createTimeSchema['form']['is_show'] = false;
@@ -298,8 +305,15 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
         // 放入最后
         $schemas['__CREATE_TIME__'] = $createTimeSchema;
+        $schemas['__CREATE_USER_ID__'] = $createUserIdSchema;
+        $schemas['__CREATE_USER_NAME__'] = $createUserNameSchema;
         $schemas['__MODIFY_TIME__'] = $updateTimeSchema;
+        $schemas['__MODIFY_USER_ID__'] = $updateUserIdSchema;
+        $schemas['__MODIFY_USER_NAME__'] = $updateUserNameSchema;
         $schemas['__REMOVED__'] = $removeSchema;
+        $schemas['__REMOVE_TIME__'] = $removeTimeSchema;
+        $schemas['__REMOVE_USER_ID__'] = $removeUserIdSchema;
+        $schemas['__REMOVE_USER_NAME__'] = $removeUserNameSchema;
         return $schemas;
     }
 
@@ -389,6 +403,54 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             )
         );
 
+        $schemas['__CREATE_USER_ID__'] = array(
+            'name' => '创建操作者ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => '24'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => false
+            ),
+            'list' => array(
+                'is_show' => false,
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
+        $schemas['__CREATE_USER_NAME__'] = array(
+            'name' => '创建操作者名称',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => false
+            ),
+            'list' => array(
+                'is_show' => false,
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
         $schemas['__MODIFY_TIME__'] = array(
             'name' => '修改时间',
             'data' => array(
@@ -415,6 +477,54 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             )
         );
 
+        $schemas['__MODIFY_USER_ID__'] = array(
+            'name' => '修改操作者ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => '24'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => false
+            ),
+            'list' => array(
+                'is_show' => false,
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
+        $schemas['__MODIFY_USER_NAME__'] = array(
+            'name' => '修改操作者名称',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => false
+            ),
+            'list' => array(
+                'is_show' => false,
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
         $schemas['__REMOVED__'] = array(
             'name' => '是否删除',
             'data' => array(
@@ -434,6 +544,80 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => false
             ),
             'search' => array(
+                'is_show' => false
+            )
+        );
+
+        $schemas['__REMOVE_TIME__'] = array(
+            'name' => '删除时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => '19',
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'readonly' => true,
+                'is_show' => false
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
+        $schemas['__REMOVE_USER_ID__'] = array(
+            'name' => '删除操作者ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => '24'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => false
+            ),
+            'list' => array(
+                'is_show' => false,
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
+        $schemas['__REMOVE_USER_NAME__'] = array(
+            'name' => '删除操作者名称',
+            'data' => array(
+                'type' => 'string',
+                'length' => '100'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => false
+            ),
+            'list' => array(
+                'is_show' => false,
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
                 'is_show' => false
             )
         );
