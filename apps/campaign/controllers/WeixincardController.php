@@ -202,7 +202,7 @@ class WeixincardController extends ControllerBase
             $new_code = isset($datas['new_code']) ? trim($datas['new_code']) : '';
 
             // 领取卡券处理
-            $newCardBag = $this->modelCardBag->userGetCard($CardId, $UserCardCode, $FromUserName, $CreateTime, $IsGiveByFriend, $FriendUserName, $OuterId, $OldUserCardCode, $IsRestoreMemberCard, $IsRecommendByFriend, $SourceScene, $encrypt_code, $new_code, $datas);
+            $this->modelCardBag->userGetCard($CardId, $UserCardCode, $FromUserName, $CreateTime, $IsGiveByFriend, $FriendUserName, $OuterId, $OldUserCardCode, $IsRestoreMemberCard, $IsRecommendByFriend, $SourceScene, $encrypt_code, $new_code, $datas);
 
             // 增加该卡券的领取数量
             $this->modelCard->incReceivedNum($CardId, 1);
