@@ -138,6 +138,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $field['form']['name'] = $field['name'];
             }
 
+            // 如果form配置里面进行修改validation 那么以form的validation为准
+            if (isset($field['form']['validation'])) {
+                $field['validation'] = $field['form']['validation'];
+            }
+
             if (!empty($this->readonly)) {
                 $field['form']['readonly'] = true;
             }

@@ -228,6 +228,9 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'items' => '',
                 'formSettings' => function ($column, $Grid) {
                     $settings = array();
+                    $settings['validation'] = array(
+                        'required' => false
+                    );
                     $row = $column->getRow();
                     if (empty($row->_id)) {
                         // 新增的时候不显示
