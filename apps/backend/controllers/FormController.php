@@ -330,8 +330,13 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $tools;
     }
 
+    private $schemas = array();
     private function getSchemas()
     {
+        if (!empty($this->schemas)) {
+            return $this->schemas;
+        }
+
         $schemas = array();
         $schemas['_id'] = array(
             'name' => 'ID',
@@ -870,17 +875,23 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $this->checkToken($token);
         }
 
-        $this->view->setVar('readonly', $this->readonly);
+        // ajax请求的话
+        if ($this->request->isAjax()) {
+            $this->view->disable();
+        } elseif (!in_array(strtolower($this->actionName), array('list', 'add', 'edit'))) {
+            $this->view->disable();
+        }
 
+        $this->view->setVar('readonly', $this->readonly);
+        $this->view->setVar('schemas', array());
         $this->view->setVar('formName', $this->getName());
-        $this->view->setVar('schemas', $this->getSchemas());
         // headerTools
-        $this->view->setVar('headerTools', $this->getHeaderTools());
+        $this->view->setVar('headerTools', array());
         // RowTools
-        $this->view->setVar('rowTools', $this->getRowTools());
+        $this->view->setVar('rowTools', array());
         // FormTools
-        $this->view->setVar('formTools', $this->getFormTools());
-        $this->view->setVar('partials4List', $this->getPartials4List());
+        $this->view->setVar('formTools', array());
+        $this->view->setVar('partials4List', array());
     }
 
     /**
@@ -891,6 +902,12 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function listAction()
     {
         try {
+            $this->view->setVar('schemas', $this->getSchemas());
+            $this->view->setVar('partials4List', $this->getPartials4List());
+            // headerTools
+            $this->view->setVar('headerTools', $this->getHeaderTools());
+            // RowTools
+            $this->view->setVar('rowTools', $this->getRowTools());
             $this->view->setVar('defaultSort', $this->getModel()
                 ->getDefaultSort());
         } catch (\Exception $e) {
@@ -927,8 +944,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         try {
             unset($_SESSION['toastr']);
-
-            $this->view->disable();
 
             $input = $this->getListFilterInput();
             if (!$input->isValid()) {
@@ -996,6 +1011,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function addAction()
     {
         try {
+            $this->view->setVar('schemas', $this->getSchemas());
+            // FormTools
+            $this->view->setVar('formTools', $this->getFormTools());
             /* 初始化、取得 菜单信息 */
             $row = $this->getModel()->getEmptyRow($this->getFilterInput());
             foreach ($row as $field => $value) {
@@ -1017,7 +1035,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function insertAction()
     {
         try {
-            $this->view->disable();
             $input = $this->getFilterInput();
             if ($input->isValid()) {
                 // 在进行插入处理之前进行检查
@@ -1056,6 +1073,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function editAction()
     {
         try {
+            $this->view->setVar('schemas', $this->getSchemas());
+            // FormTools
+            $this->view->setVar('formTools', $this->getFormTools());
             $input = $this->getFilterInput();
             if ($input->isValid("id")) {
                 // get exist
@@ -1083,7 +1103,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function updateAction()
     {
         try {
-            $this->view->disable();
             $fields4change = array();
 
             // 如果指定了某个字段需要更新的话
@@ -1196,8 +1215,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function removeAction()
     {
         try {
-            $this->view->disable();
-
             $input = $this->getFilterInput();
 
             if ($input->isValid("id")) {
@@ -1225,8 +1242,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function removefileAction()
     {
         try {
-            $this->view->disable();
-
             $id = $this->request->get('id', array(
                 'trim',
                 'string'
