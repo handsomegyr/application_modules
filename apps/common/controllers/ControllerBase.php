@@ -52,9 +52,15 @@ class ControllerBase extends Controller
         return $this->getUrl($this->actionName);
     }
 
-    protected function getUrl($action)
+    protected function getUrl($action, $controllerName = "", $moduleName = "")
     {
-        return  $this->url->get("{$this->moduleName}/{$this->controllerName}/{$action}");
+        if (empty($controllerName)) {
+            $controllerName = $this->controllerName;
+        }
+        if (empty($moduleName)) {
+            $moduleName = $this->moduleName;
+        }
+        return  $this->url->get("{$moduleName}/{$controllerName}/{$action}");
     }
 
     public function get($string, $defaultParam = null, $defaultType = "string")

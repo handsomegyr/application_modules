@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Controllers;
 
 /**
@@ -42,6 +43,12 @@ class ErrorController extends \App\Backend\Controllers\ControllerBase
      */
     public function show500Action()
     {
+        $errorMsg = "";
+        if (isset($_SESSION['admin_error']['errorMsg'])) {
+            $errorMsg = $_SESSION['admin_error']['errorMsg'];
+            unset($_SESSION['admin_error']['errorMsg']);
+        }
+        $this->view->setVar('errorMsg', $errorMsg);
         $this->disableLayout();
     }
 
@@ -51,5 +58,6 @@ class ErrorController extends \App\Backend\Controllers\ControllerBase
      * @name 显示信息页面
      */
     public function messageAction()
-    {}
+    {
+    }
 }

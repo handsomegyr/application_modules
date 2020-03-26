@@ -1023,7 +1023,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $this->view->setVar('form_act', $this->getUrl("insert"));
             $this->view->setVar('list_url', $this->getUrl("list"));
         } catch (\Exception $e) {
-            throw $e;
+            // throw $e;
+            $_SESSION['admin_error']['errorMsg'] = $e->getMessage();
+            return $this->_redirect($this->getUrl("show500", "error", "admin"));
         }
     }
 
@@ -1080,6 +1082,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if ($input->isValid("id")) {
                 // get exist
                 $row = $this->getModel()->getInfoById($input->id);
+                if (empty($row)) {
+                    throw new \Exception('数据未找到');
+                }
             } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
@@ -1091,7 +1096,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $this->view->setVar('form_act', $this->getUrl("update"));
             $this->view->setVar('list_url', $this->getUrl("list"));
         } catch (\Exception $e) {
-            throw $e;
+            // throw $e;
+            $_SESSION['admin_error']['errorMsg'] = $e->getMessage();
+            return $this->_redirect($this->getUrl("show500", "error", "admin"));
         }
     }
 
@@ -1113,6 +1120,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if (!empty($field)) {
                 $fields4change[] = $field;
             }
+            $__MODIFY_TIME__ = $this->request->get('__MODIFY_TIME__', array(
+                'trim',
+                'string'
+            ), '');
             $input = $this->getFilterInput($fields4change);
             if ($input->isValid()) {
                 // get exist
@@ -1120,18 +1131,12 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 if (empty($row)) {
                     throw new \Exception("更新的数据为空");
                 }
-
-                $__MODIFY_TIME__ = $this->request->get('__MODIFY_TIME__', array(
-                    'trim',
-                    'string'
-                ), '');
                 if (!empty($__MODIFY_TIME__)) {
                     // 检查更新时间是否已经改变 避免并发
                     if (date('Y-m-d H:i:s', $row['__MODIFY_TIME__']->sec) != $__MODIFY_TIME__) {
                         throw new \Exception("该数据已被他人修改过");
                     }
                 }
-
                 // 在进行更新处理之前进行检查
                 $this->validate4Update($input, $row);
             } else {
@@ -1169,9 +1174,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                         }
                     }
                     if (!empty($updateData)) {
-                        $this->getModel()->update(array(
-                            '_id' => $input->id
-                        ), array(
+                        $query = array(
+                            '_id' => $input->id,
+                        );
+                        $this->getModel()->update($query, array(
                             '$set' => $updateData
                         ));
                     }
@@ -1193,9 +1199,14 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             } else {
                 $updateData = array();
                 $updateData[$field] = $input->$field;
-                $this->getModel()->update(array(
+
+                $query = array(
                     '_id' => $input->id
-                ), array(
+                );
+                if (!empty($__MODIFY_TIME__)) {
+                    $query['__MODIFY_TIME__'] = $__MODIFY_TIME__;
+                }
+                $this->getModel()->update($query, array(
                     '$set' => $updateData
                 ));
                 $this->makeJsonResult(stripslashes($input->$field));
@@ -1375,7 +1386,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
     protected function insert(\App\Backend\Models\Input $input, $row)
     {
-        $this->getModel()->processInsertOrUpdate($input, $row);
+        if (empty($_SESSION['admin_id'])) {
+            throw new \Exception('后台操作用户未登录');
+        }
+
+        $data = $input->getFormData(true);
+        // $this->setPhql(true);
+        if (empty($row) || empty($row['_id'])) {
+            return $this->getModel()->insert($data);
+        } else {
+            throw new \Exception("生成操作的数据不合法");
+        }
     }
 
     protected function validate4Update(\App\Backend\Models\Input $input, $row)
@@ -1391,7 +1412,21 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
     protected function update(\App\Backend\Models\Input $input, $row)
     {
-        $this->getModel()->processInsertOrUpdate($input, $row);
+        if (empty($_SESSION['admin_id'])) {
+            throw new \Exception('后台操作用户未登录');
+        }
+
+        $data = $input->getFormData(true);
+        // $this->setPhql(true);
+        if (empty($row) || empty($row['_id'])) {
+            throw new \Exception("更新操作的数据不合法");
+        } else {
+            $query['_id'] = $row['_id'];
+            // $this->setDebug(true);
+            return $this->getModel()->update($query, array(
+                '$set' => $data
+            ));
+        }
     }
 
     protected function validate4Delete(\App\Backend\Models\Input $input, $row)
@@ -1403,7 +1438,13 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
     protected function delete(\App\Backend\Models\Input $input, $row)
     {
-        $this->getModel()->processDelete($input, $row);
+        if (empty($_SESSION['admin_id'])) {
+            throw new \Exception('后台操作用户未登录');
+        }
+        $query = array(
+            '_id' => $input->id
+        );
+        $this->getModel()->remove($query);
     }
 
     // 将数据库的一行转换成画面显示所需的一行
