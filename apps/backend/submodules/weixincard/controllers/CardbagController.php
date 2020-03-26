@@ -867,7 +867,7 @@ class CardbagController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/cardbag/getcode?id=58940256887c2223368b456e
         try {
-            $this->view->disable();
+            
 
             $weixin = $this->getWeixin();
 
@@ -911,7 +911,7 @@ class CardbagController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/cardbag/consumecode?id=58940256887c2223368b456e
         try {
-            $this->view->disable();
+            
 
             $weixin = $this->getWeixin();
 
@@ -961,7 +961,7 @@ class CardbagController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/cardbag/unavailablecode?id=58940256887c2223368b456e
         try {
-            $this->view->disable();
+            
 
             $weixin = $this->getWeixin();
 

@@ -43,7 +43,6 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
     public function getgoodslistAction()
     {
         try {
-            $this->view->disable();
             $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
             
             $q = urldecode($this->get('q', ''));
@@ -102,7 +101,6 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
     public function newperiodAction()
     {
         try {
-            $this->view->disable();
             
             $input = $this->getFilterInput();
             

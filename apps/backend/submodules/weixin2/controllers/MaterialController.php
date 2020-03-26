@@ -147,7 +147,7 @@ class MaterialController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/material/batchgetmaterial?id=xxx
         try {
-            $this->view->disable();
+            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -231,7 +231,7 @@ class MaterialController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/material/getmaterialcount?id=xxx
         try {
-            $this->view->disable();
+            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -279,7 +279,6 @@ class MaterialController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/material/addmaterial?id=xxx
         try {
-            $this->view->disable();
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
@@ -307,7 +306,7 @@ class MaterialController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/material/addnews?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -335,7 +334,7 @@ class MaterialController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/material/updatenews?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -363,7 +362,7 @@ class MaterialController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/material/deletematerial?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -391,7 +390,7 @@ class MaterialController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/material/getmaterial?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {

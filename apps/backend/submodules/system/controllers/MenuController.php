@@ -28,7 +28,6 @@ class MenuController extends \App\Backend\Controllers\FormController
     public function toggleisshowAction()
     {
         try {
-            $this->view->disable();
             $input = $this->getFilterInput();
 
             if ($input->isValid("id") && $input->isValid("is_show")) {

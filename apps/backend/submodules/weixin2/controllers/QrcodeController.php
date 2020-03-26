@@ -82,7 +82,7 @@ class QrcodeController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/qrcode/createqrcode?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {

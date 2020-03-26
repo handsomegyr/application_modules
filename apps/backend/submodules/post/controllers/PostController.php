@@ -29,7 +29,6 @@ class PostController extends \App\Backend\Controllers\FormController
     public function passAction()
     {
         try {
-            $this->view->disable();
             
             $input = $this->getFilterInput();
             
@@ -57,7 +56,6 @@ class PostController extends \App\Backend\Controllers\FormController
     public function unpassAction()
     {
         try {
-            $this->view->disable();
             
             $input = $this->getFilterInput();
             

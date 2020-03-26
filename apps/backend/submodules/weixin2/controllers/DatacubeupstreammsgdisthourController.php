@@ -55,7 +55,7 @@ class DatacubeupstreammsgdisthourController extends \App\Backend\Controllers\For
     {
         // http://www.applicationmodule.com/admin/weixin2/datacubeupstreammsgdisthour/syncupstreammsgdisthour?id=xxx
         try {
-            $this->view->disable();
+            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

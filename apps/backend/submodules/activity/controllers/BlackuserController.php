@@ -160,8 +160,6 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/activity/blackuser/exportcsv
         try {
-            $this->view->disable();
-
             $input = $this->getListFilterInput();
 
             // 根据检索条件获取列表
@@ -200,7 +198,6 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/activity/blackuser/importcsv
         try {
-            $this->view->disable();
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容
@@ -350,7 +347,6 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/activity/blackuser/exchangeactivity?id=xxx
         try {
-            $this->view->disable();
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");

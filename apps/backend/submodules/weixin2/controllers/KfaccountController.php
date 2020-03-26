@@ -136,7 +136,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/kfaccount/syncaccountlist?id=xxx
         try {
-            $this->view->disable();
+            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -173,7 +173,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/kfaccount/synconlineaccountlist?id=xxx
         try {
-            $this->view->disable();
+            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -210,7 +210,6 @@ class KfaccountController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/kfaccount/updateaccount?id=xxx
         try {
-            $this->view->disable();
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
@@ -238,7 +237,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/kfaccount/addaccount?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -266,7 +265,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/kfaccount/uploadheadimg?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -301,7 +300,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/kfaccount/deleteaccount?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -329,7 +328,7 @@ class KfaccountController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/kfaccount/inviteworker?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {

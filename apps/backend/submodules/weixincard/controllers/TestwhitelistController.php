@@ -140,7 +140,6 @@ class TestwhitelistController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/testwhitelist/set
         try {
-            $this->view->disable();
             $weixin = $this->getWeixin();
 
             $whiteList = $this->modelTestwhitelist->getAll();

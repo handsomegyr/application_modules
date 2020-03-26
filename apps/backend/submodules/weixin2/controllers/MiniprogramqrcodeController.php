@@ -82,7 +82,7 @@ class MiniprogramqrcodeController extends \App\Backend\Controllers\FormControlle
     {
         // http://www.applicationmodule.com/admin/weixin2/miniprogramqrcode/createqrcode?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {

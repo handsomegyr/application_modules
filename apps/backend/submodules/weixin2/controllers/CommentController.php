@@ -81,7 +81,7 @@ class CommentController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/comment/closecomment?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -110,7 +110,7 @@ class CommentController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/comment/opencomment?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -139,7 +139,7 @@ class CommentController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/comment/synccommentlist?id=xxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {

@@ -56,7 +56,7 @@ class DatacubeusercumulateController extends \App\Backend\Controllers\FormContro
     {
         // http://www.applicationmodule.com/admin/weixin2/datacubeusercumulate/syncusercumulate?id=xxx
         try {
-            $this->view->disable();
+            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

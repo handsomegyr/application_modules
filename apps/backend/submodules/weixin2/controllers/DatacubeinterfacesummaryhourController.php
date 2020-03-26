@@ -55,7 +55,7 @@ class DatacubeinterfacesummaryhourController extends \App\Backend\Controllers\Fo
     {
         // http://www.applicationmodule.com/admin/weixin2/datacubeinterfacesummaryhour/syncinterfacesummaryhour?id=xxx
         try {
-            $this->view->disable();
+            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

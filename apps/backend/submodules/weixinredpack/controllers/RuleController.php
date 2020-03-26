@@ -39,7 +39,6 @@ class RuleController extends \App\Backend\Controllers\FormController
     public function copyAction()
     {
         try {
-            $this->view->disable();
             
             $input = $this->getFilterInput();
             

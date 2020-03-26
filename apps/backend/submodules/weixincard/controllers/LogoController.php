@@ -166,7 +166,7 @@ class LogoController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/logo/upload?id=xxxx
         try {
-            $this->view->disable();
+            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {

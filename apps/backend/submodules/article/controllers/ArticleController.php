@@ -219,7 +219,6 @@ class ArticleController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/article/article/elastic?id=xxx
         try {
-            $this->view->disable();
             
             $id = $this->get('id', '');
             if (empty($id)) {

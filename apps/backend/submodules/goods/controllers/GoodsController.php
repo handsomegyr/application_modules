@@ -52,7 +52,6 @@ class GoodsController extends \App\Backend\Controllers\FormController
     public function lotteryAction()
     {
         try {
-            $this->view->disable();
             
             $input = $this->getFilterInput();
             

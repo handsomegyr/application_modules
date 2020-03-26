@@ -51,7 +51,7 @@ class DatacubeupstreammsgmonthController extends \App\Backend\Controllers\FormCo
     {
         // http://www.applicationmodule.com/admin/weixin2/datacubeupstreammsgmonth/syncupstreammsgmonth?id=xxx
         try {
-            $this->view->disable();
+            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

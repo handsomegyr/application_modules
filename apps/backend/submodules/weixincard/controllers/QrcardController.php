@@ -465,7 +465,6 @@ class QrcardController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/qrcard/create?id=xx
         try {
-            $this->view->disable();
             $weixin = $this->getWeixin();
             $this->modelQrcard->setWeixin($weixin);
             $id = $this->get('id', '');
@@ -540,7 +539,6 @@ class QrcardController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/qrcard/createmultiple?id=xx
         try {
-            $this->view->disable();
             $weixin = $this->getWeixin();
             $this->modelQrcard->setWeixin($weixin);
             $id = $this->get('id', '');

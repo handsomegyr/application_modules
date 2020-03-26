@@ -42,7 +42,6 @@ class ResourceController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/system/resource/create
         try {
-            $this->view->disable();
             $module = "admin";
             $moduleName = "后台管理";
             $resourceList = \App\Backend\Tags\MyTags::getList($module);

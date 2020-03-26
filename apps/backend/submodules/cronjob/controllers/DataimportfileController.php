@@ -42,7 +42,6 @@ class DataimportfileController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/cronjob/dataimportfile/importcsv
         try {
-            $this->view->disable();
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容

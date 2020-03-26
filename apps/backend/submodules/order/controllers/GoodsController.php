@@ -33,7 +33,6 @@ class GoodsController extends \App\Backend\Controllers\FormController
     public function deliveryorderAction()
     {
         try {
-            $this->view->disable();
             
             $input = $this->getFilterInput();
             
