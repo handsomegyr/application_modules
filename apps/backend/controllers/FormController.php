@@ -29,124 +29,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return array();
     }
 
-    // protected $firstLetterDatas = array(
-    //     array(
-    //         'name' => 'A',
-    //         'value' => 'A'
-    //     ),
-    //     array(
-    //         'name' => 'B',
-    //         'value' => 'B'
-    //     ),
-    //     array(
-    //         'name' => 'C',
-    //         'value' => 'C'
-    //     ),
-    //     array(
-    //         'name' => 'D',
-    //         'value' => 'D'
-    //     ),
-    //     array(
-    //         'name' => 'E',
-    //         'value' => 'E'
-    //     ),
-    //     array(
-    //         'name' => 'F',
-    //         'value' => 'F'
-    //     ),
-    //     array(
-    //         'name' => 'G',
-    //         'value' => 'G'
-    //     ),
-    //     array(
-    //         'name' => 'H',
-    //         'value' => 'H'
-    //     ),
-    //     array(
-    //         'name' => 'I',
-    //         'value' => 'I'
-    //     ),
-    //     array(
-    //         'name' => 'J',
-    //         'value' => 'J'
-    //     ),
-    //     array(
-    //         'name' => 'K',
-    //         'value' => 'K'
-    //     ),
-    //     array(
-    //         'name' => 'L',
-    //         'value' => 'L'
-    //     ),
-    //     array(
-    //         'name' => 'M',
-    //         'value' => 'M'
-    //     ),
-    //     array(
-    //         'name' => 'N',
-    //         'value' => 'N'
-    //     ),
-    //     array(
-    //         'name' => 'O',
-    //         'value' => 'O'
-    //     ),
-    //     array(
-    //         'name' => 'P',
-    //         'value' => 'P'
-    //     ),
-    //     array(
-    //         'name' => 'Q',
-    //         'value' => 'Q'
-    //     ),
-    //     array(
-    //         'name' => 'R',
-    //         'value' => 'R'
-    //     ),
-    //     array(
-    //         'name' => 'S',
-    //         'value' => 'S'
-    //     ),
-    //     array(
-    //         'name' => 'T',
-    //         'value' => 'T'
-    //     ),
-    //     array(
-    //         'name' => 'U',
-    //         'value' => 'U'
-    //     ),
-    //     array(
-    //         'name' => 'V',
-    //         'value' => 'V'
-    //     ),
-    //     array(
-    //         'name' => 'W',
-    //         'value' => 'W'
-    //     ),
-    //     array(
-    //         'name' => 'X',
-    //         'value' => 'X'
-    //     ),
-    //     array(
-    //         'name' => 'Y',
-    //         'value' => 'Y'
-    //     ),
-    //     array(
-    //         'name' => 'Z',
-    //         'value' => 'Z'
-    //     )
-    // );
-
-    // protected $trueOrFalseDatas = array(
-    //     array(
-    //         'name' => '是',
-    //         'value' => '1'
-    //     ),
-    //     array(
-    //         'name' => '否',
-    //         'value' => '0'
-    //     )
-    // );
-
+    //array_column($this->firstLetterDatas, 'value', 'name');
     protected $firstLetterDatas = array(
         'A' => 'A',
         'B' => 'B',
@@ -175,6 +58,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         'Y' => 'Y',
         'Z' => 'Z'
     );
+
     protected $trueOrFalseDatas = array(
         '0' => '否',
         '1' => '是',
@@ -1145,44 +1029,46 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
             // update
             if (empty($field)) {
-
-                $this->update($input, $row);
-                // 处理多图片或多文件的排序
-                $filesort = $this->request->get("_file_sort_", array(
-                    'trim',
-                ), array());
-                if (!empty($filesort)) {
-                    // 获取最新的数据信息
-                    $newRow = $this->getModel()->getInfoById($input->id);
-                    $updateData = array();
-                    foreach ($filesort as $field => $sortvalue) {
-                        if (!empty($sortvalue)) {
-                            $updateValue = explode(',', $sortvalue);
-                            if (!empty($updateValue)) {
-                                // 检查是否还存在这些文件 该情况发生在 用户先进行了文件排序 然后直接删除了文件
-                                $is_exist = true;
-                                foreach ($updateValue as $file) {
-                                    if (!in_array($file, $newRow[$field])) {
-                                        $is_exist = false;
-                                        break;
+                // 更新数据
+                $affectNums = $this->update($input, $row, $__MODIFY_TIME__);
+                // 更新成功的话
+                if ($affectNums > 0) {
+                    // 处理多图片或多文件的排序
+                    $filesort = $this->request->get("_file_sort_", array(
+                        'trim',
+                    ), array());
+                    if (!empty($filesort)) {
+                        // 获取最新的数据信息
+                        $newRow = $this->getModel()->getInfoById($input->id);
+                        $updateData = array();
+                        foreach ($filesort as $field => $sortvalue) {
+                            if (!empty($sortvalue)) {
+                                $updateValue = explode(',', $sortvalue);
+                                if (!empty($updateValue)) {
+                                    // 检查是否还存在这些文件 该情况发生在 用户先进行了文件排序 然后直接删除了文件
+                                    $is_exist = true;
+                                    foreach ($updateValue as $file) {
+                                        if (!in_array($file, $newRow[$field])) {
+                                            $is_exist = false;
+                                            break;
+                                        }
                                     }
-                                }
-                                if ($is_exist) {
-                                    $updateData[$field] = $updateValue;
+                                    if ($is_exist) {
+                                        $updateData[$field] = $updateValue;
+                                    }
                                 }
                             }
                         }
-                    }
-                    if (!empty($updateData)) {
-                        $query = array(
-                            '_id' => $input->id,
-                        );
-                        $this->getModel()->update($query, array(
-                            '$set' => $updateData
-                        ));
+                        if (!empty($updateData)) {
+                            $query = array(
+                                '_id' => $input->id,
+                            );
+                            $this->getModel()->update($query, array(
+                                '$set' => $updateData
+                            ));
+                        }
                     }
                 }
-
                 // /* 添加链接 */
                 // $link[0]['text'] = '返回' . $this->getName() . '列表';
                 // $link[0]['href'] = $this->getUrl("list");
@@ -1203,6 +1089,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $query = array(
                     '_id' => $input->id
                 );
+                // 检查更新时间是否已经改变 避免并发
                 if (!empty($__MODIFY_TIME__)) {
                     $query['__MODIFY_TIME__'] = $__MODIFY_TIME__;
                 }
@@ -1410,7 +1297,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         // }
     }
 
-    protected function update(\App\Backend\Models\Input $input, $row)
+    protected function update(\App\Backend\Models\Input $input, $row, $__MODIFY_TIME__ = "")
     {
         if (empty($_SESSION['admin_id'])) {
             throw new \Exception('后台操作用户未登录');
@@ -1422,6 +1309,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             throw new \Exception("更新操作的数据不合法");
         } else {
             $query['_id'] = $row['_id'];
+            // 检查更新时间是否已经改变 避免并发
+            if (!empty($__MODIFY_TIME__)) {
+                $query['__MODIFY_TIME__'] = $__MODIFY_TIME__;
+            }
             // $this->setDebug(true);
             return $this->getModel()->update($query, array(
                 '$set' => $data

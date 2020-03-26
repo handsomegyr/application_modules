@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Task\Controllers;
 
 use App\Backend\Submodules\Task\Models\Log;
@@ -20,7 +21,7 @@ class LogController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['name'] = array(
             'name' => '公司名称',
             'data' => array(
@@ -41,7 +42,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['code'] = array(
             'name' => '编号',
             'data' => array(
@@ -62,7 +63,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['letter'] = array(
             'name' => '首字母',
             'data' => array(
@@ -75,11 +76,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
-                    // return array_column($this->firstLetterDatas, 'value', 'name');
-                    return $this->firstLetterDatas;
-                }
+                'items' => $this->firstLetterDatas
             ),
             'list' => array(
                 'is_show' => true
@@ -88,7 +85,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['url'] = array(
             'name' => '链接',
             'data' => array(
@@ -109,7 +106,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['state'] = array(
             'name' => '状态',
             'data' => array(
@@ -132,7 +129,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_order'] = array(
             'name' => '是否常用',
             'data' => array(
@@ -155,7 +152,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['zt_state'] = array(
             'name' => '是否支持服务站配送',
             'data' => array(
@@ -178,7 +175,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

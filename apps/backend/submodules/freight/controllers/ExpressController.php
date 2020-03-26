@@ -76,10 +76,7 @@ class ExpressController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
-                    //return array_column($this->firstLetterDatas, 'value', 'name');
-                    return $this->firstLetterDatas;
-                }
+                'items' => $this->firstLetterDatas
             ),
             'list' => array(
                 'is_show' => true
