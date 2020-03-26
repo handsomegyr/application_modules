@@ -122,14 +122,14 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
             // 根据请求地址进行特殊的处理
             if (in_array($this->actionName, array('add', 'insert', 'edit', 'update'))) {
-                if (!empty($field['form']['formSettings'])) {
-                    if (is_callable($field['form']['formSettings'])) {
+                if (!empty($field['form']['extensionSettings'])) {
+                    if (is_callable($field['form']['extensionSettings'])) {
                         $value = $field['data']['defaultValue'];
                         if (!empty($row) && isset($row[$field])) {
                             $value = $row[$field];
                         }
                         $column = new \App\Backend\Models\Column($field, $value, $schemas, $row, $this->url->getBaseUri());
-                        $field['form'] = array_merge($field['form'], $field['form']['formSettings']($column, $this));
+                        $field['form'] = array_merge($field['form'], $field['form']['extensionSettings']($column, $this));
                     }
                 }
             }

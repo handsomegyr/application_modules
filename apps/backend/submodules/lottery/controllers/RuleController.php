@@ -226,7 +226,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'input_type' => 'number',
                 'is_show' => true,
                 'items' => '',
-                'formSettings' => function ($column, $Grid) {
+                'extensionSettings' => function ($column, $Grid) {
                     $settings = array();
                     $settings['validation'] = array(
                         'required' => false
