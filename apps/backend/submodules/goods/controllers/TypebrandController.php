@@ -27,10 +27,8 @@ class TypebrandController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['type_id'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['type_id'] = array(
             'name' => '所属类型',
             'data' => array(
                 'type' => 'string',

@@ -35,10 +35,8 @@ class CodeController extends \App\Backend\Controllers\FormController
     private $prizeList = null;
     private $activityList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['prize_id'] = array(
             'name' => '奖品ID',
             'data' => array(

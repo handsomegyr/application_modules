@@ -19,10 +19,8 @@ class NotifylogController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['channel'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['channel'] = array(
             'name' => '回调渠道',
             'data' => array(
                 'type' => 'string',

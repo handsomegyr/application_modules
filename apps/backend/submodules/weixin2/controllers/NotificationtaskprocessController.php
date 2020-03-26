@@ -25,10 +25,8 @@ class NotificationtaskprocessController extends \App\Backend\Controllers\FormCon
     }
     protected $taskItems = null;
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['name'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['name'] = array(
             'name' => '任务处理名',
             'data' => array(
                 'type' => 'string',

@@ -19,10 +19,8 @@ class LanguageController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['name'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['name'] = array(
             'name' => '语言名',
             'data' => array(
                 'type' => 'string',

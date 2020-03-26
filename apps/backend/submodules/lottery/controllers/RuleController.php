@@ -34,12 +34,10 @@ class RuleController extends \App\Backend\Controllers\FormController
     private $prizeList = null;
     private $activityList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
-
-        $schemas = parent::getSchemas();
 
         $schemas['activity_id'] = array(
             'name' => '所属活动',

@@ -19,10 +19,8 @@ class SettingsController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['host'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['host'] = array(
             'name' => '服务器',
             'data' => array(
                 'type' => 'string',

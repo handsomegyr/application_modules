@@ -29,10 +29,8 @@ class KeywordtocustommsgController extends \App\Backend\Controllers\FormControll
     private $keywordItems = null;
     private $customMsgItems = null;
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['keyword_id'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
                 'type' => 'string',

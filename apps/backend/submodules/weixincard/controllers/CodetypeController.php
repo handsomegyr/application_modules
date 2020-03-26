@@ -20,10 +20,8 @@ class CodetypeController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['code_type'] = array(
             'name' => '展示类型值',
             'data' => array(

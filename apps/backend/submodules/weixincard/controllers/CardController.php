@@ -191,10 +191,8 @@ class CardController extends \App\Backend\Controllers\FormController
         return $tools;
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['_id']['list']['is_show'] = false;
+    protected function getSchemas2($schemas)
+    {        $schemas['_id']['list']['is_show'] = false;
         $use_custom_code = true;
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);

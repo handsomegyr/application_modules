@@ -19,10 +19,8 @@ class QuestionshowtypeController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['code'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['code'] = array(
             'name' => '展现方式值',
             'data' => array(
                 'type' => 'integer',

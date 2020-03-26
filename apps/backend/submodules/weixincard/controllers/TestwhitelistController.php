@@ -33,10 +33,8 @@ class TestwhitelistController extends \App\Backend\Controllers\FormController
         return $tools;
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['openid'] = array(
             'name' => '测试的openid',
             'data' => array(

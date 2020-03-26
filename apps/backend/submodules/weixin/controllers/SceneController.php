@@ -19,10 +19,8 @@ class SceneController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['scene_id'] = array(
             'name' => '场景编号',
             'data' => array(

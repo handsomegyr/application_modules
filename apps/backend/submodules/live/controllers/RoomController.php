@@ -21,10 +21,8 @@ class RoomController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['auchor_id'] = array(
             'name' => '主播名称',
             'data' => array(

@@ -19,10 +19,8 @@ class TaskController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['type'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['type'] = array(
             'name' => '任务类别',
             'data' => array(
                 'type' => 'integer',

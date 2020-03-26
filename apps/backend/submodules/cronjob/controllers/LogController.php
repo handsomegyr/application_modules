@@ -20,10 +20,8 @@ class LogController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['job_name'] = array(
             'name' => '计划任务',
             'data' => array(

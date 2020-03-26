@@ -45,10 +45,8 @@ class ExchangeController extends \App\Backend\Controllers\FormController
     private $sourceList = null;
     private $prizeCategoryList = null;
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['activity_id'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['activity_id'] = array(
             'name' => '活动名称',
             'data' => array(
                 'type' => 'string',

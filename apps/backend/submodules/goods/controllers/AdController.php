@@ -22,10 +22,8 @@ class AdController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['goods_id'] = array(
             'name' => '所属商品',
             'data' => array(

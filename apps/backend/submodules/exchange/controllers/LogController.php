@@ -20,10 +20,8 @@ class LogController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['result_code'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['result_code'] = array(
             'name' => '兑换结果',
             'data' => array(
                 'type' => 'integer',

@@ -59,10 +59,8 @@ class RuleController extends \App\Backend\Controllers\FormController
         }
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['activity'] = array(
             'name' => '活动名称',
             'data' => array(

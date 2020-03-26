@@ -24,10 +24,8 @@ class UserController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['username'] = array(
             'name' => '用户名称',
             'data' => array(

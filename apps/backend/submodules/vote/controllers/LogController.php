@@ -41,10 +41,8 @@ class LogController extends \App\Backend\Controllers\FormController
     private $activityList = null;
     private $itemList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['activity'] = array(
             'name' => '所属活动',
             'data' => array(

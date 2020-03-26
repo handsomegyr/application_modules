@@ -27,10 +27,8 @@ class UserController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['room_id'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['room_id'] = array(
             'name' => '直播间名称',
             'data' => array(
                 'type' => 'string',

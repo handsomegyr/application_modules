@@ -29,10 +29,8 @@ class KeywordtotemplatemsgController extends \App\Backend\Controllers\FormContro
     private $keywordItems = null;
     private $templateMsgItems = null;
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['keyword_id'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
                 'type' => 'string',

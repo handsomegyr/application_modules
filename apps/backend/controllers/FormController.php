@@ -194,34 +194,19 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         'PURGE' => 'PURGE'
     );
 
-    protected function sortSchemas($schemas)
+    private function sortSchemas($schemas)
     {
         //$idSchema = $schemas['_id'];
-        $createTimeSchema = $schemas['__CREATE_TIME__'];
-        $createUserIdSchema = $schemas['__CREATE_USER_ID__'];
-        $createUserNameSchema = $schemas['__CREATE_USER_NAME__'];
-        $updateTimeSchema = $schemas['__MODIFY_TIME__'];
-        $updateUserIdSchema = $schemas['__MODIFY_USER_ID__'];
-        $updateUserNameSchema = $schemas['__MODIFY_USER_NAME__'];
-        $removeSchema = $schemas['__REMOVED__'];
-        $removeTimeSchema = $schemas['__REMOVE_TIME__'];
-        $removeUserIdSchema = $schemas['__REMOVE_USER_ID__'];
-        $removeUserNameSchema = $schemas['__REMOVE_USER_NAME__'];
-
         if (strtolower($this->actionName) == 'add') {
-            $createTimeSchema['form']['is_show'] = false;
-            $updateTimeSchema['form']['is_show'] = false;
+            $schemas['__CREATE_TIME__']['form']['is_show'] = false;
+            $schemas['__MODIFY_TIME__']['form']['is_show'] = false;
         } elseif (strtolower($this->actionName) == 'edit') {
-            $createTimeSchema['form']['is_show'] = false;
-            $updateTimeSchema['form']['is_show'] = true;
-            $updateTimeSchema['form']['readonly'] = true;
+            $schemas['__CREATE_TIME__']['form']['is_show'] = false;
+            $schemas['__MODIFY_TIME__']['form']['is_show'] = true;
+            $schemas['__MODIFY_TIME__']['form']['readonly'] = true;
         }
 
         //unset($schemas['_id']);
-        unset($schemas['__CREATE_TIME__']);
-        unset($schemas['__MODIFY_TIME__']);
-        unset($schemas['__REMOVED__']);
-
         foreach ($schemas as $key => &$field) {
 
             if (empty($field['list']['name'])) {
@@ -251,6 +236,12 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     if (!empty($objModel)) {
                         $field['data']['file']['path'] = $objModel->getUploadPath();
                     }
+                }
+            }
+
+            // 根据请求地址进行特殊的处理
+            if (in_array($this->actionName, array('add'))) {
+                if (!empty($field['form']['getFormSettings'])) {
                 }
             }
 
@@ -303,17 +294,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
         }
 
-        // 放入最后
-        $schemas['__CREATE_TIME__'] = $createTimeSchema;
-        $schemas['__CREATE_USER_ID__'] = $createUserIdSchema;
-        $schemas['__CREATE_USER_NAME__'] = $createUserNameSchema;
-        $schemas['__MODIFY_TIME__'] = $updateTimeSchema;
-        $schemas['__MODIFY_USER_ID__'] = $updateUserIdSchema;
-        $schemas['__MODIFY_USER_NAME__'] = $updateUserNameSchema;
-        $schemas['__REMOVED__'] = $removeSchema;
-        $schemas['__REMOVE_TIME__'] = $removeTimeSchema;
-        $schemas['__REMOVE_USER_ID__'] = $removeUserIdSchema;
-        $schemas['__REMOVE_USER_NAME__'] = $removeUserNameSchema;
         return $schemas;
     }
 
@@ -350,7 +330,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $tools;
     }
 
-    protected function getSchemas()
+    private function getSchemas()
     {
         $schemas = array();
         $schemas['_id'] = array(
@@ -377,6 +357,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => true
             )
         );
+
+        $schemas = $this->getSchemas2($schemas);
 
         $schemas['__CREATE_TIME__'] = array(
             'name' => '创建时间',
@@ -622,6 +604,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             )
         );
 
+        return $this->sortSchemas($schemas);
+    }
+
+    protected function getSchemas2($schemas)
+    {
         return $schemas;
     }
 
@@ -644,7 +631,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
         // print_r($files);
         // die('xxxxxx');
-        $schemas = $this->sortSchemas($this->getSchemas());
+        $schemas = $this->getSchemas();
         $input = new Input();
         $input->id = $this->request->get('id', array(
             'trim',
@@ -832,7 +819,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $input->sort_by = $columns[$order[0]['column']]['name'];
         $input->sort_order = $order[0]['dir'];
 
-        $schemas = $this->sortSchemas($this->getSchemas());
+        $schemas = $this->getSchemas();
         foreach ($schemas as $key => $field) {
             if (empty($field['search']['is_show'])) {
                 continue;
@@ -886,7 +873,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $this->view->setVar('readonly', $this->readonly);
 
         $this->view->setVar('formName', $this->getName());
-        $this->view->setVar('schemas', $this->sortSchemas($this->getSchemas()));
+        $this->view->setVar('schemas', $this->getSchemas());
         // headerTools
         $this->view->setVar('headerTools', $this->getHeaderTools());
         // RowTools
@@ -954,7 +941,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // 保存一下从数据库中取出的数据行
             $orginalDataList = array();
             if (!empty($list['data'])) {
-                $schemas = $this->sortSchemas($this->getSchemas());
+                $schemas = $this->getSchemas();
                 foreach ($list['data'] as &$item) {
                     $orginalDataList[$item['id']] = $item;
                     $item = $this->returnRecord4ListShow($item, $schemas);
@@ -1448,7 +1435,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $excel = array();
 
         $fields = array();
-        $schemas = $this->sortSchemas($this->getSchemas());
+        $schemas = $this->getSchemas();
         foreach ($schemas as $key => $field) {
             if (!isset($field['export']['is_show'])) {
                 $field['export']['is_show'] = empty($field['form']['is_show']) ? false : $field['form']['is_show'];

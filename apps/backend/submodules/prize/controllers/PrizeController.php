@@ -27,10 +27,8 @@ class PrizeController extends \App\Backend\Controllers\FormController
 
     private $categoryList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['prize_name'] = array(
             'name' => '奖品名',
             'data' => array(

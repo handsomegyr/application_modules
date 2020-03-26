@@ -27,10 +27,8 @@ class QuestionnaireController extends \App\Backend\Controllers\FormController
     }
     private $activityIdItems = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['name'] = array(
             'name' => '问卷名',
             'data' => array(

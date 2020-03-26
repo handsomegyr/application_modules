@@ -136,10 +136,8 @@ class DataimportfileController extends \App\Backend\Controllers\FormController
         }
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['cron_time'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['cron_time'] = array(
             'name' => '执行时间',
             'data' => array(
                 'type' => 'datetime',

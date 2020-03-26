@@ -41,10 +41,8 @@ class RuleController extends \App\Backend\Controllers\FormController
     private $categoryList = null;
     private $prizeList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
 

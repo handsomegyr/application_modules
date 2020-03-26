@@ -63,10 +63,8 @@ class GoodsController extends \App\Backend\Controllers\FormController
         }
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['_id']['list']['is_show'] = false;
+    protected function getSchemas2($schemas)
+    {        $schemas['_id']['list']['is_show'] = false;
         $schemas['goods_id'] = array(
             'name' => '商品ID',
             'data' => array(

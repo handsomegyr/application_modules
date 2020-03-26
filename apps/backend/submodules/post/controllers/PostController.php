@@ -76,10 +76,8 @@ class PostController extends \App\Backend\Controllers\FormController
         }
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['title'] = array(
             'name' => '主题',
             'data' => array(

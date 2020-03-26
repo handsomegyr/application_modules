@@ -24,10 +24,8 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['member_id'] = array(
             'name' => '会员',
             'data' => array(

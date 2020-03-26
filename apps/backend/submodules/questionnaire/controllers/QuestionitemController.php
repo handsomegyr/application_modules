@@ -26,10 +26,8 @@ class QuestionitemController extends \App\Backend\Controllers\FormController
     }
     private $questionIdItems = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['question_id'] = array(
             'name' => '所属题目',
             'data' => array(

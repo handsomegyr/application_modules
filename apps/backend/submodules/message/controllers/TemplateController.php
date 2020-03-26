@@ -19,10 +19,8 @@ class TemplateController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['code'] = array(
             'name' => '模板代码',
             'data' => array(

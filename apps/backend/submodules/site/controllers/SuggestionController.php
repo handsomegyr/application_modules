@@ -19,10 +19,8 @@ class SuggestionController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['theme'] = array(
             'name' => '主题',
             'data' => array(

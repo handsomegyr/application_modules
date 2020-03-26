@@ -19,10 +19,8 @@ class NotifyController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['out_trade_no'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['out_trade_no'] = array(
             'name' => '支付单号',
             'data' => array(
                 'type' => 'string',

@@ -32,10 +32,8 @@ class UserController extends \App\Backend\Controllers\FormController
     private $activityList = null;
     private $gameList = null;
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['activity_id'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['activity_id'] = array(
             'name' => '所属活动',
             'data' => array(
                 'type' => 'string',

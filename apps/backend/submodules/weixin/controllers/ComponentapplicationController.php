@@ -19,10 +19,8 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
         

@@ -59,10 +59,8 @@ class ReplymsgsendlogController extends \App\Backend\Controllers\FormController
     protected $thumbmediaidItems = null;
     protected $accountItems = null;
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['component_appid'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',

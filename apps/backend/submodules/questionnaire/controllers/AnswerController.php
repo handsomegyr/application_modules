@@ -36,10 +36,8 @@ class AnswerController extends \App\Backend\Controllers\FormController
 
     protected $questionnaireidItems = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['user_id'] = array(
             'name' => '用户ID',
             'data' => array(

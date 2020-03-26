@@ -79,10 +79,8 @@ class ResourceController extends \App\Backend\Controllers\FormController
         }
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['module'] = array(
             'name' => '模块',
             'data' => array(

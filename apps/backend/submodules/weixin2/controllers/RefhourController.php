@@ -19,10 +19,8 @@ class RefhourController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['name'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['name'] = array(
             'name' => '分时名',
             'data' => array(
                 'type' => 'string',

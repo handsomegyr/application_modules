@@ -20,10 +20,8 @@ class JobController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['name'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['name'] = array(
             'name' => '任务名称',
             'data' => array(
                 'type' => 'string',

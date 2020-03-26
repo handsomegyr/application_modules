@@ -19,10 +19,8 @@ class PayController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['pay_sn'] = array(
             'name' => '支付单号',
             'data' => array(

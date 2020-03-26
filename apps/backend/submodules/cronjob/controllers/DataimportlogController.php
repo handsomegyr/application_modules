@@ -19,10 +19,8 @@ class DataimportlogController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['current_cronjob_id'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['current_cronjob_id'] = array(
             'name' => '当前计划任务ID',
             'data' => array(
                 'type' => 'string',

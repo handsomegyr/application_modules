@@ -26,10 +26,8 @@ class UserController extends \App\Backend\Controllers\FormController
     }
     private $categoryList = null;
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['category'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['category'] = array(
             'name' => '积分分类',
             'data' => array(
                 'type' => 'integer',

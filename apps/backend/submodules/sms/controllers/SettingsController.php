@@ -19,10 +19,8 @@ class SettingsController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['apiname'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['apiname'] = array(
             'name' => '短信接口',
             'data' => array(
                 'type' => 'string',

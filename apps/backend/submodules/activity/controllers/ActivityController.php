@@ -29,10 +29,8 @@ class ActivityController extends \App\Backend\Controllers\FormController
 
     private $categoryList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['category'] = array(
             'name' => '所属分类',
             'data' => array(

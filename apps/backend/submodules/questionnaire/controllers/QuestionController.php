@@ -50,10 +50,8 @@ class QuestionController extends \App\Backend\Controllers\FormController
     private $questionShowTypeItems = null;
 
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['name'] = array(
             'name' => '题目名',
             'data' => array(

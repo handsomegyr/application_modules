@@ -33,10 +33,8 @@ class ColorController extends \App\Backend\Controllers\FormController
         return $tools;
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['value'] = array(
             'name' => '颜色值',
             'data' => array(

@@ -20,10 +20,8 @@ class ExpressController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['name'] = array(
             'name' => '公司名称',
             'data' => array(

@@ -27,10 +27,8 @@ class AttributevalueController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['name'] = array(
             'name' => '属性可选值',
             'data' => array(

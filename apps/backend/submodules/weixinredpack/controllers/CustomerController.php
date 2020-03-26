@@ -19,10 +19,8 @@ class CustomerController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['name'] = array(
             'name' => '客户名称',
             'data' => array(

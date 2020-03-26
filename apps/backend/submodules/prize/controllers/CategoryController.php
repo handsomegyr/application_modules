@@ -20,10 +20,8 @@ class CategoryController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['code'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['code'] = array(
             'name' => '分类码',
             'data' => array(
                 'type' => 'integer',

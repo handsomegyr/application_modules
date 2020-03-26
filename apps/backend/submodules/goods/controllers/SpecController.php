@@ -23,10 +23,8 @@ class SpecController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['name'] = array(
             'name' => '规格',
             'data' => array(

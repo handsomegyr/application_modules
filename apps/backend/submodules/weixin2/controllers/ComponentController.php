@@ -19,10 +19,8 @@ class ComponentController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['is_weixin_open_platform'] = array(
             'name' => '是否是微信开发平台',
             'data' => array(

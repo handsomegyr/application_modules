@@ -21,10 +21,8 @@ class MemberController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $birthday = strtotime(date('Y-m-d') . " 00:00:00");
         $now = date('Y-m-d H:i:s');
         $now = strtotime($now);

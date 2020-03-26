@@ -23,10 +23,8 @@ class ReplyController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['reply_type'] = array(
             'name' => '回复类型',
             'data' => array(

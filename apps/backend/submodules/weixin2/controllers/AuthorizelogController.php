@@ -20,10 +20,8 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['AppId'] = array(
             'name' => '第三方平台appid',
             'data' => array(

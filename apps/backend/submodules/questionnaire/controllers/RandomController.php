@@ -28,10 +28,8 @@ class RandomController extends \App\Backend\Controllers\FormController
 
     private $questionnaireIdItems = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['user_id'] = array(
             'name' => '用户ID',
             'data' => array(

@@ -47,10 +47,8 @@ class LimitController extends \App\Backend\Controllers\FormController
     private $activityList = null;
     private $itemList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
 

@@ -80,10 +80,8 @@ class CardbagController extends \App\Backend\Controllers\FormController
         return $tools;
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['card_id'] = array(
             'name' => '微信卡券ID',
             'data' => array(

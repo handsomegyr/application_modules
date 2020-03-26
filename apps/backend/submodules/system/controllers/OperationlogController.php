@@ -22,10 +22,8 @@ class OperationlogController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['user_id'] = array(
             'name' => '操作用户',
             'data' => array(

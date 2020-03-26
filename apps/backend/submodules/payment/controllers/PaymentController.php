@@ -20,10 +20,8 @@ class PaymentController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['code'] = array(
             'name' => '支付方式',
             'data' => array(

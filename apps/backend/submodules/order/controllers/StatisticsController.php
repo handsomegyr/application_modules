@@ -19,10 +19,8 @@ class StatisticsController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['order_amount'] = array(
             'name' => '订单总金额',
             'data' => array(

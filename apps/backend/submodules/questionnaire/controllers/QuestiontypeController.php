@@ -20,10 +20,8 @@ class QuestiontypeController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['code'] = array(
             'name' => '分类值',
             'data' => array(

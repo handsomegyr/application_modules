@@ -55,10 +55,8 @@ class LogoController extends \App\Backend\Controllers\FormController
         return true;
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['logo'] = array(
             'name' => '卡券的商户logo图片文件',
             'data' => array(

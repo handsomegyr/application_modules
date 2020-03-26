@@ -117,10 +117,8 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
         }
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['name'] = array(
             'name' => '商品名',
             'data' => array(

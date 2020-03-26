@@ -24,10 +24,8 @@ class PoiController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['poi_id'] = array(
             'name' => '微信公众平台上的门店ID。',
             'data' => array(

@@ -19,10 +19,8 @@ class ReissueController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['logid'] = array(
             'name' => '红包日志ID',
             'data' => array(

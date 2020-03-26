@@ -27,10 +27,8 @@ class ItemController extends \App\Backend\Controllers\FormController
     }
     private $subjectList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['subject_id'] = array(
             'name' => '所属主题',
             'data' => array(

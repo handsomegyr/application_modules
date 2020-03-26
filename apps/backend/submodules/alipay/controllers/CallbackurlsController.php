@@ -26,10 +26,8 @@ class CallbackurlsController extends \App\Backend\Controllers\FormController
     }
     private $appliactionList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['app_id'] = array(
             'name' => '应用ID',
             'data' => array(

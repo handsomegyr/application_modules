@@ -19,10 +19,8 @@ class MsgController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['from_user_id'] = array(
             'name' => '发起者',
             'data' => array(

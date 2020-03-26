@@ -91,10 +91,8 @@ class MenuController extends \App\Backend\Controllers\FormController
         );
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
 

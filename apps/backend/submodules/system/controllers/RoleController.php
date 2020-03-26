@@ -18,10 +18,8 @@ class RoleController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
     
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['name'] = array(
             'name' => '角色名',
             'data' => array(

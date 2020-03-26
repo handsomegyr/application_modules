@@ -27,10 +27,8 @@ class ImageController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        $schemas['goods_commonid'] = array(
+    protected function getSchemas2($schemas)
+    {        $schemas['goods_commonid'] = array(
             'name' => '所属商品',
             'data' => array(
                 'type' => 'string',

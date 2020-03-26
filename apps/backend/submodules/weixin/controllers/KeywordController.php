@@ -28,10 +28,8 @@ class KeywordController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['keyword'] = array(
             'name' => '关键词',
             'data' => array(

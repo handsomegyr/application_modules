@@ -65,9 +65,8 @@ class #_controllerName_#Controller extends \App\Backend\Controllers\FormControll
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
         #_schemas_#
         return $schemas;
     }

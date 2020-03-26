@@ -19,10 +19,8 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['error_code'] = array(
             'name' => '错误代号',
             'data' => array(

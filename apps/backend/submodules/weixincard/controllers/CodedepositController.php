@@ -27,10 +27,8 @@ class CodedepositController extends \App\Backend\Controllers\FormController
 
     private $cardList = null;
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
-
         $schemas['card_id'] = array(
             'name' => '微信卡券ID',
             'data' => array(

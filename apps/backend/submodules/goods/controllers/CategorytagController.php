@@ -27,10 +27,8 @@ class CategorytagController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
-    {
-        $schemas = parent::getSchemas();
-        
+    protected function getSchemas2($schemas)
+    {        
         $schemas['gc_id_1'] = array(
             'name' => '一级分类',
             'data' => array(
