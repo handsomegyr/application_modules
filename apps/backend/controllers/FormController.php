@@ -501,7 +501,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $schemas;
     }
 
-    protected function getFilterInput($fields4change = array())
+    protected function getFilterInput($schemas = array(), $fields4change = array())
     {
         $files = array();
         // Check if the user has uploaded files
@@ -520,8 +520,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
         // print_r($files);
         // die('xxxxxx');
-        $schemas = $this->getSchemas();
-        $input = new Input();
+        if (empty($schemas)) {
+            $schemas = $this->getSchemas();
+        }
+        $input = new \App\Backend\Models\Input();
         $input->id = $this->request->get('id', array(
             'trim',
             'string'
@@ -674,7 +676,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $input;
     }
 
-    protected function getListFilterInput()
+    protected function getListFilterInput($schemas = array())
     {
         $columns = $this->request->get('columns', null, array(
             0 => array(
@@ -701,14 +703,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             'regex' => ''
         ));
 
-        $input = new Input();
+        $input = new \App\Backend\Models\Input();
         $input->draw = $draw;
         $input->page = $start / $length + 1;
         $input->page_size = $length;
         $input->sort_by = $columns[$order[0]['column']]['name'];
         $input->sort_order = $order[0]['dir'];
 
-        $schemas = $this->getSchemas();
+        if (empty($schemas)) {
+            $schemas = $this->getSchemas();
+        }
+
         foreach ($schemas as $key => $field) {
             if (empty($field['search']['is_show'])) {
                 continue;
@@ -807,7 +812,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function exportAction()
     {
         try {
-            $input = $this->getListFilterInput();
+            $schemas = $this->getSchemas();
+            $input = $this->getListFilterInput($schemas);
 
             // 根据检索条件获取列表
             resetTimeMemLimit();
@@ -828,8 +834,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         try {
             unset($_SESSION['toastr']);
-
-            $input = $this->getListFilterInput();
+            $schemas = $this->getSchemas();
+            $input = $this->getListFilterInput($schemas);
             if (!$input->isValid()) {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
@@ -840,7 +846,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // 保存一下从数据库中取出的数据行
             $orginalDataList = array();
             if (!empty($list['data'])) {
-                $schemas = $this->getSchemas();
                 foreach ($list['data'] as &$item) {
                     $orginalDataList[$item['id']] = $item;
                     $item = $this->returnRecord4ListShow($item, $schemas);
@@ -895,11 +900,12 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function addAction()
     {
         try {
-            $this->view->setVar('schemas', $this->getSchemas());
+            $schemas = $this->getSchemas();
+            $this->view->setVar('schemas', $schemas);
             // FormTools
             $this->view->setVar('formTools', $this->getFormTools());
             /* 初始化、取得 菜单信息 */
-            $row = $this->getModel()->getEmptyRow($this->getFilterInput());
+            $row = $this->getModel()->getEmptyRow($this->getFilterInput($schemas));
             foreach ($row as $field => $value) {
                 $row[$field] = $this->adjustDataTime4Show($value);
             }
@@ -921,7 +927,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function insertAction()
     {
         try {
-            $input = $this->getFilterInput();
+            $schemas = $this->getSchemas();
+            $input = $this->getFilterInput($schemas);
             if ($input->isValid()) {
                 // 在进行插入处理之前进行检查
                 $this->validate4Insert($input, array());
@@ -959,20 +966,23 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function editAction()
     {
         try {
-            $this->view->setVar('schemas', $this->getSchemas());
+            $id = $this->request->get('id', array(
+                'trim',
+                'string'
+            ), '');
+            if (empty($id)) {
+                throw new \Exception("id值未指定");
+            }
+            // get exist
+            $row = $this->getModel()->getInfoById($id);
+            if (empty($row)) {
+                throw new \Exception("数据未找到");
+            }
+
+            $schemas = $this->getSchemas();
+            $this->view->setVar('schemas', $schemas);
             // FormTools
             $this->view->setVar('formTools', $this->getFormTools());
-            $input = $this->getFilterInput();
-            if ($input->isValid("id")) {
-                // get exist
-                $row = $this->getModel()->getInfoById($input->id);
-                if (empty($row)) {
-                    throw new \Exception('数据未找到');
-                }
-            } else {
-                $messageInfo = $this->_getValidationMessage($input);
-                throw new \Exception($messageInfo);
-            }
             foreach ($row as $field => $value) {
                 $row[$field] = $this->adjustDataTime4Show($value);
             }
@@ -994,6 +1004,19 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function updateAction()
     {
         try {
+            $id = $this->request->get('id', array(
+                'trim',
+                'string'
+            ), '');
+            if (empty($id)) {
+                throw new \Exception("id值未指定");
+            }
+            // get exist
+            $row = $this->getModel()->getInfoById($id);
+            if (empty($row)) {
+                throw new \Exception("更新的数据未找到");
+            }
+            $schemas = $this->getSchemas();
             $fields4change = array();
 
             // 如果指定了某个字段需要更新的话
@@ -1008,13 +1031,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'trim',
                 'string'
             ), '');
-            $input = $this->getFilterInput($fields4change);
+            $input = $this->getFilterInput($schemas, $fields4change);
             if ($input->isValid()) {
-                // get exist
-                $row = $this->getModel()->getInfoById($input->id);
-                if (empty($row)) {
-                    throw new \Exception("更新的数据为空");
-                }
                 if (!empty($__MODIFY_TIME__)) {
                     // 检查更新时间是否已经改变 避免并发
                     if (date('Y-m-d H:i:s', $row['__MODIFY_TIME__']->sec) != $__MODIFY_TIME__) {
@@ -1113,18 +1131,16 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function removeAction()
     {
         try {
-            $input = $this->getFilterInput();
-
-            if ($input->isValid("id")) {
-                // 在进行删除处理之前进行检查
-                $this->validate4Delete($input, array());
-            } else {
-                $messageInfo = $this->_getValidationMessage($input);
-                throw new \Exception($messageInfo);
+            $id = $this->request->get('id', array(
+                'trim',
+                'string'
+            ), '');
+            if (empty($id)) {
+                throw new \Exception("id值未指定");
             }
 
             // delete
-            $this->delete($input, array());
+            $this->delete($id, array());
 
             $this->makeJsonResult($this->getUrl("list"), '删除成功！');
         } catch (\Exception $e) {
@@ -1327,13 +1343,13 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         // $this->getModel()->checkIsLeaf($input->id);
     }
 
-    protected function delete(\App\Backend\Models\Input $input, $row)
+    protected function delete($id, $row)
     {
         if (empty($_SESSION['admin_id'])) {
             throw new \Exception('后台操作用户未登录');
         }
         $query = array(
-            '_id' => $input->id
+            '_id' => $id
         );
         $this->getModel()->remove($query);
     }
