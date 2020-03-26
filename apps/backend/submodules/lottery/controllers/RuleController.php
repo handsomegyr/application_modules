@@ -225,7 +225,21 @@ class RuleController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'formSettings' => function ($column, $Grid) {
+                    $settings = array();
+                    $row = $column->getRow();
+                    if (empty($row->_id)) {
+                        // 新增的时候不显示
+                        $settings['is_show'] = false;
+                    } else {
+                        // 修改的时候不能修改
+                        $settings['readonly'] = true;
+                    }
+                    // print_r($settings);
+                    // die('xxxxxxxx');
+                    return $settings;
+                }
             ),
             'list' => array(
                 'is_show' => true,

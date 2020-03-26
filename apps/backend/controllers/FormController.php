@@ -3,6 +3,7 @@
 namespace App\Backend\Controllers;
 
 use App\Backend\Models\Input;
+use PDO;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength;
@@ -81,18 +82,26 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     private function sortSchemas($schemas, $row = array())
     {
         //$idSchema = $schemas['_id'];
-        if (strtolower($this->actionName) == 'add') {
-            $schemas['__CREATE_TIME__']['form']['is_show'] = false;
-            $schemas['__MODIFY_TIME__']['form']['is_show'] = false;
-        } elseif (strtolower($this->actionName) == 'edit') {
-            $schemas['__CREATE_TIME__']['form']['is_show'] = false;
-            $schemas['__MODIFY_TIME__']['form']['is_show'] = true;
-            $schemas['__MODIFY_TIME__']['form']['readonly'] = true;
-        }
-
         //unset($schemas['_id']);
-        foreach ($schemas as $key => &$field) {
 
+        foreach ($schemas as $key => $field) {
+
+            // 数据类型
+            if ($field['data']['type'] == 'json') {
+                $field['data']['defaultValue'] = '{}';
+            } elseif ($field['data']['type'] == 'array') {
+                $field['data']['defaultValue'] = '';
+            } elseif ($field['data']['type'] == 'file') {
+                $field['data']['length'] = 255;
+                if (!isset($field['data']['file']) || !isset($field['data']['file']['path'])) {
+                    $objModel = $this->getModel();
+                    if (!empty($objModel)) {
+                        $field['data']['file']['path'] = $objModel->getUploadPath();
+                    }
+                }
+            }
+
+            //  列表
             if (empty($field['list']['name'])) {
                 $field['list']['name'] = $field['name'];
             }
@@ -109,23 +118,19 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $field['list']['ajax'] = 'update?_field_edt_=' . $key;
             }
 
-            if ($field['data']['type'] == 'json') {
-                $field['data']['defaultValue'] = '{}';
-            } elseif ($field['data']['type'] == 'array') {
-                $field['data']['defaultValue'] = '';
-            } elseif ($field['data']['type'] == 'file') {
-                $field['data']['length'] = 255;
-                if (!isset($field['data']['file']) || !isset($field['data']['file']['path'])) {
-                    $objModel = $this->getModel();
-                    if (!empty($objModel)) {
-                        $field['data']['file']['path'] = $objModel->getUploadPath();
-                    }
-                }
-            }
+            //  表单
 
             // 根据请求地址进行特殊的处理
-            if (in_array($this->actionName, array('add'))) {
-                if (!empty($field['form']['getFormSettings'])) {
+            if (in_array($this->actionName, array('add', 'insert', 'edit', 'update'))) {
+                if (!empty($field['form']['formSettings'])) {
+                    if (is_callable($field['form']['formSettings'])) {
+                        $value = $field['data']['defaultValue'];
+                        if (!empty($row) && isset($row[$field])) {
+                            $value = $row[$field];
+                        }
+                        $column = new \App\Backend\Models\Column($field, $value, $schemas, $row, $this->url->getBaseUri());
+                        $field['form'] = array_merge($field['form'], $field['form']['formSettings']($column, $this));
+                    }
                 }
             }
 
@@ -146,6 +151,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $field['form'][$field['form']['input_type']]['filetype'] = '';
             }
 
+            // 检索
             if (empty($field['search']['name'])) {
                 $field['search']['name'] = $field['name'];
             }
@@ -167,6 +173,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 }
             }
 
+            // 导出
             if (empty($field['export']['name'])) {
                 $field['export']['name'] = $field['form']['name'];
             }
@@ -176,6 +183,18 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     $field['export']['is_show'] = $field['list']['is_show'];
                 }
             }
+
+            $schemas[$key] = $field;
+        }
+
+        // 特殊处理
+        if (strtolower($this->actionName) == 'add') {
+            $schemas['__CREATE_TIME__']['form']['is_show'] = false;
+            $schemas['__MODIFY_TIME__']['form']['is_show'] = false;
+        } elseif (strtolower($this->actionName) == 'edit') {
+            $schemas['__CREATE_TIME__']['form']['is_show'] = false;
+            $schemas['__MODIFY_TIME__']['form']['is_show'] = true;
+            $schemas['__MODIFY_TIME__']['form']['readonly'] = true;
         }
 
         return $schemas;
@@ -526,6 +545,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
         foreach ($schemas as $key => $field) {
             if (empty($field['form']['is_show'])) {
+                continue;
+            }
+            if (!empty($field['form']['readonly'])) {
                 continue;
             }
             if (!empty($fields4change)) {
