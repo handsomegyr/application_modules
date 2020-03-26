@@ -88,7 +88,6 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/blackuser/getblacklist?id=xxx
         try {
-            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -152,7 +151,6 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/blackuser/batchblacklist?id=xxx
         try {
-            
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -200,7 +198,8 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',

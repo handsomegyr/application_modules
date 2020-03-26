@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Article\Controllers;
 
 use App\Backend\Submodules\Article\Models\Article;
@@ -19,13 +20,13 @@ class ArticleController extends \App\Backend\Controllers\FormController
     public function initialize()
     {
         $this->modelArticle = new Article();
-        
+
         $this->modelCategory = new Category();
         parent::initialize();
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['category_id'] = array(
             'name' => '所属分类',
             'data' => array(
@@ -50,7 +51,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['title'] = array(
             'name' => '主题',
             'data' => array(
@@ -71,7 +72,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['content'] = array(
             'name' => '内容',
             'data' => array(
@@ -93,7 +94,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['url'] = array(
             'name' => '链接',
             'data' => array(
@@ -114,7 +115,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['article_time'] = array(
             'name' => '发布时间',
             'data' => array(
@@ -140,7 +141,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['is_show'] = array(
             'name' => '是否显示',
             'data' => array(
@@ -164,7 +165,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['show_order'] = array(
             'name' => '排序',
             'data' => array(
@@ -185,7 +186,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -219,18 +220,15 @@ class ArticleController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/article/article/elastic?id=xxx
         try {
-            
             $id = $this->get('id', '');
             if (empty($id)) {
-                throw new \Exception("id未指定", - 1);
+                throw new \Exception("id未指定", -1);
             }
             $articleInfo = $this->modelArticle->getInfoById($id);
             if (empty($articleInfo)) {
-                throw new \Exception("id不正确", - 2);
+                throw new \Exception("id不正确", -2);
             }
-            
             $client = $this->getDI()->get('elasticsearch');
-            
             // 删除
             $params = [
                 'index' => 'application_modules',
@@ -238,7 +236,6 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 'id' => $id
             ];
             $response = $client->delete($params);
-            
             // 新建
             $params = [
                 'index' => 'application_modules',
@@ -251,16 +248,13 @@ class ArticleController extends \App\Backend\Controllers\FormController
                 ]
             ];
             $response = $client->index($params);
-            
             // 获取
             $params = [
                 'index' => 'application_modules',
                 'type' => 'article',
                 'id' => $id
             ];
-            
             $response = $client->get($params);
-            
             $this->makeJsonResult($response);
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

@@ -59,8 +59,6 @@ class MenuController extends \App\Backend\Controllers\FormController
     public function editshoworderAction()
     {
         try {
-            $this->view->disable();
-
             $input = $this->getFilterInput();
 
             if ($input->isValid("id") && $input->isValid("show_order")) {

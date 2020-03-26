@@ -52,8 +52,6 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/authorizer/getauthorizerinfo?id=xxx
         try {
-            $this->view->disable();
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");

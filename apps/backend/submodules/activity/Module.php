@@ -34,7 +34,7 @@ class Module
     /**
      * Registers the module-only services
      *
-     * @param Phalcon\DI $di            
+     * @param Phalcon\DI $di     
      */
     public function registerServices($di)
     {

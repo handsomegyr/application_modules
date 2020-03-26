@@ -52,7 +52,6 @@ class DatacubeupstreammsgdistController extends \App\Backend\Controllers\FormCon
     {
         // http://www.applicationmodule.com/admin/weixin2/datacubeupstreammsgdist/syncupstreammsgdist?id=xxx
         try {
-            
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -147,7 +146,8 @@ class DatacubeupstreammsgdistController extends \App\Backend\Controllers\FormCon
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',

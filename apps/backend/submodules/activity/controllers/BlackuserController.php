@@ -87,7 +87,8 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['activity_id'] = array(
+    {
+        $schemas['activity_id'] = array(
             'name' => '活动名称',
             'data' => array(
                 'type' => 'string',
@@ -236,7 +237,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
                         $uploadFiles[$file->getKey()] = $file;
                     }
                 }
-                //return $this->makeJsonError(\json_encode($uploadFiles));                
+                //return $this->makeJsonError(\json_encode($uploadFiles));                    
                 if (empty($uploadFiles) || !isset($uploadFiles['csv_file'])) {
                     return $this->makeJsonError("没有上传导入文件2");
                 }
