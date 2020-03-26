@@ -78,7 +78,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         'PURGE' => 'PURGE'
     );
 
-    private function sortSchemas($schemas)
+    private function sortSchemas($schemas, $row = array())
     {
         //$idSchema = $schemas['_id'];
         if (strtolower($this->actionName) == 'add') {
@@ -214,13 +214,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $tools;
     }
 
-    private $schemas = array();
-    private function getSchemas()
+    private function getSchemas($row = array())
     {
-        if (!empty($this->schemas)) {
-            return $this->schemas;
-        }
-
         $schemas = array();
         $schemas['_id'] = array(
             'name' => 'ID',
@@ -493,7 +488,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             )
         );
 
-        return $this->sortSchemas($schemas);
+        return $this->sortSchemas($schemas, $row);
     }
 
     protected function getSchemas2($schemas)
@@ -979,7 +974,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 throw new \Exception("数据未找到");
             }
 
-            $schemas = $this->getSchemas();
+            $schemas = $this->getSchemas($row);
             $this->view->setVar('schemas', $schemas);
             // FormTools
             $this->view->setVar('formTools', $this->getFormTools());
@@ -1016,7 +1011,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if (empty($row)) {
                 throw new \Exception("更新的数据未找到");
             }
-            $schemas = $this->getSchemas();
+            $schemas = $this->getSchemas($row);
             $fields4change = array();
 
             // 如果指定了某个字段需要更新的话
