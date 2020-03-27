@@ -927,7 +927,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             // FormTools
             $this->view->setVar('formTools', $this->getFormTools());
             /* 初始化、取得 菜单信息 */
-            $row = $this->getModel()->getEmptyRow($this->getFilterInput($schemas));
+            $input = new \App\Backend\Models\Input();
+            $input->setSchemas($schemas);
+            $row = $this->getModel()->getEmptyRow($input);
             foreach ($row as $field => $value) {
                 $row[$field] = $this->adjustDataTime4Show($value);
             }

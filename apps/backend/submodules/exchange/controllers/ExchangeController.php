@@ -4,9 +4,10 @@ namespace App\Backend\Submodules\Exchange\Controllers;
 
 use App\Backend\Submodules\Exchange\Models\Exchange;
 use App\Backend\Submodules\Prize\Models\Prize;
-use App\Backend\Submodules\Prize\Models\Category;
+use App\Backend\Submodules\Prize\Models\Category as PrizeCategory;
 use App\Backend\Submodules\Activity\Models\Activity;
 use App\Backend\Submodules\System\Models\Source;
+use App\Backend\Submodules\Points\Models\Category as PointCategory;
 
 /**
  * @title({name="兑换记录"})
@@ -31,22 +32,26 @@ class ExchangeController extends \App\Backend\Controllers\FormController
         $this->modelPrize = new Prize();
         $this->modelActivity = new Activity();
         $this->modelSource = new Source();
-        $this->modelPrizeCategory = new Category();
+        $this->modelPrizeCategory = new PrizeCategory();
 
         $this->prizeList = $this->modelPrize->getAll();
         $this->activityList = $this->modelActivity->getAll();
         // $this->sourceList = $this->modelSource->getAll();
         $this->prizeCategoryList = $this->modelPrizeCategory->getAll();
-
+        $this->modelCategory = new PointCategory();
+        $this->categoryList = $this->modelCategory->getAll();
         parent::initialize();
     }
+
+    private $categoryList = null;
     private $prizeList = null;
     private $activityList = null;
     private $sourceList = null;
     private $prizeCategoryList = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['activity_id'] = array(
+    {
+        $schemas['activity_id'] = array(
             'name' => '活动名称',
             'data' => array(
                 'type' => 'string',
@@ -707,16 +712,18 @@ class ExchangeController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
+                'items' => $this->categoryList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->categoryList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
             ),
             'export' => array(
                 'is_show' => true

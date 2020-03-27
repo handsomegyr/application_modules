@@ -193,16 +193,18 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'select',
                 'is_show' => true,
+                'items' => $this->categoryList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->categoryList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->categoryList
             ),
             'export' => array(
                 'is_show' => true

@@ -41,7 +41,8 @@ class LogController extends \App\Backend\Controllers\FormController
     private $ruleList = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['category'] = array(
+    {
+        $schemas['category'] = array(
             'name' => '积分分类',
             'data' => array(
                 'type' => 'integer',
