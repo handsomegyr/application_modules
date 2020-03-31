@@ -2273,7 +2273,7 @@ class ServiceController extends ControllerBase
             // 如果没有领取过并且领取者不是发起人的话,就进行领邀请函处理
             // 领取一下
             $register_name = $this->modelMember->getRegisterName($userInfo);
-            $invitationInfoGotDetail = $this->modelInvitationGotDetail->create($invitationId, $invitationInfo['user_id'], $invitationInfo['user_name'], $invitationInfo['user_headimgurl'], $userInfo['_id'], $register_name, $userInfo['avatar'], 0, 0, YUNGOU_ACTIVITY_ID, array(
+            $invitationInfoGotDetail = $this->modelInvitationGotDetail->create($invitationId, $invitationInfo['user_id'], $invitationInfo['user_name'], $invitationInfo['user_headimgurl'], $userInfo['_id'], $register_name, $userInfo['avatar'], 0, 0, YUNGOU_ACTIVITY_ID, array(), array(
                 'rand' => mt_rand(0, 2)
             ));
             // 邀請函领取次数也加1,同时价值加$worth
@@ -2332,7 +2332,7 @@ class ServiceController extends ControllerBase
             $invitation_memo = array_merge($memo, array(
                 'invitation_user_id' => $invitationUserInfo['_id']
             ));
-            $myInvitationInfo = $this->modelInvitation->getOrCreateByUserId($memberInfo['_id'], $register_name, $memberInfo['avatar'], "", '云购', 0, 0, 0, 1, false, '', YUNGOU_ACTIVITY_ID, $invitation_memo);
+            $myInvitationInfo = $this->modelInvitation->getOrCreateByUserId($memberInfo['_id'], $register_name, $memberInfo['avatar'], "", '云购', 0, 0, 0, 1, false, '', YUNGOU_ACTIVITY_ID, array(), $invitation_memo);
             // 生成个人消息记录
             $this->modelMsgCount->log($memberInfo['_id']);
 
