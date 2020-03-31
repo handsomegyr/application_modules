@@ -72,6 +72,43 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
 
     protected function getSchemas2($schemas)
     {
+        //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+        $app_type_options = array();
+        $app_type_options['1'] = '公众号';
+        $app_type_options['2'] = '小程序';
+        $app_type_options['3'] = '企业号';
+        $app_type_options['4'] = '订阅号';
+        $schemas['app_type'] = array(
+            'name' => '应用类型',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $app_type_options
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $app_type_options
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $app_type_options
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
