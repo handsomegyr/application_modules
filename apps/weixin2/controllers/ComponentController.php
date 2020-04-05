@@ -514,10 +514,13 @@ class ComponentController extends ControllerBase
             }
             $this->requestLogDatas['response'] = 'success';
 
-            // 全网发布自动校验
-            $verifyComponentRet = $this->verifyComponent($datas);
-            if ($verifyComponentRet['is_success']) {
-                return $verifyComponentRet['response'];
+            // 如果是微信开放平台的话
+            if (!empty($this->appConfig['is_weixin_open_platform'])) {
+                // 全网发布自动校验
+                $verifyComponentRet = $this->verifyComponent($datas);
+                if ($verifyComponentRet['is_success']) {
+                    return $verifyComponentRet['response'];
+                }
             }
 
             // 开始处理相关的业务逻辑
