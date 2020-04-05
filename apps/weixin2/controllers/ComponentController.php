@@ -308,11 +308,15 @@ class ComponentController extends ControllerBase
             $AESInfo['api'] = 'authorizecallback';
             $this->requestLogDatas['aes_info'] = $AESInfo;
 
+            $encodingAESKey = isset($this->appConfig['EncodingAESKey']) ? $this->appConfig['EncodingAESKey'] : '';
             $verifyToken = isset($this->appConfig['verify_token']) ? $this->appConfig['verify_token'] : '';
+            $receiveId = $this->appConfig['appid'];
+            $this->requestLogDatas['aes_info']['EncodingAESKey'] = $encodingAESKey;
+            $this->requestLogDatas['aes_info']['verify_token'] = $verifyToken;
+            $this->requestLogDatas['aes_info']['receiveId'] = $receiveId;
             if (empty($verifyToken)) {
                 throw new \Exception('application verify_token is null. config:' . \json_encode($this->appConfig));
             }
-            $this->requestLogDatas['aes_info']['verify_token'] = $verifyToken;
 
             // 签名正确，将接受到的xml转化为数组数据并记录数据
             $datas = $this->getDataFromWeixinServer();
@@ -463,6 +467,20 @@ class ComponentController extends ControllerBase
             $this->requestLogDatas['component_appid'] = $component_appid;
             $this->requestLogDatas['authorizer_appid'] = $authorizer_appid;
 
+            // 如果是微信开放平台的话
+            if (!empty($this->appConfig['is_weixin_open_platform'])) {
+                $verifyToken = isset($this->appConfig['verify_token']) ? $this->appConfig['verify_token'] : '';
+                $encodingAESKey = isset($this->appConfig['EncodingAESKey']) ? $this->appConfig['EncodingAESKey'] : '';
+                $receiveId = $this->appConfig['appid'];
+            } else {
+                $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
+                $encodingAESKey = isset($this->authorizerConfig['EncodingAESKey']) ? $this->authorizerConfig['EncodingAESKey'] : '';
+                $receiveId = $this->authorizerConfig['appid'];
+            }
+            $this->requestLogDatas['aes_info']['EncodingAESKey'] = $encodingAESKey;
+            $this->requestLogDatas['aes_info']['verify_token'] = $verifyToken;
+            $this->requestLogDatas['aes_info']['receiveId'] = $receiveId;
+
             $onlyRevieve = false;
 
             $AESInfo = array();
@@ -475,11 +493,13 @@ class ComponentController extends ControllerBase
             $AESInfo['authorizer_appid'] = isset($_GET['authorizer_appid']) ? trim(($_GET['authorizer_appid'])) : '';
             $this->requestLogDatas['aes_info'] = $AESInfo;
 
-            $verifyToken = isset($this->appConfig['verify_token']) ? $this->appConfig['verify_token'] : '';
             if (empty($verifyToken)) {
-                throw new \Exception('application verify_token is null. config:' . \json_encode($this->appConfig));
+                if (!empty($this->appConfig['is_weixin_open_platform'])) {
+                    throw new \Exception('application verify_token is null. config:' . \json_encode($this->appConfig));
+                } else {
+                    throw new \Exception('application verify_token is null. config:' . \json_encode($this->authorizerConfig));
+                }
             }
-            $this->requestLogDatas['aes_info']['verify_token'] = $verifyToken;
 
             // 合法性校验
             if (!$this->objWeixin->checkSignature($verifyToken)) {
@@ -856,20 +876,18 @@ class ComponentController extends ControllerBase
         // 需要解密
         if ($this->isNeedDecryptAndEncrypt) {
 
-            $encodingAESKey = isset($this->appConfig['EncodingAESKey']) ? $this->appConfig['EncodingAESKey'] : '';
-            if (empty($encodingAESKey)) {
+            if (empty($this->requestLogDatas['aes_info']['EncodingAESKey'])) {
                 throw new \Exception('application EncodingAESKey is null');
             }
-            $this->requestLogDatas['aes_info']['EncodingAESKey'] = $encodingAESKey;
 
             $decryptMsg = "";
-            $pc = new \Weixin\ThirdParty\MsgCrypt\WXBizMsgCrypt($this->requestLogDatas['aes_info']['verify_token'], $this->requestLogDatas['aes_info']['EncodingAESKey'], $this->appConfig['appid']);
+            $pc = new \Weixin\ThirdParty\MsgCrypt\WXBizMsgCrypt($this->requestLogDatas['aes_info']['verify_token'], $this->requestLogDatas['aes_info']['EncodingAESKey'],  $this->requestLogDatas['aes_info']['receiveId']);
             $errCode = $pc->decryptMsg($this->requestLogDatas['aes_info']['msg_signature'], $this->requestLogDatas['aes_info']['timestamp'], $this->requestLogDatas['aes_info']['nonce'], $postStr, $decryptMsg);
             if (empty($errCode)) {
                 $datas = $this->revieve($decryptMsg);
                 $this->requestLogDatas['aes_info']['decryptMsg'] = $decryptMsg;
             } else {
-                throw new \Exception('application EncodingAESKey is failure in decryptMsg, appid:' . $this->appConfig['appid']);
+                throw new \Exception('application EncodingAESKey is failure in decryptMsg, appid:' .  $this->requestLogDatas['aes_info']['receiveId']);
             }
         }
         return $datas;
@@ -885,13 +903,13 @@ class ComponentController extends ControllerBase
                 $encryptMsg = '';
                 $timeStamp = time();
                 $nonce = $this->requestLogDatas['aes_info']['nonce'];
-                $pc = new \Weixin\ThirdParty\MsgCrypt\WXBizMsgCrypt($this->requestLogDatas['aes_info']['verify_token'], $this->requestLogDatas['aes_info']['EncodingAESKey'], $this->appConfig['appid']);
+                $pc = new \Weixin\ThirdParty\MsgCrypt\WXBizMsgCrypt($this->requestLogDatas['aes_info']['verify_token'], $this->requestLogDatas['aes_info']['EncodingAESKey'], $this->requestLogDatas['aes_info']['receiveId']);
                 $errCode = $pc->encryptMsg($response, $timeStamp, $nonce, $encryptMsg);
 
                 if (empty($errCode)) {
                     $response = $encryptMsg;
                 } else {
-                    throw new \Exception('application EncodingAESKey is failure in encryptMsg, appid:' . $this->appConfig['appid']);
+                    throw new \Exception('application EncodingAESKey is failure in encryptMsg, appid:' .  $this->requestLogDatas['aes_info']['receiveId']);
                 }
             }
         }
@@ -1741,141 +1759,6 @@ class ComponentController extends ControllerBase
         $this->weixinopenService->answerCustomMsgs($FromUserName, $ToUserName, $match);
         $this->weixinopenService->answerTemplateMsgs($FromUserName, $ToUserName, $match);
         return $this->weixinopenService->answerReplyMsgs($FromUserName, $ToUserName, $match);
-    }
-
-    protected function debugVar()
-    {
-        ob_start();
-        print_r(func_get_args());
-        $info = ob_get_contents();
-        ob_get_clean();
-        return $info;
-    }
-
-    /**
-     * 获取信息接收信息
-     *
-     * @return array
-     */
-    protected function revieve($postStr = "")
-    {
-        if (empty($postStr)) {
-            $postStr = file_get_contents('php://input');
-        }
-        $datas = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-        $datas = $this->object2array($datas);
-
-        if (isset($datas['Event']) && $datas['Event'] === 'LOCATION') {
-            $Latitude = isset($datas['Latitude']) ? floatval($datas['Latitude']) : 0;
-            $Longitude = isset($datas['Longitude']) ? floatval($datas['Longitude']) : 0;
-            $datas['coordinate'] = array(
-                $Latitude,
-                $Longitude
-            );
-        }
-
-        if (isset($datas['MsgType']) && $datas['MsgType'] === 'location') {
-            $Location_X = isset($datas['Location_X']) ? floatval($datas['Location_X']) : 0;
-            $Location_Y = isset($datas['Location_Y']) ? floatval($datas['Location_Y']) : 0;
-            $datas['coordinate'] = array(
-                $Location_X,
-                $Location_Y
-            );
-        }
-
-        return $datas;
-    }
-
-    /**
-     * 百度地图API URI标示服务
-     *
-     * @param float $lat
-     *            lat<纬度>,lng<经度>
-     * @param float $lng
-     *            lat<纬度>,lng<经度>
-     * @param string $title
-     *            标注点显示标题
-     * @param string $content
-     *            标注点显示内容
-     * @param int $zoom
-     *            展现地图的级别，默认为视觉最优级别。
-     * @param string $output
-     *            表示输出类型，web上必须指定为html才能展现地图产品结果
-     * @return string
-     */
-    protected function mapUrl($lat, $lng, $title = '', $content = '', $zoom = '', $output = 'html')
-    {
-        $title = rawurlencode($title);
-        $content = rawurlencode($content);
-        return "http://api.map.baidu.com/marker?location={$lat},{$lng}&title={$title}&content={$content}&zoom={$zoom}&output={$output}&referer=catholic";
-    }
-
-    /**
-     * 生成某个坐标的静态定位图片
-     *
-     * @param float $lat
-     *            lat<纬度>,lng<经度>
-     * @param float $lng
-     *            lat<纬度>,lng<经度>
-     * @param int $width
-     *            图片宽度。取值范围：(0, 1024]。默认400
-     * @param int $height
-     *            图片高度。取值范围：(0, 1024]。 默认300
-     * @param int $zoom
-     *            地图级别。取值范围：[1, 18]。 默认11
-     * @return string
-     */
-    protected function mapImage($lat, $lng, $width = 400, $height = 300, $zoom = 11)
-    {
-        return "http://api.map.baidu.com/staticimage?center={$lng},{$lat}&markers={$lng},{$lat}&width={$width}&height={$height}&zoom={$zoom}";
-    }
-
-    protected function shopLocation($Location_X, $Location_Y)
-    {
-        return array();
-        // $modelShop = new Cronjob_Model_Shop();
-        // $shopList = $modelShop->getNearby($Location_Y, $Location_X, 2000, 1, 10);
-        // $shopList = $shopList['list'];
-        $shopList = array();
-        $articles = array();
-        if (count($shopList) > 0) {
-            $count = 0;
-            foreach ($shopList as $item) {
-                $name = (string) $item['name'];
-                $address = (string) $item['address'];
-                $longitude = (string) $item['location'][0];
-                $latitude = (string) $item['location'][1];
-
-                $article = array();
-                $article['title'] = $name;
-                $article['description'] = $address;
-                if ($count == 0) {
-                    $article['picurl'] = $this->mapImage($latitude, $longitude, 640, 320);
-                } else {
-                    $article['picurl'] = '';
-                }
-                $article['url'] = $this->mapUrl($latitude, $longitude, $name, $address);
-
-                array_push($articles, $article);
-                $count++;
-                // 只要推送5条地理位置信息
-                if ($count >= 5) {
-                    break;
-                }
-            }
-        }
-        return $articles;
-    }
-
-    /**
-     * 转化方法 很重要
-     *
-     * @param object $object            
-     */
-    protected function object2array($object)
-    {
-        // return @json_decode(@json_encode($object), 1);
-        return @json_decode(preg_replace('/{}/', '""', @json_encode($object)), 1);
     }
 
     /**
