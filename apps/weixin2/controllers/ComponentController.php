@@ -306,14 +306,14 @@ class ComponentController extends ControllerBase
             $AESInfo['encrypt_type'] = isset($_GET['encrypt_type']) ? $_GET['encrypt_type'] : '';
             $AESInfo['msg_signature'] = isset($_GET['msg_signature']) ? $_GET['msg_signature'] : '';
             $AESInfo['api'] = 'authorizecallback';
-            $this->requestLogDatas['aes_info'] = $AESInfo;
 
             $encodingAESKey = isset($this->appConfig['EncodingAESKey']) ? $this->appConfig['EncodingAESKey'] : '';
             $verifyToken = isset($this->appConfig['verify_token']) ? $this->appConfig['verify_token'] : '';
             $receiveId = $this->appConfig['appid'];
-            $this->requestLogDatas['aes_info']['EncodingAESKey'] = $encodingAESKey;
-            $this->requestLogDatas['aes_info']['verify_token'] = $verifyToken;
-            $this->requestLogDatas['aes_info']['receiveId'] = $receiveId;
+            $AESInfo['EncodingAESKey'] = $encodingAESKey;
+            $AESInfo['verify_token'] = $verifyToken;
+            $AESInfo['receiveId'] = $receiveId;
+            $this->requestLogDatas['aes_info'] = $AESInfo;
             if (empty($verifyToken)) {
                 throw new \Exception('application verify_token is null. config:' . \json_encode($this->appConfig));
             }
@@ -467,20 +467,6 @@ class ComponentController extends ControllerBase
             $this->requestLogDatas['component_appid'] = $component_appid;
             $this->requestLogDatas['authorizer_appid'] = $authorizer_appid;
 
-            // 如果是微信开放平台的话
-            if (!empty($this->appConfig['is_weixin_open_platform'])) {
-                $verifyToken = isset($this->appConfig['verify_token']) ? $this->appConfig['verify_token'] : '';
-                $encodingAESKey = isset($this->appConfig['EncodingAESKey']) ? $this->appConfig['EncodingAESKey'] : '';
-                $receiveId = $this->appConfig['appid'];
-            } else {
-                $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
-                $encodingAESKey = isset($this->authorizerConfig['EncodingAESKey']) ? $this->authorizerConfig['EncodingAESKey'] : '';
-                $receiveId = $this->authorizerConfig['appid'];
-            }
-            $this->requestLogDatas['aes_info']['EncodingAESKey'] = $encodingAESKey;
-            $this->requestLogDatas['aes_info']['verify_token'] = $verifyToken;
-            $this->requestLogDatas['aes_info']['receiveId'] = $receiveId;
-
             $onlyRevieve = false;
 
             $AESInfo = array();
@@ -491,6 +477,20 @@ class ComponentController extends ControllerBase
             $AESInfo['api'] = 'callback';
             $AESInfo['appid'] = isset($_GET['appid']) ? trim(($_GET['appid'])) : '';
             $AESInfo['authorizer_appid'] = isset($_GET['authorizer_appid']) ? trim(($_GET['authorizer_appid'])) : '';
+
+            // 如果是微信开放平台的话
+            if (!empty($this->appConfig['is_weixin_open_platform'])) {
+                $verifyToken = isset($this->appConfig['verify_token']) ? $this->appConfig['verify_token'] : '';
+                $encodingAESKey = isset($this->appConfig['EncodingAESKey']) ? $this->appConfig['EncodingAESKey'] : '';
+                $receiveId = $this->appConfig['appid'];
+            } else {
+                $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
+                $encodingAESKey = isset($this->authorizerConfig['EncodingAESKey']) ? $this->authorizerConfig['EncodingAESKey'] : '';
+                $receiveId = $this->authorizerConfig['appid'];
+            }
+            $AESInfo['EncodingAESKey'] = $encodingAESKey;
+            $AESInfo['verify_token'] = $verifyToken;
+            $AESInfo['receiveId'] = $receiveId;
             $this->requestLogDatas['aes_info'] = $AESInfo;
 
             if (empty($verifyToken)) {
@@ -1768,6 +1768,11 @@ class ComponentController extends ControllerBase
      * 析构函数
      */
     public function __destruct()
+    {
+        $this->doRecordMsgLog();
+    }
+
+    protected function doRecordMsgLog()
     {
         if (!empty($this->requestLogDatas)) {
 
