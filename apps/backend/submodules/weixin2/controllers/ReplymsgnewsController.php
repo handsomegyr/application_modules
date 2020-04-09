@@ -4,39 +4,30 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\ReplyMsg\News;
 use App\Backend\Submodules\Weixin2\Models\ReplyMsg\ReplyMsg;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="被动回复用户消息图文设置"})
  *
  * @name 被动回复用户消息图文设置
  */
-class ReplymsgnewsController extends \App\Backend\Controllers\FormController
+class ReplymsgnewsController extends BaseController
 {
     private $modelNews;
     private $modelReplyMsg;
 
-    private $modelAuthorizer;
-    private $modelComponent;
     public function initialize()
     {
         $this->modelNews = new News();
         $this->modelReplyMsg = new ReplyMsg();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
 
         $this->replyMsgItems = $this->modelReplyMsg->getAllByType("news", "_id");
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
     protected $replyMsgItems = null;
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -96,7 +87,36 @@ class ReplymsgnewsController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['reply_msg_id'] = array(
             'name' => '所属回复消息ID',
             'data' => array(

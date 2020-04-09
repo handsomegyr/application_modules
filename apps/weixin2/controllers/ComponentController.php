@@ -1756,6 +1756,7 @@ class ComponentController extends ControllerBase
      */
     protected function answer($FromUserName, $ToUserName, $content, $authorizer_appid, $component_appid, $agentid)
     {
+        $agentid = intval($agentid);
         $match = $this->modelWeixinopenKeyword->matchKeyWord($content, $authorizer_appid, $component_appid, $agentid, false);
         if (empty($match)) {
             $this->modelWeixinopenWord->record($content, $authorizer_appid, $component_appid, $agentid);

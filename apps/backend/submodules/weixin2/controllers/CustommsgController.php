@@ -3,8 +3,6 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\CustomMsg\CustomMsg;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 use App\Backend\Submodules\Weixin2\Models\CustomMsg\Type;
 use App\Backend\Submodules\Weixin2\Models\Media\Media;
@@ -17,11 +15,9 @@ use App\Backend\Submodules\Weixin2\Models\Kf\Account;
  *
  * @name 客服消息
  */
-class CustommsgController extends \App\Backend\Controllers\FormController
+class CustommsgController extends BaseController
 {
     private $modelCustomMsg;
-    private $modelAuthorizer;
-    private $modelComponent;
 
     private $modelType;
     private $modelMedia;
@@ -31,16 +27,11 @@ class CustommsgController extends \App\Backend\Controllers\FormController
     public function initialize()
     {
         $this->modelCustomMsg = new CustomMsg();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
 
         $this->modelType = new Type();
         $this->modelMedia = new Media();
         $this->modelMaterial = new Material();
         $this->modelAccount = new Account();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
 
         $this->typeItems = $this->modelType->getAll();
         $this->mediaItems = $this->modelMedia->getAllByType("", "_id");
@@ -51,8 +42,6 @@ class CustommsgController extends \App\Backend\Controllers\FormController
 
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected $typeItems = null;
     protected $mediaItems = null;
@@ -62,7 +51,8 @@ class CustommsgController extends \App\Backend\Controllers\FormController
     protected $accountItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -117,6 +107,37 @@ class CustommsgController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true
