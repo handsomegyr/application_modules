@@ -3,8 +3,6 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Menu\ConditionalMatchrule;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 use App\Backend\Submodules\Weixin2\Models\User\Tag;
 use App\Backend\Submodules\Weixin2\Models\Language;
 
@@ -13,38 +11,30 @@ use App\Backend\Submodules\Weixin2\Models\Language;
  *
  * @name 个性化菜单匹配规则设置
  */
-class MenuconditionalmatchruleController extends \App\Backend\Controllers\FormController
+class MenuconditionalmatchruleController extends BaseController
 {
     private $modelConditionalMatchrule;
-    private $modelAuthorizer;
-    private $modelComponent;
 
     private $modelUserTag;
     private $modelLanguage;
     public function initialize()
     {
         $this->modelConditionalMatchrule = new ConditionalMatchrule();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
 
         $this->modelUserTag = new Tag();
         $this->modelLanguage = new Language();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
 
         $this->userTagItems = $this->modelUserTag->getAllByType("tag_id");
         $this->languageItems = $this->modelLanguage->getAll();
 
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
     protected $userTagItems = null;
     protected $languageItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -99,6 +89,36 @@ class MenuconditionalmatchruleController extends \App\Backend\Controllers\FormCo
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true
