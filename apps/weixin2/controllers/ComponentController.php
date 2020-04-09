@@ -25,6 +25,9 @@ class ComponentController extends ControllerBase
 
     private $modelWeixinopenReplyMsg;
 
+    /**
+     * @var \App\Weixin2\Models\Keyword\Keyword
+     */
     private $modelWeixinopenKeyword;
 
     private $modelWeixinopenKeywordToReplyMsg;
@@ -33,6 +36,9 @@ class ComponentController extends ControllerBase
 
     private $modelWeixinopenKeywordToTemplateMsg;
 
+    /**
+     * @var \App\Weixin2\Models\Keyword\Word
+     */
     private $modelWeixinopenWord;
 
     private $modelWeixinopenQrcode;
@@ -524,6 +530,7 @@ class ComponentController extends ControllerBase
             }
 
             // 开始处理相关的业务逻辑
+            $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : '';
             $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
             $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
             $content = isset($datas['Content']) ? trim($datas['Content']) : '';
@@ -586,7 +593,7 @@ class ComponentController extends ControllerBase
                 // 'timestamp' => $__TIME_STAMP__,
                 // 'signkey' => $__SIGN_KEY__
                 // ));
-                $response = $this->answer($FromUserName, $ToUserName, $content, $authorizer_appid, $component_appid);
+                $response = $this->answer($FromUserName, $ToUserName, $content, $authorizer_appid, $component_appid, $AgentID);
             }
 
             // 输出响应结果
@@ -754,7 +761,7 @@ class ComponentController extends ControllerBase
             // 为回复的Model装载weixin对象
             $this->modelWeixinopenReplyMsg->setWeixinInstance($this->objWeixin);
 
-            $response = $this->answer("FromUserName", "ToUserName", $keyword, $this->authorizerConfig['appid'], $this->appConfig['appid']);
+            $response = $this->answer("FromUserName", "ToUserName", $keyword, $this->authorizerConfig['appid'], $this->appConfig['appid'], 0);
 
             return $this->result("OK", $response);
         } catch (\Exception $e) {
@@ -1743,17 +1750,18 @@ class ComponentController extends ControllerBase
      * @param string $ToUserName            
      * @param string $content            
      * @param string $authorizer_appid            
-     * @param string $component_appid            
+     * @param string $component_appid             
+     * @param string $agentid           
      * @return boolean
      */
-    protected function answer($FromUserName, $ToUserName, $content, $authorizer_appid, $component_appid)
+    protected function answer($FromUserName, $ToUserName, $content, $authorizer_appid, $component_appid, $agentid)
     {
-        $match = $this->modelWeixinopenKeyword->matchKeyWord($content, $authorizer_appid, $component_appid, false);
+        $match = $this->modelWeixinopenKeyword->matchKeyWord($content, $authorizer_appid, $component_appid, $agentid, false);
         if (empty($match)) {
-            $this->modelWeixinopenWord->record($content, $authorizer_appid, $component_appid);
-            $match = $this->modelWeixinopenKeyword->matchKeyWord('默认回复', $authorizer_appid, $component_appid, false);
+            $this->modelWeixinopenWord->record($content, $authorizer_appid, $component_appid, $agentid);
+            $match = $this->modelWeixinopenKeyword->matchKeyWord('默认回复', $authorizer_appid, $component_appid, $agentid, false);
             if (empty($match)) {
-                $match = $this->modelWeixinopenKeyword->matchKeyWord('默认回复', "", $component_appid, false);
+                $match = $this->modelWeixinopenKeyword->matchKeyWord('默认回复', "", $component_appid, 0, false);
             }
         }
         $match['reply_msg_ids'] = $this->modelWeixinopenKeywordToReplyMsg->getReplyMsgIdsByKeywordId($match['_id']);

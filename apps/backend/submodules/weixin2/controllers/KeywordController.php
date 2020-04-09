@@ -5,6 +5,7 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 use App\Backend\Submodules\Weixin2\Models\Keyword\Keyword;
 use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
 use App\Backend\Submodules\Weixin2\Models\Component\Component;
+use App\Backend\Submodules\Weixin2\Models\Agent\Agent;
 use App\Backend\Submodules\Weixin2\Models\ReplyMsg\Type as ReplyMsgType;
 use App\Backend\Submodules\Weixin2\Models\CustomMsg\Type as CustomMsgType;
 
@@ -18,6 +19,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
     private $modelKeyword;
     private $modelAuthorizer;
     private $modelComponent;
+    private $modelAgent;
 
     private $modelReplyMsgType;
     private $modelCustomMsgType;
@@ -27,6 +29,7 @@ class KeywordController extends \App\Backend\Controllers\FormController
         $this->modelKeyword = new Keyword();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
+        $this->modelAgent = new Agent();
 
         $this->modelReplyMsgType = new ReplyMsgType();
         $this->modelCustomMsgType = new CustomMsgType();
@@ -36,16 +39,19 @@ class KeywordController extends \App\Backend\Controllers\FormController
 
         $this->replyMsgTypeItems = $this->modelReplyMsgType->getAll();
         $this->customMsgTypeItems = $this->modelCustomMsgType->getAll();
+        $this->agentItems = $this->modelAgent->getAll();
 
         parent::initialize();
     }
     protected $componentItems = null;
     protected $authorizerItems = null;
+    protected $agentItems = null;
     protected $replyMsgTypeItems = null;
     protected $customMsgTypeItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -105,6 +111,37 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['reply_msg_type'] = array(
             'name' => '被动回复消息类型',
             'data' => array(
