@@ -85,7 +85,7 @@ class AgentmsgnewsController extends BaseController
             'export' => array(
                 'is_show' => true
             )
-        );        
+        );
         $schemas['agentid'] = array(
             'name' => '代理应用ID',
             'data' => array(
@@ -116,7 +116,7 @@ class AgentmsgnewsController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['Agent_msg_id'] = array(
+        $schemas['agent_msg_id'] = array(
             'name' => '所属应用消息ID',
             'data' => array(
                 'type' => 'string',
@@ -228,7 +228,7 @@ class AgentmsgnewsController extends BaseController
             )
         );
         $schemas['big_pic_url'] = array(
-            'name' => '大图图片链接',
+            'name' => '图文消息的图片链接',
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
@@ -244,7 +244,7 @@ class AgentmsgnewsController extends BaseController
                 'input_type' => 'image',
                 'is_show' => true,
                 'items' => '',
-                'help' => '大图图片链接，支持JPG、PNG格式，较好的效果为大图360*200',
+                'help' => '图文消息的图片链接，支持JPG、PNG格式，较好的效果为大图 1068*455，小图150*150。',
             ),
             'list' => array(
                 'is_show' => true,
