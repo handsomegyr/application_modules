@@ -112,34 +112,6 @@ class MassmsgsendmethodController extends \App\Backend\Controllers\FormControlle
                 'is_show' => true
             )
         );
-        $schemas['send_ignore_reprint'] = array(
-            'name' => '是否继续群发',
-            'data' => array(
-                'type' => 'boolean',
-                'length' => 1,
-                'defaultValue' => false
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas,
-                'help' => '图文消息被判定为转载时，是否继续群发。 1为继续群发（转载），0为停止群发。 该参数默认为0。',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '1',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
 
         return $schemas;
     }
