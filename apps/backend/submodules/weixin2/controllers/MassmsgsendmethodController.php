@@ -84,34 +84,6 @@ class MassmsgsendmethodController extends \App\Backend\Controllers\FormControlle
                 'is_show' => true
             )
         );
-        $schemas['is_to_all'] = array(
-            'name' => '用于设定是否向全部用户发送',
-            'data' => array(
-                'type' => 'boolean',
-                'length' => 1,
-                'defaultValue' => false
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas,
-                'help' => '用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，选择false可根据tag_id发送给指定群组的用户',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '1',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
 
         return $schemas;
     }
