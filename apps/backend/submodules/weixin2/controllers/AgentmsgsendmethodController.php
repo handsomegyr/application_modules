@@ -48,11 +48,12 @@ class AgentmsgsendmethodController extends \App\Backend\Controllers\FormControll
             )
         );
 
-        //应用消息发送方式 0:全部发送 1:按tag_id发送 2:按openid列表
+        //应用消息发送方式 0:向关注该企业应用的全部成员发送 1:按成员ID列表发送 2:按部门ID列表发送 3:按标签ID列表发送
         $sendMethodOptions = array();
-        $sendMethodOptions[0] = "全部发送";
-        $sendMethodOptions[1] = "按tag_id发送";
-        $sendMethodOptions[2] = "按openid列表发送";
+        $sendMethodOptions[0] = "向关注该企业应用的全部成员发送";
+        $sendMethodOptions[1] = "按成员ID列表发送";
+        $sendMethodOptions[2] = "按部门ID列表发送";
+        $sendMethodOptions[3] = "按标签ID列表发送";
         $schemas['send_method'] = array(
             'name' => '应用消息发送方式',
             'data' => array(
