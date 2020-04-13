@@ -3,51 +3,39 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Keyword\Keyword;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
-use App\Backend\Submodules\Weixin2\Models\Agent\Agent;
 use App\Backend\Submodules\Weixin2\Models\ReplyMsg\Type as ReplyMsgType;
 use App\Backend\Submodules\Weixin2\Models\CustomMsg\Type as CustomMsgType;
+use App\Backend\Submodules\Weixin2\Models\AgentMsg\Type as AgentMsgType;
 
 /**
  * @title({name="关键字设定"})
  *
  * @name 关键字设定
  */
-class KeywordController extends \App\Backend\Controllers\FormController
+class KeywordController extends BaseController
 {
     private $modelKeyword;
-    private $modelAuthorizer;
-    private $modelComponent;
-    private $modelAgent;
-
     private $modelReplyMsgType;
     private $modelCustomMsgType;
 
     public function initialize()
     {
         $this->modelKeyword = new Keyword();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-        $this->modelAgent = new Agent();
 
         $this->modelReplyMsgType = new ReplyMsgType();
         $this->modelCustomMsgType = new CustomMsgType();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
+        $this->modelAgentMsgType = new AgentMsgType();
 
         $this->replyMsgTypeItems = $this->modelReplyMsgType->getAll();
         $this->customMsgTypeItems = $this->modelCustomMsgType->getAll();
-        $this->agentItems = $this->modelAgent->getAll();
+        $this->agentMsgTypeItems = $this->modelAgentMsgType->getAll();
 
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
-    protected $agentItems = null;
+
     protected $replyMsgTypeItems = null;
     protected $customMsgTypeItems = null;
+    protected $agentMsgTypeItems = null;
 
     protected function getSchemas2($schemas)
     {
@@ -197,6 +185,36 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->customMsgTypeItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['agent_msg_type'] = array(
+            'name' => '应用消息类型',
+            'data' => array(
+                'type' => 'string',
+                'length' => 30,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentMsgTypeItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentMsgTypeItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentMsgTypeItems
             ),
             'export' => array(
                 'is_show' => true
