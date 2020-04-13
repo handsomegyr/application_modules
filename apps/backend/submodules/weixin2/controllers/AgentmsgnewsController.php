@@ -4,6 +4,7 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\AgentMsg\News;
 use App\Backend\Submodules\Weixin2\Models\AgentMsg\AgentMsg;
+use App\Backend\Submodules\Weixin2\Models\Media\Media;
 
 /**
  * @title({name="应用消息图文设置"})
@@ -18,11 +19,14 @@ class AgentmsgnewsController extends BaseController
     {
         $this->modelNews = new News();
         $this->modelAgentMsg = new AgentMsg();
+        $this->modelMedia = new Media();
 
         $this->AgentMsgItems = $this->modelAgentMsg->getAllByType("news", "_id");
+        $this->mediaItems = $this->modelMedia->getAllByType("image", "_id");
         parent::initialize();
     }
     protected $AgentMsgItems = null;
+    protected $mediaItems = null;
 
     protected function getSchemas2($schemas)
     {
@@ -289,6 +293,98 @@ class AgentmsgnewsController extends BaseController
                 'is_show' => true
             )
         );
+
+
+        $schemas['thumb_media'] = array(
+            'name' => '图文消息缩略图的临时素材',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->mediaItems,
+                'help' => '图文消息缩略图的media_id, 可以通过素材管理接口获得。此处thumb_media_id即上传接口返回的media_id',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->mediaItems,
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->mediaItems,
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['author'] = array(
+            'name' => '图文消息的作者',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '图文消息的作者，不超过64个字节',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['digest'] = array(
+            'name' => '图文消息的描述',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '图文消息的描述，不超过512个字节，超过会自动截断（支持id转译）',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['index'] = array(
             'name' => '文章在图文消息中的位置',
             'data' => array(

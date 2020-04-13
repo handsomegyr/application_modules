@@ -68,7 +68,7 @@ class AgentmsgsendmethodController extends \App\Backend\Controllers\FormControll
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $sendMethodOptions,
-                'help' => '应用消息发送方式 0:全部发送 1:按tag_id发送 2:按openid列表',
+                'help' => '应用消息发送方式 0:向关注该企业应用的全部成员发送 1:按成员ID列表发送 2:按部门ID列表发送 3:按标签ID列表发送',
             ),
             'list' => array(
                 'is_show' => true,

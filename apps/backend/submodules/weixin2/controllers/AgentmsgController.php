@@ -3,7 +3,6 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\AgentMsg\AgentMsg;
-
 use App\Backend\Submodules\Weixin2\Models\AgentMsg\Type;
 use App\Backend\Submodules\Weixin2\Models\Media\Media;
 
@@ -22,7 +21,6 @@ class AgentmsgController extends BaseController
     public function initialize()
     {
         $this->modelAgentMsg = new AgentMsg();
-
         $this->modelType = new Type();
         $this->modelMedia = new Media();
 
