@@ -3,8 +3,6 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Material\News;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 use App\Backend\Submodules\Weixin2\Models\Material\Material;
 
 /**
@@ -15,88 +13,21 @@ use App\Backend\Submodules\Weixin2\Models\Material\Material;
 class MaterialnewsController extends \App\Backend\Controllers\FormController
 {
     private $modelNews;
-    private $modelAuthorizer;
-    private $modelComponent;
     private $modelMaterial;
     public function initialize()
     {
         $this->modelNews = new News();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
         $this->modelMaterial = new Material();
 
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         $this->materialNewsItems = $this->modelMaterial->getAllByType("news");
         $this->materialThumbItems = $this->modelMaterial->getAllByType("thumb", "media_id");
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
     protected $materialNewsItems = null;
     protected $materialThumbItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
-            'name' => '第三方平台应用ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->componentItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->componentItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->componentItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['authorizer_appid'] = array(
-            'name' => '授权方应用ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->authorizerItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->authorizerItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->authorizerItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
+    {
         $schemas['material_id'] = array(
             'name' => '所属永久素材ID',
             'data' => array(

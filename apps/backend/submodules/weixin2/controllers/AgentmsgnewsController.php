@@ -21,105 +21,15 @@ class AgentmsgnewsController extends BaseController
         $this->modelAgentMsg = new AgentMsg();
         $this->modelMedia = new Media();
 
-        $this->AgentMsgItems = $this->modelAgentMsg->getAllByType("news", "_id");
+        $this->agentMsgItems = $this->modelAgentMsg->getAllByType("news", "_id");
         $this->mediaItems = $this->modelMedia->getAllByType("image", "_id");
         parent::initialize();
     }
-    protected $AgentMsgItems = null;
+    protected $agentMsgItems = null;
     protected $mediaItems = null;
 
     protected function getSchemas2($schemas)
     {
-        $schemas['component_appid'] = array(
-            'name' => '第三方平台应用ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->componentItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->componentItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->componentItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['authorizer_appid'] = array(
-            'name' => '授权方应用ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->authorizerItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->authorizerItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->authorizerItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['agentid'] = array(
-            'name' => '代理应用ID',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->agentItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
         $schemas['agent_msg_id'] = array(
             'name' => '所属应用消息ID',
             'data' => array(
@@ -133,18 +43,18 @@ class AgentmsgnewsController extends BaseController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->AgentMsgItems
+                'items' => $this->agentMsgItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => $this->AgentMsgItems
+                'items' => $this->agentMsgItems
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->AgentMsgItems
+                'items' => $this->agentMsgItems
             ),
             'export' => array(
                 'is_show' => true
