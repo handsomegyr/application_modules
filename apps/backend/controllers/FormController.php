@@ -1281,8 +1281,16 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         }
     }
 
+    protected function setDefaultQuery(\App\Backend\Models\Input $input)
+    {
+        //$input->setDefaultQuery($queryCondtions);
+        return $input;
+    }
+
     protected function getList(\App\Backend\Models\Input $input)
     {
+        // 增加默认条件的设置
+        $input = $this->setDefaultQuery($input);
         $list = $this->getModel()->getList($input);
         $this->view->setVar('list', $list['data']);
         $this->view->setVar('filter', $list['filter']);
