@@ -65,6 +65,9 @@ class ApplicationsnsController extends ControllerBase
 
     private $state;
 
+    //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+    private $app_type = 0;
+
     public function initialize()
     {
         parent::initialize();
@@ -145,7 +148,14 @@ class ApplicationsnsController extends ControllerBase
                 $redirectUri .= '/callback';
 
                 // 授权处理
-                $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['access_token']);
+                //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+                if ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_PUB) {
+                    $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['access_token']);
+                } elseif ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_QY) {
+                    $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $this->authorizerConfig['access_token']);
+                } else {
+                    throw new \Exception('该运用不支持授权操作');
+                }
                 $objSns->setScope($this->scope);
                 $objSns->setState($this->state);
                 $objSns->setRedirectUri($redirectUri);
@@ -207,10 +217,38 @@ class ApplicationsnsController extends ControllerBase
             $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : '';
 
             // 第二步：通过code换取access_token
-            $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['access_token']);
-            $arrAccessToken = $objSns->getAccessToken();
-            if (isset($arrAccessToken['errcode'])) {
-                throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+            //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+            if ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_PUB) {
+                $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['access_token']);
+                $arrAccessToken = $objSns->getAccessToken();
+                if (isset($arrAccessToken['errcode'])) {
+                    throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+                }
+            } elseif ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_QY) {
+                $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $this->authorizerConfig['access_token']);
+                $arrAccessToken = $objSns->getUserInfo($this->authorizerConfig['access_token']);
+                if (isset($arrAccessToken['errcode'])) {
+                    throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+                }
+                $arrAccessToken['scope'] = $this->scope;
+                $arrAccessToken['access_token'] = $this->authorizerConfig['access_token'];
+
+                //a) 当用户为企业成员时
+                // UserId	成员UserID。若需要获得用户详情信息，可调用通讯录接口：读取成员
+                // DeviceId	手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
+                if (isset($arrAccessToken['UserId'])) {
+                    $arrAccessToken['openid'] = $arrAccessToken['UserId'];
+                    $arrAccessToken['is_qy_member'] = 1;
+                }
+                //b) 非企业成员授权时
+                // OpenId	非企业成员的标识，对当前企业唯一
+                // DeviceId	手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
+                if (isset($arrAccessToken['OpenId'])) {
+                    $arrAccessToken['openid'] = $arrAccessToken['OpenId'];
+                    $arrAccessToken['is_qy_member'] = 0;
+                }
+            } else {
+                throw new \Exception('该运用不支持授权操作');
             }
 
             // 授权成功后，记录该微信用户的基本信息
@@ -222,9 +260,22 @@ class ApplicationsnsController extends ControllerBase
                 $userInfo = $this->modelWeixinopenUser->getUserInfoByIdLastWeek($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $this->now);
                 if (true || empty($userInfo)) {
                     $updateInfoFromWx = true;
-                    $weixin = new \Weixin\Client();
-                    $weixin->setSnsAccessToken($arrAccessToken['access_token']);
-                    $userInfo = $weixin->getSnsManager()->getSnsUserInfo($arrAccessToken['openid']);
+                    //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+                    if ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_PUB) {
+                        $weixin = new \Weixin\Client();
+                        $weixin->setSnsAccessToken($arrAccessToken['access_token']);
+                        $userInfo = $weixin->getSnsManager()->getSnsUserInfo($arrAccessToken['openid']);
+                    } elseif ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_QY) {
+                        // 当用户为企业成员时
+                        if (!empty($arrAccessToken['is_qy_member'])) {
+                            $weixin = new \Weixin\Qy\Client($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+                            $weixin->setAccessToken($arrAccessToken['access_token']);
+                            $userInfo = $weixin->getUserManager()->get($arrAccessToken['openid']);
+                        } else {
+                            $userInfo = array();
+                            $userInfo['openid'] = $arrAccessToken['openid'];
+                        }
+                    }
                     if (isset($userInfo['errcode'])) {
                         throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
                     }
@@ -257,7 +308,9 @@ class ApplicationsnsController extends ControllerBase
 
             // 调整数据库操作的执行顺序，优化跳转速度
             if ($updateInfoFromWx) {
-                $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
+                if(!empty($userInfo['headimgurl'])){
+                    $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
+                }
                 $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['openid'] . $this->authorizer_appid . $this->component_appid);
                 if (!$lock->lock()) {
                     $this->modelWeixinopenUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $userInfo);
@@ -382,6 +435,8 @@ class ApplicationsnsController extends ControllerBase
         if (empty($this->authorizerConfig)) {
             throw new \Exception("component_appid:{$this->component_appid}和authorizer_appid:{$this->authorizer_appid}所对应的记录不存在");
         }
+        //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+        $this->app_type = intval($this->authorizerConfig['app_type']);
 
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : uniqid();
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_userinfo';
