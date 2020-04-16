@@ -145,11 +145,11 @@ class ApplicationsnsController extends ControllerBase
                 $redirectUri .= '/callback';
 
                 // 授权处理
-                $objComponent = new \Weixin\Token\Component($this->authorizer_appid, $this->component_appid, $this->componentConfig['access_token']);
-                $objComponent->setScope($this->scope);
-                $objComponent->setState($this->state);
-                $objComponent->setRedirectUri($redirectUri);
-                $redirectUri = $objComponent->getAuthorizeUrl(false);
+                $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['access_token']);
+                $objSns->setScope($this->scope);
+                $objSns->setState($this->state);
+                $objSns->setRedirectUri($redirectUri);
+                $redirectUri = $objSns->getAuthorizeUrl(false);
                 header("location:{$redirectUri}");
                 exit();
             }
@@ -207,8 +207,8 @@ class ApplicationsnsController extends ControllerBase
             $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : '';
 
             // 第二步：通过code换取access_token
-            $objComponent = new \Weixin\Token\Component($this->authorizer_appid, $this->component_appid, $this->componentConfig['access_token']);
-            $arrAccessToken = $objComponent->getAccessToken();
+            $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['access_token']);
+            $arrAccessToken = $objSns->getAccessToken();
             if (isset($arrAccessToken['errcode'])) {
                 throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
             }
