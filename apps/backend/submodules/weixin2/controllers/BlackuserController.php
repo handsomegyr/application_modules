@@ -3,8 +3,6 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\User\BlackUser;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="黑名单"})
@@ -14,20 +12,11 @@ use App\Backend\Submodules\Weixin2\Models\Component\Component;
 class BlackuserController extends \App\Backend\Controllers\FormController
 {
     private $modelBlackUser;
-    private $modelAuthorizer;
-    private $modelComponent;
     public function initialize()
     {
         $this->modelBlackUser = new BlackUser();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected function getHeaderTools2($tools)
     {
@@ -88,7 +77,6 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/blackuser/getblacklist?id=xxx
         try {
-
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容
@@ -151,7 +139,6 @@ class BlackuserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/blackuser/batchblacklist?id=xxx
         try {
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
@@ -254,6 +241,36 @@ class BlackuserController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true
