@@ -3,31 +3,20 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Comment\Comment;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="已群发文章评论"})
  *
  * @name 已群发文章评论
  */
-class CommentController extends \App\Backend\Controllers\FormController
+class CommentController extends BaseController
 {
     private $modelComment;
-    private $modelAuthorizer;
-    private $modelComponent;
     public function initialize()
     {
         $this->modelComment = new Comment();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected function getFormTools2($tools)
     {
@@ -81,8 +70,6 @@ class CommentController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/comment/closecomment?id=xxx
         try {
-            
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
@@ -110,8 +97,6 @@ class CommentController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/comment/opencomment?id=xxx
         try {
-            
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
@@ -139,8 +124,6 @@ class CommentController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/comment/synccommentlist?id=xxx
         try {
-            
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
@@ -160,7 +143,8 @@ class CommentController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -215,6 +199,37 @@ class CommentController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true
