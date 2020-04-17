@@ -3,8 +3,6 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\DataCube\UserCumulate;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 use App\Backend\Submodules\Weixin2\Models\User\Source;
 
 /**
@@ -12,26 +10,17 @@ use App\Backend\Submodules\Weixin2\Models\User\Source;
  *
  * @name 累计用户数据
  */
-class DatacubeusercumulateController extends \App\Backend\Controllers\FormController
+class DatacubeusercumulateController extends BaseController
 {
     private $modelUserCumulate;
-    private $modelAuthorizer;
-    private $modelComponent;
     private $modelUserSource;
     public function initialize()
     {
         $this->modelUserCumulate = new UserCumulate();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
         $this->modelUserSource = new Source();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         $this->userSourceItems = $this->modelUserSource->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
     protected $userSourceItems = null;
 
     protected function getHeaderTools2($tools)
@@ -56,8 +45,6 @@ class DatacubeusercumulateController extends \App\Backend\Controllers\FormContro
     {
         // http://www.applicationmodule.com/admin/weixin2/datacubeusercumulate/syncusercumulate?id=xxx
         try {
-            
-
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容
@@ -151,7 +138,8 @@ class DatacubeusercumulateController extends \App\Backend\Controllers\FormContro
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -206,6 +194,36 @@ class DatacubeusercumulateController extends \App\Backend\Controllers\FormContro
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true

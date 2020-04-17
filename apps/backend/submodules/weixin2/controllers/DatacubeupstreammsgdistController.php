@@ -3,32 +3,20 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\DataCube\UpstreamMsgDist;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="消息发送分布数据"})
  *
  * @name 消息发送分布数据
  */
-class DatacubeupstreammsgdistController extends \App\Backend\Controllers\FormController
+class DatacubeupstreammsgdistController extends BaseController
 {
     private $modelUpstreamMsgDist;
-    private $modelAuthorizer;
-    private $modelComponent;
     public function initialize()
     {
         $this->modelUpstreamMsgDist = new UpstreamMsgDist();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
-
 
     protected function getHeaderTools2($tools)
     {
@@ -52,7 +40,6 @@ class DatacubeupstreammsgdistController extends \App\Backend\Controllers\FormCon
     {
         // http://www.applicationmodule.com/admin/weixin2/datacubeupstreammsgdist/syncupstreammsgdist?id=xxx
         try {
-
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容
@@ -202,6 +189,36 @@ class DatacubeupstreammsgdistController extends \App\Backend\Controllers\FormCon
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true

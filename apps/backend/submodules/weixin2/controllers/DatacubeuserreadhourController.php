@@ -3,34 +3,25 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\DataCube\UserReadHour;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 use App\Backend\Submodules\Weixin2\Models\RefHour;
+
 /**
  * @title({name="图文统计分时数据"})
  *
  * @name 图文统计分时数据
  */
-class DatacubeuserreadhourController extends \App\Backend\Controllers\FormController
+class DatacubeuserreadhourController extends BaseController
 {
     private $modelUserReadHour;
-    private $modelAuthorizer;
-    private $modelComponent;
     private $modelRefHour;
     public function initialize()
     {
         $this->modelUserReadHour = new UserReadHour();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
         $this->modelRefHour = new RefHour();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         $this->refHourItems = $this->modelRefHour->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
+    protected $refHourItems = null;
 
     protected function getHeaderTools2($tools)
     {
@@ -54,8 +45,6 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
     {
         // http://www.applicationmodule.com/admin/weixin2/datacubeuserreadhour/syncuserreadhour?id=xxx
         try {
-            
-
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容
@@ -149,7 +138,8 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -204,6 +194,36 @@ class DatacubeuserreadhourController extends \App\Backend\Controllers\FormContro
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true
