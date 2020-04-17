@@ -61,6 +61,8 @@ class ApplicationsnsController extends ControllerBase
 
     private $authorizerConfig;
 
+    private $agentid = 0;
+
     private $scope;
 
     private $state;
@@ -120,7 +122,7 @@ class ApplicationsnsController extends ControllerBase
                 // $list = $this->modelWeixinopenCallbackurls->getValidCallbackUrlList($this->authorizer_appid, $this->component_appid, true);
                 // $hostret = $this->modelWeixinopenCallbackurls->getHost($redirect);
                 // return Result::success($hostret);
-                $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $redirect);
+                $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $this->agentid, $redirect);
                 if (empty($isValid)) {
                     throw new \Exception("回调地址不合法");
                 }
@@ -129,7 +131,7 @@ class ApplicationsnsController extends ControllerBase
             if (!$refresh && !empty($_SESSION[$this->sessionKey])) {
                 $arrAccessToken = $_SESSION[$this->sessionKey];
                 $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
-                $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
+                $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
                 header("location:{$redirect}");
                 exit();
             } else {
@@ -308,7 +310,7 @@ class ApplicationsnsController extends ControllerBase
 
             // 调整数据库操作的执行顺序，优化跳转速度
             if ($updateInfoFromWx) {
-                if(!empty($userInfo['headimgurl'])){
+                if (!empty($userInfo['headimgurl'])) {
                     $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
                 }
                 $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['openid'] . $this->authorizer_appid . $this->component_appid);
@@ -316,7 +318,7 @@ class ApplicationsnsController extends ControllerBase
                     $this->modelWeixinopenUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $userInfo);
                 }
             }
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
+            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
             header("location:{$redirect}");
             exit();
         } catch (\Exception $e) {

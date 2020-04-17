@@ -15,6 +15,9 @@ class SubscribemsgController extends ControllerBase
 
     private $modelWeixinopenAuthorizer;
 
+    /**
+     * @var \App\Weixin2\Models\ScriptTracking
+     */
     private $modelWeixinopenScriptTracking;
 
     private $modelWeixinopenCallbackurls;
@@ -43,6 +46,8 @@ class SubscribemsgController extends ControllerBase
     private $authorizer_appid;
 
     private $authorizerConfig;
+
+    private $agentid = 0;
 
     private $scope;
 
@@ -96,7 +101,7 @@ class SubscribemsgController extends ControllerBase
 
             if ($dc) {
                 // 添加重定向域的检查
-                $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $redirect);
+                $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $this->agentid, $redirect);
                 if (empty($isValid)) {
                     throw new \Exception("回调地址不合法");
                 }
@@ -229,7 +234,7 @@ class SubscribemsgController extends ControllerBase
             $redirect = $this->addUrlParameter($redirect, array(
                 'it_subscribemsg_ts' => $timestamp
             ));
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $openid, $this->appConfig['_id']);
+            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $openid, $this->appConfig['_id']);
             header("location:{$redirect}");
             exit();
         } catch (\Exception $e) {
