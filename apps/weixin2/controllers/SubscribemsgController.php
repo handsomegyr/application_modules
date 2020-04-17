@@ -24,6 +24,9 @@ class SubscribemsgController extends ControllerBase
 
     private $modelWeixinopenSnsApplication;
 
+    /**
+     * @var \App\Weixin2\Models\SubscribeMsg\SubscribeLog
+     */
     private $modelWeixinopenSubscribeMsgSubscribeLog;
 
     // lock key
@@ -195,11 +198,11 @@ class SubscribemsgController extends ControllerBase
                 }
 
                 // 查找是否有记录
-                $msgInfo = $this->modelWeixinopenSubscribeMsgSubscribeLog->getInfoByOpenidAndTemplateIdAndScene($openid, $template_id, $scene, $this->authorizer_appid, $this->component_appid);
+                $msgInfo = $this->modelWeixinopenSubscribeMsgSubscribeLog->getInfoByOpenidAndTemplateIdAndScene($openid, $template_id, $scene, $this->authorizer_appid, $this->component_appid, $this->agentid);
 
                 // 如果没有的话日志记录
                 if (empty($msgInfo)) {
-                    $msgInfo = $this->modelWeixinopenSubscribeMsgSubscribeLog->log($this->component_appid, $this->authorizer_appid, $appid4Sns, $openid, $template_id, $action, $scene, $reserved, $this->now);
+                    $msgInfo = $this->modelWeixinopenSubscribeMsgSubscribeLog->log($this->component_appid, $this->authorizer_appid, $this->agentid, $appid4Sns, $openid, $template_id, $action, $scene, $reserved, $this->now);
                 }
             }
             $redirect = $this->addUrlParameter($redirect, array(
