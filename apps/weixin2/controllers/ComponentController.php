@@ -43,6 +43,9 @@ class ComponentController extends ControllerBase
 
     private $modelWeixinopenQrcode;
 
+    /**
+     * @var \App\Weixin2\Models\Qrcode\EventLog
+     */
     private $modelWeixinopenQrcodeEventLog;
 
     // lock key
@@ -530,7 +533,7 @@ class ComponentController extends ControllerBase
             }
 
             // 开始处理相关的业务逻辑
-            $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : '';
+            $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : '0';
             $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
             $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
             $content = isset($datas['Content']) ? trim($datas['Content']) : '';
@@ -1179,6 +1182,7 @@ class ComponentController extends ControllerBase
      */
     protected function handleRequestAndGetResponseByEvent(array $datas)
     {
+        $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : '0';
         $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
         $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
         $MsgType = isset($datas['MsgType']) ? trim($datas['MsgType']) : '';
@@ -1230,8 +1234,8 @@ class ComponentController extends ControllerBase
 
                 $scene_id = (str_ireplace('qrscene_', '', $EventKey));
 
-                $this->modelWeixinopenQrcodeEventLog->record($this->authorizer_appid, $this->appid, $scene_id, $FromUserName, $ToUserName, $CreateTime, $MsgType, $Event, $EventKey, $Ticket);
-                $this->modelWeixinopenQrcode->incSubscribeEventNum($this->authorizer_appid, $this->appid, $scene_id, 1);
+                $this->modelWeixinopenQrcodeEventLog->record($this->authorizer_appid, $this->appid, $AgentID, $scene_id, $FromUserName, $ToUserName, $CreateTime, $MsgType, $Event, $EventKey, $Ticket);
+                $this->modelWeixinopenQrcode->incSubscribeEventNum($this->authorizer_appid, $this->appid, $AgentID, $scene_id, 1);
 
                 // 二维码场景管理
                 if (!empty($scene_id)) {
@@ -1273,8 +1277,8 @@ class ComponentController extends ControllerBase
 
             $Ticket = isset($datas['Ticket']) ? trim($datas['Ticket']) : '';
 
-            $this->modelWeixinopenQrcodeEventLog->record($this->authorizer_appid, $this->appid, $EventKey, $FromUserName, $ToUserName, $CreateTime, $MsgType, $Event, $EventKey, $Ticket);
-            $this->modelWeixinopenQrcode->incScanEventNum($this->authorizer_appid, $this->appid, $EventKey, 1);
+            $this->modelWeixinopenQrcodeEventLog->record($this->authorizer_appid, $this->appid, $AgentID, $EventKey, $FromUserName, $ToUserName, $CreateTime, $MsgType, $Event, $EventKey, $Ticket);
+            $this->modelWeixinopenQrcode->incScanEventNum($this->authorizer_appid, $this->appid, $AgentID, $EventKey, 1);
 
             $onlyRevieve = true;
             // $content = "扫描二维码{$EventKey}";
