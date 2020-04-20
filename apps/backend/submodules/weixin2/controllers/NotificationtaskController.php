@@ -3,8 +3,6 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Notification\Task;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 use App\Backend\Submodules\Weixin2\Models\MassMsg\SendMethod;
 use App\Backend\Submodules\Weixin2\Models\MassMsg\MassMsg;
@@ -12,17 +10,14 @@ use App\Backend\Submodules\Weixin2\Models\TemplateMsg\TemplateMsg;
 use App\Backend\Submodules\Weixin2\Models\CustomMsg\CustomMsg;
 use App\Backend\Submodules\Weixin2\Models\User\Tag;
 
-
 /**
  * @title({name="推送任务"})
  *
  * @name 推送任务
  */
-class NotificationtaskController extends \App\Backend\Controllers\FormController
+class NotificationtaskController extends BaseController
 {
     private $modelTask;
-    private $modelAuthorizer;
-    private $modelComponent;
 
     private $modelSendMethod;
     private $modelMassMsg;
@@ -32,18 +27,11 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
     public function initialize()
     {
         $this->modelTask = new Task();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-
         $this->modelSendMethod = new SendMethod();
         $this->modelMassMsg = new MassMsg();
         $this->modelTemplateMsg = new TemplateMsg();
         $this->modelCustomMsg = new CustomMsg();
         $this->modelUserTag = new Tag();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
-
 
         $this->sendMethodItems = $this->modelSendMethod->getAll();
         $this->massMsgItems = $this->modelMassMsg->getAllByType("", "_id");
@@ -53,8 +41,6 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
 
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected $sendMethodItems = null;
     protected $massMsgItems = null;
@@ -63,7 +49,8 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
     protected $userTagItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -118,6 +105,36 @@ class NotificationtaskController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true

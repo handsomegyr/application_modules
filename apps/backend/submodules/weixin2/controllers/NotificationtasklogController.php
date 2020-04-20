@@ -3,9 +3,6 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Notification\TaskLog;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
-
 use App\Backend\Submodules\Weixin2\Models\MassMsg\SendMethod;
 use App\Backend\Submodules\Weixin2\Models\Notification\Task;
 use App\Backend\Submodules\Weixin2\Models\MassMsg\MassMsg;
@@ -21,12 +18,9 @@ use App\Backend\Submodules\Weixin2\Models\Notification\TaskProcess;
  *
  * @name 推送任务日志
  */
-class NotificationtasklogController extends \App\Backend\Controllers\FormController
+class NotificationtasklogController extends BaseController
 {
     private $modelTaskLog;
-    private $modelAuthorizer;
-    private $modelComponent;
-
     private $modelSendMethod;
     private $modelTask;
     private $modelMassMsg;
@@ -38,8 +32,6 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
     public function initialize()
     {
         $this->modelTaskLog = new TaskLog();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
         $this->modelSendMethod = new SendMethod();
         $this->modelTask = new Task();
         $this->modelMassMsg = new MassMsg();
@@ -48,24 +40,16 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
         $this->modelUserTag = new Tag();
         $this->modelTaskProcess = new TaskProcess();
 
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
-
         $this->userTagItems = $this->modelUserTag->getAllByType("tag_id");
         $this->taskItems = $this->modelTask->getAll();
-
         $this->sendMethodItems = $this->modelSendMethod->getAll();
         $this->massMsgItems = $this->modelMassMsg->getAllByType("", "_id");
         $this->templateMsgItems = $this->modelTemplateMsg->getAll();
         $this->customMsgItems = $this->modelCustomMsg->getAllByType("", "_id");
-
         $this->taskProcessItems = $this->modelTaskProcess->getAll();
 
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
-
     protected $userTagItems = null;
     protected $taskItems = null;
     protected $sendMethodItems = null;
@@ -75,7 +59,8 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
     protected $taskProcessItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -130,6 +115,36 @@ class NotificationtasklogController extends \App\Backend\Controllers\FormControl
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['agentid'] = array(
+            'name' => '代理应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true
