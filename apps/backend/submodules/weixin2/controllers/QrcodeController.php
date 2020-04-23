@@ -80,7 +80,7 @@ class QrcodeController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->createQrcode($id);
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));

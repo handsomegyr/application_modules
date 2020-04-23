@@ -22,7 +22,7 @@ class KeywordtoagentmsgController extends \App\Backend\Controllers\FormControlle
         $this->modelKeyword = new Keyword();
         $this->modelAgentMsg = new AgentMsg();
 
-        $this->keywordItems = $this->modelKeyword->getAll();
+        $this->keywordItems = $this->modelKeyword->getAll('agent_msg_type');
         $this->agentMsgItems = $this->modelAgentMsg->getAllByType("", "_id");
         parent::initialize();
     }

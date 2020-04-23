@@ -189,7 +189,7 @@ class MaterialController extends BaseController
                 if ($offset < 0) {
                     return $this->makeJsonError("偏移位置未设定");
                 }
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->getWeixinObject()
                     ->getMaterialManager()
                     ->batchGetMaterial($type, $offset, 20);
@@ -235,7 +235,7 @@ class MaterialController extends BaseController
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->getWeixinObject()
                     ->getMaterialManager()
                     ->getMaterialCount();
@@ -273,7 +273,7 @@ class MaterialController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->addMaterial($id);
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
@@ -300,7 +300,7 @@ class MaterialController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->addNews($id);
             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
@@ -326,7 +326,7 @@ class MaterialController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->updateNews($id);
             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
@@ -352,7 +352,7 @@ class MaterialController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->deleteMaterial($id);
             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
@@ -378,7 +378,7 @@ class MaterialController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->getWeixinObject()
                 ->getMaterialManager()
                 ->getMaterial($data->media_id);

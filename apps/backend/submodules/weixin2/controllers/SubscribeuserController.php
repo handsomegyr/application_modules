@@ -70,7 +70,7 @@ class SubscribeuserController extends \App\Backend\Controllers\FormController
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
 
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $weixinopenService->syncSubscribeUserList($this->now, "");
                 return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
             }

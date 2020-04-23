@@ -159,6 +159,6 @@ class ServiceController extends ControllerBase
             throw new \Exception("authorizer_appid为空");
         }
         // 创建service
-        $this->weixinopenService = new \App\Weixin2\Services\Service1($this->authorizer_appid, $this->component_appid);
+        $this->weixinopenService = new \App\Weixin2\Services\WeixinService($this->authorizer_appid, $this->component_appid);
     }
 }

@@ -142,7 +142,7 @@ class KfaccountController extends BaseController
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
 
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->syncKfAccountList();
                 return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
@@ -177,7 +177,7 @@ class KfaccountController extends BaseController
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
 
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->syncOnlineKfAccountList();
                 return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
@@ -204,7 +204,7 @@ class KfaccountController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->addOrUpdateKfAccount($id, false);
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
@@ -231,7 +231,7 @@ class KfaccountController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->addOrUpdateKfAccount($id, true);
             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
@@ -257,7 +257,7 @@ class KfaccountController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->getWeixinObject()
                 ->getCustomServiceManager()
                 ->kfacountUploadheadimg($data->kf_account, \config('oss.url') . $data->media);
@@ -290,7 +290,7 @@ class KfaccountController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->deleteKfAccount($id, false);
             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
@@ -316,7 +316,7 @@ class KfaccountController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->inviteWorker($id);
             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {

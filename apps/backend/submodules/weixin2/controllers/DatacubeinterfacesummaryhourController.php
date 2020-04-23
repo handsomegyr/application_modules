@@ -100,7 +100,7 @@ class DatacubeinterfacesummaryhourController extends BaseController
                     return $this->makeJsonError("结束日期小于起始日期");
                 }
 
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->syncInterfaceSummaryHour($start_ref_date, $end_ref_date);
                 return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }

@@ -109,7 +109,7 @@ class UsertagController extends \App\Backend\Controllers\FormController
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
 
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->syncTagList();
                 return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
@@ -136,7 +136,7 @@ class UsertagController extends \App\Backend\Controllers\FormController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->deleteUserTag($id);
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
@@ -165,7 +165,7 @@ class UsertagController extends \App\Backend\Controllers\FormController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->addUserTag($id);
             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {

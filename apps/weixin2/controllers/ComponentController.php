@@ -572,7 +572,10 @@ class ComponentController extends ControllerBase
 
             // 业务逻辑开始
             // $response = "success";
-            $response = $this->handleRequestAndGetResponseByMsgType($datas);
+            $datas = $this->handleRequestAndGetResponseByMsgType($datas);
+
+            $content = $datas['content_process'];
+            $response = $datas['response'];
             // 业务逻辑结束
 
             /**
@@ -864,7 +867,7 @@ class ComponentController extends ControllerBase
         $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : "";
         $this->authorizer_appid = isset($_GET['authorizer_appid']) ? trim($_GET['authorizer_appid']) : "";
         // 创建service
-        $this->weixinopenService = new \App\Weixin2\Services\Service1($this->authorizer_appid, $this->appid);
+        $this->weixinopenService = new \App\Weixin2\Services\WeixinService($this->authorizer_appid, $this->appid);
         $this->appConfig = $this->weixinopenService->getAppConfig4Component();
         if (empty($this->appConfig)) {
             throw new \Exception("appid:{$this->appid}所对应的记录不存在");
@@ -948,7 +951,7 @@ class ComponentController extends ControllerBase
         if ($MsgType == 'event') { // 事件消息
 
             // 事件消息处理
-            $response = $this->handleRequestAndGetResponseByEvent($datas);
+            return $this->handleRequestAndGetResponseByEvent($datas);
         } // 事件逻辑结束
 
         // 文本逻辑开始
@@ -1166,7 +1169,10 @@ class ComponentController extends ControllerBase
         } // 链接逻辑结束
 
         // 不同项目特定的业务逻辑结束
-        return $response;
+
+        $datas['content_process'] = $content;
+        $datas['response'] = $response;
+        return $datas;
     }
 
     /**
@@ -1744,7 +1750,9 @@ class ComponentController extends ControllerBase
         }
         // 不同项目特定的业务逻辑结束
 
-        return $response;
+        $datas['content_process'] = $content;
+        $datas['response'] = $response;
+        return $datas;
     }
 
     /**
@@ -1772,8 +1780,12 @@ class ComponentController extends ControllerBase
         $match['reply_msg_ids'] = $this->modelWeixinopenKeywordToReplyMsg->getReplyMsgIdsByKeywordId($match['_id']);
         $match['custom_msg_ids'] = $this->modelWeixinopenKeywordToCustomMsg->getCustomMsgIdsByKeywordId($match['_id']);
         $match['template_msg_ids'] = $this->modelWeixinopenKeywordToTemplateMsg->getTemplateMsgIdsByKeywordId($match['_id']);
-        $this->weixinopenService->answerCustomMsgs($FromUserName, $ToUserName, $match);
-        $this->weixinopenService->answerTemplateMsgs($FromUserName, $ToUserName, $match);
+        if (!empty($match['custom_msg_ids'])) {
+            $this->weixinopenService->answerCustomMsgs($FromUserName, $ToUserName, $match);
+        }
+        if (!empty($match['template_msg_ids'])) {
+            $this->weixinopenService->answerTemplateMsgs($FromUserName, $ToUserName, $match);
+        }
         return $this->weixinopenService->answerReplyMsgs($FromUserName, $ToUserName, $match);
     }
 

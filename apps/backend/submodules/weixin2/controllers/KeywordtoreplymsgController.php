@@ -24,7 +24,7 @@ class KeywordtoreplymsgController extends \App\Backend\Controllers\FormControlle
         $this->modelKeyword = new Keyword();
         $this->modelReplyMsg = new ReplyMsg();
 
-        $this->keywordItems = $this->modelKeyword->getAll();
+        $this->keywordItems = $this->modelKeyword->getAll('reply_msg_type');
         $this->replyMsgItems = $this->modelReplyMsg->getAllByType("", "_id");
         parent::initialize();
     }
@@ -32,7 +32,8 @@ class KeywordtoreplymsgController extends \App\Backend\Controllers\FormControlle
     private $replyMsgItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['keyword_id'] = array(
+    {
+        $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
                 'type' => 'string',

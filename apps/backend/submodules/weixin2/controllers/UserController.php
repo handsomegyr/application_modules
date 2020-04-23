@@ -98,7 +98,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->getWeixinObject()
                 ->getUserManager()
                 ->updateRemark($data['openid'], $data['remark']);
@@ -131,7 +131,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->getUserInfo($id);
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
@@ -159,7 +159,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->getUserTagIdList($id);
             return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {

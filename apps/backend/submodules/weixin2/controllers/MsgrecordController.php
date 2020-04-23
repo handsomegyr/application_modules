@@ -100,7 +100,7 @@ class MsgrecordController extends BaseController
                     return $this->makeJsonError("聊天结束日期小于聊天开始日期");
                 }
 
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->syncMsgRecordList($msgrecord_start_time, $msgrecord_end_time);
                 return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }

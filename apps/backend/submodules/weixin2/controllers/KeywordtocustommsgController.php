@@ -22,7 +22,7 @@ class KeywordtocustommsgController extends \App\Backend\Controllers\FormControll
         $this->modelKeyword = new Keyword();
         $this->modelCustomMsg = new CustomMsg();
 
-        $this->keywordItems = $this->modelKeyword->getAll();
+        $this->keywordItems = $this->modelKeyword->getAll('custom_msg_type');
         $this->customMsgItems = $this->modelCustomMsg->getAllByType("", "_id");
         parent::initialize();
     }
@@ -30,7 +30,8 @@ class KeywordtocustommsgController extends \App\Backend\Controllers\FormControll
     private $customMsgItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['keyword_id'] = array(
+    {
+        $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
                 'type' => 'string',

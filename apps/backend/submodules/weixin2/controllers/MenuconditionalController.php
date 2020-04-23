@@ -112,7 +112,7 @@ class MenuconditionalController extends BaseController
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
 
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->getWeixinObject()
                     ->getMenuManager()
                     ->get();
@@ -170,7 +170,7 @@ class MenuconditionalController extends BaseController
                 if (empty($user_id)) {
                     return $this->makeJsonError("测试用户微信名未设定");
                 }
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 //$user_id = "Guo-YR";
                 $res = $weixinopenService->getWeixinObject()
                     ->getMenuManager()
@@ -208,7 +208,7 @@ class MenuconditionalController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->createConditionalMenu($data['matchrule']);
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
@@ -235,7 +235,7 @@ class MenuconditionalController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Weixin2\Services\Service1($data['authorizer_appid'], $data['component_appid']);
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->deleteConditionalMenu($data['matchrule'], $data['menuid']);
             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {

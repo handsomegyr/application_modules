@@ -86,10 +86,13 @@ class MenuController extends BaseController
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
-
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
-                $res = $weixinopenService->createMenu();
-
+                if (empty($mmenu_agent_agentid)) {
+                    $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
+                    $res = $weixinopenService->createMenu();
+                } else {
+                    $weixinopenService = new \App\Weixin2\Services\QyService($authorizer_appid, $component_appid, $mmenu_agent_agentid);
+                    $res = $weixinopenService->createMenu();
+                }
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
         } catch (\Exception $e) {
@@ -123,11 +126,17 @@ class MenuController extends BaseController
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
-
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
-                $res = $weixinopenService->getWeixinObject()
-                    ->getMenuManager()
-                    ->delete(array());
+                if (empty($mmenu_agent_agentid)) {
+                    $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
+                    $res = $weixinopenService->getWeixinObject()
+                        ->getMenuManager()
+                        ->delete(array());
+                } else {
+                    $weixinopenService = new \App\Weixin2\Services\QyService($authorizer_appid, $component_appid, $mmenu_agent_agentid);
+                    $res = $weixinopenService->getQyWeixinObject()
+                        ->getMenuManager()
+                        ->delete($mmenu_agent_agentid, array());
+                }
                 // if (empty($res['errcode'])) {
                 //     return print_r($res); // true;
                 // }
@@ -169,8 +178,10 @@ class MenuController extends BaseController
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
-
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
+                if (!empty($mmenu_agent_agentid)) {
+                    return $this->makeJsonError("应用ID是企业微信的应用");
+                }
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->getWeixinObject()
                     ->getMenuManager()
                     ->getCurrentSelfMenuInfo();
@@ -215,11 +226,18 @@ class MenuController extends BaseController
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
-
-                $weixinopenService = new \App\Weixin2\Services\Service1($authorizer_appid, $component_appid);
-                $res = $weixinopenService->getWeixinObject()
-                    ->getMenuManager()
-                    ->get();
+                if (empty($mmenu_agent_agentid)) {
+                    $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
+                    $res = $weixinopenService->getWeixinObject()
+                        ->getMenuManager()
+                        ->get();
+                } else {
+                    $weixinopenService = new \App\Weixin2\Services\QyService($authorizer_appid, $component_appid, $mmenu_agent_agentid);
+                    $res = $weixinopenService->getQyWeixinObject()
+                        ->getMenuManager()
+                        ->get($mmenu_agent_agentid);
+                }
+                
                 // if (empty($res['errcode'])) {
                 //     return print_r($res); // true;
                 // }
