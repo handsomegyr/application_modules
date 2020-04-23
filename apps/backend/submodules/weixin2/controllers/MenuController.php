@@ -79,6 +79,7 @@ class MenuController extends BaseController
             } else {
                 $component_appid = trim($this->request->get('mmenu_component_appid'));
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
+                $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
@@ -115,6 +116,7 @@ class MenuController extends BaseController
             } else {
                 $component_appid = trim($this->request->get('mmenu_component_appid'));
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
+                $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
@@ -160,6 +162,7 @@ class MenuController extends BaseController
             } else {
                 $component_appid = trim($this->request->get('mmenu_component_appid'));
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
+                $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
@@ -205,6 +208,7 @@ class MenuController extends BaseController
             } else {
                 $component_appid = trim($this->request->get('mmenu_component_appid'));
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
+                $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
@@ -254,6 +258,17 @@ class MenuController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems,
+            ),
+        );
+        $fields['mmenu_agent_agentid'] = array(
+            'name' => '企业微信应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems,
             ),
         );
         return $fields;

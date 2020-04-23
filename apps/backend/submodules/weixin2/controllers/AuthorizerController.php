@@ -225,7 +225,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['verify_token'] = array(
-            'name' => '令牌token',
+            'name' => 'Token',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -256,7 +256,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['EncodingAESKey'] = array(
-            'name' => '加密symmetric_key',
+            'name' => 'EncodingAESKey',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
