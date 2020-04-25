@@ -505,6 +505,12 @@ function registerServices($di)
                 'action' => 2
             ));
 
+            $router->add("/admin/company/:controller/:action", array(
+                'module' => 'admin/company',
+                'controller' => 1,
+                'action' => 2
+            ));
+
             $router->add("/:module/:controller/:action", array(
                 'module' => 1,
                 'controller' => 2,

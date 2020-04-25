@@ -148,6 +148,10 @@ $application->registerModules(array(
         'className' => 'App\Backend\Search\Module',
         'path' => APP_PATH . 'apps/backend/submodules/search/Module.php'
     ),
+    'admin/company' => array(
+        'className' => 'App\Backend\Company\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/company/Module.php'
+    ),
     'weixin' => array(
         'className' => 'App\Weixin\Module',
         'path' => APP_PATH . 'apps/weixin/Module.php'
