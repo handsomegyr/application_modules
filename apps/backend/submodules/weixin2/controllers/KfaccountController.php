@@ -257,10 +257,11 @@ class KfaccountController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
+            $filePath = $this->modelAccount->getPhysicalFilePath($data['media']);
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->getWeixinObject()
                 ->getCustomServiceManager()
-                ->kfacountUploadheadimg($data->kf_account, \config('oss.url') . $data->media);
+                ->kfacountUploadheadimg($data->kf_account, $filePath);
             // if (empty($res['errcode'])) {
             //     return print_r($res);
             //     return true;
