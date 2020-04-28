@@ -104,7 +104,7 @@ class AgentmsgsendlogController extends BaseController
         );
 
         $schemas['agentid'] = array(
-            'name' => '代理应用ID',
+            'name' => '应用ID',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,

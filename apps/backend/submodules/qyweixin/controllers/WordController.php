@@ -98,7 +98,7 @@ class WordController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['agentid'] = array(
-            'name' => '代理应用ID',
+            'name' => '应用ID',
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
