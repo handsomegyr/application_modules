@@ -28,6 +28,10 @@ $application->registerModules(array(
         'className' => 'App\Backend\Weixin2\Module',
         'path' => APP_PATH . 'apps/backend/submodules/weixin2/Module.php'
     ),
+    'admin/qyweixin' => array(
+        'className' => 'App\Backend\Qyweixin\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/qyweixin/Module.php'
+    ),
     'admin/lottery' => array(
         'className' => 'App\Backend\Lottery\Module',
         'path' => APP_PATH . 'apps/backend/submodules/lottery/Module.php'
@@ -159,6 +163,10 @@ $application->registerModules(array(
     'weixin2' => array(
         'className' => 'App\Weixin2\Module',
         'path' => APP_PATH . 'apps/weixin2/Module.php'
+    ),
+    'qyweixin' => array(
+        'className' => 'App\Qyweixin\Module',
+        'path' => APP_PATH . 'apps/qyweixin/Module.php'
     ),
     'exchange' => array(
         'className' => 'App\Exchange\Module',
