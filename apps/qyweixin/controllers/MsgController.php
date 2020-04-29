@@ -110,8 +110,8 @@ class MsgController extends ControllerBase
      */
     public function callbackAction()
     {
-        // http://wxcrmdemo.jdytoy.com/qyweixin/api/qy/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff
-        // http://wxcrm.eintone.com/qyweixin/api/qy/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff
+        // http://wxcrmdemo.jdytoy.com/qyweixin/api/msg/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff
+        // http://wxcrm.eintone.com/qyweixin/api/msg/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff
         try {
             /**
              * ==================================================================================
