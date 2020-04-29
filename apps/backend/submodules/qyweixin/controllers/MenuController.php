@@ -73,7 +73,7 @@ class MenuController extends BaseController
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
                 $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($provider_appid)) {
-                    return $this->makeJsonError("第三方服务商应用ID未设定");
+                    // return $this->makeJsonError("第三方服务商应用ID未设定");
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
@@ -109,7 +109,7 @@ class MenuController extends BaseController
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
                 $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($provider_appid)) {
-                    return $this->makeJsonError("第三方服务商应用ID未设定");
+                    // return $this->makeJsonError("第三方服务商应用ID未设定");
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
@@ -156,7 +156,7 @@ class MenuController extends BaseController
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
                 $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($provider_appid)) {
-                    return $this->makeJsonError("第三方服务商应用ID未设定");
+                    // return $this->makeJsonError("第三方服务商应用ID未设定");
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");

@@ -3,10 +3,10 @@
 namespace App\Qyweixin\Controllers;
 
 /**
- * 公众号授权给第三方服务商的技术实现流程
- * https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1453779503&token=&lang=zh_CN
+ * 消息推送
+ * 企业微信消息与事件接收
  */
-class QyController extends ControllerBase
+class MsgController extends ControllerBase
 {
     // 活动ID
     protected $activity_id = 2;
@@ -124,30 +124,32 @@ class QyController extends ControllerBase
             // 初始化
             $this->doInitializeLogic();
 
-            $provider_appid = $this->providerConfig['appid'];
-            $authorizer_appid = $this->authorizerConfig['appid'];
+            $provider_appid = $this->provider_appid;
+            $authorizer_appid = $this->authorizer_appid;
             $this->requestLogDatas['provider_appid'] = $provider_appid;
             $this->requestLogDatas['authorizer_appid'] = $authorizer_appid;
 
             $onlyRevieve = false;
             $AESInfo = array();
+            $AESInfo['api'] = 'callback';
+            $AESInfo['provider_appid'] = $provider_appid;
+            $AESInfo['authorizer_appid'] = $authorizer_appid;
             $AESInfo['msg_signature'] = isset($_GET['msg_signature']) ? $_GET['msg_signature'] : '';
             $AESInfo['timestamp'] = isset($_GET['timestamp']) ? trim(strtolower($_GET['timestamp'])) : '';
             $AESInfo['nonce'] = isset($_GET['nonce']) ? $_GET['nonce'] : '';
-            $AESInfo['api'] = 'callback';
-            $AESInfo['provider_appid'] = isset($_GET['provider_appid']) ? trim(($_GET['provider_appid'])) : '';
-            $AESInfo['authorizer_appid'] = isset($_GET['authorizer_appid']) ? trim(($_GET['authorizer_appid'])) : '';
             $AESInfo['echostr'] = isset($_GET['echostr']) ? $_GET['echostr'] : '';
 
-            // 如果是微信开放平台的话
-            if (!empty($this->providerConfig['is_weixin_open_platform'])) {
+            // 如果是第3方服务商的话
+            if (!empty($this->providerConfig)) {
                 $verifyToken = isset($this->providerConfig['verify_token']) ? $this->providerConfig['verify_token'] : '';
                 $encodingAESKey = isset($this->providerConfig['EncodingAESKey']) ? $this->providerConfig['EncodingAESKey'] : '';
-                $receiveId = $this->providerConfig['appid'];
+                $receiveId = $this->provider_appid;
+                $errorConfig = $this->providerConfig;
             } else {
                 $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
                 $encodingAESKey = isset($this->authorizerConfig['EncodingAESKey']) ? $this->authorizerConfig['EncodingAESKey'] : '';
-                $receiveId = $this->authorizerConfig['appid'];
+                $receiveId = $this->authorizer_appid;
+                $errorConfig = $this->authorizerConfig;
             }
             $AESInfo['EncodingAESKey'] = $encodingAESKey;
             $AESInfo['verify_token'] = $verifyToken;
@@ -155,11 +157,6 @@ class QyController extends ControllerBase
             $this->requestLogDatas['aes_info'] = $AESInfo;
 
             if (empty($verifyToken)) {
-                if (!empty($this->providerConfig['is_weixin_open_platform'])) {
-                    $errorConfig = $this->providerConfig;
-                } else {
-                    $errorConfig = $this->authorizerConfig;
-                }
                 throw new \Exception('application verify_token is null. config:' . \json_encode($errorConfig));
             }
 
@@ -186,14 +183,12 @@ class QyController extends ControllerBase
                 // 合法性校验
                 $ret4CheckSignature = $this->objQyWeixin->checkSignature($verifyToken, $encodingAESKey);
                 if (empty($ret4CheckSignature)) {
-                    // $debug = $this->debugVar($_GET, $this->objQyWeixin->getSignature());
                     $debug = \json_encode($this->requestLogDatas);
                     throw new \Exception('签名错误' . $debug);
                 } else {
                     return $ret4CheckSignature['replyEchoStr'];
                 }
             } elseif ($this->request->isPost()) {
-
                 // 3.2 支持Http Post请求接收业务数据
                 // 假设企业的接收消息的URL设置为http://api.3dept.com。
                 // 当用户触发回调行为时，企业微信会发送回调消息到填写的URL，请求内容如下：
@@ -244,15 +239,6 @@ class QyController extends ControllerBase
                 }
                 $this->requestLogDatas['response'] = 'success';
 
-                // 如果是微信开放平台的话
-                if (!empty($this->providerConfig['is_weixin_open_platform'])) {
-                    // 全网发布自动校验
-                    $verifyComponentRet = $this->verifyComponent($datas);
-                    if ($verifyComponentRet['is_success']) {
-                        return $verifyComponentRet['response'];
-                    }
-                }
-
                 // 开始处理相关的业务逻辑
                 $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : '0';
                 $this->requestLogDatas['AgentID'] = $AgentID;
@@ -267,9 +253,9 @@ class QyController extends ControllerBase
 
                 // 关于重试的消息排重，有msgid的消息推荐使用msgid排重。事件类型消息推荐使用FromUserName + CreateTime 排重。
                 if (!empty($MsgId)) {
-                    $uniqueKey = $MsgId . "-" . $this->providerConfig['appid'] . "-" . $this->authorizerConfig['appid'] . "-" . $AgentID;
+                    $uniqueKey = $MsgId . "-" . $this->provider_appid . "-" . $this->authorizer_appid . "-" . $AgentID;
                 } else {
-                    $uniqueKey = $FromUserName . "-" . $CreateTime . "-" . $this->providerConfig['appid'] . "-" . $this->authorizerConfig['appid'] . "-" . $AgentID;
+                    $uniqueKey = $FromUserName . "-" . $CreateTime . "-" . $this->provider_appid . "-" . $this->authorizer_appid . "-" . $AgentID;
                 }
                 $this->requestLogDatas['lock_uniqueKey'] = $uniqueKey;
                 if (!empty($uniqueKey)) {
@@ -287,7 +273,7 @@ class QyController extends ControllerBase
                 // // 获取微信用户的个人信息
                 // if (!empty($this->authorizerConfig['access_token'])) {
                 //     $this->modelQyweixinUser->setWeixinInstance($this->objQyWeixin);
-                //     $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizerConfig['appid'], $this->providerConfig['appid']);
+                //     $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
                 // }
                 // 设定来源和目标用户的openid
                 $this->objQyWeixin->setFromAndTo($FromUserName, $ToUserName);
@@ -364,7 +350,7 @@ class QyController extends ControllerBase
             // </xml>
             $verifyToken = isset($this->providerConfig['verify_token']) ? $this->providerConfig['verify_token'] : '';
             $encodingAesKey = isset($this->providerConfig['EncodingAESKey']) ? $this->providerConfig['EncodingAESKey'] : '';
-            $AppId = $this->providerConfig['appid'];
+            $AppId = $this->provider_appid;
 
             // die($encodingAesKey.strlen($encodingAesKey));
             $pc = new \Weixin\ThirdParty\MsgCrypt\WXBizMsgCrypt($verifyToken, $encodingAesKey, $AppId);
@@ -411,7 +397,7 @@ class QyController extends ControllerBase
             $FromUserName = isset($_GET['FromUserName']) ? trim($_GET['FromUserName']) : '';
 
             $this->modelQyweixinUser->setWeixinInstance($this->objQyWeixin);
-            $ret = $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizerConfig['appid'], $this->providerConfig['appid']);
+            $ret = $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
 
             return $this->result("OK", $ret);
         } catch (\Exception $e) {
@@ -445,7 +431,7 @@ class QyController extends ControllerBase
             // 为回复的Model装载weixin对象
             $this->modelQyweixinReplyMsg->setWeixinInstance($this->objQyWeixin);
 
-            $response = $this->answer("FromUserName", "ToUserName", $keyword, $this->authorizerConfig['appid'], $this->providerConfig['appid'], $agentid);
+            $response = $this->answer("FromUserName", "ToUserName", $keyword, $this->authorizer_appid, $this->provider_appid, $agentid);
 
             return $this->result("OK", $response);
         } catch (\Exception $e) {
@@ -461,13 +447,17 @@ class QyController extends ControllerBase
         // 第三方服务商运用ID
         $this->provider_appid = isset($_GET['provider_appid']) ? trim($_GET['provider_appid']) : "";
         $this->authorizer_appid = isset($_GET['authorizer_appid']) ? trim($_GET['authorizer_appid']) : "";
+
         // 创建service
         $this->qyweixinService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, 0);
-        $this->providerConfig = $this->qyweixinService->getAppConfig4Provider();
-        if (empty($this->providerConfig)) {
-            throw new \Exception("provider_appid:{$this->provider_appid}所对应的记录不存在");
+
+        if (!empty($this->provider_appid)) {
+            $this->providerConfig = $this->qyweixinService->getAppConfig4Provider();
+            if (empty($this->providerConfig)) {
+                throw new \Exception("provider_appid:{$this->provider_appid}所对应的记录不存在");
+            }
+            $this->objQyWeixinProvider = $this->qyweixinService->getWeixinProvider();
         }
-        $this->objQyWeixinProvider = $this->qyweixinService->getWeixinProvider();
 
         // 授权方ID
         if (!empty($this->authorizer_appid)) {
