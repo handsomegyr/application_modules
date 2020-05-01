@@ -26,11 +26,6 @@ class ApplicationsnsController extends ControllerBase
     private $modelWeixinopenAuthorizer;
 
     /**
-     * @var \App\Weixin2\Models\Agent\Agent
-     */
-    private $modelWeixinopenAgent;
-
-    /**
      * @var \App\Weixin2\Models\ScriptTracking
      */
     private $modelWeixinopenScriptTracking;
@@ -80,7 +75,6 @@ class ApplicationsnsController extends ControllerBase
         $this->modelWeixinopenUser = new \App\Weixin2\Models\User\User();
         $this->modelWeixinopenComponent = new \App\Weixin2\Models\Component\Component();
         $this->modelWeixinopenAuthorizer = new \App\Weixin2\Models\Authorize\Authorizer();
-        $this->modelWeixinopenAgent = new \App\Weixin2\Models\Agent\Agent();
         $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
         $this->modelWeixinopenCallbackurls = new \App\Weixin2\Models\Callbackurls();
         $this->modelWeixinopenSnsApplication = new \App\Weixin2\Models\SnsApplication();
@@ -323,16 +317,6 @@ class ApplicationsnsController extends ControllerBase
         // $redirect = $this->addUrlParameter($redirect, array(
         // 'it_appid' => $this->appid
         // ));
-        if ($this->app_type != \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_QY) {
-            $redirect = $this->addUrlParameter($redirect, array(
-                'it_userToken' => urlencode($arrAccessToken['access_token'])
-            ));
-
-            $redirect = $this->addUrlParameter($redirect, array(
-                'it_refreshToken' => urlencode($arrAccessToken['refresh_token'])
-            ));
-        }
-
         $redirect = $this->addUrlParameter($redirect, array(
             'it_FromUserName' => $arrAccessToken['openid']
         ));
@@ -412,7 +396,7 @@ class ApplicationsnsController extends ControllerBase
         }
         //应用类型 1:公众号 2:小程序 3:订阅号
         $this->app_type = intval($this->authorizerConfig['app_type']);
-        
+
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : uniqid();
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_userinfo';
         $this->sessionKey = $this->cookie_session_key . "_accessToken_{$this->appid}_{$this->component_appid}_{$this->authorizer_appid}_{$this->scope}";

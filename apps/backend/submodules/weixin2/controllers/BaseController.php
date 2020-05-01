@@ -17,7 +17,6 @@ class BaseController extends \App\Backend\Controllers\FormController
 
     public function initialize()
     {
-        $this->modelAgent = new Agent();
         $this->modelAuthorizer = new Authorizer();
         $this->modelComponent = new Component();
 
