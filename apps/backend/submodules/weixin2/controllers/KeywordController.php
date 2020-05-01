@@ -5,7 +5,6 @@ namespace App\Backend\Submodules\Weixin2\Controllers;
 use App\Backend\Submodules\Weixin2\Models\Keyword\Keyword;
 use App\Backend\Submodules\Weixin2\Models\ReplyMsg\Type as ReplyMsgType;
 use App\Backend\Submodules\Weixin2\Models\CustomMsg\Type as CustomMsgType;
-use App\Backend\Submodules\Weixin2\Models\AgentMsg\Type as AgentMsgType;
 
 /**
  * @title({name="关键字设定"})
@@ -24,18 +23,15 @@ class KeywordController extends BaseController
 
         $this->modelReplyMsgType = new ReplyMsgType();
         $this->modelCustomMsgType = new CustomMsgType();
-        $this->modelAgentMsgType = new AgentMsgType();
 
         $this->replyMsgTypeItems = $this->modelReplyMsgType->getAll();
         $this->customMsgTypeItems = $this->modelCustomMsgType->getAll();
-        $this->agentMsgTypeItems = $this->modelAgentMsgType->getAll();
 
         parent::initialize();
     }
 
     protected $replyMsgTypeItems = null;
     protected $customMsgTypeItems = null;
-    protected $agentMsgTypeItems = null;
 
     protected function getSchemas2($schemas)
     {
@@ -155,36 +151,6 @@ class KeywordController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->customMsgTypeItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['agent_msg_type'] = array(
-            'name' => '应用消息类型',
-            'data' => array(
-                'type' => 'string',
-                'length' => 30,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentMsgTypeItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->agentMsgTypeItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentMsgTypeItems
             ),
             'export' => array(
                 'is_show' => true
