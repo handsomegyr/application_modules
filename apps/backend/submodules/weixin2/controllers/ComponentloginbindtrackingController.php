@@ -32,7 +32,8 @@ class ComponentloginbindtrackingController extends \App\Backend\Controllers\Form
     protected $authorizerItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -40,7 +41,7 @@ class ComponentloginbindtrackingController extends \App\Backend\Controllers\Form
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'select',

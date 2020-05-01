@@ -90,7 +90,7 @@ class UsertagController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/usertag/synctaglist?id=xxx
         try {
-            
+
 
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -154,7 +154,7 @@ class UsertagController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/usertag/addusertag?id=xxx
         try {
-            
+
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -202,7 +202,8 @@ class UsertagController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -210,7 +211,7 @@ class UsertagController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'select',

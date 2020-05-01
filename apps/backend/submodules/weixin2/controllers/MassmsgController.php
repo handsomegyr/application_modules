@@ -123,7 +123,7 @@ class MassmsgController extends BaseController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'select',

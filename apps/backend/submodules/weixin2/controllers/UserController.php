@@ -87,7 +87,7 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/user/updateremark?id=xxx
         try {
-            
+
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -120,7 +120,7 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/user/getuserinfo?id=xxx
         try {
-            
+
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -148,7 +148,7 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/user/getusertagidlist?id=xxx
         try {
-            
+
 
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -168,7 +168,8 @@ class UserController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['component_appid'] = array(
+    {
+        $schemas['component_appid'] = array(
             'name' => '第三方平台应用ID',
             'data' => array(
                 'type' => 'string',
@@ -176,7 +177,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'select',
