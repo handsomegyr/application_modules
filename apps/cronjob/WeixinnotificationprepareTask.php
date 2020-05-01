@@ -152,7 +152,7 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
 
                     // 对应每一个openid都生成一条对应的发送日志
                     foreach ($openids as $openid) {
-                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskInfo['agentid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskContent['_id'], $taskContent['name'], $taskContent['openids'], $openid, $taskContent['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskContent['_id'], $taskContent['name'], $taskContent['openids'], $openid, $taskContent['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
                         $i++;
                     }
                 } elseif ($taskInfo['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_MASSMSG) { // 2:群发消息
@@ -187,7 +187,7 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                     if (empty($massMsgInfo)) {
                         throw new \Exception("任务ID:{$taskInfo['_id']},群发消息记录ID:{$taskInfo['mass_msg_id']}所对应的记录不存在");
                     }
-                    $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskInfo['agentid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskContent['_id'], $taskContent['name'], $taskContent['openids'], "", $taskContent['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                    $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskContent['_id'], $taskContent['name'], $taskContent['openids'], "", $taskContent['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
                     $i++;
                 } elseif ($taskInfo['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_CUSTOMMSG) { // 3:客服消息
 
@@ -208,7 +208,7 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         throw new \Exception("任务ID:{$taskInfo['_id']},客服消息记录ID:{$taskInfo['custom_msg_id']}所对应的记录不存在");
                     }
                     foreach ($openids as $openid) {
-                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskInfo['agentid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskContent['_id'], $taskContent['name'], $taskContent['openids'], $openid, $taskContent['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskContent['_id'], $taskContent['name'], $taskContent['openids'], $openid, $taskContent['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
                         $i++;
                     }
                 }

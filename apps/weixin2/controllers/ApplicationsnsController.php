@@ -66,13 +66,11 @@ class ApplicationsnsController extends ControllerBase
 
     private $authorizerConfig;
 
-    private $agentid = 0;
-
     private $scope;
 
     private $state;
 
-    //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+    //应用类型 1:公众号 2:小程序 3:订阅号
     private $app_type = 0;
 
     public function initialize()
@@ -128,7 +126,7 @@ class ApplicationsnsController extends ControllerBase
                 // $list = $this->modelWeixinopenCallbackurls->getValidCallbackUrlList($this->authorizer_appid, $this->component_appid, true);
                 // $hostret = $this->modelWeixinopenCallbackurls->getHost($redirect);
                 // return Result::success($hostret);
-                $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $this->agentid, $redirect);
+                $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $redirect);
                 if (empty($isValid)) {
                     throw new \Exception("回调地址不合法");
                 }
@@ -137,7 +135,7 @@ class ApplicationsnsController extends ControllerBase
             if (!$refresh && !empty($_SESSION[$this->sessionKey])) {
                 $arrAccessToken = $_SESSION[$this->sessionKey];
                 $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
-                $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
+                $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
                 header("location:{$redirect}");
                 exit();
             } else {
@@ -156,11 +154,9 @@ class ApplicationsnsController extends ControllerBase
                 $redirectUri .= '/callback';
 
                 // 授权处理
-                //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+                //应用类型 1:公众号 2:小程序 3:订阅号
                 if ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_PUB) {
                     $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
-                } elseif ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_QY) {
-                    $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
                 } else {
                     throw new \Exception('该运用不支持授权操作');
                 }
@@ -225,38 +221,12 @@ class ApplicationsnsController extends ControllerBase
             $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : '';
 
             // 第二步：通过code换取access_token
-            //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+            //应用类型 1:公众号 2:小程序 3:订阅号
             if ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_PUB) {
                 $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
                 $arrAccessToken = $objSns->getAccessToken();
                 if (!empty($arrAccessToken['errcode'])) {
                     throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
-                }
-            } elseif ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_QY) {
-                //获取agent信息
-                $agentInfo = $this->modelWeixinopenAgent->getInfoByAppid($this->component_appid, $this->authorizer_appid, $this->agentid);
-                $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $agentInfo['secret']);
-                $arrAccessToken = $objSns->getUserInfo($agentInfo['access_token']);
-                if (!empty($arrAccessToken['errcode'])) {
-                    throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
-                }
-                $arrAccessToken['scope'] = $this->scope;
-                $arrAccessToken['access_token'] = $agentInfo['access_token'];
-                $arrAccessToken['refresh_token'] = "";
-
-                //a) 当用户为企业成员时
-                // UserId	成员UserID。若需要获得用户详情信息，可调用通讯录接口：读取成员
-                // DeviceId	手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
-                if (isset($arrAccessToken['UserId'])) {
-                    $arrAccessToken['openid'] = $arrAccessToken['UserId'];
-                    $arrAccessToken['is_qy_member'] = 1;
-                }
-                //b) 非企业成员授权时
-                // OpenId	非企业成员的标识，对当前企业唯一
-                // DeviceId	手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
-                if (isset($arrAccessToken['OpenId'])) {
-                    $arrAccessToken['openid'] = $arrAccessToken['OpenId'];
-                    $arrAccessToken['is_qy_member'] = 0;
                 }
             } else {
                 throw new \Exception('该运用不支持授权操作');
@@ -271,21 +241,11 @@ class ApplicationsnsController extends ControllerBase
                 $userInfo = $this->modelWeixinopenUser->getUserInfoByIdLastWeek($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $this->now);
                 if (true || empty($userInfo)) {
                     $updateInfoFromWx = true;
-                    //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+                    //应用类型 1:公众号 2:小程序 3:订阅号
                     if ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_PUB) {
                         $weixin = new \Weixin\Client();
                         $weixin->setSnsAccessToken($arrAccessToken['access_token']);
                         $userInfo = $weixin->getSnsManager()->getSnsUserInfo($arrAccessToken['openid']);
-                    } elseif ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_QY) {
-                        // 当用户为企业成员时
-                        if (!empty($arrAccessToken['is_qy_member'])) {
-                            $weixin = new \Weixin\Qy\Client($this->authorizer_appid, $agentInfo['secret']);
-                            $weixin->setAccessToken($arrAccessToken['access_token']);
-                            $userInfo = $weixin->getUserManager()->get($arrAccessToken['openid']);
-                        } else {
-                            $userInfo = array();
-                            $userInfo['openid'] = $arrAccessToken['openid'];
-                        }
                     }
                     if (isset($userInfo['errcode'])) {
                         throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
@@ -329,7 +289,7 @@ class ApplicationsnsController extends ControllerBase
                     }
                 }
             }
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
+            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
             header("location:{$redirect}");
             exit();
         } catch (\Exception $e) {
@@ -450,10 +410,9 @@ class ApplicationsnsController extends ControllerBase
         if (empty($this->authorizerConfig)) {
             throw new \Exception("component_appid:{$this->component_appid}和authorizer_appid:{$this->authorizer_appid}所对应的记录不存在");
         }
-        //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+        //应用类型 1:公众号 2:小程序 3:订阅号
         $this->app_type = intval($this->authorizerConfig['app_type']);
-        $this->agentid = empty($this->appConfig['agentid']) ? 0 : $this->appConfig['agentid'];
-
+        
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : uniqid();
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_userinfo';
         $this->sessionKey = $this->cookie_session_key . "_accessToken_{$this->appid}_{$this->component_appid}_{$this->authorizer_appid}_{$this->scope}";

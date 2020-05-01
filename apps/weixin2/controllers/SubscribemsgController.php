@@ -50,8 +50,6 @@ class SubscribemsgController extends ControllerBase
 
     private $authorizerConfig;
 
-    private $agentid = 0;
-
     private $scope;
 
     private $reserved;
@@ -104,7 +102,7 @@ class SubscribemsgController extends ControllerBase
 
             if ($dc) {
                 // 添加重定向域的检查
-                $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $this->agentid, $redirect);
+                $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $redirect);
                 if (empty($isValid)) {
                     throw new \Exception("回调地址不合法");
                 }
@@ -198,11 +196,11 @@ class SubscribemsgController extends ControllerBase
                 }
 
                 // 查找是否有记录
-                $msgInfo = $this->modelWeixinopenSubscribeMsgSubscribeLog->getInfoByOpenidAndTemplateIdAndScene($openid, $template_id, $scene, $this->authorizer_appid, $this->component_appid, $this->agentid);
+                $msgInfo = $this->modelWeixinopenSubscribeMsgSubscribeLog->getInfoByOpenidAndTemplateIdAndScene($openid, $template_id, $scene, $this->authorizer_appid, $this->component_appid);
 
                 // 如果没有的话日志记录
                 if (empty($msgInfo)) {
-                    $msgInfo = $this->modelWeixinopenSubscribeMsgSubscribeLog->log($this->component_appid, $this->authorizer_appid, $this->agentid, $appid4Sns, $openid, $template_id, $action, $scene, $reserved, $this->now);
+                    $msgInfo = $this->modelWeixinopenSubscribeMsgSubscribeLog->log($this->component_appid, $this->authorizer_appid, $appid4Sns, $openid, $template_id, $action, $scene, $reserved, $this->now);
                 }
             }
             $redirect = $this->addUrlParameter($redirect, array(
@@ -237,7 +235,7 @@ class SubscribemsgController extends ControllerBase
             $redirect = $this->addUrlParameter($redirect, array(
                 'it_subscribemsg_ts' => $timestamp
             ));
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $openid, $this->appConfig['_id']);
+            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $openid, $this->appConfig['_id']);
             header("location:{$redirect}");
             exit();
         } catch (\Exception $e) {

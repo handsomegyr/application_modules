@@ -83,19 +83,10 @@ class MediaController extends BaseController
             } elseif ($data['type'] == "video") {
                 $file_ext = "mp4";
             }
-            if (empty($data['agentid'])) {
-                $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
-                $res = $weixinopenService->getWeixinObject()
-                    ->getMediaManager()
-                    ->download($data['media_id'], $file_ext);
-            } else {
-                $weixinopenService = new \App\Weixin2\Services\QyService($data['authorizer_appid'], $data['component_appid'], $data['agentid']);
-                $res = $weixinopenService->getQyWeixinObject()
-                    ->getMediaManager()
-                    ->download($data['media_id'], $file_ext);
-            }
-
-
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->getWeixinObject()
+                ->getMediaManager()
+                ->download($data['media_id'], $file_ext);
             // 如果返回的是视频消息素材，则内容如下：
             // {
             // "video_url":DOWN_URL
@@ -151,14 +142,8 @@ class MediaController extends BaseController
             if (empty($data)) {
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
-            if (empty($data['agentid'])) {
-                $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
-                $res = $weixinopenService->uploadMedia($id);
-            } else {
-                $weixinopenService = new \App\Weixin2\Services\QyService($data['authorizer_appid'], $data['component_appid'], $data['agentid']);
-                $res = $weixinopenService->uploadMedia($id);
-            }
-
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->uploadMedia($id);
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -227,36 +212,7 @@ class MediaController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['agentid'] = array(
-            'name' => '代理应用ID',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->agentItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
+        
         $schemas['name'] = array(
             'name' => '素材名',
             'data' => array(

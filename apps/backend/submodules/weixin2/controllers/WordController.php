@@ -3,37 +3,21 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Keyword\Word;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
-use App\Backend\Submodules\Weixin2\Models\Agent\Agent;
 
 /**
  * @title({name="非关键词"})
  *
  * @name 非关键词
  */
-class WordController extends \App\Backend\Controllers\FormController
+class WordController extends BaseController
 {
     private $modelWord;
-    private $modelAuthorizer;
-    private $modelComponent;
-    private $modelAgent;
 
     public function initialize()
     {
         $this->modelWord = new Word();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-        $this->modelAgent = new Agent();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
-        $this->agentItems = $this->modelAgent->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
-    protected $agentItems = null;
 
     protected function getSchemas2($schemas)
     {
@@ -92,36 +76,6 @@ class WordController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['agentid'] = array(
-            'name' => '代理应用ID',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->agentItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true

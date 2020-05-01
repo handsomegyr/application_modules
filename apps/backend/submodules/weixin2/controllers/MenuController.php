@@ -79,20 +79,15 @@ class MenuController extends BaseController
             } else {
                 $component_appid = trim($this->request->get('mmenu_component_appid'));
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
-                $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
-                if (empty($mmenu_agent_agentid)) {
-                    $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
-                    $res = $weixinopenService->createMenu();
-                } else {
-                    $weixinopenService = new \App\Weixin2\Services\QyService($authorizer_appid, $component_appid, $mmenu_agent_agentid);
-                    $res = $weixinopenService->createMenu();
-                }
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
+                $res = $weixinopenService->createMenu();
+
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
         } catch (\Exception $e) {
@@ -119,24 +114,17 @@ class MenuController extends BaseController
             } else {
                 $component_appid = trim($this->request->get('mmenu_component_appid'));
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
-                $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
-                if (empty($mmenu_agent_agentid)) {
-                    $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
-                    $res = $weixinopenService->getWeixinObject()
-                        ->getMenuManager()
-                        ->delete(array());
-                } else {
-                    $weixinopenService = new \App\Weixin2\Services\QyService($authorizer_appid, $component_appid, $mmenu_agent_agentid);
-                    $res = $weixinopenService->getQyWeixinObject()
-                        ->getMenuManager()
-                        ->delete($mmenu_agent_agentid, array());
-                }
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
+                $res = $weixinopenService->getWeixinObject()
+                    ->getMenuManager()
+                    ->delete(array());
+
                 // if (empty($res['errcode'])) {
                 //     return print_r($res); // true;
                 // }
@@ -171,15 +159,11 @@ class MenuController extends BaseController
             } else {
                 $component_appid = trim($this->request->get('mmenu_component_appid'));
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
-                $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
-                }
-                if (!empty($mmenu_agent_agentid)) {
-                    return $this->makeJsonError("应用ID是企业微信的应用");
                 }
                 $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->getWeixinObject()
@@ -219,25 +203,16 @@ class MenuController extends BaseController
             } else {
                 $component_appid = trim($this->request->get('mmenu_component_appid'));
                 $authorizer_appid = trim($this->request->get('mmenu_authorizer_appid'));
-                $mmenu_agent_agentid = trim($this->request->get('mmenu_agent_agentid'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
-                if (empty($mmenu_agent_agentid)) {
-                    $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
-                    $res = $weixinopenService->getWeixinObject()
-                        ->getMenuManager()
-                        ->get();
-                } else {
-                    $weixinopenService = new \App\Weixin2\Services\QyService($authorizer_appid, $component_appid, $mmenu_agent_agentid);
-                    $res = $weixinopenService->getQyWeixinObject()
-                        ->getMenuManager()
-                        ->get($mmenu_agent_agentid);
-                }
-                
+                $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
+                $res = $weixinopenService->getWeixinObject()
+                    ->getMenuManager()
+                    ->get();
                 // if (empty($res['errcode'])) {
                 //     return print_r($res); // true;
                 // }
@@ -276,17 +251,6 @@ class MenuController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems,
-            ),
-        );
-        $fields['mmenu_agent_agentid'] = array(
-            'name' => '企业微信应用ID',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems,
             ),
         );
         return $fields;
@@ -349,36 +313,6 @@ class MenuController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['agentid'] = array(
-            'name' => '代理应用ID',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->agentItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true
