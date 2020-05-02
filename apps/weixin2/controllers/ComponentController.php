@@ -11,12 +11,24 @@ class ComponentController extends ControllerBase
     // 活动ID
     protected $activity_id = 2;
 
+    /**
+     * @var \App\Weixin2\Models\Component\Component
+     */
     private $modelWeixinopenComponent;
 
+    /**
+     * @var \App\Weixin2\Models\Authorize\Authorizer
+     */
     private $modelWeixinopenAuthorizer;
 
+    /**
+     * @var \App\Weixin2\Models\Component\ComponentLoginBindTracking
+     */
     private $modelWeixinopenComponentLoginBindTracking;
 
+    /**
+     * @var \App\Weixin2\Models\Authorize\AuthorizeLog
+     */
     private $modelWeixinopenAuthorizeLog;
 
     private $trackingKey = "公众号授权给第三方平台流程";
@@ -30,7 +42,7 @@ class ComponentController extends ControllerBase
 
     private $authorizer_appid;
 
-    private $authorizerConfig;
+    // private $authorizerConfig;
 
     private $weixinopenService;
 
@@ -448,6 +460,7 @@ class ComponentController extends ControllerBase
     {
         // 第三方平台运用ID
         $this->component_appid = isset($_GET['appid']) ? trim($_GET['appid']) : "";
+        // 授权方ID
         $this->authorizer_appid = isset($_GET['authorizer_appid']) ? trim($_GET['authorizer_appid']) : "";
         // 创建service
         $this->weixinopenService = new \App\Weixin2\Services\WeixinService($this->authorizer_appid, $this->component_appid);
@@ -456,15 +469,6 @@ class ComponentController extends ControllerBase
             throw new \Exception("component_appid:{$this->component_appid}所对应的记录不存在");
         }
         $this->objWeixinComponent = $this->weixinopenService->getWeixinComponent();
-
-        // 授权方ID
-        if (!empty($this->authorizer_appid)) {
-
-            $this->authorizerConfig = $this->weixinopenService->getAppConfig4Authorizer();
-            if (empty($this->authorizerConfig)) {
-                throw new \Exception("component_appid:{$this->component_appid}和authorizer_appid:{$this->authorizer_appid}所对应的记录不存在");
-            }
-        }
     }
 
     protected function getDataFromWeixinServer()

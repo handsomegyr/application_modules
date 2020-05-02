@@ -11,17 +11,25 @@ class ComponentsnsController extends ControllerBase
 
     // 活动ID
     protected $activity_id = 3;
-
+    /**
+     * @var \App\Weixin2\Models\User\User
+     */
     private $modelWeixinopenUser;
-
+    /**
+     * @var \App\Weixin2\Models\Component\Component
+     */
     private $modelWeixinopenComponent;
-
+    /**
+     * @var \App\Weixin2\Models\Authorize\Authorizer
+     */
     private $modelWeixinopenAuthorizer;
     /**
      * @var \App\Weixin2\Models\ScriptTracking
      */
     private $modelWeixinopenScriptTracking;
-
+    /**
+     * @var \App\Weixin2\Models\Callbackurls
+     */
     private $modelWeixinopenCallbackurls;
 
     // lock key

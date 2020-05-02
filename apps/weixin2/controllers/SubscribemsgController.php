@@ -11,17 +11,19 @@ class SubscribemsgController extends ControllerBase
     // 活动ID
     protected $activity_id = 5;
 
-    private $modelWeixinopenComponent;
-
-    private $modelWeixinopenAuthorizer;
-
     /**
      * @var \App\Weixin2\Models\ScriptTracking
      */
     private $modelWeixinopenScriptTracking;
 
+    /**
+     * @var \App\Weixin2\Models\Callbackurls
+     */
     private $modelWeixinopenCallbackurls;
 
+    /**
+     * @var \App\Weixin2\Models\SnsApplication
+     */
     private $modelWeixinopenSnsApplication;
 
     /**
@@ -32,9 +34,9 @@ class SubscribemsgController extends ControllerBase
     // lock key
     private $lock_key_prefix = 'weixinopen_subscribemsg_';
 
-    private $cookie_session_key = 'weixinopen_subscribemsg_';
+    // private $cookie_session_key = 'weixinopen_subscribemsg_';
 
-    private $sessionKey;
+    // private $sessionKey;
 
     private $trackingKey = "一次性订阅消息授权";
 
@@ -44,11 +46,11 @@ class SubscribemsgController extends ControllerBase
 
     private $component_appid;
 
-    private $componentConfig;
+    // private $componentConfig;
 
     private $authorizer_appid;
 
-    private $authorizerConfig;
+    // private $authorizerConfig;
 
     private $scope;
 
@@ -59,8 +61,6 @@ class SubscribemsgController extends ControllerBase
         parent::initialize();
         $this->view->disable();
 
-        $this->modelWeixinopenComponent = new \App\Weixin2\Models\Component\Component();
-        $this->modelWeixinopenAuthorizer = new \App\Weixin2\Models\Authorize\Authorizer();
         $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
         $this->modelWeixinopenCallbackurls = new \App\Weixin2\Models\Callbackurls();
         $this->modelWeixinopenSnsApplication = new \App\Weixin2\Models\SnsApplication();
@@ -286,22 +286,14 @@ class SubscribemsgController extends ControllerBase
         }
         // 第三方平台运用ID
         $this->component_appid = $this->appConfig['component_appid'];
-        if (empty($this->component_appid)) {
-            throw new \Exception("component_appid为空");
-        }
-        $this->componentConfig = $this->modelWeixinopenComponent->getInfoByAppid($this->component_appid);
-        if (empty($this->componentConfig)) {
-            throw new \Exception("component_appid:{$this->component_appid}所对应的记录不存在");
-        }
+        // if (empty($this->component_appid)) {
+        //     throw new \Exception("component_appid为空");
+        // }
 
         // 授权方ID
         $this->authorizer_appid = $this->appConfig['authorizer_appid'];
         if (empty($this->authorizer_appid)) {
             throw new \Exception("authorizer_appid为空");
-        }
-        $this->authorizerConfig = $this->modelWeixinopenAuthorizer->getInfoByAppid($this->component_appid, $this->authorizer_appid);
-        if (empty($this->authorizerConfig)) {
-            throw new \Exception("component_appid:{$this->component_appid}和authorizer_appid:{$this->authorizer_appid}所对应的记录不存在");
         }
     }
 }

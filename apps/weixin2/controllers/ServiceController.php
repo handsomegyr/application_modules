@@ -14,17 +14,17 @@ class ServiceController extends ControllerBase
      * @var \App\Weixin2\Models\ScriptTracking
      */
     private $modelWeixinopenScriptTracking;
-
-    private $modelWeixinopenCallbackurls;
-
+    /**
+     * @var \App\Weixin2\Models\SnsApplication
+     */
     private $modelWeixinopenSnsApplication;
 
-    // lock key
-    private $lock_key_prefix = 'weixinopen_application_service_';
+    // // lock key
+    // private $lock_key_prefix = 'weixinopen_application_service_';
 
-    private $cookie_session_key = 'weixinopen_application_service_';
+    // private $cookie_session_key = 'weixinopen_application_service_';
 
-    private $sessionKey;
+    // private $sessionKey;
 
     private $trackingKey = "授权应用服务调用";
 
@@ -44,7 +44,6 @@ class ServiceController extends ControllerBase
         $this->view->disable();
 
         $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
-        $this->modelWeixinopenCallbackurls = new \App\Weixin2\Models\Callbackurls();
         $this->modelWeixinopenSnsApplication = new \App\Weixin2\Models\SnsApplication();
 
         $_SESSION['service_start_time'] = microtime(true);
@@ -148,9 +147,9 @@ class ServiceController extends ControllerBase
 
         // 第三方平台运用ID
         $this->component_appid = $this->appConfig['component_appid'];
-        if (empty($this->component_appid)) {
-            throw new \Exception("component_appid为空");
-        }
+        // if (empty($this->component_appid)) {
+        //     throw new \Exception("component_appid为空");
+        // }
         // 授权方ID
         $this->authorizer_appid = $this->appConfig['authorizer_appid'];
         if (empty($this->authorizer_appid)) {

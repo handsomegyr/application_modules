@@ -16,11 +16,6 @@ class ApplicationsnsController extends ControllerBase
     private $modelWeixinopenUser;
 
     /**
-     * @var \App\Weixin2\Models\Component\Component
-     */
-    private $modelWeixinopenComponent;
-
-    /**
      * @var \App\Weixin2\Models\Authorize\Authorizer
      */
     private $modelWeixinopenAuthorizer;
@@ -40,8 +35,8 @@ class ApplicationsnsController extends ControllerBase
      */
     private $modelWeixinopenSnsApplication;
 
-    // lock key
-    private $lock_key_prefix = 'weixinopen_application_sns_';
+    // // lock key
+    // private $lock_key_prefix = 'weixinopen_application_sns_';
 
     private $cookie_session_key = 'weixinopen_application_sns_';
 
@@ -55,7 +50,7 @@ class ApplicationsnsController extends ControllerBase
 
     private $component_appid;
 
-    private $componentConfig;
+    // private $componentConfig;
 
     private $authorizer_appid;
 
@@ -73,7 +68,6 @@ class ApplicationsnsController extends ControllerBase
         parent::initialize();
         $this->view->disable();
         $this->modelWeixinopenUser = new \App\Weixin2\Models\User\User();
-        $this->modelWeixinopenComponent = new \App\Weixin2\Models\Component\Component();
         $this->modelWeixinopenAuthorizer = new \App\Weixin2\Models\Authorize\Authorizer();
         $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
         $this->modelWeixinopenCallbackurls = new \App\Weixin2\Models\Callbackurls();
@@ -82,21 +76,6 @@ class ApplicationsnsController extends ControllerBase
 
     /**
      * 引导用户去授权
-     * 第一步：请求CODE
-     * 请求方法
-     * 在确保微信公众账号拥有授权作用域（scope参数）的权限的前提下（一般而言，已微信认证的服务号拥有snsapi_base和snsapi_userinfo），使用微信客户端打开以下链接（严格按照以下格式，包括顺序和大小写，并请将参数替换为实际内容）：
-     *
-     * https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE&component_appid=component_appid#wechat_redirect
-     * 若提示“该链接无法访问”，请检查参数是否填写错误，是否拥有scope参数对应的授权作用域权限。
-     *
-     * 参数说明
-     * 参数 是否必须 说明
-     * appid 是 公众号的appid
-     * redirect_uri 是 重定向地址，需要urlencode，这里填写的应是服务开发方的回调地址
-     * response_type 是 填code
-     * scope 是 授权作用域，拥有多个作用域用逗号（,）分隔
-     * state 否 重定向后会带上state参数，开发者可以填写任意参数值，最多128字节
-     * component_appid 是 服务方的appid，在申请创建公众号服务成功后，可在公众号服务详情页找到
      */
     public function indexAction()
     {
@@ -179,9 +158,6 @@ class ApplicationsnsController extends ControllerBase
      * 第二步：通过code换取access_token
      * 请求方法
      * 获取第一步的code后，请求以下链接获取access_token：
-     *
-     * https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=APPID&code=CODE&grant_type=authorization_code&component_appid=COMPONENT_APPID&component_access_token=COMPONENT_ACCESS_TOKEN
-     * 需要注意的是，由于安全方面的考虑，对访问该链接的客户端有IP白名单的要求。
      */
     public function callbackAction()
     {
@@ -275,12 +251,6 @@ class ApplicationsnsController extends ControllerBase
             if ($updateInfoFromWx) {
                 if (!empty($userInfo['headimgurl'])) {
                     $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
-                }
-                if ($this->app_type != \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_QY) {
-                    $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['openid'] . $this->authorizer_appid . $this->component_appid);
-                    if (!$lock->lock()) {
-                        $this->modelWeixinopenUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $userInfo);
-                    }
                 }
             }
             $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
@@ -377,13 +347,9 @@ class ApplicationsnsController extends ControllerBase
         }
         // 第三方平台运用ID
         $this->component_appid = $this->appConfig['component_appid'];
-        if (empty($this->component_appid)) {
-            throw new \Exception("component_appid为空");
-        }
-        $this->componentConfig = $this->modelWeixinopenComponent->getInfoByAppid($this->component_appid);
-        if (empty($this->componentConfig)) {
-            throw new \Exception("component_appid:{$this->component_appid}所对应的记录不存在");
-        }
+        // if (empty($this->component_appid)) {
+        //     throw new \Exception("component_appid为空");
+        // }
 
         // 授权方ID
         $this->authorizer_appid = $this->appConfig['authorizer_appid'];
