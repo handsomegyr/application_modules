@@ -133,7 +133,7 @@ class MsgController extends ControllerBase
             $AESInfo['msg_signature'] = isset($_GET['msg_signature']) ? $_GET['msg_signature'] : '';
 
             // 如果是微信开放平台的话
-            if (!empty($this->componentConfig['is_weixin_open_platform'])) {
+            if (!empty($this->componentConfig)) {
                 $verifyToken = isset($this->componentConfig['verify_token']) ? $this->componentConfig['verify_token'] : '';
                 $encodingAESKey = isset($this->componentConfig['EncodingAESKey']) ? $this->componentConfig['EncodingAESKey'] : '';
                 $receiveId = $this->component_appid;
@@ -167,7 +167,7 @@ class MsgController extends ControllerBase
             $this->requestLogDatas['response'] = 'success';
 
             // 如果是微信开放平台的话
-            if (!empty($this->componentConfig['is_weixin_open_platform'])) {
+            if (!empty($this->componentConfig)) {
                 // 全网发布自动校验
                 $verifyComponentRet = $this->verifyComponent($datas);
                 if ($verifyComponentRet['is_success']) {

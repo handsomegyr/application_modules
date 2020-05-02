@@ -488,7 +488,7 @@ class ComponentController extends ControllerBase
             $AESInfo['authorizer_appid'] = isset($_GET['authorizer_appid']) ? trim(($_GET['authorizer_appid'])) : '';
 
             // 如果是微信开放平台的话
-            if (!empty($this->appConfig['is_weixin_open_platform'])) {
+            if (!empty($this->appConfig)) {
                 $verifyToken = isset($this->appConfig['verify_token']) ? $this->appConfig['verify_token'] : '';
                 $encodingAESKey = isset($this->appConfig['EncodingAESKey']) ? $this->appConfig['EncodingAESKey'] : '';
                 $receiveId = $this->appConfig['appid'];
@@ -503,7 +503,7 @@ class ComponentController extends ControllerBase
             $this->requestLogDatas['aes_info'] = $AESInfo;
 
             if (empty($verifyToken)) {
-                if (!empty($this->appConfig['is_weixin_open_platform'])) {
+                if (!empty($this->appConfig)) {
                     throw new \Exception('application verify_token is null. config:' . \json_encode($this->appConfig));
                 } else {
                     throw new \Exception('application verify_token is null. config:' . \json_encode($this->authorizerConfig));
@@ -524,7 +524,7 @@ class ComponentController extends ControllerBase
             $this->requestLogDatas['response'] = 'success';
 
             // 如果是微信开放平台的话
-            if (!empty($this->appConfig['is_weixin_open_platform'])) {
+            if (!empty($this->appConfig)) {
                 // 全网发布自动校验
                 $verifyComponentRet = $this->verifyComponent($datas);
                 if ($verifyComponentRet['is_success']) {
