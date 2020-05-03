@@ -11,13 +11,12 @@ class ServiceController extends ControllerBase
     protected $activity_id = 6;
 
     /**
-     *
      * @var \App\Qyweixin\Models\ScriptTracking
      */
     private $modelQyweixinScriptTracking;
-
-    private $modelQyweixinCallbackurls;
-
+    /**
+     * @var \App\Qyweixin\Models\SnsApplication
+     */
     private $modelQyweixinSnsApplication;
 
     // lock key
@@ -39,6 +38,9 @@ class ServiceController extends ControllerBase
 
     private $agentid = 0;
 
+    /**
+     * @var \App\Qyweixin\Services\QyService
+     */
     private $weixinopenService = null;
 
     public function initialize()
@@ -47,7 +49,6 @@ class ServiceController extends ControllerBase
         $this->view->disable();
 
         $this->modelQyweixinScriptTracking = new \App\Qyweixin\Models\ScriptTracking();
-        $this->modelQyweixinCallbackurls = new \App\Qyweixin\Models\Callbackurls();
         $this->modelQyweixinSnsApplication = new \App\Qyweixin\Models\SnsApplication();
 
         $_SESSION['service_start_time'] = microtime(true);
@@ -160,6 +161,6 @@ class ServiceController extends ControllerBase
             throw new \Exception("authorizer_appid为空");
         }
         // 创建service
-        $this->weixinopenService = new \App\Qyweixin\Services\WeixinService($this->authorizer_appid, $this->provider_appid);
+        $this->weixinopenService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $this->agentid);
     }
 }

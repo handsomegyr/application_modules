@@ -96,22 +96,30 @@ class ApplicationsnsController extends ControllerBase
     }
 
     /**
-     * 引导用户去授权
-     * 第一步：请求CODE
-     * 请求方法
-     * 在确保微信公众账号拥有授权作用域（scope参数）的权限的前提下（一般而言，已微信认证的服务号拥有snsapi_base和snsapi_userinfo），使用微信客户端打开以下链接（严格按照以下格式，包括顺序和大小写，并请将参数替换为实际内容）：
-     *
-     * https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE&provider_appid=provider_appid#wechat_redirect
-     * 若提示“该链接无法访问”，请检查参数是否填写错误，是否拥有scope参数对应的授权作用域权限。
-     *
-     * 参数说明
-     * 参数 是否必须 说明
-     * appid 是 公众号的appid
-     * redirect_uri 是 重定向地址，需要urlencode，这里填写的应是服务开发方的回调地址
-     * response_type 是 填code
-     * scope 是 授权作用域，拥有多个作用域用逗号（,）分隔
-     * state 否 重定向后会带上state参数，开发者可以填写任意参数值，最多128字节
-     * provider_appid 是 服务方的appid，在申请创建公众号服务成功后，可在公众号服务详情页找到
+     * 如果企业需要在打开的网页里面携带用户的身份信息，第一步需要构造如下的链接来获取code参数：
+
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=CORPID&redirect_uri=REDIRECT_URI&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
+参数说明：
+
+参数	必须	说明
+appid	是	企业的CorpID
+redirect_uri	是	授权后重定向的回调链接地址，请使用urlencode对链接进行处理
+response_type	是	返回类型，此时固定为：code
+scope	是	应用授权作用域。企业自建应用固定填写：snsapi_base
+state	否	重定向后会带上state参数，企业可以填写a-zA-Z0-9的参数值，长度不可超过128个字节
+#wechat_redirect	是	终端使用此参数判断是否需要带上身份信息
+
+示例：
+
+假定当前
+企业CorpID：wxCorpId
+访问链接：http://api.3dept.com/cgi-bin/query?action=get
+根据URL规范，将上述参数分别进行UrlEncode，得到拼接的OAuth2链接为：
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxCorpId&redirect_uri=http%3a%2f%2fapi.3dept.com%2fcgi-bin%2fquery%3faction%3dget&response_type=code&scope=snsapi_base&state=#wechat_redirect
+员工点击后，页面将跳转至 
+http://api.3dept.com/cgi-bin/query?action=get&code=AAAAAAgG333qs9EdaPbCAP1VaOrjuNkiAZHTWgaWsZQ&state=
+企业可根据code参数调用获得员工的userid
+注意到，构造OAuth2链接中参数的redirect_uri是经过UrlEncode的
      */
     public function indexAction()
     {
@@ -132,9 +140,6 @@ class ApplicationsnsController extends ControllerBase
 
             if ($dc) {
                 // 添加重定向域的检查
-                // $list = $this->modelQyweixinCallbackurls->getValidCallbackUrlList($this->authorizer_appid, $this->provider_appid, true);
-                // $hostret = $this->modelQyweixinCallbackurls->getHost($redirect);
-                // return Result::success($hostret);
                 $isValid = $this->modelQyweixinCallbackurls->isValid($this->authorizer_appid, $this->provider_appid, $this->agentid, $redirect);
                 if (empty($isValid)) {
                     throw new \Exception("回调地址不合法");
@@ -164,9 +169,7 @@ class ApplicationsnsController extends ControllerBase
 
                 // 授权处理
                 // 应用类型 1:企业号
-                if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_PUB) {
-                    $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
-                } elseif ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
+                if (empty($this->authorizerConfig['provider_appid']) && $this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
                     $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
                 } else {
                     throw new \Exception('该运用不支持授权操作');
@@ -185,24 +188,11 @@ class ApplicationsnsController extends ControllerBase
     }
 
     /**
-     * 第二步：获取code
-     *
-     * 用户允许授权后，将会重定向到redirect_uri的网址上，并且带上code, state以及appid
-     *
-     * redirect_uri?code=CODE&state=STATE&appid=APPID
-     * 若用户禁止授权，则重定向后不会带上code参数，仅会带上state参数
-     *
-     * redirect_uri?state=STATE
-     * 第二步：通过code换取access_token
-     * 请求方法
-     * 获取第一步的code后，请求以下链接获取access_token：
-     *
-     * https://api.weixin.qq.com/sns/oauth2/provider/access_token?appid=APPID&code=CODE&grant_type=authorization_code&provider_appid=provider_appid&component_access_token=COMPONENT_ACCESS_TOKEN
-     * 需要注意的是，由于安全方面的考虑，对访问该链接的客户端有IP白名单的要求。
+     * 员工点击后，页面将跳转至 redirect_uri?code=CODE&state=STATE，企业可根据code参数获得员工的userid。code长度最大为512字节。
      */
     public function callbackAction()
     {
-        // http://wxcrmdemo.jdytoy.com/qyweixin/api/applicationsns/callback?appid=xxx&code=xxx&scope=auth_user&state=xxx
+        // http://wxcrmdemo.jdytoy.com/qyweixin/api/applicationsns/callback?code=xxx&scope=auth_user&state=xxx
         try {
             $appid = empty($_SESSION['appid']) ? "" : $_SESSION['appid'];
             if (empty($appid)) {
@@ -233,22 +223,14 @@ class ApplicationsnsController extends ControllerBase
 
             // 第二步：通过code换取access_token
             // 应用类型 1:企业号
-            if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_PUB) {
-                $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
-                $arrAccessToken = $objSns->getAccessToken();
-                if (!empty($arrAccessToken['errcode'])) {
-                    throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
-                }
-            } elseif ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
-                // 获取agent信息
-                $agentInfo = $this->modelQyweixinAgent->getInfoByAppid($this->provider_appid, $this->authorizer_appid, $this->agentid);
-                $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $agentInfo['secret']);
-                $arrAccessToken = $objSns->getUserInfo($agentInfo['access_token']);
+            if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
+                $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+                $arrAccessToken = $objSns->getUserInfo($this->authorizerConfig['access_token']);
                 if (!empty($arrAccessToken['errcode'])) {
                     throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
                 }
                 $arrAccessToken['scope'] = $this->scope;
-                $arrAccessToken['access_token'] = $agentInfo['access_token'];
+                $arrAccessToken['access_token'] = $this->authorizerConfig['access_token'];
                 $arrAccessToken['refresh_token'] = "";
 
                 // a) 当用户为企业成员时
@@ -279,11 +261,7 @@ class ApplicationsnsController extends ControllerBase
                 if (true || empty($userInfo)) {
                     $updateInfoFromWx = true;
                     // 应用类型 1:企业号
-                    if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_PUB) {
-                        $weixin = new \Weixin\Client();
-                        $weixin->setSnsAccessToken($arrAccessToken['access_token']);
-                        $userInfo = $weixin->getSnsManager()->getSnsUserInfo($arrAccessToken['openid']);
-                    } elseif ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
+                    if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
                         // 当用户为企业成员时
                         if (!empty($arrAccessToken['is_qy_member'])) {
                             $weixin = new \Weixin\Qy\Client($this->authorizer_appid, $agentInfo['secret']);
