@@ -26,26 +26,31 @@ class MsgController extends ControllerBase
     private $modelQyweixinReplyMsg;
 
     /**
+     *
      * @var \App\Qyweixin\Models\Keyword\Keyword
      */
     private $modelQyweixinKeyword;
 
     /**
+     *
      * @var \App\Qyweixin\Models\Keyword\KeywordToReplyMsg
      */
     private $modelQyweixinKeywordToReplyMsg;
 
     /**
+     *
      * @var \App\Qyweixin\Models\Keyword\KeywordToAgentMsg
      */
     private $modelQyweixinKeywordToAgentMsg;
 
     /**
+     *
      * @var \App\Qyweixin\Models\Keyword\KeywordToTemplateMsg
      */
     private $modelQyweixinKeywordToTemplateMsg;
 
     /**
+     *
      * @var \App\Qyweixin\Models\Keyword\Word
      */
     private $modelQyweixinWord;
@@ -74,6 +79,7 @@ class MsgController extends ControllerBase
     private $authorizerConfig;
 
     /**
+     *
      * @var \App\Components\Weixinopen\Services\QyService
      */
     private $qyweixinService;
@@ -272,8 +278,8 @@ class MsgController extends ControllerBase
                 }
                 // // 获取微信用户的个人信息
                 // if (!empty($this->authorizerConfig['access_token'])) {
-                //     $this->modelQyweixinUser->setWeixinInstance($this->objQyWeixin);
-                //     $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
+                // $this->modelQyweixinUser->setWeixinInstance($this->objQyWeixin);
+                // $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
                 // }
                 // 设定来源和目标用户的openid
                 $this->objQyWeixin->setFromAndTo($FromUserName, $ToUserName);
@@ -456,7 +462,7 @@ class MsgController extends ControllerBase
             if (empty($this->providerConfig)) {
                 throw new \Exception("provider_appid:{$this->provider_appid}所对应的记录不存在");
             }
-            $this->objQyWeixinProvider = $this->qyweixinService->getWeixinProvider();
+            $this->objQyWeixinProvider = $this->qyweixinService->getQyweixinProvider();
         }
 
         // 授权方ID
@@ -812,7 +818,7 @@ class MsgController extends ControllerBase
      * 当企业成员通过企业微信APP或微工作台（原企业号）触发进入应用、上报地理位置、点击菜单等事件时，企业微信会将这些事件消息发送给企业后台。
      * 如何接收消息已经在使用接收消息说明，本小节是对事件消息结构体的说明。
      *
-     * 注：以下出现的xml包仅是接收的消息包中的Encrypt参数解密后的内容说明         
+     * 注：以下出现的xml包仅是接收的消息包中的Encrypt参数解密后的内容说明
      * 通讯录变更事件
      * 当企业通过通讯录助手开通通讯录权限后，成员的变更会通知给企业。变更的事件，将推送到企业微信管理端通讯录助手中的‘接收事件服务器’。由通讯录同步助手调用接口触发的变更事件不回调通讯录同步助手本身。管理员在管理端更改组织架构或者成员信息以及企业微信的成员在客户端变更自己的个人信息将推送给通讯录同步助手。第三方通讯录变更事件参见第三方回调协议
      * 菜单事件
@@ -838,8 +844,8 @@ class MsgController extends ControllerBase
         $response = '';
 
         // 不同项目特定的业务逻辑开始
-        // 接收事件推送        
-        if ($Event == 'subscribe'  || $Event == 'unsubscribe') { // 成员关注及取消关注事件
+        // 接收事件推送
+        if ($Event == 'subscribe' || $Event == 'unsubscribe') { // 成员关注及取消关注事件
             /**
              * 成员关注及取消关注事件
              * 小程序在管理端开启接收消息配置后，也可收到关注/取消关注事件
@@ -1586,7 +1592,8 @@ class MsgController extends ControllerBase
              * 客户群变更事件
              */
             if ($ChangeType == 'add_external_contact') { // 接收客户变更事件-添加企业客户事件
-                /** 添加企业客户事件
+                /**
+                 * 添加企业客户事件
                  * 配置了客户联系功能的成员添加外部联系人时，回调该事件
                  *
                  * 请求示例：
@@ -1621,7 +1628,8 @@ class MsgController extends ControllerBase
                  * 注意:如果外部联系人和成员已经开始聊天或已通过「外部联系人免验证添加成员事件」得到的welcomecode发送欢迎语，则不会继续返回welcomecode。
                  */
             } elseif ($ChangeType == 'edit_external_contact') { // 接收客户变更事件-编辑企业客户事件
-                /** 编辑企业客户事件
+                /**
+                 * 编辑企业客户事件
                  * 配置了客户联系功能的成员修改外部联系人的备注、手机号或标签时时，回调该事件
                  *
                  * 请求示例：
@@ -1651,7 +1659,8 @@ class MsgController extends ControllerBase
                  * State 添加此用户的「联系我」方式配置的state参数，可用于识别添加此用户的渠道
                  */
             } elseif ($ChangeType == 'add_half_external_contact') { // 接收客户变更事件-外部联系人免验证添加成员事件
-                /** 外部联系人免验证添加成员事件
+                /**
+                 * 外部联系人免验证添加成员事件
                  * 外部联系人添加了配置了客户联系功能且开启了免验证的成员时（此时成员尚未确认添加对方为好友），回调该事件
                  *
                  * 请求示例：
@@ -1686,7 +1695,8 @@ class MsgController extends ControllerBase
                  * 注意:如果外部联系人和成员已经开始聊天，则不会返回welcomecode。
                  */
             } elseif ($ChangeType == 'del_external_contact') { // 接收客户变更事件-删除企业客户事件
-                /** 删除企业客户事件
+                /**
+                 * 删除企业客户事件
                  * 配置了客户联系功能的成员删除外部联系人时，回调该事件
                  *
                  * 请求示例：
@@ -1714,7 +1724,8 @@ class MsgController extends ControllerBase
                  * ExternalUserID 外部联系人的userid，注意不是企业成员的帐号
                  */
             } elseif ($ChangeType == 'del_follow_user') { // 接收客户变更事件-删除跟进成员事件
-                /** 删除跟进成员事件
+                /**
+                 * 删除跟进成员事件
                  * 配置了客户联系功能的成员被外部联系人删除时，回调该事件
                  *
                  * 请求示例：
@@ -1744,7 +1755,8 @@ class MsgController extends ControllerBase
             }
             $response = "success";
         } elseif ($Event == 'change_external_chat') { // 客户群变更事件
-            /** 客户群变更事件
+            /**
+             * 客户群变更事件
              * 客户群被修改后（群名变更，群成员增加或移除），回调该事件。收到该事件后，企业需要再调用获取客户群详情接口，以获取最新的群详情。
              *
              * 请求示例：

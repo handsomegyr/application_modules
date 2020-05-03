@@ -44,7 +44,7 @@ class KfaccountController extends BaseController
             'action' => 'updateaccount',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['kf_account']) && !empty($row['nickname']) && !empty($row['is_created'])
                 ) {
                     return true;
@@ -60,7 +60,7 @@ class KfaccountController extends BaseController
             'action' => 'addaccount',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['kf_account']) && !empty($row['nickname']) && empty($row['is_created'])
                 ) {
                     return true;
@@ -76,7 +76,7 @@ class KfaccountController extends BaseController
             'action' => 'uploadheadimg',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['kf_account']) && !empty($row['is_created'])
                 ) {
                     return true;
@@ -91,7 +91,7 @@ class KfaccountController extends BaseController
             'title' => '删除客服帐号',
             'action' => 'deleteaccount',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['kf_account']) && !empty($row['is_created'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['kf_account']) && !empty($row['is_created'])) {
                     return true;
                 } else {
                     return false;
@@ -104,7 +104,7 @@ class KfaccountController extends BaseController
             'title' => '邀请绑定客服帐号',
             'action' => 'inviteworker',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['kf_account']) && !empty($row['invite_wx'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['kf_account']) && !empty($row['invite_wx'])) {
                     return true;
                 } else {
                     return false;

@@ -38,7 +38,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
             'action' => 'batchunblacklist',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['openid']) && !empty($row['is_black'])
                 ) {
                     return true;
@@ -54,7 +54,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
             'action' => 'batchblacklist',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['openid']) && empty($row['is_black'])
                 ) {
                     return true;

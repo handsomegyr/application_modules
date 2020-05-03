@@ -115,6 +115,7 @@ class ComponentsnsController extends ControllerBase
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
                 $_SESSION['component_appid'] = $this->component_appid;
+                $_SESSION['appid'] = $this->authorizer_appid;
 
                 $moduleName = 'weixin2';
                 $controllerName = $this->controllerName;
@@ -124,11 +125,6 @@ class ComponentsnsController extends ControllerBase
                 $redirectUri .= '/' . $moduleName;
                 $redirectUri .= '/' . $controllerName;
                 $redirectUri .= '/callback';
-
-                // $redirectUri .= '?component_appid=' . $this->component_appid;
-                // $redirectUri .= '?appid=' . $this->authorizer_appid;
-                // $redirectUri .= '&state=' . $this->state;
-                // $redirectUri .= '&scope=' . $this->scope;
 
                 // 授权处理
                 $objComponent = new \Weixin\Token\Component($this->authorizer_appid, $this->component_appid, $this->componentConfig['access_token']);

@@ -37,7 +37,7 @@ class UsertousertagController extends \App\Backend\Controllers\FormController
             'action' => 'untaguser',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['openid']) && !empty($row['tag_id']) && !empty($row['is_tag'])
                 ) {
                     return true;
@@ -52,7 +52,7 @@ class UsertousertagController extends \App\Backend\Controllers\FormController
             'action' => 'taguser',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['openid']) && !empty($row['tag_id']) && empty($row['is_tag'])
                 ) {
                     return true;

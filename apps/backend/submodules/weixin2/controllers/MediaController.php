@@ -29,7 +29,7 @@ class MediaController extends BaseController
             'title' => '获取临时素材',
             'action' => 'getmedia',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['media_id'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['media_id'])) {
                     return true;
                 } else {
                     return false;
@@ -42,7 +42,7 @@ class MediaController extends BaseController
             'title' => '上传临时素材',
             'action' => 'uploadmedia',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['type'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['type'])) {
                     // 媒体文件在微信后台保存时间为3天，即3天后media_id失效。
                     $expire_seconds = 24 * 3600 * 2.5;
                     if (!empty($row['media_id']) && (($row['media_time']->sec + $expire_seconds) > time())) {

@@ -38,7 +38,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'action' => 'updateremark',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid'])
+                    !empty($row) && !empty($row['authorizer_appid']) 
                 ) {
                     return true;
                 } else {
@@ -52,7 +52,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'action' => 'getuserinfo',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid'])
+                    !empty($row) && !empty($row['authorizer_appid']) 
                 ) {
                     return true;
                 } else {
@@ -66,7 +66,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'action' => 'getusertagidlist',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid'])
+                    !empty($row) && !empty($row['authorizer_appid']) 
                 ) {
                     return true;
                 } else {

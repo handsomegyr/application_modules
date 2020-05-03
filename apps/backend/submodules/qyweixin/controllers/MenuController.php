@@ -78,6 +78,9 @@ class MenuController extends BaseController
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
+                if (empty($mmenu_agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
                 $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $mmenu_agent_agentid);
                 $res = $weixinopenService->createMenu();
 
@@ -114,7 +117,9 @@ class MenuController extends BaseController
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
                 }
-
+                if (empty($mmenu_agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
                 $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $mmenu_agent_agentid);
                 $res = $weixinopenService->getQyWeixinObject()
                     ->getMenuManager()
@@ -160,6 +165,9 @@ class MenuController extends BaseController
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
+                }
+                if (empty($mmenu_agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
                 }
                 $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $mmenu_agent_agentid);
                 $res = $weixinopenService->getQyWeixinObject()

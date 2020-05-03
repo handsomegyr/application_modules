@@ -56,7 +56,7 @@ class MenuconditionalController extends BaseController
             'action' => 'addconditional',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     empty($row['menuid']) && !empty($row['matchrule'])
                 ) {
                     return true;
@@ -72,7 +72,7 @@ class MenuconditionalController extends BaseController
             'action' => 'deleteconditional',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['menuid']) && !empty($row['matchrule'])
                 ) {
                     return true;

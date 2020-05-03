@@ -22,8 +22,8 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
 
     protected function getSchemas2($schemas)
     {
-        $schemas['AppId'] = array(
-            'name' => '第三方服务商appid',
+        $schemas['SuiteId'] = array(
+            'name' => '第三方应用的SuiteId',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -77,10 +77,10 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
             )
         );
         $infoTypeItems = array();
-        $infoTypeItems['component_verify_ticket'] = "推送component_verify_ticket";
-        $infoTypeItems['unauthorized'] = "取消授权";
-        $infoTypeItems['updateauthorized'] = "更新授权";
-        $infoTypeItems['authorized'] = "授权成功通知";
+        $infoTypeItems['suite_ticket'] = "推送suite_ticket";
+        $infoTypeItems['cancel_auth'] = "取消授权通知";
+        $infoTypeItems['change_auth'] = "变更授权通知";
+        $infoTypeItems['create_auth'] = "授权成功通知";
 
         $schemas['InfoType'] = array(
             'name' => '事件',
@@ -113,8 +113,8 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['ComponentVerifyTicket'] = array(
-            'name' => 'ComponentVerifyTicket内容',
+        $schemas['SuiteTicket'] = array(
+            'name' => 'SuiteTicket内容',
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
@@ -140,8 +140,8 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['AuthorizerAppid'] = array(
-            'name' => '公众号appid',
+        $schemas['AuthCorpId'] = array(
+            'name' => '授权方的corpid',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -167,8 +167,8 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['AuthorizationCode'] = array(
-            'name' => '授权码(code)',
+        $schemas['AuthCode'] = array(
+            'name' => '授权的auth_code',
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
@@ -189,60 +189,6 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['AuthorizationCodeExpiredTime'] = array(
-            'name' => '过期时间',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['PreAuthCode'] = array(
-            'name' => '预授权码',
-            'data' => array(
-                'type' => 'string',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => false,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true

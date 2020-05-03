@@ -24,7 +24,7 @@ class CommentController extends BaseController
             'title' => '关闭已群发文章评论',
             'action' => 'closecomment',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['is_open'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_data_id']) && !empty($row['is_open'])) {
                     return true;
                 } else {
                     return false;
@@ -37,7 +37,7 @@ class CommentController extends BaseController
             'title' => '打开已群发文章评论',
             'action' => 'opencomment',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && empty($row['is_open'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_data_id']) && empty($row['is_open'])) {
                     return true;
                 } else {
                     return false;
@@ -50,7 +50,7 @@ class CommentController extends BaseController
             'title' => '获取文章的评论数据',
             'action' => 'synccomment',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_data_id'])) {
                     return true;
                 } else {
                     return false;

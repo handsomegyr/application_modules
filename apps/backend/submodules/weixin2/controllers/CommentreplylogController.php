@@ -24,7 +24,7 @@ class CommentreplylogController extends BaseController
             'title' => '删除回复',
             'action' => 'deletecommentreply',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && !empty($row['content']) && !empty($row['is_created'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && !empty($row['content']) && !empty($row['is_created'])) {
                     return true;
                 } else {
                     return false;
@@ -37,7 +37,7 @@ class CommentreplylogController extends BaseController
             'title' => '标记精选',
             'action' => 'addcommentreply',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && empty($row['content']) && empty($row['is_created'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && empty($row['content']) && empty($row['is_created'])) {
                     return true;
                 } else {
                     return false;

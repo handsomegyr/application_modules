@@ -3,7 +3,7 @@
 namespace App\Weixin2\Controllers;
 
 /**
- * 公众号授权给第三方平台的技术实现流程
+ * 小程序或者公众号授权给第三方平台的技术实现流程
  * https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1453779503&token=&lang=zh_CN
  */
 class ComponentController extends ControllerBase
@@ -71,13 +71,13 @@ class ComponentController extends ControllerBase
      *
      * 授权页网址为：
      *
-     * https://mp.weixin.qq.com/cgi-bin/componentloginpage?appid=xxxx&pre_auth_code=xxxxx&redirect_uri=xxxx&auth_type=xxx。
+     * https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=xxxx&pre_auth_code=xxxxx&redirect_uri=xxxx&auth_type=xxx
      */
     public function loginAction()
     {
         // http://wxcrm.eintone.com/component/login.html
-        // http://wxcrmdemo.jdytoy.com/weixinopen/api/component/login?appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
-        // http://wxcrm.eintone.com/weixinopen/api/component/login?appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
+        // http://wxcrmdemo.jdytoy.com/weixinopen/api/component/login?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
+        // http://wxcrm.eintone.com/weixinopen/api/component/login?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
@@ -98,6 +98,7 @@ class ComponentController extends ControllerBase
             // 存储跳转地址
             $_SESSION['redirect'] = $redirect;
             $_SESSION['login_type'] = "login";
+            $_SESSION['component_appid'] = $this->component_appid;
 
             $moduleName = 'weixin2';
             $controllerName = $this->controllerName;
@@ -107,7 +108,6 @@ class ComponentController extends ControllerBase
             $redirectUri .= '/' . $moduleName;
             $redirectUri .= '/' . $controllerName;
             $redirectUri .= '/logincallback';
-            $redirectUri .= '?appid=' . $this->component_appid;
             // 授权处理
             $redirectUri = $this->objWeixinComponent->getComponentLoginPage($pre_auth_code, $redirectUri, $auth_type, $biz_appid, false);
             header("location:{$redirectUri}");
@@ -125,14 +125,14 @@ class ComponentController extends ControllerBase
      * 第三方平台方可以生成授权链接，将链接通过移动端直接发给授权管理员，管理员确认后即授权成功。
      * 授权链接为：
      *
-     * https://mp.weixin.qq.com/safe/bindcomponent?action=bindcomponent&auth_type=3&no_scan=1&appid=xxxx&pre_auth_code=xxxxx&redirect_uri=xxxx&auth_type=xxx&biz_appid=xxxx#wechat_redirect
+     * https://mp.weixin.qq.com/safe/bindcomponent?action=bindcomponent&auth_type=3&no_scan=1&component_appid=xxxx&pre_auth_code=xxxxx&redirect_uri=xxxx&auth_type=xxx&biz_appid=xxxx#wechat_redirect
      * 注：auth_type、biz_appid两个字段互斥。
      */
     public function bindAction()
     {
         // http://wxcrm.eintone.com/component/bind.html
-        // http://wxcrmdemo.jdytoy.com/weixinopen/api/component/bind?appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
-        // http://wxcrm.eintone.com/weixinopen/api/component/bind?appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
+        // http://wxcrmdemo.jdytoy.com/weixinopen/api/component/bind?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
+        // http://wxcrm.eintone.com/weixinopen/api/component/bind?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
@@ -153,6 +153,7 @@ class ComponentController extends ControllerBase
             // 存储跳转地址
             $_SESSION['redirect'] = $redirect;
             $_SESSION['login_type'] = "bind";
+            $_SESSION['component_appid'] = $this->component_appid;
 
             $moduleName = 'weixin2';
             $controllerName = $this->controllerName;
@@ -162,7 +163,6 @@ class ComponentController extends ControllerBase
             $redirectUri .= '/' . $moduleName;
             $redirectUri .= '/' . $controllerName;
             $redirectUri .= '/logincallback';
-            $redirectUri .= '?appid=' . $this->component_appid;
 
             // 授权处理
             $redirectUri = $this->objWeixinComponent->getBindcomponentUrl($pre_auth_code, $redirectUri, $auth_type, $biz_appid, false);
@@ -191,8 +191,14 @@ class ComponentController extends ControllerBase
      */
     public function logincallbackAction()
     {
-        // http://wxcrm.eintone.com/weixinopen/api/component/logincallback?appid=wxca8519f703c07d32&auth_code=queryauthcode@@@YGWj2XtzxxwQQfpIW6VGOJvDALlLfFwSy9anTBQs0sEMXsXZMrTRVPbhXpmqh265vpKz_YIgj2bJ-WJR2oGABw&expires_in=3600
+        // http://wxcrm.eintone.com/weixinopen/api/component/logincallback?auth_code=queryauthcode@@@YGWj2XtzxxwQQfpIW6VGOJvDALlLfFwSy9anTBQs0sEMXsXZMrTRVPbhXpmqh265vpKz_YIgj2bJ-WJR2oGABw&expires_in=3600
         try {
+            $component_appid = empty($_SESSION['component_appid']) ? "" : $_SESSION['component_appid'];
+            if (empty($component_appid)) {
+                throw new \Exception("appid未定义");
+            }
+            $_GET['component_appid'] = $component_appid;
+
             // 初始化
             $this->doInitializeLogic();
 
@@ -262,8 +268,13 @@ class ComponentController extends ControllerBase
      */
     public function authorizecallbackAction()
     {
-        // http://wxcrm.eintone.com/weixinopen/api/component/authorizecallback?appid=wxca8519f703c07d32
+        // http://wxcrm.eintone.com/weixinopen/api/component/authorizecallback?component_appid=wxca8519f703c07d32
         try {
+            // 兼容的写法
+            $appid = isset($_GET['appid']) ? trim($_GET['appid']) : '';
+            if (!empty($appid)) {
+                $_GET['component_appid'] = $appid;
+            }
             /**
              * ==================================================================================
              * ====================================以下逻辑请勿修改===============================
@@ -410,7 +421,7 @@ class ComponentController extends ControllerBase
      */
     public function authorizerTokenAction()
     {
-        // http://wxcrm.eintone.com/weixinopen/api/component/authorizer-token?appid=wxca8519f703c07d32&authorizer_appid=xxx
+        // http://wxcrm.eintone.com/weixinopen/api/component/authorizer-token?component_appid=wxca8519f703c07d32&authorizer_appid=xxx
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -443,7 +454,7 @@ class ComponentController extends ControllerBase
      */
     public function getComponentAccessTokenAction()
     {
-        // http://wxcrm.eintone.com/weixinopen/api/component/get-component-access-token?appid=wxca8519f703c07d32
+        // http://wxcrm.eintone.com/weixinopen/api/component/get-component-access-token?component_appid=wxca8519f703c07d32
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -459,7 +470,7 @@ class ComponentController extends ControllerBase
     protected function doInitializeLogic()
     {
         // 第三方平台运用ID
-        $this->component_appid = isset($_GET['appid']) ? trim($_GET['appid']) : "";
+        $this->component_appid = isset($_GET['component_appid']) ? trim($_GET['component_appid']) : "";
         // 授权方ID
         $this->authorizer_appid = isset($_GET['authorizer_appid']) ? trim($_GET['authorizer_appid']) : "";
         // 创建service

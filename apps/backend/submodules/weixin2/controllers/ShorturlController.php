@@ -26,7 +26,7 @@ class ShorturlController extends BaseController
             // 'is_show' =>true,
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['action']) && !empty($row['long_url']) && empty($row['is_created'])
                 ) {
                     return true;

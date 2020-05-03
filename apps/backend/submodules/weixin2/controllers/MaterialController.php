@@ -51,7 +51,7 @@ class MaterialController extends BaseController
             'action' => 'addmaterial',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['type']) && !empty($row['media']) && empty($row['media_id']) && ($row['type'] != "news")
                 ) {
                     return true;
@@ -67,7 +67,7 @@ class MaterialController extends BaseController
             'action' => 'addnews',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['type']) && empty($row['media_id']) && ($row['type'] == "news")
                 ) {
                     return true;
@@ -83,7 +83,7 @@ class MaterialController extends BaseController
             'action' => 'updatenews',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['type']) && !empty($row['media_id']) && ($row['type'] == "news")
                 ) {
                     return true;
@@ -99,7 +99,7 @@ class MaterialController extends BaseController
             'action' => 'deletematerial',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['media_id'])
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['media_id'])
                 ) {
                     return true;
                 } else {
@@ -114,7 +114,7 @@ class MaterialController extends BaseController
             'action' => 'getmaterial',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['media_id'])
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['media_id'])
                 ) {
                     return true;
                 } else {

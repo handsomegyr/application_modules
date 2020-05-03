@@ -49,7 +49,7 @@ class MassmsgsendlogController extends BaseController
             'title' => '查询群发消息发送状态',
             'action' => 'getmass',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_id'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_id'])) {
                     return true;
                 } else {
                     return false;
@@ -61,7 +61,7 @@ class MassmsgsendlogController extends BaseController
             'title' => '删除群发',
             'action' => 'deletemass',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_id']) && ($row['msg_type'] == "mpvideo" || $row['msg_type'] == "mpnews")) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_id']) && ($row['msg_type'] == "mpvideo" || $row['msg_type'] == "mpnews")) {
                     return true;
                 } else {
                     return false;

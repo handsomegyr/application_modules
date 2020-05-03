@@ -11,6 +11,7 @@ class ServiceController extends ControllerBase
     protected $activity_id = 6;
 
     /**
+     *
      * @var \App\Qyweixin\Models\ScriptTracking
      */
     private $modelQyweixinScriptTracking;

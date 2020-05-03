@@ -17,7 +17,9 @@ class ComponentsnsController extends ControllerBase
     private $modelQyweixinProvider;
 
     private $modelQyweixinAuthorizer;
+
     /**
+     *
      * @var \App\Qyweixin\Models\ScriptTracking
      */
     private $modelQyweixinScriptTracking;
@@ -79,8 +81,8 @@ class ComponentsnsController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://wxcrmdemo.jdytoy.com/qyweixin/api/componentsns/index?appid=wxb4c2aa76686ea8f4&provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://wxcrm.eintone.com/qyweixin/api/componentsns/index?appid=wxb4c2aa76686ea8f4&provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/index?appid=wxb4c2aa76686ea8f4&provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://wxcrm.eintone.com/qyweixin/api/providersns/index?appid=wxb4c2aa76686ea8f4&provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
@@ -125,11 +127,12 @@ class ComponentsnsController extends ControllerBase
                 // $redirectUri .= '&scope=' . $this->scope;
 
                 // 授权处理
-                $objComponent = new \Weixin\Token\Component($this->authorizer_appid, $this->provider_appid, $this->providerConfig['access_token']);
-                $objComponent->setScope($this->scope);
-                $objComponent->setState($this->state);
-                $objComponent->setRedirectUri($redirectUri);
-                $redirectUri = $objComponent->getAuthorizeUrl(false);
+                $objSns = new \Weixin\Qy\Token\ServiceSns();
+                $objSns->setScope($this->provider_appid);
+                $objSns->setScope($this->scope);
+                $objSns->setState($this->state);
+                $objSns->setRedirectUri($redirectUri);
+                $redirectUri = $objSns->getAuthorizeUrl(false);
                 header("location:{$redirectUri}");
                 exit();
             }
@@ -140,24 +143,11 @@ class ComponentsnsController extends ControllerBase
     }
 
     /**
-     * 第二步：获取code
-     *
-     * 用户允许授权后，将会重定向到redirect_uri的网址上，并且带上code, state以及appid
-     *
-     * redirect_uri?code=CODE&state=STATE&appid=APPID
-     * 若用户禁止授权，则重定向后不会带上code参数，仅会带上state参数
-     *
-     * redirect_uri?state=STATE
-     * 第二步：通过code换取access_token
-     * 请求方法
-     * 获取第一步的code后，请求以下链接获取access_token：
-     *
-     * https://api.weixin.qq.com/sns/oauth2/provider/access_token?appid=APPID&code=CODE&grant_type=authorization_code&provider_appid=provider_appid&component_access_token=COMPONENT_ACCESS_TOKEN
-     * 需要注意的是，由于安全方面的考虑，对访问该链接的客户端有IP白名单的要求。
+     * 企业员工点击后，页面将跳转至 redirect_uri?code=CODE&state=STATE，第三方应用可根据code参数获得企业员工的corpid与userid。code长度最大为512字节。
      */
     public function callbackAction()
     {
-        // http://wxcrmdemo.jdytoy.com/qyweixin/api/componentsns/callback?appid=xxx&code=xxx&scope=auth_user&state=xxx
+        // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/callback?appid=xxx&code=xxx&scope=auth_user&state=xxx
         try {
             $provider_appid = empty($_SESSION['provider_appid']) ? "" : $_SESSION['provider_appid'];
             if (empty($provider_appid)) {
@@ -186,8 +176,8 @@ class ComponentsnsController extends ControllerBase
             $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : '';
 
             // 第二步：通过code换取access_token
-            $objComponent = new \Weixin\Token\Component($this->authorizer_appid, $this->provider_appid, $this->providerConfig['access_token']);
-            $arrAccessToken = $objComponent->getAccessToken();
+            $objSns = new \Weixin\Token\Component($this->authorizer_appid, $this->provider_appid, $this->providerConfig['access_token']);
+            $arrAccessToken = $objSns->getAccessToken();
             if (isset($arrAccessToken['errcode'])) {
                 throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
             }

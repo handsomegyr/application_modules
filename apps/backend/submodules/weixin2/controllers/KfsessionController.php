@@ -43,7 +43,7 @@ class KfsessionController extends BaseController
             'action' => 'closesession',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['kf_account']) && !empty($row['openid']) && !empty($row['is_created'])
                 ) {
                     return true;
@@ -59,7 +59,7 @@ class KfsessionController extends BaseController
             'action' => 'createsession',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['kf_account']) && !empty($row['openid']) && empty($row['is_created'])
                 ) {
                     return true;
@@ -75,7 +75,7 @@ class KfsessionController extends BaseController
             'action' => 'getsession',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['kf_account']) && !empty($row['openid'])
                 ) {
                     return true;
@@ -90,7 +90,7 @@ class KfsessionController extends BaseController
             'title' => '获取客服会话列表',
             'action' => 'getsessionlist',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['kf_account'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['kf_account'])) {
                     return true;
                 } else {
                     return false;

@@ -46,7 +46,7 @@ class TemplateController extends BaseController
             'action' => 'deletetemplate',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['template_id'])
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['template_id'])
                 ) {
                     return true;
                 } else {
@@ -61,7 +61,7 @@ class TemplateController extends BaseController
             'action' => 'addtemplate',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && empty($row['template_id'])
+                    !empty($row) && !empty($row['authorizer_appid']) && empty($row['template_id'])
                 ) {
                     return true;
                 } else {

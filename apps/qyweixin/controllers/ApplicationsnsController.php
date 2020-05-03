@@ -11,36 +11,43 @@ class ApplicationsnsController extends ControllerBase
     protected $activity_id = 4;
 
     /**
+     *
      * @var \App\Qyweixin\Models\User\User
      */
     private $modelQyweixinUser;
 
     /**
+     *
      * @var \App\Qyweixin\Models\Provider\Provider
      */
     private $modelQyweixinProvider;
 
     /**
+     *
      * @var \App\Qyweixin\Models\Authorize\Authorizer
      */
     private $modelQyweixinAuthorizer;
 
     /**
+     *
      * @var \App\Qyweixin\Models\Agent\Agent
      */
     private $modelQyweixinAgent;
 
     /**
+     *
      * @var \App\Qyweixin\Models\ScriptTracking
      */
     private $modelQyweixinScriptTracking;
 
     /**
+     *
      * @var \App\Qyweixin\Models\Callbackurls
      */
     private $modelQyweixinCallbackurls;
 
     /**
+     *
      * @var \App\Qyweixin\Models\SnsApplication
      */
     private $modelQyweixinSnsApplication;
@@ -72,7 +79,7 @@ class ApplicationsnsController extends ControllerBase
 
     private $state;
 
-    //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+    // 应用类型 1:企业号
     private $app_type = 0;
 
     public function initialize()
@@ -156,7 +163,7 @@ class ApplicationsnsController extends ControllerBase
                 $redirectUri .= '/callback';
 
                 // 授权处理
-                //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+                // 应用类型 1:企业号
                 if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_PUB) {
                     $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
                 } elseif ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
@@ -225,7 +232,7 @@ class ApplicationsnsController extends ControllerBase
             $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : '';
 
             // 第二步：通过code换取access_token
-            //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+            // 应用类型 1:企业号
             if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_PUB) {
                 $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
                 $arrAccessToken = $objSns->getAccessToken();
@@ -233,7 +240,7 @@ class ApplicationsnsController extends ControllerBase
                     throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
                 }
             } elseif ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
-                //获取agent信息
+                // 获取agent信息
                 $agentInfo = $this->modelQyweixinAgent->getInfoByAppid($this->provider_appid, $this->authorizer_appid, $this->agentid);
                 $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $agentInfo['secret']);
                 $arrAccessToken = $objSns->getUserInfo($agentInfo['access_token']);
@@ -244,16 +251,16 @@ class ApplicationsnsController extends ControllerBase
                 $arrAccessToken['access_token'] = $agentInfo['access_token'];
                 $arrAccessToken['refresh_token'] = "";
 
-                //a) 当用户为企业成员时
-                // UserId	成员UserID。若需要获得用户详情信息，可调用通讯录接口：读取成员
-                // DeviceId	手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
+                // a) 当用户为企业成员时
+                // UserId 成员UserID。若需要获得用户详情信息，可调用通讯录接口：读取成员
+                // DeviceId 手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
                 if (isset($arrAccessToken['UserId'])) {
                     $arrAccessToken['openid'] = $arrAccessToken['UserId'];
                     $arrAccessToken['is_qy_member'] = 1;
                 }
-                //b) 非企业成员授权时
-                // OpenId	非企业成员的标识，对当前企业唯一
-                // DeviceId	手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
+                // b) 非企业成员授权时
+                // OpenId 非企业成员的标识，对当前企业唯一
+                // DeviceId 手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
                 if (isset($arrAccessToken['OpenId'])) {
                     $arrAccessToken['openid'] = $arrAccessToken['OpenId'];
                     $arrAccessToken['is_qy_member'] = 0;
@@ -271,7 +278,7 @@ class ApplicationsnsController extends ControllerBase
                 $userInfo = $this->modelQyweixinUser->getUserInfoByIdLastWeek($arrAccessToken['openid'], $this->authorizer_appid, $this->provider_appid, $this->now);
                 if (true || empty($userInfo)) {
                     $updateInfoFromWx = true;
-                    //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+                    // 应用类型 1:企业号
                     if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_PUB) {
                         $weixin = new \Weixin\Client();
                         $weixin->setSnsAccessToken($arrAccessToken['access_token']);
@@ -450,7 +457,7 @@ class ApplicationsnsController extends ControllerBase
         if (empty($this->authorizerConfig)) {
             throw new \Exception("provider_appid:{$this->provider_appid}和authorizer_appid:{$this->authorizer_appid}所对应的记录不存在");
         }
-        //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+        // 应用类型 1:企业号
         $this->app_type = intval($this->authorizerConfig['app_type']);
         $this->agentid = empty($this->appConfig['agentid']) ? 0 : $this->appConfig['agentid'];
 

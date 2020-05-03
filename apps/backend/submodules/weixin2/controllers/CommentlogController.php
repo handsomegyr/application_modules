@@ -24,7 +24,7 @@ class CommentlogController extends BaseController
             'title' => '取消精选',
             'action' => 'unmarkelectcomment',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && !empty($row['comment_type'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && !empty($row['comment_type'])) {
                     return true;
                 } else {
                     return false;
@@ -37,7 +37,7 @@ class CommentlogController extends BaseController
             'title' => '标记精选',
             'action' => 'markelectcomment',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && empty($row['comment_type'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && empty($row['comment_type'])) {
                     return true;
                 } else {
                     return false;
@@ -50,7 +50,7 @@ class CommentlogController extends BaseController
             'title' => '删除评论',
             'action' => 'deletecommentlog',
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && !empty($row['is_created'])) {
+                if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['msg_data_id']) && !empty($row['user_comment_id']) && !empty($row['is_created'])) {
                     return true;
                 } else {
                     return false;

@@ -31,7 +31,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             'action' => 'getauthorizerinfo',
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['appid']) && !empty($row['provider_appid'])) {
+                if (!empty($row) && !empty($row['appid'])) {
                     return true;
                 } else {
                     return false;
@@ -72,12 +72,9 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
 
     protected function getSchemas2($schemas)
     {
-        //应用类型 1:公众号 2:小程序 3:企业号 4:订阅号
+        //应用类型 1:企业号
         $app_type_options = array();
-        $app_type_options['1'] = '公众号';
-        $app_type_options['2'] = '小程序';
-        $app_type_options['3'] = '企业号';
-        $app_type_options['4'] = '订阅号';
+        $app_type_options['1'] = '企业号';
         $schemas['app_type'] = array(
             'name' => '应用类型',
             'data' => array(
@@ -815,6 +812,301 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+
+        $schemas['suite_access_token'] = array(
+            'name' => '第三方应用凭据',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['suite_access_token_expire'] = array(
+            'name' => '第三方应用过期时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => 19,
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['suite_ticket'] = array(
+            'name' => '第三方应用安全凭证',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['permanent_code'] = array(
+            'name' => '企业微信永久授权码',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['dealer_corp_info'] = array(
+            'name' => '代理服务商企业信息',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['auth_corp_info'] = array(
+            'name' => '授权方企业信息',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['auth_info'] = array(
+            'name' => '授权信息',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['auth_user_info'] = array(
+            'name' => '授权管理员的信息',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['register_code_info'] = array(
+            'name' => '推广二维码安装相关信息',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['admin_list'] = array(
+            'name' => '应用的管理员列表',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['func_info'] = array(
             'name' => '权限集列表',
             'data' => array(

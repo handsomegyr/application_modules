@@ -51,7 +51,7 @@ class UsertagController extends \App\Backend\Controllers\FormController
             'action' => 'deleteusertag',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['name']) && !empty($row['tag_id'])
                 ) {
                     return true;
@@ -67,7 +67,7 @@ class UsertagController extends \App\Backend\Controllers\FormController
             'action' => 'addusertag',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['component_appid']) &&
+                    !empty($row) && !empty($row['authorizer_appid']) &&
                     !empty($row['name']) && empty($row['tag_id'])
                 ) {
                     return true;
