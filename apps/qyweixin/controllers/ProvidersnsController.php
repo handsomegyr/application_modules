@@ -12,10 +12,20 @@ class ComponentsnsController extends ControllerBase
     // 活动ID
     protected $activity_id = 3;
 
-    private $modelQyweixinUser;
+    // /**
+    // *
+    // * @var \App\Qyweixin\Models\User\User
+    // */
+    // private $modelQyweixinUser;
 
+    /**
+     * @var \App\Qyweixin\Models\Provider\Provider
+     */
     private $modelQyweixinProvider;
 
+    /**
+     * @var \App\Qyweixin\Models\Authorize\Authorizer
+     */
     private $modelQyweixinAuthorizer;
 
     /**
@@ -24,7 +34,17 @@ class ComponentsnsController extends ControllerBase
      */
     private $modelQyweixinScriptTracking;
 
+    /**
+     *
+     * @var \App\Qyweixin\Models\Callbackurls
+     */
     private $modelQyweixinCallbackurls;
+
+    /**
+     *
+     * @var \App\Qyweixin\Models\SnsApplication
+     */
+    private $modelQyweixinSnsApplication;
 
     // lock key
     private $lock_key_prefix = 'qyweixin_component_sns_';
@@ -34,6 +54,9 @@ class ComponentsnsController extends ControllerBase
     private $sessionKey;
 
     private $trackingKey = "第三方服务商SNS授权";
+
+    private $appid;
+    private $appConfig;
 
     private $provider_appid;
 
@@ -54,11 +77,12 @@ class ComponentsnsController extends ControllerBase
         parent::initialize();
         $this->view->disable();
 
-        $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
+        // $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
         $this->modelQyweixinProvider = new \App\Qyweixin\Models\Provider\Provider();
         $this->modelQyweixinAuthorizer = new \App\Qyweixin\Models\Authorize\Authorizer();
         $this->modelQyweixinScriptTracking = new \App\Qyweixin\Models\ScriptTracking();
         $this->modelQyweixinCallbackurls = new \App\Qyweixin\Models\Callbackurls();
+        $this->modelQyweixinSnsApplication = new \App\Qyweixin\Models\SnsApplication();
     }
 
     /**
@@ -85,15 +109,16 @@ class ComponentsnsController extends ControllerBase
      */
     public function authorizeAction()
     {
-        // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/authorize?appid=wxb4c2aa76686ea8f4&provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://wxcrm.eintone.com/qyweixin/api/providersns/authorize?appid=wxb4c2aa76686ea8f4&provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
+        // http://wxcrm.eintone.com/qyweixin/api/providersns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
             $this->doInitializeLogic();
 
             $redirect = isset($_GET['redirect']) ? (trim($_GET['redirect'])) : ''; // 附加参数存储跳转地址
-            $dc = isset($_GET['dc']) ? intval($_GET['dc']) : 1; // 是否检查回调域名
+            // $dc = isset($_GET['dc']) ? intval($_GET['dc']) : 1; // 是否检查回调域名
+            $dc = empty($this->appConfig['is_cb_url_check']) ? 0 : 1; // 是否检查回调域名
             $refresh = isset($_GET['refresh']) ? intval($_GET['refresh']) : 0; // 是否刷新
 
             if ($dc) {
@@ -107,15 +132,14 @@ class ComponentsnsController extends ControllerBase
             if (!$refresh && !empty($_SESSION[$this->sessionKey])) {
                 $arrAccessToken = $_SESSION[$this->sessionKey];
                 $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
-                $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+                $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['qyuserid']);
                 header("location:{$redirect}");
                 exit();
             } else {
                 // 存储跳转地址
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
-                $_SESSION['provider_appid'] = $this->provider_appid;
-                $_SESSION['appid'] = $this->authorizer_appid;
+                $_SESSION['appid'] = $this->appid;
 
                 $moduleName = 'qyweixin';
                 $controllerName = $this->controllerName;
@@ -167,16 +191,18 @@ class ComponentsnsController extends ControllerBase
      */
     public function authorize4corpAction()
     {
-        // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/authorize4corp?appid=wxb4c2aa76686ea8f4&provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://wxcrm.eintone.com/qyweixin/api/providersns/authorize4corp?appid=wxb4c2aa76686ea8f4&provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/authorize4corp?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
+        // http://wxcrm.eintone.com/qyweixin/api/providersns/authorize4corp?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
             $this->doInitializeLogic();
-
-            $agentid = isset($_GET['agentid']) ? (trim($_GET['agentid'])) : ''; // 企业应用的id
+            if (empty($this->agentid)) {
+                throw new \Exception("agentid未指定");
+            }
             $redirect = isset($_GET['redirect']) ? (trim($_GET['redirect'])) : ''; // 附加参数存储跳转地址
-            $dc = isset($_GET['dc']) ? intval($_GET['dc']) : 1; // 是否检查回调域名
+            // $dc = isset($_GET['dc']) ? intval($_GET['dc']) : 1; // 是否检查回调域名            
+            $dc = empty($this->appConfig['is_cb_url_check']) ? 0 : 1; // 是否检查回调域名
             $refresh = isset($_GET['refresh']) ? intval($_GET['refresh']) : 0; // 是否刷新
 
             if ($dc) {
@@ -190,17 +216,14 @@ class ComponentsnsController extends ControllerBase
             if (!$refresh && !empty($_SESSION[$this->sessionKey])) {
                 $arrAccessToken = $_SESSION[$this->sessionKey];
                 $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
-                $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+                $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['qyuserid']);
                 header("location:{$redirect}");
                 exit();
             } else {
                 // 存储跳转地址
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
-                $_SESSION['provider_appid'] = $this->provider_appid;
-                $_SESSION['appid'] = $this->authorizer_appid;
-                $_SESSION['agentid'] = $this->agentid;
-
+                $_SESSION['appid'] = $this->appid;
 
                 $moduleName = 'qyweixin';
                 $controllerName = $this->controllerName;
@@ -210,13 +233,13 @@ class ComponentsnsController extends ControllerBase
                 $redirectUri .= '/' . $moduleName;
                 $redirectUri .= '/' . $controllerName;
                 $redirectUri .= '/callback';
-                
+
                 // 授权处理
                 $objSns = new \Weixin\Qy\Token\ServiceSns();
                 $objSns->setAppid($this->authorizer_appid);
                 $objSns->setScope($this->scope);
                 $objSns->setState($this->state);
-                $objSns->setAgentid($agentid);
+                $objSns->setAgentid($this->agentid);
                 $objSns->setRedirectUri($redirectUri);
                 $redirectUri = $objSns->getAuthorizeUrl4Corp(false);
                 header("location:{$redirectUri}");
@@ -265,11 +288,13 @@ class ComponentsnsController extends ControllerBase
      */
     public function sso3rdqrConnectAction()
     {
-        // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/sso3rdqrConnect?provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&usertype=snsapi_userinfo&refresh=1
-        // http://wxcrm.eintone.com/qyweixin/api/providersns/sso3rdqrConnect?provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&usertype=snsapi_userinfo&refresh=1
+        // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/sso3rdqrConnect?provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&usertype=admin&refresh=1
+        // http://wxcrm.eintone.com/qyweixin/api/providersns/sso3rdqrConnect?provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&usertype=admin&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
+            $this->authorizer_appid = "";
+            $this->agentid = 0;
             // 第三方服务商运用ID
             $this->provider_appid = isset($_GET['provider_appid']) ? trim($_GET['provider_appid']) : "";
             if (empty($this->provider_appid)) {
@@ -279,6 +304,7 @@ class ComponentsnsController extends ControllerBase
             if (empty($this->providerConfig)) {
                 throw new \Exception("provider_appid:{$this->provider_appid}所对应的记录不存在");
             }
+            $this->sessionKey = $this->cookie_session_key . "_accessToken_{$this->provider_appid}_{$this->authorizer_appid}_{$this->scope}";
 
             $usertype = isset($_GET['usertype']) ? (trim($_GET['usertype'])) : 'admin'; // 支持登录的类型
             $redirect = isset($_GET['redirect']) ? (trim($_GET['redirect'])) : ''; // 附加参数存储跳转地址
@@ -313,7 +339,7 @@ class ComponentsnsController extends ControllerBase
                 $redirectUri .= '/' . $moduleName;
                 $redirectUri .= '/' . $controllerName;
                 $redirectUri .= '/ssoauthcallback';
-                $redirectUri .= '?component_appid=' . $this->component_appid;
+                $redirectUri .= '?provider_appid=' . $this->provider_appid;
 
                 // 授权处理
                 $objSns = new \Weixin\Qy\Token\ServiceSns();
@@ -338,13 +364,7 @@ class ComponentsnsController extends ControllerBase
     {
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/callback?appid=xxx&code=xxx&scope=auth_user&state=xxx
         try {
-            $provider_appid = empty($_SESSION['provider_appid']) ? "" : $_SESSION['provider_appid'];
-            if (empty($provider_appid)) {
-                throw new \Exception("provider_appid未定义");
-            }
-            $_GET['provider_appid'] = $provider_appid;
-
-            $provider_appid = empty($_SESSION['appid']) ? "" : $_SESSION['appid'];
+            $appid = empty($_SESSION['appid']) ? "" : $_SESSION['appid'];
             if (empty($appid)) {
                 throw new \Exception("appid未定义");
             }
@@ -384,41 +404,8 @@ class ComponentsnsController extends ControllerBase
             $arrAccessToken['scope'] = $this->scope;
             $arrAccessToken['access_token'] = $suite_access_token;
             $arrAccessToken['refresh_token'] = "";
-            $arrAccessToken['openid'] = $arrAccessToken['UserId'];
 
-            // a) 当用户为企业成员时
-            // UserId 成员UserID。若需要获得用户详情信息，可调用通讯录接口：读取成员
-            // DeviceId 手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
-            if (isset($arrAccessToken['UserId'])) {
-                $arrAccessToken['openid'] = $arrAccessToken['UserId'];
-                $arrAccessToken['is_qy_member'] = 1;
-            }
-            // b) 非企业成员授权时
-            // OpenId 非企业成员的标识，对当前企业唯一
-            // DeviceId 手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
-            if (isset($arrAccessToken['OpenId'])) {
-                $arrAccessToken['openid'] = $arrAccessToken['OpenId'];
-                $arrAccessToken['is_qy_member'] = 0;
-            }
-
-            // 授权成功后，记录该微信用户的基本信息
-
-            // 用户授权的作用域，使用逗号（,）分隔
-            $scopeArr = \explode(',', $arrAccessToken['scope']);
-            if (in_array('snsapi_userinfo', $scopeArr) || in_array('snsapi_login', $scopeArr)) {
-                // 先判断用户在数据库中是否存在最近一周产生的openid，如果不存在，则再动用网络请求，进行用户信息获取
-                $userInfo = $this->modelQyweixinUser->getUserInfoByIdLastWeek($arrAccessToken['openid'], $this->authorizer_appid, $this->provider_appid, $this->now);
-                if (true || empty($userInfo)) {
-                    $updateInfoFromWx = true;
-                    if (!empty($arrAccessToken['user_ticket'])) {
-                        $userInfo = $objQyProvider->getUserDetail3rd($suite_access_token, $arrAccessToken['user_ticket']);
-                        if (isset($userInfo['errcode'])) {
-                            throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
-                        }
-                    }
-                }
-                $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
-            }
+            $userInfo = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
 
             if (!empty($userInfo)) {
                 if (!empty($userInfo['nickname'])) {
@@ -438,7 +425,7 @@ class ComponentsnsController extends ControllerBase
 
             $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
 
-            if ($sourceFromUserName !== null && $sourceFromUserName == $arrAccessToken['openid']) {
+            if ($sourceFromUserName !== null && $sourceFromUserName == $arrAccessToken['qyuserid']) {
                 $redirect = $this->addUrlParameter($redirect, array(
                     '__self' => true
                 ));
@@ -449,12 +436,8 @@ class ComponentsnsController extends ControllerBase
                 if (!empty($userInfo['headimgurl'])) {
                     $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
                 }
-                $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['openid'] . $this->authorizer_appid . $this->provider_appid);
-                if (!$lock->lock()) {
-                    $this->modelQyweixinUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->provider_appid, $userInfo);
-                }
             }
-            $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+            $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['qyuserid']);
 
             header("location:{$redirect}");
             exit();
@@ -492,6 +475,7 @@ class ComponentsnsController extends ControllerBase
             if (empty($this->providerConfig)) {
                 throw new \Exception("provider_appid:{$this->provider_appid}所对应的记录不存在");
             }
+            $this->agentid = 0;
             $this->authorizer_appid = "";
             $this->authorizerConfig['secretKey'] = $this->providerConfig['secretKey'];
 
@@ -517,7 +501,7 @@ class ComponentsnsController extends ControllerBase
             $qyService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $this->agentid);
             $objQyProvider = $qyService->getQyweixinProvider();
 
-            // 获取登录用户信息
+            // 授权成功后，记录该微信用户的基本信息
             $provider_access_token = $this->providerConfig['access_token'];
             $arrAccessToken = $objQyProvider->getLoginInfo($provider_access_token, $auth_code);
             if (!empty($arrAccessToken['errcode'])) {
@@ -527,18 +511,18 @@ class ComponentsnsController extends ControllerBase
             $arrAccessToken['scope'] = $this->scope;
             $arrAccessToken['access_token'] = $provider_access_token;
             $arrAccessToken['refresh_token'] = "";
-            $arrAccessToken['openid'] = $arrAccessToken['user_info']['userid'];
+            $arrAccessToken['userid'] = $arrAccessToken['user_info']['userid'];
+            $arrAccessToken['nickname'] = $arrAccessToken['user_info']['name'];
+            $arrAccessToken['headimgurl'] = $arrAccessToken['user_info']['avatar'];
 
-            // 授权成功后，记录该微信用户的基本信息
-            $userInfo = $arrAccessToken['user_info'];
+            $userInfo = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
+
             if (!empty($userInfo)) {
-                if (!empty($userInfo['name'])) {
-                    $userInfo['nickname'] = ($userInfo['name']);
+                if (!empty($userInfo['nickname'])) {
                     $arrAccessToken['nickname'] = ($userInfo['nickname']);
                 }
 
-                if (!empty($userInfo['avatar'])) {
-                    $userInfo['headimgurl'] = ($userInfo['avatar']);
+                if (!empty($userInfo['headimgurl'])) {
                     $arrAccessToken['headimgurl'] = stripslashes($userInfo['avatar']);
                 }
 
@@ -551,7 +535,7 @@ class ComponentsnsController extends ControllerBase
 
             $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
 
-            if ($sourceFromUserName !== null && $sourceFromUserName == $arrAccessToken['openid']) {
+            if ($sourceFromUserName !== null && $sourceFromUserName == $arrAccessToken['qyuserid']) {
                 $redirect = $this->addUrlParameter($redirect, array(
                     '__self' => true
                 ));
@@ -563,7 +547,7 @@ class ComponentsnsController extends ControllerBase
                     $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
                 }
             }
-            $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+            $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['qyuserid']);
             if (empty($redirect)) {
                 return $this->result("OK", $arrAccessToken);
             } else {
@@ -609,10 +593,13 @@ class ComponentsnsController extends ControllerBase
         $redirect = $this->addUrlParameter($redirect, array(
             'it_FromUserName' => $arrAccessToken['openid']
         ));
+        $redirect = $this->addUrlParameter($redirect, array(
+            'it_userid' => $arrAccessToken['userid']
+        ));
 
         // 计算signkey
         $timestamp = time();
-        $signkey = $this->getSignKey($arrAccessToken['openid'], $timestamp);
+        $signkey = $this->getSignKey($arrAccessToken['userid'] . "|" . $arrAccessToken['openid'], $timestamp);
         $redirect = $this->addUrlParameter($redirect, array(
             'it_signkey' => $signkey
         ));
@@ -632,15 +619,15 @@ class ComponentsnsController extends ControllerBase
             ));
         }
 
-        if (!empty($arrAccessToken['unionid'])) {
-            $redirect = $this->addUrlParameter($redirect, array(
-                'it_unionid' => $arrAccessToken['unionid']
-            ));
-            $signkey = $this->getSignKey($arrAccessToken['unionid'], $timestamp);
-            $redirect = $this->addUrlParameter($redirect, array(
-                'it_signkey2' => $signkey
-            ));
-        }
+        // if (!empty($arrAccessToken['unionid'])) {
+        //     $redirect = $this->addUrlParameter($redirect, array(
+        //         'it_unionid' => $arrAccessToken['unionid']
+        //     ));
+        //     $signkey = $this->getSignKey($arrAccessToken['unionid'], $timestamp);
+        //     $redirect = $this->addUrlParameter($redirect, array(
+        //         'it_signkey2' => $signkey
+        //     ));
+        // }
 
         return $redirect;
     }
@@ -650,8 +637,22 @@ class ComponentsnsController extends ControllerBase
      */
     protected function doInitializeLogic()
     {
+        // 应用ID
+        $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : "";
+        if (empty($this->appid)) {
+            throw new \Exception("appid为空");
+        }
+        $this->appConfig = $this->modelQyweixinSnsApplication->getInfoByAppid($this->appid);
+        if (empty($this->appConfig)) {
+            throw new \Exception("appid:{$this->appid}所对应的记录不存在");
+        }
+
+        $isValid = $this->modelQyweixinSnsApplication->checkIsValid($this->appConfig, $this->now);
+        if (empty($isValid)) {
+            throw new \Exception("appid:{$this->appid}所对应的记录已无效");
+        }
         // 第三方服务商运用ID
-        $this->provider_appid = isset($_GET['provider_appid']) ? trim($_GET['provider_appid']) : "";
+        $this->provider_appid = $this->appConfig['provider_appid'];
         if (empty($this->provider_appid)) {
             throw new \Exception("provider_appid为空");
         }
@@ -661,17 +662,73 @@ class ComponentsnsController extends ControllerBase
         }
 
         // 授权方ID
-        $this->authorizer_appid = isset($_GET['appid']) ? trim($_GET['appid']) : "";
+        $this->authorizer_appid = $this->appConfig['authorizer_appid'];
         if (empty($this->authorizer_appid)) {
-            throw new \Exception("appid为空");
+            throw new \Exception("authorizer_appid为空");
         }
         $this->authorizerConfig = $this->modelQyweixinAuthorizer->getInfoByAppid($this->provider_appid, $this->authorizer_appid);
         if (empty($this->authorizerConfig)) {
             throw new \Exception("provider_appid:{$this->provider_appid}和authorizer_appid:{$this->authorizer_appid}所对应的记录不存在");
         }
+        // 应用类型 1:企业号
+        $this->app_type = intval($this->authorizerConfig['app_type']);
+        $this->agentid = empty($this->appConfig['agentid']) ? 0 : $this->appConfig['agentid'];
 
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : uniqid();
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_userinfo';
         $this->sessionKey = $this->cookie_session_key . "_accessToken_{$this->provider_appid}_{$this->authorizer_appid}_{$this->scope}";
+    }
+
+    protected function getUserInfo4AccessToken($objQyProvider, $arrAccessToken)
+    {
+        // a) 当用户为企业成员时
+        // CorpId	用户所属企业的corpid
+        // UserId	用户在企业内的UserID，如果该企业与第三方应用有授权关系时，返回明文UserId，否则返回密文UserId
+        // DeviceId	手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
+        // user_ticket	成员票据，最大为512字节。
+        // scope为snsapi_userinfo或snsapi_privateinfo，且用户在应用可见范围之内时返回此参数。后续利用该参数可以获取用户信息或敏感信息，参见“第三方使用user_ticket获取成员详情”。
+        // expires_in	user_ticket的有效时间（秒），随user_ticket一起返回
+        // open_userid	全局唯一。对于同一个服务商，不同应用获取到企业内同一个成员的open_userid是相同的，最多64个字节。仅第三方应用可获取
+        if (isset($arrAccessToken['UserId'])) {
+            $arrAccessToken['openid'] = '';
+            $arrAccessToken['userid'] = $arrAccessToken['UserId'];
+            $arrAccessToken['is_qy_member'] = 1;
+            $arrAccessToken['qyuserid'] = $arrAccessToken['userid'];
+            $arrAccessToken['open_userid'] = $arrAccessToken['open_userid'];
+
+            // // 用户授权的作用域，使用逗号（,）分隔
+            // $scopeArr = \explode(',', $arrAccessToken['scope']);
+            // if (in_array('snsapi_userinfo', $scopeArr) || in_array('snsapi_privateinfo', $scopeArr)) {
+            //     // 先判断用户在数据库中是否存在最近一周产生的openid，如果不存在，则再动用网络请求，进行用户信息获取
+            //     $userInfo = $this->modelQyweixinUser->getUserInfoByIdLastWeek($arrAccessToken['userid'], $this->authorizer_appid, $this->provider_appid, $this->now);
+            //     if (true || empty($userInfo)) {
+            //         $updateInfoFromWx = true;
+            //         if (!empty($arrAccessToken['user_ticket'])) {
+            //             $userInfo = $objQyProvider->getUserDetail3rd($arrAccessToken['access_token'], $arrAccessToken['user_ticket']);
+            //             if (isset($userInfo['errcode'])) {
+            //                 throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
+            //             }
+            //         }
+            //     }
+            // }
+        } // b) 非企业成员授权时
+        // OpenId	非企业成员的标识，对当前服务商唯一
+        // DeviceId	手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)
+        elseif (isset($arrAccessToken['OpenId'])) {
+            $arrAccessToken['userid'] = '';
+            $arrAccessToken['openid'] = $arrAccessToken['OpenId'];
+            $arrAccessToken['is_qy_member'] = 0;
+            $arrAccessToken['qyuserid'] = $arrAccessToken['openid'];
+            $arrAccessToken['open_userid'] = "";
+        }
+
+        $userInfo = array();
+        $userInfo['userid'] = $arrAccessToken['userid'];
+        $userInfo['openid'] = $arrAccessToken['openid'];
+        $userInfo['nickname'] = isset($arrAccessToken['nickname']) ? $arrAccessToken['nickname'] : "";
+        $userInfo['headimgurl'] = isset($arrAccessToken['headimgurl']) ? $arrAccessToken['headimgurl'] : "";
+        $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
+
+        return $userInfo;
     }
 }
