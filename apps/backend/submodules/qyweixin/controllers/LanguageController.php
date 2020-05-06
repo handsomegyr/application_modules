@@ -20,7 +20,8 @@ class LanguageController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '语言名',
             'data' => array(
                 'type' => 'string',

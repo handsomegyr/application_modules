@@ -528,7 +528,7 @@ class LinkedcorpmsgController extends BaseController
                 'is_show' => true
             )
         );
-        
+
         $schemas['priority'] = array(
             'name' => '优先级',
             'data' => array(

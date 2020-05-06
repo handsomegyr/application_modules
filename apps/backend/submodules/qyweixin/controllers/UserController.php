@@ -3,172 +3,155 @@
 namespace App\Backend\Submodules\Qyweixin\Controllers;
 
 use App\Backend\Submodules\Qyweixin\Models\User\User;
-use App\Backend\Submodules\Qyweixin\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Qyweixin\Models\Provider\Provider;
 
 /**
  * @title({name="用户"})
  *
  * @name 用户
  */
-class UserController extends \App\Backend\Controllers\FormController
+class UserController extends BaseController
 {
     private $modelUser;
-    private $modelAuthorizer;
-    private $modelProvider;
 
     public function initialize()
     {
         $this->modelUser = new User();
-
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelProvider = new Provider();
-
-        $this->providerItems = $this->modelProvider->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
-    protected $providerItems = null;
-    protected $authorizerItems = null;
 
-    protected function getFormTools2($tools)
-    {
-        $tools['updateremark'] = array(
-            'title' => '设置用户备注名',
-            'action' => 'updateremark',
-            'is_show' => function ($row) {
-                if (
-                    !empty($row) && !empty($row['authorizer_appid']) 
-                ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            'icon' => 'fa-pencil-square-o',
-        );
-        $tools['getuserinfo'] = array(
-            'title' => '获取用户基本信息',
-            'action' => 'getuserinfo',
-            'is_show' => function ($row) {
-                if (
-                    !empty($row) && !empty($row['authorizer_appid']) 
-                ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            'icon' => 'fa-pencil-square-o',
-        );
-        $tools['getusertagidlist'] = array(
-            'title' => '获取用户身上的标签列表',
-            'action' => 'getusertagidlist',
-            'is_show' => function ($row) {
-                if (
-                    !empty($row) && !empty($row['authorizer_appid']) 
-                ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            'icon' => 'fa-pencil-square-o',
-        );
-        return $tools;
-    }
+    // protected function getFormTools2($tools)
+    // {
+    //     $tools['updateremark'] = array(
+    //         'title' => '设置用户备注名',
+    //         'action' => 'updateremark',
+    //         'is_show' => function ($row) {
+    //             if (
+    //                 !empty($row) && !empty($row['authorizer_appid'])
+    //             ) {
+    //                 return true;
+    //             } else {
+    //                 return false;
+    //             }
+    //         },
+    //         'icon' => 'fa-pencil-square-o',
+    //     );
+    //     $tools['getuserinfo'] = array(
+    //         'title' => '获取用户基本信息',
+    //         'action' => 'getuserinfo',
+    //         'is_show' => function ($row) {
+    //             if (
+    //                 !empty($row) && !empty($row['authorizer_appid'])
+    //             ) {
+    //                 return true;
+    //             } else {
+    //                 return false;
+    //             }
+    //         },
+    //         'icon' => 'fa-pencil-square-o',
+    //     );
+    //     $tools['getusertagidlist'] = array(
+    //         'title' => '获取用户身上的标签列表',
+    //         'action' => 'getusertagidlist',
+    //         'is_show' => function ($row) {
+    //             if (
+    //                 !empty($row) && !empty($row['authorizer_appid'])
+    //             ) {
+    //                 return true;
+    //             } else {
+    //                 return false;
+    //             }
+    //         },
+    //         'icon' => 'fa-pencil-square-o',
+    //     );
+    //     return $tools;
+    // }
 
-    /**
-     * @title({name="设置用户备注名"})
-     *
-     * @name 设置用户备注名
-     */
-    public function updateremarkAction()
-    {
-        // http://www.applicationmodule.com/admin/qyweixin/user/updateremark?id=xxx
-        try {
-            
+    // /**
+    //  * @title({name="设置用户备注名"})
+    //  *
+    //  * @name 设置用户备注名
+    //  */
+    // public function updateremarkAction()
+    // {
+    //     // http://www.applicationmodule.com/admin/qyweixin/user/updateremark?id=xxx
+    //     try {
+    //         $id = trim($this->request->get('id'));
+    //         if (empty($id)) {
+    //             return $this->makeJsonError("记录ID未指定");
+    //         }
+    //         $data = $this->modelUser->getInfoById($id);
+    //         if (empty($data)) {
+    //             return $this->makeJsonError("id：{$id}的记录不存在");
+    //         }
 
-            $id = trim($this->request->get('id'));
-            if (empty($id)) {
-                return $this->makeJsonError("记录ID未指定");
-            }
-            $data = $this->modelUser->getInfoById($id);
-            if (empty($data)) {
-                return $this->makeJsonError("id：{$id}的记录不存在");
-            }
+    //         $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['authorizer_appid'], $data['provider_appid']);
+    //         $res = $weixinopenService->getWeixinObject()
+    //             ->getUserManager()
+    //             ->updateRemark($data['openid'], $data['remark']);
+    //         if (empty($res['errcode'])) {
+    //             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+    //         } else {
+    //             return $this->makeJsonError($res['errmsg']);
+    //         }
+    //     } catch (\Exception $e) {
+    //         $this->makeJsonError($e->getMessage());
+    //     }
+    // }
+    // /**
+    //  * @title({name="获取用户基本信息"})
+    //  *
+    //  * @name 获取用户基本信息
+    //  */
+    // public function getuserinfoAction()
+    // {
+    //     // http://www.applicationmodule.com/admin/qyweixin/user/getuserinfo?id=xxx
+    //     try {
+    //         $id = trim($this->request->get('id'));
+    //         if (empty($id)) {
+    //             return $this->makeJsonError("记录ID未指定");
+    //         }
+    //         $data = $this->modelUser->getInfoById($id);
+    //         if (empty($data)) {
+    //             return $this->makeJsonError("id：{$id}的记录不存在");
+    //         }
 
-            $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['authorizer_appid'], $data['provider_appid']);
-            $res = $weixinopenService->getWeixinObject()
-                ->getUserManager()
-                ->updateRemark($data['openid'], $data['remark']);
-            if (empty($res['errcode'])) {
-                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
-            } else {
-                return $this->makeJsonError($res['errmsg']);
-            }
-        } catch (\Exception $e) {
-            $this->makeJsonError($e->getMessage());
-        }
-    }
-    /**
-     * @title({name="获取用户基本信息"})
-     *
-     * @name 获取用户基本信息
-     */
-    public function getuserinfoAction()
-    {
-        // http://www.applicationmodule.com/admin/qyweixin/user/getuserinfo?id=xxx
-        try {
-            
+    //         $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['authorizer_appid'], $data['provider_appid']);
+    //         $res = $weixinopenService->getUserInfo($id);
 
-            $id = trim($this->request->get('id'));
-            if (empty($id)) {
-                return $this->makeJsonError("记录ID未指定");
-            }
-            $data = $this->modelUser->getInfoById($id);
-            if (empty($data)) {
-                return $this->makeJsonError("id：{$id}的记录不存在");
-            }
+    //         $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+    //     } catch (\Exception $e) {
+    //         $this->makeJsonError($e->getMessage());
+    //     }
+    // }
+    // /**
+    //  * @title({name="获取用户身上的标签列表"})
+    //  *
+    //  * @name 获取用户身上的标签列表
+    //  */
+    // public function getusertagidlistAction()
+    // {
+    //     // http://www.applicationmodule.com/admin/qyweixin/user/getusertagidlist?id=xxx
+    //     try {
+    //         $id = trim($this->request->get('id'));
+    //         if (empty($id)) {
+    //             return $this->makeJsonError("记录ID未指定");
+    //         }
+    //         $data = $this->modelUser->getInfoById($id);
+    //         if (empty($data)) {
+    //             return $this->makeJsonError("id：{$id}的记录不存在");
+    //         }
 
-            $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['authorizer_appid'], $data['provider_appid']);
-            $res = $weixinopenService->getUserInfo($id);
-
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
-        } catch (\Exception $e) {
-            $this->makeJsonError($e->getMessage());
-        }
-    }
-    /**
-     * @title({name="获取用户身上的标签列表"})
-     *
-     * @name 获取用户身上的标签列表
-     */
-    public function getusertagidlistAction()
-    {
-        // http://www.applicationmodule.com/admin/qyweixin/user/getusertagidlist?id=xxx
-        try {
-            
-
-            $id = trim($this->request->get('id'));
-            if (empty($id)) {
-                return $this->makeJsonError("记录ID未指定");
-            }
-            $data = $this->modelUser->getInfoById($id);
-            if (empty($data)) {
-                return $this->makeJsonError("id：{$id}的记录不存在");
-            }
-
-            $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['authorizer_appid'], $data['provider_appid']);
-            $res = $weixinopenService->getUserTagIdList($id);
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
-        } catch (\Exception $e) {
-            $this->makeJsonError($e->getMessage());
-        }
-    }
+    //         $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['authorizer_appid'], $data['provider_appid']);
+    //         $res = $weixinopenService->getUserTagIdList($id);
+    //         return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+    //     } catch (\Exception $e) {
+    //         $this->makeJsonError($e->getMessage());
+    //     }
+    // }
 
     protected function getSchemas2($schemas)
-    {        $schemas['provider_appid'] = array(
+    {
+        $schemas['provider_appid'] = array(
             'name' => '第三方服务商应用ID',
             'data' => array(
                 'type' => 'string',
@@ -228,8 +211,8 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['openid'] = array(
-            'name' => '用户的标识',
+        $schemas['userid'] = array(
+            'name' => '成员UserID',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -242,7 +225,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '用户的标识，对当前公众号唯一',
+                'help' => '成员UserID。对应管理端的帐号，企业内必须唯一。不区分大小写，长度为1~64个字节。只能由数字、字母和“_-@.”四种字符组成，且第一个字符必须是数字或字母。',
             ),
             'list' => array(
                 'is_show' => true,
@@ -256,290 +239,8 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['nickname'] = array(
-            'name' => '用户的昵称',
-            'data' => array(
-                'type' => 'string',
-                'length' => 50,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $sexOptions = array();
-        $sexOptions['0'] = '未知';
-        $sexOptions['1'] = '男';
-        $sexOptions['2'] = '女';
-
-        $schemas['sex'] = array(
-            'name' => '用户的性别',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 1,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $sexOptions
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $sexOptions
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $sexOptions
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['country'] = array(
-            'name' => '用户所在国家',
-            'data' => array(
-                'type' => 'string',
-                'length' => 30,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['province'] = array(
-            'name' => '用户所在省份',
-            'data' => array(
-                'type' => 'string',
-                'length' => 30,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['city'] = array(
-            'name' => '用户所在城市',
-            'data' => array(
-                'type' => 'string',
-                'length' => 30,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['headimgurl'] = array(
-            'name' => '用户头像',
-            'data' => array(
-                'type' => 'string',
-                'length' => 300,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。'
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => 'img',
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['privilege'] = array(
-            'name' => '用户权限',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => false,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['subscribe_time'] = array(
-            'name' => '用户关注时间',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime()
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'items' => '',
-                'help' => '用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间'
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['subscribe'] = array(
-            'name' => '是否订阅',
-            'data' => array(
-                'type' => 'boolean',
-                'length' => 1,
-                'defaultValue' => false
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas,
-                'help' => '用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。'
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '1',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['language'] = array(
-            'name' => '用户的语言',
-            'data' => array(
-                'type' => 'string',
-                'length' => 10,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '用户的语言，简体中文为zh_CN'
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['unionid'] = array(
-            'name' => 'UNIONID',
+        $schemas['openid'] = array(
+            'name' => '用户的标识',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -552,7 +253,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => 'UNIONID,只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段'
+                'help' => '企业微信成员userid对应的openid',
             ),
             'list' => array(
                 'is_show' => true,
@@ -566,8 +267,8 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['groupid'] = array(
-            'name' => '用户所在的分组ID',
+        $schemas['name'] = array(
+            'name' => '成员名称',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
@@ -578,193 +279,26 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '用户所在的分组ID（兼容旧的用户分组接口）'
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['remark'] = array(
-            'name' => '备注',
-            'data' => array(
-                'type' => 'string',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => '',
-                'help' => '公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注'
-            ),
-            'list' => array(
-                'is_show' => false,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['access_token'] = array(
-            'name' => 'accesstoken',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1024,
-                'defaultValue' => '{}'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['tagid_list'] = array(
-            'name' => '用户被打上的标签ID列表',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1024,
-                'defaultValue' => '{}'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => false,
                 'list_type' => '',
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        $schemas['subscribe_scene'] = array(
-            'name' => '用户关注的渠道来源',
+        $schemas['alias'] = array(
+            'name' => '成员别名',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '返回用户关注的渠道来源，ADD_SCENE_SEARCH 公众号搜索，ADD_SCENE_ACCOUNT_MIGRATION 公众号迁移，ADD_SCENE_PROFILE_CARD 名片分享，ADD_SCENE_QR_CODE 扫描二维码，ADD_SCENEPROFILE LINK 图文页内名称点击，ADD_SCENE_PROFILE_ITEM 图文页右上角菜单，ADD_SCENE_PAID 支付后关注，ADD_SCENE_OTHERS 其他',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['qr_scene'] = array(
-            'name' => '二维码扫码场景',
-            'data' => array(
-                'type' => 'string',
-                'length' => 50,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '二维码扫码场景（开发者自定义）',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['qr_scene_str'] = array(
-            'name' => '二维码扫码场景描述',
-            'data' => array(
-                'type' => 'string',
-                'length' => 50,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'name' => '二维码扫码场景描述（开发者自定义）',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['session_key'] = array(
-            'name' => '会话KEY',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -814,6 +348,663 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['department'] = array(
+            'name' => '成员所属部门id列表',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '不超过20个',
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['order'] = array(
+            'name' => '部门内的排序值',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '默认为0，成员次序以创建时间从小到大排列。个数必须和参数department的个数一致，数值越大排序越前面。有效的值范围是[0, 2^32)',
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['position'] = array(
+            'name' => '职务信息',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '长度为0~128个字符',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $sexOptions = array();
+        $sexOptions['0'] = '未知';
+        $sexOptions['1'] = '男';
+        $sexOptions['2'] = '女';
+
+        $schemas['gender'] = array(
+            'name' => '性别',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $sexOptions
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $sexOptions
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $sexOptions
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['email'] = array(
+            'name' => '邮箱',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '长度6~64个字节，且为有效的email格式。企业内必须唯一，mobile/email二者不能同时为空',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['telephone'] = array(
+            'name' => '座机',
+            'data' => array(
+                'type' => 'string',
+                'length' => 32,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '32字节以内，由纯数字或’-‘号组成。',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['is_leader_in_dept'] = array(
+            'name' => '所在的部门内是否为上级',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '个数必须和参数department的个数一致，表示在所在的部门内是否为上级。1表示为上级，0表示非上级。在审批等应用里可以用来标识上级审批人'
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['avatar_mediaid_recid'] = array(
+            'name' => '成员头像的mediaid所对应的记录ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['avatar_mediaid'] = array(
+            'name' => '成员头像的mediaid',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '成员头像的mediaid，通过素材管理接口上传图片获得的mediaid'
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['enable'] = array(
+            'name' => '启用/禁用成员',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas,
+                'help' => '1表示启用成员，0表示禁用成员'
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['extattr'] = array(
+            'name' => '自定义字段',
+            'data' => array(
+                'type' => 'string',
+                'length' => 32,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '自定义字段需要先在WEB管理端添加，见扩展属性添加方法，否则忽略未知属性的赋值。与对外属性一致，不过只支持type=0的文本和type=1的网页类型，详细描述查看对外属性'
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['to_invite'] = array(
+            'name' => '是否邀请该成员使用企业微信',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas,
+                'help' => '是否邀请该成员使用企业微信（将通过微信服务通知或短信或邮件下发邀请，每天自动下发一次，最多持续3个工作日），默认值为true。'
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['external_profile'] = array(
+            'name' => '成员对外属性',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '字段详情见对外属性'
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['external_position'] = array(
+            'name' => '对外职务',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '如果设置了该值，则以此作为对外展示的职务，否则以position来展示。长度12个汉字内'
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['address'] = array(
+            'name' => '地址',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '长度最大128个字符'
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['main_department'] = array(
+            'name' => '主部门',
+            'data' => array(
+                'type' => 'string',
+                'length' => 32,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['avatar'] = array(
+            'name' => '用户头像',
+            'data' => array(
+                'type' => 'string',
+                'length' => 300,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '第三方仅通讯录应用可获取'
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['thumb_avatar'] = array(
+            'name' => '头像缩略图url',
+            'data' => array(
+                'type' => 'string',
+                'length' => 300,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '第三方仅通讯录应用可获取'
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $statusOptions = array();
+        $statusOptions['0'] = '未知';
+        $statusOptions['1'] = '已激活';
+        $statusOptions['2'] = '已禁用';
+        $statusOptions['4'] = '未激活';
+        $statusOptions['5'] = '退出企业';
+
+        $schemas['status'] = array(
+            'name' => '激活状态',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $statusOptions,
+                'help' => '1=已激活，2=已禁用，4=未激活，5=退出企业。已激活代表已激活企业微信或已关注微工作台（原企业号）。未激活代表既未激活企业微信又未关注微工作台（原企业号）。',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $statusOptions
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $statusOptions
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['qr_code'] = array(
+            'name' => '员工个人二维码',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '扫描可添加为外部联系人(注意返回的是一个url，可在浏览器上打开该url以展示二维码)；第三方仅通讯录应用可获取'
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => 'img',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['open_userid'] = array(
+            'name' => '全局唯一',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '对于同一个服务商，不同应用获取到企业内同一个成员的open_userid是相同的，最多64个字节。仅第三方应用可获取'
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['hide_mobile'] = array(
+            'name' => '是否隐藏手机号',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['english_name'] = array(
+            'name' => '英文名',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['oss_headimgurl'] = array(
             'name' => 'OSS头像URL',
             'data' => array(
@@ -841,13 +1032,67 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['session_key'] = array(
+            'name' => '会话KEY',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['access_token'] = array(
+            'name' => 'accesstoken',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
 
         return $schemas;
     }
 
     protected function getName()
     {
-        return '用户';
+        return '企业用户';
     }
 
     protected function getModel()

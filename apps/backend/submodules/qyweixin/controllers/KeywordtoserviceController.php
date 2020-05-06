@@ -30,7 +30,8 @@ class KeywordtoserviceController extends \App\Backend\Controllers\FormController
     private $serviceItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['keyword_id'] = array(
+    {
+        $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
                 'type' => 'string',

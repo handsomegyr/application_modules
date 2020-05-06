@@ -3,37 +3,21 @@
 namespace App\Backend\Submodules\Qyweixin\Controllers;
 
 use App\Backend\Submodules\Qyweixin\Models\Keyword\Word;
-use App\Backend\Submodules\Qyweixin\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Qyweixin\Models\Provider\Provider;
-use App\Backend\Submodules\Qyweixin\Models\Agent\Agent;
 
 /**
  * @title({name="非关键词"})
  *
- * @name 非关键词
+ * @name 非关键词Base
  */
-class WordController extends \App\Backend\Controllers\FormController
+class WordController extends BaseController
 {
     private $modelWord;
-    private $modelAuthorizer;
-    private $modelProvider;
-    private $modelAgent;
 
     public function initialize()
     {
         $this->modelWord = new Word();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelProvider = new Provider();
-        $this->modelAgent = new Agent();
-
-        $this->providerItems = $this->modelProvider->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
-        $this->agentItems = $this->modelAgent->getAll();
         parent::initialize();
     }
-    protected $providerItems = null;
-    protected $authorizerItems = null;
-    protected $agentItems = null;
 
     protected function getSchemas2($schemas)
     {

@@ -4,15 +4,13 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 
 use App\Backend\Submodules\Qyweixin\Models\Msg\Log;
 use App\Backend\Submodules\Qyweixin\Models\Msg\Type;
-use App\Backend\Submodules\Qyweixin\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Qyweixin\Models\Provider\Provider;
 
 /**
  * @title({name="消息与事件接收日志"})
  *
  * @name 消息与事件接收日志
  */
-class MsglogController extends \App\Backend\Controllers\FormController
+class MsglogController extends BaseController
 {
     private $modelLog;
     private $modelType;
@@ -22,18 +20,12 @@ class MsglogController extends \App\Backend\Controllers\FormController
     {
         $this->modelLog = new Log();
         $this->modelType = new Type();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelProvider = new Provider();
 
         $this->typeItems = $this->modelType->getAll();
-        $this->providerItems = $this->modelProvider->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
 
     protected $typeItems = null;
-    protected $providerItems = null;
-    protected $authorizerItems = null;
 
     protected function getSchemas2($schemas)
     {

@@ -3,36 +3,25 @@
 namespace App\Backend\Submodules\Qyweixin\Controllers;
 
 use App\Backend\Submodules\Qyweixin\Models\Provider\ProviderLoginBindTracking;
-use App\Backend\Submodules\Qyweixin\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Qyweixin\Models\Provider\Provider;
 
 /**
  * @title({name="登录授权发起执行时间跟踪统计"})
  *
  * @name 登录授权发起执行时间跟踪统计
  */
-class ProviderloginbindtrackingController extends \App\Backend\Controllers\FormController
+class ProviderloginbindtrackingController extends BaseController
 {
     private $modelProviderLoginBindTracking;
-
-    private $modelAuthorizer;
-    private $modelProvider;
 
     public function initialize()
     {
         $this->modelProviderLoginBindTracking = new ProviderLoginBindTracking();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelProvider = new Provider();
-
-        $this->providerItems = $this->modelProvider->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
-    protected $providerItems = null;
-    protected $authorizerItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['provider_appid'] = array(
+    {
+        $schemas['provider_appid'] = array(
             'name' => '第三方服务商应用ID',
             'data' => array(
                 'type' => 'string',

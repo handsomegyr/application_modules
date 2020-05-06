@@ -15,7 +15,7 @@ class KeywordController extends BaseController
 {
     private $modelKeyword;
     private $modelReplyMsgType;
-    private $modelCustomMsgType;
+    private $modelAgentMsgType;
 
     public function initialize()
     {
@@ -30,7 +30,7 @@ class KeywordController extends BaseController
     }
 
     protected $replyMsgTypeItems = null;
-    protected $customMsgTypeItems = null;
+    // protected $customMsgTypeItems = null;
     protected $agentMsgTypeItems = null;
 
     protected function getSchemas2($schemas)

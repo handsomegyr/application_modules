@@ -26,7 +26,8 @@ class EventController extends \App\Backend\Controllers\FormController
     private $eventCategoryItems = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '事件名',
             'data' => array(
                 'type' => 'string',

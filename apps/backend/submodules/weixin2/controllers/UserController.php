@@ -3,33 +3,21 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\User\User;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="用户"})
  *
  * @name 用户
  */
-class UserController extends \App\Backend\Controllers\FormController
+class UserController extends BaseController
 {
     private $modelUser;
-    private $modelAuthorizer;
-    private $modelComponent;
 
     public function initialize()
     {
         $this->modelUser = new User();
-
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected function getFormTools2($tools)
     {
@@ -38,7 +26,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'action' => 'updateremark',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) 
+                    !empty($row) && !empty($row['authorizer_appid'])
                 ) {
                     return true;
                 } else {
@@ -52,7 +40,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'action' => 'getuserinfo',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) 
+                    !empty($row) && !empty($row['authorizer_appid'])
                 ) {
                     return true;
                 } else {
@@ -66,7 +54,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'action' => 'getusertagidlist',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) 
+                    !empty($row) && !empty($row['authorizer_appid'])
                 ) {
                     return true;
                 } else {

@@ -20,7 +20,8 @@ class MediatypeController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '类型名',
             'data' => array(
                 'type' => 'string',
