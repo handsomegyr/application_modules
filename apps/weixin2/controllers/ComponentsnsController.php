@@ -41,6 +41,10 @@ class ComponentsnsController extends ControllerBase
 
     private $trackingKey = "第三方平台SNS授权";
 
+    private $appid;
+
+    private $appConfig;
+
     private $component_appid;
 
     private $componentConfig;
@@ -52,6 +56,9 @@ class ComponentsnsController extends ControllerBase
     private $scope;
 
     private $state;
+
+    //应用类型 1:公众号 2:小程序 3:订阅号
+    private $app_type = 0;
 
     public function initialize()
     {
@@ -83,10 +90,10 @@ class ComponentsnsController extends ControllerBase
      * state 否 重定向后会带上state参数，开发者可以填写任意参数值，最多128字节
      * component_appid 是 服务方的appid，在申请创建公众号服务成功后，可在公众号服务详情页找到
      */
-    public function indexAction()
+    public function authorizeAction()
     {
-        // http://wxcrmdemo.jdytoy.com/weixinopen/api/componentsns/index?appid=wxb4c2aa76686ea8f4&component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://wxcrm.eintone.com/weixinopen/api/componentsns/index?appid=wxb4c2aa76686ea8f4&component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://wxcrmdemo.jdytoy.com/weixinopen/api/componentsns/authorize?appid=wxb4c2aa76686ea8f4&component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://wxcrm.eintone.com/weixinopen/api/componentsns/authorize?appid=wxb4c2aa76686ea8f4&component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
@@ -114,8 +121,7 @@ class ComponentsnsController extends ControllerBase
                 // 存储跳转地址
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
-                $_SESSION['component_appid'] = $this->component_appid;
-                $_SESSION['appid'] = $this->authorizer_appid;
+                $_SESSION['appid'] = $this->appid;
 
                 $moduleName = 'weixin2';
                 $controllerName = $this->controllerName;
@@ -161,11 +167,11 @@ class ComponentsnsController extends ControllerBase
     {
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/componentsns/callback?appid=xxx&code=xxx&scope=auth_user&state=xxx
         try {
-            $component_appid = empty($_SESSION['component_appid']) ? "" : $_SESSION['component_appid'];
-            if (empty($component_appid)) {
-                throw new \Exception("component_appid未定义");
+            $appid = empty($_SESSION['appid']) ? "" : $_SESSION['appid'];
+            if (empty($appid)) {
+                throw new \Exception("appid未定义");
             }
-            $_GET['component_appid'] = $component_appid;
+            $_GET['appid'] = $appid;
 
             // 初始化
             $this->doInitializeLogic();
@@ -331,25 +337,37 @@ class ComponentsnsController extends ControllerBase
      */
     protected function doInitializeLogic()
     {
+        // 应用ID
+        $this->appid = isset($_GET['appid']) ? trim($_GET['appid']) : "";
+        if (empty($this->appid)) {
+            throw new \Exception("appid为空");
+        }
+        $this->appConfig = $this->modelWeixinopenSnsApplication->getInfoByAppid($this->appid);
+        if (empty($this->appConfig)) {
+            throw new \Exception("appid:{$this->appid}所对应的记录不存在");
+        }
+
+        $isValid = $this->modelWeixinopenSnsApplication->checkIsValid($this->appConfig, $this->now);
+        if (empty($isValid)) {
+            throw new \Exception("appid:{$this->appid}所对应的记录已无效");
+        }
         // 第三方平台运用ID
-        $this->component_appid = isset($_GET['component_appid']) ? trim($_GET['component_appid']) : "";
+        $this->component_appid = $this->appConfig['component_appid'];
         if (empty($this->component_appid)) {
             throw new \Exception("component_appid为空");
         }
-        $this->componentConfig = $this->modelWeixinopenComponent->getInfoByAppid($this->component_appid);
-        if (empty($this->componentConfig)) {
-            throw new \Exception("component_appid:{$this->component_appid}所对应的记录不存在");
-        }
 
         // 授权方ID
-        $this->authorizer_appid = isset($_GET['appid']) ? trim($_GET['appid']) : "";
+        $this->authorizer_appid = $this->appConfig['authorizer_appid'];
         if (empty($this->authorizer_appid)) {
-            throw new \Exception("appid为空");
+            throw new \Exception("authorizer_appid为空");
         }
         $this->authorizerConfig = $this->modelWeixinopenAuthorizer->getInfoByAppid($this->component_appid, $this->authorizer_appid);
         if (empty($this->authorizerConfig)) {
             throw new \Exception("component_appid:{$this->component_appid}和authorizer_appid:{$this->authorizer_appid}所对应的记录不存在");
         }
+        //应用类型 1:公众号 2:小程序 3:订阅号
+        $this->app_type = intval($this->authorizerConfig['app_type']);
 
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : uniqid();
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_userinfo';

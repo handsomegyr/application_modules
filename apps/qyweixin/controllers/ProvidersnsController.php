@@ -56,6 +56,7 @@ class ComponentsnsController extends ControllerBase
     private $trackingKey = "第三方服务商SNS授权";
 
     private $appid;
+    
     private $appConfig;
 
     private $provider_appid;
@@ -71,6 +72,9 @@ class ComponentsnsController extends ControllerBase
     private $scope;
 
     private $state;
+
+    // 应用类型 1:企业号
+    private $app_type = 0;
 
     public function initialize()
     {
