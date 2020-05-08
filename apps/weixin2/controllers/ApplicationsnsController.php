@@ -203,7 +203,8 @@ class ApplicationsnsController extends ControllerBase
             }
 
             // 授权成功后，记录该微信用户的基本信息
-
+            $updateInfoFromWx = true;
+            $userInfo = array();
             // 用户授权的作用域，使用逗号（,）分隔
             $scopeArr = \explode(',', $arrAccessToken['scope']);
             if (in_array('snsapi_userinfo', $scopeArr) || in_array('snsapi_login', $scopeArr)) {
@@ -221,9 +222,8 @@ class ApplicationsnsController extends ControllerBase
                         throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
                     }
                 }
-                $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
             }
-
+            $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
             if (!empty($userInfo)) {
                 if (!empty($userInfo['nickname'])) {
                     $arrAccessToken['nickname'] = ($userInfo['nickname']);
@@ -251,6 +251,10 @@ class ApplicationsnsController extends ControllerBase
             if ($updateInfoFromWx) {
                 if (!empty($userInfo['headimgurl'])) {
                     $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
+                }
+                $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['openid'] . $this->authorizer_appid . $this->component_appid);
+                if (!$lock->lock()) {
+                    $this->modelWeixinopenUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $userInfo);
                 }
             }
             $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);

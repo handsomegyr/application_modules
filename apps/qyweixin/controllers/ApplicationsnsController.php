@@ -10,11 +10,11 @@ class ApplicationsnsController extends ControllerBase
     // 活动ID
     protected $activity_id = 4;
 
-    // /**
-    // *
-    // * @var \App\Qyweixin\Models\User\User
-    // */
-    // private $modelQyweixinUser;
+    /**
+     *
+     * @var \App\Qyweixin\Models\User\User
+     */
+    private $modelQyweixinUser;
 
     // /**
     // *
@@ -86,7 +86,7 @@ class ApplicationsnsController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        // $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
+        $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
         // $this->modelQyweixinProvider = new \App\Qyweixin\Models\Provider\Provider();
         $this->modelQyweixinAuthorizer = new \App\Qyweixin\Models\Authorize\Authorizer();
         // $this->modelQyweixinAgent = new \App\Qyweixin\Models\Agent\Agent();
@@ -324,7 +324,7 @@ class ApplicationsnsController extends ControllerBase
                 throw new \Exception("state发生了改变");
             }
 
-            $updateInfoFromWx = false;
+            $updateInfoFromWx = true;
             $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : '';
 
             // 授权成功后，记录该企业微信用户的基本信息
@@ -345,12 +345,12 @@ class ApplicationsnsController extends ControllerBase
             $userInfo = $this->getUserInfo4AccessToken($arrAccessToken);
 
             if (!empty($userInfo)) {
-                if (!empty($userInfo['nickname'])) {
-                    $arrAccessToken['nickname'] = ($userInfo['nickname']);
+                if (!empty($userInfo['name'])) {
+                    $arrAccessToken['name'] = ($userInfo['name']);
                 }
 
-                if (!empty($userInfo['headimgurl'])) {
-                    $arrAccessToken['headimgurl'] = stripslashes($userInfo['headimgurl']);
+                if (!empty($userInfo['avatar'])) {
+                    $arrAccessToken['avatar'] = stripslashes($userInfo['avatar']);
                 }
 
                 if (!empty($userInfo['unionid'])) {
@@ -369,9 +369,15 @@ class ApplicationsnsController extends ControllerBase
 
             // 调整数据库操作的执行顺序，优化跳转速度
             if ($updateInfoFromWx) {
-                if (!empty($userInfo['headimgurl'])) {
-                    $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
+                if (!empty($userInfo['avatar'])) {
+                    $userInfo['avatar'] = stripslashes($userInfo['avatar']);
                 }
+                if(!empty($arrAccessToken['userid'])){
+                    $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['userid'] . $this->authorizer_appid . $this->provider_appid);
+                    if (!$lock->lock()) {
+                        $this->modelQyweixinUser->updateUserInfoBySns($arrAccessToken['userid'], $this->authorizer_appid, $this->provider_appid, $userInfo);
+                    }
+                }                
             }
             $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['qyuserid'], $this->appConfig['_id']);
             header("location:{$redirect}");
@@ -417,7 +423,7 @@ class ApplicationsnsController extends ControllerBase
         // ));
         // }
         $redirect = $this->addUrlParameter($redirect, array(
-            'it_FromUserName' => $arrAccessToken['openid']
+            'it_openid' => $arrAccessToken['openid']
         ));
         $redirect = $this->addUrlParameter($redirect, array(
             'it_userid' => $arrAccessToken['userid']
@@ -433,15 +439,15 @@ class ApplicationsnsController extends ControllerBase
             'it_timestamp' => $timestamp
         ));
 
-        if (!empty($arrAccessToken['nickname'])) {
+        if (!empty($arrAccessToken['name'])) {
             $redirect = $this->addUrlParameter($redirect, array(
-                'it_nickname' => urlencode($arrAccessToken['nickname'])
+                'it_name' => urlencode($arrAccessToken['name'])
             ));
         }
 
-        if (!empty($arrAccessToken['headimgurl'])) {
+        if (!empty($arrAccessToken['avatar'])) {
             $redirect = $this->addUrlParameter($redirect, array(
-                'it_headimgurl' => urlencode(stripslashes($arrAccessToken['headimgurl']))
+                'it_avatar' => urlencode(stripslashes($arrAccessToken['avatar']))
             ));
         }
 

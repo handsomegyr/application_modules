@@ -12,11 +12,11 @@ class ComponentsnsController extends ControllerBase
     // 活动ID
     protected $activity_id = 3;
 
-    // /**
-    // *
-    // * @var \App\Qyweixin\Models\User\User
-    // */
-    // private $modelQyweixinUser;
+    /**
+     *
+     * @var \App\Qyweixin\Models\User\User
+     */
+    private $modelQyweixinUser;
 
     /**
      * @var \App\Qyweixin\Models\Provider\Provider
@@ -56,7 +56,7 @@ class ComponentsnsController extends ControllerBase
     private $trackingKey = "第三方服务商SNS授权";
 
     private $appid;
-    
+
     private $appConfig;
 
     private $provider_appid;
@@ -81,7 +81,7 @@ class ComponentsnsController extends ControllerBase
         parent::initialize();
         $this->view->disable();
 
-        // $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
+        $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
         $this->modelQyweixinProvider = new \App\Qyweixin\Models\Provider\Provider();
         $this->modelQyweixinAuthorizer = new \App\Qyweixin\Models\Authorize\Authorizer();
         $this->modelQyweixinScriptTracking = new \App\Qyweixin\Models\ScriptTracking();
@@ -391,7 +391,7 @@ class ComponentsnsController extends ControllerBase
                 throw new \Exception("state发生了改变");
             }
 
-            $updateInfoFromWx = false;
+            $updateInfoFromWx = true;
             $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : '';
 
             // 创建service
@@ -399,7 +399,7 @@ class ComponentsnsController extends ControllerBase
             $objQyProvider = $qyService->getQyweixinProvider();
 
             // 第二步：通过code获取访问用户身份
-            $suite_access_token = "";
+            $suite_access_token = $this->authorizerConfig['suite_access_token'];
             $arrAccessToken = $objQyProvider->getUserInfo3rd($suite_access_token, $code);
             if (!empty($arrAccessToken['errcode'])) {
                 throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
@@ -412,12 +412,12 @@ class ComponentsnsController extends ControllerBase
             $userInfo = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
 
             if (!empty($userInfo)) {
-                if (!empty($userInfo['nickname'])) {
-                    $arrAccessToken['nickname'] = ($userInfo['nickname']);
+                if (!empty($userInfo['name'])) {
+                    $arrAccessToken['name'] = ($userInfo['name']);
                 }
 
-                if (!empty($userInfo['headimgurl'])) {
-                    $arrAccessToken['headimgurl'] = stripslashes($userInfo['headimgurl']);
+                if (!empty($userInfo['avatar'])) {
+                    $arrAccessToken['avatar'] = stripslashes($userInfo['avatar']);
                 }
 
                 if (!empty($userInfo['unionid'])) {
@@ -437,8 +437,14 @@ class ComponentsnsController extends ControllerBase
 
             // 调整数据库操作的执行顺序，优化跳转速度
             if ($updateInfoFromWx) {
-                if (!empty($userInfo['headimgurl'])) {
-                    $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
+                if (!empty($userInfo['avatar'])) {
+                    $userInfo['avatar'] = stripslashes($userInfo['avatar']);
+                }
+                if (!empty($arrAccessToken['userid'])) {
+                    $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['openid'] . $this->authorizer_appid . $this->provider_appid);
+                    if (!$lock->lock()) {
+                        $this->modelQyweixinUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->provider_appid, $userInfo);
+                    }
                 }
             }
             $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['qyuserid']);
@@ -516,18 +522,18 @@ class ComponentsnsController extends ControllerBase
             $arrAccessToken['access_token'] = $provider_access_token;
             $arrAccessToken['refresh_token'] = "";
             $arrAccessToken['userid'] = $arrAccessToken['user_info']['userid'];
-            $arrAccessToken['nickname'] = $arrAccessToken['user_info']['name'];
-            $arrAccessToken['headimgurl'] = $arrAccessToken['user_info']['avatar'];
+            $arrAccessToken['name'] = $arrAccessToken['user_info']['name'];
+            $arrAccessToken['avatar'] = $arrAccessToken['user_info']['avatar'];
 
             $userInfo = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
 
             if (!empty($userInfo)) {
-                if (!empty($userInfo['nickname'])) {
-                    $arrAccessToken['nickname'] = ($userInfo['nickname']);
+                if (!empty($userInfo['name'])) {
+                    $arrAccessToken['name'] = ($userInfo['name']);
                 }
 
-                if (!empty($userInfo['headimgurl'])) {
-                    $arrAccessToken['headimgurl'] = stripslashes($userInfo['avatar']);
+                if (!empty($userInfo['avatar'])) {
+                    $arrAccessToken['avatar'] = stripslashes($userInfo['avatar']);
                 }
 
                 if (!empty($userInfo['unionid'])) {
@@ -547,8 +553,14 @@ class ComponentsnsController extends ControllerBase
 
             // 调整数据库操作的执行顺序，优化跳转速度
             if ($updateInfoFromWx) {
-                if (!empty($userInfo['headimgurl'])) {
-                    $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
+                if (!empty($userInfo['avatar'])) {
+                    $userInfo['avatar'] = stripslashes($userInfo['avatar']);
+                }
+                if (!empty($arrAccessToken['userid'])) {
+                    $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['userid'] . $this->authorizer_appid . $this->provider_appid);
+                    if (!$lock->lock()) {
+                        $this->modelQyweixinUser->updateUserInfoBySns($arrAccessToken['userid'], $this->authorizer_appid, $this->provider_appid, $userInfo);
+                    }
                 }
             }
             $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['qyuserid']);
@@ -595,7 +607,7 @@ class ComponentsnsController extends ControllerBase
         // ));
 
         $redirect = $this->addUrlParameter($redirect, array(
-            'it_FromUserName' => $arrAccessToken['openid']
+            'it_openid' => $arrAccessToken['openid']
         ));
         $redirect = $this->addUrlParameter($redirect, array(
             'it_userid' => $arrAccessToken['userid']
@@ -611,15 +623,15 @@ class ComponentsnsController extends ControllerBase
             'it_timestamp' => $timestamp
         ));
 
-        if (!empty($arrAccessToken['nickname'])) {
+        if (!empty($arrAccessToken['name'])) {
             $redirect = $this->addUrlParameter($redirect, array(
-                'it_nickname' => urlencode($arrAccessToken['nickname'])
+                'it_name' => urlencode($arrAccessToken['name'])
             ));
         }
 
-        if (!empty($arrAccessToken['headimgurl'])) {
+        if (!empty($arrAccessToken['avatar'])) {
             $redirect = $this->addUrlParameter($redirect, array(
-                'it_headimgurl' => urlencode(stripslashes($arrAccessToken['headimgurl']))
+                'it_avatar' => urlencode(stripslashes($arrAccessToken['avatar']))
             ));
         }
 
@@ -729,8 +741,8 @@ class ComponentsnsController extends ControllerBase
         $userInfo = array();
         $userInfo['userid'] = $arrAccessToken['userid'];
         $userInfo['openid'] = $arrAccessToken['openid'];
-        $userInfo['nickname'] = isset($arrAccessToken['nickname']) ? $arrAccessToken['nickname'] : "";
-        $userInfo['headimgurl'] = isset($arrAccessToken['headimgurl']) ? $arrAccessToken['headimgurl'] : "";
+        $userInfo['name'] = isset($arrAccessToken['name']) ? $arrAccessToken['name'] : "";
+        $userInfo['avatar'] = isset($arrAccessToken['avatar']) ? $arrAccessToken['avatar'] : "";
         $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
 
         return $userInfo;

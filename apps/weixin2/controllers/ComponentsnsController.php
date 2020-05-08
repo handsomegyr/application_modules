@@ -201,7 +201,8 @@ class ComponentsnsController extends ControllerBase
             }
 
             // 授权成功后，记录该微信用户的基本信息
-
+            $updateInfoFromWx = true;
+            $userInfo = array();
             // 用户授权的作用域，使用逗号（,）分隔
             $scopeArr = \explode(',', $arrAccessToken['scope']);
             if (in_array('snsapi_userinfo', $scopeArr) || in_array('snsapi_login', $scopeArr)) {
@@ -216,9 +217,8 @@ class ComponentsnsController extends ControllerBase
                         throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
                     }
                 }
-                $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
             }
-
+            $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
             if (!empty($userInfo)) {
                 if (!empty($userInfo['nickname'])) {
                     $arrAccessToken['nickname'] = ($userInfo['nickname']);
