@@ -26,6 +26,20 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
 
     protected function getFormTools2($tools)
     {
+        $tools['getaccesstoken'] = array(
+            'title' => '获取AccessToken信息',
+            'action' => 'getaccesstoken',
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['appid'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
         $tools['getauthorizerinfo'] = array(
             'title' => '获取帐号基本信息',
             'action' => 'getauthorizerinfo',
@@ -41,6 +55,33 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
         );
 
         return $tools;
+    }
+
+    /**
+     * @title({name="获取AccessToken信息"})
+     *
+     * @name 获取AccessToken信息
+     */
+    public function getaccesstokenAction()
+    {
+        // http://www.applicationmodule.com/admin/qyweixin/authorizer/getaccesstoken?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAuthorizer->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['appid'], $data['provider_appid'], 0);
+            $res = $weixinopenService->getAccessToken4Authorizer();
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
     }
 
     /**

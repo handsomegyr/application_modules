@@ -359,7 +359,7 @@ class MsgController extends ControllerBase
             $AppId = $this->provider_appid;
 
             // die($encodingAesKey.strlen($encodingAesKey));
-            $pc = new \Weixin\ThirdParty\MsgCrypt\WXBizMsgCrypt($verifyToken, $encodingAesKey, $AppId);
+            $pc = new \Weixin\Qy\ThirdParty\MsgCrypt\WXBizMsgCrypt($verifyToken, $encodingAesKey, $AppId);
 
             // <xml><ToUserName><![CDATA[gh_abc8231997cb]]></ToUserName><Encrypt><![CDATA[thU8Mz/2q8z+eeZ2HuOGzqAwZrMQWJdIkbr+vY+6a+vCO+22HSyHLWiEZv8TmaqkYKubJbIOpGhLvC2YBYJ94G/G5dsE17xhfGUkV70NMMc/8zL2jay6WAUCNHWovZ1V/SFlgi32AYJ69vICullSE5JCEH4TavYOk42KTfQSO4BYtAuF3zeFIoT3kc13wuqSSx/MN5YZTuNH2QV43Z2WQkQogOwisJP1GRDuFtB2o1bHfD9CxMOAKnRPGEDC6vwCMbEJgf8EVWcoNXRhDJ77eTmTg6pVi3rGXVWCJH7wC2oHz2jy/+MI2UDeSKuz8D/oJPT2RUEN+NErJS26slWXYbE1sTILcwQ+Yz7Su5Ec804/7Fs166UIShMgLzvMXk76PkG6xNsl4uGqapppq1+qVIUTQ8uggzfGbQsjDaZefQg=]]></Encrypt></xml>
             $verifyToken = "";
@@ -434,8 +434,8 @@ class MsgController extends ControllerBase
             // 设定来源和目标用户的openid
             $this->objQyWeixin->setFromAndTo("FromUserName", "ToUserName");
 
-            // 为回复的Model装载weixin对象
-            $this->modelQyweixinReplyMsg->setWeixinInstance($this->objQyWeixin);
+            // // 为回复的Model装载weixin对象
+            // $this->modelQyweixinReplyMsg->setWeixinInstance($this->objQyWeixin);
 
             $response = $this->answer("FromUserName", "ToUserName", $keyword, $this->authorizer_appid, $this->provider_appid, $agentid);
 

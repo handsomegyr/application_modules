@@ -342,7 +342,9 @@ class ApplicationsnsController extends ControllerBase
             $arrAccessToken['access_token'] = $this->authorizerConfig['access_token'];
             $arrAccessToken['refresh_token'] = "";
 
-            $userInfo = $this->getUserInfo4AccessToken($arrAccessToken);
+            $userInfoAndAccessTokenRet = $this->getUserInfo4AccessToken($arrAccessToken);
+            $arrAccessToken = $userInfoAndAccessTokenRet['arrAccessToken'];
+            $userInfo = $userInfoAndAccessTokenRet['userInfo'];
 
             if (!empty($userInfo)) {
                 if (!empty($userInfo['name'])) {
@@ -547,6 +549,6 @@ class ApplicationsnsController extends ControllerBase
         $userInfo['openid'] = $arrAccessToken['openid'];
         $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
 
-        return $userInfo;
+        return array('arrAccessToken' => $arrAccessToken, 'userInfo' => $userInfo);
     }
 }

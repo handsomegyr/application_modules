@@ -409,7 +409,9 @@ class ComponentsnsController extends ControllerBase
             $arrAccessToken['access_token'] = $suite_access_token;
             $arrAccessToken['refresh_token'] = "";
 
-            $userInfo = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
+            $userInfoAndAccessTokenRet = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
+            $arrAccessToken = $userInfoAndAccessTokenRet['arrAccessToken'];
+            $userInfo = $userInfoAndAccessTokenRet['userInfo'];
 
             if (!empty($userInfo)) {
                 if (!empty($userInfo['name'])) {
@@ -504,7 +506,7 @@ class ComponentsnsController extends ControllerBase
                 }
             }
 
-            $updateInfoFromWx = false;
+            $updateInfoFromWx = true;
             $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : '';
 
             // 创建service
@@ -525,7 +527,9 @@ class ComponentsnsController extends ControllerBase
             $arrAccessToken['name'] = $arrAccessToken['user_info']['name'];
             $arrAccessToken['avatar'] = $arrAccessToken['user_info']['avatar'];
 
-            $userInfo = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
+            $userInfoAndAccessTokenRet = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
+            $arrAccessToken = $userInfoAndAccessTokenRet['arrAccessToken'];
+            $userInfo = $userInfoAndAccessTokenRet['userInfo'];
 
             if (!empty($userInfo)) {
                 if (!empty($userInfo['name'])) {
@@ -745,6 +749,6 @@ class ComponentsnsController extends ControllerBase
         $userInfo['avatar'] = isset($arrAccessToken['avatar']) ? $arrAccessToken['avatar'] : "";
         $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
 
-        return $userInfo;
+        return array('arrAccessToken' => $arrAccessToken, 'userInfo' => $userInfo);
     }
 }
