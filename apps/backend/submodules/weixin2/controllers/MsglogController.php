@@ -12,28 +12,20 @@ use App\Backend\Submodules\Weixin2\Models\Component\Component;
  *
  * @name 消息与事件接收日志
  */
-class MsglogController extends \App\Backend\Controllers\FormController
+class MsglogController extends BaseController
 {
     private $modelLog;
     private $modelType;
-    private $modelAuthorizer;
-    private $modelComponent;
     public function initialize()
     {
         $this->modelLog = new Log();
         $this->modelType = new Type();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
 
         $this->typeItems = $this->modelType->getAll();
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
 
     protected $typeItems = null;
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected function getSchemas2($schemas)
     {

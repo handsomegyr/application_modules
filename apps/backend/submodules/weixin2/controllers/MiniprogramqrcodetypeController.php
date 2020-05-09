@@ -20,7 +20,8 @@ class MiniprogramqrcodetypeController extends \App\Backend\Controllers\FormContr
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '类型名',
             'data' => array(
                 'type' => 'string',

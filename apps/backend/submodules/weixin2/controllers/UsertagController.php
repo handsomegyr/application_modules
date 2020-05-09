@@ -3,33 +3,22 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\User\Tag;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="用户标签"})
  *
  * @name 用户标签
  */
-class UsertagController extends \App\Backend\Controllers\FormController
+class UsertagController extends BaseController
 {
     private $modelTag;
-    private $modelAuthorizer;
-    private $modelComponent;
 
     public function initialize()
     {
         $this->modelTag = new Tag();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
 
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected function getHeaderTools2($tools)
     {
@@ -90,8 +79,6 @@ class UsertagController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/usertag/synctaglist?id=xxx
         try {
-
-
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容
@@ -154,8 +141,6 @@ class UsertagController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/usertag/addusertag?id=xxx
         try {
-
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");

@@ -3,15 +3,13 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\User\SubscribeUser;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="关注用户"})
  *
  * @name 关注用户
  */
-class SubscribeuserController extends \App\Backend\Controllers\FormController
+class SubscribeuserController extends BaseController
 {
     private $modelSubscribeUser;
     private $modelAuthorizer;
@@ -19,15 +17,8 @@ class SubscribeuserController extends \App\Backend\Controllers\FormController
     public function initialize()
     {
         $this->modelSubscribeUser = new SubscribeUser();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected function getHeaderTools2($tools)
     {
@@ -51,8 +42,6 @@ class SubscribeuserController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/subscribeuser/getsubscribeuserlist?id=xxx
         try {
-
-
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容

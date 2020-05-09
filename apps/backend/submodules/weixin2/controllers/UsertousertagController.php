@@ -3,32 +3,21 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\User\UserToUserTag;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="用户和用户标签对应设置"})
  *
  * @name 用户和用户标签对应设置
  */
-class UsertousertagController extends \App\Backend\Controllers\FormController
+class UsertousertagController extends BaseController
 {
     private $modelUserToUserTag;
-    private $modelAuthorizer;
-    private $modelComponent;
 
     public function initialize()
     {
         $this->modelUserToUserTag = new UserToUserTag();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected function getFormTools2($tools)
     {
@@ -74,8 +63,6 @@ class UsertousertagController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/usertousertag/untaguser?id=xxx
         try {
-
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
@@ -102,8 +89,6 @@ class UsertousertagController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixin2/usertousertag/taguser?id=xxx
         try {
-
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");

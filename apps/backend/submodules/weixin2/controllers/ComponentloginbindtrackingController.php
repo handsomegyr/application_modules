@@ -3,33 +3,21 @@
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
 use App\Backend\Submodules\Weixin2\Models\Component\ComponentLoginBindTracking;
-use App\Backend\Submodules\Weixin2\Models\Authorize\Authorizer;
-use App\Backend\Submodules\Weixin2\Models\Component\Component;
 
 /**
  * @title({name="登录授权发起执行时间跟踪统计"})
  *
  * @name 登录授权发起执行时间跟踪统计
  */
-class ComponentloginbindtrackingController extends \App\Backend\Controllers\FormController
+class ComponentloginbindtrackingController extends BaseController
 {
     private $modelComponentLoginBindTracking;
-
-    private $modelAuthorizer;
-    private $modelComponent;
 
     public function initialize()
     {
         $this->modelComponentLoginBindTracking = new ComponentLoginBindTracking();
-        $this->modelAuthorizer = new Authorizer();
-        $this->modelComponent = new Component();
-
-        $this->componentItems = $this->modelComponent->getAll();
-        $this->authorizerItems = $this->modelAuthorizer->getAll();
         parent::initialize();
     }
-    protected $componentItems = null;
-    protected $authorizerItems = null;
 
     protected function getSchemas2($schemas)
     {

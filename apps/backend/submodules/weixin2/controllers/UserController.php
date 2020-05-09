@@ -75,8 +75,6 @@ class UserController extends BaseController
     {
         // http://www.applicationmodule.com/admin/weixin2/user/updateremark?id=xxx
         try {
-
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
@@ -108,8 +106,6 @@ class UserController extends BaseController
     {
         // http://www.applicationmodule.com/admin/weixin2/user/getuserinfo?id=xxx
         try {
-
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
@@ -136,8 +132,6 @@ class UserController extends BaseController
     {
         // http://www.applicationmodule.com/admin/weixin2/user/getusertagidlist?id=xxx
         try {
-
-
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");

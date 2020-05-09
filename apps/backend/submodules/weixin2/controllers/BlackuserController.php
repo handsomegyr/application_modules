@@ -9,7 +9,7 @@ use App\Backend\Submodules\Weixin2\Models\User\BlackUser;
  *
  * @name 黑名单
  */
-class BlackuserController extends \App\Backend\Controllers\FormController
+class BlackuserController extends BaseController
 {
     private $modelBlackUser;
     public function initialize()

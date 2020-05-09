@@ -20,7 +20,8 @@ class SubscribesceneController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '渠道来源名',
             'data' => array(
                 'type' => 'string',
