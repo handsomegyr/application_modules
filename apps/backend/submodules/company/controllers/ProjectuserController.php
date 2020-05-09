@@ -19,9 +19,8 @@ class ProjectuserController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
         $schemas['project_id'] = array(
             'name' => '项目ID',
             'data' => array(

@@ -92,6 +92,7 @@ EOD;
     {
         // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Weixin2\Settings\Menu
         // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Qyweixin\Settings\Menu
+        // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Company\Settings\Menu
         try {
             $this->view->disable();
             $settings = $this->get('settings', '');
@@ -213,6 +214,7 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Banner\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Search\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Qyweixin\Settings\Menu&is_create_menu=1
+        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Company\Settings\Menu&is_create_menu=1
 
         try {
             $this->view->disable();

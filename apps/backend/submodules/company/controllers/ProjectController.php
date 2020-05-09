@@ -19,9 +19,8 @@ class ProjectController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
-    protected function getSchemas()
+    protected function getSchemas2($schemas)
     {
-        $schemas = parent::getSchemas();
         $schemas['project_code'] = array(
             'name' => '项目编号',
             'data' => array(
@@ -133,7 +132,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['ae'] = array(
             'name' => 'AE信息,多个AE用逗号间隔',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -160,7 +159,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['executives'] = array(
             'name' => '执行人信息,多个执行人用逗号间隔',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -214,7 +213,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['dev_url'] = array(
             'name' => '开发地址,多个地址用逗号间隔',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -241,7 +240,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['test_url'] = array(
             'name' => '测试地址,多个地址用逗号间隔',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -268,7 +267,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['product_url'] = array(
             'name' => '正式地址,多个地址用逗号间隔',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -322,7 +321,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['dm_names'] = array(
             'name' => '项目域名',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
                 'defaultValue' => ''
             ),
@@ -347,7 +346,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['enabled'] = array(
-            'name' => '允许发布:0是,1否',
+            'name' => '允许发布',
             'data' => array(
                 'type' => 'boolean',
                 'length' => 1,
@@ -373,33 +372,42 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        //上线状态:0开发中,1部署中,2已上线,3已下线
+        $onlineOptions = array();
+        $onlineOptions['0'] = '开发中';
+        $onlineOptions['1'] = '部署中';
+        $onlineOptions['2'] = '已上线';
+        $onlineOptions['3'] = '已下线';
         $schemas['online'] = array(
-            'name' => '上线状态:0开发中,1部署中,2已上线,3已下线',
+            'name' => '上线状态',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $onlineOptions
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1',
                 'render' => '',
+                'items' => $onlineOptions
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => true,
+                'input_type' => 'select',
+                'items' => $onlineOptions
             ),
             'export' => array(
                 'is_show' => true
             )
         );
+
         $schemas['last_upload_time'] = array(
             'name' => '最后发布时间',
             'data' => array(
@@ -430,9 +438,9 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['description'] = array(
             'name' => '项目备注',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
-                'defaultValue' => '{}'
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
