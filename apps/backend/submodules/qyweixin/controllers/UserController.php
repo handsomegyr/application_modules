@@ -376,7 +376,7 @@ class UserController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['order'] = array(
+        $schemas['department_order'] = array(
             'name' => '部门内的排序值',
             'data' => array(
                 'type' => 'json',
