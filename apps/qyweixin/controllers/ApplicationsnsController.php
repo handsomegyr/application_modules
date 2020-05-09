@@ -28,11 +28,11 @@ class ApplicationsnsController extends ControllerBase
      */
     private $modelQyweixinAuthorizer;
 
-    // /**
-    // *
-    // * @var \App\Qyweixin\Models\Agent\Agent
-    // */
-    // private $modelQyweixinAgent;
+    /**
+     *
+     * @var \App\Qyweixin\Models\Agent\Agent
+     */
+    private $modelQyweixinAgent;
 
     /**
      *
@@ -89,13 +89,14 @@ class ApplicationsnsController extends ControllerBase
         $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
         // $this->modelQyweixinProvider = new \App\Qyweixin\Models\Provider\Provider();
         $this->modelQyweixinAuthorizer = new \App\Qyweixin\Models\Authorize\Authorizer();
-        // $this->modelQyweixinAgent = new \App\Qyweixin\Models\Agent\Agent();
+        $this->modelQyweixinAgent = new \App\Qyweixin\Models\Agent\Agent();
         $this->modelQyweixinScriptTracking = new \App\Qyweixin\Models\ScriptTracking();
         $this->modelQyweixinCallbackurls = new \App\Qyweixin\Models\Callbackurls();
         $this->modelQyweixinSnsApplication = new \App\Qyweixin\Models\SnsApplication();
     }
 
     /**
+     * 构造网页授权链接
      * 如果企业需要在打开的网页里面携带用户的身份信息，第一步需要构造如下的链接来获取code参数：
      *
      * https://open.weixin.qq.com/connect/oauth2/authorize?appid=CORPID&redirect_uri=REDIRECT_URI&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
@@ -128,6 +129,7 @@ class ApplicationsnsController extends ControllerBase
         // http://wxcrm.eintone.com/qyweixin/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
+            $this->trackingKey = $this->trackingKey . "_网页授权";
             // 初始化
             $this->doInitializeLogic();
 
@@ -157,6 +159,7 @@ class ApplicationsnsController extends ControllerBase
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
                 $_SESSION['appid'] = $this->appid;
+                $_SESSION['trackingKey'] = $this->trackingKey;
 
                 $moduleName = 'qyweixin';
                 $controllerName = $this->controllerName;
@@ -232,6 +235,7 @@ class ApplicationsnsController extends ControllerBase
         // http://wxcrm.eintone.com/qyweixin/api/applicationsns/ssoqrconnect?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
+            $this->trackingKey = $this->trackingKey . "_扫码登录";
             // 初始化
             $this->doInitializeLogic();
             if (empty($this->agentid)) {
@@ -263,6 +267,7 @@ class ApplicationsnsController extends ControllerBase
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
                 $_SESSION['appid'] = $this->appid;
+                $_SESSION['trackingKey'] = $this->trackingKey;
 
                 $moduleName = 'qyweixin';
                 $controllerName = $this->controllerName;
@@ -300,6 +305,8 @@ class ApplicationsnsController extends ControllerBase
     {
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/applicationsns/callback?code=xxx&scope=auth_user&state=xxx
         try {
+            $this->trackingKey = empty($_SESSION['trackingKey']) ? "" : $_SESSION['trackingKey'];
+
             $appid = empty($_SESSION['appid']) ? "" : $_SESSION['appid'];
             if (empty($appid)) {
                 throw new \Exception("appid未定义");
@@ -334,12 +341,19 @@ class ApplicationsnsController extends ControllerBase
             }
 
             $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
-            $arrAccessToken = $objSns->getUserInfo($this->authorizerConfig['access_token']);
+            if (empty($this->agentid)) {
+                $access_token = $this->authorizerConfig['access_token'];
+            } else {
+                $agentInfo = $this->modelQyweixinAgent->getInfoByAppid($this->provider_appid, $this->authorizer_appid, $this->agentid);
+                $access_token = $agentInfo['access_token'];
+            }
+
+            $arrAccessToken = $objSns->getUserInfo($access_token);
             if (!empty($arrAccessToken['errcode'])) {
                 throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
             }
             $arrAccessToken['scope'] = $this->scope;
-            $arrAccessToken['access_token'] = $this->authorizerConfig['access_token'];
+            $arrAccessToken['access_token'] = $access_token;
             $arrAccessToken['refresh_token'] = "";
 
             $userInfoAndAccessTokenRet = $this->getUserInfo4AccessToken($arrAccessToken);
@@ -374,12 +388,12 @@ class ApplicationsnsController extends ControllerBase
                 if (!empty($userInfo['avatar'])) {
                     $userInfo['avatar'] = stripslashes($userInfo['avatar']);
                 }
-                if(!empty($arrAccessToken['userid'])){
+                if (!empty($arrAccessToken['userid'])) {
                     $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['userid'] . $this->authorizer_appid . $this->provider_appid);
                     if (!$lock->lock()) {
                         $this->modelQyweixinUser->updateUserInfoBySns($arrAccessToken['userid'], $this->authorizer_appid, $this->provider_appid, $userInfo);
                     }
-                }                
+                }
             }
             $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['qyuserid'], $this->appConfig['_id']);
             header("location:{$redirect}");
@@ -507,7 +521,9 @@ class ApplicationsnsController extends ControllerBase
         // 应用类型 1:企业号
         $this->app_type = intval($this->authorizerConfig['app_type']);
         $this->agentid = empty($this->appConfig['agentid']) ? 0 : $this->appConfig['agentid'];
-
+        if (empty($this->agentid)) {
+            throw new \Exception("agentid未指定");
+        }
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : uniqid();
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_base';
         $this->sessionKey = $this->cookie_session_key . "_accessToken_{$this->appid}_{$this->provider_appid}_{$this->authorizer_appid}_{$this->agentid}_{$this->scope}";

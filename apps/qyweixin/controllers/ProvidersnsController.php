@@ -117,6 +117,7 @@ class ComponentsnsController extends ControllerBase
         // http://wxcrm.eintone.com/qyweixin/api/providersns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
+            $this->trackingKey = $this->trackingKey . "_第三方应用";
             // 初始化
             $this->doInitializeLogic();
 
@@ -144,6 +145,7 @@ class ComponentsnsController extends ControllerBase
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
                 $_SESSION['appid'] = $this->appid;
+                $_SESSION['trackingKey'] = $this->trackingKey;
 
                 $moduleName = 'qyweixin';
                 $controllerName = $this->controllerName;
@@ -199,6 +201,7 @@ class ComponentsnsController extends ControllerBase
         // http://wxcrm.eintone.com/qyweixin/api/providersns/authorize4corp?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
+            $this->trackingKey = $this->trackingKey . "_第三方应用企业";
             // 初始化
             $this->doInitializeLogic();
             if (empty($this->agentid)) {
@@ -228,6 +231,7 @@ class ComponentsnsController extends ControllerBase
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
                 $_SESSION['appid'] = $this->appid;
+                $_SESSION['trackingKey'] = $this->trackingKey;
 
                 $moduleName = 'qyweixin';
                 $controllerName = $this->controllerName;
@@ -296,6 +300,7 @@ class ComponentsnsController extends ControllerBase
         // http://wxcrm.eintone.com/qyweixin/api/providersns/sso3rdqrConnect?provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&usertype=admin&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
+            $this->trackingKey = $this->trackingKey . "_第三方单点登录";
             // 初始化
             $this->authorizer_appid = "";
             $this->agentid = 0;
@@ -334,6 +339,7 @@ class ComponentsnsController extends ControllerBase
                 $_SESSION['redirect'] = $redirect;
                 $_SESSION['state'] = $this->state;
                 $_SESSION['usertype'] = $usertype;
+                $_SESSION['trackingKey'] = $this->trackingKey;
 
                 $moduleName = 'qyweixin';
                 $controllerName = $this->controllerName;
@@ -368,6 +374,7 @@ class ComponentsnsController extends ControllerBase
     {
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/callback?appid=xxx&code=xxx&scope=auth_user&state=xxx
         try {
+            $this->trackingKey = empty($_SESSION['trackingKey']) ? "" : $_SESSION['trackingKey'];
             $appid = empty($_SESSION['appid']) ? "" : $_SESSION['appid'];
             if (empty($appid)) {
                 throw new \Exception("appid未定义");
@@ -477,6 +484,7 @@ class ComponentsnsController extends ControllerBase
     {
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/providersns/login?provider_appid=wxca8519f703c07d32&auth_code=xxx
         try {
+            $this->trackingKey = empty($_SESSION['trackingKey']) ? "" : $_SESSION['trackingKey'];
             // 初始化
             // 第三方服务商运用ID
             $this->provider_appid = isset($_GET['provider_appid']) ? trim($_GET['provider_appid']) : "";
