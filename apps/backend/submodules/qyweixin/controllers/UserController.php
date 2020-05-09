@@ -637,15 +637,15 @@ class UserController extends BaseController
         $schemas['extattr'] = array(
             'name' => '自定义字段',
             'data' => array(
-                'type' => 'string',
-                'length' => 32,
+                'type' => 'json',
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
                 'help' => '自定义字段需要先在WEB管理端添加，见扩展属性添加方法，否则忽略未知属性的赋值。与对外属性一致，不过只支持type=0的文本和type=1的网页类型，详细描述查看对外属性'

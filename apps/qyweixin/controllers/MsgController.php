@@ -10,19 +10,31 @@ class MsgController extends ControllerBase
 {
     // 活动ID
     protected $activity_id = 2;
-
+    /**
+     *
+     * @var \App\Qyweixin\Models\User\User
+     */
     private $modelQyweixinUser;
-
+    /**
+     *
+     * @var \App\Qyweixin\Models\Provider\Provider
+     */
     private $modelQyweixinProvider;
-
+    /**
+     *
+     * @var \App\Qyweixin\Models\Authorize\Authorizer
+     */
     private $modelQyweixinAuthorizer;
 
-    private $modelQyweixinProviderLoginBindTracking;
-
-    private $modelQyweixinAuthorizeLog;
-
+    /**
+     *
+     * @var \App\Qyweixin\Models\Msg\Log
+     */
     private $modelQyweixinMsgLog;
-
+    /**
+     *
+     * @var \App\Qyweixin\Models\ReplyMsg\ReplyMsg
+     */
     private $modelQyweixinReplyMsg;
 
     /**
@@ -45,19 +57,9 @@ class MsgController extends ControllerBase
 
     /**
      *
-     * @var \App\Qyweixin\Models\Keyword\KeywordToTemplateMsg
-     */
-    private $modelQyweixinKeywordToTemplateMsg;
-
-    /**
-     *
      * @var \App\Qyweixin\Models\Keyword\Word
      */
     private $modelQyweixinWord;
-
-    private $modelQyweixinQrcode;
-
-    private $modelQyweixinQrcodeEventLog;
 
     // lock key
     private $lock_key_prefix = 'qyweixin_qy_';
@@ -97,17 +99,12 @@ class MsgController extends ControllerBase
         $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
         $this->modelQyweixinProvider = new \App\Qyweixin\Models\Provider\Provider();
         $this->modelQyweixinAuthorizer = new \App\Qyweixin\Models\Authorize\Authorizer();
-        $this->modelQyweixinProviderLoginBindTracking = new \App\Qyweixin\Models\Provider\ProviderLoginBindTracking();
-        $this->modelQyweixinAuthorizeLog = new \App\Qyweixin\Models\Authorize\AuthorizeLog();
         $this->modelQyweixinMsgLog = new \App\Qyweixin\Models\Msg\Log();
         $this->modelQyweixinReplyMsg = new \App\Qyweixin\Models\ReplyMsg\ReplyMsg();
         $this->modelQyweixinKeyword = new \App\Qyweixin\Models\Keyword\Keyword();
         $this->modelQyweixinWord = new \App\Qyweixin\Models\Keyword\Word();
         $this->modelQyweixinKeywordToReplyMsg = new \App\Qyweixin\Models\Keyword\KeywordToReplyMsg();
         $this->modelQyweixinKeywordToAgentMsg = new \App\Qyweixin\Models\Keyword\KeywordToAgentMsg();
-        $this->modelQyweixinKeywordToTemplateMsg = new \App\Qyweixin\Models\Keyword\KeywordToTemplateMsg();
-        $this->modelQyweixinQrcode = new \App\Qyweixin\Models\Qrcode\Qrcode();
-        $this->modelQyweixinQrcodeEventLog = new \App\Qyweixin\Models\Qrcode\EventLog();
     }
 
     /**
@@ -278,8 +275,8 @@ class MsgController extends ControllerBase
                 }
                 // // 获取微信用户的个人信息
                 // if (!empty($this->authorizerConfig['access_token'])) {
-                // $this->modelQyweixinUser->setWeixinInstance($this->objQyWeixin);
-                // $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
+                $this->modelQyweixinUser->setQyweixinInstance($this->objQyWeixin);
+                $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
                 // }
                 // 设定来源和目标用户的openid
                 $this->objQyWeixin->setFromAndTo($FromUserName, $ToUserName);
@@ -395,14 +392,14 @@ class MsgController extends ControllerBase
      */
     public function testGetUserAction()
     {
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-get-user?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&FromUserName=o8IA5v7Dwz8tk_EcVsRITf7fA9Fk
+        // http://wxcrm.eintone.com/qyweixin/api/provider/test-get-user?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&FromUserName=o8IA5v7Dwz8tk_EcVsRITf7fA9Fk
         try {
             // 初始化
             $this->doInitializeLogic();
 
             $FromUserName = isset($_GET['FromUserName']) ? trim($_GET['FromUserName']) : '';
 
-            $this->modelQyweixinUser->setWeixinInstance($this->objQyWeixin);
+            $this->modelQyweixinUser->setQyweixinInstance($this->objQyWeixin);
             $ret = $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
 
             return $this->result("OK", $ret);
@@ -416,15 +413,15 @@ class MsgController extends ControllerBase
      */
     public function testKeywordAction()
     {
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=xxx
+        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=xxx
 
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试文本1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试图片1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试语音1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试视频1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试音乐1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试单图文1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试多图文1
+        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试文本1
+        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试图片1
+        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试语音1
+        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试视频1
+        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试音乐1
+        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试单图文1
+        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试多图文1
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -433,9 +430,6 @@ class MsgController extends ControllerBase
 
             // 设定来源和目标用户的openid
             $this->objQyWeixin->setFromAndTo("FromUserName", "ToUserName");
-
-            // // 为回复的Model装载weixin对象
-            // $this->modelQyweixinReplyMsg->setWeixinInstance($this->objQyWeixin);
 
             $response = $this->answer("FromUserName", "ToUserName", $keyword, $this->authorizer_appid, $this->provider_appid, $agentid);
 
@@ -2011,7 +2005,6 @@ class MsgController extends ControllerBase
 
         $match['reply_msg_ids'] = $this->modelQyweixinKeywordToReplyMsg->getReplyMsgIdsByKeywordId($match['id']);
         $match['agent_msg_ids'] = $this->modelQyweixinKeywordToAgentMsg->getAgentMsgIdsByKeywordId($match['id']);
-        // $match['template_msg_ids'] = $this->modelQyweixinKeywordToTemplateMsg->getTemplateMsgIdsByKeywordId($match['id']);
         // $e = new \Exception("Post请求" . \json_encode($match));
         // $this->modelErrorLog->log($this->activity_id, $e, $this->now);
         // return '';
@@ -2046,9 +2039,7 @@ class MsgController extends ControllerBase
             $this->requestLogDatas['request_params'] = array_merge($_GET, $_POST);
             $this->requestLogDatas['is_aes'] = $this->isNeedDecryptAndEncrypt;
 
-            if ($this->requestLogDatas['log_type'] == 'qyauthorizelog') { // 授权事件接收URL
-                $this->modelQyweixinAuthorizeLog->record($this->requestLogDatas);
-            } elseif ($this->requestLogDatas['log_type'] == 'qymsglog') { // 消息与事件接收URL
+            if ($this->requestLogDatas['log_type'] == 'qymsglog') { // 消息与事件接收URL
                 $this->modelQyweixinMsgLog->record($this->requestLogDatas);
             }
         }
