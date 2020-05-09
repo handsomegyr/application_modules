@@ -104,9 +104,9 @@ class MediaController extends BaseController
                     if (!empty($res['name'])) {
                         $filename = $res['name'];
                     } else {
-                        $filename = $filename . '.' . $file_ext;
+                        $filename = 'media_' . \uniqid() . '.' . $file_ext;
                     }
-                    $path = APP_PATH . '/upload/media/' . 'media_' . $filename;
+                    $path = APP_PATH . '/upload/media/' . $filename;
                     // $path = \tempnam(\sys_get_temp_dir(), 'media_');
                     $fp = fopen($path, 'w');
                     $fileContent = $res['bytes'];
@@ -212,7 +212,7 @@ class MediaController extends BaseController
                 'is_show' => true
             )
         );
-        
+
         $schemas['name'] = array(
             'name' => '素材名',
             'data' => array(

@@ -61,7 +61,7 @@ class KeywordtoagentmsgController extends \App\Backend\Controllers\FormControlle
                 'is_show' => true
             )
         );
-        $schemas['custom_msg_id'] = array(
+        $schemas['agent_msg_id'] = array(
             'name' => '应用消息ID',
             'data' => array(
                 'type' => 'string',

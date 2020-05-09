@@ -104,16 +104,16 @@ class MediaController extends BaseController
                     if (!empty($res['name'])) {
                         $filename = $res['name'];
                     } else {
-                        $filename = $filename . '.' . $file_ext;
+                        $filename = 'qymedia_' . \uniqid() . '.' . $file_ext;
                     }
-                    $path = APP_PATH . '/upload/media/' . 'media_' . $filename;
+                    $path = APP_PATH . '/upload/qymedia/' . $filename;
                     // $path = \tempnam(\sys_get_temp_dir(), 'media_');
                     $fp = fopen($path, 'w');
                     $fileContent = $res['bytes'];
                     fwrite($fp, $fileContent);
                     fclose($fp);
                     $fileName = basename($path);
-                    $url = $this->url->get("service/file/index") . '?upload_path=media&id=' . $fileName;
+                    $url = $this->url->get("service/file/index") . '?upload_path=qymedia&id=' . $fileName;
                     return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $url)), '操作成功:' . \json_encode($res));
                     //return Response::download($path, $filename);
                 }
