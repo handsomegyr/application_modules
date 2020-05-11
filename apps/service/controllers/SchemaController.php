@@ -144,7 +144,7 @@ class SchemaController extends ControllerBase
         
         $di = $this->getDI();
         $connection = $di['db'];
-        $connection->execute("SET NAMES 'utf8';");
+        $connection->execute("SET NAMES 'utf8mb4';");
         $tableColumns = $connection->describeColumns($tablename);
         
         $fieldInfoList = array();

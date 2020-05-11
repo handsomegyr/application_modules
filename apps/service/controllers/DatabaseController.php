@@ -21,10 +21,10 @@ class DatabaseController extends ControllerBase
         $di = $this->getDI();
         
         // $this->connectionFrom = $di['dbfrom'];
-        // $this->connectionFrom->execute("SET NAMES 'utf8';");
+        // $this->connectionFrom->execute("SET NAMES 'utf8mb4';");
         
         $this->connectionTo = $di['db'];
-        $this->connectionTo->execute("SET NAMES 'utf8';");
+        $this->connectionTo->execute("SET NAMES 'utf8mb4';");
     }
 
     /**

@@ -84,6 +84,23 @@ class #_controllerName_#Controller extends \App\Backend\Controllers\FormControll
 EOD;
 
     /**
+     * @title({name="创建实体schema"})
+     *
+     * @name 创建实体schema
+     */
+    public function getalltablesAction()
+    {
+        // http://www.applicationmodule.com/admin/builder/getalltables
+        try {
+            $this->view->disable();
+            $tables = $this->getAllTables();
+            $this->makeJsonResult("", "create OK", $tables);
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
      * @title({name="创建后台菜单"})
      *
      * @name 创建后台菜单
@@ -269,6 +286,24 @@ EOD;
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
+    }
+
+    protected function getAllTables()
+    {
+        // $tableInfo = DB::select("SHOW FULL COLUMNS FROM {$table}");
+        $di = \Phalcon\DI::getDefault();
+        $db = $di['db'];
+        $result = $db->query("SHOW TABLES", array());
+        $result->setFetchMode(\Phalcon\Db::FETCH_ASSOC);
+        $tables = $result->fetchAll();
+        $list = array();
+        foreach ($tables as $key => $tableInfo) {
+            foreach ($tableInfo as $key2 => $value) {
+                $result = $db->query("UPDATE {$value} SET __CREATE_USER_ID__ = '1',__CREATE_USER_NAME__='admin', __MODIFY_USER_ID__ = '1',__MODIFY_USER_NAME__='admin'", array());
+                $list[] = $value;
+            }            
+        }
+        return $list;
     }
 
     protected function getConfigContent($table)

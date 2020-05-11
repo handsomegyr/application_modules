@@ -93,7 +93,7 @@ function registerServices($di)
     // "dbname" => $config->database->dbname,
     // "charset" => $config->database->charset
     // ));
-    // // $connection->execute("SET NAMES 'utf8';");
+    // // $connection->execute("SET NAMES 'utf8mb4';");
     // $eventsManager = new EventsManager();
     // $eventsManager->attach('db', function ($event, $conn) {
     // // echo $conn->getSQLStatement() . '<br />';
@@ -138,7 +138,7 @@ function registerServices($di)
             "charset" => $config->database->charset,
             "collation" => $config->database->collation
         ));
-        // $connection->execute("SET NAMES 'utf8';");
+        // $connection->execute("SET NAMES 'utf8mb4';");
         return $connection;
     };
 

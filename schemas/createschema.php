@@ -15,7 +15,7 @@ $connection = new $dbclass(array(
     "password" => $config->database->password,
     "dbname" => $config->database->dbname
 ));
-$connection->execute("SET NAMES 'utf8';");
+$connection->execute("SET NAMES 'utf8mb4';");
 
 try {
     // $connection->begin();
