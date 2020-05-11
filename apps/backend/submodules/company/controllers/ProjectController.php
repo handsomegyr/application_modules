@@ -82,10 +82,6 @@ class ProjectController extends \App\Backend\Controllers\FormController
             $taskContent['project_id'] = $data['_id'];
             $taskContent['process_list'] = 'create_project';
             $taskInfo = $modelTask->log(1, $taskContent);
-
-            //更新
-            //svn://192.168.81.129/p001
-            //$modelProject->update(array('_id' => $project_id), array('$set' => array('svn_url' => $svn_url)));
             $res['taskInfo'] = $taskInfo;
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
