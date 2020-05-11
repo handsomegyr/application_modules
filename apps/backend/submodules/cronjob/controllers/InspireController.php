@@ -20,7 +20,8 @@ class InspireController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['content'] = array(
+    {
+        $schemas['content'] = array(
             'name' => '文本',
             'data' => array(
                 'type' => 'varchar',

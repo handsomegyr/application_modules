@@ -8,10 +8,13 @@ class InspireTask extends \Phalcon\CLI\Task
      */
     public function handleAction(array $params)
     {
+        $content = \uniqid();
+        echo sprintf('%s', $content) . PHP_EOL;
+
         $modelInspire = new \App\Cronjob\Models\Inspire();
         $modelInspire->remove(array());
         $info = array();
-        $info['content'] = \uniqid();
+        $info['content'] = $content;
         $modelInspire->insert($info);
     }
 }

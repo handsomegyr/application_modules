@@ -26,7 +26,8 @@ class ItemController extends \App\Backend\Controllers\FormController
     private $bannerList = null;
 
     protected function getSchemas2($schemas)
-    {        $now = date('Y-m-d') . " 00:00:00";
+    {
+        $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
 
         $schemas['banner_id'] = array(

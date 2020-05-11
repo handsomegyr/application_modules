@@ -20,7 +20,8 @@ class DataimportlogController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['current_cronjob_id'] = array(
+    {
+        $schemas['current_cronjob_id'] = array(
             'name' => '当前计划任务ID',
             'data' => array(
                 'type' => 'string',

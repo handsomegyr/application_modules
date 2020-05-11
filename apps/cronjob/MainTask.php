@@ -1,4 +1,5 @@
 <?php
+
 use Pheanstalk\Pheanstalk;
 
 class MainTask extends \Phalcon\CLI\Task
@@ -26,7 +27,7 @@ class MainTask extends \Phalcon\CLI\Task
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $tube = $params[0];
         $pheanstalk->useTube($tube);
-        
+
         // 不断插数据到队列中获取数据
         try {
             $id = uniqid();
@@ -59,7 +60,7 @@ class MainTask extends \Phalcon\CLI\Task
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $tube = $params[0];
         $pheanstalk->useTube($tube);
-        
+
         // 不断插数据到队列中获取数据
         try {
             while (true) {
@@ -69,7 +70,8 @@ class MainTask extends \Phalcon\CLI\Task
                 $pheanstalk->put($message);
                 usleep(200000);
             }
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
     }
 
     public function testgetjobfromqueueAction(array $params)
@@ -77,7 +79,7 @@ class MainTask extends \Phalcon\CLI\Task
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $tube = $params[0];
         $pheanstalk->watch($tube)->ignore('default');
-        
+
         // 不断从队列中获取数据
         try {
             while (true) {
@@ -90,6 +92,7 @@ class MainTask extends \Phalcon\CLI\Task
                     break;
                 }
             }
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
     }
 }

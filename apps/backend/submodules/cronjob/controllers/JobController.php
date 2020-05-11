@@ -21,7 +21,8 @@ class JobController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '任务名称',
             'data' => array(
                 'type' => 'string',
@@ -78,24 +79,27 @@ class JobController extends \App\Backend\Controllers\FormController
             'name' => '执行开始时间',
             'data' => array(
                 'type' => 'datetime',
-                'defaultValue' => getCurrentTime(),
-                'length' => 19
+                'length' => 19,
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -103,24 +107,27 @@ class JobController extends \App\Backend\Controllers\FormController
             'name' => '任务结束时间',
             'data' => array(
                 'type' => 'datetime',
-                'defaultValue' => getCurrentTime(),
-                'length' => 19
+                'length' => 19,
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -203,24 +210,27 @@ class JobController extends \App\Backend\Controllers\FormController
             'name' => '最后一次执行时间',
             'data' => array(
                 'type' => 'datetime',
-                'defaultValue' => getCurrentTime(),
-                'length' => 19
+                'length' => 19,
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -285,19 +295,5 @@ class JobController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelJob;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        //$activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            //$item['activity_name'] = isset($activityList[$item['activity_id']]) ? $activityList[$item['activity_id']] : '--';
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-            if (!empty($item['last_execute_time'])) {
-                $item['last_execute_time'] = date("Y-m-d H:i:s", $item['last_execute_time']->sec);
-            }
-        }
-        return $list;
-    }
+    }    
 }

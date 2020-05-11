@@ -136,7 +136,8 @@ class DataimportfileController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['cron_time'] = array(
+    {
+        $schemas['cron_time'] = array(
             'name' => '执行时间',
             'data' => array(
                 'type' => 'datetime',
@@ -184,7 +185,7 @@ class DataimportfileController extends \App\Backend\Controllers\FormController
                 'render' => '',
                 'name' => '文件信息',
                 // 扩展设置
-                'extensionSettings' => function ($column, $Grid) {                    
+                'extensionSettings' => function ($column, $Grid) {
                     //display()方法来通过传入的回调函数来处理当前列的值：
                     return $column->display(function () {
                         $itemList = array();

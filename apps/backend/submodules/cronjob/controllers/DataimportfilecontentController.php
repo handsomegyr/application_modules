@@ -20,7 +20,8 @@ class DataimportfilecontentController extends \App\Backend\Controllers\FormContr
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['cron_time'] = array(
+    {
+        $schemas['cron_time'] = array(
             'name' => '计划任务时间',
             'data' => array(
                 'type' => 'datetime',

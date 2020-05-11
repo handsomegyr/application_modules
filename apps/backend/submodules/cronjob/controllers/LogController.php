@@ -3,6 +3,7 @@
 namespace App\Backend\Submodules\Cronjob\Controllers;
 
 use App\Backend\Submodules\Cronjob\Models\Log;
+use App\Backend\Submodules\Cronjob\Models\Job;
 
 /**
  * @title({name="计划任务日志管理"})
@@ -13,12 +14,18 @@ class LogController extends \App\Backend\Controllers\FormController
 {
 
     private $modelLog;
+    private $modelJob;
 
     public function initialize()
     {
         $this->modelLog = new Log();
+        $this->modelJob = new Job();
+        $this->jobList = $this->modelJob->getAll();
+
         parent::initialize();
     }
+
+    private $jobList = null;
 
     protected function getSchemas2($schemas)
     {
@@ -26,21 +33,24 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => '计划任务',
             'data' => array(
                 'type' => 'string',
-                'defaultValue' => '',
-                'length' => 30
+                'length' => '24'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->jobList
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'items' => $this->jobList
             ),
             'search' => array(
-                'is_show' => false
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->jobList
             ),
             'export' => array(
                 'is_show' => true

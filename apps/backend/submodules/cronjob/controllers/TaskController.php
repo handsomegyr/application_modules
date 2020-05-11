@@ -20,7 +20,8 @@ class TaskController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['type'] = array(
+    {
+        $schemas['type'] = array(
             'name' => '任务类别',
             'data' => array(
                 'type' => 'integer',
