@@ -12,7 +12,7 @@ use App\Backend\Submodules\Company\Models\Project;
 class ProjectController extends \App\Backend\Controllers\FormController
 {
     private $modelProject;
-    protected $NGINX_SERVER_DOMAIN = ".myweb.com ";
+    protected $NGINX_SERVER_DOMAIN = ".myweb.com";
     public function initialize()
     {
         $this->modelProject = new Project();

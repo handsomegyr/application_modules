@@ -33,7 +33,7 @@ EOD;
     protected $WWWROOT_PROD_R = '/home/webs/prod/';
 
     // nginx 相关    
-    protected $NGINX_SERVER_DOMAIN = ".myweb.com ";
+    protected $NGINX_SERVER_DOMAIN = ".myweb.com";
 
     protected $NGINX_CONF_DEV_R = '/etc/nginx/conf.d/dev/';
     protected $NGINX_CONF_TEST_R = '/etc/nginx/conf.d/test/';
