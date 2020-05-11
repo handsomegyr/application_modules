@@ -299,9 +299,9 @@ EOD;
         $list = array();
         foreach ($tables as $key => $tableInfo) {
             foreach ($tableInfo as $key2 => $value) {
-                $result = $db->query("UPDATE {$value} SET __CREATE_USER_ID__ = '1',__CREATE_USER_NAME__='admin', __MODIFY_USER_ID__ = '1',__MODIFY_USER_NAME__='admin'", array());
+                // $result = $db->query("UPDATE {$value} SET __CREATE_USER_ID__ = '1',__CREATE_USER_NAME__='admin', __MODIFY_USER_ID__ = '1',__MODIFY_USER_NAME__='admin'", array());
                 $list[] = $value;
-            }            
+            }
         }
         return $list;
     }
