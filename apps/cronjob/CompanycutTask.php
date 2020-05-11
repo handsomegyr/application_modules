@@ -133,9 +133,20 @@ EOD;
         }
         $do_time = time();
 
-        // 不是debug的时候
-        if (empty($is_debug)) {
-
+        // 是debug的时候
+        if (!empty($is_debug)) {
+            // 测试用
+            $taskInfo = array();
+            $taskInfo['content'] = array('process_list' => $process_list, 'project_code' => $project_code);
+            $cutTaskList['datas'][] = $taskInfo;
+            // 循环处理
+            foreach ($cutTaskList['datas'] as $taskInfo) {
+                $taskResult = $this->doTask($taskInfo, $do_time);
+                print_r($taskResult);
+            }
+            echo "project_code:{$project_code} process_list:{$process_list} debug test";
+            return;
+        } else {
             // 检查是否锁定，如果没有锁定加锁
             $key = cacheKey(__FILE__, __CLASS__, __METHOD__);
             $objLock = new \iLock($key);
@@ -143,7 +154,7 @@ EOD;
                 echo "上次操作还未完成,请等待";
                 return false;
             }
-            
+
             $modelTask = new \App\Cronjob\Models\Task();
             // 从task表中取出cut相关的任务进行处理  
             $query = array('type' => 1, 'is_done' => false);
@@ -153,14 +164,18 @@ EOD;
                 echo "无进行操作的任务";
                 return false;
             }
+            $listHandled = array();
             // 循环处理
             foreach ($cutTaskList['datas'] as $taskInfo) {
                 try {
                     $modelTask->begin();
                     $taskResult = $this->doTask($taskInfo, $do_time);
+                    $listHandled[] = $taskResult;
                     if (!empty($taskResult['taskSuccess'])) {
                         // 成功的话
                         $modelTask->finishTask($taskInfo, $do_time, $taskResult);
+                    } else {
+                        throw new \Exception("发生了错误:" . $taskResult['taskErrorMsg']);
                     }
                     $modelTask->commit();
                 } catch (\Exception $e) {
@@ -180,16 +195,9 @@ EOD;
                     $modelTask->recordTaskInfo($taskInfo, $is_done, $do_time, $memo);
                 }
             }
-        } else {
-            // 测试用
-            $taskInfo = array();
-            $taskInfo['content'] = array('process_list' => $process_list, 'project_code' => $project_code);
-            $cutTaskList['datas'][] = $taskInfo;
-            // 循环处理
-            foreach ($cutTaskList['datas'] as $taskInfo) {
-                $taskResult = $this->doTask($taskInfo, $do_time);
-                print_r($taskResult);
-            }
+
+            echo \json_encode($listHandled) . " is handled";
+            return;
         }
     }
 
@@ -197,10 +205,13 @@ EOD;
     {
         $taskResult = array();
         $taskResult['taskInfo'] = $taskInfo;
-        $taskResult['taskSuccess'] = false;
+        $taskResult['taskSuccess'] = true;
 
         $taskContent = $taskInfo['content'];
         $project_code = $taskContent['project_code'];
+        $project_id = $taskContent['project_id'];
+        // $modelProject = new \App\Company\Models\Project();
+
         // 创建工程的时候 需要做很多的操作
         if ($taskContent['process_list'] == 'create_project') {
             $processList = array(
@@ -220,17 +231,15 @@ EOD;
                 $output = "";
                 $ret = "";
                 $tip = "";
-                $success = false;
+                $success = true;
                 if ($process_name == 'svn_create') {
                     // svn create 版本库
                     // svnadmin create /mnt/svn/test2
                     $realm = $this->SVNROOT_R . $project_code;
-                    $subcommand = ' create ';
-                    $cmdline = $this->SVNADMCMD . $subcommand . $realm  . ' 2>&1 ';
-                    $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
+                    if (!file_exists($realm . '/conf/svnserve.conf')) {
+                        $subcommand = ' create ';
+                        $cmdline = $this->SVNADMCMD . $subcommand . $realm  . ' 2>&1 ';
+                        $tip = exec("$cmdline", $output, $ret);
                     }
                 } elseif ($process_name == 'svn_import') {
                     // 将工程交由版本库控制：svn import 项目目录 SVN Repository URL -m "提交日志信息"
@@ -240,41 +249,29 @@ EOD;
                     $svn_url = $this->SVNSERVER . $project_code;
                     $cmdline = $this->SVNCMD . $subcommand . $workingcopy_path . ' ' . $svn_url . ' -m "' . $project_code . '" ' . $this->SVNOPTIONS . ' 2>&1 ';
                     $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
-                    }
                 } elseif ($process_name == 'svn_conf_svnserve') {
                     // 创建conf/svnserve.conf文件
                     $realm = $this->SVNROOT_R . $project_code;
-                    $config4SvnServer = str_replace("#_realm_#", $realm, $this->SVNSERVER_CONFIG_TEMPLATE);
-                    $cmdline = "file_put_contents to {$realm}/conf/svnserve.conf";
-                    $tip = file_put_contents($realm . "/conf/svnserve.conf", $config4SvnServer);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
+                    if (!file_exists($realm . "/conf/svnserve.conf")) {
+                        $config4SvnServer = str_replace("#_realm_#", $realm, $this->SVNSERVER_CONFIG_TEMPLATE);
+                        $cmdline = "file_put_contents to {$realm}/conf/svnserve.conf";
+                        $tip = file_put_contents($realm . "/conf/svnserve.conf", $config4SvnServer);
                     }
                 } elseif ($process_name == 'svn_conf_post_comit') {
                     // 创建hooks/post-commit文件                        
                     $realm = $this->SVNROOT_R . $project_code;
-                    $workingcopy_path = $this->WWWROOT_DEV_R . $project_code;
-                    $config4PostCommit = str_replace("#_path_#", $workingcopy_path, $this->POST_COMMIT_CONFIG_TEMPLATE);
-                    $cmdline = "file_put_contents to {$realm}/hooks/post-commit";
-                    $tip = file_put_contents($realm . "/hooks/post-commit", $config4PostCommit);
-                    $tip = chmod($realm . "/hooks/post-commit", 777);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
+                    if (!file_exists($realm . "/hooks/post-commit")) {
+                        $workingcopy_path = $this->WWWROOT_DEV_R . $project_code;
+                        $config4PostCommit = str_replace("#_path_#", $workingcopy_path, $this->POST_COMMIT_CONFIG_TEMPLATE);
+                        $cmdline = "file_put_contents to {$realm}/hooks/post-commit";
+                        $tip = file_put_contents($realm . "/hooks/post-commit", $config4PostCommit);
+                        $tip = chmod($realm . "/hooks/post-commit", 777);
                     }
                 } elseif ($process_name == 'mkdir_www_dev') {
                     // 创建开发环境的目录 
                     $workingcopy_path = $this->WWWROOT_DEV_R . $project_code;
                     $cmdline = "mkdir -p {$workingcopy_path}";
                     $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
-                    }
                 } elseif ($process_name == 'svn_check') {
                     // SVN checkout 代码到开发环境的目录
                     // svn checkout svn://127.0.0.1/xxx /mnt/www/dev/xxxx/ --username xxx --password xxx
@@ -283,26 +280,19 @@ EOD;
                     $svn_url = $this->SVNSERVER . $project_code;
                     $cmdline = $this->SVNCMD . $subcommand . $svn_url . ' ' . $workingcopy_path . $this->SVNOPTIONS . ' 2>&1 ';
                     $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
-                    }
                 } elseif ($process_name == 'ngxin_conf_dev') {
                     // 创建开发环境的nginx/conf文件
                     $server_name = $project_code . "_dev" . $this->NGINX_SERVER_DOMAIN;
                     $root_path = $this->WWWROOT_DEV_R . $project_code . "/public";
                     $access_log = $this->NGINX_ACCESSLOG_DEV_R . $project_code . ".log";
                     $file4Nginx = $this->NGINX_CONF_DEV_R . $project_code . ".conf";
-
-                    $config4Nginx = $this->NGINX_CONFIG_TEMPLATE;
-                    $config4Nginx = str_replace("#_server_name_#", $server_name, $config4Nginx);
-                    $config4Nginx = str_replace("#_root_path_#", $root_path, $config4Nginx);
-                    $config4Nginx = str_replace("#_access_log_#", $access_log, $config4Nginx);
-                    $cmdline = "file_put_contents to {$file4Nginx}";
-                    $tip = file_put_contents($file4Nginx, $config4Nginx);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
+                    if (!file_exists($file4Nginx)) {
+                        $config4Nginx = $this->NGINX_CONFIG_TEMPLATE;
+                        $config4Nginx = str_replace("#_server_name_#", $server_name, $config4Nginx);
+                        $config4Nginx = str_replace("#_root_path_#", $root_path, $config4Nginx);
+                        $config4Nginx = str_replace("#_access_log_#", $access_log, $config4Nginx);
+                        $cmdline = "file_put_contents to {$file4Nginx}";
+                        $tip = file_put_contents($file4Nginx, $config4Nginx);
                     }
                 } elseif ($process_name == 'ngxin_conf_test') {
                     // 创建测试环境的nginx/conf文件
@@ -310,16 +300,13 @@ EOD;
                     $root_path = $this->WWWROOT_TEST_R . $project_code . "/public";
                     $access_log = $this->NGINX_ACCESSLOG_TEST_R . $project_code . ".log";
                     $file4Nginx = $this->NGINX_CONF_TEST_R . $project_code . ".conf";
-
-                    $config4Nginx = $this->NGINX_CONFIG_TEMPLATE;
-                    $config4Nginx = str_replace("#_server_name_#", $server_name, $config4Nginx);
-                    $config4Nginx = str_replace("#_root_path_#", $root_path, $config4Nginx);
-                    $config4Nginx = str_replace("#_access_log_#", $access_log, $config4Nginx);
-                    $cmdline = "file_put_contents to {$file4Nginx}";
-                    $tip = file_put_contents($file4Nginx, $config4Nginx);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
+                    if (!file_exists($file4Nginx)) {
+                        $config4Nginx = $this->NGINX_CONFIG_TEMPLATE;
+                        $config4Nginx = str_replace("#_server_name_#", $server_name, $config4Nginx);
+                        $config4Nginx = str_replace("#_root_path_#", $root_path, $config4Nginx);
+                        $config4Nginx = str_replace("#_access_log_#", $access_log, $config4Nginx);
+                        $cmdline = "file_put_contents to {$file4Nginx}";
+                        $tip = file_put_contents($file4Nginx, $config4Nginx);
                     }
                 } elseif ($process_name == 'ngxin_conf_prod') {
                     // 创建正式环境的nginx/conf文件
@@ -327,67 +314,46 @@ EOD;
                     $root_path = $this->WWWROOT_PROD_R . $project_code . "/public";
                     $access_log = $this->NGINX_ACCESSLOG_PROD_R . $project_code . ".log";
                     $file4Nginx = $this->NGINX_CONF_PROD_R . $project_code . ".conf";
-
-                    $config4Nginx = $this->NGINX_CONFIG_TEMPLATE;
-                    $config4Nginx = str_replace("#_server_name_#", $server_name, $config4Nginx);
-                    $config4Nginx = str_replace("#_root_path_#", $root_path, $config4Nginx);
-                    $config4Nginx = str_replace("#_access_log_#", $access_log, $config4Nginx);
-                    $cmdline = "file_put_contents to {$file4Nginx}";
-                    $tip = file_put_contents($file4Nginx, $config4Nginx);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
+                    if (!file_exists($file4Nginx)) {
+                        $config4Nginx = $this->NGINX_CONFIG_TEMPLATE;
+                        $config4Nginx = str_replace("#_server_name_#", $server_name, $config4Nginx);
+                        $config4Nginx = str_replace("#_root_path_#", $root_path, $config4Nginx);
+                        $config4Nginx = str_replace("#_access_log_#", $access_log, $config4Nginx);
+                        $cmdline = "file_put_contents to {$file4Nginx}";
+                        $tip = file_put_contents($file4Nginx, $config4Nginx);
                     }
                 } elseif ($process_name == 'reload_nginx_all') {
                     // 重启所有环境的nginx服务
                     $cmdline = 'ansible storm_cluster -m command -a "systemctl reload nginx"';
                     $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
-                    }
                 } elseif ($process_name == 'reload_nginx_dev') {
                     // 重启开发环境的nginx服务
                     $cmdline = "systemctl reload nginx";
                     $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
-                    }
                 } elseif ($process_name == 'rsync_dev_to_test') {
                     // 将开发环境的代码同步到测试环境 
                     // "rsync -azu --progress --delete --exclude=*.log --exclude=*.svn --exclude=.svn /mnt/www/"+project_code+"_demo"+" /mnt/www/"+project_code,                      
                     $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_DEV_R . $project_code . " " . $this->WWWROOT_TEST_R . $project_code;
                     $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
-                    }
                 } elseif ($process_name == 'publish_test_to_prod') {
                     // 将测试环境的代码发布到正式环境 
                     // "rsync -azu --progress --delete --exclude=*.log --exclude=*.svn --exclude=.svn /mnt/www/"+project_code+"_demo"+" /mnt/www/"+project_code,                      
                     $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_TEST_R . $project_code . " " . $this->WWWROOT_PROD_R . $project_code;
                     $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
-                    }
                 } elseif ($process_name == 'rsync_server_to_test') {
                     // 将开发环境nginx配置同步到各个测试环境 
                     $cmdline = 'ansible storm_cluster -m command -a "' . $this->RSYNCCMD . " " . $this->NGINX_CONF_TEST_R . $project_code . ".conf" . " " . $this->NGINX_CONF_TEST_R . $project_code . ".conf" . '"';
                     $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
-                    }
                 } elseif ($process_name == 'rsync_server_to_prod') {
                     // 将开发环境nginx配置同步到各个正式环境 
                     $cmdline = 'ansible storm_cluster -m command -a "' . $this->RSYNCCMD . " " . $this->NGINX_CONF_PROD_R . $project_code . ".conf" . " " . $this->NGINX_CONF_PROD_R . $project_code . ".conf" . '"';
                     $tip = exec("$cmdline", $output, $ret);
-                    // 成功的话
-                    if (empty($ret)) {
-                        $success = true;
-                    }
+                }
+                // 成功的话
+                if (empty($ret)) {
+                    $success = true;
+                } else {
+                    $success = false;
                 }
                 $result_ary = array();
                 $result_ary['process_name'] = $process_name;
@@ -399,6 +365,10 @@ EOD;
                 $result_ary['output'] = $output;
                 $taskResult['processList'][] = $result_ary;
                 $taskResult['taskSuccess'] = $taskResult['taskSuccess'] && $success;
+                if (!$success) {
+                    $taskResult['taskErrorMsg'] = $tip;
+                    return $taskResult;
+                }
             }
         }
 

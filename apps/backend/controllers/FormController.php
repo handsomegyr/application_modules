@@ -550,6 +550,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
         foreach ($schemas as $key => $field) {
             if (empty($field['form']['is_show'])) {
+                if ($this->actionName == 'insert') {
+                    $input->addSchema($key, $field);
+                    $input->$key = isset($field['data']['defaultValue']) ? $field['data']['defaultValue'] : '';
+                }
                 continue;
             }
             if (!empty($field['form']['readonly'])) {
