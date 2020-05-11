@@ -132,18 +132,21 @@ Core script to handle the entire layout and base functions
                         _action: '',
                     });
 
-                    var formData1 = {};//new FormData();
+                    // var formData1 = new FormData();
+                    var formData1 = {};
                     for (var key in data) {
                         // formData1.append(key, data[key]);
-                        formData1.key = data[key];
+                        formData1[key] = data[key];
                     }
                     // var formData1 = data;
                     $.ajax({
+                        // method: 'GET',
                         type: 'GET',
                         url: url,
+                        dataType: "json", //预期服务器返回的数据类型
                         cache: false,
                         contentType: false,
-                        processData: false,
+                        // processData: false,
                         data: formData1,
                         success: function(data) {
                             // alert('success');
