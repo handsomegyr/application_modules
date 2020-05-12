@@ -110,9 +110,10 @@ server {
 EOD;
 
     // 文件同步相关
-    protected $RSYNCCMD = "/bin/env USER='root' RSYNC_PASSWORD='guotingyu0324' /usr/bin/rsync -vzrpt --progress --delete --exclude='.svn' --exclude='.git' --exclude='.buildpath' --exclude='.project' --exclude='.gitignore' --exclude='*.log' --exclude='/logs/*' --exclude='/cache/*' --exclude=node_modules "; //--blocking-io
+    //protected $RSYNCCMD = "/bin/env USER='root' RSYNC_PASSWORD='guotingyu0324' /usr/bin/rsync -azu --progress --delete --exclude='.svn' --exclude='.git' --exclude='.buildpath' --exclude='.project' --exclude='.gitignore' --exclude='*.log' --exclude='/logs/*' --exclude='/cache/*' --exclude=node_modules "; //--blocking-io
+    protected $RSYNCCMD = "rsync -azu --delete --exclude=*.log --exclude=.svn  --exclude=*.svn ";
     protected $RSYNCSERVER = '192.168.81.129';
-
+    protected $IPS = array('192.168.81.129');
     /**
      * 公司CUT相关的处理
      * cd /learn-php/phalcon/application_modules/apps/cronjob
@@ -175,7 +176,7 @@ EOD;
                         // 成功的话
                         $modelTask->finishTask($taskInfo, $do_time, $taskResult);
                     } else {
-                        throw new \Exception("发生了错误:" . $taskResult['taskErrorMsg']);
+                        throw new \Exception(\json_encode($taskResult['errorTask']));
                     }
                     $modelTask->commit();
                 } catch (\Exception $e) {
@@ -331,15 +332,19 @@ EOD;
                     $cmdline = "systemctl reload nginx";
                     $tip = exec("$cmdline", $output, $ret);
                 } elseif ($process_name == 'rsync_dev_to_test') {
-                    // 将开发环境的代码同步到测试环境 
-                    // "rsync -azu --progress --delete --exclude=*.log --exclude=*.svn --exclude=.svn /mnt/www/"+project_code+"_demo"+" /mnt/www/"+project_code,                      
-                    $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_DEV_R . $project_code . " " . $this->WWWROOT_TEST_R . $project_code;
-                    $tip = exec("$cmdline", $output, $ret);
+                    // 将开发环境的代码同步到测试环境                      
+                    // "rsync -azu --delete --exclude=*.log --exclude=.svn  --exclude=*.svn /mnt/www/"+project_code+"_demo/ root@"+ip[i]+":/mnt/www/"+project_code+"_demo/"
+                    foreach ($this->IPS as $ip) {
+                        $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_DEV_R . $project_code . "/" . " root@{$ip}:" . $this->WWWROOT_TEST_R . $project_code . "/";
+                        $tip = exec("$cmdline", $output, $ret);
+                    }
                 } elseif ($process_name == 'publish_test_to_prod') {
                     // 将测试环境的代码发布到正式环境 
-                    // "rsync -azu --progress --delete --exclude=*.log --exclude=*.svn --exclude=.svn /mnt/www/"+project_code+"_demo"+" /mnt/www/"+project_code,                      
-                    $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_TEST_R . $project_code . " " . $this->WWWROOT_PROD_R . $project_code;
-                    $tip = exec("$cmdline", $output, $ret);
+                    // "rsync -azu --progress --delete --exclude=*.log --exclude=*.svn --exclude=.svn /mnt/www/"+project_code+"_demo"+" /mnt/www/"+project_code,
+                    foreach ($this->IPS as $ip) {
+                        $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_TEST_R . $project_code . "/" . " root@{$ip}:" . $this->WWWROOT_PROD_R . $project_code . "/";
+                        $tip = exec("$cmdline", $output, $ret);
+                    }
                 } elseif ($process_name == 'rsync_server_to_test') {
                     // 将开发环境nginx配置同步到各个测试环境 
                     $cmdline = 'ansible storm_cluster -m command -a "' . $this->RSYNCCMD . " " . $this->NGINX_CONF_TEST_R . $project_code . ".conf" . " " . $this->NGINX_CONF_TEST_R . $project_code . ".conf" . '"';
@@ -367,6 +372,7 @@ EOD;
                 $taskResult['taskSuccess'] = $taskResult['taskSuccess'] && $success;
                 if (!$success) {
                     $taskResult['taskErrorMsg'] = $tip;
+                    $taskResult['errorTask'] = $result_ary;
                     return $taskResult;
                 }
             }

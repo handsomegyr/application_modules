@@ -3,6 +3,7 @@
 namespace App\Backend\Submodules\Company\Controllers;
 
 use App\Backend\Submodules\Company\Models\Project;
+use App\Cronjob\Models\Task;
 
 /**
  * @title({name="项目管理"})
@@ -12,10 +13,15 @@ use App\Backend\Submodules\Company\Models\Project;
 class ProjectController extends \App\Backend\Controllers\FormController
 {
     private $modelProject;
+    private $modelTask;
+
+    protected $COMPANY_CUT_TASKTYPE = 1;
     protected $NGINX_SERVER_DOMAIN = ".myweb.com";
+
     public function initialize()
     {
         $this->modelProject = new Project();
+        $this->modelTask = new Task();
         parent::initialize();
     }
 
@@ -24,6 +30,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $tools['buildprojectsettings'] = array(
             'title' => '构建项目环境',
             'action' => 'buildprojectsettings',
+            'process_without_modal' => true,
             // 'is_show' =>true,
             'is_show' => function ($row) {
                 if (!empty($row) && !empty($row['project_code'])) {
@@ -34,7 +41,20 @@ class ProjectController extends \App\Backend\Controllers\FormController
             },
             'icon' => 'fa-pencil-square-o',
         );
-
+        $tools['rsyncdevtotest'] = array(
+            'title' => '同步测试',
+            'action' => 'rsyncdevtotest',
+            'process_without_modal' => true,
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['project_code'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
         return $tools;
     }
 
@@ -76,12 +96,41 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
             // 登录一个任务
-            $modelTask = new \App\Cronjob\Models\Task();
             $taskContent = array();
             $taskContent['project_code'] = $data['project_code'];
             $taskContent['project_id'] = $data['_id'];
             $taskContent['process_list'] = 'create_project';
-            $taskInfo = $modelTask->log(1, $taskContent);
+            $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
+            $res['taskInfo'] = $taskInfo;
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="同步测试"})
+     *
+     * @name 同步测试
+     */
+    public function rsyncdevtotestAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/authorizer/rsyncdevtotest?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelProject->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+            // 登录一个任务
+            $taskContent = array();
+            $taskContent['project_code'] = $data['project_code'];
+            $taskContent['project_id'] = $data['_id'];
+            $taskContent['process_list'] = 'rsync_dev_to_test';
+            $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
             $res['taskInfo'] = $taskInfo;
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
@@ -91,6 +140,9 @@ class ProjectController extends \App\Backend\Controllers\FormController
 
     protected function getSchemas2($schemas)
     {
+        $schemas['_id']['list']['is_show'] = false;
+        $schemas['_id']['search']['is_show'] = false;
+
         $schemas['project_code'] = array(
             'name' => '项目编号',
             'data' => array(
@@ -224,7 +276,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['ae'] = array(
-            'name' => 'AE信息,多个AE用逗号间隔',
+            'name' => 'AE信息',
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
@@ -236,10 +288,11 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '多个AE用逗号间隔',
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -251,7 +304,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['executives'] = array(
-            'name' => '执行人信息,多个执行人用逗号间隔',
+            'name' => '执行人信息',
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
@@ -263,10 +316,11 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '多个执行人用逗号间隔',
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -317,7 +371,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['dev_url'] = array(
-            'name' => '开发地址,多个地址用逗号间隔',
+            'name' => '开发地址',
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
@@ -330,6 +384,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
+                'name' => '多个地址用逗号间隔',
                 'extensionSettings' => function ($column, $Grid) {
                     $settings = array();
                     $row = $column->getRow();
@@ -341,7 +396,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 }
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -353,7 +408,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['test_url'] = array(
-            'name' => '测试地址,多个地址用逗号间隔',
+            'name' => '测试地址',
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
@@ -366,6 +421,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
+                'help' => '多个地址用逗号间隔',
                 'extensionSettings' => function ($column, $Grid) {
                     $settings = array();
                     $row = $column->getRow();
@@ -377,7 +433,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 }
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -389,7 +445,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['product_url'] = array(
-            'name' => '正式地址,多个地址用逗号间隔',
+            'name' => '正式地址',
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
@@ -402,6 +458,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
+                'help' => '多个地址用逗号间隔',
                 'extensionSettings' => function ($column, $Grid) {
                     $settings = array();
                     $row = $column->getRow();
@@ -413,7 +470,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 }
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -440,7 +497,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -467,7 +524,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -584,7 +641,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),

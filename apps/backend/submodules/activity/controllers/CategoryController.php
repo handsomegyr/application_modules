@@ -21,7 +21,8 @@ class CategoryController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['_id']['list']['is_show'] = false;
+    {
+        $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
 
         $schemas['code'] = array(
