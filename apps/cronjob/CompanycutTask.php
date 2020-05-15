@@ -332,19 +332,33 @@ EOD;
                     $cmdline = "systemctl reload nginx";
                     $tip = exec("$cmdline", $output, $ret);
                 } elseif ($process_name == 'rsync_dev_to_test') {
-                    // 将开发环境的代码同步到测试环境                      
+                    // 将开发环境的代码同步到测试环境
+                    // 先将开发用的代码目录同步到测试用的代码目录                      
                     // "rsync -azu --delete --exclude=*.log --exclude=.svn  --exclude=*.svn /mnt/www/"+project_code+"_demo/ root@"+ip[i]+":/mnt/www/"+project_code+"_demo/"
+                    $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_DEV_R . $project_code . "/" . " " . $this->WWWROOT_TEST_R . $project_code . "/";
+                    $tip = exec("$cmdline", $output, $ret);
+
+                    // 从本地机器上执行rsync命令同步到各个app服务器上
                     foreach ($this->IPS as $ip) {
-                        $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_DEV_R . $project_code . "/" . " root@{$ip}:" . $this->WWWROOT_TEST_R . $project_code . "/";
+                        $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_TEST_R . $project_code . "/" . " root@{$ip}:" . $this->WWWROOT_TEST_R . $project_code . "/";
                         $tip = exec("$cmdline", $output, $ret);
                     }
+
+                    // 或则用ansible工具处理
                 } elseif ($process_name == 'publish_test_to_prod') {
                     // 将测试环境的代码发布到正式环境 
+                    // 先将测试用的代码目录同步到正式用的代码目录
                     // "rsync -azu --progress --delete --exclude=*.log --exclude=*.svn --exclude=.svn /mnt/www/"+project_code+"_demo"+" /mnt/www/"+project_code,
+                    $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_TEST_R . $project_code . "/" . " " . $this->WWWROOT_PROD_R . $project_code . "/";
+                    $tip = exec("$cmdline", $output, $ret);
+
+                    // 从本地机器上执行rsync命令同步到各个app服务器上
                     foreach ($this->IPS as $ip) {
-                        $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_TEST_R . $project_code . "/" . " root@{$ip}:" . $this->WWWROOT_PROD_R . $project_code . "/";
+                        $cmdline = $this->RSYNCCMD . " " . $this->WWWROOT_PROD_R . $project_code . "/" . " root@{$ip}:" . $this->WWWROOT_PROD_R . $project_code . "/";
                         $tip = exec("$cmdline", $output, $ret);
                     }
+                    // 或则用ansible工具处理
+
                 } elseif ($process_name == 'rsync_server_to_test') {
                     // 将开发环境nginx配置同步到各个测试环境 
                     $cmdline = 'ansible storm_cluster -m command -a "' . $this->RSYNCCMD . " " . $this->NGINX_CONF_TEST_R . $project_code . ".conf" . " " . $this->NGINX_CONF_TEST_R . $project_code . ".conf" . '"';

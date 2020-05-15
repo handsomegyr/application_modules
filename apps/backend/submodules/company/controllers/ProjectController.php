@@ -55,6 +55,21 @@ class ProjectController extends \App\Backend\Controllers\FormController
             },
             'icon' => 'fa-pencil-square-o',
         );
+
+        $tools['publishtesttoprod'] = array(
+            'title' => '发布正式',
+            'action' => 'publishtesttoprod',
+            'process_without_modal' => true,
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['project_code'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
         return $tools;
     }
 
@@ -130,6 +145,36 @@ class ProjectController extends \App\Backend\Controllers\FormController
             $taskContent['project_code'] = $data['project_code'];
             $taskContent['project_id'] = $data['_id'];
             $taskContent['process_list'] = 'rsync_dev_to_test';
+            $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
+            $res['taskInfo'] = $taskInfo;
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="发布正式"})
+     *
+     * @name 发布正式
+     */
+    public function publishtesttoprodAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/authorizer/publishtesttoprod?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelProject->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+            // 登录一个任务
+            $taskContent = array();
+            $taskContent['project_code'] = $data['project_code'];
+            $taskContent['project_id'] = $data['_id'];
+            $taskContent['process_list'] = 'publish_test_to_prod';
             $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
             $res['taskInfo'] = $taskInfo;
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
