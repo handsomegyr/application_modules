@@ -3,6 +3,8 @@
 namespace App\Backend\Submodules\Company\Controllers;
 
 use App\Backend\Submodules\Company\Models\ProjectUser;
+use App\Backend\Submodules\Company\Models\Project;
+use App\Backend\Submodules\System\Models\User;
 
 /**
  * @title({name="项目用户管理"})
@@ -12,12 +14,22 @@ use App\Backend\Submodules\Company\Models\ProjectUser;
 class ProjectuserController extends \App\Backend\Controllers\FormController
 {
     private $modelProjectUser;
+    private $modelProject;
+    private $modelUser;
 
     public function initialize()
     {
         $this->modelProjectUser = new ProjectUser();
+        $this->modelProject = new Project();
+        $this->modelUser = new User();
+        
+        $this->projectList = $this->modelProject->getAll();
+        $this->userList = $this->modelUser->getAll();
         parent::initialize();
     }
+
+    private $projectList = null;
+    private $userList = null;
 
     protected function getSchemas2($schemas)
     {
@@ -25,24 +37,24 @@ class ProjectuserController extends \App\Backend\Controllers\FormController
             'name' => '项目ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->projectList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->projectList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->projectList
             ),
             'export' => array(
                 'is_show' => true
@@ -52,24 +64,24 @@ class ProjectuserController extends \App\Backend\Controllers\FormController
             'name' => '用户ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->userList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->userList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->userList
             ),
             'export' => array(
                 'is_show' => true

@@ -787,7 +787,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $token = $this->request->get('_token', array(
                 'trim'
             ), '');
-            $this->checkToken($token);
+            try {
+                $this->checkToken($token);
+            } catch (\Exception $th) {
+                die($th->getMessage());
+            }
         }
 
         // ajax请求的话

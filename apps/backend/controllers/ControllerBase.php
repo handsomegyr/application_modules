@@ -124,7 +124,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         }
 
         if ($_SESSION['csrf_token'] != $token) {
-            throw new \Exception("token is not correct");
+            throw new \Exception("token is not correct current_token:".$_SESSION['csrf_token']);
         }
 
         return true;

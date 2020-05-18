@@ -751,4 +751,16 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $input->test_url = $input->project_code . "_test" . $this->NGINX_SERVER_DOMAIN;
         $input->product_url = $input->project_code . $this->NGINX_SERVER_DOMAIN;
     }
+
+    protected function setDefaultQuery(\App\Backend\Models\Input $input)
+    {
+        $queryCondtions = array(
+            '$exp' => " ( exists (select * from icompany_project_user where `icompany_project_user`.`project_id` = `icompany_project`.`_id` and `icompany_project_user`.`user_id` = '1' and `icompany_project_user`.`__REMOVED__` = 0) ) "
+        );
+        // $queryCondtions = array(
+        //     'id' => array('$in' => array())
+        // );
+        $input->setDefaultQuery($queryCondtions);
+        return $input;
+    }
 }
