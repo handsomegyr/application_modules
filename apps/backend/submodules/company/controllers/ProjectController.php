@@ -100,7 +100,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
      */
     public function buildprojectsettingsAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/authorizer/buildprojectsettings?id=xxx
+        // http://www.applicationmodule.com/admin/weixin2/project/buildprojectsettings?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -130,7 +130,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
      */
     public function rsyncdevtotestAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/authorizer/rsyncdevtotest?id=xxx
+        // http://www.applicationmodule.com/admin/weixin2/project/rsyncdevtotest?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -160,7 +160,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
      */
     public function publishtesttoprodAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/authorizer/publishtesttoprod?id=xxx
+        // http://www.applicationmodule.com/admin/weixin2/project/publishtesttoprod?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -754,13 +754,20 @@ class ProjectController extends \App\Backend\Controllers\FormController
 
     protected function setDefaultQuery(\App\Backend\Models\Input $input)
     {
-        $queryCondtions = array(
-            '$exp' => " ( exists (select * from icompany_project_user where `icompany_project_user`.`project_id` = `icompany_project`.`_id` and `icompany_project_user`.`user_id` = '1' and `icompany_project_user`.`__REMOVED__` = 0) ) "
-        );
-        // $queryCondtions = array(
-        //     'id' => array('$in' => array())
-        // );
-        $input->setDefaultQuery($queryCondtions);
+        if (isset($_SESSION['roleInfo'])) {
+            $roleAlias = $_SESSION['roleInfo']['alias'];
+        } else {
+            $roleAlias = 'guest';
+        }
+        if ($roleAlias != 'superAdmin') {
+            $queryCondtions = array(
+                '$exp' => " ( exists (select * from icompany_project_user where `icompany_project_user`.`project_id` = `icompany_project`.`_id` and `icompany_project_user`.`user_id` = '{$_SESSION['admin_id']}' and `icompany_project_user`.`__REMOVED__` = 0) ) "
+            );
+            // $queryCondtions = array(
+            //     'id' => array('$in' => array())
+            // );
+            $input->setDefaultQuery($queryCondtions);
+        }
         return $input;
     }
 }

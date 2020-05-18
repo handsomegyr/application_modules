@@ -209,9 +209,8 @@ EOD;
         $taskResult['taskSuccess'] = true;
 
         $taskContent = $taskInfo['content'];
-        $project_code = $taskContent['project_code'];
-        $project_id = $taskContent['project_id'];
-        // $modelProject = new \App\Company\Models\Project();
+        $project_code = empty($taskContent['project_code']) ? "" : $taskContent['project_code'];
+        $project_id = empty($taskContent['project_id']) ? "" : $taskContent['project_id'];
 
         // 创建工程的时候 需要做很多的操作
         if ($taskContent['process_list'] == 'create_project') {
@@ -327,6 +326,10 @@ EOD;
                     // 重启所有环境的nginx服务
                     $cmdline = 'ansible storm_cluster -m command -a "systemctl reload nginx"';
                     $tip = exec("$cmdline", $output, $ret);
+                } elseif ($process_name == 'reload_php_all') {
+                    // 重启所有环境的php服务
+                    $cmdline = 'ansible storm_cluster -m command -a "systemctl restart php-fpm"';
+                    $tip = exec("$cmdline", $output, $ret);
                 } elseif ($process_name == 'reload_nginx_dev') {
                     // 重启开发环境的nginx服务
                     $cmdline = "systemctl reload nginx";
@@ -377,6 +380,7 @@ EOD;
                 $result_ary = array();
                 $result_ary['process_name'] = $process_name;
                 $result_ary['project_code'] = $project_code;
+                $result_ary['project_id'] = $project_id;
                 $result_ary['success'] = $success;
                 $result_ary['cmdline'] = $cmdline;
                 $result_ary['tip'] = $tip;

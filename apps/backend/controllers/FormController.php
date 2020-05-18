@@ -785,7 +785,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $is_active4index = ($requestUrl == 'admin/index') ? true : false;
 
         // 角色判断,当用户角色为非超级管理员时，进行权限判断
-        if (isset($_SESSION['admin_id'])) {
+        if (isset($_SESSION['roleInfo'])) {
             $roleAlias = $_SESSION['roleInfo']['alias'];
         } else {
             $roleAlias = 'guest';
