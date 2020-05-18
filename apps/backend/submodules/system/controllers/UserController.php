@@ -21,8 +21,12 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         $this->modelUser = new User();
         $this->modelRole = new Role();
+
+        $this->roleList = $this->modelRole->getAll();
+
         parent::initialize();
     }
+    private $roleList = null;
 
     protected function getSchemas2($schemas)
     {
@@ -105,15 +109,16 @@ class UserController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function () {
-                    return $this->modelRole->getAll();
-                }
+                'items' => $this->roleList
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'items' => $this->roleList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->roleList
             )
         );
 
@@ -192,14 +197,5 @@ class UserController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelUser;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $roleList = $this->modelRole->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['role'] = $roleList[$item['role']];
-        }
-        return $list;
     }
 }

@@ -9,6 +9,7 @@ use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength;
 use Phalcon\Validation\Validator\Between;
 use Phalcon\Filter\FilterFactory;
+use App\Backend\Submodules\System\Models\Menu;
 
 /**
  * @title({name="表管理"})
@@ -778,9 +779,36 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $input;
     }
 
+    protected function buildMenus()
+    {
+        $requestUrl = $this->moduleName . '/' . $this->controllerName;
+        $is_active4index = ($requestUrl == 'admin/index') ? true : false;
+
+        // 角色判断,当用户角色为非超级管理员时，进行权限判断
+        if (isset($_SESSION['admin_id'])) {
+            $roleAlias = $_SESSION['roleInfo']['alias'];
+        } else {
+            $roleAlias = 'guest';
+        }
+        $menu_list = !empty($_SESSION['roleInfo']) ? $_SESSION['roleInfo']['menu_list'] : array();
+        $modelMenu = new Menu();
+        $menus = $modelMenu->getPrivilege($menu_list, $requestUrl);
+        // $menus2 = $modelMenu->buildPrivilegeTree($menu_list, $requestUrl);
+        // print_r($menus);
+        // print_r($menus2);
+        // die($requestUrl);
+        $this->view->setVar('roleAlias', $roleAlias);
+        $this->view->setVar('menus', $menus);
+        $this->view->setVar('is_active4index', $is_active4index);
+    }
+
+
     public function initialize()
     {
         parent::initialize();
+
+        // 构建菜单
+        $this->buildMenus();
 
         // 检查token
         if ($this->request->isAjax() && $this->request->isPost()) {

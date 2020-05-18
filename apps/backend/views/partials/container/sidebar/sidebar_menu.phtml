@@ -1,36 +1,13 @@
-<?php
-
-use App\Backend\Submodules\System\Models\Menu;
-
-$requestUrl = $this->view->moduleName . '/' . $this->view->controllerName;
-$menu_list = !empty($_SESSION['roleInfo']) ? $_SESSION['roleInfo']['menu_list'] : array();
-
-$is_active4index = ($requestUrl == 'admin/index') ? true : false;
-
-// 角色判断,当用户角色为非超级管理员时，进行权限判断
-if (isset($_SESSION['admin_id'])) {
-	$roleAlias = $_SESSION['roleInfo']['alias'];
-} else {
-	$roleAlias = 'guest';
-}
-$modelMenu = new Menu();
-$menus = $modelMenu->getPrivilege($menu_list, $requestUrl);
-// $menus2 = $modelMenu->buildPrivilegeTree($menu_list, $requestUrl);
-// print_r($menus);
-// print_r($menus2);
-// die($requestUrl);
-?>
-
 <ul class="sidebar-menu tree" data-widget="tree">
 	<li class="header">菜单</li>
-	<li class="<?php if (!empty($is_active4index)) { ?>active<?php } ?> " style=" height: auto;">
+	<li class="<?php if (!empty($this->view->is_active4index)) { ?>active<?php } ?> " style=" height: auto;">
 		<a href="<?php echo $this->view->baseUrl ?>admin/index/index">
 			<i class="fa fa-bar-chart"></i> <span>首页</span>
 		</a>
 	</li>
 
 	<?php $index = 0; ?>
-	<?php foreach ($menus as $menukey => $menu) { ?>
+	<?php foreach ($this->view->menus as $menukey => $menu) { ?>
 		<?php
 		$this->partial('partials/container/sidebar/menu')
 		?>
