@@ -218,6 +218,7 @@ EOD;
                 'svn_create', 'svn_conf_svnserve', 'svn_conf_post_comit',
                 'mkdir_www_dev', 'svn_check', 'ngxin_conf_dev',
                 'ngxin_conf_test', 'ngxin_conf_prod',
+                'create_db',
                 'reload_nginx_dev', 'reload_nginx_all'
             );
         } else {
@@ -370,6 +371,28 @@ EOD;
                     // 将开发环境nginx配置同步到各个正式环境 
                     $cmdline = 'ansible storm_cluster -m command -a "' . $this->RSYNCCMD . " " . $this->NGINX_CONF_PROD_R . $project_code . ".conf" . " " . $this->NGINX_CONF_PROD_R . $project_code . ".conf" . '"';
                     $tip = exec("$cmdline", $output, $ret);
+                } elseif ($process_name == 'create_db') {
+                    // $di = $this->getDI();
+                    $di = \Phalcon\DI::getDefault();
+                    $config = $di->get('config');
+                    // 创建项目对应的数据库
+                    $connection = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+                        "host" => $config->database->host,
+                        "username" => $config->database->username,
+                        "password" => $config->database->password,
+                        // "dbname" => $config->database->dbname,
+                        "charset" => $config->database->charset,
+                        "collation" => $config->database->collation,
+                        'options'  => [
+                            \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$config->database->charset} COLLATE {$config->database->collation};",
+                            //\PDO::ATTR_CASE => PDO::CASE_LOWER,
+                        ],
+                    ));
+                    $ret = $connection->execute("CREATE DATABASE IF NOT EXISTS `?` DEFAULT CHARACTER SET ? COLLATE ? ", array(
+                        $project_code,
+                        $config->database->charset,
+                        $config->database->collation,
+                    ));
                 }
                 // 成功的话
                 if (empty($ret)) {

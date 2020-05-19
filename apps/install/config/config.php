@@ -1,6 +1,7 @@
 <?php
 define('CHARSET', 'utf-8');
 define('DBCHARSET', 'utf8mb4');
+define('DBCOLLATION', 'utf8mb4_unicode_ci');
 
 define('METHOD_UNDEFINED', 255);
 define('ENV_CHECK_RIGHT', 0);

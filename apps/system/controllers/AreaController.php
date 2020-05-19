@@ -1,4 +1,5 @@
 <?php
+
 namespace App\System\Controllers;
 
 use App\System\Models\Area;
@@ -30,7 +31,7 @@ class AreaController extends ControllerBase
         try {
             // 获取省列表
             $list = $this->modelArea->getProvinces();
-            
+
             // 返回结果
             echo ($this->result("获取成功", $list));
             return true;
@@ -50,7 +51,7 @@ class AreaController extends ControllerBase
             $province = $this->get('province', '');
             // 获取省列表
             $list = $this->modelArea->getCitys($province);
-            
+
             // 返回结果
             echo ($this->result("获取成功", $list));
             return true;
@@ -70,7 +71,7 @@ class AreaController extends ControllerBase
             $city = $this->get('city', '');
             // 获取省列表
             $list = $this->modelArea->getDistricts($city);
-            
+
             // 返回结果
             echo ($this->result("获取成功", $list));
             return true;
@@ -80,4 +81,3 @@ class AreaController extends ControllerBase
         }
     }
 }
-

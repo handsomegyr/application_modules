@@ -1,12 +1,13 @@
 <?php
+
 namespace App\Install\Controllers;
 
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 
 class IndexController extends ControllerBase
 {
-	private $lockfile= APP_PATH . 'apps/install/config/lock';
-	
+    private $lockfile = APP_PATH . 'apps/install/config/lock';
+
     public function initialize()
     {
         parent::initialize();
@@ -14,30 +15,30 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
-		
-		if(file_exists($this->lockfile)) {
-			die($this->lang('install_locked'));
-		}
+
+        if (file_exists($this->lockfile)) {
+            die($this->lang('install_locked'));
+        }
 
         // 数据库默认配置
         $this->assign('dbhost', '127.0.0.1');
         $this->assign('dbname', 'test1');
         $this->assign('dbuser', 'root');
         $this->assign('dbpw', 'guotingyu0324');
-        
+
         // 获取环境信息
         $this->getEnvInfo2();
-        
+
         // 数据库sql
         $dirfile_items = array();
         $key = 0;
         $dirList = $this->traverseDir(APP_PATH . 'apps/backend/submodules');
-        if (! empty($dirList)) {
+        if (!empty($dirList)) {
             foreach ($dirList as $dir) {
                 $sqlfile = $dir . '/config/install/schema.sql';
                 $dirfile_items[$key]['file'] = $sqlfile;
                 if (file_exists($sqlfile)) {
-                    if (is_writable(sqlfile)) {
+                    if (is_writable($sqlfile)) {
                         $dirfile_items[$key]['status'] = 1;
                         $dirfile_items[$key]['current'] = '+r+w';
                     } else {
@@ -49,11 +50,11 @@ class IndexController extends ControllerBase
                         $dirfile_items[$key]['status'] = 1;
                         $dirfile_items[$key]['current'] = '+r+w';
                     } else {
-                        $dirfile_items[$key]['status'] = - 1;
+                        $dirfile_items[$key]['status'] = -1;
                         $dirfile_items[$key]['current'] = 'nofile';
                     }
                 }
-                $key ++;
+                $key++;
             }
         }
         $this->assign('dirfile_items', $dirfile_items);
@@ -62,38 +63,38 @@ class IndexController extends ControllerBase
     public function buildAction()
     {
         $this->view->disable();
-        
+
         try {
             $dbhost = $this->get('dbhost', '');
             if (empty($dbhost)) {
-                echo $this->error(- 1, '数据库服务器地址为空');
+                echo $this->error(-1, '数据库服务器地址为空');
                 return false;
             }
             $dbname = $this->get('dbname', '');
             if (empty($dbhost)) {
-                echo $this->error(- 2, '数据库名为空');
+                echo $this->error(-2, '数据库名为空');
                 return false;
             }
             $dbuser = $this->get('dbuser', '');
             if (empty($dbhost)) {
-                echo $this->error(- 3, '数据库用户名为空');
+                echo $this->error(-3, '数据库用户名为空');
                 return false;
             }
             $dbpw = $this->get('dbpw', '');
             if (empty($dbhost)) {
-                echo $this->error(- 4, '数据库密码为空');
+                echo $this->error(-4, '数据库密码为空');
                 return false;
             }
             ///sleep(10);            
-			if(file_exists($this->lockfile)) {
-				echo $this->error(- 5, $this->lang('install_locked'));
+            if (file_exists($this->lockfile)) {
+                echo $this->error(-5, $this->lang('install_locked'));
                 return false;
-			}
-			touch($this->lockfile);
-			
+            }
+            touch($this->lockfile);
+
             // 创建数据库 构建表结构和数据
             $this->doMysql2($dbhost, $dbname, $dbuser, $dbpw);
-            
+
             echo $this->result('OK');
             return true;
         } catch (\Exception $e) {
@@ -105,7 +106,7 @@ class IndexController extends ControllerBase
     protected function dir_writeable($dir)
     {
         $writeable = 0;
-        if (! is_dir($dir)) {
+        if (!is_dir($dir)) {
             @mkdir($dir, 0777);
         }
         if (is_dir($dir)) {
@@ -127,10 +128,15 @@ class IndexController extends ControllerBase
             "username" => $dbuser,
             "password" => $dbpw,
             //"dbname" => $dbname,
-            "charset" => DBCHARSET
+            "charset" => DBCHARSET,
+            "collation" => DBCOLLATION,
+            'options'  => [
+                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES " . DBCHARSET . " COLLATE " . DBCOLLATION . ";",
+                //\PDO::ATTR_CASE => PDO::CASE_LOWER,
+            ],
         ));
         $dirList = $this->traverseDir(APP_PATH . 'apps/backend/submodules');
-        if (! empty($dirList)) {
+        if (!empty($dirList)) {
             foreach ($dirList as $dir) {
                 $sqlfile = $dir . '/config/install/schema.sql';
                 if (file_exists($sqlfile)) {
@@ -146,7 +152,7 @@ class IndexController extends ControllerBase
     {
         $sql = str_replace("\r\n", "\n", $sql);
         $sql = str_replace("\r", "\n", $sql);
-        
+
         $num = 0;
         foreach (explode(";\n", trim($sql)) as $query) {
             $ret[$num] = '';
@@ -155,7 +161,7 @@ class IndexController extends ControllerBase
                 // $ret[$num] .= (isset($query[0]) && $query[0] == '#') || (isset($query[1]) && isset($query[1]) && $query[0] . $query[1] == '--') ? '' : $query;
                 $ret[$num] .= $query;
             }
-            $num ++;
+            $num++;
         }
         foreach ($ret as $query) {
             $connection->execute($query);
@@ -176,7 +182,7 @@ class IndexController extends ControllerBase
             }
             closedir($dir_handle);
         }
-        
+
         return $dirList;
     }
 
@@ -206,7 +212,7 @@ class IndexController extends ControllerBase
                 'b' => 'notset'
             )
         );
-        
+
         foreach ($env_items as $key => $item) {
             if ($key == 'php') {
                 $env_items[$key]['current'] = PHP_VERSION;
@@ -225,13 +231,13 @@ class IndexController extends ControllerBase
             } elseif (isset($item['c'])) {
                 $env_items[$key]['current'] = constant($item['c']);
             }
-            
+
             $env_items[$key]['status'] = 1;
             if ($item['r'] != 'notset' && strcmp($env_items[$key]['current'], $item['r']) < 0) {
                 $env_items[$key]['status'] = 0;
             }
         }
-        
+
         $error_code = 0;
         foreach ($env_items as $key => $item) {
             $status = 1;
@@ -250,17 +256,16 @@ class IndexController extends ControllerBase
             }
             $env_items[$key]['check_status'] = $status;
         }
-        
+
         $this->assign('env_items_check_result', $error_code);
         $this->assign('env_items', $env_items);
     }
 
-	protected function lang($lang_key, $force = true)
-	{
-		$di = \Phalcon\DI::getDefault();
-		$install_config = $di->get('install_config');
-		$lang = isset($install_config['lang']) ? $install_config['lang'] : array();
-		return isset($lang[$lang_key]) ? $lang[$lang_key] : ($force ? $lang_key : '');
-	}
-	
+    protected function lang($lang_key, $force = true)
+    {
+        $di = \Phalcon\DI::getDefault();
+        $install_config = $di->get('install_config');
+        $lang = isset($install_config['lang']) ? $install_config['lang'] : array();
+        return isset($lang[$lang_key]) ? $lang[$lang_key] : ($force ? $lang_key : '');
+    }
 }

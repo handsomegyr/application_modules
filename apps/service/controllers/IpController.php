@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 class IpController extends ControllerBase
@@ -24,4 +25,3 @@ class IpController extends ControllerBase
         }
     }
 }
-

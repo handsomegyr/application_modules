@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 use App\Message\Models\Template;
@@ -36,7 +37,7 @@ class SmsController extends ControllerBase
             // ));
             // die(base64_encode($contents));
             $tpl_info = $this->messageTemplate->getInfoByCode($code);
-            if (! empty($tpl_info)) {
+            if (!empty($tpl_info)) {
                 $param = json_decode($contents, true);
                 $subject = ncReplaceText($tpl_info['title'], $param);
                 $message = ncReplaceText($tpl_info['content'], $param);
@@ -45,7 +46,7 @@ class SmsController extends ControllerBase
                 echo $this->result('OK');
             } else {
                 // 记录错误
-                echo $this->error(- 1, "code:{$code}对应的模版消息未设置");
+                echo $this->error(-1, "code:{$code}对应的模版消息未设置");
             }
             return;
         } catch (\Exception $e) {
@@ -54,4 +55,3 @@ class SmsController extends ControllerBase
         }
     }
 }
-

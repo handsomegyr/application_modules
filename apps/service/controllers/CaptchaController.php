@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 class CaptchaController extends ControllerBase
@@ -20,17 +21,16 @@ class CaptchaController extends ControllerBase
         $image_height = $this->get('image_height', '0');
         $options = array(
             'code_length' => 4
-        // 'captcha_type' => \Securimage::SI_CAPTCHA_MATHEMATIC
-                );
+            // 'captcha_type' => \Securimage::SI_CAPTCHA_MATHEMATIC
+        );
         $img = new \Securimage($options);
-        if (! empty($image_width)) {
+        if (!empty($image_width)) {
             $img->image_width = $image_width;
         }
-        if (! empty($image_height)) {
+        if (!empty($image_height)) {
             $img->image_height = $image_height;
         }
         $img->show();
         exit();
     }
 }
-

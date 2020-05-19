@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 class VcodeController extends ControllerBase
@@ -28,32 +29,32 @@ class VcodeController extends ControllerBase
         try {
             $userEmail = $this->get('userEmail', '');
             if (empty($userEmail)) {
-                echo ($this->error(- 1, '邮箱为空'));
+                echo ($this->error(-1, '邮箱为空'));
                 return false;
             }
-            
+
             // if (isset($_SESSION['vcode']) && (time() < $_SESSION['vcode']['vcode_expire_time'])) {
             // echo ($this->error(- 99, '请求过于频繁,请稍后再试'));
             // return false;
             // }
-            
+
             $captcha = trim($this->get('captcha', '')); // captcha
-            if (! empty($captcha)) {
+            if (!empty($captcha)) {
                 $image = new \Securimage();
                 if ($image->check($captcha) == true) {
                     // echo "Correct!";
                 } else {
-                    echo ($this->error(- 3, "验证码不正确"));
+                    echo ($this->error(-3, "验证码不正确"));
                     return false;
                 }
             } else {
                 // 该手机号一天n次的话,就出现验证码
                 $isCaptchaNeed = $this->isCaptchaNeed($userEmail, 10);
-                if (! empty($isCaptchaNeed)) {
-                    echo ($this->error(- 4, "请输入验证码"));
+                if (!empty($isCaptchaNeed)) {
+                    echo ($this->error(-4, "请输入验证码"));
                     return false;
                 }
-                
+
                 // 记录调用次数
                 $key = $this->getCacheKey($userEmail);
                 $cache = $this->getDI()->get("cache");
@@ -63,7 +64,7 @@ class VcodeController extends ControllerBase
                 }
                 $cache->save($key, $count + 1, 60 * 60 * 24); // 24小时
             }
-            
+
             // 发送验证码处理
             $vcode = createRandNumber10();
             $vcode = substr($vcode, 0, 6);
@@ -72,7 +73,7 @@ class VcodeController extends ControllerBase
             $ret = $this->mailSettings->sendEmail($userEmail, $tpl_info['subject'], $tpl_info['content']);
             echo $this->result('OK');
             fastcgi_finish_request();
-            
+
             $now = time();
             $_SESSION['vcode'] = array(
                 'vkey' => $userEmail,
@@ -96,37 +97,37 @@ class VcodeController extends ControllerBase
         try {
             $mobile = $this->get('mobile', '');
             if (empty($mobile)) {
-                echo ($this->error(- 1, '手机号的值为空'));
+                echo ($this->error(-1, '手机号的值为空'));
                 return false;
             }
-            
-            if (! isValidMobile($mobile)) {
-                echo ($this->error(- 2, '手机号的格式不正确'));
+
+            if (!isValidMobile($mobile)) {
+                echo ($this->error(-2, '手机号的格式不正确'));
                 return false;
             }
-            
+
             // if (isset($_SESSION['vcode']) && (time() < $_SESSION['vcode']['vcode_expire_time'])) {
             // echo ($this->error(- 99, '请求过于频繁,请稍后再试'));
             // return false;
             // }
-            
+
             $captcha = trim($this->get('captcha', '')); // captcha
-            if (! empty($captcha)) {
+            if (!empty($captcha)) {
                 $image = new \Securimage();
                 if ($image->check($captcha) == true) {
                     // echo "Correct!";
                 } else {
-                    echo ($this->error(- 3, "验证码不正确"));
+                    echo ($this->error(-3, "验证码不正确"));
                     return false;
                 }
             } else {
                 // 该手机号一天n次的话,就出现验证码
                 $isCaptchaNeed = $this->isCaptchaNeed($mobile, 10);
-                if (! empty($isCaptchaNeed)) {
-                    echo ($this->error(- 4, "请输入验证码"));
+                if (!empty($isCaptchaNeed)) {
+                    echo ($this->error(-4, "请输入验证码"));
                     return false;
                 }
-                
+
                 // 记录调用次数
                 $key = $this->getCacheKey($mobile);
                 $cache = $this->getDI()->get("cache");
@@ -136,7 +137,7 @@ class VcodeController extends ControllerBase
                 }
                 $cache->save($key, $count + 1, 60 * 60 * 24); // 24小时
             }
-            
+
             // 发送验证码处理
             $vcode = createRandNumber10();
             $vcode = substr($vcode, 0, 6);
@@ -145,7 +146,7 @@ class VcodeController extends ControllerBase
             $ret = $this->smsSettings->sendSms($mobile, $tpl_info['subject'], $tpl_info['content']);
             echo $this->result('OK');
             fastcgi_finish_request();
-            
+
             $now = time();
             $_SESSION['vcode'] = array(
                 'vkey' => $mobile,
@@ -169,10 +170,10 @@ class VcodeController extends ControllerBase
         try {
             $sn = $this->get('sn', '');
             $userEmail = $this->get('userEmail', '');
-            
+
             // 验证码检查
             $validateRet = $this->validateVcode($sn, $userEmail);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
@@ -193,10 +194,10 @@ class VcodeController extends ControllerBase
         try {
             $sn = $this->get('sn', '');
             $mobile = $this->get('mobile', '');
-            
+
             // 验证码检查
             $validateRet = $this->validateVcode($sn, $mobile);
-            if (! empty($validateRet['error_code'])) {
+            if (!empty($validateRet['error_code'])) {
                 echo ($this->error($validateRet['error_code'], $validateRet['error_msg']));
                 return false;
             }
@@ -216,7 +217,7 @@ class VcodeController extends ControllerBase
         $cache = $this->getDI()->get("cache");
         $count = $cache->get($key);
         $isCaptchaNeed = ($count >= $num);
-        
+
         return $isCaptchaNeed;
     }
 
@@ -226,4 +227,3 @@ class VcodeController extends ControllerBase
         return $key;
     }
 }
-

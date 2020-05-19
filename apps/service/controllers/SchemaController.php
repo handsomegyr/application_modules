@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 use \Phalcon\Db\Column;
@@ -11,82 +12,82 @@ class SchemaController extends ControllerBase
          * Integer abstract type
          */
         Column::TYPE_INTEGER => 'Integer',
-        
+
         /**
          * Date abstract type
          */
         Column::TYPE_DATE => 'Date',
-        
+
         /**
          * Varchar abstract type
          */
         Column::TYPE_VARCHAR => 'Varchar',
-        
+
         /**
          * Decimal abstract type
          */
         Column::TYPE_DECIMAL => 'Decimal',
-        
+
         /**
          * Datetime abstract type
          */
         Column::TYPE_DATETIME => 'Datetime',
-        
+
         /**
          * Char abstract type
          */
         Column::TYPE_CHAR => 'Char',
-        
+
         /**
          * Text abstract data type
          */
         Column::TYPE_TEXT => 'Text',
-        
+
         /**
          * Float abstract data type
          */
         Column::TYPE_FLOAT => 'Float',
-        
+
         /**
          * Boolean abstract data type
          */
         Column::TYPE_BOOLEAN => 'Boolean',
-        
+
         /**
          * Double abstract data type
          */
         Column::TYPE_DOUBLE => 'Double',
-        
+
         /**
          * Tinyblob abstract data type
          */
         Column::TYPE_TINYBLOB => 'Tinyblob',
-        
+
         /**
          * Blob abstract data type
          */
         Column::TYPE_BLOB => 'Blob',
-        
+
         /**
          * Mediumblob abstract data type
          */
         Column::TYPE_MEDIUMBLOB => 'Mediumblob',
-        
+
         /**
          * Longblob abstract data type
          */
         Column::TYPE_LONGBLOB => 'Longblob',
-        
+
         /**
          * Big integer abstract type
          */
         Column::TYPE_BIGINTEGER => 'Big integer',
-        
+
         /**
          * Json abstract type
          */
         Column::TYPE_JSON => 'Json',
-        
+
         /**
          * Jsonb abstract type
          */
@@ -98,27 +99,27 @@ class SchemaController extends ControllerBase
          * Bind Type Null
          */
         Column::BIND_PARAM_NULL => 'Null',
-        
+
         /**
          * Bind Type Integer
          */
         Column::BIND_PARAM_INT => 'Integer',
-        
+
         /**
          * Bind Type String
          */
         Column::BIND_PARAM_STR => 'String',
-        
+
         /**
          * Bind Type Blob
          */
         Column::BIND_PARAM_BLOB => 'Blob',
-        
+
         /**
          * Bind Type Bool
          */
         Column::BIND_PARAM_BOOL => 'Bool',
-        
+
         /**
          * Bind Type Decimal
          */
@@ -141,15 +142,15 @@ class SchemaController extends ControllerBase
         $tablename = $this->request->get('tablename', array(
             'trim'
         ), '');
-        
+
         $di = $this->getDI();
         $connection = $di['db'];
         $connection->execute("SET NAMES 'utf8mb4';");
         $tableColumns = $connection->describeColumns($tablename);
-        
+
         $fieldInfoList = array();
         foreach ($tableColumns as $key => $column) {
-            
+
             $fieldInfo = array();
             $fieldInfo['name'] = $column->getName();
             if (in_array($fieldInfo['name'], array(
@@ -174,7 +175,7 @@ class SchemaController extends ControllerBase
                 $fieldInfo['type'] = isset($this->typeInfo[$column->getType()]) ? $this->typeInfo[$column->getType()] : "";
             }
             $fieldInfo['type'] = strtolower($fieldInfo['type']);
-            
+
             $fieldInfo['size'] = $column->getSize();
             $fieldInfo['default_value'] = $column->getDefault();
             $fieldInfo['isUnsigned'] = $column->isUnsigned();
@@ -184,9 +185,9 @@ class SchemaController extends ControllerBase
             $fieldInfo['bindType'] = isset($this->bindInfo[$column->getBindType()]) ? $this->bindInfo[$column->getBindType()] : "";
             $fieldInfo['scale'] = $column->getScale();
             $fieldInfo['typeValues'] = $column->getTypeValues();
-            $isBoolean = ($fieldInfo['type'] == 'integer') && ! empty($fieldInfo['isUnsigned']) && ! empty($fieldInfo['isNumeric']);
-            $required = ! empty($fieldInfo['isNotNull']) ? 1 : 0;
-            
+            $isBoolean = ($fieldInfo['type'] == 'integer') && !empty($fieldInfo['isUnsigned']) && !empty($fieldInfo['isNumeric']);
+            $required = !empty($fieldInfo['isNotNull']) ? 1 : 0;
+
             if ($column->getType() == Column::TYPE_INTEGER) {
                 $input_type = "number";
             } elseif ($column->getType() == Column::TYPE_DECIMAL) {
@@ -198,7 +199,7 @@ class SchemaController extends ControllerBase
             } else {
                 $input_type = 'text';
             }
-            
+
             $str = <<<EOD
 schemas['{$fieldInfo['name']}'] = array(
     'name' => '{$fieldInfo['name']}',
@@ -221,12 +222,11 @@ schemas['{$fieldInfo['name']}'] = array(
     )
 );
 EOD;
-            
+
             echo '$' . $str . "<br/>";
         }
         echo "<br/>";
-        
+
         return;
     }
 }
-

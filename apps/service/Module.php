@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use Phalcon\Loader;
@@ -14,7 +15,7 @@ class Module
     public function registerAutoloaders()
     {
         $loader = new Loader();
-        
+
         $loader->registerNamespaces(array(
             'App\Service\Controllers' => __DIR__ . '/controllers/'
         ));
@@ -32,21 +33,21 @@ class Module
          * Read configuration
          */
         $config = include __DIR__ . "/config/config.php";
-        
+
         // Registering a dispatcher
         $di->set('dispatcher', function () {
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace("App\Service\Controllers");
             return $dispatcher;
         });
-        
+
         /**
          * Setting up the view component
          */
         $di['view'] = function () {
             $view = new View();
             $view->setViewsDir(__DIR__ . '/views/');
-            
+
             return $view;
         };
     }

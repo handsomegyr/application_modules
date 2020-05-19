@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 class FileController extends ControllerBase
@@ -50,27 +51,27 @@ class FileController extends ControllerBase
         $autoRotate = $this->request->get('ar', array(
             'trim'
         ), false);
-        
+
         if ($id == null) {
             header("HTTP/1.1 404 Not Found");
             return;
         }
-        
+
         if (empty($uploadPath)) {
             $filename = APP_PATH . "public/upload/{$id}";
         } else {
             $filename = APP_PATH . "public/upload/{$uploadPath}/{$id}";
         }
-        if (! file_exists($filename)) {
+        if (!file_exists($filename)) {
             header("HTTP/1.1 404 Not Found");
             return;
         }
-        
+
         $data = file_get_contents($filename);
         $finfo = new \finfo(FILEINFO_MIME);
         $fileMime = $finfo->buffer($data);
         $fileName = $id;
-        
+
         // 当检测到文件类型为空是，判断一下文件的类型
         if (empty($fileMime)) {
             // 直接输出
@@ -104,16 +105,16 @@ class FileController extends ControllerBase
                             $imagick->thumbnailImage($width, $height);
                         } else 
                             if ($width > 0 || $height > 0) {
-                                $imagick->thumbnailImage($width, $height);
-                            }
+                            $imagick->thumbnailImage($width, $height);
+                        }
                     }
-                    
+
                     $backgroundColor = new \ImagickPixel();
                     $backgroundColor->setColor("rgb(255,255,255)");
                     if ($rotate != 0) {
                         $imagick->rotateimage($backgroundColor, $rotate);
                     }
-                    
+
                     if ($autoRotate) {
                         try {
                             $orientation = $imagick->getImageOrientation();
@@ -121,18 +122,19 @@ class FileController extends ControllerBase
                                 case \Imagick::ORIENTATION_BOTTOMRIGHT:
                                     $imagick->rotateimage($backgroundColor, 180); // rotate 180 degrees
                                     break;
-                                
+
                                 case \Imagick::ORIENTATION_RIGHTTOP:
                                     $imagick->rotateimage($backgroundColor, 90); // rotate 90 degrees CW
                                     break;
-                                
+
                                 case \Imagick::ORIENTATION_LEFTBOTTOM:
-                                    $imagick->rotateimage($backgroundColor, - 90); // rotate 90 degrees CCW
+                                    $imagick->rotateimage($backgroundColor, -90); // rotate 90 degrees CCW
                                     break;
                             }
-                        } catch (\Exception $e) {}
+                        } catch (\Exception $e) {
+                        }
                     }
-                    
+
                     if ($quality < 100) {
                         $imagick->setImageCompression(\Imagick::COMPRESSION_JPEG);
                         $imagick->setImageCompressionQuality($quality);
@@ -147,10 +149,9 @@ class FileController extends ControllerBase
                 }
             }
         }
-        
-        output:
-        setHeaderExpires();
-        
+
+        output: setHeaderExpires();
+
         if (isset($fileMime)) {
             header('Content-Type: ' . $fileMime . ';');
         }
@@ -161,7 +162,7 @@ class FileController extends ControllerBase
         }
         // $this->response->setHeader("Content-Type", $fileMime);
         echo $data;
-        
+
         return;
     }
 
@@ -175,7 +176,7 @@ class FileController extends ControllerBase
         // http://www.jizigou.com/service/file/upload?upload_path=post
         $uploadPath = $this->get('upload_path', '');
         $rst = array();
-        if (! empty($_FILES)) {
+        if (!empty($_FILES)) {
             foreach ($_FILES as $field => $file) {
                 if ($file['error'] === UPLOAD_ERR_OK) {
                     if (filesize($file['tmp_name']) > 0) {
@@ -235,7 +236,7 @@ class FileController extends ControllerBase
                             $message = "Unknown upload error";
                             break;
                     }
-                    
+
                     $rst[$field] = array(
                         'ok' => 0,
                         'err_code' => $file['error'],
@@ -254,4 +255,3 @@ class FileController extends ControllerBase
         return;
     }
 }
-

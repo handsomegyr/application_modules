@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 use \Phalcon\Db\Column;
@@ -16,13 +17,13 @@ class DatabaseController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        
+
         set_time_limit(0);
         $di = $this->getDI();
-        
+
         // $this->connectionFrom = $di['dbfrom'];
         // $this->connectionFrom->execute("SET NAMES 'utf8mb4';");
-        
+
         $this->connectionTo = $di['db'];
         $this->connectionTo->execute("SET NAMES 'utf8mb4';");
     }
@@ -38,7 +39,7 @@ class DatabaseController extends ControllerBase
         $this->connectionTo->execute("Delete FROM igoods_type");
         $result = $this->connectionFrom->query('SELECT * FROM type order by type_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
         while ($item = $result->fetch()) {
             // print_r($item);
@@ -55,10 +56,10 @@ class DatabaseController extends ControllerBase
                 0, // __REMOVED__
                 $item->type_id, // shopnc_type_id
                 $item->class_id // shopnc_class_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -70,20 +71,20 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transfercategory
         // http://phalconm/service/database/transfercategory
-        
+
         // 从源表中获取数据
         // $statement = $this->connectionFrom->prepare('SELECT * FROM goods_class Where 1=:name');
         $this->connectionTo->execute("Delete FROM igoods_category");
         $result = $this->connectionFrom->query('SELECT * FROM goods_class order by gc_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $parent_id = '';
             $type_id = '';
-            if (! empty($item->type_id)) {
+            if (!empty($item->type_id)) {
                 $typeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_type where shopnc_type_id={$item->type_id}", \Phalcon\Db::FETCH_ASSOC);
                 // print_r($typeInfo);
                 $type_id = $typeInfo['_id'];
@@ -107,23 +108,23 @@ class DatabaseController extends ControllerBase
                 $item->gc_id, // shopnc_class_id
                 $item->gc_parent_id, // shopnc_class_parent_id,
                 $item->type_id // shopnc_type_id
-                        ));
+            ));
         }
-        
+
         // 更新parent_id
         $result = $this->connectionTo->query('SELECT * FROM igoods_category order by _id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         while ($item = $result->fetch()) {
             $parent_id = '';
-            if (! empty($item->shopnc_class_parent_id)) {
+            if (!empty($item->shopnc_class_parent_id)) {
                 $parentInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->shopnc_class_parent_id}", \Phalcon\Db::FETCH_ASSOC);
                 $parent_id = $parentInfo['_id'];
             }
             $this->connectionTo->execute("UPDATE igoods_category SET parent_id='{$parent_id}' WHERE _id='{$item->_id}' ");
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -137,18 +138,18 @@ class DatabaseController extends ControllerBase
         // 从源表中获取数据
         $result = $this->connectionTo->query('SELECT * FROM igoods_type order by _id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
         while ($item = $result->fetch()) {
             $category_id = '';
-            if (! empty($item->shopnc_class_id)) {
+            if (!empty($item->shopnc_class_id)) {
                 $categoryInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->shopnc_class_id}", \Phalcon\Db::FETCH_ASSOC);
                 $category_id = $categoryInfo['_id'];
             }
             $this->connectionTo->execute("UPDATE igoods_type SET category_id='{$category_id}' WHERE _id='{$item->_id}' ");
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -160,19 +161,19 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transferbrand
         // http://phalconm/service/database/transferbrand
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_brand");
         $result = $this->connectionFrom->query('SELECT * FROM brand order by brand_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $store_id = '';
             $category_id = '';
-            if (! empty($item->class_id)) {
+            if (!empty($item->class_id)) {
                 $categoryInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->class_id}", \Phalcon\Db::FETCH_ASSOC);
                 $category_id = $categoryInfo['_id'];
             }
@@ -194,10 +195,10 @@ class DatabaseController extends ControllerBase
                 $item->brand_id, // shopnc_brand_id
                 $item->class_id, // shopnc_class_id
                 $item->store_id // shopnc_store_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -209,18 +210,18 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transferspec
         // http://phalconm/service/database/transferspec
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_spec");
         $result = $this->connectionFrom->query('SELECT * FROM spec order by sp_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $category_id = '';
-            if (! empty($item->class_id)) {
+            if (!empty($item->class_id)) {
                 $categoryInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->class_id}", \Phalcon\Db::FETCH_ASSOC);
                 $category_id = $categoryInfo['_id'];
             }
@@ -235,10 +236,10 @@ class DatabaseController extends ControllerBase
                 0, // __REMOVED__
                 $item->sp_id, // shopnc_sp_id
                 $item->class_id // shopnc_class_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -250,30 +251,30 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transferspecvalue
         // http://phalconm/service/database/transferspecvalue
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_spec_value");
         $result = $this->connectionFrom->query('SELECT * FROM spec_value order by sp_value_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $store_id = '';
-            
+
             $sp_id = '';
-            if (! empty($item->sp_id)) {
+            if (!empty($item->sp_id)) {
                 $specInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_spec where shopnc_sp_id={$item->sp_id}", \Phalcon\Db::FETCH_ASSOC);
                 $sp_id = $specInfo['_id'];
             }
-            
+
             $gc_id = '';
-            if (! empty($item->gc_id)) {
+            if (!empty($item->gc_id)) {
                 $categoryInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id = $categoryInfo['_id'];
             }
-            
+
             $success = $this->connectionTo->execute("INSERT INTO igoods_spec_value(_id,name,sp_id,gc_id,store_id,color,sort,__CREATE_TIME__,__MODIFY_TIME__,__REMOVED__,shopnc_sp_value_id,shopnc_sp_id,shopnc_gc_id,shopnc_store_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", array(
                 $_id, // _id
                 $item->sp_value_name, // name
@@ -289,10 +290,10 @@ class DatabaseController extends ControllerBase
                 $item->sp_id, // shopnc_sp_id
                 $item->gc_id, // shopnc_gc_id
                 $item->store_id // shopnc_store_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -304,30 +305,30 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transfertypebrand
         // http://phalconm/service/database/transfertypebrand
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_type_brand");
         $result = $this->connectionFrom->query('SELECT * FROM type_brand order by type_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $store_id = '';
-            
+
             $type_id = '';
-            if (! empty($item->type_id)) {
+            if (!empty($item->type_id)) {
                 $typeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_type where shopnc_type_id={$item->type_id}", \Phalcon\Db::FETCH_ASSOC);
                 $type_id = $typeInfo['_id'];
             }
-            
+
             $brand_id = '';
-            if (! empty($item->brand_id)) {
+            if (!empty($item->brand_id)) {
                 $brandInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_brand where shopnc_brand_id={$item->brand_id}", \Phalcon\Db::FETCH_ASSOC);
                 $brand_id = $brandInfo['_id'];
             }
-            
+
             $success = $this->connectionTo->execute("INSERT INTO igoods_type_brand(_id,type_id,brand_id,__CREATE_TIME__,__MODIFY_TIME__,__REMOVED__,shopnc_type_id,shopnc_brand_id) VALUES (?,?,?,?,?,?,?,?)", array(
                 $_id, // _id
                 $type_id, // type_id
@@ -337,10 +338,10 @@ class DatabaseController extends ControllerBase
                 0, // __REMOVED__
                 $item->type_id, // shopnc_type_id
                 $item->brand_id // shopnc_brand_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -352,30 +353,30 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transfertypespec
         // http://phalconm/service/database/transfertypespec
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_type_spec");
         $result = $this->connectionFrom->query('SELECT * FROM type_spec order by type_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $store_id = '';
-            
+
             $type_id = '';
-            if (! empty($item->type_id)) {
+            if (!empty($item->type_id)) {
                 $typeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_type where shopnc_type_id={$item->type_id}", \Phalcon\Db::FETCH_ASSOC);
                 $type_id = $typeInfo['_id'];
             }
-            
+
             $sp_id = '';
-            if (! empty($item->sp_id)) {
+            if (!empty($item->sp_id)) {
                 $specInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_spec where shopnc_sp_id={$item->sp_id}", \Phalcon\Db::FETCH_ASSOC);
                 $sp_id = $specInfo['_id'];
             }
-            
+
             $success = $this->connectionTo->execute("INSERT INTO igoods_type_spec(_id,type_id,sp_id,__CREATE_TIME__,__MODIFY_TIME__,__REMOVED__,shopnc_type_id,shopnc_sp_id) VALUES (?,?,?,?,?,?,?,?)", array(
                 $_id, // _id
                 $type_id, // type_id
@@ -385,10 +386,10 @@ class DatabaseController extends ControllerBase
                 0, // __REMOVED__
                 $item->type_id, // shopnc_type_id
                 $item->sp_id // shopnc_sp_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -400,18 +401,18 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transferattribute
         // http://phalconm/service/database/transferattribute
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_attribute");
         $result = $this->connectionFrom->query('SELECT * FROM attribute order by attr_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $type_id = '';
-            if (! empty($item->type_id)) {
+            if (!empty($item->type_id)) {
                 $typeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_type where shopnc_type_id={$item->type_id}", \Phalcon\Db::FETCH_ASSOC);
                 $type_id = $typeInfo['_id'];
             }
@@ -427,10 +428,10 @@ class DatabaseController extends ControllerBase
                 0, // __REMOVED__
                 $item->attr_id, // shopnc_attr_id
                 $item->type_id // shopnc_type_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -442,28 +443,28 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transferattributevalue
         // http://phalconm/service/database/transferattributevalue
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_attribute_value");
         $result = $this->connectionFrom->query('SELECT * FROM attribute_value order by attr_value_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $type_id = '';
-            if (! empty($item->type_id)) {
+            if (!empty($item->type_id)) {
                 $typeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_type where shopnc_type_id={$item->type_id}", \Phalcon\Db::FETCH_ASSOC);
                 $type_id = $typeInfo['_id'];
             }
-            
+
             $attr_id = '';
-            if (! empty($item->attr_id)) {
+            if (!empty($item->attr_id)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_attribute where shopnc_attr_id={$item->attr_id}", \Phalcon\Db::FETCH_ASSOC);
                 $attr_id = $attributeInfo['_id'];
             }
-            
+
             $success = $this->connectionTo->execute("INSERT INTO igoods_attribute_value(_id,name,type_id,attr_id,sort,__CREATE_TIME__,__MODIFY_TIME__,__REMOVED__,shopnc_attr_value_id,shopnc_type_id,shopnc_attr_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)", array(
                 $_id, // _id
                 $item->attr_value_name, // name
@@ -476,10 +477,10 @@ class DatabaseController extends ControllerBase
                 $item->attr_value_id, // shopnc_attr_value_id
                 $item->type_id, // shopnc_type_id
                 $item->attr_id // shopnc_attr_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -491,46 +492,46 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transfergoodsclasstag
         // http://phalconm/service/database/transfergoodsclasstag
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_category_tag");
         $result = $this->connectionFrom->query('SELECT * FROM goods_class_tag order by gc_tag_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $type_id = '';
-            if (! empty($item->type_id)) {
+            if (!empty($item->type_id)) {
                 $typeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_type where shopnc_type_id={$item->type_id}", \Phalcon\Db::FETCH_ASSOC);
                 $type_id = $typeInfo['_id'];
             }
-            
+
             $gc_id_1 = '';
-            if (! empty($item->gc_id_1)) {
+            if (!empty($item->gc_id_1)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id_1}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id_1 = $attributeInfo['_id'];
             }
-            
+
             $gc_id_2 = '';
-            if (! empty($item->gc_id_2)) {
+            if (!empty($item->gc_id_2)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id_2}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id_2 = $attributeInfo['_id'];
             }
-            
+
             $gc_id_3 = '';
-            if (! empty($item->gc_id_3)) {
+            if (!empty($item->gc_id_3)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id_3}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id_3 = $attributeInfo['_id'];
             }
-            
+
             $gc_id = '';
-            if (! empty($item->gc_id)) {
+            if (!empty($item->gc_id)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id = $attributeInfo['_id'];
             }
-            
+
             $success = $this->connectionTo->execute("INSERT INTO igoods_category_tag(_id,gc_id_1,gc_id_2,gc_id_3,tag_name,tag_value,gc_id,type_id,__CREATE_TIME__,__MODIFY_TIME__,__REMOVED__,shopnc_gc_tag_id,shopnc_gc_id_1,shopnc_gc_id_2,shopnc_gc_id_3,shopnc_gc_id,shopnc_type_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", array(
                 $_id, // _id
                 $gc_id_1, // gc_id_1
@@ -549,10 +550,10 @@ class DatabaseController extends ControllerBase
                 $item->gc_id_3, // shopnc_gc_id_3
                 $item->gc_id, // shopnc_gc_id
                 $item->type_id // shopnc_type_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -564,49 +565,49 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transfergoodscommon
         // http://phalconm/service/database/transfergoodscommon
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_common");
         $result = $this->connectionFrom->query('SELECT * FROM goods_common order by goods_commonid asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $store_id = '';
             $type_id = '';
-            if (! empty($item->type_id)) {
+            if (!empty($item->type_id)) {
                 $typeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_type where shopnc_type_id={$item->type_id}", \Phalcon\Db::FETCH_ASSOC);
                 $type_id = $typeInfo['_id'];
             }
-            
+
             $gc_id = '';
-            if (! empty($item->gc_id)) {
+            if (!empty($item->gc_id)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id = $attributeInfo['_id'];
             }
-            
+
             $gc_id_1 = '';
-            if (! empty($item->gc_id_1)) {
+            if (!empty($item->gc_id_1)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id_1}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id_1 = $attributeInfo['_id'];
             }
-            
+
             $gc_id_2 = '';
-            if (! empty($item->gc_id_2)) {
+            if (!empty($item->gc_id_2)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id_2}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id_2 = $attributeInfo['_id'];
             }
-            
+
             $gc_id_3 = '';
-            if (! empty($item->gc_id_3)) {
+            if (!empty($item->gc_id_3)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id_3}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id_3 = $attributeInfo['_id'];
             }
-            
+
             $brand_id = '';
-            if (! empty($item->brand_id)) {
+            if (!empty($item->brand_id)) {
                 $brandInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_brand where shopnc_brand_id={$item->brand_id}", \Phalcon\Db::FETCH_ASSOC);
                 $brand_id = $brandInfo['_id'];
             }
@@ -680,10 +681,10 @@ class DatabaseController extends ControllerBase
                 $item->areaid_2, // shopnc_areaid_2
                 $item->plateid_top, // shopnc_plateid_top
                 $item->plateid_bottom // shopnc_plateid_bottom
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -695,53 +696,53 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transfergoods
         // http://phalconm/service/database/transfergoods
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_goods");
         $result = $this->connectionFrom->query('SELECT * FROM goods order by goods_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $store_id = '';
             $type_id = '';
-            if (! empty($item->type_id)) {
+            if (!empty($item->type_id)) {
                 $typeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_type where shopnc_type_id={$item->type_id}", \Phalcon\Db::FETCH_ASSOC);
                 $type_id = $typeInfo['_id'];
             }
             $goods_commonid = '';
-            if (! empty($item->goods_commonid)) {
+            if (!empty($item->goods_commonid)) {
                 $goodsCommonInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_common where shopnc_goods_commonid={$item->goods_commonid}", \Phalcon\Db::FETCH_ASSOC);
                 $goods_commonid = $goodsCommonInfo['_id'];
             }
             $gc_id = '';
-            if (! empty($item->gc_id)) {
+            if (!empty($item->gc_id)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id = $attributeInfo['_id'];
             }
-            
+
             $gc_id_1 = '';
-            if (! empty($item->gc_id_1)) {
+            if (!empty($item->gc_id_1)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id_1}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id_1 = $attributeInfo['_id'];
             }
-            
+
             $gc_id_2 = '';
-            if (! empty($item->gc_id_2)) {
+            if (!empty($item->gc_id_2)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id_2}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id_2 = $attributeInfo['_id'];
             }
-            
+
             $gc_id_3 = '';
-            if (! empty($item->gc_id_3)) {
+            if (!empty($item->gc_id_3)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id_3}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id_3 = $attributeInfo['_id'];
             }
-            
+
             $brand_id = '';
-            if (! empty($item->brand_id)) {
+            if (!empty($item->brand_id)) {
                 $brandInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_brand where shopnc_brand_id={$item->brand_id}", \Phalcon\Db::FETCH_ASSOC);
                 $brand_id = $brandInfo['_id'];
             }
@@ -807,10 +808,10 @@ class DatabaseController extends ControllerBase
                 $item->areaid_2, // shopnc_areaid_2
                 $item->color_id, // shopnc_color_id
                 $item->transport_id // shopnc_transport_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -822,52 +823,52 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transfergoodsattrindex
         // http://phalconm/service/database/transfergoodsattrindex
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_attr_index");
         $result = $this->connectionFrom->query('SELECT * FROM goods_attr_index order by goods_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $type_id = '';
-            if (! empty($item->type_id)) {
+            if (!empty($item->type_id)) {
                 $typeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_type where shopnc_type_id={$item->type_id}", \Phalcon\Db::FETCH_ASSOC);
                 $type_id = $typeInfo['_id'];
             }
-            
+
             $attr_id = '';
-            if (! empty($item->attr_id)) {
+            if (!empty($item->attr_id)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_attribute where shopnc_attr_id={$item->attr_id}", \Phalcon\Db::FETCH_ASSOC);
                 $attr_id = $attributeInfo['_id'];
             }
-            
+
             $goods_id = '';
-            if (! empty($item->goods_id)) {
+            if (!empty($item->goods_id)) {
                 $goodsInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_goods where shopnc_goods_id={$item->goods_id}", \Phalcon\Db::FETCH_ASSOC);
                 $goods_id = $goodsInfo['_id'];
             }
-            
+
             $goods_commonid = '';
-            if (! empty($item->goods_commonid)) {
+            if (!empty($item->goods_commonid)) {
                 $goodsCommonInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_common where shopnc_goods_commonid={$item->goods_commonid}", \Phalcon\Db::FETCH_ASSOC);
                 $goods_commonid = $goodsCommonInfo['_id'];
             }
-            
+
             $attr_value_id = '';
-            if (! empty($item->attr_value_id)) {
+            if (!empty($item->attr_value_id)) {
                 $attributeValueInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_attribute_value where shopnc_attr_value_id={$item->attr_value_id}", \Phalcon\Db::FETCH_ASSOC);
                 $attr_value_id = $attributeValueInfo['_id'];
             }
-            
+
             $gc_id = '';
-            if (! empty($item->gc_id)) {
+            if (!empty($item->gc_id)) {
                 $attributeInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_category where shopnc_class_id={$item->gc_id}", \Phalcon\Db::FETCH_ASSOC);
                 $gc_id = $attributeInfo['_id'];
             }
-            
+
             $success = $this->connectionTo->execute("INSERT INTO igoods_attr_index(_id,goods_id,goods_commonid,gc_id,type_id,attr_id,attr_value_id,__CREATE_TIME__,__MODIFY_TIME__,__REMOVED__,shopnc_goods_id,shopnc_goods_commonid,shopnc_gc_id,shopnc_type_id,shopnc_attr_id,shopnc_attr_value_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", array(
                 $_id, // _id
                 $goods_id, // goods_id
@@ -885,10 +886,10 @@ class DatabaseController extends ControllerBase
                 $item->type_id, // shopnc_type_id
                 $item->attr_id, // shopnc_attr_id
                 $item->attr_value_id // shopnc_attr_value_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -900,23 +901,23 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transfergoodsfcode
         // http://phalconm/service/database/transfergoodsfcode
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_fcode");
         $result = $this->connectionFrom->query('SELECT * FROM goods_fcode order by fc_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
-            
+
             $goods_commonid = '';
-            if (! empty($item->goods_commonid)) {
+            if (!empty($item->goods_commonid)) {
                 $goodsCommonInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_common where shopnc_goods_commonid={$item->goods_commonid}", \Phalcon\Db::FETCH_ASSOC);
                 $goods_commonid = $goodsCommonInfo['_id'];
             }
-            
+
             $success = $this->connectionTo->execute("INSERT INTO igoods_fcode(_id,goods_commonid,code,state,__CREATE_TIME__,__MODIFY_TIME__,__REMOVED__,shopnc_fc_id,shopnc_goods_commonid) VALUES (?,?,?,?,?,?,?,?,?)", array(
                 $_id, // _id
                 $goods_commonid, // goods_commonid
@@ -927,10 +928,10 @@ class DatabaseController extends ControllerBase
                 0, // __REMOVED__
                 $item->fc_id, // shopnc_fc_id
                 $item->goods_commonid // shopnc_goods_commonid
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -942,24 +943,24 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transfergoodsimages
         // http://phalconm/service/database/transfergoodsimages
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM igoods_images");
         $result = $this->connectionFrom->query('SELECT * FROM goods_images order by goods_image_id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $store_id = '';
             $color_id = '';
             $goods_commonid = '';
-            if (! empty($item->goods_commonid)) {
+            if (!empty($item->goods_commonid)) {
                 $goodsCommonInfo = $this->connectionTo->fetchOne("SELECT * FROM igoods_common where shopnc_goods_commonid={$item->goods_commonid}", \Phalcon\Db::FETCH_ASSOC);
                 $goods_commonid = $goodsCommonInfo['_id'];
             }
-            
+
             $success = $this->connectionTo->execute("INSERT INTO igoods_images(_id,goods_commonid,store_id,color_id,image,sort,is_default,__CREATE_TIME__,__MODIFY_TIME__,__REMOVED__,shopnc_goods_image_id,shopnc_goods_commonid,shopnc_store_id,shopnc_color_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", array(
                 $_id, // _id
                 $goods_commonid, // goods_commonid
@@ -975,10 +976,10 @@ class DatabaseController extends ControllerBase
                 $item->goods_commonid, // shopnc_goods_commonid
                 $item->store_id, // shopnc_store_id
                 $item->color_id // shopnc_color_id
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -991,21 +992,21 @@ class DatabaseController extends ControllerBase
         // http://phalconm4local/service/database/areaparentcode
         // http://phalconm/service/database/areaparentcode
         // http://www.jizigou.com/service/database/areaparentcode
-        
+
         // 从源表中获取数据
         $result = $this->connectionTo->query('SELECT * FROM area order by level desc,code asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         while ($item = $result->fetch()) {
             $_id = $item->_id;
             $code = substr($item->code, 0, 3);
             $parent_name = $item->parent_name;
             $level = $item->level;
             $parent_code = $item->parent_code;
-            if (! empty($parent_code)) {
+            if (!empty($parent_code)) {
                 continue;
             }
-            if (! empty($parent_name)) {
+            if (!empty($parent_name)) {
                 if ($level > 3) {
                     $areaInfo = $this->connectionTo->query('SELECT * FROM area where name=? and level=? and LEFT(code, 3)=?', array(
                         $parent_name,
@@ -1018,12 +1019,12 @@ class DatabaseController extends ControllerBase
                         $level - 1
                     ));
                 }
-                if (! empty($areaInfo)) {
+                if (!empty($areaInfo)) {
                     $areaInfo = $areaInfo->fetch();
                     $parent_code = $areaInfo['code'];
                 }
             }
-            if (! empty($parent_code)) {
+            if (!empty($parent_code)) {
                 $success = $this->connectionTo->execute("update area set parent_code=? where _id=?", array(
                     $parent_code,
                     $_id
@@ -1031,7 +1032,7 @@ class DatabaseController extends ControllerBase
             }
         }
         echo "OK<br/>";
-        
+
         return;
     }
 
@@ -1042,14 +1043,14 @@ class DatabaseController extends ControllerBase
     {
         // http://phalconm4local/service/database/transferexpress
         // http://phalconm/service/database/transferexpress
-        
+
         // 从源表中获取数据
         $this->connectionTo->execute("Delete FROM ifreight_express");
         $result = $this->connectionFrom->query('SELECT * FROM express order by id asc', null);
         $result->setFetchMode(\Phalcon\Db::FETCH_OBJ);
-        
+
         $datetime = date('Y-m-d H:i:s');
-        
+
         while ($item = $result->fetch()) {
             $_id = myMongoId(new \MongoId());
             $parent_id = '';
@@ -1066,11 +1067,10 @@ class DatabaseController extends ControllerBase
                 $datetime, // __CREATE_TIME__
                 $datetime, // __MODIFY_TIME__
                 0 // __REMOVED__
-                        ));
+            ));
         }
         echo "OK<br/>";
-        
+
         return;
     }
 }
-

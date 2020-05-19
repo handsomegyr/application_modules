@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 class ControllerBase extends \App\Common\Controllers\ControllerBase

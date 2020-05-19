@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Controllers;
 
 class TimeController extends ControllerBase
@@ -28,4 +29,3 @@ class TimeController extends ControllerBase
         }
     }
 }
-
