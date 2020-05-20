@@ -297,9 +297,12 @@ EOD;
         $result->setFetchMode(\Phalcon\Db::FETCH_ASSOC);
         $tables = $result->fetchAll();
         $list = array();
+        $time = date('Y-m-d H:i:s');
         foreach ($tables as $key => $tableInfo) {
-            foreach ($tableInfo as $key2 => $value) {
-                // $result = $db->query("UPDATE {$value} SET __CREATE_USER_ID__ = '1',__CREATE_USER_NAME__='admin', __MODIFY_USER_ID__ = '1',__MODIFY_USER_NAME__='admin'", array());
+            foreach ($tableInfo as $key2 => $value) {                
+                $result = $db->query("UPDATE {$value} SET __CREATE_TIME__ = '{$time}',__CREATE_USER_ID__ = '5639d567bbcb269f108b4567',__CREATE_USER_NAME__='admin',__MODIFY_TIME__ = '{$time}',__MODIFY_USER_ID__ = '5639d567bbcb269f108b4567',__MODIFY_USER_NAME__='admin'", array());
+                // $result = $db->query("UPDATE {$value} SET __CREATE_USER_ID__ = '5639d567bbcb269f108b4567',__CREATE_USER_NAME__='admin',__MODIFY_USER_ID__ = '5639d567bbcb269f108b4567',__MODIFY_USER_NAME__='admin',__REMOVE_USER_ID__ = '',__REMOVE_USER_NAME__='' where __REMOVED__=0", array());
+                // $result = $db->query("UPDATE {$value} SET __CREATE_USER_ID__ = '5639d567bbcb269f108b4567',__CREATE_USER_NAME__='admin',__MODIFY_USER_ID__ = '5639d567bbcb269f108b4567',__MODIFY_USER_NAME__='admin',__REMOVE_USER_ID__ = '5639d567bbcb269f108b4567',__REMOVE_USER_NAME__='admin',__REMOVE_USER_NAME__='admin' where __REMOVED__=1", array());
                 $list[] = $value;
             }
         }

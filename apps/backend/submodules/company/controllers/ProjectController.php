@@ -33,7 +33,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'process_without_modal' => true,
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['project_code'])) {
+                if (!empty($row) && !empty($row['project_code']) && !empty($row['db_pwd'])) {
                     return true;
                 } else {
                     return false;
@@ -81,7 +81,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'process_without_modal' => true,
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['project_code'])) {
+                if (!empty($row) && !empty($row['project_code']) && !empty($row['db_pwd'])) {
                     return true;
                 } else {
                     return false;
@@ -114,6 +114,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             $taskContent = array();
             $taskContent['project_code'] = $data['project_code'];
             $taskContent['project_id'] = $data['_id'];
+            $taskContent['db_pwd'] = $data['db_pwd'];
             $taskContent['process_list'] = 'create_project';
             $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
             $res['taskInfo'] = $taskInfo;
@@ -320,6 +321,47 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+
+        $schemas['db_pwd'] = array(
+            'name' => '数据库密码',
+            'data' => array(
+                'type' => 'string',
+                'length' => 30,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'extensionSettings' => function ($column, $Grid) {
+                    $settings = array();
+                    $row = $column->getRow();
+                    if (empty($row->_id)) {
+                        // 新增的时候显示
+                        $settings['is_show'] = true;
+                    } else {
+                        // 修改的时候不能修改
+                        $settings['readonly'] = true;
+                    }
+                    return $settings;
+                }
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
         $schemas['ae'] = array(
             'name' => 'AE信息',
             'data' => array(

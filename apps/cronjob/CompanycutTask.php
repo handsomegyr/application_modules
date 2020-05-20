@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * 公司cut系统
+ * 需要在各个appserver机器上安装ansible,php,nginx等基础软件
+ * 需要在master机器上安装ansible,php,nginx,svn,rsync等基础软件
+ */
 class CompanycutTask extends \Phalcon\CLI\Task
 {
     // svn相关
@@ -190,7 +196,7 @@ EOD;
                     );
                     // 超过几次后就设置成完成
                     $is_done = false;
-                    if (intval($taskInfo['do_num']) >= 3) {
+                    if (intval($taskInfo['do_num']) >= 0) {
                         $is_done = true;
                     }
                     $modelTask->recordTaskInfo($taskInfo, $is_done, $do_time, $memo);
@@ -211,6 +217,7 @@ EOD;
         $taskContent = $taskInfo['content'];
         $project_code = empty($taskContent['project_code']) ? "" : $taskContent['project_code'];
         $project_id = empty($taskContent['project_id']) ? "" : $taskContent['project_id'];
+        $db_pwd = empty($taskContent['db_pwd']) ? "" : $taskContent['db_pwd'];
 
         // 创建工程的时候 需要做很多的操作
         if ($taskContent['process_list'] == 'create_project') {
@@ -380,7 +387,7 @@ EOD;
                         "host" => $config->database->host,
                         "username" => $config->database->username,
                         "password" => $config->database->password,
-                        // "dbname" => $config->database->dbname,
+                        "dbname" => "mysql",
                         "charset" => $config->database->charset,
                         "collation" => $config->database->collation,
                         'options'  => [
@@ -388,11 +395,49 @@ EOD;
                             //\PDO::ATTR_CASE => PDO::CASE_LOWER,
                         ],
                     ));
-                    $ret = $connection->execute("CREATE DATABASE IF NOT EXISTS `?` DEFAULT CHARACTER SET ? COLLATE ? ", array(
-                        $project_code,
-                        $config->database->charset,
-                        $config->database->collation,
-                    ));
+                    $dbret1 = $connection->execute("CREATE DATABASE IF NOT EXISTS `{$project_code}` DEFAULT CHARACTER SET {$config->database->charset} COLLATE {$config->database->collation} ", array());
+                    // 如果是失败的话
+                    if (empty($dbret1)) {
+                    }
+
+                    // 检查用户是否存在
+                    $dbUserInfo = $connection->fetchOne("SELECT * FROM user where User='{$project_code}' and Host='%'", \Phalcon\Db::FETCH_ASSOC);
+                    // print_r($typeInfo);
+                    if (empty($dbUserInfo)) {
+                        // 创建数据库的用户
+                        $dbret2 = $connection->execute("CREATE USER '{$project_code}'@'%' IDENTIFIED BY '{$db_pwd}'", array());
+                        // 如果是失败的话
+                        if (empty($dbret2)) {
+                        }
+                        // 授权数据库的用户
+                        $dbret3 = $connection->execute("GRANT ALL PRIVILEGES ON {$project_code}.* TO '{$project_code}'@'%' IDENTIFIED BY '{$db_pwd}' WITH GRANT OPTION", array());
+                        // 如果是失败的话
+                        if (empty($dbret3)) {
+                        };
+                        // 刷新
+                        $connection->execute("FLUSH PRIVILEGES");
+                    }
+
+                    // 创建一些基础表
+                    $dir = APP_PATH . 'apps/backend/submodules/system';
+                    $sqlfile = $dir . '/config/install/schema.sql';
+                    if (file_exists($sqlfile)) {
+                        $sql = file_get_contents($sqlfile);
+                        $connection1 = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+                            "host" => $config->database->host,
+                            "username" => $config->database->username,
+                            "password" => $config->database->password,
+                            "dbname" => $project_code,
+                            "charset" => $config->database->charset,
+                            "collation" => $config->database->collation,
+                            'options'  => [
+                                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$config->database->charset} COLLATE {$config->database->collation};",
+                                //\PDO::ATTR_CASE => PDO::CASE_LOWER,
+                            ],
+                        ));
+                        $sqlRet = $this->doSql($connection1, $sql);
+                        // $tip = \json_encode($sqlRet);
+                    }
                 }
                 // 成功的话
                 if (empty($ret)) {
@@ -420,5 +465,26 @@ EOD;
         }
 
         return $taskResult;
+    }
+
+    protected function doSql($connection, $sql)
+    {
+        $sql = str_replace("\r\n", "\n", $sql);
+        $sql = str_replace("\r", "\n", $sql);
+
+        $num = 0;
+        foreach (explode(";\n", trim($sql)) as $query) {
+            $ret[$num] = '';
+            $queries = explode("\n", trim($query));
+            foreach ($queries as $query) {
+                // $ret[$num] .= (isset($query[0]) && $query[0] == '#') || (isset($query[1]) && isset($query[1]) && $query[0] . $query[1] == '--') ? '' : $query;
+                $ret[$num] .= $query;
+            }
+            $num++;
+        }
+        // return $ret;
+        foreach ($ret as $query) {
+            $connection->execute($query);
+        }
     }
 }

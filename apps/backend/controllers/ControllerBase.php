@@ -30,6 +30,35 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         $viewClass['label'] = "col-sm-2";
         $viewClass['field'] = "col-sm-8";
         $this->view->setVar("viewClass", $viewClass);
+
+        // 不是ajax请求的话
+        if (!$this->request->isAjax()) {
+            // 构建菜单
+            $this->buildMenus();
+        }
+    }
+
+    protected function buildMenus()
+    {
+        $requestUrl = $this->moduleName . '/' . $this->controllerName;
+        $is_active4index = ($requestUrl == 'admin/index') ? true : false;
+
+        // 角色判断,当用户角色为非超级管理员时，进行权限判断
+        if (isset($_SESSION['roleInfo'])) {
+            $roleAlias = $_SESSION['roleInfo']['alias'];
+        } else {
+            $roleAlias = 'guest';
+        }
+        $menu_list = !empty($_SESSION['roleInfo']) ? $_SESSION['roleInfo']['menu_list'] : array();
+        $modelMenu = new \App\Backend\Submodules\System\Models\Menu();
+        $menus = $modelMenu->getPrivilege($menu_list, $requestUrl);
+        // $menus2 = $modelMenu->buildPrivilegeTree($menu_list, $requestUrl);
+        // print_r($menus);
+        // print_r($menus2);
+        // die($requestUrl);
+        $this->view->setVar('roleAlias', $roleAlias);
+        $this->view->setVar('menus', $menus);
+        $this->view->setVar('is_active4index', $is_active4index);
     }
 
     protected function _getValidationMessage($input)
@@ -124,7 +153,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         }
 
         if ($_SESSION['csrf_token'] != $token) {
-            throw new \Exception("token is not correct current_token:".$_SESSION['csrf_token']);
+            throw new \Exception("token is not correct current_token:" . $_SESSION['csrf_token']);
         }
 
         return true;
