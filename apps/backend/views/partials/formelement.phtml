@@ -15,6 +15,7 @@
         $prepend = "";
         $append = "";
         $value = "";
+        $input_type = "text";
         if ($field['form']['input_type'] == "hidden") {
             $this->partial('partials/form/hidden');
             $this->partial('partials/form/display');
@@ -38,6 +39,11 @@
         } elseif ($field['form']['input_type'] == "text") {
             $prepend = '<i class="fa fa-pencil fa-fw"></i>';
             $value = $this->view->row[$key];
+            $this->partial('partials/form/input');
+        } elseif ($field['form']['input_type'] == "password") {
+            $prepend = '<i class="fa fa-eye-slash fa-fw"></i>';
+            $value = $this->view->row[$key];
+            $input_type = "password";
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "number") {
             $value = intval($this->view->row[$key]);
@@ -79,6 +85,16 @@
             if (empty($field['form']['select']['multiple'])) {
                 $this->partial('partials/form/select');
             } else {
+                if (!is_array($this->view->row[$key])) {
+                    // 先用json转换
+                    $value = \json_decode($this->view->row[$key]);
+                    // 如果失败就用逗号分隔
+                    if (empty($value)) {
+                        $value = explode(',', $this->view->row[$key]);
+                    }
+                } else {
+                    $value = $this->view->row[$key];
+                }
                 $this->partial('partials/form/multipleselect');
             }
         } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {

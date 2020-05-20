@@ -311,16 +311,52 @@
 												return '';
 											}
 											return JSON.stringify(data);
-
 										<?php } elseif (isset($field['list']['items'])) { ?>
-											//console.info(data);
+											// console.info(data);
+											<?php
+											$uniqid = \uniqid();
+											$items = is_callable($field['list']['items']) ? $field['list']['items']() : $field['list']['items'];
+											$listValue = array();
+											foreach ($items as $itemKey => $item) {
+												if (isset($item['value'])) {
+													$listValue['key_'.$item['value']] =$item['name']; 
+												}else{
+													$listValue['key_'.$itemKey] =$item;
+												}
+											}
+											?>
+											//var items = {key_0: "开发中", key_1: "部署中", key_2: "已上线", key_3: "已下线"};
+											<?php if (!empty($listValue)) { ?>
+											var items = '<?php echo \json_encode($listValue)?>';
+											items = JSON.parse(items);
+											<?php }else{ ?>
+											var items = {};
+											<?php } ?>
+
+											<?php if (($field['data']['type'] == "array")) { ?>
+												var dataArr = JSON.parse(data);												
+											<?php }else{ ?>
+												var dataArr = [];
+												dataArr.push(data);
+											<?php } ?>
+
+											var res = [];
+											for (var item1 of dataArr) {
+												if(items['key_'+item1]){
+													res.push(items['key_'+item1]);
+												}
+											}
+											
+											var imgs = '';
+											$.each(res, function(i, n) {												
+												imgs += '<span class="label label-info">'+n+'</span>&nbsp;';
+											});
+											return imgs;
+
 											if (false) {
-												return '<span class="label label-info"></span>';
-												<?php
-												$items = is_callable($field['list']['items']) ? $field['list']['items']() : $field['list']['items'];
-												?>
-												<?php foreach ($items as $itemKey => $item) { ?>
-													<?php if (isset($item['value'])) { ?>
+											return '<span class="label label-info"></span>';											
+											<?php $items = array(); foreach ($items as $itemKey => $item) { ?>
+												<?php if (isset($item['value'])) { ?>
 											} else if (data == '<?php echo $item['value'] ?>') {
 												return '<span class="label label-info"><?php echo $item['name'] ?></span>';
 											<?php } else { ?>
@@ -330,7 +366,8 @@
 											<?php } ?>
 											} else {
 												return '<span class="label label-info"></span>';
-											};
+											};											
+
 										<?php } elseif (isset($field['list']['ajax'])) { ?>
 											<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly) { ?>
 												return '<span class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.edit(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')" >' + data + '</span>';
@@ -346,6 +383,7 @@
 											<?php } ?>
 										<?php } else { ?>
 											//return List.htmlEscape(data);
+
 											return data;
 										<?php } ?>
 									}

@@ -517,7 +517,8 @@ class SourceController extends \App\Backend\Controllers\FormController
             'name' => '坐标',
             'data' => array(
                 'type' => 'array',
-                'length' => '100'
+                'length' => '100',
+                'defaultValue' => '[]'
             ),
             'validation' => array(
                 'required' => false

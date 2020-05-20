@@ -197,7 +197,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -365,23 +365,27 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['ae'] = array(
             'name' => 'AE信息',
             'data' => array(
-                'type' => 'string',
+                'type' => 'array',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '[]'
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'textarea',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '多个AE用逗号间隔',
+                'items' => array('AE1' => 'AE1', 'AE2' => 'AE2', 'AE3' => 'AE3', 'AE4' => 'AE4'),
+                'select' => array(
+                    'multiple' => true
+                ),
+                'help' => '多个AE用逗号间隔'
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => array('AE1' => 'AE1', 'AE2' => 'AE2', 'AE3' => 'AE3', 'AE4' => 'AE4'),
             ),
             'search' => array(
                 'is_show' => true
@@ -393,23 +397,27 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['executives'] = array(
             'name' => '执行人信息',
             'data' => array(
-                'type' => 'string',
+                'type' => 'array',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '[]'
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'textarea',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
+                'items' => array('PE1' => 'PE1', 'PE2' => 'PE2', 'PE3' => 'PE3', 'PE4' => 'PE4'),
+                'select' => array(
+                    'multiple' => true
+                ),
                 'help' => '多个执行人用逗号间隔',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'items' => array('PE1' => 'PE1', 'PE2' => 'PE2', 'PE3' => 'PE3', 'PE4' => 'PE4'),
             ),
             'search' => array(
                 'is_show' => true
@@ -471,7 +479,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'name' => '多个地址用逗号间隔',
+                'help' => '多个地址用逗号间隔',
                 'extensionSettings' => function ($column, $Grid) {
                     $settings = array();
                     $row = $column->getRow();

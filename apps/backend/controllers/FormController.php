@@ -90,7 +90,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if ($field['data']['type'] == 'json') {
                 $field['data']['defaultValue'] = '{}';
             } elseif ($field['data']['type'] == 'array') {
-                $field['data']['defaultValue'] = '';
+                $field['data']['defaultValue'] = '[]';
             } elseif ($field['data']['type'] == 'file') {
                 $field['data']['length'] = 255;
                 if (!isset($field['data']['file']) || !isset($field['data']['file']['path'])) {

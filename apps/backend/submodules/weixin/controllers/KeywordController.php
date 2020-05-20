@@ -101,7 +101,8 @@ class KeywordController extends \App\Backend\Controllers\FormController
             'name' => '回复内容',
             'data' => array(
                 'type' => 'array',
-                'length' => '24'
+                'length' => '1024',
+                'defaultValue' => '[]'
             ),
             'validation' => array(
                 'required' => true
@@ -192,10 +193,9 @@ class KeywordController extends \App\Backend\Controllers\FormController
                     $item['reply_ids_show'][] = $replyList[$reply_id];
                 }
             }
-            
-            $item['reply_ids_show'] = implode(',', $item['reply_ids_show']);
-            $item['reply_type_name'] = isset($replyTypeList[$item['reply_type']]) ? $replyTypeList[$item['reply_type']] : "--";            
 
+            $item['reply_ids_show'] = implode(',', $item['reply_ids_show']);
+            $item['reply_type_name'] = isset($replyTypeList[$item['reply_type']]) ? $replyTypeList[$item['reply_type']] : "--";
         }
         return $list;
     }

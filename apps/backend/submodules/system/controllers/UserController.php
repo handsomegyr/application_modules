@@ -86,7 +86,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'password',
                 'is_show' => true
             ),
             'list' => array(
