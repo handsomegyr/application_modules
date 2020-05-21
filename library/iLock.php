@@ -51,7 +51,7 @@ class iLock
         
         $di = \Phalcon\DI::getDefault();
         $config = $di->get('config');
-        // $_SERVER['ICC_REDIS_MASTERS'] = "{$config['redis']['host']}:{$config['redis']['port']}";
+        // $_SERVER['REDIS_MASTERS'] = "{$config['redis']['host']}:{$config['redis']['port']}";
         $host = $config['redis']['host'];
         $port = $config['redis']['port'];
         

@@ -150,7 +150,7 @@ function registerServices($di)
      * Register a database component
      */
     $di->set('databases', function () {
-        $default = new \iDatabase('54602cae489619970f8b4b58', 'guoyongrong0123456789', '54602cde4896197a0e8b4c5a');
+        $default = new \iDatabase('xxxxxxxxxxx', 'guoyongrong0123456789', 'xxxxxxxxxxx');
         return array(
             "default" => $default
         );
@@ -208,7 +208,7 @@ function registerServices($di)
         $parameters = array();
         $memcacheConfig = array();
         $_SERVER['ICC_MEMCACHED_SERVER'] = "{$config['memcached']['host']}:{$config['memcached']['port']}";
-        // $_SERVER['ICC_MEMCACHED_SERVER'] = "860449636f404316.m.cnhzaliqshpub001.ocs.aliyuncs.com:11211";
+        // $_SERVER['ICC_MEMCACHED_SERVER'] = "xxxxx:11211";
         if (!empty($_SERVER['ICC_MEMCACHED_SERVER'])) {
             $memcacheServers = explode(',', $_SERVER['ICC_MEMCACHED_SERVER']);
             if (is_array($memcacheServers) && !empty($memcacheServers)) {
@@ -242,9 +242,9 @@ function registerServices($di)
      * Setting up the redis component
      */
     $di['redis'] = function () use ($config) {
-        $_SERVER['ICC_REDIS_MASTERS'] = "{$config['redis']['host']}:{$config['redis']['port']}";
-        // if (! empty($_SERVER['ICC_REDIS_MASTERS'])) {
-        // $redisServers = explode(',', $_SERVER['ICC_REDIS_MASTERS']);
+        $_SERVER['REDIS_MASTERS'] = "{$config['redis']['host']}:{$config['redis']['port']}";
+        // if (! empty($_SERVER['REDIS_MASTERS'])) {
+        // $redisServers = explode(',', $_SERVER['REDIS_MASTERS']);
         // $parameters = array();
         // if (is_array($redisServers) && ! empty($redisServers)) {
         // foreach ($redisServers as $server) {
@@ -258,10 +258,10 @@ function registerServices($di)
         // $objRedis = new \Predis\Client($parameters, $options);
         // return $objRedis;
         // } else {
-        // throw new \Exception("生产环境中尚未设定环境变量ICC_REDIS_MASTERS，请检查");
+        // throw new \Exception("生产环境中尚未设定环境变量REDIS_MASTERS，请检查");
         // }
-        if (!empty($_SERVER['ICC_REDIS_MASTERS'])) {
-            $redisServer = explode(':', $_SERVER['ICC_REDIS_MASTERS']);
+        if (!empty($_SERVER['REDIS_MASTERS'])) {
+            $redisServer = explode(':', $_SERVER['REDIS_MASTERS']);
             $parameters = array(
                 'host' => $redisServer[0],
                 'port' => $redisServer[1],
@@ -272,7 +272,7 @@ function registerServices($di)
             $objRedis = new \Predis\Client($parameters, $options);
             return $objRedis;
         } else {
-            throw new \Exception("生产环境中尚未设定环境变量ICC_REDIS_MASTERS，请检查");
+            throw new \Exception("生产环境中尚未设定环境变量REDIS_MASTERS，请检查");
         }
     };
 
