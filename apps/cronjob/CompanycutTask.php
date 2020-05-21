@@ -260,7 +260,7 @@ EOD;
                 } elseif ($process_name == 'svn_conf_svnserve') {
                     // 创建conf/svnserve.conf文件
                     $realm = $this->SVNROOT_R . $project_code;
-                    if (!file_exists($realm . "/conf/svnserve.conf")) {
+                    if (true || !file_exists($realm . "/conf/svnserve.conf")) {
                         $config4SvnServer = str_replace("#_realm_#", $realm, $this->SVNSERVER_CONFIG_TEMPLATE);
                         $cmdline = "file_put_contents to {$realm}/conf/svnserve.conf";
                         $tip = file_put_contents($realm . "/conf/svnserve.conf", $config4SvnServer);
@@ -268,7 +268,7 @@ EOD;
                 } elseif ($process_name == 'svn_conf_post_comit') {
                     // 创建hooks/post-commit文件                        
                     $realm = $this->SVNROOT_R . $project_code;
-                    if (!file_exists($realm . "/hooks/post-commit")) {
+                    if (true || !file_exists($realm . "/hooks/post-commit")) {
                         $workingcopy_path = $this->WWWROOT_DEV_R . $project_code;
                         $config4PostCommit = str_replace("#_path_#", $workingcopy_path, $this->POST_COMMIT_CONFIG_TEMPLATE);
                         $cmdline = "file_put_contents to {$realm}/hooks/post-commit";
