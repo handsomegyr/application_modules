@@ -35,7 +35,6 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
      */
     public function indexAction()
     {
-        session_destroy();
         $this->view->setVar('formName', '首页');
         $envs = [
             ['name' => 'PHP version',       'value' => 'PHP/' . PHP_VERSION],
@@ -144,9 +143,12 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
      */
     public function loginAction()
     {
+        // session_destroy();
         try {
             $this->disableLayout();
             $this->view->setVar('form_act', $this->getUrl("signin"));
+            $_SESSION['csrf_token'] = createRandCode(40);
+            $this->view->setVar('csrf_token', $_SESSION['csrf_token']);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -159,7 +161,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
      */
     public function signinAction()
     {
-        session_unset();
+        // session_unset();
         try {
             $this->view->disable();
             $input = $this->getLoginFilterInput();
@@ -206,7 +208,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
 
     public function signin4othersAction()
     {
-        session_unset();
+        // session_unset();
         try {
             $this->view->disable();
             $username = $this->request->get('username', array(
