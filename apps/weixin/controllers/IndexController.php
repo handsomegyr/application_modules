@@ -99,7 +99,7 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
-        // http://www.jizigou.com/weixin/index/index
+        // http://www.applicationmodule.com/weixin/index/index
         die('index');
     }
 
@@ -110,7 +110,7 @@ class IndexController extends ControllerBase
      */
     public function callbackAction()
     {
-        // http://www.jizigou.com/weixin/index/callback
+        // http://www.applicationmodule.com/weixin/index/callback
         try {
             /**
              * ==================================================================================
@@ -286,7 +286,7 @@ class IndexController extends ControllerBase
      */
     public function syncmenuAction()
     {
-        // http://www.jizigou.com/weixin/index/syncmenu
+        // http://www.applicationmodule.com/weixin/index/syncmenu
         try {
             $menus = $this->_menu->buildMenu();
             if (! empty($menus)) {
@@ -305,7 +305,7 @@ class IndexController extends ControllerBase
      */
     public function syncconditionalmenuAction()
     {
-        // http://www.jizigou.com/weixin/index/syncconditionalmenu
+        // http://www.applicationmodule.com/weixin/index/syncconditionalmenu
         try {
             $matchRuleList = $this->_conditional_menu->getList4MatchRule();
             if (! empty($matchRuleList)) {
@@ -344,7 +344,7 @@ class IndexController extends ControllerBase
      */
     public function createqrcodeAction()
     {
-        // http://www.jizigou.com/weixin/index/createqrcode
+        // http://www.applicationmodule.com/weixin/index/createqrcode
         try {
             $scenes = $this->_scene->getAll();
             foreach ($scenes as $scene) {
@@ -371,7 +371,7 @@ class IndexController extends ControllerBase
      */
     public function sendtemplatemsgAction()
     {
-        // http://www.jizigou.com/weixin/index/sendtemplatemsg
+        // http://www.applicationmodule.com/weixin/index/sendtemplatemsg
         try {
             $template_id = "5UWzYiEm8AsW97T9uZbX-zUGporKDGIfDFf-wUi8OD4";
             $url = "http://www.baidu.com";
@@ -419,7 +419,7 @@ class IndexController extends ControllerBase
      */
     public function getsettingsAction()
     {
-        // http://www.jizigou.com/weixin/index/getsettings
+        // http://www.applicationmodule.com/weixin/index/getsettings
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -448,7 +448,7 @@ class IndexController extends ControllerBase
      */
     public function getjssdkinfoAction()
     {
-        // http://www.jizigou.com/weixin/index/getjssdkinfo
+        // http://www.applicationmodule.com/weixin/index/getjssdkinfo
         try {
             // 如果不是跨域请求的话
             $jsonpcallback = trim($this->get('jsonpcallback'));
@@ -495,7 +495,7 @@ class IndexController extends ControllerBase
      */
     public function getaccesstokenAction()
     {
-        // http://www.jizigou.com/weixin/index/getaccesstoken
+        // http://www.applicationmodule.com/weixin/index/getaccesstoken
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -521,7 +521,7 @@ class IndexController extends ControllerBase
      */
     public function getjsapiticketAction()
     {
-        // http://www.jizigou.com/weixin/index/getjsapiticket
+        // http://www.applicationmodule.com/weixin/index/getjsapiticket
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -548,7 +548,7 @@ class IndexController extends ControllerBase
      */
     public function getcallbackipAction()
     {
-        // http://www.jizigou.com/weixin/index/getcallbackip
+        // http://www.applicationmodule.com/weixin/index/getcallbackip
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -573,7 +573,7 @@ class IndexController extends ControllerBase
      */
     public function getallgroupAction()
     {
-        // http://www.jizigou.com/weixin/index/getcallbackip
+        // http://www.applicationmodule.com/weixin/index/getcallbackip
         try {
             if (empty($this->_appConfig)) {
                 $this->_appConfig = $this->_app->getTokenByAppid($this->appid);
@@ -598,7 +598,7 @@ class IndexController extends ControllerBase
      */
     public function getuserinfoAction()
     {
-        // http://www.jizigou.com/weixin/index/getuserinfo?FromUserName=o4ELSvz-B4_DThF0Vpfrverk3IpY
+        // http://www.applicationmodule.com/weixin/index/getuserinfo?FromUserName=o4ELSvz-B4_DThF0Vpfrverk3IpY
         try {
             $FromUserName = $this->get('FromUserName', '');
             

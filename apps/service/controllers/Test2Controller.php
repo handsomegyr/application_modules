@@ -14,7 +14,7 @@ class Test2Controller extends ControllerBase
     public function indexAction()
     {
         try {
-            // http://www.jizigou.com/service/test2/index
+            // http://www.applicationmodule.com/service/test2/index
             // http://www.applicationmodule.com/service/test2/index
             $modelMsgCount = new \App\Message\Models\MsgCount(\App\Common\Models\Base\Base::MONGODB);
             // $modelMsgCount->setDebug(true);

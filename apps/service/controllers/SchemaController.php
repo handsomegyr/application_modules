@@ -137,7 +137,7 @@ class SchemaController extends ControllerBase
      */
     public function createAction()
     {
-        // http://www.jizigou.com/service/schema/create?tablename=itencent_application
+        // http://www.applicationmodule.com/service/schema/create?tablename=itencent_application
         // http://phalconM4local/service/schema/create?tablename=ishop4b2c_member
         $tablename = $this->request->get('tablename', array(
             'trim'

@@ -143,7 +143,7 @@ class WeixincardController extends ControllerBase
      */
     public function getAction()
     {
-        // http://www.jizigou.com/weixincard/index/get
+        // http://www.applicationmodule.com/weixincard/index/get
         try {
             // 领取卡券事件推送
             /**
@@ -220,7 +220,7 @@ class WeixincardController extends ControllerBase
      */
     public function getbyfriendAction()
     {
-        // http://www.jizigou.com/weixincard/index/getbyfriend
+        // http://www.applicationmodule.com/weixincard/index/getbyfriend
         try {
             // 领取卡券事件推送
             /**
@@ -301,7 +301,7 @@ class WeixincardController extends ControllerBase
      */
     public function consumeAction()
     {
-        // http://www.jizigou.com/weixincard/index/consume
+        // http://www.applicationmodule.com/weixincard/index/consume
         try {
             // 核销卡券事件推送
             /**
@@ -383,7 +383,7 @@ class WeixincardController extends ControllerBase
      */
     public function deleteAction()
     {
-        // http://www.jizigou.com/weixincard/index/delete
+        // http://www.applicationmodule.com/weixincard/index/delete
         try {
             // 删除事件推送
             /**

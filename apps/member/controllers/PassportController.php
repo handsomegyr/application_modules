@@ -25,7 +25,7 @@ class PassportController extends ControllerBase
      */
     public function loginAction()
     {
-        // http://www.jizigou.com/member/passport/login
+        // http://www.applicationmodule.com/member/passport/login
         $account = $this->get('account'); // 手机号或邮箱地址
         $this->assign('account', $account);
     }
@@ -35,7 +35,7 @@ class PassportController extends ControllerBase
      */
     public function logoutAction()
     {
-        // http://www.jizigou.com/member/passport/logout
+        // http://www.applicationmodule.com/member/passport/logout
         // 清理COOKIE
         $this->modelMember->clearCookies();
         $url = $this->getUrl("login");
@@ -51,7 +51,7 @@ class PassportController extends ControllerBase
      */
     public function registerAction()
     {
-        // http://www.jizigou.com/member/passport/register
+        // http://www.applicationmodule.com/member/passport/register
     }
 
     /**
@@ -59,7 +59,7 @@ class PassportController extends ControllerBase
      */
     public function registercheckAction()
     {
-        // http://www.jizigou.com/member/passport/registercheck
+        // http://www.applicationmodule.com/member/passport/registercheck
         $isLogin = $this->modelMember->checkloginMember();
         if (empty($isLogin)) {
             $url = $this->getUrl("register");
@@ -74,7 +74,7 @@ class PassportController extends ControllerBase
      */
     public function findpasswordAction()
     {
-        // http://www.jizigou.com/member/passport/findpassword
+        // http://www.applicationmodule.com/member/passport/findpassword
     }
 
     /**
@@ -82,7 +82,7 @@ class PassportController extends ControllerBase
      */
     public function findcheckAction()
     {
-        // http://www.jizigou.com/member/passport/findcheck
+        // http://www.applicationmodule.com/member/passport/findcheck
     }
 
     /**
@@ -90,7 +90,7 @@ class PassportController extends ControllerBase
      */
     public function findresetsuccessAction()
     {
-        // http://www.jizigou.com/member/passport/findresetsuccess
+        // http://www.applicationmodule.com/member/passport/findresetsuccess
     }
 
     /**
@@ -98,7 +98,7 @@ class PassportController extends ControllerBase
      */
     public function qcbindAction()
     {
-        // http://www.jizigou.com/member/passport/qcbind
+        // http://www.applicationmodule.com/member/passport/qcbind
         // $this->view->setRenderLevel(View::LEVEL_ACTION);
         $userInfo = array();
         if (! empty($_SESSION['login_from'])) {

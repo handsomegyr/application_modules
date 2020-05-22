@@ -28,7 +28,7 @@ class LotteryController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.jizigou.com/yungou/lottery/list?i=56360fd4adfb3842018b4569&b=563613f7adfb3809008b4a37&r=10
+        // http://www.applicationmodule.com/yungou/lottery/list?i=56360fd4adfb3842018b4569&b=563613f7adfb3809008b4a37&r=10
         // 共揭晓商品
         $lotteryCount = $this->modelGoods->getRaffleCount();
         $this->assign('lotteryCount', $lotteryCount);
@@ -39,7 +39,7 @@ class LotteryController extends ControllerBase
      */
     public function detailAction()
     {
-        // http://www.jizigou.com/yungou/lottery/detail?id=xxx
+        // http://www.applicationmodule.com/yungou/lottery/detail?id=xxx
         $goods_id = $this->get('id', '');
         if (empty($goods_id)) {
             $this->goToError();

@@ -15,8 +15,8 @@ class CaptchaController extends ControllerBase
      * 提供生成captcha的服务
      */
     public function createAction()
-    {
-        // http://www.jizigou.com/service/captcha/create?image_width=100&image_height=100
+    {        
+        // http://www.applicationmodule.com/service/captcha/create?image_width=100&image_height=100
         $image_width = $this->get('image_width', '0');
         $image_height = $this->get('image_height', '0');
         $options = array(

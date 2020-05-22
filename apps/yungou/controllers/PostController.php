@@ -28,7 +28,7 @@ class PostController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.jizigou.com/yungou/post/index?i=56360fd4adfb3842018b4569&r=10
+        // http://www.applicationmodule.com/yungou/post/index?i=56360fd4adfb3842018b4569&r=10
         $page = $this->get('page', '1');
         $size = $this->get('size', '40');
         $i = $this->get('i', ''); // 晒单分类
@@ -76,7 +76,7 @@ class PostController extends ControllerBase
      */
     public function detailAction()
     {
-        // http://www.jizigou.com/yungou/post/detail?id=xxx
+        // http://www.applicationmodule.com/yungou/post/detail?id=xxx
         $post_id = $this->get('id', '');
         if (empty($post_id)) {
             $this->goToError();

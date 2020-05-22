@@ -27,7 +27,7 @@ var error = '<?php echo empty($this->view->error)?'':json_encode($this->view->er
          * 获取JSSDK参数，并设置config
          */
         function getJSSDK() {
-            return $.getJSON('http://www.jizigou.com/weixin/index/getjssdkinfo?jsonpcallback=?', {
+            return $.getJSON('http://www.applicationmodule.com/weixin/index/getjssdkinfo?jsonpcallback=?', {
                 url: encodeURIComponent(window.location.href.split('#')[0])
             }).then(function (res) {
                 $('p').empty();

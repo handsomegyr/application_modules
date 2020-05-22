@@ -16,7 +16,7 @@ class SaicmobilityController extends ControllerBase
      */
     public function sendcouponAction()
     {
-        // http://www.jizigou.com/service/saicmobility/sendcoupon
+        // http://www.applicationmodule.com/service/saicmobility/sendcoupon
         try {
             $currentTime = date('Y-m-d H:i:s');
             $objSaicmobility = new \Saicmobility(1040001, "sqjt0212", false);
