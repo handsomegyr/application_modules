@@ -35,6 +35,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
      */
     public function indexAction()
     {
+        session_destroy();
         $this->view->setVar('formName', '首页');
         $envs = [
             ['name' => 'PHP version',       'value' => 'PHP/' . PHP_VERSION],
@@ -127,6 +128,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
     public function logoutAction()
     {
         try {
+            session_destroy();
             $this->modelUser->clearCookies();
             $url = $this->getUrl("login");
             $this->_redirect($url);
@@ -157,6 +159,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
      */
     public function signinAction()
     {
+        session_unset();
         try {
             $this->view->disable();
             $input = $this->getLoginFilterInput();
@@ -187,6 +190,9 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             $_SESSION['toastr']['message'] = '登录成功!';
             $_SESSION['toastr']['options'] = array();
 
+            // 不是来自于其他系统登录
+            $_SESSION['is_login_from_other_system'] = false;
+
             // 返回信息
             $ret = array();
             $ret['redirect'] = $url;
@@ -200,6 +206,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
 
     public function signin4othersAction()
     {
+        session_unset();
         try {
             $this->view->disable();
             $username = $this->request->get('username', array(
@@ -221,12 +228,12 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             $_SESSION['is_login_from_other_system'] = true;
 
             // 返回信息
-            $ret = array();
-            $this->makeJsonResult($ret, 'ok');
+            $ret = $_SESSION;
+            return $this->makeJsonResult($ret, 'ok');
         } catch (\Exception $e) {
             // die($e->getMessage());
             // throw $e;
-            $this->makeJsonError($e->getMessage());
+            return $this->makeJsonError($e->getMessage());
         }
     }
 
