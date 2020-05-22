@@ -49,6 +49,7 @@ EOD;
     protected $NGINX_ACCESSLOG_TEST_R = '/learn-php/log/nginx/test/';
     protected $NGINX_ACCESSLOG_PROD_R = '/learn-php/log/nginx/prod/';
 
+    // laravel框架的nginx配置
     protected $NGINX_CONFIG_TEMPLATE = <<<'EOD'
 server {
     listen       80;
@@ -112,6 +113,47 @@ server {
     #location ~ /\.ht {
     #    deny  all;
     #}
+}
+EOD;
+    // phalcon框架的nginx配置
+    protected $NGINX_CONFIG_PHALCON_TEMPLATE = <<<'EOD'
+server  {
+    listen       80;
+    server_name #_server_name_#;
+    index index.php index.html index.htm default.html default.htm default.php;
+    set $root_path '#_root_path_#';
+    root $root_path;
+    #include other
+    location / {
+        # 跨域相关
+        add_header "Access-Control-Allow-Origin" *;
+        add_header "Access-Control-Allow-Headers" 'Origin, X-Requested-With, Content-Type, Accept';
+        #index index.html index.htm index.php;        
+        try_files $uri $uri/ @rewrites;      
+    } 
+    location @rewrites {
+        rewrite ^(.*)$ /index.php?_url=$1;        
+    }
+    location ~ \.php {
+        # 跨域相关
+        add_header "Access-Control-Allow-Origin" *;
+        add_header "Access-Control-Allow-Headers" 'Origin, X-Requested-With, Content-Type, Accept';        
+        fastcgi_pass 127.0.0.1:9000;        
+        fastcgi_index index.php;
+        include fastcgi.conf;        
+        include fastcgi_params;        
+        fastcgi_split_path_info       ^(.+\.php)(/.+)$;        
+        fastcgi_param PATH_INFO       $fastcgi_path_info;        
+        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;        
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;    
+    }    
+    location ~* ^/(css|img|js|flv|swf|download)/(.+)$ {        
+        root $root_path;    
+    }
+    location ~ /\.ht {        
+        deny all;    
+    }                
+    access_log  #_access_log_#  main;
 }
 EOD;
 
@@ -294,8 +336,8 @@ EOD;
                     $root_path = $this->WWWROOT_DEV_R . $project_code . "/public";
                     $access_log = $this->NGINX_ACCESSLOG_DEV_R . $project_code . ".log";
                     $file4Nginx = $this->NGINX_CONF_DEV_R . $project_code . ".conf";
-                    if (!file_exists($file4Nginx)) {
-                        $config4Nginx = $this->NGINX_CONFIG_TEMPLATE;
+                    if (true || !file_exists($file4Nginx)) {
+                        $config4Nginx = $this->NGINX_CONFIG_PHALCON_TEMPLATE;
                         $config4Nginx = str_replace("#_server_name_#", $server_name, $config4Nginx);
                         $config4Nginx = str_replace("#_root_path_#", $root_path, $config4Nginx);
                         $config4Nginx = str_replace("#_access_log_#", $access_log, $config4Nginx);
@@ -308,8 +350,8 @@ EOD;
                     $root_path = $this->WWWROOT_TEST_R . $project_code . "/public";
                     $access_log = $this->NGINX_ACCESSLOG_TEST_R . $project_code . ".log";
                     $file4Nginx = $this->NGINX_CONF_TEST_R . $project_code . ".conf";
-                    if (!file_exists($file4Nginx)) {
-                        $config4Nginx = $this->NGINX_CONFIG_TEMPLATE;
+                    if (true || !file_exists($file4Nginx)) {
+                        $config4Nginx = $this->NGINX_CONFIG_PHALCON_TEMPLATE;
                         $config4Nginx = str_replace("#_server_name_#", $server_name, $config4Nginx);
                         $config4Nginx = str_replace("#_root_path_#", $root_path, $config4Nginx);
                         $config4Nginx = str_replace("#_access_log_#", $access_log, $config4Nginx);
@@ -322,8 +364,8 @@ EOD;
                     $root_path = $this->WWWROOT_PROD_R . $project_code . "/public";
                     $access_log = $this->NGINX_ACCESSLOG_PROD_R . $project_code . ".log";
                     $file4Nginx = $this->NGINX_CONF_PROD_R . $project_code . ".conf";
-                    if (!file_exists($file4Nginx)) {
-                        $config4Nginx = $this->NGINX_CONFIG_TEMPLATE;
+                    if (true || !file_exists($file4Nginx)) {
+                        $config4Nginx = $this->NGINX_CONFIG_PHALCON_TEMPLATE;
                         $config4Nginx = str_replace("#_server_name_#", $server_name, $config4Nginx);
                         $config4Nginx = str_replace("#_root_path_#", $root_path, $config4Nginx);
                         $config4Nginx = str_replace("#_access_log_#", $access_log, $config4Nginx);
