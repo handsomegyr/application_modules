@@ -1,15 +1,15 @@
 <li class="dropdown user user-menu">
 	<!-- Menu Toggle Button -->
 	<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-		<!-- The user image in the navbar-->		
-		<img src="<?php echo empty($_SESSION['admin_user_info']['headimgurl']) ? $this->view->adminConfig->admin->default_avatar : $this->myTag->getUploadFilePath('system/user',$_SESSION['admin_user_info']['headimgurl']); ?>" class="user-image" alt="User Image">
+		<!-- The user image in the navbar-->
+		<img src="<?php echo empty($_SESSION['admin_user_info']['headimgurl']) ? $this->view->adminConfig->admin->default_avatar : $this->myTag->getUploadFilePath('system/user', $_SESSION['admin_user_info']['headimgurl']); ?>" class="user-image" alt="User Image">
 		<!-- hidden-xs hides the username on small devices so only the image appears. -->
 		<span class="hidden-xs"><?php echo $_SESSION['admin_name'] ?></span>
 	</a>
 	<ul class="dropdown-menu">
 		<!-- The user image in the menu -->
 		<li class="user-header">
-			<img src="<?php echo empty($_SESSION['admin_user_info']['headimgurl']) ? $this->view->adminConfig->admin->default_avatar : $this->myTag->getUploadFilePath('system/user',$_SESSION['admin_user_info']['headimgurl']); ?>" class="img-circle" alt="User Image">
+			<img src="<?php echo empty($_SESSION['admin_user_info']['headimgurl']) ? $this->view->adminConfig->admin->default_avatar : $this->myTag->getUploadFilePath('system/user', $_SESSION['admin_user_info']['headimgurl']); ?>" class="img-circle" alt="User Image">
 			<p>
 				<?php echo $_SESSION['admin_name'] ?>
 
@@ -20,9 +20,11 @@
 			<div class="pull-left">
 				<a href="<?php echo $this->view->baseUrl . 'admin/system/user/edit?id=' . $_SESSION['admin_id'] ?>" class="btn btn-default btn-flat">设置</a>
 			</div>
-			<div class="pull-right">
-				<a href="<?php echo $this->view->baseUrl . 'admin/index/logout' ?>" class="btn btn-default btn-flat">登出</a>
-			</div>
+			<?php if (empty($_SESSION['is_login_from_other_system'])) { ?>
+				<div class="pull-right">
+					<a href="<?php echo $this->view->baseUrl . 'admin/index/logout' ?>" class="btn btn-default btn-flat">登出</a>
+				</div>
+			<?php } ?>
 		</li>
 	</ul>
 </li>

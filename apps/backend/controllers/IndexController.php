@@ -17,6 +17,9 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
 
     protected $formName = "首页";
 
+    /**
+     * @var \App\Backend\Models\User
+     */
     private $modelUser = NULL;
 
     public function initialize()
@@ -187,6 +190,38 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             // 返回信息
             $ret = array();
             $ret['redirect'] = $url;
+            $this->makeJsonResult($ret, 'ok');
+        } catch (\Exception $e) {
+            // die($e->getMessage());
+            // throw $e;
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    public function signin4othersAction()
+    {
+        try {
+            $this->view->disable();
+            $username = $this->request->get('username', array(
+                'trim',
+                'string'
+            ), '');
+            $password = $this->request->get('password', array(
+                'trim',
+                'string'
+            ), '');
+
+            /* 检查密码是否正确 */
+            $userInfo = $this->modelUser->checkLogin($username, $password);
+
+            // 登陆处理
+            $this->modelUser->login($userInfo);
+
+            // 从其他系统进行登录的
+            $_SESSION['is_login_from_other_system'] = true;
+
+            // 返回信息
+            $ret = array();
             $this->makeJsonResult($ret, 'ok');
         } catch (\Exception $e) {
             // die($e->getMessage());
