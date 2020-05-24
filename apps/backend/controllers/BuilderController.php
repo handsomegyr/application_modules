@@ -232,7 +232,7 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Search\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Qyweixin\Settings\Menu&is_create_menu=1
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Company\Settings\Menu&is_create_menu=1
-
+        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Database\Settings\Menu&is_create_menu=1
         try {
             $this->view->disable();
             $settings = $this->get('settings', '');
@@ -299,7 +299,7 @@ EOD;
         $list = array();
         $time = date('Y-m-d H:i:s');
         foreach ($tables as $key => $tableInfo) {
-            foreach ($tableInfo as $key2 => $value) {                
+            foreach ($tableInfo as $key2 => $value) {
                 $result = $db->query("UPDATE {$value} SET __CREATE_TIME__ = '{$time}',__CREATE_USER_ID__ = '5639d567bbcb269f108b4567',__CREATE_USER_NAME__='admin',__MODIFY_TIME__ = '{$time}',__MODIFY_USER_ID__ = '5639d567bbcb269f108b4567',__MODIFY_USER_NAME__='admin'", array());
                 // $result = $db->query("UPDATE {$value} SET __CREATE_USER_ID__ = '5639d567bbcb269f108b4567',__CREATE_USER_NAME__='admin',__MODIFY_USER_ID__ = '5639d567bbcb269f108b4567',__MODIFY_USER_NAME__='admin',__REMOVE_USER_ID__ = '',__REMOVE_USER_NAME__='' where __REMOVED__=0", array());
                 // $result = $db->query("UPDATE {$value} SET __CREATE_USER_ID__ = '5639d567bbcb269f108b4567',__CREATE_USER_NAME__='admin',__MODIFY_USER_ID__ = '5639d567bbcb269f108b4567',__MODIFY_USER_NAME__='admin',__REMOVE_USER_ID__ = '5639d567bbcb269f108b4567',__REMOVE_USER_NAME__='admin',__REMOVE_USER_NAME__='admin' where __REMOVED__=1", array());
@@ -326,7 +326,11 @@ EOD;
         //$columns['tableInfo'] = $tableInfo;
         foreach ($tableInfo as $col) {
             // 某些字段不用输出显示
-            if (in_array($col['Field'], array('_id', '__CREATE_TIME__', '__MODIFY_TIME__', '__REMOVED__'))) {
+            if (in_array($col['Field'], array(
+                '_id', '__CREATE_TIME__',  '__CREATE_USER_ID__', '__CREATE_USER_NAME__',
+                '__MODIFY_TIME__', '__MODIFY_USER_ID__', '__MODIFY_USER_NAME__',
+                '__REMOVED__', '__REMOVE_TIME__', '__REMOVE_USER_ID__', '__REMOVE_USER_NAME__'
+            ))) {
                 continue;
             }
 
