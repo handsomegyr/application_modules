@@ -4,6 +4,7 @@ namespace App\Backend\Submodules\Company\Controllers;
 
 use App\Backend\Submodules\Company\Models\Project;
 use App\Cronjob\Models\Task;
+use App\Backend\Submodules\Database\Models\Project as DBProject;
 
 /**
  * @title({name="项目管理"})
@@ -14,6 +15,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
 {
     private $modelProject;
     private $modelTask;
+    private $modelDbProject;
 
     protected $COMPANY_CUT_TASKTYPE = 1;
     protected $NGINX_SERVER_DOMAIN = ".myweb.com";
@@ -22,6 +24,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
     {
         $this->modelProject = new Project();
         $this->modelTask = new Task();
+        $this->modelDbProject = new DBProject();
         parent::initialize();
     }
 
@@ -819,5 +822,30 @@ class ProjectController extends \App\Backend\Controllers\FormController
             $input->setDefaultQuery($queryCondtions);
         }
         return $input;
+    }
+
+    protected function insert(\App\Backend\Models\Input $input, $row)
+    {
+        try {
+            $this->modelDbProject->begin();
+
+            // 新建一条公司项目记录
+            $newInfo = parent::insert($input, $row);
+
+            // 创建一条公司项目记录所对应的idb管理用的数据库记录
+            $data = array();
+            $data['company_project_id'] = $newInfo['_id'];
+            $data['name'] = $newInfo['project_name'];
+            $data['sn'] = $newInfo['db_pwd'];
+            $data['desc'] = $newInfo['description'];
+            $data['isSystem'] = false;
+            $this->modelDbProject->insert($data);
+
+            $this->modelDbProject->commit();
+            return $newInfo;
+        } catch (\Exception $e) {
+            $this->modelDbProject->rollback();
+            throw $e;
+        }
     }
 }
