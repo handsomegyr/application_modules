@@ -167,7 +167,7 @@ class ProjectcollectionmappingController extends \App\Backend\Controllers\FormCo
                 'is_show' => true
             )
         );
-        $schemas['active'] = array(
+        $schemas['is_actived'] = array(
             'name' => '是否启用',
             'data' => array(
                 'type' => 'boolean',

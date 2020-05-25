@@ -140,7 +140,7 @@ class ProjectcollectionorderbyController extends \App\Backend\Controllers\FormCo
                 'is_show' => true
             )
         );
-        $schemas['order'] = array(
+        $schemas['show_order'] = array(
             'name' => '排序值',
             'data' => array(
                 'type' => 'integer',

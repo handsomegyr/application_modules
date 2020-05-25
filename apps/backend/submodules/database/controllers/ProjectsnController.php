@@ -59,7 +59,6 @@ class ProjectsnController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-
         $schemas['project_id'] = array(
             'name' => '所属数据库',
             'data' => array(
@@ -168,7 +167,7 @@ class ProjectsnController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['expire'] = array(
+        $schemas['expire_time'] = array(
             'name' => '过期时间',
             'data' => array(
                 'type' => 'datetime',
@@ -195,7 +194,7 @@ class ProjectsnController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['active'] = array(
+        $schemas['is_actived'] = array(
             'name' => '是否有效',
             'data' => array(
                 'type' => 'boolean',
@@ -222,7 +221,7 @@ class ProjectsnController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['default'] = array(
+        $schemas['is_default'] = array(
             'name' => '是否默认',
             'data' => array(
                 'type' => 'boolean',
