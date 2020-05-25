@@ -2,6 +2,7 @@
 
 namespace App\Backend\Submodules\Database\Controllers;
 
+use App\Backend\Submodules\Database\Models\Project\Collection;
 use App\Backend\Submodules\Database\Models\Project\Collection\Structure;
 use App\Backend\Submodules\Company\Models\Project;
 use App\Backend\Submodules\Database\Models\Project as DBProject;
@@ -15,6 +16,7 @@ class ProjectcollectionstructureController extends \App\Backend\Controllers\Form
 {
     private $modelDbProject;
     private $modelProject;
+    private $modelProjectCollection;
     private $modelStructure;
 
     public function initialize()
@@ -22,13 +24,17 @@ class ProjectcollectionstructureController extends \App\Backend\Controllers\Form
         $this->modelDbProject = new DBProject();
         $this->modelProject = new Project();
         $this->modelStructure = new Structure();
+        $this->modelProjectCollection = new Collection();
+
         $this->projectList4Company = $this->modelProject->getAll();
         $this->projectList4Db = $this->modelDbProject->getAll();
+        $this->collectionList4Db = $this->modelProjectCollection->getAll();
         parent::initialize();
     }
 
     private $projectList4Company = null;
     private $projectList4Db = null;
+    private $collectionList4Db = null;
 
     protected function getSchemas2($schemas)
     {
@@ -90,24 +96,24 @@ class ProjectcollectionstructureController extends \App\Backend\Controllers\Form
             'name' => '所属数据库表',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->collectionList4Db
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->collectionList4Db
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->collectionList4Db
             ),
             'export' => array(
                 'is_show' => true
@@ -789,11 +795,11 @@ class ProjectcollectionstructureController extends \App\Backend\Controllers\Form
             )
         );
         $schemas['rshType'] = array(
-            'name' => '关联数据展现类型,combobox',
+            'name' => '关联数据展现类型',
             'data' => array(
                 'type' => 'string',
                 'length' => 20,
-                'defaultValue' => ''
+                'defaultValue' => 'combobox'
             ),
             'validation' => array(
                 'required' => false
