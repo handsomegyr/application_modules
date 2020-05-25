@@ -183,7 +183,7 @@ class PlugincollectionstructureController extends \App\Backend\Controllers\FormC
                 'is_show' => true
             )
         );
-        $schemas['filter'] = array(
+        $schemas['filterType'] = array(
             'name' => '过滤器',
             'data' => array(
                 'type' => 'boolean',

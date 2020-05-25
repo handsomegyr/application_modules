@@ -59,7 +59,6 @@ class ProjectcollectionstructureController extends \App\Backend\Controllers\Form
                 'is_show' => true
             )
         );
-
         $schemas['project_id'] = array(
             'name' => '所属数据库',
             'data' => array(
@@ -276,7 +275,7 @@ class ProjectcollectionstructureController extends \App\Backend\Controllers\Form
                 'is_show' => true
             )
         );
-        $schemas['filter'] = array(
+        $schemas['filterType'] = array(
             'name' => '过滤器',
             'data' => array(
                 'type' => 'boolean',
