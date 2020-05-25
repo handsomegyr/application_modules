@@ -110,6 +110,7 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Weixin2\Settings\Menu
         // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Qyweixin\Settings\Menu
         // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Company\Settings\Menu
+        // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Database\Settings\Menu
         try {
             $this->view->disable();
             $settings = $this->get('settings', '');
