@@ -3,7 +3,8 @@
 namespace App\Backend\Submodules\Database\Controllers;
 
 use App\Backend\Submodules\Database\Models\Plugin\Collection\Structure;
-
+use App\Backend\Submodules\Database\Models\Plugin;
+use App\Backend\Submodules\Database\Models\Plugin\Collection;
 /**
  * @title({name="插件表结构管理"})
  *
@@ -12,12 +13,20 @@ use App\Backend\Submodules\Database\Models\Plugin\Collection\Structure;
 class PlugincollectionstructureController extends \App\Backend\Controllers\FormController
 {
     private $modelStructure;
+    private $modelPlugin;
+    private $modelCollection;
 
     public function initialize()
     {
         $this->modelStructure = new Structure();
+        $this->modelPlugin = new Plugin();
+        $this->modelCollection = new Collection();
+        $this->pluginList = $this->modelPlugin->getAll();
+        $this->collectionList4Plugin = $this->modelCollection->getAll();
         parent::initialize();
     }
+    private $pluginList = null;
+    private $collectionList4Plugin = null;
 
     protected function getSchemas2($schemas)
     {
@@ -25,24 +34,24 @@ class PlugincollectionstructureController extends \App\Backend\Controllers\FormC
             'name' => '所属插件',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->pluginList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->pluginList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->pluginList
             ),
             'export' => array(
                 'is_show' => true
@@ -52,24 +61,24 @@ class PlugincollectionstructureController extends \App\Backend\Controllers\FormC
             'name' => '所属插件表',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->collectionList4Plugin
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->collectionList4Plugin
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->collectionList4Plugin
             ),
             'export' => array(
                 'is_show' => true

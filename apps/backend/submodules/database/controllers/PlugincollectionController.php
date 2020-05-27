@@ -3,6 +3,7 @@
 namespace App\Backend\Submodules\Database\Controllers;
 
 use App\Backend\Submodules\Database\Models\Plugin\Collection;
+use App\Backend\Submodules\Database\Models\Plugin;
 
 /**
  * @title({name="插件表管理"})
@@ -12,12 +13,16 @@ use App\Backend\Submodules\Database\Models\Plugin\Collection;
 class PlugincollectionController extends \App\Backend\Controllers\FormController
 {
     private $modelCollection;
+    private $modelPlugin;
 
     public function initialize()
     {
         $this->modelCollection = new Collection();
+        $this->modelPlugin = new Plugin();
+        $this->pluginList = $this->modelPlugin->getAll();
         parent::initialize();
     }
+    private $pluginList = null;
 
     protected function getSchemas2($schemas)
     {
@@ -49,27 +54,27 @@ class PlugincollectionController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['plugin_id'] = array(
-            'name' => '所属插件',
+            'name' => '所属插件',            
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->pluginList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->pluginList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->pluginList
             ),
             'export' => array(
                 'is_show' => true

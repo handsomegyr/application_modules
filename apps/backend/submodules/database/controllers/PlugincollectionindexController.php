@@ -3,6 +3,8 @@
 namespace App\Backend\Submodules\Database\Controllers;
 
 use App\Backend\Submodules\Database\Models\Plugin\Collection\Index;
+use App\Backend\Submodules\Database\Models\Plugin;
+use App\Backend\Submodules\Database\Models\Plugin\Collection;
 
 /**
  * @title({name="插件表索引管理"})
@@ -12,37 +14,44 @@ use App\Backend\Submodules\Database\Models\Plugin\Collection\Index;
 class PlugincollectionindexController extends \App\Backend\Controllers\FormController
 {
     private $modelIndex;
+    private $modelPlugin;
+    private $modelCollection;
 
     public function initialize()
     {
         $this->modelIndex = new Index();
+        $this->modelPlugin = new Plugin();
+        $this->modelCollection = new Collection();
+        $this->pluginList = $this->modelPlugin->getAll();
+        $this->collectionList4Plugin = $this->modelCollection->getAll();
         parent::initialize();
     }
+    private $pluginList = null;
 
     protected function getSchemas2($schemas)
     {
         $schemas['plugin_id'] = array(
-            'name' => '所属插件',
+            'name' => '所属插件',            
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->pluginList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->pluginList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->pluginList
             ),
             'export' => array(
                 'is_show' => true
@@ -52,24 +61,24 @@ class PlugincollectionindexController extends \App\Backend\Controllers\FormContr
             'name' => '所属插件表',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->collectionList4Plugin
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->collectionList4Plugin
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->collectionList4Plugin
             ),
             'export' => array(
                 'is_show' => true
