@@ -431,7 +431,7 @@ class PlugincollectionController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['hookNotifyEmail'] = array(
+        $schemas['hook_notify_email'] = array(
             'name' => 'HOOK告警通知',
             'data' => array(
                 'type' => 'string',

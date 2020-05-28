@@ -27,6 +27,7 @@ class PlugincollectionindexController extends \App\Backend\Controllers\FormContr
         parent::initialize();
     }
     private $pluginList = null;
+    private $collectionList4Plugin = null;
 
     protected function getSchemas2($schemas)
     {
