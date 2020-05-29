@@ -92,6 +92,33 @@ class PlugincollectionstructureController extends \App\Backend\Controllers\FormC
                 'defaultValue' => ''
             ),
             'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['__OLD_FIELD__'] = array(
+            'name' => '旧字段(英文)',
+            'data' => array(
+                'type' => 'string',
+                'length' => 50,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
                 'required' => false
             ),
             'form' => array(

@@ -196,7 +196,7 @@ class PrizeController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'boolean',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => true
             ),
             'validation' => array(
                 'required' => true
