@@ -32,7 +32,7 @@ class PlugincollectionindexController extends \App\Backend\Controllers\FormContr
     protected function getSchemas2($schemas)
     {
         $schemas['plugin_id'] = array(
-            'name' => '所属插件',            
+            'name' => '所属插件',
             'data' => array(
                 'type' => 'string',
                 'length' => '24'
@@ -85,18 +85,46 @@ class PlugincollectionindexController extends \App\Backend\Controllers\FormContr
                 'is_show' => true
             )
         );
-        $schemas['indexes'] = array(
-            'name' => '索引',
+        $schemas['name'] = array(
+            'name' => '索引名',
             'data' => array(
                 'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['keys'] = array(
+            'name' => '索引条件',
+            'data' => array(
+                'type' => 'json',
                 'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -115,7 +143,7 @@ class PlugincollectionindexController extends \App\Backend\Controllers\FormContr
         $schemas['options'] = array(
             'name' => '索引配置信息',
             'data' => array(
-                'type' => 'string',
+                'type' => 'json',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -123,7 +151,7 @@ class PlugincollectionindexController extends \App\Backend\Controllers\FormContr
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -139,7 +167,7 @@ class PlugincollectionindexController extends \App\Backend\Controllers\FormContr
                 'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 

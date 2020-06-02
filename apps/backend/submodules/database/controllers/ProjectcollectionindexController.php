@@ -113,15 +113,15 @@ class ProjectcollectionindexController extends \App\Backend\Controllers\FormCont
                 'is_show' => true
             )
         );
-        $schemas['keys'] = array(
-            'name' => '索引',
+        $schemas['name'] = array(
+            'name' => '索引名',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 190,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
@@ -140,18 +140,19 @@ class ProjectcollectionindexController extends \App\Backend\Controllers\FormCont
                 'is_show' => true
             )
         );
-        $schemas['options'] = array(
-            'name' => '索引配置信息',
+
+        $schemas['keys'] = array(
+            'name' => '索引条件',
             'data' => array(
-                'type' => 'string',
+                'type' => 'json',
                 'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -166,7 +167,34 @@ class ProjectcollectionindexController extends \App\Backend\Controllers\FormCont
             'export' => array(
                 'is_show' => true
             )
-        );        
+        );
+        $schemas['options'] = array(
+            'name' => '索引配置信息',
+            'data' => array(
+                'type' => 'json',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
 
         return $schemas;
     }
