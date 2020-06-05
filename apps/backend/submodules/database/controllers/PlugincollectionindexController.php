@@ -113,7 +113,7 @@ class PlugincollectionindexController extends \App\Backend\Controllers\FormContr
             )
         );
 
-        $schemas['keys'] = array(
+        $schemas['indexes'] = array(
             'name' => '索引条件',
             'data' => array(
                 'type' => 'json',
