@@ -5,6 +5,8 @@ namespace App\Backend\Submodules\Database\Controllers;
 use App\Backend\Submodules\Database\Models\Project\Collection;
 use App\Backend\Submodules\Company\Models\Project;
 use App\Backend\Submodules\Database\Models\Project as DBProject;
+use App\Backend\Submodules\Database\Models\Plugin;
+use App\Backend\Submodules\Database\Models\Plugin\Collection as PluginCollection;
 
 /**
  * @title({name="表管理"})
@@ -16,17 +18,25 @@ class ProjectcollectionController extends \App\Backend\Controllers\FormControlle
     private $modelDbProject;
     private $modelProject;
     private $modelCollection;
+    private $modelPlugin;
+    private $modelPluginCollection;
 
     public function initialize()
     {
         $this->modelDbProject = new DBProject();
         $this->modelProject = new Project();
         $this->modelCollection = new Collection();
+        $this->modelPlugin = new Plugin();
+        $this->modelPluginCollection = new PluginCollection();
 
         $this->projectList4Company = $this->modelProject->getAll();
         $this->projectList4Db = $this->modelDbProject->getAll();
+        $this->pluginList = $this->modelPlugin->getAll();
+        $this->collectionList4Plugin = $this->modelPluginCollection->getAll();
         parent::initialize();
     }
+    private $pluginList = null;
+    private $collectionList4Plugin = null;
 
     private $projectList4Company = null;
     private $projectList4Db = null;
@@ -334,24 +344,24 @@ class ProjectcollectionController extends \App\Backend\Controllers\FormControlle
             'name' => '所属插件',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->pluginList
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->pluginList
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->pluginList
             ),
             'export' => array(
                 'is_show' => true
@@ -361,24 +371,24 @@ class ProjectcollectionController extends \App\Backend\Controllers\FormControlle
             'name' => '所属插件表',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
+                'length' => '24'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => ''
+                'items' => $this->collectionList4Plugin
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
+                'items' => $this->collectionList4Plugin
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->collectionList4Plugin
             ),
             'export' => array(
                 'is_show' => true

@@ -141,7 +141,7 @@ class ProjectcollectionindexController extends \App\Backend\Controllers\FormCont
             )
         );
 
-        $schemas['keys'] = array(
+        $schemas['indexes'] = array(
             'name' => '索引条件',
             'data' => array(
                 'type' => 'json',
