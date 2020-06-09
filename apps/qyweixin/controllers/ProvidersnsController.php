@@ -157,7 +157,7 @@ class ComponentsnsController extends ControllerBase
                 $redirectUri .= '/callback';
 
                 // 授权处理
-                $objSns = new \Weixin\Qy\Token\ServiceSns();
+                $objSns = new \Qyweixin\Token\ServiceSns();
                 $objSns->setAppid($this->authorizer_appid);
                 $objSns->setScope($this->scope);
                 $objSns->setState($this->state);
@@ -243,7 +243,7 @@ class ComponentsnsController extends ControllerBase
                 $redirectUri .= '/callback';
 
                 // 授权处理
-                $objSns = new \Weixin\Qy\Token\ServiceSns();
+                $objSns = new \Qyweixin\Token\ServiceSns();
                 $objSns->setAppid($this->authorizer_appid);
                 $objSns->setScope($this->scope);
                 $objSns->setState($this->state);
@@ -352,7 +352,7 @@ class ComponentsnsController extends ControllerBase
                 $redirectUri .= '?provider_appid=' . $this->provider_appid;
 
                 // 授权处理
-                $objSns = new \Weixin\Qy\Token\ServiceSns();
+                $objSns = new \Qyweixin\Token\ServiceSns();
                 $objSns->setAppid($this->provider_appid);
                 $objSns->setState($this->state);
                 $objSns->setUserType($usertype);

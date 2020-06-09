@@ -46,7 +46,7 @@ class ProviderController extends ControllerBase
 
     private $trackingKey = "公众号授权给第三方服务商流程";
 
-    /** @var  \Weixin\Qy\Service */
+    /** @var  \Qyweixin\Service */
     private $objQyProvider;
 
     private $provider_appid;

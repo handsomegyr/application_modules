@@ -69,7 +69,7 @@ class MsgController extends ControllerBase
     /** @var  \Weixin\Component */
     private $objQyWeixinProvider;
 
-    /** @var  \Weixin\Qy\Client */
+    /** @var  \Qyweixin\Client */
     private $objQyWeixin;
 
     private $provider_appid;
@@ -356,7 +356,7 @@ class MsgController extends ControllerBase
             $AppId = $this->provider_appid;
 
             // die($encodingAesKey.strlen($encodingAesKey));
-            $pc = new \Weixin\Qy\ThirdParty\MsgCrypt\WXBizMsgCrypt($verifyToken, $encodingAesKey, $AppId);
+            $pc = new \Qyweixin\ThirdParty\MsgCrypt\WXBizMsgCrypt($verifyToken, $encodingAesKey, $AppId);
 
             // <xml><ToUserName><![CDATA[gh_abc8231997cb]]></ToUserName><Encrypt><![CDATA[thU8Mz/2q8z+eeZ2HuOGzqAwZrMQWJdIkbr+vY+6a+vCO+22HSyHLWiEZv8TmaqkYKubJbIOpGhLvC2YBYJ94G/G5dsE17xhfGUkV70NMMc/8zL2jay6WAUCNHWovZ1V/SFlgi32AYJ69vICullSE5JCEH4TavYOk42KTfQSO4BYtAuF3zeFIoT3kc13wuqSSx/MN5YZTuNH2QV43Z2WQkQogOwisJP1GRDuFtB2o1bHfD9CxMOAKnRPGEDC6vwCMbEJgf8EVWcoNXRhDJ77eTmTg6pVi3rGXVWCJH7wC2oHz2jy/+MI2UDeSKuz8D/oJPT2RUEN+NErJS26slWXYbE1sTILcwQ+Yz7Su5Ec804/7Fs166UIShMgLzvMXk76PkG6xNsl4uGqapppq1+qVIUTQ8uggzfGbQsjDaZefQg=]]></Encrypt></xml>
             $verifyToken = "";
@@ -479,7 +479,7 @@ class MsgController extends ControllerBase
                 throw new \Exception('application EncodingAESKey is null');
             }
             $decryptMsg = "";
-            $pc = new \Weixin\Qy\ThirdParty\MsgCrypt\WXBizMsgCrypt($this->requestLogDatas['aes_info']['verify_token'], $this->requestLogDatas['aes_info']['EncodingAESKey'], $this->requestLogDatas['aes_info']['receiveId']);
+            $pc = new \Qyweixin\ThirdParty\MsgCrypt\WXBizMsgCrypt($this->requestLogDatas['aes_info']['verify_token'], $this->requestLogDatas['aes_info']['EncodingAESKey'], $this->requestLogDatas['aes_info']['receiveId']);
             $errCode = $pc->decryptMsg($this->requestLogDatas['aes_info']['msg_signature'], $this->requestLogDatas['aes_info']['timestamp'], $this->requestLogDatas['aes_info']['nonce'], $postStr, $decryptMsg);
             if (empty($errCode)) {
                 $datas = $this->revieve($decryptMsg);
@@ -501,7 +501,7 @@ class MsgController extends ControllerBase
                 $encryptMsg = '';
                 $timeStamp = time();
                 $nonce = $this->requestLogDatas['aes_info']['nonce'];
-                $pc = new \Weixin\Qy\ThirdParty\MsgCrypt\WXBizMsgCrypt($this->requestLogDatas['aes_info']['verify_token'], $this->requestLogDatas['aes_info']['EncodingAESKey'], $this->requestLogDatas['aes_info']['receiveId']);
+                $pc = new \Qyweixin\ThirdParty\MsgCrypt\WXBizMsgCrypt($this->requestLogDatas['aes_info']['verify_token'], $this->requestLogDatas['aes_info']['EncodingAESKey'], $this->requestLogDatas['aes_info']['receiveId']);
                 $errCode = $pc->encryptMsg($response, $timeStamp, $nonce, $encryptMsg);
 
                 if (empty($errCode)) {

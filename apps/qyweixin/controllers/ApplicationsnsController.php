@@ -173,7 +173,7 @@ class ApplicationsnsController extends ControllerBase
                 // 授权处理
                 // 应用类型 1:企业号
                 if (empty($this->authorizerConfig['provider_appid']) && $this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
-                    $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+                    $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
                 } else {
                     throw new \Exception('该运用不支持授权操作');
                 }
@@ -281,7 +281,7 @@ class ApplicationsnsController extends ControllerBase
                 // 授权处理
                 // 应用类型 1:企业号
                 if (empty($this->authorizerConfig['provider_appid']) && $this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
-                    $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+                    $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
                 } else {
                     throw new \Exception('该运用不支持授权操作');
                 }
@@ -340,7 +340,7 @@ class ApplicationsnsController extends ControllerBase
                 throw new \Exception('该运用不支持授权操作');
             }
 
-            $objSns = new \Weixin\Qy\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+            $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
             if (empty($this->agentid)) {
                 $access_token = $this->authorizerConfig['access_token'];
             } else {
@@ -543,7 +543,7 @@ class ApplicationsnsController extends ControllerBase
             // $userInfo = $this->modelQyweixinUser->getUserInfoByIdLastWeek($arrAccessToken['userid'], $this->authorizer_appid, $this->provider_appid, $this->now);
             // if (true || empty($userInfo)) {
             // $updateInfoFromWx = true;
-            // $weixin = new \Weixin\Qy\Client($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+            // $weixin = new \Qyweixin\Client($this->authorizer_appid, $this->authorizerConfig['appsecret']);
             // $weixin->setAccessToken($arrAccessToken['access_token']);
             // $userInfo = $weixin->getUserManager()->get($arrAccessToken['userid']);
             // if (!empty($userInfo['errcode'])) {
