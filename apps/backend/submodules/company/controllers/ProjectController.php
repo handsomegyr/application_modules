@@ -297,6 +297,33 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['isSystem'] = array(
+            'name' => '是否公司内部项目',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['language'] = array(
             'name' => '开发语言',
             'data' => array(
