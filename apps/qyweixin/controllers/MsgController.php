@@ -3,22 +3,22 @@
 namespace App\Qyweixin\Controllers;
 
 /**
- * 消息推送
- * 企业微信消息与事件接收
- */
+         * 消息推送
+         * 企业微信消息与事件接收
+         */
 class MsgController extends ControllerBase
 {
     // 活动ID
     protected $activity_id = 2;
     /**
-     *
-     * @var \App\Qyweixin\Models\User\User
-     */
+         *
+         * @var \App\Qyweixin\Models\User\User
+         */
     private $modelQyweixinUser;
     /**
-     *
-     * @var \App\Qyweixin\Models\Provider\Provider
-     */
+         *
+         * @var \App\Qyweixin\Models\Provider\Provider
+         */
     private $modelQyweixinProvider;
     /**
      *
@@ -80,6 +80,10 @@ class MsgController extends ControllerBase
 
     private $authorizerConfig;
 
+    private $agentid;
+
+    private $agentConfig;
+
     /**
      *
      * @var \App\Components\Weixinopen\Services\QyService
@@ -113,8 +117,8 @@ class MsgController extends ControllerBase
      */
     public function callbackAction()
     {
-        // http://wxcrmdemo.jdytoy.com/qyweixin/api/msg/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff
-        // http://wxcrm.eintone.com/qyweixin/api/msg/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff
+        // http://wxcrmdemo.jdytoy.com/qyweixin/api/msg/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff&agentid=999999
+        // http://www.applicationmodule.com/qyweixin/api/msg/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff&agentid=999999
         try {
             /**
              * ==================================================================================
@@ -342,7 +346,7 @@ class MsgController extends ControllerBase
      */
     public function testDecryptMsgAction()
     {
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-decrypt-msg?appid=wxca8519f703c07d32
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-decrypt-msg?appid=wxca8519f703c07d32
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -392,7 +396,7 @@ class MsgController extends ControllerBase
      */
     public function testGetUserAction()
     {
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-get-user?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&FromUserName=o8IA5v7Dwz8tk_EcVsRITf7fA9Fk
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-get-user?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&FromUserName=o8IA5v7Dwz8tk_EcVsRITf7fA9Fk
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -413,15 +417,15 @@ class MsgController extends ControllerBase
      */
     public function testKeywordAction()
     {
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=xxx
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=xxx
 
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试文本1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试图片1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试语音1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试视频1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试音乐1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试单图文1
-        // http://wxcrm.eintone.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试多图文1
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试文本1
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试图片1
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试语音1
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试视频1
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试音乐1
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试单图文1
+        // http://www.applicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试多图文1
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -447,9 +451,10 @@ class MsgController extends ControllerBase
         // 第三方服务商运用ID
         $this->provider_appid = isset($_GET['provider_appid']) ? trim($_GET['provider_appid']) : "";
         $this->authorizer_appid = isset($_GET['authorizer_appid']) ? trim($_GET['authorizer_appid']) : "";
+        $this->agentid = isset($_GET['agentid']) ? intval($_GET['agentid']) : 0;
 
         // 创建service
-        $this->qyweixinService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, 0);
+        $this->qyweixinService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $this->agentid);
 
         if (!empty($this->provider_appid)) {
             $this->providerConfig = $this->qyweixinService->getAppConfig4Provider();
@@ -464,6 +469,15 @@ class MsgController extends ControllerBase
             $this->authorizerConfig = $this->qyweixinService->getAppConfig4Authorizer();
             if (empty($this->authorizerConfig)) {
                 throw new \Exception("provider_appid:{$this->provider_appid}和authorizer_appid:{$this->authorizer_appid}所对应的记录不存在");
+            }
+            $this->objQyWeixin = $this->qyweixinService->getQyWeixinObject();
+        }
+
+        // 应用ID
+        if (!empty($this->agentid)) {
+            $this->agentConfig = $this->qyweixinService->getAccessToken4Agent();
+            if (empty($this->agentConfig)) {
+                throw new \Exception("provider_appid:{$this->provider_appid}和authorizer_appid:{$this->authorizer_appid}和agentid:{$this->agentid}所对应的记录不存在");
             }
             $this->objQyWeixin = $this->qyweixinService->getQyWeixinObject();
         }

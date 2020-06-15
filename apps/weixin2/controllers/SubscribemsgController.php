@@ -87,7 +87,7 @@ class SubscribemsgController extends ControllerBase
     public function indexAction()
     {
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/subscribemsg/index?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&reserved=qwerty&scope=snsapi_userinfo&refresh=1&scene=xxx&template_id=xxx
-        // http://wxcrm.eintone.com/weixinopen/api/subscribemsg/index?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&reserved=qwerty&scope=snsapi_userinfo&refresh=1&scene=xxx&template_id=xxx
+        // http://www.applicationmodule.com/weixinopen/api/subscribemsg/index?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&reserved=qwerty&scope=snsapi_userinfo&refresh=1&scene=xxx&template_id=xxx
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化

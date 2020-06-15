@@ -89,7 +89,7 @@ class MsgController extends ControllerBase
      *
      *
      * * 公众号消息与事件接收URL
-     * http://wxcrm.eintone.com/weixinopen/api/msg/$APPID$/callback?appid=wxca8519f703c07d32
+     * http://www.applicationmodule.com/weixinopen/api/msg/$APPID$/callback?appid=wxca8519f703c07d32
      * 处理微信的回调数据
      *
      * 1、在接收已授权公众号消息和事件的URL中，增加2个参数（此前已有2个参数，为时间戳 timestamp，随机数nonce），分别是encrypt_type（加密类型，为aes）和msg_signature（消息体签名，用于验证消息体的正确性）
@@ -100,8 +100,8 @@ class MsgController extends ControllerBase
      */
     public function callbackAction()
     {
-        // http://wxcrm.eintone.com/weixinopen/api/msg/$APPID$/callback?appid=wxca8519f703c07d32&authorizer_appid=xxx
-        // http://wxcrm.eintone.com/weixinopen/api/msg/xxxxxxx/callback?appid=wxca8519f703c07d32&authorizer_appid=xxx
+        // http://www.applicationmodule.com/weixinopen/api/msg/$APPID$/callback?appid=wxca8519f703c07d32&authorizer_appid=xxx
+        // http://www.applicationmodule.com/weixinopen/api/msg/xxxxxxx/callback?appid=wxca8519f703c07d32&authorizer_appid=xxx
         try {
             /**
              * ==================================================================================
@@ -269,7 +269,7 @@ class MsgController extends ControllerBase
      */
     public function testDecryptMsgAction()
     {
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-decrypt-msg?appid=wxca8519f703c07d32
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-decrypt-msg?appid=wxca8519f703c07d32
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -319,7 +319,7 @@ class MsgController extends ControllerBase
      */
     public function testGetUserAction()
     {
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-get-user?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&FromUserName=o8IA5v7Dwz8tk_EcVsRITf7fA9Fk
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-get-user?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&FromUserName=o8IA5v7Dwz8tk_EcVsRITf7fA9Fk
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -340,15 +340,15 @@ class MsgController extends ControllerBase
      */
     public function testKeywordAction()
     {
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=xxx
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=xxx
 
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试文本1
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试图片1
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试语音1
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试视频1
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试音乐1
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试单图文1
-        // http://wxcrm.eintone.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试多图文1
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试文本1
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试图片1
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试语音1
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试视频1
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试音乐1
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试单图文1
+        // http://www.applicationmodule.com/weixinopen/api/msg/test-keyword?appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试多图文1
         try {
             // 初始化
             $this->doInitializeLogic();

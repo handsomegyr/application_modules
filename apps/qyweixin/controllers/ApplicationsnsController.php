@@ -124,9 +124,9 @@ class ApplicationsnsController extends ControllerBase
      */
     public function authorizeAction()
     {
-        // http://wxcrmdemo.jdytoy.com/qyweixin/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
-        // http://wxcrm.intonead.com/qyweixin/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
-        // http://wxcrm.eintone.com/qyweixin/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
+        // http://www.applicationmodule.com/qyweixin/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
+        // http://www.applicationmodule.com/qyweixin/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
+        // http://www.applicationmodule.com/qyweixin/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             $this->trackingKey = $this->trackingKey . "_网页授权";
@@ -231,8 +231,8 @@ class ApplicationsnsController extends ControllerBase
     public function ssoqrconnectAction()
     {
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/applicationsns/ssoqrconnect?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&refresh=1
-        // http://wxcrm.intonead.com/qyweixin/api/applicationsns/ssoqrconnect?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&refresh=1
-        // http://wxcrm.eintone.com/qyweixin/api/applicationsns/ssoqrconnect?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&refresh=1
+        // http://www.applicationmodule.com/qyweixin/api/applicationsns/ssoqrconnect?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&refresh=1
+        // http://www.applicationmodule.com/qyweixin/api/applicationsns/ssoqrconnect?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             $this->trackingKey = $this->trackingKey . "_扫码登录";

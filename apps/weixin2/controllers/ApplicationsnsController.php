@@ -80,8 +80,8 @@ class ApplicationsnsController extends ControllerBase
     public function authorizeAction()
     {
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://wxcrm.intonead.com/weixinopen/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://wxcrm.eintone.com/weixinopen/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://www.applicationmodule.com/weixinopen/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://www.applicationmodule.com/weixinopen/api/applicationsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
