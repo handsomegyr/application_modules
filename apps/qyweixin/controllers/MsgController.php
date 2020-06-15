@@ -131,16 +131,15 @@ class MsgController extends ControllerBase
             // 初始化
             $this->doInitializeLogic();
 
-            $provider_appid = $this->provider_appid;
-            $authorizer_appid = $this->authorizer_appid;
-            $this->requestLogDatas['provider_appid'] = $provider_appid;
-            $this->requestLogDatas['authorizer_appid'] = $authorizer_appid;
+            $this->requestLogDatas['provider_appid'] = $this->provider_appid;
+            $this->requestLogDatas['authorizer_appid'] = $this->authorizer_appid;
 
             $onlyRevieve = false;
             $AESInfo = array();
             $AESInfo['api'] = 'callback';
-            $AESInfo['provider_appid'] = $provider_appid;
-            $AESInfo['authorizer_appid'] = $authorizer_appid;
+            $AESInfo['provider_appid'] = $this->provider_appid;
+            $AESInfo['authorizer_appid'] = $this->authorizer_appid;
+            $AESInfo['request_agent'] = $this->agentid;
             $AESInfo['msg_signature'] = isset($_GET['msg_signature']) ? $_GET['msg_signature'] : '';
             $AESInfo['timestamp'] = isset($_GET['timestamp']) ? trim(strtolower($_GET['timestamp'])) : '';
             $AESInfo['nonce'] = isset($_GET['nonce']) ? $_GET['nonce'] : '';
@@ -153,10 +152,17 @@ class MsgController extends ControllerBase
                 $receiveId = $this->provider_appid;
                 $errorConfig = $this->providerConfig;
             } else {
-                $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
-                $encodingAESKey = isset($this->authorizerConfig['EncodingAESKey']) ? $this->authorizerConfig['EncodingAESKey'] : '';
-                $receiveId = $this->authorizer_appid;
-                $errorConfig = $this->authorizerConfig;
+                if (!empty($this->agentConfig)) {
+                    $verifyToken = isset($this->agentConfig['verify_token']) ? $this->agentConfig['verify_token'] : '';
+                    $encodingAESKey = isset($this->agentConfig['EncodingAESKey']) ? $this->agentConfig['EncodingAESKey'] : '';
+                    $receiveId = $this->authorizer_appid;
+                    $errorConfig = $this->agentConfig;
+                } else {
+                    $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
+                    $encodingAESKey = isset($this->authorizerConfig['EncodingAESKey']) ? $this->authorizerConfig['EncodingAESKey'] : '';
+                    $receiveId = $this->authorizer_appid;
+                    $errorConfig = $this->authorizerConfig;
+                }
             }
             $AESInfo['EncodingAESKey'] = $encodingAESKey;
             $AESInfo['verify_token'] = $verifyToken;
@@ -253,8 +259,6 @@ class MsgController extends ControllerBase
                 $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
                 $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
                 $content = isset($datas['Content']) ? trim($datas['Content']) : '';
-                $__TIME_STAMP__ = time();
-                $__SIGN_KEY__ = $this->modelQyweixinAuthorizer->getSignKey($FromUserName, $this->authorizerConfig['secretKey'], $__TIME_STAMP__);
                 $MsgId = isset($datas['MsgId']) ? trim($datas['MsgId']) : '';
                 $CreateTime = isset($datas['CreateTime']) ? ($datas['CreateTime']) : time();
 
@@ -272,7 +276,7 @@ class MsgController extends ControllerBase
                     }
                 }
                 // 如果有AgentId的话那么重新获取接口对象
-                if (!empty($AgentID)) {
+                if (!empty($AgentID) && ($AgentID != $this->agentid)) {
                     // 创建service
                     $this->qyweixinService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $AgentID);
                     $this->objQyWeixin = $this->qyweixinService->getQyWeixinObject();
@@ -317,7 +321,7 @@ class MsgController extends ControllerBase
                 }
 
                 if (empty($response)) {
-                    $response = $this->answer($FromUserName, $ToUserName, $content, $authorizer_appid, $provider_appid, $AgentID);
+                    $response = $this->answer($FromUserName, $ToUserName, $content, $this->authorizer_appid, $this->provider_appid, $AgentID);
                 }
 
                 // 输出响应结果
