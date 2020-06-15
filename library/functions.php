@@ -122,6 +122,7 @@ function arrayToCVS($name, $datas, $delimiter = "\t")
     ), $datas['result']);
     $tmpname = tempnam(sys_get_temp_dir(), 'export_cvs_');
     $fp = fopen($tmpname, 'w');
+    fwrite($fp, "\xEF\xBB\xBF");
     foreach ($result as $row) {
         fputcsv($fp, $row, $delimiter, '"');
     }
@@ -147,6 +148,48 @@ function excelTitle($i)
         return $str[$divisor - 1] . $str[$remainder];
     } else {
         return $str[$remainder];
+    }
+}
+
+/**
+ * 将数组数据导出为table文件用于直接输出excel表格
+ *
+ * @param array $datas            
+ * @param string $name            
+ * @param string $output            
+ */
+function arrayToTable($name, $datas, $output = null)
+{
+    resetTimeMemLimit();
+    if (empty($name)) {
+        $name = 'export_' . date("Y_m_d_H_i_s");
+    }
+
+    $result = array_merge(array(
+        $datas['title']
+    ), $datas['result']);
+
+    if (empty($output)) {
+        header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
+        header('Content-Disposition: attachment;filename="' . $name . '.xls"');
+        header('Cache-Control: max-age=0');
+        echo "<table>";
+        foreach ($result as $row) {
+            echo '<tr><td>' . join("</td><td>", $row) . '</td></tr>';
+            ob_flush();
+        }
+        echo "</table>";
+        exit();
+    } else {
+        $fp = fopen($output, 'w');
+        fwrite($fp, "<table>");
+        foreach ($result as $row) {
+            $line = '<tr><td>' . join("</td><td>", $row) . '</td></tr>';
+            fwrite($fp, $line);
+        }
+        fwrite($fp, "</table>");
+        fclose($fp);
+        return true;
     }
 }
 
@@ -313,7 +356,7 @@ function sendEmail($to, $subject, $content, $type = 'html')
  */
 function getIp()
 {
-    // $config = Zend_Registry::get('config');
+    $config = array(); //Zend_Registry::get('config');
     if (!empty($config['global']['cdn']['status'])) {
         $first = function ($ips) {
             $explode = explode(',', $ips);
@@ -516,88 +559,57 @@ function getProbability($percent)
  */
 function rangeDownload($file)
 {
-    $fp = @fopen($file, 'rb');
+    if (!is_file($file)) {
+        return false;
+    }
 
-    $size = filesize($file); // File size
-    $length = $size; // Content length
-    $start = 0; // Start byte
-    $end = $size - 1; // End byte
-    // Now that we've gotten so far without errors we send
-    // the accept range header
-    /*
-     * At the moment we only support single ranges. Multiple ranges requires some more work to ensure it works correctly and comply with the spesifications: http://www.w3.org/Protocols/rfc2616/rfc2616-sec19.html#sec19.2 Multirange support annouces itself with: header('Accept-Ranges: bytes'); Multirange content must be sent with multipart/byteranges mediatype, (mediatype = mimetype) as well as a boundry header to indicate the various chunks of data.
-     */
+    $fp = fopen($file, 'rb');
+
+    $size = filesize($file);
+    $length = $size;
+    $start = 0;
+    $end = $size - 1;
     header("Accept-Ranges: 0-$length");
-    // header('Accept-Ranges: bytes');
-    // multipart/byteranges
-    // http://www.w3.org/Protocols/rfc2616/rfc2616-sec19.html#sec19.2
     if (isset($_SERVER['HTTP_RANGE'])) {
-
         $c_start = $start;
         $c_end = $end;
-        // Extract the range string
         list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
-        // Make sure the client hasn't sent us a multibyte range
         if (strpos($range, ',') !== false) {
-
-            // (?) Shoud this be issued here, or should the first
-            // range be used? Or should the header be ignored and
-            // we output the whole content?
             header('HTTP/1.1 416 Requested Range Not Satisfiable');
             header("Content-Range: bytes $start-$end/$size");
-            // (?) Echo some info to the client?
             exit();
         }
-        // If the range starts with an '-' we start from the beginning
-        // If not, we forward the file pointer
-        // And make sure to get the end byte if spesified
-        if ($range0 == '-') {
 
-            // The n-number of the last bytes is requested
+        if ($range[0] == '-') {
             $c_start = $size - substr($range, 1);
         } else {
-
             $range = explode('-', $range);
             $c_start = $range[0];
             $c_end = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $size;
         }
-        /*
-         * Check the range and make sure it's treated according to the specs. http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
-         */
-        // End bytes can not be larger than $end.
         $c_end = ($c_end > $end) ? $end : $c_end;
-        // Validate the requested range and return an error if it's not correct.
         if ($c_start > $c_end || $c_start > $size - 1 || $c_end >= $size) {
-
             header('HTTP/1.1 416 Requested Range Not Satisfiable');
             header("Content-Range: bytes $start-$end/$size");
-            // (?) Echo some info to the client?
             exit();
         }
         $start = $c_start;
         $end = $c_end;
-        $length = $end - $start + 1; // Calculate new content length
+        $length = $end - $start + 1;
         fseek($fp, $start);
         header('HTTP/1.1 206 Partial Content');
     }
-    // Notify the client the byte range we'll be outputting
     header("Content-Range: bytes $start-$end/$size");
     header("Content-Length: $length");
 
-    // Start buffered download
     $buffer = 1024 * 8;
     while (!feof($fp) && ($p = ftell($fp)) <= $end) {
-
         if ($p + $buffer > $end) {
-
-            // In case we're only outputtin a chunk, make sure we don't
-            // read past the length
             $buffer = $end - $p + 1;
         }
-        set_time_limit(0); // Reset time limit for big files
+        set_time_limit(0);
         echo fread($fp, $buffer);
-        flush(); // Free up memory. Otherwise large files will trigger PHP's
-        // memory limit.
+        flush();
     }
 
     fclose($fp);
@@ -1043,7 +1055,7 @@ function getContentFromUrl($url)
         ));
         $response = $client->request('GET');
         if ($response->isError())
-            throw new Exception($url . ', $response is error！');
+            throw new \Exception($url . ', $response is error！');
         $content = $response->getBody();
     } else {
         $content = file_get_contents($url);
@@ -1054,7 +1066,7 @@ function getContentFromUrl($url)
 /**
  * 获取手机归属地信息
  *
- * @param unknown_type $mobile
+ * @param string $mobile
  *            手机号码
  * @return boolean arrary 手机号码不对
  *         array() {
@@ -1105,7 +1117,7 @@ function lockForGenerateCache($cacheKey)
                 exit('please wait generate cache, left time:' . (time() - $lockTime));
             }
         }
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         var_dump($e->getLine() . $e->getFile() . $e->getMessage());
         return false;
     }
@@ -1123,7 +1135,7 @@ function unlockForGenerateCache($cacheKey)
         $lockFile = sys_get_temp_dir() . '/cache_lock_' . md5($_SERVER['HTTP_HOST'] . $cacheKey);
         unlink($lockFile);
         return true;
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         var_dump($e->getLine() . $e->getFile() . $e->getMessage());
         return false;
     }
@@ -1229,12 +1241,12 @@ function createPager($url, $record_count, $page = 1, $size = 10, $sch = array())
  *
  * @return string
  */
-function createRandVCode($n = 4, $session_start = false)
+function createRandVCode($n = 4, $session_start = false, $string = "ABCDEFGHIJKLMNPQRSTUVWXY3456789")
 {
     $str = array(); // 用来存储随机码
-    $string = "ABCDEFGHIJKLMNPQRSTUVWXY3456789"; // 随机挑选其中4个字符，也可以选择更多，注意循环的时候加上，宽度适当调整
-    // $string =
-    // "1234567890";//随机挑选其中4个字符，也可以选择更多，注意循环的时候加上，宽度适当调整
+    // $string = "ABCDEFGHIJKLMNPQRSTUVWXY3456789"; // 随机挑选其中4个字符，也可以选择更多，注意循环的时候加上，宽度适当调整
+    // $string ="1234567890";//随机挑选其中4个字符，也可以选择更多，注意循环的时候加上，宽度适当调整
+
     $vcode = "";
     $strlen = strlen($string) - 1;
     for ($i = 0; $i < $n; $i++) {
@@ -1279,7 +1291,6 @@ function myMongoId($var = null)
             try {
                 return new \MongoId($var);
             } catch (Exception $e) {
-                fb(exceptionMsg($e), 'LOG');
                 return new \MongoId();
             }
         }
@@ -1520,10 +1531,9 @@ function object2Array($object)
  *
  * @return string
  */
-function createRandCode($n = 32)
+function createRandCode($n = 32, $string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
 {
-    $str = array(); // 用来存储随机码
-    $string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    $str = array(); // 用来存储随机码    
     $code = "";
     for ($i = 0; $i < $n; $i++) {
         $str[$i] = $string[rand(0, $n - 1)];
@@ -1846,17 +1856,17 @@ function is_date($str)
     $stamp = strtotime($str);
 
     if (!is_numeric($stamp)) {
-        return FALSE;
+        return false;
     }
     $month = date('m', $stamp);
     $day = date('d', $stamp);
     $year = date('Y', $stamp);
 
     if (checkdate($month, $day, $year)) {
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 function showPrice($number, $decimals = null)
@@ -1895,4 +1905,192 @@ function convertCharacet($data)
         }
     }
     return $data;
+}
+
+/**
+ * 将字符串转化为UTF-8
+ *
+ * @param string $string            
+ * @return string
+ */
+function convertToUtf8($string)
+{
+    // 检测是否包含bom头，如果包含去掉
+    if (substr($string, 0, 3) == "\xEF\xBB\xBF") {
+        $string = substr($string, 3);
+    }
+    $currentEncoding = mb_detect_encoding($string);
+    if ($currentEncoding == 'UTF-8' || $currentEncoding === false) {
+        return $string;
+    } else {
+        return mb_convert_encoding($string, 'UTF-8', $currentEncoding);
+    }
+}
+
+
+/**
+ * 判断一张图片是否为gif
+ *
+ * @param 二进制图片内容 $filename            
+ */
+function isAnimatedGif($image)
+{
+    return strpos($image, chr(0x21) . chr(0xff) . chr(0x0b) . 'NETSCAPE2.0') === FALSE ? false : true;
+}
+
+
+/**
+ * 解压压缩包中的指定类型的文件到临时目录文件中
+ *
+ * @param string $zipfile            
+ * @param array $type            
+ */
+function unzip($zipfile, $types = array())
+{
+    $rst = array();
+    $zip = new ZipArchive();
+    if ($zip->open($zipfile) === true) {
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $entry = $zip->getNameIndex($i);
+            if (!empty($types)) {
+                foreach ($types as $type) {
+                    if (!preg_match('#\.(' . $type . ')$#i', $entry)) {
+                        continue 2;
+                    }
+                }
+            }
+            $tmpname = tempnam(sys_get_temp_dir(), 'unzip_');
+            copy('zip://' . $zipfile . '#' . $entry, $tmpname);
+            $rst[] = $tmpname;
+        }
+        $zip->close();
+        return $rst;
+    } else {
+        throw new Exception("ZIP archive failed");
+        return false;
+    }
+}
+
+/**
+ * Check if the file is encrypted
+ *
+ * Notice: if file doesn't exists or cannot be opened, function
+ * also return false.
+ *
+ * @param string $pathToArchive            
+ * @return boolean return true if file is encrypted
+ */
+function isEncryptedZip($pathToArchive)
+{
+    $fp = @fopen($pathToArchive, 'r');
+    $encrypted = false;
+    if ($fp && fseek($fp, 6) == 0) {
+        $string = fread($fp, 2);
+        if (false !== $string) {
+            $data = unpack("vgeneral", $string);
+            $encrypted = $data['general'] & 0x01 ? true : false;
+        }
+        fclose($fp);
+    }
+    return $encrypted;
+}
+
+/**
+ * 检测指定内容是否为zip压缩文件
+ *
+ * @param string $content            
+ * @return boolean
+ */
+function isZip($content)
+{
+    $finfo = new \finfo(FILEINFO_MIME);
+    $mime = $finfo->buffer($content);
+    if (strpos($mime, 'zip') !== false) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * 将指定内容写入到临时文件
+ *
+ * @param mixed $content            
+ */
+function toTemp($content)
+{
+    $fileName = tempnam(sys_get_temp_dir(), "icc_temp_");
+    file_put_contents($fileName, $content);
+    return $fileName;
+}
+
+/**
+ * 通过popen运行指定的命令
+ *
+ * @param string $cmd            
+ * @param boolean $output            
+ * @return string
+ */
+function runCmd($cmd, $output = false)
+{
+    $result = '';
+    $fp = popen($cmd, "r");
+    while (!feof($fp)) {
+        $result .= fgets($fp, 1024);
+    }
+    pclose($fp);
+    if ($output) {
+        echo "\n";
+        echo "====================";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n";
+        echo "================cmd=======================\n";
+        echo $cmd . "\n";
+        echo "================cmd result================\n";
+        echo $result . "\n";
+        echo "================cmd end===================\n";
+    }
+    return $result;
+}
+
+/**
+ * 将文件转化为zip
+ *
+ * @param string $filename            
+ * @param string $content            
+ * @return string boolean
+ */
+function fileToZipStream($filename, $content)
+{
+    $tmp = tempnam(sys_get_temp_dir(), 'zip_');
+    $zip = new ZipArchive();
+    $res = $zip->open($tmp, ZipArchive::CREATE);
+    if ($res === true) {
+        $zip->addFromString($filename, $content);
+        $zip->close();
+        $rst = file_get_contents($tmp);
+        unlink($tmp);
+        return $rst;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * 检测字符串是否为UTF-8
+ *
+ * @param string $string            
+ * @return number
+ */
+function detectUTF8($string)
+{
+    return preg_match('%(?:
+        [\xC2-\xDF][\x80-\xBF]
+        |\xE0[\xA0-\xBF][\x80-\xBF]
+        |[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}
+        |\xED[\x80-\x9F][\x80-\xBF]    
+        |\xF0[\x90-\xBF][\x80-\xBF]{2}
+        |[\xF1-\xF3][\x80-\xBF]{3}
+        |\xF4[\x80-\x8F][\x80-\xBF]{2}
+        )+%xs', $string);
 }

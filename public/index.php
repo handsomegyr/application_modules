@@ -24,7 +24,9 @@ try {
     
     define('CURRENT_TIMESTAMP', time()); // 当前时间
     
-    require __DIR__ . '/../vendor/autoload.php';
+    require __DIR__ . '/../vendor/autoload.php';    
+
+    require __DIR__ . '/../library/DatabaseManager.php';
     
     require __DIR__ . '/../library/functions.php';
     

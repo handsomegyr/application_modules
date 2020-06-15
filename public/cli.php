@@ -10,7 +10,9 @@ try {
     
     defined('IS_IN_CLI_MODE') || define('IS_IN_CLI_MODE', true);
     
-    require __DIR__ . '/../vendor/autoload.php';
+    require __DIR__ . '/../vendor/autoload.php';    
+
+    require __DIR__ . '/../library/DatabaseManager.php';
     
     require __DIR__ . '/../library/functions.php';
     

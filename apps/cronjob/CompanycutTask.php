@@ -162,6 +162,14 @@ EOD;
     protected $RSYNCCMD = "rsync -azu --delete --exclude=*.log --exclude=.svn  --exclude=*.svn ";
     protected $RSYNCSERVER = '192.168.81.129';
     protected $IPS = array('192.168.81.129');
+
+    // HIVE
+    const HIVE_BIN = '/home/hadoop/hive/bin/hive';
+
+    // OOZIE
+    const OOZIE_BIN = 'oozie';
+    const OOZIE_SERVER = 'http://127.0.0.1:11000/oozie';
+
     /**
      * 公司CUT相关的处理
      * cd /learn-php/phalcon/application_modules/apps/cronjob
@@ -421,6 +429,7 @@ EOD;
                     $cmdline = 'ansible storm_cluster -m command -a "' . $this->RSYNCCMD . " " . $this->NGINX_CONF_PROD_R . $project_code . ".conf" . " " . $this->NGINX_CONF_PROD_R . $project_code . ".conf" . '"';
                     $tip = exec("$cmdline", $output, $ret);
                 } elseif ($process_name == 'create_db') {
+                    // 创建数据库和基础表
                     // $di = $this->getDI();
                     $di = \Phalcon\DI::getDefault();
                     $config = $di->get('config');
@@ -480,7 +489,61 @@ EOD;
                         $sqlRet = $this->doSql($connection1, $sql);
                         // $tip = \json_encode($sqlRet);
                     }
+                } elseif ($process_name == 'data_export') {
+                    // 表数据导出
+                    $this->doDataExport($taskContent);
+                } elseif ($process_name == 'send_email') {
+                    // 发送邮件
+                    $workload = $taskContent['workload'];
+                    $params = unserialize($workload);
+                    $toEmail = $params['toEmail'];
+                    $subject = $params['subject'];
+                    $content = $params['content'];
+                    $this->sendEmailPhpMailer($toEmail, $subject, $content);
+                } elseif ($process_name == 'collection_bson_export') {
+                    // 表数据bson导出
+                    $this->doCollectionBsonExport($taskContent);
+                } elseif ($process_name == 'create_index') {
+                    // 创建索引
+                    $this->doCreateIndex($taskContent);
+                } elseif ($process_name == 'bson_import') {
+                    // bson，csv导入
+                    $this->doBsonImport($taskContent);
+                } elseif ($process_name == 'bson_export') {
+                    // bson，csv导出
+                    $this->doBsonExport($taskContent);
+                } elseif ($process_name == 'touch_data') {
+                    // 数据预热
+                    $this->doBsonExport($taskContent);
+                } elseif ($process_name == 'drop_datas') {
+                    // 数据清空
+                    $this->doDropDatas($taskContent);
+                } elseif ($process_name == 'create_hive_table') {
+                    // 在hive中创建数据集合
+                    $this->doCreateHiveTable($taskContent);
+                } elseif ($process_name == 'execute_hive_sql') {
+                    // 在hive中执行hivesql
+                    $this->doExecuteHiveSQL($taskContent);
+                } elseif ($process_name == 'oozie_work_flow') {
+                    // 执行Oozie的工作流
+                    $this->doOozieWorkflow($taskContent);
+                } elseif ($process_name == 'delete_removed_data') {
+                    // 删除被removed的数据
+                    $this->doDeleteRemovedData($taskContent);
+                } elseif ($process_name == 'log_error') {
+                    // 记录错误信息
+                    $this->doLogError($taskContent);
+                } elseif ($process_name == 'plugin_collection_sync') {
+                    // 同步插件集合数据结构
+                    $this->doPluginCollectionSync($taskContent);
+                } elseif ($process_name == 'sync_collection_in_single_plugin') {
+                    // 同步在特定插件中的集合
+                    $this->doSyncCollectionInSinglePlugin($taskContent);
+                } elseif ($process_name == 'plugin_index_sync') {
+                    // 同步插件索引
+                    $this->doPluginIndexSync($taskContent);
                 }
+
                 // 成功的话
                 if (empty($ret)) {
                     $success = true;
@@ -509,6 +572,7 @@ EOD;
         return $taskResult;
     }
 
+    // 执行sql命令
     protected function doSql($connection, $sql)
     {
         $sql = str_replace("\r\n", "\n", $sql);
@@ -528,5 +592,1109 @@ EOD;
         foreach ($ret as $query) {
             $connection->execute($query);
         }
+    }
+
+    // 表数据导出
+    protected function doDataExport($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $exportKey = $taskContent['exportKey'];
+        $exportGearmanKey = $taskContent['exportGearmanKey'];
+
+        $scriptStarTime = microtime(true);
+        $params = unserialize($workload);
+        $scope = $params['scope'];
+        $collection_id = $params['collection_id'];
+        $query = $params['query'];
+        $fields = $params['fields'];
+
+        echo "====================";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n";
+
+        print_r($params);
+
+        $di = \Phalcon\DI::getDefault();
+        $cache = $di->get("cache"); //$this->getDI()->get("cache");
+
+        // 获取映射关系，初始化数据集合model
+        $dataModel = $this->getData4Collection($collection_id);
+
+        // 增加a.b类型字段的支持
+        $queryFields = $fields;
+        foreach ($queryFields as $k => $v) {
+            if (strpos($k, '.') !== false) {
+                $tmp = explode('.', $k);
+                $queryFields[$tmp[0]] = true;
+            }
+        }
+
+        // $dataModel->setReadPreference(MONGODB_READ_PREFERENCE);
+        $start = 0;
+        $limit = 1000000;
+        $sort = array('_id' => 1);
+        $list = $dataModel->find($query, $sort, $start, $limit, $queryFields);
+        $dataTotal = $list['total'];
+
+        if ($dataTotal > $limit) {
+            var_dump('$dataTotal > ' . $limit . ' stop');
+            $cache->delete($exportGearmanKey);
+            $fileInfo = array();
+            $fileInfo['outType'] = 'toolarge';
+            $cache->save($exportKey, $fileInfo, 7200);
+            return false;
+        }
+
+        $excelDatas = array();
+        // 保持拥有全部的字段名，不存在错乱的想象
+
+        $loop = function ($value, $tmp) {
+            $new = $value;
+            $len = count($tmp);
+            for ($i = 0; $i < $len; $i++) {
+                if (isset($new[$tmp[$i]])) {
+                    $new = $new[$tmp[$i]];
+                } else {
+                    return '';
+                }
+            }
+            return $new;
+        };
+
+        $fieldNames = array_keys($fields);
+
+        if (!empty($list['datas'])) {
+            foreach ($list['datas'] as $row) {
+                $tmp = array();
+                foreach ($fieldNames as $key) {
+                    if (strpos($key, '.') !== false) {
+                        $explodeKey = explode('.', $key);
+                        $tmp[$key] = $loop($row, $explodeKey);
+                    } else {
+                        $tmp[$key] = isset($row[$key]) ? $row[$key] : '';
+                    }
+                }
+                $excelDatas[] = $tmp;
+                unset($tmp);
+            }
+        }
+        unset($list);
+
+        echo "get data from database:" . (microtime(true) - $scriptStarTime);
+        echo "\n";
+
+        // 在导出数据的情况下，将关联数据显示为关联集合的显示字段数据
+        $rshData = array();
+        foreach ($scope->_rshCollection as $_id => $detail) {
+            $model = $this->getData4Collection($_id);
+            $rshDataList = $model->findAll(array(), array(
+                $detail['rshCollectionKeyField'] => true,
+                $detail['rshCollectionValueField'] => true
+            ));
+
+            $datas = array();
+            foreach ($rshDataList as $row) {
+                $key = $row[$detail['rshCollectionValueField']];
+                $value = isset($row[$detail['rshCollectionKeyField']]) ? $row[$detail['rshCollectionKeyField']] : '';
+                if ($key instanceof \MongoId) {
+                    $key = $key->__toString();
+                }
+                if (!empty($key)) {
+                    $datas[$key] = $value;
+                }
+            }
+
+            if (is_array($detail['collectionField'])) {
+                foreach ($detail['collectionField'] as $detailCollectionField) {
+                    $rshData[$detailCollectionField] = $datas;
+                }
+            } else {
+                $rshData[$detail['collectionField']] = $datas;
+            }
+        }
+
+        echo "get rsh collection data from database:" . (microtime(true) - $scriptStarTime);
+        echo "\n";
+
+        echo "excelDatas";
+        print_r($excelDatas);
+        echo "\n";
+
+        // 结束
+        $excelDatas = convertToPureArray($excelDatas);
+
+        echo "convertToPureArray:" . (microtime(true) - $scriptStarTime);
+        echo "\n";
+
+        array_walk($excelDatas, function (&$value, $key) use ($rshData, $fields) {
+            ksort($value);
+            array_walk($value, function (&$cell, $field) use ($rshData) {
+                if (is_string($field) || is_int($field)) {
+                    if (isset($rshData[$field])) {
+                        $cell = isset($rshData[$field][$cell]) ? $rshData[$field][$cell] : '';
+                    } else {
+                        if (is_string($cell)) {
+                            if (strtotime($cell) === false)
+                                $cell = preg_replace("/\r|\n|\t|\s/", "", htmlspecialchars($cell));
+                        } else {
+                            if (is_array($cell)) {
+                                $cell = json_encode($cell, JSON_UNESCAPED_UNICODE);
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        echo "array_walk excelDatas:" . (microtime(true) - $scriptStarTime);
+        echo "\n";
+
+        $title = array();
+        ksort($fields);
+        foreach (array_keys($fields) as $field) {
+            $title[] = isset($scope->_title[$field]) ? $scope->_title[$field] : $field;
+        }
+
+        $excel = array(
+            'title' => $title,
+            'result' => $excelDatas
+        );
+
+        $temp = '/home/webs/nas/gearman_export_' . \uniqid(); // tempnam(sys_get_temp_dir(), 'gearman_export_');
+
+        echo "write to temp file start:" . (microtime(true) - $scriptStarTime);
+        echo "\n";
+
+        $this->arrayToCVS2($excel, null, $temp);
+        $outType = 'csv';
+
+        echo "write to temp file end:" . (microtime(true) - $scriptStarTime);
+        echo "\n";
+
+        $fileInfo = array();
+        $fileInfo['_id'] = $temp;
+
+        var_dump($fileInfo);
+        echo "write to gridfs:" . (microtime(true) - $scriptStarTime);
+        echo "\n";
+
+        $fileInfo['outType'] = $outType;
+        var_dump($fileInfo);
+
+        var_dump(file_get_contents($fileInfo['_id']));
+
+        // 确保数据同步能正确完成，当且仅当读取从节点时有效
+        sleep(3);
+        $cache->save($exportKey, $fileInfo, 7200);
+        sleep(3);
+        $cache->delete($exportGearmanKey);
+
+        echo "====================end======================";
+        echo "\n";
+        return true;
+    }
+
+    /**
+     * 发送邮件byPHPmailer
+     *
+     * @param mixed $to
+     *            (array|string)
+     * @param string $subject            
+     * @param string $content            
+     */
+    protected function sendEmailPhpMailer($to, $subject, $content, $debug = 0)
+    {
+        $mail = new \PHPMailer();
+        $mail->CharSet = 'UTF-8';
+        $mail->SMTPAutoTLS = false;
+        $mail->SMTPDebug = $debug; // Enable verbose debug output
+        $mail->isSMTP();
+        $mail->Host = 'smtp.jizigou.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'info@jizigou.com';
+        $mail->Password = '123qawq123S';
+        $mail->Port = 25;
+
+        $mail->setFrom('handsomegyr@126.com', 'System Monitor');
+        if (is_array($to)) {
+            foreach ($to as $email) {
+                $mail->addAddress($email); // Add a recipient
+            }
+        } else {
+            $mail->addAddress($to);
+        }
+        $mail->isHTML(true);
+
+        $mail->Subject = $subject;
+        $mail->Body = $content;
+
+        if (!$mail->send()) {
+            echo 'Message could not be sent.';
+            echo 'Mailer Error: ' . $mail->ErrorInfo;
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // 用bson格式导出表数据
+    protected function doCollectionBsonExport($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+
+        $key = $params['key'];
+        $collection_id = $params['collection_id'];
+        $dataModel = $this->getData4Collection($collection_id);
+        $collection_name = $dataModel->getSource();
+
+        $zipName = 'bson_' . \uniqid() . '.zip';
+        $tmp = '/home/webs/nas/' . $zipName; // tempnam(sys_get_temp_dir(), 'zip_');
+        var_dump($tmp);
+
+        $zip = new \ZipArchive();
+        $res = $zip->open($tmp, \ZipArchive::CREATE);
+        if ($res === true) {
+            // 添加项目数据
+            $filename = $this->collection2bson($dataModel, array());
+            var_dump($filename);
+            var_dump(filesize($filename));
+            var_dump($zip->addFile($filename, $collection_name . '.bson'));
+        }
+        $zip->close();
+
+        if (!empty($filename))
+            unlink($filename);
+
+        // 存入mongodb中用于中间读取
+        $fileInfo = array();
+        $fileInfo['_id'] = $tmp;
+        $fileInfo['filename'] = $zipName;
+        // $fileInfo['mime'] = 'application/zip';
+        $fileInfo['size'] = $fileInfo['length'] = filesize($tmp);
+        var_dump($fileInfo);
+
+        $di = \Phalcon\DI::getDefault();
+        $cache = $di->get("cache");
+        $cache->save($key, $fileInfo, 60);
+        return true;
+    }
+
+    // 创建索引
+    protected function doCreateIndex($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+
+        echo "====================";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n";
+
+        $index_name = isset($params['index_name']) ? $params['index_name'] : '';
+        $collection_id = isset($params['collection_id']) ? $params['collection_id'] : '';
+        $indexInfo = isset($params['keys']) ? $params['keys'] : '';
+        $options = isset($params['options']) ? $params['options'] : array();
+        // 创建索引
+        if (!empty($collection_id) && !empty($index_name) && !empty($indexInfo) && is_array($indexInfo)) {
+
+            $modelCompanyProject = new \App\Company\Models\Project();
+            $modelProjectCollection = new \App\Database\Models\Project\Collection();
+
+            // 获取表信息数据
+            $dataCollectionInfo = $modelProjectCollection->getInfoById($collection_id);
+            if (empty($dataCollectionInfo)) {
+                throw new \Exception("该collection_id:{$collection_id}所对应的集合不存在");
+            }
+            $companyProjectInfo = $modelCompanyProject->getInfoById($dataCollectionInfo['company_project_id']);
+            if (empty($companyProjectInfo)) {
+                throw new \Exception('集合的company_project_id无效');
+            }
+            $objDatabaseManager = new \DatabaseManager($companyProjectInfo['project_code'], $companyProjectInfo['project_code'], $companyProjectInfo['db_pwd']);
+
+            // 创建表索引
+            $ret = $objDatabaseManager->addIndex($dataCollectionInfo['alias'], $index_name, $indexInfo, $options);
+            var_dump($ret);
+        }
+
+        echo "====================end======================";
+        echo "\n";
+        return true;
+    }
+
+    // Bson数据导入
+    protected function doBsonImport($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+        $key = $params['key'];
+        $admin_id = $workload['admin_id'];
+        $admin_name = $workload['admin_name'];
+        $collection_id = $params['collection_id'];
+        $physicalDrop = $params['physicalDrop'];
+
+        $modelCompanyProject = new \App\Company\Models\Project();
+        $modelProjectCollection = new \App\Database\Models\Project\Collection();
+        $modelProjectCollectionStructure = new \App\Database\Models\Project\Collection\Structure();
+
+        // 获取表信息数据
+        $dataCollectionInfo = $modelProjectCollection->getInfoById($collection_id);
+        if (empty($dataCollectionInfo)) {
+            throw new \Exception("该collection_id:{$collection_id}所对应的集合不存在");
+        }
+        $companyProjectInfo = $modelCompanyProject->getInfoById($dataCollectionInfo['company_project_id']);
+        if (empty($companyProjectInfo)) {
+            throw new \Exception('集合的company_project_id无效');
+        }
+
+        // 获取集合的数据结构
+        $_schema = array();
+        $_fields = array();
+        $list = $modelProjectCollectionStructure->findAll(array(
+            'company_project_id' => $dataCollectionInfo['company_project_id'],
+            'project_id' => $dataCollectionInfo['project_id'],
+            'collection_id' => $collection_id
+        ));
+        foreach ($list as $row) {
+            $_schema[$row['label']] = $row['field'];
+            $_fields[$row['field']] = $row['type'];
+        }
+
+        $objDatabaseManager = new \DatabaseManager($companyProjectInfo['project_code'], $companyProjectInfo['project_code'], $companyProjectInfo['db_pwd']);
+
+        // 如果是物理删除数据的话
+        if ($physicalDrop) {
+            // 重新建表操作2  保留表结构和索引
+            $tablename = $dataCollectionInfo['alias'];
+            $new_tablename = $tablename . "_del_" . date('YmdHis') . "_" . \uniqid();
+
+            // 先改表名
+            $objDatabaseManager->alterTableName($tablename, $new_tablename);
+
+            // 再生成一个相同表名称的表
+            $objDatabaseManager->cloneTable($tablename, $new_tablename);
+        }
+
+        // 加载csv数据
+        $csv = file_get_contents($key);
+
+        // 判断该文件是不是压缩文件,如果是压缩文件解压处理，注意只能解压压缩包根目录下的文件
+        if (isZip($csv)) {
+            $tmpZip = tempnam(sys_get_temp_dir(), 'tmpzip_');
+            file_put_contents($tmpZip, $csv);
+            $unzipList = unzip($tmpZip, array(
+                'csv'
+            ));
+            if (empty($unzipList)) {
+                throw new Exception("加压文件列表为空，未发现有效的csv文件");
+            }
+            $csv = file_get_contents($unzipList[0]);
+            unlink($unzipList[0]);
+            unlink($tmpZip);
+        }
+
+        // 删除过期的临时缓存文件
+        unlink($key);
+
+        if (empty($csv)) {
+            echo '$csv is empty';
+            return false;
+        }
+
+        $arr = csv2arr($csv);
+        unset($csv); // 释放内存
+
+        if (empty($arr)) {
+            echo '$arr is empty';
+            return false;
+        }
+
+        // 获取第一行的数据
+        $firstRow = array_shift($arr);
+        var_dump(__LINE__, $firstRow);
+
+        $titles = array();
+        foreach ($firstRow as $col => $value) {
+            $value = trim($value);
+            var_dump(__LINE__, $col, $value);
+            var_dump(__LINE__, $value, array_keys($_schema));
+            if (in_array($value, array_keys($_schema), true)) {
+                $titles[$col] = $_schema[$value];
+                var_dump(__LINE__, $value, $_schema[$value]);
+            } else {
+                var_dump(__LINE__, $value, array_values($_schema));
+                if (in_array($value, array_values($_schema), true)) {
+                    $titles[$col] = $value;
+                }
+            }
+            var_dump(__LINE__, $titles);
+        }
+        var_dump(__LINE__, $_schema);
+        var_dump(__LINE__, $titles);
+        if (count($titles) == 0) {
+            var_dump(__LINE__, $titles);
+            var_dump(__LINE__, $firstRow);
+            echo '无匹配的标题或者标题字段，请检查导入数据的格式是否正确';
+            return false;
+        }
+
+        $now = date("Y-m-d H:i:s", time());
+        $temp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'bson_' . \uniqid() . '.csv';
+        $fp = fopen($temp, 'w');
+        foreach ($arr as $row) {
+            $insertData = array();
+            foreach ($titles as $col => $colName) {
+                $insertData[$colName] = $row[$col];
+            }
+            $id = new \MongoId();
+            $insertData['_id'] = $id->__toString();
+            $insertData['__REMOVED__'] = 0;
+            $insertData['__CREATE_TIME__'] = $now;
+            $insertData['__CREATE_USER_ID__'] = $admin_id;
+            $insertData['__CREATE_USER_NAME__'] = $admin_name;
+
+            $insertData['__MODIFY_TIME__'] = $now;
+            $insertData['__MODIFY_USER_ID__'] = $admin_id;
+            $insertData['__MODIFY_USER_NAME__'] = $admin_name;
+
+            // fwrite($fp, bson_encode($insertData));
+            fputcsv($fp, $insertData);
+        }
+        fclose($fp);
+
+        // 执行导入脚本
+        $objDatabaseManager->importCsvData($tablename, $temp);
+        echo "\n";
+        unlink($temp);
+
+        echo "\ncomplete";
+        return true;
+    }
+
+    // Bson数据导出
+    protected function doBsonExport($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+
+        $key = $params['key'];
+        $project_id = $params['project_id'];
+        $company_project_id = $params['company_project_id'];
+
+        var_dump("=======bson获取开始:" . date("Y-m-d H:i:s") . "=============\n");
+
+        $zipName = 'bson_' . \uniqid() . '.zip';
+        $tmp = '/home/webs/nas/' . $zipName; // tempnam(sys_get_temp_dir(), 'zip_');
+        var_dump($tmp);
+
+        $zip = new \ZipArchive();
+        $res = $zip->open($tmp, \ZipArchive::CREATE);
+        if ($res === true) {
+            // 添加项目数据
+            $modelProject = new \App\Database\Models\Project();
+            $filename = $this->collection2bson($modelProject, array(
+                '_id' => $project_id
+            ));
+            $zip->addFile($filename, 'idatabase_project' . '.csv');
+            // unlink($filename);
+
+            // 获取密钥信息
+            $modelProjectSn = new \App\Database\Models\Project\Sn();
+            $filename = $this->collection2bson($modelProjectSn, array(
+                'company_project_id' => $company_project_id,
+                'project_id' => $project_id
+            ));
+            $zip->addFile($filename, 'idatabase_project_sn' . '.csv');
+            // unlink($filename);
+
+            // 添加集合数据
+            $modelProjectCollection = new \App\Database\Models\Project\Collection();
+            $filename = $this->collection2bson($modelProjectCollection, array(
+                'company_project_id' => $company_project_id,
+                'project_id' => $project_id
+            ));
+            $zip->addFile($filename, 'idatabase_project_collection' . '.csv');
+            // unlink($filename);
+
+            // 添加结构数据
+            $modelProjectCollectionStructure = new \App\Database\Models\Project\Collection\Structure();
+            $filename = $this->collection2bson($modelProjectCollectionStructure, array(
+                'company_project_id' => $company_project_id,
+                'project_id' => $project_id
+            ));
+            $zip->addFile($filename, 'idatabase_project_collection_structure' . '.csv');
+            // unlink($filename);
+
+            // 获取映射信息
+            $modelProjectCollectionMapping = new \App\Database\Models\Project\Collection\Mapping();
+            $filename = $this->collection2bson($modelProjectCollectionMapping, array(
+                'company_project_id' => $company_project_id,
+                'project_id' => $project_id
+            ));
+            $zip->addFile($filename, 'idatabase_project_collection_mapping' . '.csv');
+            // unlink($filename);
+
+            // 导出集合数据信息
+            $list4Collection = $modelProjectCollection->findAll(array(
+                'company_project_id' => $company_project_id,
+                'project_id' => $project_id
+            ));
+
+            if (!empty($list4Collection)) {
+
+                // 添加集合列表映射关系说明
+                $filename = $this->projectMap2Excel($list4Collection);
+                $zip->addFile($filename, '项目集合列表.csv');
+                // unlink($filename);
+
+                foreach ($list4Collection as $collectionInfo) {
+                    $collection_id = $collectionInfo['_id'];
+                    $collection_name = $collectionInfo['alias'];
+
+                    $dataModel = $this->getData4Collection($collection_id);
+                    $filename = $this->collection2bson($dataModel, array());
+                    $zip->addFile($filename, $collection_name . '.csv');
+                    // unlink($filename);
+
+                    // 添加文档结构说明
+                    $filename = $this->collectionStructure2Excel($collectionInfo);
+                    $zip->addFile($filename, $collection_name . '文档结构说明.xlsx');
+                    // unlink($filename);
+                }
+            }
+        }
+        $zip->close();
+
+        // 存入mongodb中用于中间读取
+        $fileInfo = array();
+        $fileInfo['_id'] = $tmp;
+        $fileInfo['filename'] = $zipName;
+        // $fileInfo['mime'] = 'application/zip';
+        $fileInfo['size'] = $fileInfo['length'] = filesize($tmp);
+        var_dump($fileInfo);
+
+        $di = \Phalcon\DI::getDefault();
+        $cache = $di->get("cache");
+        $cache->save($key, $fileInfo, 60);
+        return true;
+    }
+
+    // 数据预热
+    protected function doTouchData($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+        $project_id = $params['project_id'];
+        $company_project_id = $params['company_project_id'];
+        var_dump($params);
+
+        $modelProjectCollection = new \App\Database\Models\Project\Collection();
+        $list4Collection = $modelProjectCollection->findAll(array(
+            'company_project_id' => $company_project_id,
+            'project_id' => $project_id
+        ));
+
+        if (empty($list4Collection)) {
+            return false;
+        }
+
+        foreach ($list4Collection as $row) {
+
+            $collection_id = $row['_id'];
+            var_dump($collection_id);
+
+            $modelData = $this->getData4Collection($collection_id);
+            $cursorData = $modelData->find(array(), array('_id' => -1), 0, 10000);
+            var_dump($collection_id . 'preload is ok');
+        }
+        return true;
+    }
+
+    // 数据清空
+    protected function doDropDatas($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+        $collection_id = $params['collection_id'];
+
+        echo "====================";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n";
+
+        $modelCompanyProject = new \App\Company\Models\Project();
+        $modelProjectCollection = new \App\Database\Models\Project\Collection();
+
+        // 获取表信息数据
+        $dataCollectionInfo = $modelProjectCollection->getInfoById($collection_id);
+        if (empty($dataCollectionInfo)) {
+            throw new \Exception("该collection_id:{$collection_id}所对应的集合不存在");
+        }
+        $companyProjectInfo = $modelCompanyProject->getInfoById($dataCollectionInfo['company_project_id']);
+        if (empty($companyProjectInfo)) {
+            throw new \Exception('集合的company_project_id无效');
+        }
+
+        $objDatabaseManager = new \DatabaseManager($companyProjectInfo['project_code'], $companyProjectInfo['project_code'], $companyProjectInfo['db_pwd']);
+
+        // 重新建表操作2  保留表结构和索引
+        $tablename = $dataCollectionInfo['alias'];
+        $new_tablename = $tablename . "_del_" . date('YmdHis') . "_" . \uniqid();
+
+        // 先改表名
+        $objDatabaseManager->alterTableName($tablename, $new_tablename);
+
+        // 再生成一个相同表名称的表
+        $objDatabaseManager->cloneTable($tablename, $new_tablename);
+
+        echo "====================end======================";
+        echo "\n";
+        return true;
+    }
+
+    // 在hive中创建数据集合
+    protected function doCreateHiveTable($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+
+        echo "\n";
+        echo $sql = $params['hiveSQL'];
+        echo "\n";
+
+        echo "====================";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n";
+        echo $sql;
+        echo "\n";
+        echo $fileName = toTemp($sql);
+        echo "\n";
+        echo $cmd = self::HIVE_BIN . " -f \"{$fileName}\"";
+        echo "\n";
+        runCmd($cmd, true);
+        unlink($fileName);
+        echo "====================end======================";
+        echo "\n";
+        return true;
+    }
+
+    // 在hive中执行hivesql
+    protected function doExecuteHiveSQL($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+
+        echo $result_collection = $params['result_collection'];
+        // $result_collection = preg_replace('/idatabase_collection_/i', '', $result_collection);
+
+        echo $params['hiveSQL'];
+        if (preg_match('/insert/i', $params['hiveSQL'])) {
+            echo "hiveSQL包含有风险的语句，比如insert\n";
+            return false;
+        }
+
+        // 检测结合是否为统计结果集合
+        $modelProjectCollection = new \App\Database\Models\Project\Collection();
+        $check = $modelProjectCollection->findOne(array(
+            '_id' => ($result_collection),
+            'is_hive_result_collection' => true
+        ));
+        if (empty($check)) {
+            echo "目标集合非统计结果集合，不能写入数据\n";
+            return false;
+        }
+
+        $sql = 'INSERT OVERWRITE TABLE ' . $check['alias'];
+        echo $sql .= $params['hiveSQL'];
+
+        echo "\n";
+        echo "====================";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n";
+        echo $fileName = toTemp($sql);
+        echo "\n";
+        echo $cmd = self::HIVE_BIN . " -f \"{$fileName}\"";
+        echo "\n";
+        runCmd($cmd, true);
+        unlink($fileName);
+        echo "====================end======================";
+        echo "\n";
+        return true;
+    }
+
+    // 执行Oozie的工作流
+    protected function doOozieWorkflow($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+        echo $sql = $params['hiveSQL'];
+
+        echo "\n";
+        echo "====================";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n";
+        echo $fileName = toTemp($sql);
+        echo "\n";
+        echo $cmd = self::OOZIE_BIN . " oozie job -oozie " . self::OOZIE_SERVER . " -config examples/apps/map-reduce/job.properties -run";
+        echo "\n";
+        runCmd($cmd, true);
+        unlink($fileName);
+        echo "====================end======================";
+        echo "\n";
+        return true;
+    }
+
+    // 删除被removed的数据
+    protected function doDeleteRemovedData($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $params = unserialize($workload);
+        var_dump($params);
+        $collection_id = $params['collection_id'];
+
+        echo "\n";
+        echo "====================";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+
+        $dataModel = $this->getData4Collection($collection_id);
+        $dataModel->physicalRemove(array(
+            '__REMOVED__' => true
+        ));
+
+        echo "====================end======================";
+        echo "\n";
+
+        return true;
+    }
+
+    // 同步插件集合数据结构
+    protected function doPluginCollectionSync($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        echo "====================start_plugin_sync";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n";
+
+        $key = md5($workload);
+        $params = unserialize($workload);
+        $project_id = $params['project_id'];
+        $plugin_id = $params['plugin_id'];
+
+        var_dump(__LINE__, $params);
+        echo "\n";
+
+        $datas = array();
+        $cursor = $this->_plugin_collection->find(array(
+            'plugin_id' => $plugin_id
+        ));
+        if ($cursor->count() > 0) {
+            while ($cursor->hasNext()) {
+                $row = $cursor->getNext();
+                // $this->_plugin_collection->syncPluginCollection($project_id, $plugin_id, $row['alias']);
+                // 此处此前是单个集合逐个进行同步执行调整为并发执行
+                $params = array();
+                $params['project_id'] = $project_id;
+                $params['plugin_id'] = $plugin_id;
+                $params['collectionName'] = $row['alias'];
+                $key = md5(serialize($params));
+                $this->_gmClient->doBackground('syncCollectionInSinglePlugin', serialize($params), $key);
+            }
+            return true;
+        } else {
+            var_dump(__LINE__, '程序异常：未查询到有效的记录');
+            echo "\n";
+            return false;
+        }
+    }
+
+    // 同步在特定插件中的集合
+    protected function doSyncCollectionInSinglePlugin($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        echo "====================syncCollectionInSinglePlugin sync start";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n";
+
+        $key = md5($workload);
+        $params = unserialize($workload);
+        $project_id = $params['project_id'];
+        $plugin_id = $params['plugin_id'];
+        $collectionName = $params['collectionName'];
+
+        var_dump(__LINE__, $params);
+        echo "\n";
+
+        $this->_plugin_collection->syncPluginCollection($project_id, $plugin_id, $collectionName);
+
+        echo "====================syncCollectionInSinglePlugin sync end";
+        echo date("Y-m-d H:i:s");
+        echo "====================";
+        echo "\n\n";
+        return true;
+    }
+
+    // 同步插件索引
+    protected function doPluginIndexSync($taskContent)
+    {
+        $workload = $taskContent['workload'];
+        $key = md5($workload);
+        $params = unserialize($workload);
+        $project_id = $params['project_id'];
+        $plugin_id = $params['plugin_id'];
+        var_dump($params);
+
+        $objPluginIndex = $this->model('Idatabase\Model\PluginIndex');
+        // $objPluginIndex->setReadPreference(MONGODB_READ_PREFERENCE);
+
+        $rst = $objPluginIndex->autoCreateIndexes($project_id, $plugin_id);
+        return true;
+    }
+
+    //记录错误信息
+    protected function doLogError($taskContent)
+    {
+        $msg = $taskContent['workload'];
+
+        if (!is_string($msg)) {
+            $msg = json_encode($msg);
+        }
+
+        $msg = join("\t", array(
+            date("Y-m-d H:i:s"),
+            isset($_SERVER["SERVER_ADDR"]) ? $_SERVER["SERVER_ADDR"] : 'cli',
+            $msg,
+            PHP_EOL
+        ));
+        $fp = fopen('/home/webs/nas/logs/' . date("Y-m-d") . 'log', 'a');
+        fwrite($fp, $msg);
+        fclose($fp);
+        return true;
+    }
+
+    /**
+     * 获取表对应的model
+     * @return \App\Common\Models\Base\Base
+     */
+    protected function getData4Collection($collection_id)
+    {
+        $modelCompanyProject = new \App\Company\Models\Project();
+        $modelProjectCollection = new \App\Database\Models\Project\Collection();
+
+        // 获取表信息数据
+        $dataCollectionInfo = $modelProjectCollection->getInfoById($collection_id);
+        if (empty($dataCollectionInfo)) {
+            throw new \Exception("该collection_id:{$collection_id}所对应的集合不存在");
+        }
+        $companyProjectInfo = $modelCompanyProject->getInfoById($dataCollectionInfo['company_project_id']);
+        if (empty($companyProjectInfo)) {
+            throw new \Exception('集合的company_project_id无效');
+        }
+        $objDatabaseManager = new \DatabaseManager($companyProjectInfo['project_code'], $companyProjectInfo['project_code'], $companyProjectInfo['db_pwd']);
+
+        $uniqueDbName = 'data_collection_' . $dataCollectionInfo['_id'] . '_' . \uniqid();
+        $di = \Phalcon\DI::getDefault();
+        $di->set($uniqueDbName, $objDatabaseManager->getDbConnection4CompanyProject());
+        return \App\Common\Models\Base\Base::getEntityModel($dataCollectionInfo['alias'], $uniqueDbName);
+    }
+
+    /**
+     * 将数组数据导出为csv文件
+     *
+     * @param array $datas            
+     * @param string $name            
+     * @param string $output            
+     */
+    protected function arrayToCVS2($datas, $name = null, $output = null)
+    {
+        resetTimeMemLimit();
+        if (empty($name)) {
+            $name = 'export_' . date("Y_m_d_H_i_s");
+        }
+
+        $result = array_merge(array(
+            $datas['title']
+        ), $datas['result']);
+
+        if (empty($output)) {
+            $tmpname = tempnam(sys_get_temp_dir(), 'export_csv_');
+            $fp = fopen($tmpname, 'w');
+            fwrite($fp, "\xEF\xBB\xBF");
+            foreach ($result as $row) {
+                fputcsv($fp, $row, ",", '"');
+            }
+            fclose($fp);
+
+            header('Content-type: text/csv;');
+            header('Content-Disposition: attachment; filename="' . $name . '.csv"');
+            header("Content-Length:" . filesize($tmpname));
+            echo file_get_contents($tmpname);
+            unlink($tmpname);
+            exit();
+        } else {
+            $fp = fopen($output, 'w');
+            fwrite($fp, "\xEF\xBB\xBF");
+            foreach ($result as $row) {
+                fputcsv($fp, $row, ",", '"');
+            }
+            fclose($fp);
+            return true;
+        }
+    }
+
+    /**
+     * 将指定集合内的数据转化成bson,csv文件
+     *
+     * @param  $dataModel            
+     * @param array $query            
+     * @return string
+     */
+    protected function collection2bson($dataModel, $query = array())
+    {
+        $list = $dataModel->findAll($query);
+        $tmp = tempnam(sys_get_temp_dir(), 'bson_');
+        $fp = fopen($tmp, 'w');
+        foreach ($list as $row) {
+            // fwrite($fp, \bson_encode($row));
+            fputcsv($fp, $row);
+        }
+        fclose($fp);
+        return $tmp;
+    }
+
+    /**
+     * 将项目关系表，导出到指定的文件中
+     *
+     * @param array $list4Collection            
+     * @return string
+     */
+    private function projectMap2Excel($list4Collection)
+    {
+        $map = array();
+        foreach ($list4Collection as $row) {
+            $map[] = array(
+                $row['alias'],
+                $row['name'],
+                $row['desc']
+            );
+        }
+
+        $tmp = tempnam(sys_get_temp_dir(), 'csv_');
+        $datas = array();
+        $datas['title'] = array(
+            '物理集合',
+            '集合名',
+            '集合描述'
+        );
+        $datas['result'] = $map;
+        $this->arrayToCVS2($datas, '项目集合对应关系结构', $tmp);
+        return $tmp;
+    }
+
+    /**
+     * 集合数据结构到excel表格
+     *
+     * @return string
+     */
+    private function collectionStructure2Excel($collectionInfo)
+    {
+        $modelProjectCollectionStructure = new \App\Database\Models\Project\Collection\Structure();
+        $list4CollectionStructure = $modelProjectCollectionStructure->findAll(
+            array(
+                'company_project_id' => $collectionInfo['company_project_id'],
+                'project_id' => $collectionInfo['project_id'],
+                'collection_id' => $collectionInfo['_id']
+            )
+        );
+        $map = array();
+        $map[] = array(
+            '_id',
+            '系统编号',
+            '字符串'
+        );
+        foreach ($list4CollectionStructure as $row) {
+            $map[] = array(
+                $row['field'],
+                $row['label'],
+                $row['type']
+            );
+        }
+
+        $map[] = array(
+            '__CREATE_TIME__',
+            '创建时间',
+            '日期类型'
+        );
+
+        $map[] = array(
+            '__CREATE_USER_ID__',
+            '创建操作者ID',
+            '字符串类型'
+        );
+
+        $map[] = array(
+            '__CREATE_USER_NAME__',
+            '创建操作者名',
+            '字符串类型'
+        );
+
+        $map[] = array(
+            '__MODIFY_TIME__',
+            '修改时间',
+            '日期类型'
+        );
+
+        $map[] = array(
+            '__MODIFY_USER_ID__',
+            '修改操作者ID',
+            '字符串类型'
+        );
+
+        $map[] = array(
+            '__MODIFY_USER_NAME__',
+            '修改操作者名',
+            '字符串类型'
+        );
+
+        $map[] = array(
+            '__REMOVED__',
+            '是否删除',
+            '布尔型'
+        );
+
+        $map[] = array(
+            '__REMOVE_TIME__',
+            '删除时间',
+            '日期类型'
+        );
+
+        $map[] = array(
+            '__REMOVE_USER_ID__',
+            '删除操作者ID',
+            '字符串类型'
+        );
+
+        $map[] = array(
+            '__REMOVE_USER_NAME__',
+            '删除操作者名',
+            '字符串类型'
+        );
+
+        $tmp = tempnam(sys_get_temp_dir(), 'csv_');
+        $datas = array();
+        $datas['title'] = array(
+            '字段名',
+            '字段说明',
+            '字段类型'
+        );
+        $datas['result'] = $map;
+        $this->arrayToCVS2($datas, $collectionInfo['alias'], $tmp);
+        return $tmp;
     }
 }
