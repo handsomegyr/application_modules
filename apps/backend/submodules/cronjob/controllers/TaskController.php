@@ -53,7 +53,7 @@ class TaskController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => true
@@ -67,6 +67,7 @@ class TaskController extends \App\Backend\Controllers\FormController
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
+                'width' => '50px'
             ),
             'search' => array(
                 'is_show' => true

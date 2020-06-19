@@ -1,6 +1,6 @@
 <script>
 	var List = function() {
-
+		var remarkShowLength = 10; //默认现实的字符串长度
 		return {
 			url: '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>',
 			imagepath: '<?php echo $this->view->baseUrl ?>backend/',
@@ -196,6 +196,20 @@
 					}
 				});
 			},
+			//部分备注信息
+			getPartialHtml: function(remarks, remarkShowLength) {
+				if (remarks.length > remarkShowLength) {
+					return remarks.substr(0, remarkShowLength) + '&nbsp;&nbsp;<a href="javascript:void(0);" ><b>...</b></a>';
+				} else {
+					return remarks;
+				}
+			},
+
+			//全部备注信息
+			getTotalHtml: function(remarks) {
+				return remarks + '&nbsp;&nbsp;<a href="javascript:void(0);" >收起</a>';
+			},
+
 			//main function to initiate the module
 			init: function() {
 
@@ -221,6 +235,7 @@
 						});
 					<?php } ?>
 				<?php } ?>
+				//{ "columnDefs": [ //给第一列指定宽度为表格整个宽度的20% { "width": "20%", "targets": 0 } ] }
 
 				//https://datatables.net/reference/option/#Features
 				$('#example').dataTable({
@@ -232,6 +247,7 @@
 					//dom": '<"H"lfr>t<"F"ip>',
 					// "buttons": ['csv', 'excel', 'pdf', 'print'],
 					"autoWidth": true,
+					// "columnDefs": [ { "width": "20%", "targets": 2 } ],
 					"scrollX": true,
 					"processing": true,
 					"serverSide": true,
@@ -259,6 +275,7 @@
 							<?php if (!empty($field['list']['is_show'])) { ?> {
 									"data": "<?php echo isset($field['list']['list_data_name']) ? $field['list']['list_data_name'] : $key ?>",
 									"name": "<?php echo $key ?>",
+									// "width": "50px",
 									"render": function(data, type, full, meta) {
 										<?php if ($field['data']['type'] == "boolean" && isset($field['list']['list_type']) && $field['list']['list_type'] == 1) { ?>
 											//console.info(data);
@@ -319,44 +336,45 @@
 											$listValue = array();
 											foreach ($items as $itemKey => $item) {
 												if (isset($item['value'])) {
-													$listValue['key_'.$item['value']] =$item['name']; 
-												}else{
-													$listValue['key_'.$itemKey] =$item;
+													$listValue['key_' . $item['value']] = $item['name'];
+												} else {
+													$listValue['key_' . $itemKey] = $item;
 												}
 											}
 											?>
 											//var items = {key_0: "开发中", key_1: "部署中", key_2: "已上线", key_3: "已下线"};
 											<?php if (!empty($listValue)) { ?>
-											var items = '<?php echo \json_encode($listValue)?>';
-											items = JSON.parse(items);
-											<?php }else{ ?>
-											var items = {};
+												var items = '<?php echo \json_encode($listValue) ?>';
+												items = JSON.parse(items);
+											<?php } else { ?>
+												var items = {};
 											<?php } ?>
 
 											<?php if (($field['data']['type'] == "array")) { ?>
-												var dataArr = JSON.parse(data);												
-											<?php }else{ ?>
+												var dataArr = JSON.parse(data);
+											<?php } else { ?>
 												var dataArr = [];
 												dataArr.push(data);
 											<?php } ?>
 
 											var res = [];
 											for (var item1 of dataArr) {
-												if(items['key_'+item1]){
-													res.push(items['key_'+item1]);
+												if (items['key_' + item1]) {
+													res.push(items['key_' + item1]);
 												}
 											}
-											
+
 											var imgs = '';
-											$.each(res, function(i, n) {												
-												imgs += '<span class="label label-info">'+n+'</span>&nbsp;';
+											$.each(res, function(i, n) {
+												imgs += '<span class="label label-info">' + n + '</span>&nbsp;';
 											});
 											return imgs;
 
 											if (false) {
-											return '<span class="label label-info"></span>';											
-											<?php $items = array(); foreach ($items as $itemKey => $item) { ?>
-												<?php if (isset($item['value'])) { ?>
+												return '<span class="label label-info"></span>';
+												<?php $items = array();
+												foreach ($items as $itemKey => $item) { ?>
+													<?php if (isset($item['value'])) { ?>
 											} else if (data == '<?php echo $item['value'] ?>') {
 												return '<span class="label label-info"><?php echo $item['name'] ?></span>';
 											<?php } else { ?>
@@ -366,7 +384,7 @@
 											<?php } ?>
 											} else {
 												return '<span class="label label-info"></span>';
-											};											
+											};
 
 										<?php } elseif (isset($field['list']['ajax'])) { ?>
 											<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly) { ?>
@@ -384,7 +402,7 @@
 										<?php } else { ?>
 											//return List.htmlEscape(data);
 
-											return data;
+											return List.getPartialHtml(data, 255);
 										<?php } ?>
 									}
 								},
