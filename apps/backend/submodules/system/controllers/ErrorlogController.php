@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\System\Controllers;
 
 use App\Backend\Submodules\System\Models\ErrorLog;
@@ -20,7 +21,7 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['error_code'] = array(
             'name' => '错误代号',
             'data' => array(
@@ -41,18 +42,18 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['error_message'] = array(
             'name' => '错误内容',
             'data' => array(
                 'type' => 'string',
-                'length' => '200'
+                'length' => '1024'
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true
             ),
             'list' => array(
@@ -62,7 +63,7 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['happen_time'] = array(
             'name' => '发生时间',
             'data' => array(
@@ -84,7 +85,7 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

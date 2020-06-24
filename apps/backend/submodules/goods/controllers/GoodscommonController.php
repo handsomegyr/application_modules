@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Goods\Controllers;
 
 use App\Backend\Submodules\Goods\Models\Type;
@@ -44,7 +45,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
     {
         try {
             $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
-            
+
             $q = urldecode($this->get('q', ''));
             $page = intval($this->get('page', '1'));
             $query = array(
@@ -53,17 +54,17 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 )
             );
             $sort = array(
-                '_id' => - 1
+                '_id' => -1
             );
             $ret = array();
             $ret['total_count'] = 0;
             $ret['items'] = array();
             $ret['incomplete_results'] = false;
-            
-            if (! empty($q)) {
+
+            if (!empty($q)) {
                 $list = $this->modelGoodsCommon->find($query, $sort, ($page - 1), 10);
                 $ret['total_count'] = $list['total'];
-                if (! empty($list['datas'])) {
+                if (!empty($list['datas'])) {
                     foreach ($list['datas'] as &$value) {
                         $data = array();
                         $data["id"] = $value['_id'];
@@ -73,7 +74,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                     }
                 }
             }
-            
+
             // $ret = array();
             // $ret['total_count'] = 1;
             // $data = array();
@@ -101,10 +102,11 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
     public function newperiodAction()
     {
         try {
-            
+
             $input = $this->getFilterInput();
-            
-            if ($input->isValid("id")) {} else {
+
+            if ($input->isValid("id")) {
+            } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
@@ -116,7 +118,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['name'] = array(
             'name' => '商品名',
             'data' => array(
@@ -178,7 +180,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['image'] = array(
             'name' => '商品主图',
             'data' => array(
@@ -203,7 +205,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['body'] = array(
             'name' => '商品内容',
             'data' => array(
@@ -224,7 +226,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['state'] = array(
             'name' => '商品状态',
             'data' => array(
@@ -246,7 +248,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['verify'] = array(
             'name' => '审核状态',
             'data' => array(
@@ -268,7 +270,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         // 商品锁定 0未锁，1已锁
         $schemas['is_lock'] = array(
             'name' => '锁定状态',
@@ -292,7 +294,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         // 是否是否热门
         $schemas['is_hot'] = array(
             'name' => '是否热门',
@@ -316,7 +318,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         // 是否是否新品
         $schemas['is_new'] = array(
             'name' => '是否新品',
@@ -340,7 +342,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         // 商品推荐 1是，0否，默认为0
         $schemas['commend'] = array(
             'name' => '商品推荐',
@@ -364,12 +366,12 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['restrict_person_time'] = array(
             'name' => '限购人次',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => '11'
             ),
             'validation' => array(
                 'required' => true
@@ -385,7 +387,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['current_period'] = array(
             'name' => '当期数',
             'data' => array(
@@ -407,7 +409,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['max_period'] = array(
             'name' => '最大期数',
             'data' => array(
@@ -428,7 +430,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['lottery_code'] = array(
             'name' => '云购码基数',
             'data' => array(
@@ -449,7 +451,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['period_goods_id'] = array(
             'name' => '当期商品',
             'data' => array(
@@ -470,7 +472,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['gc_id'] = array(
             'name' => '所属分类',
             'data' => array(
@@ -769,7 +771,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['stateremark'] = array(
             'name' => '违规原因',
             'data' => array(
@@ -790,7 +792,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['verifyremark'] = array(
             'name' => '审核失败原因',
             'data' => array(
@@ -811,7 +813,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
         $schemas['addtime'] = array(
@@ -876,7 +878,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['marketprice'] = array(
             'name' => '市场价',
             'data' => array(
@@ -981,7 +983,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'name' => '运费模板',
             'data' => array(
                 'type' => 'integer',
-                'length' => 8
+                'length' => 11
             ),
             'validation' => array(
                 'required' => 1
@@ -1017,7 +1019,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         // 运费 0为免运费
         $schemas['freight'] = array(
             'name' => '运费',
@@ -1385,7 +1387,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['collect'] = array(
             'name' => '收藏数量',
             'data' => array(
@@ -1432,7 +1434,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             $item['verify'] = $this->verifyDatas[$item['verify']]['name'];
             $item['max_period'] = $item['max_period'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要生成新一期的商品记录吗？\', \'newperiod\')" class="halflings-icon user white"><i></i> 新期商品生成</a>';
         }
-        
+
         return $list;
     }
 
@@ -1444,7 +1446,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
         );
         $ret = doPost("http://www.applicationmodule.com/goods/service/createnewperiod", $param);
         $ret = (string) $ret;
-        if (! empty($ret)) {
+        if (!empty($ret)) {
             if (isJson($ret)) {
                 $ret = json_decode($ret, true);
                 if ($ret["success"]) {

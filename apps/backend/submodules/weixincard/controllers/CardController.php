@@ -192,7 +192,8 @@ class CardController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['_id']['list']['is_show'] = false;
+    {
+        $schemas['_id']['list']['is_show'] = false;
         $use_custom_code = true;
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
@@ -1373,14 +1374,14 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '微信公众推送摘要',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000,
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -2718,7 +2719,7 @@ class CardController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/card/createcard?id=xxxx
         try {
-            
+
 
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
@@ -2759,7 +2760,7 @@ class CardController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/card/getcardinfo?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
         try {
-            
+
 
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
@@ -2794,7 +2795,7 @@ class CardController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/card/masssend?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k&toUsers=o4ELSvz-B4_DThF0Vpfrverk3IpY,o4ELSv7CChC3YKmM8WKXX4kXSr8c&preview=1
         try {
-            
+
 
             $weixin = $this->getWeixin();
 
@@ -2903,7 +2904,7 @@ class CardController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/card/updatecardinfo?id=xxx
         try {
-            
+
 
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
@@ -3128,7 +3129,7 @@ class CardController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/weixincard/card/getdepositcodecount?card_id=xxx
         try {
-            
+
 
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);

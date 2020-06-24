@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Goods\Controllers;
 
 use App\Backend\Submodules\Goods\Models\GoodsCommon;
@@ -28,7 +29,8 @@ class ImageController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['goods_commonid'] = array(
+    {
+        $schemas['goods_commonid'] = array(
             'name' => '所属商品',
             'data' => array(
                 'type' => 'string',
@@ -40,8 +42,7 @@ class ImageController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelGoodsCommon->getAll();
                 }
             ),
@@ -64,8 +65,7 @@ class ImageController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelSpecValue->getAll();
                 }
             ),
@@ -88,8 +88,7 @@ class ImageController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelSpecValue->getAll();
                 }
             ),
@@ -104,7 +103,7 @@ class ImageController extends \App\Backend\Controllers\FormController
             'name' => '商品图片',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelImages->getUploadPath()
                 )

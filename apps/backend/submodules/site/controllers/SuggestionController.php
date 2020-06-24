@@ -109,7 +109,7 @@ class SuggestionController extends \App\Backend\Controllers\FormController
             'name' => '反馈内容',
             'data' => array(
                 'type' => 'string',
-                'length' => '1000'
+                'length' => '1024'
             ),
             'validation' => array(
                 'required' => true

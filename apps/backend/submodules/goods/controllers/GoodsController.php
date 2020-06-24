@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Goods\Controllers;
 
 use App\Backend\Submodules\Goods\Models\Type;
@@ -40,7 +41,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
         $this->modelGoodsCommon = new GoodsCommon();
         $this->modelGoods = new Goods();
         $this->modelStore = new Store();
-        
+
         parent::initialize();
     }
 
@@ -52,10 +53,11 @@ class GoodsController extends \App\Backend\Controllers\FormController
     public function lotteryAction()
     {
         try {
-            
+
             $input = $this->getFilterInput();
-            
-            if ($input->isValid("id")) {} else {
+
+            if ($input->isValid("id")) {
+            } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
@@ -67,7 +69,8 @@ class GoodsController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['goods_commonid'] = array(
+    {
+        $schemas['goods_commonid'] = array(
             'name' => '所属商品',
             'data' => array(
                 'type' => 'string',
@@ -79,8 +82,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select2',
                 'is_show' => true,
-                'items' => function ($id)
-                {
+                'items' => function ($id) {
                     return $this->modelGoodsCommon->getAll(array(
                         $id
                     ));
@@ -138,7 +140,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['price'] = array(
             'name' => '价格',
             'data' => array(
@@ -159,7 +161,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['image'] = array(
             'name' => '商品主图',
             'data' => array(
@@ -184,7 +186,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['state'] = array(
             'name' => '商品状态',
             'data' => array(
@@ -206,7 +208,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         // 商品审核 1通过，0未通过，10审核中
         $schemas['verify'] = array(
             'name' => '审核状态',
@@ -229,7 +231,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         // 是否是否热门
         $schemas['is_hot'] = array(
             'name' => '是否热门',
@@ -253,7 +255,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         // 是否是否最新
         $schemas['is_new'] = array(
             'name' => '是否最新',
@@ -277,7 +279,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['period'] = array(
             'name' => '期数',
             'data' => array(
@@ -299,7 +301,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['lottery_code'] = array(
             'name' => '云购码基数',
             'data' => array(
@@ -320,7 +322,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['lottery_prize_id'] = array(
             'name' => '云购奖品',
             'data' => array(
@@ -341,7 +343,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['total_person_time'] = array(
             'name' => '总需人次',
             'data' => array(
@@ -363,7 +365,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['purchase_person_time'] = array(
             'name' => '参与人次',
             'data' => array(
@@ -384,7 +386,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['remain_person_time'] = array(
             'name' => '剩余人次',
             'data' => array(
@@ -405,12 +407,12 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['restrict_person_time'] = array(
             'name' => '限购人次',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => '11'
             ),
             'validation' => array(
                 'required' => true
@@ -426,7 +428,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         // 销售状态 1 进行中 2 揭晓中 3 已揭晓
         $schemas['sale_state'] = array(
             'name' => '销售状态',
@@ -449,7 +451,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['prize_code'] = array(
             'name' => '中奖码',
             'data' => array(
@@ -470,10 +472,10 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
-        
+
         $schemas['prize_time'] = array(
             'name' => '中奖时间',
             'data' => array(
@@ -514,7 +516,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['gc_id'] = array(
             'name' => '所属分类',
             'data' => array(
@@ -527,8 +529,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     // die('sdfsdfsdf');
                     return $this->modelCategory->getList4Tree('');
                 }
@@ -612,8 +613,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelBrand->getAll();
                 }
             ),
@@ -624,7 +624,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['store_id'] = array(
             'name' => '所属店铺',
             'data' => array(
@@ -637,8 +637,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelStore->getAll();
                 }
             ),
@@ -669,7 +668,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['promotion_price'] = array(
             'name' => '促销价格',
             'data' => array(
@@ -872,7 +871,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
         // $schemas['addtime'] = array(
@@ -981,7 +980,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'name' => '运费模板',
             'data' => array(
                 'type' => 'integer',
-                'length' => 8
+                'length' => 11
             ),
             'validation' => array(
                 'required' => 1
@@ -1326,7 +1325,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -1369,7 +1368,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
         );
         $ret = doPost("http://www.applicationmodule.com/goods/service/lottery", $param);
         $ret = (string) $ret;
-        if (! empty($ret)) {
+        if (!empty($ret)) {
             if (isJson($ret)) {
                 $ret = json_decode($ret, true);
                 if ($ret["success"]) {
