@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Goods\Controllers;
 
 use App\Backend\Submodules\Goods\Models\Category;
@@ -24,10 +25,10 @@ class CategoryController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
-        
+
         $schemas['name'] = array(
             'name' => '分类名称',
             'data' => array(
@@ -61,8 +62,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCategory->getList4Tree('');
                 }
             ),
@@ -85,8 +85,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelType->getAll();
                 }
             ),
@@ -117,12 +116,12 @@ class CategoryController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['commis_rate'] = array(
             'name' => '分佣比例',
             'data' => array(
-                'type' => 'float',
-                'length' => 10
+                'type' => 'decimal',
+                'length' => 5
             ),
             'validation' => array(
                 'required' => 1

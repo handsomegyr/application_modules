@@ -929,7 +929,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'decimal',
                 'is_show' => true
             ),
             'list' => array(

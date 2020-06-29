@@ -480,15 +480,17 @@ class SourceController extends \App\Backend\Controllers\FormController
         $schemas['Precision'] = array(
             'name' => '地理位置精度',
             'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'decimal',
-                'is_show' => true
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false
@@ -501,15 +503,17 @@ class SourceController extends \App\Backend\Controllers\FormController
         $schemas['interval'] = array(
             'name' => '响应速度',
             'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'decimal',
-                'is_show' => true
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Order\Controllers;
 
 use App\Backend\Submodules\Order\Models\Goods;
@@ -33,10 +34,11 @@ class GoodsController extends \App\Backend\Controllers\FormController
     public function deliveryorderAction()
     {
         try {
-            
+
             $input = $this->getFilterInput();
-            
-            if ($input->isValid("id")) {} else {
+
+            if ($input->isValid("id")) {
+            } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
@@ -63,7 +65,8 @@ class GoodsController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['_id']['list']['is_show'] = false;
+    {
+        $schemas['_id']['list']['is_show'] = false;
         $schemas['goods_id'] = array(
             'name' => '商品ID',
             'data' => array(
@@ -189,7 +192,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['buyer_id'] = array(
             'name' => '买家ID',
             'data' => array(
@@ -379,7 +382,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'name' => 'commis_rate',
             'data' => array(
                 'type' => 'integer',
-                'length' => 5
+                'length' => 11
             ),
             'validation' => array(
                 'required' => false
@@ -821,8 +824,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'defaultValues' => array(
                     \App\Order\Models\Goods::ORDER_STATE1
                 ),
-                'items' => function ()
-                {
+                'items' => function () {
                     return array_column($this->orderStateDatas, 'name', 'value');
                 }
             )
@@ -869,7 +871,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -907,7 +909,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 // $item['order_state'] = $item['order_state'] . '<br/><a href="javascript:;" class="btn blue delivery_btn" order_id="'. $item['_id'] .'" >发货</a>';//data-toggle="modal" href="#responsive"
                 $item['order_state'] = $item['order_state'] . '<br/><button type="button" onclick="Delivery.show(\'' . $item['_id'] . '\')" class="btn blue">发货</button>';
             } else {
-                if (! empty($item['order_state'])) {
+                if (!empty($item['order_state'])) {
                     $item['order_state'] = $this->orderStateDatas[strval($item['order_state'])]['name'];
                 } else {
                     $item['order_state'] = "";
@@ -928,7 +930,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
         );
         $ret = doPost("http://www.applicationmodule.com/order/service/deliveryorder", $param);
         $ret = (string) $ret;
-        if (! empty($ret)) {
+        if (!empty($ret)) {
             if (isJson($ret)) {
                 $ret = json_decode($ret, true);
                 if ($ret["success"]) {
