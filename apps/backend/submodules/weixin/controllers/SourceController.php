@@ -249,15 +249,17 @@ class SourceController extends \App\Backend\Controllers\FormController
         $schemas['Location_Y'] = array(
             'name' => '经度',
             'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'decimal',
-                'is_show' => true
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true
@@ -432,15 +434,17 @@ class SourceController extends \App\Backend\Controllers\FormController
         $schemas['Latitude'] = array(
             'name' => '地理位置纬度',
             'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'decimal',
-                'is_show' => true
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true
@@ -453,15 +457,17 @@ class SourceController extends \App\Backend\Controllers\FormController
         $schemas['Longitude'] = array(
             'name' => '地理位置经度',
             'data' => array(
-                'type' => 'integer',
-                'length' => '10'
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'decimal',
-                'is_show' => true
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true
