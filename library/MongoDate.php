@@ -5,12 +5,15 @@ if (!class_exists('MongoDate')) {
 
 		public $sec;
 
-		public function __construct($timestamp = 0)
+		public $usec;
+
+		public function __construct($timestamp = 0, $usec = 0)
 		{
 			if (empty($timestamp)) {
 				$timestamp = time();
 			}
 			$this->sec = $timestamp;
+			$this->usec = $usec;
 		}
 	}
 }
