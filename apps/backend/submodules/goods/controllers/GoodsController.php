@@ -142,7 +142,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
         );
 
         $schemas['price'] = array(
-            'name' => '价格',
+            'name' => '价格(单位分)',
             'data' => array(
                 'type' => 'integer',
                 'length' => 10
@@ -670,7 +670,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
         );
 
         $schemas['promotion_price'] = array(
-            'name' => '促销价格',
+            'name' => '促销价格(单位分)',
             'data' => array(
                 'type' => 'integer',
                 'length' => 10
@@ -711,7 +711,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['marketprice'] = array(
-            'name' => '市场价',
+            'name' => '市场价(单位分)',
             'data' => array(
                 'type' => 'integer',
                 'length' => 10
@@ -1000,14 +1000,14 @@ class GoodsController extends \App\Backend\Controllers\FormController
         $schemas['freight'] = array(
             'name' => '运费',
             'data' => array(
-                'type' => 'decimal',
+                'type' => 'integer',
                 'length' => 10
             ),
             'validation' => array(
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'currency',
+                'input_type' => 'number',
                 'is_show' => false
             ),
             'list' => array(
