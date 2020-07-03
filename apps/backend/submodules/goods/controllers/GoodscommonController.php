@@ -144,7 +144,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'name' => '广告词',
             'data' => array(
                 'type' => 'string',
-                'length' => 150
+                'length' => 190
             ),
             'validation' => array(
                 'required' => 1
@@ -1003,7 +1003,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'name' => '运费模板名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 60
+                'length' => 50
             ),
             'validation' => array(
                 'required' => 1

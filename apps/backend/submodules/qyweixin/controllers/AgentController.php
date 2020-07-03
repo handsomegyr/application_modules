@@ -233,7 +233,7 @@ class AgentController extends \App\Backend\Controllers\FormController
             'name' => '应用秘钥',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -296,7 +296,7 @@ class AgentController extends \App\Backend\Controllers\FormController
             'name' => 'EncodingAESKey',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(

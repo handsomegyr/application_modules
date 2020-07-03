@@ -91,7 +91,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
             'name' => '应用密钥',
             'data' => array(
                 'type' => 'string',
-                'length' => '45'
+                'length' => '50'
             ),
             'validation' => array(
                 'required' => true

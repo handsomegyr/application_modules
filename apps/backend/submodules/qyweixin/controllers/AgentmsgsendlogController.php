@@ -371,7 +371,7 @@ class AgentmsgsendlogController extends BaseController
             'name' => '按钮文字',
             'data' => array(
                 'type' => 'string',
-                'length' => 190,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(

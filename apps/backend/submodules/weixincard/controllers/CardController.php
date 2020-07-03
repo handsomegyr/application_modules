@@ -316,7 +316,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '商户名字',
             'data' => array(
                 'type' => 'string',
-                'length' => 36,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -372,7 +372,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '券名的副标题',
             'data' => array(
                 'type' => 'string',
-                'length' => 54,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -429,7 +429,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '卡券使用提醒',
             'data' => array(
                 'type' => 'string',
-                'length' => 48,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -796,7 +796,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '第三方来源名',
             'data' => array(
                 'type' => 'string',
-                'length' => 36,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2257,7 +2257,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '起点',
             'data' => array(
                 'type' => 'string',
-                'length' => 54,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2285,7 +2285,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '终点',
             'data' => array(
                 'type' => 'string',
-                'length' => 54,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(

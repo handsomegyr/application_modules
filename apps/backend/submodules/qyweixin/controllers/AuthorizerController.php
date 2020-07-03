@@ -208,7 +208,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             'name' => '授权方应用秘钥',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -297,7 +297,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             'name' => 'EncodingAESKey',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(

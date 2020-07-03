@@ -110,7 +110,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
             'name' => 'EncodingAESKey',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -168,7 +168,7 @@ class ComponentController extends \App\Backend\Controllers\FormController
             'name' => '第三方平台应用秘钥',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(

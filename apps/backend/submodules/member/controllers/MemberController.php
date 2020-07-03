@@ -270,7 +270,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => '所在地',
             'data' => array(
                 'type' => 'string',
-                'length' => 74
+                'length' => 100
             ),
             'validation' => array(
                 'required' => true
@@ -291,7 +291,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => '家乡',
             'data' => array(
                 'type' => 'string',
-                'length' => 74
+                'length' => 100
             ),
             'validation' => array(
                 'required' => true
