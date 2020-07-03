@@ -167,7 +167,7 @@ class ShorturlController extends BaseController
             'name' => '需要转换的长链接',
             'data' => array(
                 'type' => 'string',
-                'length' => 1024,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

@@ -397,7 +397,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             'name' => '二维码图片的URL',
             'data' => array(
                 'type' => 'string',
-                'length' => 50,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

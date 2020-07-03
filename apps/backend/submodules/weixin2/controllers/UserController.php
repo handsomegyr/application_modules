@@ -774,7 +774,7 @@ class UserController extends BaseController
             'name' => '手机号',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(

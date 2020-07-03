@@ -597,7 +597,7 @@ class PoiController extends \App\Backend\Controllers\FormController
             'name' => '移动电话',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(

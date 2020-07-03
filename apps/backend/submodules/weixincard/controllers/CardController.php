@@ -852,7 +852,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '入口下方的提示语',
             'data' => array(
                 'type' => 'string',
-                'length' => 20,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -908,7 +908,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '自定义跳转外链的入口名字',
             'data' => array(
                 'type' => 'string',
-                'length' => 15,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -992,7 +992,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '营销场景的自定义入口名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 15,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(

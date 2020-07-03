@@ -202,7 +202,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
             'name' => '手机',
             'data' => array(
                 'type' => 'string',
-                'length' => 15
+                'length' => 20
             ),
             'validation' => array(
                 'required' => 1
