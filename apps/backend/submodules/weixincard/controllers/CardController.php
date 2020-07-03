@@ -230,7 +230,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '卡券类型',
             'data' => array(
                 'type' => 'string',
-                'length' => 24,
+                'length' => 30,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -287,7 +287,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => 'code码展示类型',
             'data' => array(
                 'type' => 'string',
-                'length' => 16,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -344,7 +344,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '券名',
             'data' => array(
                 'type' => 'string',
-                'length' => 27,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -400,7 +400,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '券颜色',
             'data' => array(
                 'type' => 'string',
-                'length' => 16,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -740,7 +740,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '客服电话',
             'data' => array(
                 'type' => 'string',
-                'length' => 24,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -852,7 +852,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '入口下方的提示语',
             'data' => array(
                 'type' => 'string',
-                'length' => 24,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2313,7 +2313,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '航班',
             'data' => array(
                 'type' => 'string',
-                'length' => 24,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2397,7 +2397,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '飞机机型',
             'data' => array(
                 'type' => 'string',
-                'length' => 24,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(

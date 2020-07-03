@@ -39,7 +39,7 @@ class ColorController extends \App\Backend\Controllers\FormController
             'name' => '颜色值',
             'data' => array(
                 'type' => 'string',
-                'length' => 16,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -66,7 +66,7 @@ class ColorController extends \App\Backend\Controllers\FormController
             'name' => '颜色名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 16,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(

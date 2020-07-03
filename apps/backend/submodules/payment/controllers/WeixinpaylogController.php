@@ -212,7 +212,7 @@ class WeixinpaylogController extends \App\Backend\Controllers\FormController
             'name' => '付款银行', //，采用字符串类型的银行标识
             'data' => array(
                 'type' => 'string',
-                'length' => 16,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -278,7 +278,7 @@ class WeixinpaylogController extends \App\Backend\Controllers\FormController
             'name' => '货币类型', //，符合ISO4217标准的三位字母代码，默认人民币：CNY，其他值列表详见货币类型
             'data' => array(
                 'type' => 'string',
-                'length' => 16,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -305,7 +305,7 @@ class WeixinpaylogController extends \App\Backend\Controllers\FormController
             'name' => '货币种类', //,货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
             'data' => array(
                 'type' => 'string',
-                'length' => 16,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -602,7 +602,7 @@ class WeixinpaylogController extends \App\Backend\Controllers\FormController
             'name' => '交易类型', //,JSAPI、NATIVE、MICROPAY、APP
             'data' => array(
                 'type' => 'string',
-                'length' => 16,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -683,7 +683,7 @@ class WeixinpaylogController extends \App\Backend\Controllers\FormController
             'name' => '业务结果', // SUCCESS/FAIL
             'data' => array(
                 'type' => 'string',
-                'length' => 16,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(

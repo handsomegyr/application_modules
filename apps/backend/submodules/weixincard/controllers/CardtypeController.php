@@ -26,7 +26,7 @@ class CardtypeController extends \App\Backend\Controllers\FormController
             'name' => '代码',
             'data' => array(
                 'type' => 'string',
-                'length' => 24,
+                'length' => 30,
                 'defaultValue' => ''
             ),
             'validation' => array(
