@@ -161,7 +161,7 @@ class SettingsController extends \App\Backend\Controllers\FormController
             'name' => '加密方式',
             'data' => array(
                 'type' => 'string',
-                'length' => 3,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(

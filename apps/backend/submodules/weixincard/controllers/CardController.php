@@ -824,7 +824,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '卡券顶部居中的按钮',
             'data' => array(
                 'type' => 'string',
-                'length' => 18,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -964,7 +964,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '入口右侧的提示语',
             'data' => array(
                 'type' => 'string',
-                'length' => 18,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -1048,7 +1048,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '营销入口右侧的提示语',
             'data' => array(
                 'type' => 'string',
-                'length' => 18,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2341,7 +2341,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '入口',
             'data' => array(
                 'type' => 'string',
-                'length' => 12,
+                'length' => 10,
                 'defaultValue' => ''
             ),
             'validation' => array(

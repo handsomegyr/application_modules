@@ -467,7 +467,7 @@ class WeixinpaylogController extends \App\Backend\Controllers\FormController
             'name' => '支付完成时间', //，格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。时区为GMT+8beijing。该时间取自微信支付服务器
             'data' => array(
                 'type' => 'string',
-                'length' => 14,
+                'length' => 20,
                 'defaultValue' => ''
             ),
             'validation' => array(

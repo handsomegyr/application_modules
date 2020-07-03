@@ -53,7 +53,7 @@ class ConditionalmenumatchruleController extends \App\Backend\Controllers\FormCo
             'name' => '用户分组id',
             'data' => array(
                 'type' => 'string',
-                'length' => '5'
+                'length' => '10'
             ),
             'validation' => array(
                 'required' => false
@@ -182,7 +182,7 @@ class ConditionalmenumatchruleController extends \App\Backend\Controllers\FormCo
             'name' => '语言',
             'data' => array(
                 'type' => 'string',
-                'length' => '5'
+                'length' => '10'
             ),
             'validation' => array(
                 'required' => false

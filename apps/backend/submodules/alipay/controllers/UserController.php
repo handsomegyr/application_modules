@@ -303,7 +303,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '性别(F/M)',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 1,
                 'defaultValue' => ''
             ),
             'validation' => array(

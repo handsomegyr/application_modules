@@ -67,7 +67,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '提现日期',
             'data' => array(
                 'type' => 'string',
-                'length' => '8'
+                'length' => '10'
             ),
             'validation' => array(
                 'required' => false
