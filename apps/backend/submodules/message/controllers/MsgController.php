@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Message\Controllers;
 
 use App\Backend\Submodules\Message\Models\Msg;
@@ -20,7 +21,7 @@ class MsgController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['from_user_id'] = array(
             'name' => '发起者',
             'data' => array(
@@ -65,7 +66,7 @@ class MsgController extends \App\Backend\Controllers\FormController
             'name' => '消息内容',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1

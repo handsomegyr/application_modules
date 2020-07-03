@@ -28,7 +28,8 @@ class UserController extends \App\Backend\Controllers\FormController
     private $activityList = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['activity_id'] = array(
+    {
+        $schemas['activity_id'] = array(
             'name' => '活动名称',
             'data' => array(
                 'type' => 'string',
@@ -109,7 +110,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -282,7 +283,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '联系地址',
             'data' => array(
                 'type' => 'string',
-                'length' => 200
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false

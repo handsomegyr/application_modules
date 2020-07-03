@@ -191,7 +191,7 @@ class ApplicationController extends \App\Backend\Controllers\FormController
             'name' => '支付宝网关',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

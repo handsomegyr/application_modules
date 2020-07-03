@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Yungou\Controllers;
 
 /**
@@ -49,7 +50,7 @@ class ProductController extends ControllerBase
             $this->goToError();
             return;
         }
-        
+
         // 商品详细信息
         $period_goods_id = $goodsCommonInfo['period_goods_id'];
         $goodsInfo = $this->modelGoods->getInfoById($period_goods_id);
@@ -57,17 +58,18 @@ class ProductController extends ControllerBase
             $this->goToError();
             return;
         }
-        
+
         $goodsInfo = array_merge($goodsCommonInfo, $goodsInfo);
         $this->assign('goodsInfo', $goodsInfo);
-        
+
         // 获取商品图片列表
         $goodsImageList = $this->modelGoodsImages->getListByGoodsCommonColorAndStoreIds(array(
             $goodsInfo['goods_commonid']
         ), array(), array());
         $this->assign('goodsImageList', $goodsImageList);
-        
-        if ($goodsInfo['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1) {} else {
+
+        if ($goodsInfo['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1) {
+        } else {
             // 即将揭晓
             $announcedSoonGoodsList = $this->modelGoods->getAnnouncedSoonList(1, 4);
             $this->assign('announcedSoonGoodsList', $announcedSoonGoodsList);
@@ -90,14 +92,14 @@ class ProductController extends ControllerBase
         $this->assign('r', $r);
         $tag = $this->get('tag', ''); // 限购tag=10
         $this->assign('tag', $tag);
-        
-        if (! empty($i)) {
+
+        if (!empty($i)) {
             $categoryInfo = $this->modelGoodsCategory->getInfoById($i);
-            if (! empty($categoryInfo)) {
+            if (!empty($categoryInfo)) {
                 $this->assign('categoryInfo', $categoryInfo);
             }
         }
-        
+
         // 检索条件
         $query = $this->getQuery($r, $i, $b, $tag, "");
         // 排序
@@ -134,11 +136,11 @@ class ProductController extends ControllerBase
         // 每页显示记录数
         $size = $this->get('size', '40');
         $r = $this->get('r', '10'); // 排序方式
-                                    // 关键字
+        // 关键字
         $q = $this->get('q', '');
         $q = urldecode($q);
         $this->assign('q', $q);
-        
+
         // 检索条件
         $query = $this->getQuery($r, '', '', '', $q);
         // 排序
@@ -146,7 +148,7 @@ class ProductController extends ControllerBase
         // 获取商品分页列表信息
         $goodsList = $this->modelGoods->getPageList($page, $size, $query, $sort, array());
         $this->assign('goodsList', $goodsList);
-        
+
         // 创建分页信息
         $url = $this->getSelfUrl();
         $sch = array(
@@ -172,21 +174,21 @@ class ProductController extends ControllerBase
             $this->goToError();
             return;
         }
-        
+
         // 检查是否在进行中的时候,跳转到商品页面
         if ($goodsInfo['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1) {
             $url = $this->url->get("yungou/product/index?id={$goodsInfo['goods_commonid']}");
             $this->_redirect($url);
             exit();
         }
-        
+
         // 检查是否已经已揭晓并且揭晓时间已到的时候,跳转到lottery页面
         if ($goodsInfo['sale_state'] == \App\Goods\Models\Goods::SALE_STATE3 && $goodsInfo['prize_time'] <= getMilliTime()) {
             $url = $this->url->get("yungou/lottery/detail?id={$goods_id}");
             $this->_redirect($url);
             exit();
         }
-        
+
         // 获取商品公共信息
         $goods_commonid = $goodsInfo['goods_commonid'];
         $goodsCommonInfo = $this->modelGoodsCommon->getInfoById($goods_commonid);
@@ -207,14 +209,14 @@ class ProductController extends ControllerBase
     private function getSort($r)
     {
         $sort = array();
-        
+
         if ($r == 10) { // 即将揭晓 r=10 or 30 限购tag=10
             $sort = array(
-                'complete_percent' => - 1
+                'complete_percent' => -1
             );
         } elseif ($r == 20) { // 人气r=20
             $sort = array(
-                'collect' => - 1
+                'collect' => -1
             );
         } elseif ($r == 40) { // 剩余人次r=40
             $sort = array(
@@ -222,7 +224,7 @@ class ProductController extends ControllerBase
             );
         } elseif ($r == 50) { // 最新r=50
             $sort = array(
-                '_id' => - 1
+                '_id' => -1
             );
         } elseif ($r == 31) { // 价值r=31
             $sort = array(
@@ -230,10 +232,10 @@ class ProductController extends ControllerBase
             );
         } elseif ($r == 30) { // 价值r=30
             $sort = array(
-                'price' => - 1
+                'price' => -1
             );
         }
-        
+
         return $sort;
     }
 
@@ -249,11 +251,11 @@ class ProductController extends ControllerBase
     {
         $query = array();
         // 第1层分类
-        if (! empty($i)) {
+        if (!empty($i)) {
             $query['gc_id_1'] = $i;
         }
         // 品牌
-        if (! empty($b)) {
+        if (!empty($b)) {
             $query['brand_id'] = $b;
         }
         // 限购
@@ -263,15 +265,14 @@ class ProductController extends ControllerBase
             );
         }
         // 关键字
-        if (! empty($q)) {
+        if (!empty($q)) {
             $query['name'] = array(
                 '$like' => '%' . $q . '%'
             );
         }
         // 进行中的商品
         $query['sale_state'] == \App\Goods\Models\Goods::SALE_STATE1;
-        
+
         return $query;
     }
 }
-

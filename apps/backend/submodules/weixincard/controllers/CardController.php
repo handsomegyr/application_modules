@@ -259,7 +259,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '卡券的商户logo',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -880,7 +880,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '顶部居中的url',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -936,7 +936,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '自定义跳转的URL',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -1020,7 +1020,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '入口跳转外链的地址链接',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -1347,7 +1347,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '微信公众推送封面图片',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -1401,7 +1401,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '微信公众推送URL',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -1678,7 +1678,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '自定义会员信息类目1自定义跳转url',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -1732,7 +1732,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '自定义会员信息类目2自定义跳转url',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -1786,7 +1786,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '自定义会员信息类目3自定义跳转url',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -1921,7 +1921,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '绑定旧卡的url',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -1949,7 +1949,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '激活会员卡的url',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2061,7 +2061,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '销入口1入口跳转链接',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2145,7 +2145,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '营销入口2入口跳转链接',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2201,7 +2201,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '景区导览图url',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2369,7 +2369,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '在线值机的链接',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -2509,7 +2509,7 @@ class CardController extends \App\Backend\Controllers\FormController
             'name' => '会场导览图',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

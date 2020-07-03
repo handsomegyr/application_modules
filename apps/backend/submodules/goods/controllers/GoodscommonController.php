@@ -185,7 +185,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'name' => '商品主图',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelGoodsCommon->getUploadPath()
                 )
@@ -210,7 +210,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'name' => '商品内容',
             'data' => array(
                 'type' => 'html',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => true
@@ -231,7 +231,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'name' => '商品状态',
             'data' => array(
                 'type' => 'integer',
-                'length' => 3
+                'length' => 1
             ),
             'validation' => array(
                 'required' => 1
@@ -755,7 +755,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             'name' => '手机端商品描述',
             'data' => array(
                 'type' => 'html',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => true

@@ -90,7 +90,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => '链接',
             'data' => array(
                 'type' => 'string',
-                'length' => 100
+                'length' => 255
             ),
             'validation' => array(
                 'required' => true

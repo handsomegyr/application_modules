@@ -21,7 +21,8 @@ class StoreController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '店铺名',
             'data' => array(
                 'type' => 'string',

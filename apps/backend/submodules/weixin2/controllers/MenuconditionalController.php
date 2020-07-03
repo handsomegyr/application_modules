@@ -429,7 +429,7 @@ class MenuconditionalController extends BaseController
             'name' => '网页链接',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -517,7 +517,7 @@ class MenuconditionalController extends BaseController
             'name' => '小程序的页面路径',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Article\Controllers;
 
 use App\Backend\Submodules\Article\Models\Category;
@@ -20,9 +21,10 @@ class CategoryController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['_id']['list']['is_show'] = false;
+    {
+        $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
-        
+
         $schemas['name'] = array(
             'name' => '分类名称',
             'data' => array(
@@ -87,7 +89,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['sort'] = array(
             'name' => '排序',
             'data' => array(
@@ -108,7 +110,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -140,18 +142,18 @@ class CategoryController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/article/category/elastic?id=xxx
         try {
-            
+
             $id = $this->get('id', '');
             if (empty($id)) {
-                throw new \Exception("id未指定", - 1);
+                throw new \Exception("id未指定", -1);
             }
             $categoryInfo = $this->modelCategory->getInfoById($id);
             if (empty($categoryInfo)) {
-                throw new \Exception("id不正确", - 2);
+                throw new \Exception("id不正确", -2);
             }
-            
+
             $client = $this->getDI()->get('elasticsearch');
-            
+
             // 删除
             $params = [
                 'index' => 'application_modules',
@@ -159,7 +161,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
                 'id' => $id
             ];
             $response = $client->delete($params);
-            
+
             // 新建
             $params = [
                 'index' => 'application_modules',
@@ -172,16 +174,16 @@ class CategoryController extends \App\Backend\Controllers\FormController
                 ]
             ];
             $response = $client->index($params);
-            
+
             // 获取
             $params = [
                 'index' => 'application_modules',
                 'type' => 'article_category',
                 'id' => $id
             ];
-            
+
             $response = $client->get($params);
-            
+
             $this->makeJsonResult($response);
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

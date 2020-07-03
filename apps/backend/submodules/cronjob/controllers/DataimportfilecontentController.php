@@ -160,7 +160,7 @@ class DataimportfilecontentController extends \App\Backend\Controllers\FormContr
             'name' => '内容签名',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 190,
                 'defaultValue' => ''
             ),
             'validation' => array(

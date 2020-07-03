@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Weixin\Controllers;
 
 use App\Backend\Submodules\Weixin\Models\Source;
@@ -20,7 +21,7 @@ class SourceController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['ToUserName'] = array(
             'name' => '开发者微信号',
             'data' => array(
@@ -41,7 +42,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['FromUserName'] = array(
             'name' => '发送方帐号',
             'data' => array(
@@ -82,7 +83,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['MsgType'] = array(
             'name' => '消息类型',
             'data' => array(
@@ -107,7 +108,7 @@ class SourceController extends \App\Backend\Controllers\FormController
             'name' => '文本消息内容',
             'data' => array(
                 'type' => 'string',
-                'length' => '200'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
@@ -123,7 +124,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['MsgId'] = array(
             'name' => '消息id',
             'data' => array(
@@ -144,7 +145,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['PicUrl'] = array(
             'name' => '图片链接',
             'data' => array(
@@ -245,7 +246,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['Location_Y'] = array(
             'name' => '经度',
             'data' => array(
@@ -268,7 +269,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['Scale'] = array(
             'name' => '地图缩放大小',
             'data' => array(
@@ -289,12 +290,12 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['Label'] = array(
             'name' => '地理位置信息',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
@@ -354,7 +355,7 @@ class SourceController extends \App\Backend\Controllers\FormController
             'name' => '消息链接',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
@@ -430,7 +431,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['Latitude'] = array(
             'name' => '地理位置纬度',
             'data' => array(
@@ -453,7 +454,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['Longitude'] = array(
             'name' => '地理位置经度',
             'data' => array(
@@ -476,7 +477,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['Precision'] = array(
             'name' => '地理位置精度',
             'data' => array(
@@ -499,7 +500,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['interval'] = array(
             'name' => '响应速度',
             'data' => array(
@@ -522,7 +523,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['coordinate'] = array(
             'name' => '坐标',
             'data' => array(
@@ -536,8 +537,7 @@ class SourceController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return array();
                 },
                 'select' => array(
@@ -552,7 +552,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['Status'] = array(
             'name' => '发送状态',
             'data' => array(
@@ -613,7 +613,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['response_time'] = array(
             'name' => '响应时间',
             'data' => array(
@@ -635,7 +635,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -652,7 +652,7 @@ class SourceController extends \App\Backend\Controllers\FormController
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
-            $item['response_time'] = ! empty($item['response_time']) ? date("Y-m-d H:i:s", $item['response_time']->sec) : "--";
+            $item['response_time'] = !empty($item['response_time']) ? date("Y-m-d H:i:s", $item['response_time']->sec) : "--";
         }
         return $list;
     }

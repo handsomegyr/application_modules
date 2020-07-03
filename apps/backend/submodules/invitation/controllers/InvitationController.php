@@ -88,7 +88,7 @@ class InvitationController extends \App\Backend\Controllers\FormController
             'name' => '邀请函URL',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -142,7 +142,7 @@ class InvitationController extends \App\Backend\Controllers\FormController
             'name' => '头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -358,7 +358,7 @@ class InvitationController extends \App\Backend\Controllers\FormController
             'name' => '关注提示页面链接',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Message\Controllers;
 
 use App\Backend\Submodules\Message\Models\Template;
@@ -20,7 +21,7 @@ class TemplateController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['code'] = array(
             'name' => '模板代码',
             'data' => array(
@@ -85,7 +86,7 @@ class TemplateController extends \App\Backend\Controllers\FormController
             'name' => '模板内容',
             'data' => array(
                 'type' => 'html',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1

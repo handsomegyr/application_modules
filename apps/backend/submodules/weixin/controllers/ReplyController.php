@@ -97,7 +97,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '网址链接(图文)',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
@@ -140,7 +140,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => 'banner图片(图文)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100',
+                'length' => '255',
                 'file' => array(
                     'path' => $this->modelReply->getUploadPath()
                 )
@@ -212,7 +212,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '音频(音频)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100',
+                'length' => '255',
                 'file' => array(
                     'path' => $this->modelReply->getUploadPath()
                 )
@@ -236,7 +236,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '视频(视频)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100',
+                'length' => '255',
                 'file' => array(
                     'path' => $this->modelReply->getUploadPath()
                 )

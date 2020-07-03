@@ -309,7 +309,7 @@ class QuestionController extends \App\Backend\Controllers\FormController
             'name' => '图片',
             'data' => array(
                 'type' => 'file',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => '',
                 'file' => array(
                     'path' => $this->modelQuestion->getUploadPath()
@@ -339,7 +339,7 @@ class QuestionController extends \App\Backend\Controllers\FormController
             'name' => '视频',
             'data' => array(
                 'type' => 'file',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => '',
                 'file' => array(
                     'path' => $this->modelQuestion->getUploadPath()
@@ -376,7 +376,7 @@ class QuestionController extends \App\Backend\Controllers\FormController
             'name' => '音频',
             'data' => array(
                 'type' => 'file',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => '',
                 'file' => array(
                     'path' => $this->modelQuestion->getUploadPath()

@@ -802,7 +802,7 @@ class WeixinpaylogController extends \App\Backend\Controllers\FormController
             'name' => '错误代码描述',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

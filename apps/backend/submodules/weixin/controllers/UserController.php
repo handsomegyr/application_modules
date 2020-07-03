@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Weixin\Controllers;
 
 use App\Backend\Submodules\Weixin\Models\User;
@@ -24,7 +25,7 @@ class UserController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['openid'] = array(
             'name' => '微信用户ID',
             'data' => array(
@@ -48,7 +49,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['nickname'] = array(
             'name' => '昵称',
             'data' => array(
@@ -76,7 +77,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '性别',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => '1'
             ),
             'validation' => array(
                 'required' => true
@@ -98,7 +99,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['country'] = array(
             'name' => '国家',
             'data' => array(
@@ -122,7 +123,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['province'] = array(
             'name' => '省份',
             'data' => array(
@@ -146,7 +147,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['city'] = array(
             'name' => '城市',
             'data' => array(
@@ -170,12 +171,12 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['headimgurl'] = array(
             'name' => '头像',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
@@ -194,7 +195,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['privilege'] = array(
             'name' => '用户特权信息',
             'data' => array(
@@ -215,7 +216,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['subscribe_time'] = array(
             'name' => '关注时间',
             'data' => array(
@@ -240,7 +241,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['subscribe'] = array(
             'name' => '是否关注',
             'data' => array(
@@ -267,7 +268,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['access_token'] = array(
             'name' => '授权信息',
             'data' => array(
@@ -288,7 +289,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -306,7 +307,7 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         $genderList = $this->modelGender->getAll();
         foreach ($list['data'] as &$item) {
-            $item['subscribe_time'] = ! empty($item['subscribe']) ? date("Y-m-d H:i:s", $item['subscribe_time']->sec) : "--";
+            $item['subscribe_time'] = !empty($item['subscribe']) ? date("Y-m-d H:i:s", $item['subscribe_time']->sec) : "--";
             $item['sex'] = isset($genderList[$item['sex']]) ? $genderList[$item['sex']] : "--";
         }
         return $list;

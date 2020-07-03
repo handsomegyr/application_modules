@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Site\Controllers;
 
 use App\Backend\Submodules\Site\Models\Site;
@@ -20,7 +21,8 @@ class SiteController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '网站名称',
             'data' => array(
                 'type' => 'string',
@@ -84,7 +86,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '网站描述',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false
@@ -104,7 +106,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '网站Logo',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelSite->getUploadPath()
                 )
@@ -128,7 +130,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '手机网站Logo',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelSite->getUploadPath()
                 )
@@ -152,7 +154,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '会员中心Logo',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelSite->getUploadPath()
                 )
@@ -176,7 +178,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '微信二维码',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelSite->getUploadPath()
                 )
@@ -280,7 +282,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '第三方流量统计代码',
             'data' => array(
                 'type' => 'string',
-                'length' => 500
+                'length' => 255
             ),
             'validation' => array(
                 'required' => true
@@ -319,7 +321,7 @@ class SiteController extends \App\Backend\Controllers\FormController
         $schemas['status'] = array(
             'name' => '站点状态',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => '1'
             ),
             'validation' => array(
@@ -342,7 +344,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '关闭原因',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false
@@ -422,7 +424,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '默认商品图片',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelSite->getUploadPath()
                 )
@@ -446,7 +448,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '默认会员头像',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelSite->getUploadPath()
                 )
@@ -532,7 +534,7 @@ class SiteController extends \App\Backend\Controllers\FormController
             'name' => '版权信息',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => true
@@ -548,7 +550,7 @@ class SiteController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

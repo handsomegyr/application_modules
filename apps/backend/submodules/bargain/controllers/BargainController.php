@@ -119,7 +119,7 @@ class BargainController extends \App\Backend\Controllers\FormController
             'name' => '砍价物发起用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

@@ -152,7 +152,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'name' => '商品主图',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelGoods->getUploadPath()
                 )
@@ -278,7 +278,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'name' => '用户头像',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelMember->getUploadPath()
                 )
@@ -855,7 +855,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'name' => 'orderActDesc',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Live\Controllers;
 
 use App\Backend\Submodules\Live\Models\Resource;
@@ -20,7 +21,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['contentType'] = array(
             'name' => '资源类型',
             'data' => array(
@@ -46,12 +47,12 @@ class ResourceController extends \App\Backend\Controllers\FormController
                 'items' => $this->getTypeList()
             )
         );
-        
+
         $schemas['content'] = array(
             'name' => '资源内容',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -70,7 +71,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         return $schemas;
     }
 

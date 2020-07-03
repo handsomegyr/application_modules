@@ -3,22 +3,22 @@
 namespace App\Qyweixin\Controllers;
 
 /**
-         * 消息推送
-         * 企业微信消息与事件接收
-         */
+ * 消息推送
+ * 企业微信消息与事件接收
+ */
 class MsgController extends ControllerBase
 {
     // 活动ID
     protected $activity_id = 2;
     /**
-         *
-         * @var \App\Qyweixin\Models\User\User
-         */
+     *
+     * @var \App\Qyweixin\Models\User\User
+     */
     private $modelQyweixinUser;
     /**
-         *
-         * @var \App\Qyweixin\Models\Provider\Provider
-         */
+     *
+     * @var \App\Qyweixin\Models\Provider\Provider
+     */
     private $modelQyweixinProvider;
     /**
      *

@@ -360,7 +360,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'name' => '红包祝福',
             'data' => array(
                 'type' => 'string',
-                'length' => 500
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -381,7 +381,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'name' => '红包备注',
             'data' => array(
                 'type' => 'string',
-                'length' => 500
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -402,7 +402,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'name' => '商户logo',
             'data' => array(
                 'type' => 'string',
-                'length' => 100
+                'length' => 255
             ),
             'validation' => array(
                 'required' => true
@@ -423,7 +423,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'name' => '分享文案',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 255
             ),
             'validation' => array(
                 'required' => true
@@ -444,7 +444,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'name' => '分享链接 ',
             'data' => array(
                 'type' => 'string',
-                'length' => 100
+                'length' => 255
             ),
             'validation' => array(
                 'required' => true
@@ -465,7 +465,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'name' => '分享图片',
             'data' => array(
                 'type' => 'string',
-                'length' => 100
+                'length' => 255
             ),
             'validation' => array(
                 'required' => true

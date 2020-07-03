@@ -132,7 +132,7 @@ class ConditionalmenuController extends \App\Backend\Controllers\FormController
             'name' => '链接(类型为view时必填)',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false

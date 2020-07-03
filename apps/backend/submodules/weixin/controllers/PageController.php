@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Weixin\Controllers;
 
 use App\Backend\Submodules\Weixin\Models\Page;
@@ -20,7 +21,7 @@ class PageController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['title'] = array(
             'name' => '标题',
             'data' => array(
@@ -41,12 +42,12 @@ class PageController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['picture'] = array(
             'name' => '图片',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => true
@@ -66,7 +67,7 @@ class PageController extends \App\Backend\Controllers\FormController
             'name' => '内容',
             'data' => array(
                 'type' => 'string',
-                'length' => '1000'
+                'length' => '1024'
             ),
             'validation' => array(
                 'required' => true
@@ -82,7 +83,7 @@ class PageController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

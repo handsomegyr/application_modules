@@ -60,7 +60,7 @@ class CallbackurlsController extends \App\Backend\Controllers\FormController
             'name' => '回调地址安全域名',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

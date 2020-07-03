@@ -968,7 +968,7 @@ class MsglogController extends BaseController
                 'is_show' => true
             )
         );
-        
+
         $schemas['AppId'] = array(
             'name' => '用于接收事件推送的公众号的AppId',
             'data' => array(
@@ -1024,7 +1024,7 @@ class MsglogController extends BaseController
                 'is_show' => true
             )
         );
-        
+
         $schemas['contact_UserID'] = array(
             'name' => '成员UserID',
             'data' => array(

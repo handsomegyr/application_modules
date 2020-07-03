@@ -116,7 +116,7 @@ class QuestionitemController extends \App\Backend\Controllers\FormController
             'name' => '图片URL',
             'data' => array(
                 'type' => 'file',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -143,7 +143,7 @@ class QuestionitemController extends \App\Backend\Controllers\FormController
             'name' => '视频URL',
             'data' => array(
                 'type' => 'file',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -177,7 +177,7 @@ class QuestionitemController extends \App\Backend\Controllers\FormController
             'name' => '音频URL',
             'data' => array(
                 'type' => 'file',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

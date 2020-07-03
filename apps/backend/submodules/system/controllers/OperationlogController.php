@@ -97,7 +97,7 @@ class OperationlogController extends \App\Backend\Controllers\FormController
             'name' => 'IP',
             'data' => array(
                 'type' => 'string',
-                'length' => '191'
+                'length' => '15'
             ),
             'validation' => array(
                 'required' => true

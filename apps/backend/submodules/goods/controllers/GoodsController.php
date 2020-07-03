@@ -124,7 +124,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'name' => '广告词',
             'data' => array(
                 'type' => 'string',
-                'length' => 150
+                'length' => 190
             ),
             'validation' => array(
                 'required' => 1
@@ -166,7 +166,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             'name' => '商品主图',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelGoods->getUploadPath()
                 )

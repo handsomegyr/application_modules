@@ -20,11 +20,12 @@ class NotifylogController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['channel'] = array(
+    {
+        $schemas['channel'] = array(
             'name' => '回调渠道',
             'data' => array(
                 'type' => 'string',
-                'length' => 100,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

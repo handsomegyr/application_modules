@@ -120,7 +120,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false

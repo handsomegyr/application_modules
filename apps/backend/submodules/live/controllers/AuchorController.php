@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Live\Controllers;
 
 use App\Backend\Submodules\Live\Models\Auchor;
@@ -20,7 +21,7 @@ class AuchorController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['name'] = array(
             'name' => '主播名',
             'data' => array(
@@ -44,7 +45,7 @@ class AuchorController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['openid'] = array(
             'name' => '主播ID',
             'data' => array(
@@ -95,7 +96,7 @@ class AuchorController extends \App\Backend\Controllers\FormController
             'name' => '主播头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -183,7 +184,7 @@ class AuchorController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['thirdparty_user'] = array(
             'name' => '第3方账号',
             'data' => array(
@@ -207,7 +208,7 @@ class AuchorController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['contact_name'] = array(
             'name' => '联系主播',
             'data' => array(
@@ -258,7 +259,7 @@ class AuchorController extends \App\Backend\Controllers\FormController
             'name' => '联系地址',
             'data' => array(
                 'type' => 'string',
-                'length' => 200
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -277,7 +278,7 @@ class AuchorController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-                
+
         $schemas['is_vip'] = array(
             'name' => '是否是VIP',
             'data' => array(
@@ -309,7 +310,7 @@ class AuchorController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['is_test'] = array(
             'name' => '是否是测试主播',
             'data' => array(
@@ -341,7 +342,7 @@ class AuchorController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
@@ -374,5 +375,4 @@ class AuchorController extends \App\Backend\Controllers\FormController
     {
         return $this->modelAuchor;
     }
-
 }

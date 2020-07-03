@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Goods\Controllers;
 
 class ServiceController extends ControllerBase
@@ -68,7 +69,7 @@ class ServiceController extends ControllerBase
             }
             // 生成新的一期
             $ret = $this->serviceGoods->createNewPeriodGoods($goods_commonid);
-            if (! empty($ret['error_code'])) {
+            if (!empty($ret['error_code'])) {
                 echo ($this->error('-3', $ret['error_msg']));
                 return false;
             }
@@ -103,7 +104,7 @@ class ServiceController extends ControllerBase
             }
             // 满员商品抽奖
             $ret = $this->serviceGoods->lottery($goods_id);
-            if (! empty($ret['error_code'])) {
+            if (!empty($ret['error_code'])) {
                 echo ($this->error('-3', $ret['error_msg']));
                 return false;
             }
@@ -122,21 +123,21 @@ class ServiceController extends ControllerBase
      */
     public function getgoodslistAction()
     {
-        
+
         // http://api.1yyg.com/JPData?action=getGoodsList&sortID=0&brandID=0&orderFlag=10&FIdx=1&EIdx=24&isCount=0&fun=jQuery18106648092379327863_1451569831574&_=1451569832167
         // jQuery18106648092379327863_1451569831574({"Code":0,"Count":0,"Data":{"Tables":{"Table1":{"Rows":[{"rowID":0,"goodsID":22797,"goodsSName":"奥迪（Audi）A6L 2014款 TFSI 标准型轿车","goodsPic":"20151223154720771.jpg","codeID":2665183,"codePrice":"458888.00","codeQuantity":458888,"codeSales":441973,"codePeriod":28,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":1,"goodsID":22719,"goodsSName":"小米（MIUI）红米Note 3 16GB 4G手机 标准版","goodsPic":"20151202152244904.jpg","codeID":2682716,"codePrice":"1058.00","codeQuantity":1058,"codeSales":991,"codePeriod":1034,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":2,"goodsID":22732,"goodsSName":"金士顿（Kingston）DT SE9H 32GB 金属U盘 银色亮薄","goodsPic":"20151208162616625.jpg","codeID":2536404,"codePrice":"75.00","codeQuantity":75,"codeSales":69,"codePeriod":1164,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":3,"goodsID":22798,"goodsSName":"微软（Microsoft）Surface Pro 4专业版 128G 平板电脑 i5 4G内存","goodsPic":"20151223163837660.jpg","codeID":2626023,"codePrice":"7488.00","codeQuantity":7488,"codeSales":6880,"codePeriod":34,"codeType":3,"goodsTag":"10","codeLimitBuy":"5"},{"rowID":4,"goodsID":22634,"goodsSName":"美的（Midea）MG38CB-AA 38L 家用容量多功能电烤箱","goodsPic":"20151112102523330.jpg","codeID":2656075,"codePrice":"329.00","codeQuantity":329,"codeSales":284,"codePeriod":3022,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":5,"goodsID":22704,"goodsSName":"小米（MIUI）红米Note 3 32GB 4G手机 高配版","goodsPic":"20151130164943898.jpg","codeID":2719858,"codePrice":"1299.00","codeQuantity":1299,"codeSales":1068,"codePeriod":4489,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":6,"goodsID":22620,"goodsSName":"360 儿童卫士智能手表3 通话版 W461B 王子蓝","goodsPic":"20151106171829548.jpg","codeID":2548807,"codePrice":"399.00","codeQuantity":399,"codeSales":315,"codePeriod":2959,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":7,"goodsID":22523,"goodsSName":"苹果（Apple）iPad mini 4 7.9英寸平板电脑 16G WiFi版","goodsPic":"20150918113524362.jpg","codeID":2614310,"codePrice":"2899.00","codeQuantity":2899,"codeSales":2269,"codePeriod":6093,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":8,"goodsID":22806,"goodsSName":"佳能（Canon）EOS原装单反相机包 蓝色","goodsPic":"20151228163121605.jpg","codeID":2702107,"codePrice":"78.00","codeQuantity":78,"codeSales":58,"codePeriod":63,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":9,"goodsID":22612,"goodsSName":"苹果（Apple）iPhone 6s Plus 128G版 4G手机","goodsPic":"20151105111557474.jpg","codeID":2637611,"codePrice":"8488.00","codeQuantity":8488,"codeSales":6234,"codePeriod":2971,"codeType":3,"goodsTag":"10","codeLimitBuy":"5"},{"rowID":10,"goodsID":22670,"goodsSName":"七匹狼 男士纯棉秋冬透气短袜 6双礼盒装 均码","goodsPic":"20151123110546874.jpg","codeID":2512916,"codePrice":"49.00","codeQuantity":49,"codeSales":35,"codePeriod":3321,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":11,"goodsID":21762,"goodsSName":"美的（Midea）WH517E2b 外塑内钢双层防烫 电水壶","goodsPic":"20140507095331971.jpg","codeID":2577809,"codePrice":"119.00","codeQuantity":119,"codeSales":85,"codePeriod":4026,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":12,"goodsID":22370,"goodsSName":"斯伯丁（SPALDING）74-221/74-604Y PU材质 室内外兼用 比赛用篮球","goodsPic":"20150629153939560.jpg","codeID":2626331,"codePrice":"168.00","codeQuantity":168,"codeSales":114,"codePeriod":5051,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":13,"goodsID":22317,"goodsSName":"麦斯威尔（Maxwell House）三合一特浓咖啡 13gx60条 盒装","goodsPic":"20150606143113848.jpg","codeID":2627285,"codePrice":"55.00","codeQuantity":55,"codeSales":34,"codePeriod":2004,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":14,"goodsID":22160,"goodsSName":"统一 来一桶 老坛酸菜牛肉面（辣味）120g*12桶 整箱装","goodsPic":"20150313162131353.jpg","codeID":2663538,"codePrice":"49.00","codeQuantity":49,"codeSales":30,"codePeriod":25020,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":15,"goodsID":22282,"goodsSName":"飞利浦 (Philips) M2BTBK/00 Fidelio旗舰系列 NFC蓝牙无线头戴式耳机","goodsPic":"20150521153407811.jpg","codeID":2584294,"codePrice":"1899.00","codeQuantity":1899,"codeSales":1143,"codePeriod":228,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":16,"goodsID":22262,"goodsSName":"锐澳（RIO）鸡尾酒 预调酒 KT新春幻彩装 275ml x 6瓶","goodsPic":"20150513142117466.jpg","codeID":2680607,"codePrice":"95.00","codeQuantity":95,"codeSales":57,"codePeriod":15857,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":17,"goodsID":22245,"goodsSName":"威凯（Viki）婴儿推车 超轻便可折叠经典夏季伞车 彩色网布坐兜 S1180","goodsPic":"20150429145520103.jpg","codeID":2559225,"codePrice":"299.00","codeQuantity":299,"codeSales":179,"codePeriod":2740,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":18,"goodsID":21473,"goodsSName":"曼秀雷敦（Mentholatum）薄荷润唇膏3.5g+润唇啫喱8g","goodsPic":"20131219181640458.jpg","codeID":2686681,"codePrice":"34.00","codeQuantity":34,"codeSales":20,"codePeriod":850,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":19,"goodsID":22709,"goodsSName":"乐视 超级电视 第3代X55（X3-55）55英寸 4K智能网络液晶平板电视（标配挂架）","goodsPic":"20151203145651154.jpg","codeID":2633779,"codePrice":"4899.00","codeQuantity":4899,"codeSales":2856,"codePeriod":310,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":20,"goodsID":22468,"goodsSName":"飞利浦（Philips）S5079/04 全身水洗电动剃须刀","goodsPic":"20150827170344769.jpg","codeID":2702221,"codePrice":"799.00","codeQuantity":799,"codeSales":465,"codePeriod":1106,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":21,"goodsID":22613,"goodsSName":"苹果（Apple）iPad mini 4 7.9英寸平板电脑 64G WiFi版","goodsPic":"20151105112154971.jpg","codeID":2474533,"codePrice":"3688.00","codeQuantity":3688,"codeSales":2143,"codePeriod":771,"codeType":3,"goodsTag":"10","codeLimitBuy":"5"},{"rowID":22,"goodsID":21958,"goodsSName":"苏泊尔（Supor）30cm精铸富铁炒锅 FC30E","goodsPic":"20151214100728129.jpg","codeID":2501882,"codePrice":"109.00","codeQuantity":109,"codeSales":60,"codePeriod":4726,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"},{"rowID":23,"goodsID":22658,"goodsSName":"闪迪（SanDisk）至尊高速 MicroSDXC UHS-I 存储卡 64GB-Class10-48Mb/s","goodsPic":"20151117180200543.jpg","codeID":2679301,"codePrice":"109.00","codeQuantity":109,"codeSales":60,"codePeriod":611,"codeType":0,"goodsTag":"0","codeLimitBuy":"0"}]}}}})
         // http://www.applicationmodule.com/goods/service/getgoodslist?sortID=0&brandID=0&orderFlag=10&limit=24&page=1
         try {
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '24'));
-            
+
             // 即将揭晓
             $list = $this->modelGoods->getAnnouncedSoonList($page, $limit);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $goodsInfo) {
                     // "rowID":0,
                     // "goodsID":22797,
@@ -186,7 +187,7 @@ class ServiceController extends ControllerBase
         try {
             $goodsLabel = intval($this->get('goodsLabel', '12'));
             $limit = intval($this->get('quantity', '8'));
-            
+
             if ($goodsLabel == 12) {
                 // 热门推荐
                 $list = $this->modelGoods->getHotList(1, $limit);
@@ -194,11 +195,11 @@ class ServiceController extends ControllerBase
                 // 新品上架
                 $list = $this->modelGoods->getNewList(1, $limit);
             }
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $goodsInfo) {
                     // 'goodsID':22504,
                     // 'goodsName':'苹果（Apple）iPhone 6s 16G版 4G手机',
@@ -229,9 +230,7 @@ class ServiceController extends ControllerBase
             $ret['datas'] = $datas;
             echo ($this->result("OK", $ret));
             return true;
-        } catch (\Exception $e) 
-
-        {
+        } catch (\Exception $e) {
             echo ($this->error($e->getCode(), $e->getMessage()));
             return false;
         }
@@ -251,7 +250,7 @@ class ServiceController extends ControllerBase
         try {
             $goods_id = ($this->get('codeID', ''));
             if (empty($goods_id)) {
-                echo ($this->error(- 1, '商品ID为空'));
+                echo ($this->error(-1, '商品ID为空'));
                 return true;
             }
             $goodsInfo = $this->modelGoods->getInfoById($goods_id);
@@ -260,7 +259,7 @@ class ServiceController extends ControllerBase
             // return true;
             // }
             $ret = array();
-            if (! empty($goodsInfo)) {
+            if (!empty($goodsInfo)) {
                 // "codePeriod":3147,
                 // "codeRNO":10000019,
                 // "codeRTime":"2015-12-28 20:28:28.463",
@@ -318,7 +317,7 @@ class ServiceController extends ControllerBase
             // die('time:' . $time);
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '5'));
-            
+
             $otherConditions = array();
             $otherConditions['prize_time'] = array(
                 '$gt' => $time
@@ -328,7 +327,7 @@ class ServiceController extends ControllerBase
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $goodsInfo) {
                     // "goodsPic":"20150727183000536.jpg",
                     // "goodsSName":"统一 来一桶 红烧牛肉面 12桶 整箱装",
@@ -397,19 +396,19 @@ class ServiceController extends ControllerBase
         try {
             $goods_id = ($this->get('codeId', ''));
             if (empty($goods_id)) {
-                echo ($this->error(- 1, '商品ID为空'));
+                echo ($this->error(-1, '商品ID为空'));
                 return true;
             }
             $goodsInfo = $this->modelGoods->getInfoById($goods_id);
             if (empty($goodsInfo)) {
-                echo ($this->error(- 2, '商品ID不存在'));
+                echo ($this->error(-2, '商品ID不存在'));
                 return true;
             }
             $last_purchase_time = empty($goodsInfo['last_purchase_time']) ? 0 : $goodsInfo['last_purchase_time'];
             $ret = array();
             $orderGoodsList = $goodsInfo['order_goods_list'];
             $recordEnd2 = array();
-            if (! empty($orderGoodsList)) {
+            if (!empty($orderGoodsList)) {
                 foreach ($orderGoodsList as $orderGoodsInfo) {
                     // "timeCodeVal":"221318849"
                     // "buyTime":"2015-12-29 22:13:19.408",
@@ -421,7 +420,7 @@ class ServiceController extends ControllerBase
                     // "goodsPeriod":2870,
                     // "goodsName":"苹果（Apple）iPhone 6s Plus 128G版 4G手机"
                     $data = array();
-                    list ($sec, $msec) = explode(".", $orderGoodsInfo['purchase_time']);
+                    list($sec, $msec) = explode(".", $orderGoodsInfo['purchase_time']);
                     $mill = date('His', $sec) . $msec;
                     $data['timeCodeVal'] = $mill;
                     $data['buyTime'] = getMilliTime4Show($orderGoodsInfo['purchase_time']);
@@ -439,10 +438,10 @@ class ServiceController extends ControllerBase
             $ret['recordEnd2'] = $recordEnd2;
             // 获取最前一条之前的5条记录
             $recordEnd3 = array();
-            if (! empty($last_purchase_time)) {
+            if (!empty($last_purchase_time)) {
                 $orderGoodsList = $this->modelOrderGoods->getLastPurchaseList($last_purchase_time, 5);
             }
-            if (! empty($orderGoodsList)) {
+            if (!empty($orderGoodsList)) {
                 foreach ($orderGoodsList as $orderGoodsInfo) {
                     // "timeCodeVal":"221318849"
                     // "buyTime":"2015-12-29 22:13:19.408",
@@ -491,9 +490,9 @@ class ServiceController extends ControllerBase
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '72'));
             $time = getMilliTime();
-            
+
             $otherConditions = array();
-            if (! empty($SortID)) {
+            if (!empty($SortID)) {
                 $otherConditions['gc_id_1'] = $SortID;
             }
             $otherConditions['prize_time'] = array(
@@ -503,9 +502,9 @@ class ServiceController extends ControllerBase
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $goodsInfo) {
-                    
+
                     // 'codeID':2781107,
                     // 'goodsPic':'20151223134549532.jpg',
                     // 'goodsName':"魅族（MEIZU）PRO5 32GB 联通定制版 4G手机",
@@ -520,7 +519,7 @@ class ServiceController extends ControllerBase
                     // 'userBuyNum':'88',
                     // 'postID':'0',
                     // 'codeType':0
-                    
+
                     $data = array();
                     $data['codeID'] = $goodsInfo['_id'];
                     $data['goodsPic'] = $this->modelGoods->getImagePath($this->baseUrl, $goodsInfo['image']);
@@ -529,7 +528,7 @@ class ServiceController extends ControllerBase
                     $data['codePrice'] = showPrice($goodsInfo['price'], 2);
                     $data['raffTime'] = getMilliTime4Show($goodsInfo['prize_time']);
                     $data['seconds'] = round($time - $goodsInfo['prize_time'], 0);
-                    
+
                     $data['userWeb'] = $goodsInfo['prize_buyer_id'];
                     $data['userName'] = getBuyerName($goodsInfo['prize_buyer_name'], $goodsInfo['prize_buyer_register_by']);
                     $data['userPhoto'] = $this->modelMember->getImagePath($this->baseUrl, $goodsInfo['prize_buyer_avatar']);
@@ -563,7 +562,7 @@ class ServiceController extends ControllerBase
         try {
             $goods_id = $this->get('goodsID', '');
             if (empty($goods_id)) {
-                echo ($this->error(- 1, '商品ID为空'));
+                echo ($this->error(-1, '商品ID为空'));
                 return true;
             }
             $page = intval($this->get('page', '1'));
@@ -572,7 +571,7 @@ class ServiceController extends ControllerBase
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $goodsInfo) {
                     // "codePeriod":2688,
                     // "codeID":2575389,
@@ -605,20 +604,20 @@ class ServiceController extends ControllerBase
         try {
             $goods_id = $this->get('goodsID', '');
             if (empty($goods_id)) {
-                echo ($this->error(- 1, '商品ID为空'));
+                echo ($this->error(-1, '商品ID为空'));
                 return true;
             }
             $period = intval($this->get('period', '0'));
             if (empty($period)) {
-                echo ($this->error(- 2, '期数为空'));
+                echo ($this->error(-2, '期数为空'));
                 return true;
             }
             $goodsInfo = $this->modelGoods->getPeriodInfo($goods_id, $period);
             if (empty($goodsInfo)) {
-                echo ($this->error(- 3, '商品不存在'));
+                echo ($this->error(-3, '商品不存在'));
                 return true;
             }
-            
+
             $ret = array();
             // "codePeriod":2688,
             // "codeState":1
@@ -645,22 +644,22 @@ class ServiceController extends ControllerBase
         try {
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '15'));
-            
+
             $ret = array();
             $ret['total'] = 0;
             $ret['datas'] = array();
-            
-            if (! empty($_SESSION['member_id'])) {
-                
+
+            if (!empty($_SESSION['member_id'])) {
+
                 $otherConditions = array();
                 $list = $this->modelGoodsCollect->getUserCollectlist($_SESSION['member_id'], $page, $limit, $otherConditions);
                 $ret['total'] = $list['total'];
                 $datas = array();
-                if (! empty($list['datas'])) {
+                if (!empty($list['datas'])) {
                     $goods_commonids = array_keys($list['datas']);
                     $period_goods_ids = $this->modelGoodsCommon->getPeriodGoodsIdListByIds($goods_commonids);
                     $periodGoodsList = $this->modelGoods->getListByIds($period_goods_ids, 'goods_commonid');
-                    
+
                     foreach ($list['datas'] as $value) {
                         // "goodsID": 21876,
                         // "codeID": 2561952,
@@ -672,11 +671,11 @@ class ServiceController extends ControllerBase
                         // "isSale": 1,
                         // "limitBuy": 0,
                         // "codeType": 0
-                        if (! isset($periodGoodsList[$value['goods_id']])) {
+                        if (!isset($periodGoodsList[$value['goods_id']])) {
                             throw new \Exception("{$value['goods_id']}不存在");
                         }
                         $item = $periodGoodsList[$value['goods_id']];
-                        
+
                         $datas[] = array(
                             'goodsID' => $item['goods_commonid'],
                             'codeID' => $item['_id'],
@@ -711,17 +710,17 @@ class ServiceController extends ControllerBase
             // http://www.applicationmodule.com/goods/service/addcollectgoods?goods_id=xxx
             $goods_id = ($this->get('goods_id', ''));
             if (empty($goods_id)) {
-                echo ($this->error(- 2, '商品ID为空'));
+                echo ($this->error(-2, '商品ID为空'));
                 return false;
             }
             if (empty($_SESSION['member_id'])) {
-                echo ($this->error(- 1, '非法访问'));
+                echo ($this->error(-1, '非法访问'));
                 return false;
             }
             // 检查商品是否存在
             $goodsInfo = $this->modelGoodsCommon->getInfoById($goods_id);
             if (empty($goodsInfo)) {
-                echo ($this->error(- 3, '商品ID不存在'));
+                echo ($this->error(-3, '商品ID不存在'));
                 return false;
             }
             // 检查是否已关注了
@@ -750,11 +749,11 @@ class ServiceController extends ControllerBase
             // http://www.applicationmodule.com/goods/service/delcollectgoods?goodsID=xxx
             $goods_id = ($this->get('goodsID', ''));
             if (empty($goods_id)) {
-                echo ($this->error(- 2, '商品ID为空'));
+                echo ($this->error(-2, '商品ID为空'));
                 return false;
             }
             if (empty($_SESSION['member_id'])) {
-                echo ($this->error(- 1, '非法访问'));
+                echo ($this->error(-1, '非法访问'));
                 return false;
             }
             $this->modelGoodsCollect->del($_SESSION['member_id'], $goods_id);
@@ -776,11 +775,11 @@ class ServiceController extends ControllerBase
             // http://www.applicationmodule.com/goods/service/checkcollectgoods?goods_id=xxx
             $goods_id = ($this->get('goods_id', ''));
             if (empty($goods_id)) {
-                echo ($this->error(- 2, '商品ID为空'));
+                echo ($this->error(-2, '商品ID为空'));
                 return false;
             }
             if (empty($_SESSION['member_id'])) {
-                echo ($this->error(- 1, '非法访问'));
+                echo ($this->error(-1, '非法访问'));
                 return false;
             }
             // 检查是否已关注了
@@ -806,12 +805,12 @@ class ServiceController extends ControllerBase
         try {
             // http://www.applicationmodule.com/goods/service/hascollectgoods
             if (empty($_SESSION['member_id'])) {
-                echo ($this->error(- 1, '非法访问'));
+                echo ($this->error(-1, '非法访问'));
                 return false;
             }
             // 检查是否已有关注
             $hasGoods = $this->modelGoodsCollect->hasGoods($_SESSION['member_id']);
-            
+
             echo ($this->result("OK", $hasGoods));
             return true;
         } catch (\Exception $e) {
@@ -820,4 +819,3 @@ class ServiceController extends ControllerBase
         }
     }
 }
-

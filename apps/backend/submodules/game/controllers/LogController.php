@@ -33,7 +33,8 @@ class LogController extends \App\Backend\Controllers\FormController
     private $gameList = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['activity_id'] = array(
+    {
+        $schemas['activity_id'] = array(
             'name' => '所属活动',
             'data' => array(
                 'type' => 'string',
@@ -147,7 +148,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => '玩家头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -255,7 +256,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => '游戏文件',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -282,7 +283,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => '游戏图片',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -309,7 +310,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => 'IP',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 15,
                 'defaultValue' => ''
             ),
             'validation' => array(

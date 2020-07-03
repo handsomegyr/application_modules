@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Weixin\Controllers;
 
 use App\Backend\Submodules\Weixin\Models\ComponentApplication;
@@ -20,10 +21,10 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
-        
+
         $schemas['authorizer_appid'] = array(
             'name' => '授权方appid',
             'data' => array(
@@ -44,7 +45,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['weixin_id'] = array(
             'name' => '原始ID',
             'data' => array(
@@ -65,7 +66,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['weixin_name'] = array(
             'name' => '名称',
             'data' => array(
@@ -86,7 +87,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['appid'] = array(
             'name' => '应用ID',
             'data' => array(
@@ -107,7 +108,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['secret'] = array(
             'name' => '应用密钥',
             'data' => array(
@@ -128,7 +129,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['verify_token'] = array(
             'name' => 'Token(令牌)',
             'data' => array(
@@ -149,7 +150,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['secretKey'] = array(
             'name' => '秘钥',
             'data' => array(
@@ -170,7 +171,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['EncodingAESKey'] = array(
             'name' => '加解密秘钥',
             'data' => array(
@@ -191,7 +192,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['mch_id'] = array(
             'name' => '商户ID',
             'data' => array(
@@ -212,7 +213,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['sub_mch_id'] = array(
             'name' => '子商户号',
             'data' => array(
@@ -233,7 +234,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['key'] = array(
             'name' => '商户支付密钥',
             'data' => array(
@@ -254,7 +255,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_advanced'] = array(
             'name' => '高级功能？',
             'data' => array(
@@ -278,7 +279,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_product'] = array(
             'name' => '生产环境？',
             'data' => array(
@@ -302,7 +303,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_weixin_card'] = array(
             'name' => '卡券功能？',
             'data' => array(
@@ -326,7 +327,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['access_token'] = array(
             'name' => 'ACCESS TOKEN',
             'data' => array(
@@ -347,7 +348,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['access_token_expire'] = array(
             'name' => 'ACCESS TOKEN过期时间',
             'data' => array(
@@ -369,7 +370,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['refresh_token'] = array(
             'name' => '刷新令牌',
             'data' => array(
@@ -390,7 +391,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['jsapi_ticket'] = array(
             'name' => 'JS临时票据',
             'data' => array(
@@ -411,7 +412,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['jsapi_ticket_expire'] = array(
             'name' => 'JS过期时间',
             'data' => array(
@@ -433,7 +434,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['wx_card_api_ticket'] = array(
             'name' => '卡券临时票据',
             'data' => array(
@@ -454,7 +455,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['wx_card_api_ticket_expire'] = array(
             'name' => '卡券过期时间',
             'data' => array(
@@ -476,7 +477,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['component_access_token'] = array(
             'name' => '第三方平台接口调用凭据',
             'data' => array(
@@ -497,7 +498,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['component_access_token_expire'] = array(
             'name' => '第3方平台接口调用凭据过期时间',
             'data' => array(
@@ -519,7 +520,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['component_verify_ticket'] = array(
             'name' => '推送的ticket',
             'data' => array(
@@ -540,12 +541,12 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1
@@ -561,7 +562,7 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -578,9 +579,9 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
-            $item['access_token_expire'] = ! empty($item['access_token_expire']) ? date("Y-m-d H:i:s", $item['access_token_expire']->sec) : "--";
-            $item['jsapi_ticket_expire'] = ! empty($item['jsapi_ticket_expire']) ? date("Y-m-d H:i:s", $item['jsapi_ticket_expire']->sec) : "--";
-            $item['wx_card_api_ticket_expire'] = ! empty($item['wx_card_api_ticket_expire']) ? date("Y-m-d H:i:s", $item['wx_card_api_ticket_expire']->sec) : "--";
+            $item['access_token_expire'] = !empty($item['access_token_expire']) ? date("Y-m-d H:i:s", $item['access_token_expire']->sec) : "--";
+            $item['jsapi_ticket_expire'] = !empty($item['jsapi_ticket_expire']) ? date("Y-m-d H:i:s", $item['jsapi_ticket_expire']->sec) : "--";
+            $item['wx_card_api_ticket_expire'] = !empty($item['wx_card_api_ticket_expire']) ? date("Y-m-d H:i:s", $item['wx_card_api_ticket_expire']->sec) : "--";
         }
         return $list;
     }

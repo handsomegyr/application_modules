@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Weixinredpack\Controllers;
 
 use App\Backend\Submodules\Weixinredpack\Models\Redpack;
@@ -20,7 +21,7 @@ class RedpackController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['code'] = array(
             'name' => '红包代码',
             'data' => array(
@@ -41,7 +42,7 @@ class RedpackController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['name'] = array(
             'name' => '红包名',
             'data' => array(
@@ -66,7 +67,7 @@ class RedpackController extends \App\Backend\Controllers\FormController
             'name' => '说明',
             'data' => array(
                 'type' => 'html',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false
@@ -82,10 +83,10 @@ class RedpackController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
-        
+
         $schemas['start_time'] = array(
             'name' => '开始时间',
             'data' => array(
@@ -107,7 +108,7 @@ class RedpackController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['end_time'] = array(
             'name' => '截止时间',
             'data' => array(

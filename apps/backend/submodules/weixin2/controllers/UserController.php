@@ -386,7 +386,7 @@ class UserController extends BaseController
             'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

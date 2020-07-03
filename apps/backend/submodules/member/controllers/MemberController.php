@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Member\Controllers;
 
 use App\Backend\Submodules\Member\Models\Member;
@@ -22,16 +23,16 @@ class MemberController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $birthday = strtotime(date('Y-m-d') . " 00:00:00");
         $now = date('Y-m-d H:i:s');
         $now = strtotime($now);
-        
+
         $schemas['email'] = array(
             'name' => '邮箱',
             'data' => array(
                 'type' => 'string',
-                'length' => 100
+                'length' => 255
             ),
             'validation' => array(
                 'required' => true
@@ -89,7 +90,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['mobile_bind'] = array(
             'name' => '手机绑定',
             'data' => array(
@@ -112,7 +113,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['state'] = array(
             'name' => '开启状态',
             'data' => array(
@@ -135,7 +136,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['nickname'] = array(
             'name' => '昵称',
             'data' => array(
@@ -160,7 +161,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => '头像',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelMember->getUploadPath()
                 )
@@ -180,7 +181,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['tel_mobile'] = array(
             'name' => '备用电话',
             'data' => array(
@@ -201,7 +202,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         // 会员性别,1男,2女,0未知
         $schemas['sex'] = array(
             'name' => '性别',
@@ -223,7 +224,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['birthday'] = array(
             'name' => '生日',
             'data' => array(
@@ -264,7 +265,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['location'] = array(
             'name' => '所在地',
             'data' => array(
@@ -285,7 +286,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['hometown'] = array(
             'name' => '家乡',
             'data' => array(
@@ -326,7 +327,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['monthly_income'] = array(
             'name' => '月收入',
             'data' => array(
@@ -351,7 +352,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => '签名',
             'data' => array(
                 'type' => 'string',
-                'length' => 500
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -371,7 +372,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => '隐私设定',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false
@@ -391,7 +392,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => '常用设置',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false
@@ -427,7 +428,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_login_tip'] = array(
             'name' => '登录保护',
             'data' => array(
@@ -450,7 +451,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_smallmoney_open'] = array(
             'name' => '小额免密码设置',
             'data' => array(
@@ -473,7 +474,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['smallmoney'] = array(
             'name' => '小额金额',
             'data' => array(
@@ -494,7 +495,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['register_by'] = array(
             'name' => '注册方式',
             'data' => array(
@@ -516,7 +517,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['passwd'] = array(
             'name' => '会员密码',
             'data' => array(
@@ -557,7 +558,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['name'] = array(
             'name' => '会员名',
             'data' => array(
@@ -598,7 +599,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['ww'] = array(
             'name' => '阿里旺旺',
             'data' => array(
@@ -619,7 +620,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['login_num'] = array(
             'name' => '登录次数',
             'data' => array(
@@ -767,7 +768,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => 'qq账号相关信息',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false
@@ -807,7 +808,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => '新浪账号相关信息序列化值',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false
@@ -996,7 +997,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['snsvisitnum'] = array(
             'name' => 'sns空间访问次数',
             'data' => array(
@@ -1017,7 +1018,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['areaid'] = array(
             'name' => '地区ID',
             'data' => array(
@@ -1098,7 +1099,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['quicklink'] = array(
             'name' => '会员常用操作',
             'data' => array(
@@ -1139,7 +1140,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

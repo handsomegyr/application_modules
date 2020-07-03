@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Post\Controllers;
 
 use App\Backend\Submodules\Post\Models\Post;
@@ -29,10 +30,11 @@ class PostController extends \App\Backend\Controllers\FormController
     public function passAction()
     {
         try {
-            
+
             $input = $this->getFilterInput();
-            
-            if ($input->isValid("id")) {} else {
+
+            if ($input->isValid("id")) {
+            } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
@@ -56,10 +58,11 @@ class PostController extends \App\Backend\Controllers\FormController
     public function unpassAction()
     {
         try {
-            
+
             $input = $this->getFilterInput();
-            
-            if ($input->isValid("id")) {} else {
+
+            if ($input->isValid("id")) {
+            } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
@@ -75,7 +78,7 @@ class PostController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['title'] = array(
             'name' => '主题',
             'data' => array(
@@ -100,7 +103,7 @@ class PostController extends \App\Backend\Controllers\FormController
             'name' => '内容',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1
@@ -120,7 +123,7 @@ class PostController extends \App\Backend\Controllers\FormController
             'name' => '晒图',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelPost->getUploadPath()
                 )
@@ -183,8 +186,7 @@ class PostController extends \App\Backend\Controllers\FormController
                 'defaultValues' => array(
                     \App\Common\Models\Post\Post::STATE0
                 ),
-                'items' => function ()
-                {
+                'items' => function () {
                     return array_column($this->stateDatas, 'name', 'value');
                 }
             )
@@ -193,7 +195,7 @@ class PostController extends \App\Backend\Controllers\FormController
             'name' => '未通过原因',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false
@@ -393,7 +395,7 @@ class PostController extends \App\Backend\Controllers\FormController
             'name' => '商品信息',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => false
@@ -469,7 +471,7 @@ class PostController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_recommend'] = array(
             'name' => '是否推荐',
             'data' => array(
@@ -492,7 +494,7 @@ class PostController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -523,7 +525,7 @@ class PostController extends \App\Backend\Controllers\FormController
             }
             $picArr = explode(',', $item['pic']);
             $item['pic'] = $picArr[0];
-            
+
             if ($item['state'] > \App\Common\Models\Post\Post::STATE0) {
                 $item['verify_time'] = date('Y-m-d H:i:s', $item['verify_time']->sec);
             } else {
@@ -536,7 +538,7 @@ class PostController extends \App\Backend\Controllers\FormController
             $purchase_time = getMilliTime4Show($goods_info['prize_buyer_purchase_time']);
             $prize_time = getMilliTime4Show($goods_info['prize_time']);
             $item['goods_info'] = "云购码:{$goods_info['lottery_code']}<br/>幸运码:{$goods_info['prize_code']}<br/>揭晓时间:{$prize_time}<br/>云购次数:{$goods_info['prize_buyer_purchase_num']}<br/>购买时间:{$purchase_time}";
-            
+
             if ($item['state'] != \App\Common\Models\Post\Post::STATE2) { // 已通过
                 $item['state'] = $this->stateDatas[strval($item['state'])]['name'];
                 // $item['state'] = $item['state'] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要审核通过吗？\', \'pass\')" class="halflings-icon user white"><i></i> 通过</a>';
@@ -579,7 +581,7 @@ class PostController extends \App\Backend\Controllers\FormController
     {
         $ret = doPost("http://www.applicationmodule.com/post/service/passpost", $param);
         $ret = (string) $ret;
-        if (! empty($ret)) {
+        if (!empty($ret)) {
             if (isJson($ret)) {
                 $ret = json_decode($ret, true);
                 if ($ret["success"]) {

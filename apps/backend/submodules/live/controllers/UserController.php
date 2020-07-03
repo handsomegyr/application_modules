@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Live\Controllers;
 
 use App\Backend\Submodules\Live\Models\User;
@@ -28,7 +29,8 @@ class UserController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['room_id'] = array(
+    {
+        $schemas['room_id'] = array(
             'name' => '直播间名称',
             'data' => array(
                 'type' => 'string',
@@ -102,7 +104,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -190,7 +192,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['thirdparty_user'] = array(
             'name' => '第3方账号',
             'data' => array(
@@ -214,7 +216,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['contact_name'] = array(
             'name' => '联系用户',
             'data' => array(
@@ -265,7 +267,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '联系地址',
             'data' => array(
                 'type' => 'string',
-                'length' => 200
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -284,7 +286,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['is_auchor'] = array(
             'name' => '是否是主播',
             'data' => array(
@@ -316,7 +318,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['auchor_id'] = array(
             'name' => '主播名称',
             'data' => array(
@@ -341,7 +343,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'items' => $this->modelAuchor->getAll()
             )
         );
-        
+
         $schemas['is_vip'] = array(
             'name' => '是否是VIP用户',
             'data' => array(
@@ -373,7 +375,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['is_test'] = array(
             'name' => '是否是测试人员',
             'data' => array(
@@ -405,7 +407,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        
+
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
@@ -447,7 +449,7 @@ class UserController extends \App\Backend\Controllers\FormController
             $item['room_name'] = isset($roomList[$item['room_id']]) ? $roomList[$item['room_id']] : "--";
             $item['auchor_name'] = isset($roomList[$item['auchor_id']]) ? $roomList[$item['auchor_id']] : "--";
         }
-        
+
         return $list;
     }
 }

@@ -27,7 +27,8 @@ class UserController extends \App\Backend\Controllers\FormController
     private $categoryList = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['category'] = array(
+    {
+        $schemas['category'] = array(
             'name' => '积分分类',
             'data' => array(
                 'type' => 'integer',
@@ -106,7 +107,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false

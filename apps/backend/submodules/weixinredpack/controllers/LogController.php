@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Weixinredpack\Controllers;
 
 use App\Backend\Submodules\Weixinredpack\Models\GotLog;
@@ -32,7 +33,8 @@ class LogController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['_id']['list']['is_show'] = false;
+    {
+        $schemas['_id']['list']['is_show'] = false;
         $schemas['mch_billno'] = array(
             'name' => '商户订单号',
             'data' => array(
@@ -53,7 +55,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['user_id'] = array(
             'name' => '红包用户ID',
             'data' => array(
@@ -74,7 +76,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['re_openid'] = array(
             'name' => '用户openid',
             'data' => array(
@@ -95,7 +97,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['re_nickname'] = array(
             'name' => '昵称',
             'data' => array(
@@ -116,12 +118,12 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['re_headimgurl'] = array(
             'name' => '头像',
             'data' => array(
                 'type' => 'string',
-                'length' => '300'
+                'length' => 255
             ),
             'validation' => array(
                 'required' => false
@@ -137,7 +139,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['client_ip'] = array(
             'name' => 'IP',
             'data' => array(
@@ -158,7 +160,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['activity'] = array(
             'name' => '活动',
             'data' => array(
@@ -171,8 +173,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelActivity->getAll();
                 }
             ),
@@ -186,7 +187,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'items' => $this->modelActivity->getAll()
             )
         );
-        
+
         $schemas['customer'] = array(
             'name' => '客户',
             'data' => array(
@@ -199,8 +200,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCustomer->getAll();
                 }
             ),
@@ -212,7 +212,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['redpack'] = array(
             'name' => '红包',
             'data' => array(
@@ -225,8 +225,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelRedpack->getAll();
                 }
             ),
@@ -238,7 +237,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['total_num'] = array(
             'name' => '数量',
             'data' => array(
@@ -259,7 +258,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['total_amount'] = array(
             'name' => '金额(分)',
             'data' => array(
@@ -280,7 +279,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['got_time'] = array(
             'name' => '获取时间',
             'data' => array(
@@ -302,7 +301,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['isOK'] = array(
             'name' => 'OK?',
             'data' => array(
@@ -326,7 +325,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['try_count'] = array(
             'name' => '重试次数',
             'data' => array(
@@ -347,7 +346,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_reissue'] = array(
             'name' => '补发?',
             'data' => array(
@@ -371,7 +370,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['isNeedSendRedpack'] = array(
             'name' => '正式发送?',
             'data' => array(
@@ -395,12 +394,12 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['error_logs'] = array(
             'name' => '错误日志',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1
@@ -419,12 +418,12 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1
@@ -443,7 +442,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

@@ -114,7 +114,7 @@ class BrandController extends \App\Backend\Controllers\FormController
             'name' => '品牌图片标识',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelBrand->getUploadPath()
                 )

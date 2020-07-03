@@ -61,7 +61,7 @@ class LogoController extends \App\Backend\Controllers\FormController
             'name' => '卡券的商户logo图片文件',
             'data' => array(
                 'type' => 'file',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => '',
                 'file' => array(
                     'path' => $this->modelLogo->getUploadPath()
@@ -92,7 +92,7 @@ class LogoController extends \App\Backend\Controllers\FormController
             'name' => '卡券的商户logo的url',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

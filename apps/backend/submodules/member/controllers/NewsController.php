@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Member\Controllers;
 
 use App\Backend\Submodules\Member\Models\News;
@@ -24,7 +25,7 @@ class NewsController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['user_id'] = array(
             'name' => '用户ID',
             'data' => array(
@@ -45,7 +46,7 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['user_name'] = array(
             'name' => '用户姓名',
             'data' => array(
@@ -66,12 +67,12 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['user_avatar'] = array(
             'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 100
+                'length' => 255
             ),
             'validation' => array(
                 'required' => true
@@ -87,7 +88,7 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['user_register_by'] = array(
             'name' => '注册方式',
             'data' => array(
@@ -109,7 +110,7 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['action'] = array(
             'name' => '动态操作',
             'data' => array(
@@ -131,7 +132,7 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['content_id'] = array(
             'name' => '对象ID',
             'data' => array(
@@ -152,7 +153,7 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['news_time'] = array(
             'name' => '动态时间',
             'data' => array(
@@ -174,12 +175,12 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['memo'] = array(
             'name' => '动态内容',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => true
@@ -195,7 +196,7 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

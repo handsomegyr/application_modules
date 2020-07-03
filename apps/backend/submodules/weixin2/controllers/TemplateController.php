@@ -419,7 +419,7 @@ class TemplateController extends BaseController
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
-                'defaultValue' => '{}'
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Mail\Controllers;
 
 use App\Backend\Submodules\Mail\Models\Settings;
@@ -20,7 +21,8 @@ class SettingsController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['host'] = array(
+    {
+        $schemas['host'] = array(
             'name' => '服务器',
             'data' => array(
                 'type' => 'string',
@@ -140,7 +142,7 @@ class SettingsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $tlsOrSslDatas = array(
             array(
                 'name' => 'tls',
@@ -178,7 +180,7 @@ class SettingsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_smtp'] = array(
             'name' => '是否使用SMTP',
             'data' => array(
@@ -223,7 +225,7 @@ class SettingsController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

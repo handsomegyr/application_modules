@@ -74,7 +74,7 @@ class ConditionalmenumatchruleController extends \App\Backend\Controllers\FormCo
             'name' => '性别',
             'data' => array(
                 'type' => 'integer',
-                'length' => '10'
+                'length' => '1'
             ),
             'validation' => array(
                 'required' => false

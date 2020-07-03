@@ -25,7 +25,8 @@ class InvitationgotdetailController extends \App\Backend\Controllers\FormControl
     private $activityList = null;
 
     protected function getSchemas2($schemas)
-    {        $schemas['activity_id'] = array(
+    {
+        $schemas['activity_id'] = array(
             'name' => '所属活动',
             'data' => array(
                 'type' => 'string',
@@ -138,7 +139,7 @@ class InvitationgotdetailController extends \App\Backend\Controllers\FormControl
             'name' => '发送邀请的用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -219,7 +220,7 @@ class InvitationgotdetailController extends \App\Backend\Controllers\FormControl
             'name' => '接受邀请的用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

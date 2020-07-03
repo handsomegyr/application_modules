@@ -25,7 +25,7 @@ class BannerController extends \App\Backend\Controllers\FormController
             'name' => '菜单地址',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
@@ -46,7 +46,7 @@ class BannerController extends \App\Backend\Controllers\FormController
             'name' => '图片',
             'data' => array(
                 'type' => 'file',
-                'length' => 100,
+                'length' => 255,
                 'file' => array(
                     'path' => $this->modelBanner->getUploadPath()
                 )

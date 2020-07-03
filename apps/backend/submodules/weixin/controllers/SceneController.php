@@ -198,7 +198,7 @@ class SceneController extends \App\Backend\Controllers\FormController
             'name' => '二维码图片地址',
             'data' => array(
                 'type' => 'string',
-                'length' => '100'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false

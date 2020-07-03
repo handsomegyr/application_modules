@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Message\Controllers;
 
 use App\Backend\Submodules\Message\Models\SysMsg;
@@ -16,12 +17,12 @@ class SysmsgController extends \App\Backend\Controllers\FormController
     public function initialize()
     {
         $this->modelSysMsg = new SysMsg();
-        
+
         parent::initialize();
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['to_user_id'] = array(
             'name' => '接受者',
             'data' => array(
@@ -42,12 +43,12 @@ class SysmsgController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['content'] = array(
             'name' => '消息内容',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => true
@@ -63,7 +64,7 @@ class SysmsgController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['msg_time'] = array(
             'name' => '消息时间',
             'data' => array(
@@ -85,7 +86,7 @@ class SysmsgController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_read'] = array(
             'name' => '是否已读',
             'data' => array(

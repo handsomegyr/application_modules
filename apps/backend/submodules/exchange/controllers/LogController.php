@@ -21,7 +21,8 @@ class LogController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['result_code'] = array(
+    {
+        $schemas['result_code'] = array(
             'name' => '兑换结果',
             'data' => array(
                 'type' => 'integer',
@@ -45,7 +46,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => '结果说明',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1
@@ -188,7 +189,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => '备注',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1

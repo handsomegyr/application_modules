@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Member\Controllers;
 
 use App\Backend\Submodules\Member\Models\Consignee;
@@ -19,13 +20,13 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
     public function initialize()
     {
         $this->modelConsignee = new Consignee();
-        
+
         $this->modelArea = new Area();
         parent::initialize();
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['member_id'] = array(
             'name' => '会员',
             'data' => array(
@@ -78,8 +79,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelArea->getProvinces();
                 }
             ),
@@ -103,8 +103,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'cascade' => 'province',
-                'items' => function ($province)
-                {
+                'items' => function ($province) {
                     return $this->modelArea->getCitys($province);
                 }
             ),
@@ -128,8 +127,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'cascade' => 'city',
-                'items' => function ($city)
-                {
+                'items' => function ($city) {
                     return $this->modelArea->getDistricts($city);
                 }
             ),
@@ -144,7 +142,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
             'name' => '详细地址',
             'data' => array(
                 'type' => 'string',
-                'length' => 100
+                'length' => 255
             ),
             'validation' => array(
                 'required' => 1
@@ -241,7 +239,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Goods\Controllers;
 
 use App\Backend\Submodules\Goods\Models\Category;
@@ -28,7 +29,8 @@ class SpecvalueController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '规格值名称',
             'data' => array(
                 'type' => 'string',
@@ -60,8 +62,7 @@ class SpecvalueController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelSpec->getAll();
                 }
             ),
@@ -84,8 +85,7 @@ class SpecvalueController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCategory->getList4Tree();
                 }
             ),
@@ -156,7 +156,7 @@ class SpecvalueController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

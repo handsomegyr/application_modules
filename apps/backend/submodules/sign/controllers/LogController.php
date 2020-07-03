@@ -114,7 +114,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -168,7 +168,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => 'IP',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 15,
                 'defaultValue' => ''
             ),
             'validation' => array(

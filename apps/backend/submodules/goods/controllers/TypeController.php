@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Goods\Controllers;
 
 use App\Backend\Submodules\Goods\Models\Type;
@@ -24,7 +25,8 @@ class TypeController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '类型',
             'data' => array(
                 'type' => 'string',
@@ -56,8 +58,7 @@ class TypeController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCategory->getList4Tree();
                 }
             ),
@@ -108,7 +109,7 @@ class TypeController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

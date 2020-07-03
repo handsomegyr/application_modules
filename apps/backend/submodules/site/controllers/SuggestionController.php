@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Site\Controllers;
 
 use App\Backend\Submodules\Site\Models\Suggestion;
@@ -20,7 +21,7 @@ class SuggestionController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['theme'] = array(
             'name' => '主题',
             'data' => array(
@@ -41,7 +42,7 @@ class SuggestionController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['name'] = array(
             'name' => '昵称',
             'data' => array(
@@ -62,7 +63,7 @@ class SuggestionController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['telephone'] = array(
             'name' => '电话',
             'data' => array(
@@ -83,7 +84,7 @@ class SuggestionController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['email'] = array(
             'name' => 'E-mail',
             'data' => array(
@@ -104,7 +105,7 @@ class SuggestionController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['content'] = array(
             'name' => '反馈内容',
             'data' => array(
@@ -146,7 +147,7 @@ class SuggestionController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -165,7 +166,7 @@ class SuggestionController extends \App\Backend\Controllers\FormController
         foreach ($list['data'] as &$item) {
             $item['log_time'] = date("Y-m-d H:i:s", $item['log_time']->sec);
         }
-        
+
         return $list;
     }
 }

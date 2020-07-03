@@ -281,7 +281,7 @@ class QrcardController extends \App\Backend\Controllers\FormController
             'name' => '二维码图片解析后的地址',
             'data' => array(
                 'type' => 'string',
-                'length' => 128,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

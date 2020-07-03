@@ -435,7 +435,7 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             'name' => '用户信息.头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -516,7 +516,7 @@ class ExchangeController extends \App\Backend\Controllers\FormController
             'name' => '联系信息.地址',
             'data' => array(
                 'type' => 'string',
-                'length' => 200,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

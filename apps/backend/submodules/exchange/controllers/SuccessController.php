@@ -25,7 +25,8 @@ class SuccessController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['user_id'] = array(
+    {
+        $schemas['user_id'] = array(
             'name' => '用户编号',
             'data' => array(
                 'type' => 'string',
@@ -75,7 +76,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
             'name' => '用户头像',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 255
             ),
             'validation' => array(
                 'required' => 1
@@ -446,7 +447,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
             'name' => '联系地址',
             'data' => array(
                 'type' => 'string',
-                'length' => 300
+                'length' => 255
             ),
             'validation' => array(
                 'required' => 1
@@ -467,7 +468,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
             'name' => '备注信息',
             'data' => array(
                 'type' => 'json',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1

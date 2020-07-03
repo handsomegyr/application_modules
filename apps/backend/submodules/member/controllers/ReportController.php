@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Member\Controllers;
 
 use App\Backend\Submodules\Member\Models\Report;
@@ -22,7 +23,7 @@ class ReportController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['from_user_id'] = array(
             'name' => '举报用户ID',
             'data' => array(
@@ -43,7 +44,7 @@ class ReportController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['to_user_id'] = array(
             'name' => '被举报用户ID',
             'data' => array(
@@ -64,7 +65,7 @@ class ReportController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['type'] = array(
             'name' => '举报类型',
             'data' => array(
@@ -86,12 +87,12 @@ class ReportController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['content'] = array(
             'name' => '举报内容',
             'data' => array(
                 'type' => 'string',
-                'length' => 1000
+                'length' => 1024
             ),
             'validation' => array(
                 'required' => 1
@@ -107,7 +108,7 @@ class ReportController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['report_time'] = array(
             'name' => '举报时间',
             'data' => array(
@@ -129,7 +130,7 @@ class ReportController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -149,7 +150,7 @@ class ReportController extends \App\Backend\Controllers\FormController
             $item['type'] = $this->typeDatas[$item['type']]['name'];
             $item['report_time'] = date('Y-m-d H:i:s', $item['report_time']->sec);
         }
-        
+
         return $list;
     }
 }

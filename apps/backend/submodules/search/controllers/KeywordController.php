@@ -20,7 +20,8 @@ class KeywordController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['content'] = array(
+    {
+        $schemas['content'] = array(
             'name' => '关键词',
             'data' => array(
                 'type' => 'string',

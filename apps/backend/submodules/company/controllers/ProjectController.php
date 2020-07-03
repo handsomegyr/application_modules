@@ -460,7 +460,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'name' => '项目SVN地址',
             'data' => array(
                 'type' => 'string',
-                'length' => 256,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

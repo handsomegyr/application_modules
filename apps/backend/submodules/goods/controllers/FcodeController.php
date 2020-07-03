@@ -73,7 +73,7 @@ class FcodeController extends \App\Backend\Controllers\FormController
             'name' => '状态',
             'data' => array(
                 'type' => 'boolean',
-                'length' => 3
+                'length' => 1
             ),
             'validation' => array(
                 'required' => 1

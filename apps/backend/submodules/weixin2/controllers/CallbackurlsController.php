@@ -85,7 +85,7 @@ class CallbackurlsController extends BaseController
             'name' => '回调地址安全域名',
             'data' => array(
                 'type' => 'string',
-                'length' => 300,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

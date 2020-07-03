@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Order\Controllers;
 
 /**
@@ -45,7 +46,7 @@ class CartController extends ControllerBase
         $this->modelStore = new \App\Store\Models\Store();
         $this->modelMember = new \App\Member\Models\Member();
         $this->modelMemberConsignee = new \App\Member\Models\Consignee();
-        
+
         $this->serviceCart = new \App\Order\Services\Cart();
     }
 
@@ -58,25 +59,25 @@ class CartController extends ControllerBase
             // http://www.applicationmodule.com/order/cart/add?goods_id=56372bd07f50eab004000443&quantity=1
             $goods_id = $this->get('goods_id', '');
             if (empty($goods_id)) {
-                echo ($this->error(- 1, '商品ID为空'));
+                echo ($this->error(-1, '商品ID为空'));
                 return false;
             }
             $quantity = intval($this->get('quantity', 0));
             if (empty($quantity) || $quantity < 1) {
-                echo ($this->error(- 2, '商品数量为空或不正确'));
+                echo ($this->error(-2, '商品数量为空或不正确'));
                 return false;
             }
             $buyer_id = empty($_SESSION['member_id']) ? '' : $_SESSION['member_id'];
-            
+
             // 追加购物车商品处理
             $checkRet = $this->serviceCart->addCart($buyer_id, $goods_id, $quantity);
-            if (! empty($checkRet['error_code'])) {
-                echo ($this->error(- 3, $checkRet['error_msg']));
+            if (!empty($checkRet['error_code'])) {
+                echo ($this->error(-3, $checkRet['error_msg']));
                 return false;
             }
             // 数据库中记录数据
             $cart = $checkRet['result'];
-            
+
             echo ($this->result("OK", $cart));
             return true;
         } catch (\Exception $e) {
@@ -94,7 +95,7 @@ class CartController extends ControllerBase
             // http://www.applicationmodule.com/order/cart/updatenum?goods_id=56372bd07f50eab004000443&quantity=1
             $goods_id = trim($this->get('goods_id', '')); // 商品ID
             $quantity = intval($this->get('quantity')); // 商品数量
-            
+
             if (empty($goods_id)) {
                 echo ($this->error("-1", "商品ID为空"));
                 return false;
@@ -104,11 +105,11 @@ class CartController extends ControllerBase
                 return false;
             }
             $buyer_id = empty($_SESSION['member_id']) ? '' : $_SESSION['member_id'];
-            
+
             // 更新购物车数量
             $checkRet = $this->serviceCart->updateCart($buyer_id, $goods_id, $quantity);
-            if (! empty($checkRet['error_code'])) {
-                echo ($this->error(- 3, $checkRet['error_msg']));
+            if (!empty($checkRet['error_code'])) {
+                echo ($this->error(-3, $checkRet['error_msg']));
                 return false;
             }
             // 数据库中记录数据
@@ -129,7 +130,7 @@ class CartController extends ControllerBase
         try {
             // http://www.applicationmodule.com/order/cart/clear?goods_ids=56372bd07f50eab004000443,xxx,xxx
             $goods_ids = trim($this->get('goods_ids', '')); // 商品ID,以逗号分隔
-            if (! empty($goods_ids)) {
+            if (!empty($goods_ids)) {
                 $goods_ids = explode(",", $goods_ids);
             } else {
                 $goods_ids = array();
@@ -137,8 +138,8 @@ class CartController extends ControllerBase
             $buyer_id = empty($_SESSION['member_id']) ? '' : $_SESSION['member_id'];
             // 清空或指定多个商品的处理
             $checkRet = $this->serviceCart->clearCart($buyer_id, $goods_ids);
-            if (! empty($checkRet['error_code'])) {
-                echo ($this->error(- 3, $checkRet['error_msg']));
+            if (!empty($checkRet['error_code'])) {
+                echo ($this->error(-3, $checkRet['error_msg']));
                 return false;
             }
             // 数据库中记录数据
@@ -187,7 +188,7 @@ class CartController extends ControllerBase
             $buyer_id = empty($_SESSION['member_id']) ? '' : $_SESSION['member_id'];
             // 获取购物车
             $cart = $this->serviceCart->getCartByBuyerId($buyer_id);
-            if (! empty($cart)) {
+            if (!empty($cart)) {
                 foreach ($cart as $goods_id => $goodsInfo) {
                     $quantity = $goodsInfo['goods_num'];
                     $prize = $goodsInfo['goods_price'];
@@ -218,10 +219,10 @@ class CartController extends ControllerBase
             $num = 0;
             $money = 0;
             $datas = array();
-            if (! empty($cart)) {
+            if (!empty($cart)) {
                 $goodsIdList = array_keys($cart);
                 $goodsInfoList = $this->modelGoods->getListByIds($goodsIdList);
-                
+
                 foreach ($cart as $goods_id => $goodsInfo) {
                     // 'codeID':2890420,
                     // 'goodsPic':'20151116141603129.jpg',
@@ -249,13 +250,13 @@ class CartController extends ControllerBase
                     $datas[] = $data;
                 }
             }
-            
+
             $info = array(
                 'count' => $num,
                 'money' => $money,
                 'datas' => $datas
             );
-            
+
             echo ($this->result("OK", $info));
             return true;
         } catch (\Exception $e) {
@@ -273,38 +274,38 @@ class CartController extends ControllerBase
             // http://www.applicationmodule.com/order/cart/checkout?goods_ids=xx,xxx,xxx&order_from=1&order_message=xxxx&pay_name=online
             // 购买商品信息
             $goods_ids = trim($this->get('goods_ids', '')); // 所选商品列表
-            
+
             if (empty($goods_ids)) {
                 $goods_ids = array();
             } else {
                 $goods_ids = explode(',', $goods_ids);
             }
             if (empty($goods_ids)) {
-                echo ($this->error(- 2, '购物车为空'));
+                echo ($this->error(-2, '购物车为空'));
                 return false;
             }
-            
+
             // 订单来源
             $order_from = intval($this->get('order_from', '1'));
             $order_from = ($order_from == 2) ? 2 : 1; // 1 WEB 2 MOBILE
-                                                      
+
             // 订单留言
             $order_message = $this->get('order_message', '');
-            
+
             // 付款方式 online/offline
             $pay_name = $this->get('pay_name', 'online');
             $pay_name = ($pay_name == 'offline') ? 'offline' : 'online';
-            
+
             // 买家信息
             $buyer_id = $_SESSION['member_id'];
             if (empty($buyer_id)) {
-                echo ($this->error(- 1, '购买者为空'));
+                echo ($this->error(-1, '购买者为空'));
                 return false;
             }
             // 获取会员信息
             $buyerInfo = $this->modelMember->getInfoById($buyer_id);
             if (empty($buyerInfo)) {
-                echo ($this->error(- 1, '购买者不存在'));
+                echo ($this->error(-1, '购买者不存在'));
                 return false;
             }
             $buyerInfo['buyer_id'] = $buyerInfo['_id'];
@@ -314,20 +315,20 @@ class CartController extends ControllerBase
             $buyerInfo['buyer_avatar'] = $buyerInfo['avatar'];
             $buyerInfo['buyer_register_by'] = $buyerInfo['register_by'];
             $buyerInfo['buyer_ip'] = getIp();
-            
+
             // 根据购买者获取购物车的信息
             $cart = $this->serviceCart->getCartByBuyerId($buyer_id);
-            
+
             // 按照门店分组计算以下信息
             $store_id = YUNGOU_STORE_ID;
             $list = array();
-            if (! empty($cart)) {
+            if (!empty($cart)) {
                 foreach ($cart as $goods_id => $cartItem) {
-                    if (! in_array($goods_id, $goods_ids)) {
+                    if (!in_array($goods_id, $goods_ids)) {
                         continue;
                     }
                     $checkRet = $this->serviceCart->checkCartInfo($buyer_id, $goods_id, $cartItem['goods_num'], $cart);
-                    if (! empty($checkRet['error_code'])) {
+                    if (!empty($checkRet['error_code'])) {
                         continue;
                     }
                     // 更新结算字段
@@ -341,9 +342,9 @@ class CartController extends ControllerBase
                     $cartItem['goods_value'] = $goodsInfo['price']; // 商品价值
                     $cartItem['lottery_prize_id'] = $goodsInfo['lottery_prize_id']; // 云购奖品ID
                     $cartItem['goods_type'] = 1;
-                    
+
                     // 总商品金额
-                    if (! isset($list[$store_id]['goods_amount'])) {
+                    if (!isset($list[$store_id]['goods_amount'])) {
                         $list[$store_id]['goods_amount'] = 0.00;
                     }
                     $list[$store_id]['goods_amount'] += ($cartItem['goods_price'] * $cartItem['goods_num']);
@@ -357,10 +358,10 @@ class CartController extends ControllerBase
                 }
             }
             if (empty($list)) {
-                echo ($this->error(- 2, '购物车为空'));
+                echo ($this->error(-2, '购物车为空'));
                 return false;
             }
-            
+
             // 以下进行订单的处理
             try {
                 $this->modelOrderCart->begin();
@@ -378,7 +379,7 @@ class CartController extends ControllerBase
                     $orderInfo['order_id'] = $orderInfo['_id'];
                     $order_id = $orderInfo['order_id'];
                     $orderList[$order_id] = $orderInfo;
-                    
+
                     // 生成订单扩展信息
                     // 收货人信息
                     $consigneeInfo = array();
@@ -393,7 +394,7 @@ class CartController extends ControllerBase
                         throw new \Exception('订单保存失败[未生成订单扩展数据]');
                     }
                     $orderCommonInfo['order_common_id'] = $orderCommonInfo['_id'];
-                    
+
                     // 生成订单商品信息
                     $goodsList = $item['goods_list'];
                     foreach ($goodsList as $goods_id => $goodsItem) {
@@ -420,4 +421,3 @@ class CartController extends ControllerBase
         }
     }
 }
-

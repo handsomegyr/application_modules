@@ -142,7 +142,7 @@ class PlugincollectionstructureController extends \App\Backend\Controllers\FormC
             'name' => '字段名(中文)',
             'data' => array(
                 'type' => 'string',
-                'length' => 50,
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
