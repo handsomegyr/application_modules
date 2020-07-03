@@ -80,7 +80,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '密码',
             'data' => array(
                 'type' => 'string',
-                'length' => '20'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => true
@@ -126,7 +126,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '最新登录IP',
             'data' => array(
                 'type' => 'string',
-                'length' => '20'
+                'length' => '15'
             ),
             'validation' => array(
                 'required' => false

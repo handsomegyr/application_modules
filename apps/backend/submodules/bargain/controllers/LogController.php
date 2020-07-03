@@ -142,7 +142,7 @@ class LogController extends \App\Backend\Controllers\FormController
             'name' => 'IP',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 15,
                 'defaultValue' => ''
             ),
             'validation' => array(

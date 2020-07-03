@@ -126,7 +126,7 @@ class SettingsController extends \App\Backend\Controllers\FormController
             'name' => '邮箱密码',
             'data' => array(
                 'type' => 'string',
-                'length' => 30
+                'length' => 255
             ),
             'validation' => array(
                 'required' => 1
@@ -161,7 +161,7 @@ class SettingsController extends \App\Backend\Controllers\FormController
             'name' => '加密方式',
             'data' => array(
                 'type' => 'string',
-                'length' => 10,
+                'length' => 5,
                 'defaultValue' => ''
             ),
             'validation' => array(

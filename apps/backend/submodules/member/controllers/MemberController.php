@@ -708,7 +708,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => '当前登录ip',
             'data' => array(
                 'type' => 'string',
-                'length' => 20
+                'length' => 15
             ),
             'validation' => array(
                 'required' => 0
@@ -728,7 +728,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             'name' => '上次登录ip',
             'data' => array(
                 'type' => 'string',
-                'length' => 20
+                'length' => 15
             ),
             'validation' => array(
                 'required' => 0
