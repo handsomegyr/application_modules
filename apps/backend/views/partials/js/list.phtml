@@ -198,7 +198,7 @@
 			},
 			//部分备注信息
 			getPartialHtml: function(remarks, remarkShowLength) {
-				if (remarks.length > remarkShowLength) {
+				if (remarks!=null && remarks.length > remarkShowLength) {
 					return remarks.substr(0, remarkShowLength) + '&nbsp;&nbsp;<a href="javascript:void(0);" ><b>...</b></a>';
 				} else {
 					return remarks;

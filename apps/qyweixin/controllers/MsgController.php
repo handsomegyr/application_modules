@@ -3,22 +3,22 @@
 namespace App\Qyweixin\Controllers;
 
 /**
- * 消息推送
- * 企业微信消息与事件接收
- */
+         * 消息推送
+         * 企业微信消息与事件接收
+         */
 class MsgController extends ControllerBase
 {
     // 活动ID
     protected $activity_id = 2;
     /**
-     *
-     * @var \App\Qyweixin\Models\User\User
-     */
+         *
+         * @var \App\Qyweixin\Models\User\User
+         */
     private $modelQyweixinUser;
     /**
-     *
-     * @var \App\Qyweixin\Models\Provider\Provider
-     */
+         *
+         * @var \App\Qyweixin\Models\Provider\Provider
+         */
     private $modelQyweixinProvider;
     /**
      *
@@ -1990,6 +1990,34 @@ class MsgController extends ControllerBase
              * └ └ MediaId 节点分支审批人审批意见附件，media_id具体使用请参考：文档-获取临时素材
              * StatuChangeEvent 审批申请状态变化类型：1-提单；2-同意；3-驳回；4-转审；5-催办；6-撤销；8-通过后撤销；10-添加备注
              */
+            $response = "success";
+        } elseif ($Event == 'switch_workbench_mode') { // 修改设置工作台自定义开关事件推送
+            /**
+             * 修改设置工作台自定义开关事件推送
+             * 管理员在管理端应用详情页的自定义工作台页面启用或者停用自定义工作台模式时，会推送接收修改设置工作台自定义开关事件推送到应用的回调url上（如果是第三方应用为数据回调url）。事件推送处理过程详见接收消息与事件。 修改设置工作台自定义开关事件推送XML报文格式如下：
+             *
+             * <xml>
+             * <ToUserName><![CDATA[toUser]]></ToUserName>
+             * <FromUserName><![CDATA[FromUser]]></FromUserName>
+             * <CreateTime>123456789</CreateTime>
+             * <MsgType><![CDATA[event]]></MsgType>
+             * <Event><![CDATA[switch_workbench_mode]]></Event>
+             * <Mode>1</Mode >
+             * <AgentID>1</AgentID>
+             * </xml>
+             * 参数说明：
+             *
+             * 参数 说明
+             * ToUserName 企业微信CorpID
+             * FromUserName 此处固定为sys
+             * CreateTime 消息创建时间（整型）
+             * MsgType 消息类型，此时固定为：event
+             * Event 事件类型：switch_workbench_mode，切换工作台自定义模式
+             * Mode 1表示开启工作台自定义模式，0表示关闭工作台自定义模式
+             * AgentID 企业应用的id，整型。可在应用的设置页面查看
+             */
+            $Mode = isset($datas['Mode']) ? trim($datas['Mode']) : "";
+            $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : "";
             $response = "success";
         } else {
             $response = "";

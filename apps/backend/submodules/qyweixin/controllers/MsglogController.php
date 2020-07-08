@@ -1908,6 +1908,34 @@ class MsglogController extends BaseController
             )
         );
 
+        $schemas['Mode'] = array(
+            'name' => '是否开启工作台自定义模式',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['lock_uniqueKey'] = array(
             'name' => '锁的唯一KEY',
             'data' => array(
