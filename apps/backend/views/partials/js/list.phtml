@@ -2,7 +2,7 @@
 	var List = function() {
 		var remarkShowLength = 10; //默认现实的字符串长度
 		return {
-			url: '<?php echo $this->myTag->getUrl($this->view, "", array()); ?>',
+			url: '<?php echo $this->view->baseUrl?><?php echo $this->view->moduleName?>/<?php echo $this->view->controllerName?>',
 			imagepath: '<?php echo $this->view->baseUrl ?>backend/',
 			compileFilter: function() {
 				var data = new Object;

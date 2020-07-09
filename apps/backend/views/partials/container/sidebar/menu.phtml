@@ -20,7 +20,7 @@
                     ?>
                 <?php } else { ?>
                     <li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>>
-                <a class="nav-link" href="<?php echo ($this->view->adminConfig->admin->is_tab_iframe_used || empty($priv['url'])) ? 'javascript:;' : $this->view->baseUrl . $priv['url'] ?>" <?php if($this->view->adminConfig->admin->is_tab_iframe_used){?>onclick="addTabs({id:'<?php echo $priv['_id']?>',title: '<?php echo ($priv['name']) ?>',close: true,url: '<?php echo $this->view->baseUrl . $priv['url']?>',urlType: 'relative'});"<?php } ?>><i class="fa <?php echo empty($priv['icon']) ? 'fa-tasks' : $menu['icon'] ?>"></i> <?php echo ($priv['name']) ?></a>             
+                        <a class="nav-link" href="<?php echo ($this->view->adminConfig->admin->is_tab_iframe_used || empty($priv['url'])) ? 'javascript:;' : $this->view->baseUrl . $priv['url'] ?>" <?php if($this->view->adminConfig->admin->is_tab_iframe_used){?>onclick="addTabs({id:'<?php echo $priv['_id']?>',title: '<?php echo ($priv['name']) ?>',close: true,url: '<?php echo $this->view->baseUrl . $priv['url']?>',urlType: 'relative'});"<?php } ?>><i class="fa <?php echo empty($priv['icon']) ? 'fa-tasks' : $menu['icon'] ?>"></i> <?php echo ($priv['name']) ?></a>             
                     </li>
                 <?php } ?>
                 <?php $index2++ ?>

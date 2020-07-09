@@ -113,7 +113,10 @@ $num = count($breadcrumb);
 <!-- breadcrumb start -->
 <?php if (!empty($breadcrumb)) { ?>
     <ol class="breadcrumb" style="margin-right: 30px;">
-        <li><a href="<?php echo $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin'); ?>"><i class="fa fa-dashboard"></i> 管理中心</a></li>
+        <li>
+            <!-- <a href="<?php echo $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin'); ?>"><i class="fa fa-dashboard"></i> 管理中心</a> -->
+            <a href="<?php echo ($this->view->adminConfig->admin->is_tab_iframe_used) ? 'javascript:;' : $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin') ?>" <?php if($this->view->adminConfig->admin->is_tab_iframe_used && false){?>onclick="addTabs({id:'index',title: '首页',close: true,url: '<?php echo $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin')?>',urlType: 'relative'});"<?php } ?>><i class="fa fa-dashboard"></i> 管理中心</a>
+         </li>
         <?php foreach ($breadcrumb as $k => $item) { ?>
             <?php if ($k == ($num - 1)) { ?>
                 <li class="active">
@@ -136,7 +139,10 @@ $num = count($breadcrumb);
     </ol>
 <?php } elseif (!empty($this->view->adminConfig->admin->enable_default_breadcrumb)) { ?>
     <ol class="breadcrumb" style="margin-right: 30px;">
-        <li><a href="<?php echo $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin'); ?>"><i class="fa fa-dashboard"></i> 管理中心</a></li>
+        <li>
+            <!-- <a href="<?php echo $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin'); ?>"><i class="fa fa-dashboard"></i> 管理中心</a> -->
+            <a href="<?php echo ($this->view->adminConfig->admin->is_tab_iframe_used) ? 'javascript:;' : $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin') ?>" <?php if($this->view->adminConfig->admin->is_tab_iframe_used && false){?>onclick="addTabs({id:'index',title: '首页',close: true,url: '<?php echo $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin')?>',urlType: 'relative'});"<?php } ?>><i class="fa fa-dashboard"></i> 管理中心</a>
+        </li>
         <?php for ($i = 1; $i < count($request_segments); $i++) { ?>
             <li>
                 <?php echo ucfirst($request_segments[$i]) ?>
