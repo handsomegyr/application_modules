@@ -1,7 +1,10 @@
 <ul class="sidebar-menu tree" data-widget="tree">
 	<li class="header">菜单</li>
 	<li class="<?php if (!empty($this->view->is_active4index)) { ?>active<?php } ?> " style=" height: auto;">
-		<a href="<?php echo $this->view->baseUrl ?>admin/index/index">
+		<!-- <a href="<?php echo $this->view->baseUrl ?>admin/index/index">
+			<i class="fa fa-bar-chart"></i> <span>首页</span>
+		</a> -->
+		<a class="nav-link" href="<?php echo ($this->view->adminConfig->admin->is_tab_iframe_used) ? 'javascript:;' : $this->view->baseUrl . 'admin/index/index' ?>" <?php if ($this->view->adminConfig->admin->is_tab_iframe_used) { ?>onclick="addTabs({id:'index',title: '首页',close: true,url: '<?php echo $this->view->baseUrl . 'admin/index/index' ?>',urlType: 'relative'});" <?php } ?>>
 			<i class="fa fa-bar-chart"></i> <span>首页</span>
 		</a>
 	</li>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<?php
+if (!$this->request->isAjax() || $this->request->isGet()) {
+  $this->view->csrf_token = createRandCode(40);
+  $_SESSION['csrf_token'] = $this->view->csrf_token;
+}
+?>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="csrf-token" content="<?php echo $this->view->csrf_token ?>">
+
+  <title><?php echo  $this->view->adminConfig->admin->title ?> | <?php echo  $this->view->formName ?></title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <?php $this->partial("partials/styles") ?>
+
+</head>
+
+<body class="hold-transition <?php echo  $this->view->adminConfig->admin->skin ?> <?php echo  $this->view->adminConfig->admin->layout ?>">
+  
+  <div class="wrapperInframe">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper-inframe" id="pjax-container" style="min-height: 421px;padding-top: 0px;">
+
+      <div id="app">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <?php //$this->partial("partials/container/page/page_container/page_header/page_title") 
+          ?>
+          <?php $this->partial("partials/container/page/page_container/page_header/breadcrumb") ?>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <div id="app-admin-alerts-errs"></div>
+          <!-- @include('admin::partials.alerts')
+        @include('admin::partials.exception')
+        @include('admin::partials.toastr') -->
+          <div style="display: block;" id="app-admin-controllers-modal"></div>
+          <?php echo $this->getContent(); ?>
+        </section>
+        <!-- /.content -->
+      </div>
+    </div>
+  </div>
+  <!-- /.content-wrapper -->
+  
+  <!-- Control Sidebar -->
+  <?php //$this->partial("partials/container/control_sidebar") 
+  ?>
+  <!-- /.control-sidebar -->
+
+  </div>
+  <!-- ./wrapper -->
+  <button id="totop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up"></i></button>
+
+  <?php $this->partial("partials/js") ?>
+
+</body>
+
+</html>

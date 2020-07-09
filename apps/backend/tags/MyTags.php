@@ -235,6 +235,40 @@ EOT;
         return $resources;
     }
 
+    static public function getUrl($view, $actionName, $params = array(), $controllerName = '', $moduleName = '', $baseUrl = '')
+    {
+        if (empty($baseUrl)) {
+            $baseUrl = $view->baseUrl;
+        }
+        if (empty($moduleName)) {
+            $moduleName = $view->moduleName;
+        }
+        if (empty($controllerName)) {
+            $controllerName = $view->controllerName;
+        }
+
+        if (empty($params)) {
+            $params = array();
+        }
+        if (!empty($view->__SHOWBYIFRAME__)) {
+            $params['__SHOWBYIFRAME__'] = $view->__SHOWBYIFRAME__;
+        }
+
+        if (!empty($params)) {
+            $params = http_build_query($params);
+        }
+
+        if (empty($actionName)) {
+            $url = $baseUrl . $moduleName . '/' . $controllerName;
+        } else {
+            $url = $baseUrl . $moduleName . '/' . $controllerName . '/' . $actionName;
+        }
+        if (!empty($params)) {
+            $url = $url . '?' . $params;
+        }
+        return $url;
+    }
+
     private static function methodToRouter($name)
     {
         $name = str_ireplace("\\", '-', $name);

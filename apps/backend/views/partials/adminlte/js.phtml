@@ -1,7 +1,7 @@
 <script>
   function LA() {}
   LA.token = "<?php echo $csrf_token ?>";
-  LA.sessionImage =new Image();
+  LA.sessionImage = new Image();
 </script>
 <!-- REQUIRED JS SCRIPTS -->
 <!-- jQuery 3 -->
@@ -84,6 +84,11 @@
 
 <!-- page script -->
 <?php $this->partial("partials/js/app") ?>
+<?php if ($this->view->adminConfig->admin->is_tab_iframe_used) { ?>
+  <?php if (empty($this->view->__SHOWBYIFRAME__)) { ?>
+    <?php $this->partial("partials/js/app_iframe") ?>
+  <?php } ?>
+<?php } ?>
 
 <script>
   $(function() {

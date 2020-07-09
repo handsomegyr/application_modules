@@ -2,7 +2,7 @@
 	var List = function() {
 		var remarkShowLength = 10; //默认现实的字符串长度
 		return {
-			url: '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>',
+			url: '<?php echo $this->myTag->getUrl($this->view, "", array()); ?>',
 			imagepath: '<?php echo $this->view->baseUrl ?>backend/',
 			compileFilter: function() {
 				var data = new Object;
@@ -198,7 +198,7 @@
 			},
 			//部分备注信息
 			getPartialHtml: function(remarks, remarkShowLength) {
-				if (remarks!=null && remarks.length > remarkShowLength) {
+				if (remarks != null && remarks.length > remarkShowLength) {
 					return remarks.substr(0, remarkShowLength) + '&nbsp;&nbsp;<a href="javascript:void(0);" ><b>...</b></a>';
 				} else {
 					return remarks;
@@ -226,7 +226,7 @@
 					<?php if (!empty($tool['is_show']) && empty($tool['is_export'])) { ?>
 						$('.header-tool-<?php echo $key ?>').off('click').on('click', function(e) {
 							e.preventDefault();
-							var url = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>';
+							var url = '<?php echo $this->myTag->getUrl($this->view, $tool['action'], array()); ?>';
 							<?php if (empty($tool['process_without_modal'])) { ?>
 								App.process4Modal(url, this);
 							<?php } else { ?>
@@ -261,7 +261,7 @@
 					"pageLength": 20,
 					"pagingType": "full_numbers",
 					"ajax": {
-						"url": "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/query",
+						"url": "<?php echo $this->myTag->getUrl($this->view, 'query', array()); ?>",
 						"type": 'POST',
 						"data": function(d) {
 							// alert('datatable ajax');
@@ -417,7 +417,7 @@
 								var editOp = '';
 								<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit')) { ?>
 									if (full['op']['edit']) {
-										editOp = '<a class="btn btn-sm btn-primary" href="<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/edit?id=' + id + '"><i class="fa fa-edit"></i>编辑</a>';
+										editOp = '<a class="btn btn-sm btn-primary" href="<?php echo $this->myTag->getUrl($this->view, 'edit', array('_t' => time())); ?>&id=' + id + '"><i class="fa fa-edit"></i>编辑</a>';
 									}
 								<?php } ?>
 								var deleteOp = '';
@@ -431,7 +431,7 @@
 									<?php if (true || !empty($tool['is_show'])) { ?>
 										<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
 											if (full['op']['<?php echo $key ?>']) {
-												var url = '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>?id=' + id;
+												var url = '<?php echo $this->myTag->getUrl($this->view, $tool['action'], array('_t' => time())); ?>&id=' + id;
 												var toolOp = '<a class="btn btn-sm btn-primary row-tool-<?php echo $key ?>" record_id="' + id + '" href="javascript:;" onclick="<?php if (empty($tool['process_without_modal'])) { ?>App.process4Modal<?php } else { ?>App.process4NoModal<?php } ?>(\'' + url + '\',this)" ><i class="fa <?php echo empty($tool['icon']) ? 'fa-edit' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>';
 												toolOps.push(toolOp);
 											}

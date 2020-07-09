@@ -78,7 +78,7 @@ $filterID = 'filter-box';
 
                         <?php if (false) { ?>
                             <div class="btn-group pull-left " style="margin-left: 10px;">
-                                <a href="<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/list?_pjax=%23pjax-container" class="btn btn-default btn-sm"><i class="fa fa-undo"></i>&nbsp;&nbsp;重置</a>
+                                <a href="<?php echo $this->myTag->getUrl($this->view, 'list',array('_pjax'=>'%23pjax-container'));?>" class="btn btn-default btn-sm"><i class="fa fa-undo"></i>&nbsp;&nbsp;重置</a>
                             </div>
                         <?php } ?>
                     </div>

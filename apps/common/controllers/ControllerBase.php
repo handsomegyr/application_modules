@@ -60,7 +60,7 @@ class ControllerBase extends Controller
         if (empty($moduleName)) {
             $moduleName = $this->moduleName;
         }
-        return  $this->url->get("{$moduleName}/{$controllerName}/{$action}");
+        return $this->url->get("{$moduleName}/{$controllerName}/{$action}");
     }
 
     public function get($string, $defaultParam = null, $defaultType = "string")

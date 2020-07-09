@@ -1,5 +1,5 @@
 <div class="btn-group pull-right grid-create-btn" style="margin-right: 10px">
-    <a href="<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/add" class="btn btn-sm btn-success" title="新增">
+    <a href="<?php echo $this->myTag->getUrl($this->view, 'add',array());?>" class="btn btn-sm btn-success" title="新增">
         <i class="fa fa-plus"></i><span class="hidden-xs">&nbsp;&nbsp;新增</span>
     </a>
 </div>

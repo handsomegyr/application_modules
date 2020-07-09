@@ -11,6 +11,10 @@ return new \Phalcon\Config(array(
             'name' => 'XXXX拥有版权',
             'url' => 'javascript:;'
         ],
+
+        //使用多个标签内嵌iframe
+        'is_tab_iframe_used' => true,
+
         /*
     |--------------------------------------------------------------------------
     | Laravel-admin name

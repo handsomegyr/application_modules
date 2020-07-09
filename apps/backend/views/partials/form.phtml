@@ -31,7 +31,7 @@ $isCando = $this->myTag->isCanDo($this->view->moduleName, $this->view->controlle
                         <?php } ?>
                         <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'list')) { ?>
                             <div class="btn-group pull-right" style="margin-right: 5px">
-                                <a href="<?php echo $this->view->list_url ?>" class="btn btn-sm btn-default" title="列表"><i class="fa fa-list"></i><span class="hidden-xs">&nbsp;列表</span></a>
+                                <a href="<?php echo $this->myTag->getUrl($this->view, 'list',array());?>" class="btn btn-sm btn-default" title="列表"><i class="fa fa-list"></i><span class="hidden-xs">&nbsp;列表</span></a>
                             </div>
                         <?php } ?>
 

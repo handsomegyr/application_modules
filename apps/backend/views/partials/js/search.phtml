@@ -77,8 +77,8 @@
                     $.each(d, function(i, n) {
                         p += ("&" + i + "=" + n);
                     });
-                    window.location.href = "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/export?m=csv" + p;
-                    //window.open("<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/export?m=csv" + p, '_blank');
+                    window.location.href = "<?php echo $this->myTag->getUrl($this->view, 'export',array('m'=>'csv'));?>" + p;
+                    //window.open("<?php echo $this->myTag->getUrl($this->view, 'export',array('m'=>'csv'));?>" + p, '_blank');
                 });
 
                 <?php foreach ($this->view->headerTools as $key => $tool) { ?>
@@ -90,8 +90,8 @@
                             $.each(d, function(i, n) {
                                 p += ("&" + i + "=" + n);
                             });
-                            window.location.href = "<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>?m=csv" + p;
-                            //window.open("<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>/<?php echo $tool['action'] ?>?m=csv" + p, '_blank');
+                            window.location.href = "<?php echo $this->myTag->getUrl($this->view, $tool['action'],array('m'=>'csv'));?>" + p;
+                            //window.open("<?php echo $this->myTag->getUrl($this->view, $tool['action'],array('m'=>'csv'));?>" + p, '_blank');
                         });
                     <?php } ?>
                 <?php } ?>

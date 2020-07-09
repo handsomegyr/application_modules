@@ -94,6 +94,10 @@ if ($this->view->actionName == "list") {
 $request_segments = $this->view->moduleName . "/" . $this->view->controllerName . "/" . $this->view->actionName;
 $request_segments = explode('/', trim($request_segments));
 
+$inframe = '';
+if (!empty($this->view->__SHOWBYIFRAME__)) {
+    $inframe = '?__SHOWBYIFRAME__=1';
+}
 $breadcrumb = array();
 $item = array();
 $item['url'] = "";
@@ -109,7 +113,7 @@ $num = count($breadcrumb);
 <!-- breadcrumb start -->
 <?php if (!empty($breadcrumb)) { ?>
     <ol class="breadcrumb" style="margin-right: 30px;">
-        <li><a href="<?php echo $this->view->baseUrl ?>admin/index/index"><i class="fa fa-dashboard"></i> 管理中心</a></li>
+        <li><a href="<?php echo $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin'); ?>"><i class="fa fa-dashboard"></i> 管理中心</a></li>
         <?php foreach ($breadcrumb as $k => $item) { ?>
             <?php if ($k == ($num - 1)) { ?>
                 <li class="active">
@@ -120,7 +124,7 @@ $num = count($breadcrumb);
                 </li>
             <?php } else { ?>
                 <li>
-                    <a href="<?php echo $this->view->baseUrl . $item['url'] ?>">
+                    <a href="<?php echo $this->view->baseUrl . $item['url'] . $inframe ?>">
                         <?php if (!empty($item['icon'])) { ?>
                             <i class="fa fa-<?php echo $item['icon'] ?>"></i>
                         <?php } ?>
@@ -132,7 +136,7 @@ $num = count($breadcrumb);
     </ol>
 <?php } elseif (!empty($this->view->adminConfig->admin->enable_default_breadcrumb)) { ?>
     <ol class="breadcrumb" style="margin-right: 30px;">
-        <li><a href="<?php echo $this->view->baseUrl ?>admin/index/index"><i class="fa fa-dashboard"></i> 管理中心</a></li>
+        <li><a href="<?php echo $this->myTag->getUrl($this->view, 'index', array(), 'index', 'admin'); ?>"><i class="fa fa-dashboard"></i> 管理中心</a></li>
         <?php for ($i = 1; $i < count($request_segments); $i++) { ?>
             <li>
                 <?php echo ucfirst($request_segments[$i]) ?>
