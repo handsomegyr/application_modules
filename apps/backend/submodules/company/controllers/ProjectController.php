@@ -863,9 +863,10 @@ class ProjectController extends \App\Backend\Controllers\FormController
             $data = array();
             $data['company_project_id'] = $newInfo['_id'];
             $data['name'] = $newInfo['project_name'];
+            $data['dbname'] = $newInfo['project_code'];
             $data['sn'] = $newInfo['db_pwd'];
             $data['desc'] = $newInfo['description'];
-            $data['isSystem'] = false;
+            $data['isSystem'] = $newInfo['isSystem'];
             $this->modelDbProject->insert($data);
 
             $this->modelDbProject->commit();

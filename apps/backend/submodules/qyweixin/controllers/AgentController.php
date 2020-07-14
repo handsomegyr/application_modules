@@ -188,7 +188,7 @@ class AgentController extends \App\Backend\Controllers\FormController
                 'input_type' => 'number',
                 'is_show' => true,
                 'items' => '',
-                'help' => '系统约定:agentid=9999999是外部联系人管理用,agentid=9999998是通讯录管理用'
+                'help' => '系统约定:agentid=9999999是外部联系人管理用,agentid=9999998是通讯录管理用,agentid=9999997是会话内容存档用'
             ),
             'list' => array(
                 'is_show' => true,
@@ -266,7 +266,8 @@ class AgentController extends \App\Backend\Controllers\FormController
             0 => '基础应用secret',
             1 => '通讯录管理secret',
             2 => '外部联系人管理secret',
-            3 => '自建应用secret'
+            3 => '自建应用secret',
+            4 => '聊天内容存档Secret'
         );
         $schemas['secret_type'] = array(
             'name' => 'secret类型',
