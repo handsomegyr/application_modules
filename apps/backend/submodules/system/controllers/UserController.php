@@ -90,7 +90,7 @@ class UserController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
@@ -197,5 +197,19 @@ class UserController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelUser;
+    }
+
+    protected function validate4Insert(\App\Backend\Models\Input $input, $row)
+    {
+        if (password_needs_rehash($input->password, PASSWORD_BCRYPT)) {
+            $input->password = password_hash($input->password, PASSWORD_BCRYPT);
+        }
+    }
+
+    protected function validate4Update(\App\Backend\Models\Input $input, $row)
+    {
+        if (password_needs_rehash($input->password, PASSWORD_BCRYPT)) {
+            $input->password = password_hash($input->password, PASSWORD_BCRYPT);
+        }
     }
 }

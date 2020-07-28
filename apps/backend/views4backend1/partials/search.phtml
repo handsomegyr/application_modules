@@ -55,7 +55,7 @@
     											</select>
     											<?php }elseif(!empty($field['search']['input_type']) && $field['search']['input_type'] =='datetimepicker'){?>
     											<?php if(!empty($field['search']['condition_type']) && $field['search']['condition_type'] == 'period'){?>
-    											<div class="input-append date form_datetime" data-date="">
+    											<div class="input-append date form_datetime">
 
     												<input class="m-wrap" size="16" type="text" name="search_<?php echo $key?>_from" id="search_<?php echo $key?>_from" value="">
     
@@ -65,7 +65,7 @@
     
     											</div>
         										~
-        										<div class="input-append date form_datetime" data-date="">
+        										<div class="input-append date form_datetime">
 
     												<input class="m-wrap" size="16" type="text" name="search_<?php echo $key?>_to" id="search_<?php echo $key?>_to" value="">
     

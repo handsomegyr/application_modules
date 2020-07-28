@@ -127,7 +127,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
     public function logoutAction()
     {
         try {
-            session_destroy();
+            // session_destroy();
             $this->modelUser->clearCookies();
             $url = $this->getUrl("login");
             $this->_redirect($url);

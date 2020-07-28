@@ -73,7 +73,7 @@
                                             ?>
                                             <textarea class="span12 m-wrap" name="<?php echo $key?>" rows="6" <?php if($field['validation']['required']){?>data-required="1"<?php }?>><?php echo $value?></textarea>
                                         <?php }elseif($field['form']['input_type'] == "datetimepicker"){?>
-                                            <div class="input-append date form_datetime" data-date="<?php echo date("Y-m-d H:i:s")?>">
+                                            <div class="input-append date form_datetime">
 
 												<input class="m-wrap" size="16" type="text" name="<?php echo $key?>" <?php if($field['validation']['required']){?>data-required="1"<?php }?> value="<?php echo date("Y-m-d H:i:s",$this->view->row[$key]->sec)?>">
 
