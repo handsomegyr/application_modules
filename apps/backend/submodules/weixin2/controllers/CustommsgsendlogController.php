@@ -180,7 +180,6 @@ class CustommsgsendlogController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->typeItems
-
             ),
             'list' => array(
                 'is_show' => true,

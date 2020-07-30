@@ -20,7 +20,8 @@ class LogController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['user_id'] = array(
+    {
+        $schemas['user_id'] = array(
             'name' => '用户ID',
             'data' => array(
                 'type' => 'string',
