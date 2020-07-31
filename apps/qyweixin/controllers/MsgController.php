@@ -3,22 +3,22 @@
 namespace App\Qyweixin\Controllers;
 
 /**
-         * 消息推送
-         * 企业微信消息与事件接收
-         */
+ * 消息推送
+ * 企业微信消息与事件接收
+ */
 class MsgController extends ControllerBase
 {
     // 活动ID
     protected $activity_id = 2;
     /**
-         *
-         * @var \App\Qyweixin\Models\User\User
-         */
+     *
+     * @var \App\Qyweixin\Models\User\User
+     */
     private $modelQyweixinUser;
     /**
-         *
-         * @var \App\Qyweixin\Models\Provider\Provider
-         */
+     *
+     * @var \App\Qyweixin\Models\Provider\Provider
+     */
     private $modelQyweixinProvider;
     /**
      *
@@ -1764,6 +1764,42 @@ class MsgController extends ControllerBase
                  * UserID 企业服务人员的UserID
                  * ExternalUserID 外部联系人的userid，注意不是企业成员的帐号
                  */
+            } elseif ($ChangeType == 'msg_audit_approved') { // 客户同意进行聊天内容存档事件回调
+                /**
+                 * 客户同意进行聊天内容存档事件回调
+                 * 配置了客户联系功能的成员添加外部联系人同意进行聊天内容存档时，回调该事件。
+                 *
+                 * 请求示例：
+                 *
+                 * <xml>
+                 * <ToUserName><![CDATA[toUser]]></ToUserName>
+                 * <FromUserName><![CDATA[sys]]></FromUserName>
+                 * <CreateTime>1403610513</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[change_external_contact]]></Event>
+                 * <ChangeType><![CDATA[msg_audit_approved]]></ChangeType>
+                 * <UserID><![CDATA[zhangsan]]></UserID>
+                 * <ExternalUserID><![CDATA[woAJ2GCAAABiuyujaWJHDDGi0mACHAAA]]></ExternalUserID>
+                 * <State><![CDATA[teststate]]></State>
+                 * <WelcomeCode><![CDATA[WELCOMECODE]]></WelcomeCode>
+                 * </xml>
+                 * 参数说明：
+                 *
+                 * 参数 说明
+                 * ToUserName 企业微信CorpID
+                 * FromUserName 此事件该值固定为sys，表示该消息由系统生成
+                 * CreateTime 消息创建时间 （整型）
+                 * MsgType 消息的类型，此时固定为event
+                 * Event 事件的类型，此时固定为change_external_contact
+                 * ChangeType 此时固定为msg_audit_approved
+                 * UserID 企业服务人员的UserID
+                 * ExternalUserID 外部联系人的userid，注意不是企业成员的帐号
+                 * State 添加此用户的「联系我」方式配置的state参数，可用于识别添加此用户的渠道
+                 * WelcomeCode 欢迎语code，可用于发送欢迎语
+                 * 企业可以根据ExternalUserID调用“获取客户详情”读取详情。
+                 * 企业可以通过配置客户联系「联系我」方式接口来指定State参数，当有客户通过这个联系方式添加企业成员时会回调此参数。
+                 * 注意:如果外部联系人和成员已经开始聊天或已通过「外部联系人免验证添加成员事件」得到的welcomecode发送欢迎语，则不会继续返回welcomecode。
+                 */
             }
             $response = "success";
         } elseif ($Event == 'change_external_chat') { // 客户群变更事件
@@ -2055,7 +2091,7 @@ class MsgController extends ControllerBase
         // $this->modelErrorLog->log($this->activity_id, $e, $this->now);
         // return '';
         if (!empty($match['agent_msg_ids'])) {
-            $this->qyweixinService->answerAgentMsgs($FromUserName, $ToUserName, $match);
+            $ret['answerAgentMsgs'] = $this->qyweixinService->answerAgentMsgs($FromUserName, $ToUserName, $match);
         }
         // $this->qyweixinService->answerTemplateMsgs($FromUserName, $ToUserName, $match);
         return $this->qyweixinService->answerReplyMsgs($FromUserName, $ToUserName, $match);

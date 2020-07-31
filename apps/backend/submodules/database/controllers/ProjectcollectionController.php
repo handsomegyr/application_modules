@@ -101,7 +101,7 @@ class ProjectcollectionController extends \App\Backend\Controllers\FormControlle
             'name' => '表名(英文)',
             'data' => array(
                 'type' => 'string',
-                'length' => 50,
+                'length' => 100,
                 'defaultValue' => ''
             ),
             'validation' => array(

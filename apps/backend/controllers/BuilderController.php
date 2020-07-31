@@ -113,6 +113,7 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Database\Settings\Menu
         try {
             $this->view->disable();
+            resetTimeMemLimit();
             $settings = $this->get('settings', '');
             if (empty($settings)) {
                 throw new \Exception("菜单settings为空");
@@ -125,7 +126,7 @@ EOD;
             $tree = $menuSettings->getSettings();
             $this->createMenuBySettings($tree, true);
 
-            $this->makeJsonResult("", "create OK");
+            $this->makeJsonResult("", "create OK", $tree);
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -141,6 +142,7 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createschema?model=\App\Backend\Submodules\Weixin2\Models\Language
         try {
             $this->view->disable();
+            resetTimeMemLimit();
             $model = $this->get('model', '');
             $table = $this->get('table', '');
 
@@ -179,6 +181,8 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createfile?model=\App\Backend\Submodules\Weixin2\Models\Language&title=语言
         try {
             $this->view->disable();
+            resetTimeMemLimit();
+
             $model = $this->get('model', '');
             $title = $this->get('title', '');
             if (empty($title)) {
@@ -236,6 +240,8 @@ EOD;
         // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Database\Settings\Menu&is_create_menu=1
         try {
             $this->view->disable();
+            resetTimeMemLimit();
+            
             $settings = $this->get('settings', '');
             $is_create_menu = intval($this->get('is_create_menu', 1));
 
