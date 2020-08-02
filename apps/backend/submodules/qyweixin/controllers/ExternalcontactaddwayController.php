@@ -5,11 +5,11 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\AddWay;
 
 /**
- * @title({name="企业微信"})
+ * @title({name="客户来源"})
  *
- * @name 企业微信
+ * @name 客户来源
  */
-class ExternalcontactaddwayController extends \App\Backend\Controllers\FormController
+class ExternalcontactaddwayController extends BaseController
 {
     private $modelExternalcontactAddWay;
 
@@ -25,31 +25,27 @@ class ExternalcontactaddwayController extends \App\Backend\Controllers\FormContr
             'name' => '客户来源名',
             'data' => array(
                 'type' => 'string',
-                'length' => 20,
-                'defaultValue' => '',
+                'length' => 50,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['value'] = array(
@@ -57,30 +53,26 @@ class ExternalcontactaddwayController extends \App\Backend\Controllers\FormContr
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
-                'defaultValue' => 0,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'number',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
 
@@ -89,7 +81,7 @@ class ExternalcontactaddwayController extends \App\Backend\Controllers\FormContr
 
     protected function getName()
     {
-        return '企业微信';
+        return '客户来源';
     }
 
     protected function getModel()

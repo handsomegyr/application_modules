@@ -5,11 +5,11 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\GroupMsgResult;
 
 /**
- * @title({name="企业微信"})
+ * @title({name="企业群发消息发送结果"})
  *
- * @name 企业微信
+ * @name 企业群发消息发送结果
  */
-class ExternalcontactgroupmsgresultController extends \App\Backend\Controllers\FormController
+class ExternalcontactgroupmsgresultController extends BaseController
 {
     private $modelExternalcontactGroupMsgResult;
 
@@ -25,93 +25,88 @@ class ExternalcontactgroupmsgresultController extends \App\Backend\Controllers\F
             'name' => '第三方服务商应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->providerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['authorizer_appid'] = array(
             'name' => '授权方应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['msgid'] = array(
-            'name' => '企业群发消息的id，可用于获取群发消息发送结果',
+            'name' => '企业群发消息的id',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '企业群发消息的id，可用于获取群发消息发送结果',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['external_userid'] = array(
@@ -119,30 +114,26 @@ class ExternalcontactgroupmsgresultController extends \App\Backend\Controllers\F
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['chat_id'] = array(
@@ -150,30 +141,26 @@ class ExternalcontactgroupmsgresultController extends \App\Backend\Controllers\F
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['userid'] = array(
@@ -181,92 +168,91 @@ class ExternalcontactgroupmsgresultController extends \App\Backend\Controllers\F
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
+        $statusOptions = array();
+        $statusOptions['0'] = '未发送';
+        $statusOptions['1'] = '已发送';
+        $statusOptions['2'] = '因客户不是好友导致发送失败';
+        $statusOptions['3'] = '因客户已经收到其他群发消息导致发送失败';
+
         $schemas['status'] = array(
-            'name' => '发送状态 0-未发送 1-已发送 2-因客户不是好友导致发送失败 3-因客户已经收到其他群发消息导致发送失败',
+            'name' => '发送状态',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => '',
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'radio',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => statusOptions,
-                'help' => '',
+                'items' => $statusOptions,
+                'help' => '发送状态 0-未发送 1-已发送 2-因客户不是好友导致发送失败 3-因客户已经收到其他群发消息导致发送失败',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => statusOptions,
+                'items' => $statusOptions
             ),
             'search' => array(
-                'is_show' => true,
                 'input_type' => 'select',
-                'items' => statusOptions,
+                'is_show' => true,
+                'items' => $statusOptions
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['send_time'] = array(
-            'name' => '发送时间，发送状态为1时返回',
+            'name' => '发送时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '发送时间，发送状态为1时返回',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['memo'] = array(
@@ -274,30 +260,26 @@ class ExternalcontactgroupmsgresultController extends \App\Backend\Controllers\F
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
 
@@ -306,7 +288,7 @@ class ExternalcontactgroupmsgresultController extends \App\Backend\Controllers\F
 
     protected function getName()
     {
-        return '企业微信';
+        return '企业群发消息发送结果';
     }
 
     protected function getModel()

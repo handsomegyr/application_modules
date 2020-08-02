@@ -5,11 +5,11 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\GroupChatMember;
 
 /**
- * @title({name="企业微信"})
+ * @title({name="客户群成员"})
  *
- * @name 企业微信
+ * @name 客户群成员
  */
-class ExternalcontactgroupchatmemberController extends \App\Backend\Controllers\FormController
+class ExternalcontactgroupchatmemberController extends BaseController
 {
     private $modelExternalcontactGroupChatMember;
 
@@ -25,62 +25,60 @@ class ExternalcontactgroupchatmemberController extends \App\Backend\Controllers\
             'name' => '第三方服务商应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->providerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['authorizer_appid'] = array(
             'name' => '授权方应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['chat_id'] = array(
@@ -88,30 +86,26 @@ class ExternalcontactgroupchatmemberController extends \App\Backend\Controllers\
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['userid'] = array(
@@ -119,30 +113,26 @@ class ExternalcontactgroupchatmemberController extends \App\Backend\Controllers\
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['join_time'] = array(
@@ -150,123 +140,126 @@ class ExternalcontactgroupchatmemberController extends \App\Backend\Controllers\
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
+        $typeOptions = array();
+        $typeOptions['1'] = '企业成员';
+        $typeOptions['2'] = '外部联系人';
+
         $schemas['type'] = array(
-            'name' => '成员类型。1 - 企业成员 2 - 外部联系人',
+            'name' => '成员类型',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => '',
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => 1
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => typeOptions,
-                'help' => '',
+                'items' => $typeOptions,
+                'help' => '成员类型。1 - 企业成员 2 - 外部联系人',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => typeOptions,
+                'items' => $typeOptions,
             ),
             'search' => array(
-                'is_show' => true,
                 'input_type' => 'select',
-                'items' => typeOptions,
+                'is_show' => true,
+                'items' => $typeOptions,
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
+
+        $joinSceneOptions = array();
+        $joinSceneOptions['1'] = '由成员邀请入群（直接邀请入群）';
+        $joinSceneOptions['2'] = '由成员邀请入群（通过邀请链接入群）';
+        $joinSceneOptions['3'] = '通过扫描群二维码入群';
+
         $schemas['join_scene'] = array(
-            'name' => '入群方式。1 - 由成员邀请入群（直接邀请入群）2 - 由成员邀请入群（通过邀请链接入群）3 - 通过扫描群二维码入群',
+            'name' => '入群方式',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => '',
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => 1
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => join_sceneOptions,
-                'help' => '',
+                'items' => $joinSceneOptions,
+                'help' => '入群方式。1 - 由成员邀请入群（直接邀请入群）2 - 由成员邀请入群（通过邀请链接入群）3 - 通过扫描群二维码入群',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => join_sceneOptions,
+                'items' => $joinSceneOptions,
             ),
             'search' => array(
-                'is_show' => true,
                 'input_type' => 'select',
-                'items' => join_sceneOptions,
+                'is_show' => true,
+                'items' => $joinSceneOptions,
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
+
         $schemas['sync_time'] = array(
             'name' => '同步时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['memo'] = array(
@@ -274,30 +267,26 @@ class ExternalcontactgroupchatmemberController extends \App\Backend\Controllers\
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
 
@@ -306,7 +295,7 @@ class ExternalcontactgroupchatmemberController extends \App\Backend\Controllers\
 
     protected function getName()
     {
-        return '企业微信';
+        return '客户群成员';
     }
 
     protected function getModel()

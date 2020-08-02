@@ -5,11 +5,11 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\Unassigned;
 
 /**
- * @title({name="企业微信"})
+ * @title({name="离职成员的客户"})
  *
- * @name 企业微信
+ * @name 离职成员的客户
  */
-class ExternalcontactunassignedController extends \App\Backend\Controllers\FormController
+class ExternalcontactunassignedController extends BaseController
 {
     private $modelExternalcontactUnassigned;
 
@@ -19,68 +19,160 @@ class ExternalcontactunassignedController extends \App\Backend\Controllers\FormC
         parent::initialize();
     }
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['getunassignedlist'] = array(
+            'title' => '获取离职成员的客户列表',
+            'action' => 'getunassignedlist',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
+    /**
+     * @title({name="获取离职成员的客户列表"})
+     *
+     * @name 获取离职成员的客户列表
+     */
+    public function getunassignedlistAction()
+    {
+        // http://www.applicationmodule.com/admin/qyweixin/externalcontactunassigned/getunassignedlist
+        try {
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "获取离职成员的客户列表";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $provider_appid = trim($this->request->get('unassigned_provider_appid'));
+                $authorizer_appid = trim($this->request->get('unassigned_authorizer_appid'));
+                $agent_agentid = trim($this->request->get('unassigned_agent_agentid'));
+                if (empty($provider_appid)) {
+                    // return $this->response()->error("第三方服务商应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+                if (empty($agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
+
+                $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agent_agentid);
+                $page_id = 0;
+                $page_size = 1000;
+                $res = $weixinopenService->getUnassignedList($page_id, $page_size);
+                return $this->response()->success('操作成功:' . \json_encode($res))->refresh();
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function getFields4HeaderTool()
+    {
+        $fields = array();
+        $fields['unassigned_provider_appid'] = array(
+            'name' => '第三方服务商应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+            ),
+        );
+        $fields['unassigned_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+            ),
+        );
+        $fields['unassigned_agent_agentid'] = array(
+            'name' => '微信企业应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems,
+            ),
+        );
+
+        return $fields;
+    }
+
     protected function getSchemas2($schemas)
     {
         $schemas['provider_appid'] = array(
             'name' => '第三方服务商应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->providerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['authorizer_appid'] = array(
             'name' => '授权方应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['handover_userid'] = array(
@@ -88,30 +180,26 @@ class ExternalcontactunassignedController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['external_userid'] = array(
@@ -119,30 +207,26 @@ class ExternalcontactunassignedController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['dimission_time'] = array(
@@ -150,30 +234,26 @@ class ExternalcontactunassignedController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['sync_time'] = array(
@@ -181,30 +261,26 @@ class ExternalcontactunassignedController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['memo'] = array(
@@ -212,30 +288,26 @@ class ExternalcontactunassignedController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
 
@@ -244,7 +316,7 @@ class ExternalcontactunassignedController extends \App\Backend\Controllers\FormC
 
     protected function getName()
     {
-        return '企业微信';
+        return '离职成员的客户';
     }
 
     protected function getModel()

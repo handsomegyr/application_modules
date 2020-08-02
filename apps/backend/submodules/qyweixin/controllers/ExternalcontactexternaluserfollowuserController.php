@@ -5,11 +5,11 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\ExternalUserFollowUser;
 
 /**
- * @title({name="企业微信"})
+ * @title({name="添加外部联系人的企业成员"})
  *
- * @name 企业微信
+ * @name 添加外部联系人的企业成员
  */
-class ExternalcontactexternaluserfollowuserController extends \App\Backend\Controllers\FormController
+class ExternalcontactexternaluserfollowuserController extends BaseController
 {
     private $modelExternalcontactExternalUserFollowUser;
 
@@ -25,62 +25,60 @@ class ExternalcontactexternaluserfollowuserController extends \App\Backend\Contr
             'name' => '第三方服务商应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->providerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['authorizer_appid'] = array(
             'name' => '授权方应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['external_userid'] = array(
@@ -88,402 +86,367 @@ class ExternalcontactexternaluserfollowuserController extends \App\Backend\Contr
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['userid'] = array(
-            'name' => '添加了此外部联系人的企业成员userid',
+            'name' => '企业成员userid',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '添加了此外部联系人的企业成员userid',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['remark'] = array(
-            'name' => '该成员对此外部联系人的备注',
+            'name' => '外部联系人的备注',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '该成员对此外部联系人的备注',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['description'] = array(
-            'name' => '该成员对此外部联系人的描述',
+            'name' => '描述',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '该成员对此外部联系人的描述',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['createtime'] = array(
-            'name' => '该成员添加此外部联系人的时间',
+            'name' => '添加时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '该成员添加此外部联系人的时间',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['tags'] = array(
-            'name' => '该成员添加此外部联系人所打标签的分组名称（标签功能需要企业微信升级到2.7.5及以上版本）',
+            'name' => '标签分组名称',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '该成员添加此外部联系人所打标签的分组名称（标签功能需要企业微信升级到2.7.5及以上版本）',
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['remark_corp_name'] = array(
-            'name' => '该成员对此客户备注的企业名称',
+            'name' => '企业名称',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'help' => '该成员对此客户备注的企业名称',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['remark_mobiles'] = array(
-            'name' => '该成员对此客户备注的手机号码，第三方不可获取',
+            'name' => '手机号码',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '该成员对此客户备注的手机号码，第三方不可获取',
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['add_way'] = array(
-            'name' => '该成员添加此客户的来源，具体含义详见来源定义',
+            'name' => '客户来源',
             'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => '',
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'radio',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => add_wayOptions,
-                'help' => '',
+                'items' => AddwayModel::getAll(),
+                'help' => '该成员添加此客户的来源，具体含义详见来源定义',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => add_wayOptions,
+                'items' => AddwayModel::getAll()
             ),
             'search' => array(
-                'is_show' => true,
                 'input_type' => 'select',
-                'items' => add_wayOptions,
+                'is_show' => true,
+                'items' => AddwayModel::getAll()
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
+
         $schemas['state'] = array(
-            'name' => '企业自定义的state参数，用于区分客户具体是通过哪个「联系我」添加，由企业通过创建「联系我」方式指定',
+            'name' => 'state参数',
             'data' => array(
                 'type' => 'string',
                 'length' => 30,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '企业自定义的state参数，用于区分客户具体是通过哪个「联系我」添加，由企业通过创建「联系我」方式指定',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
+
         $schemas['oper_userid'] = array(
-            'name' => '发起添加的userid，如果成员主动添加，为成员的userid；如果是客户主动添加，则为客户的外部联系人userid；如果是内部成员共享/管理员分配，则为对应的成员/管理员userid',
+            'name' => '发起添加的userid',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '发起添加的userid，如果成员主动添加，为成员的userid；如果是客户主动添加，则为客户的外部联系人userid；如果是内部成员共享/管理员分配，则为对应的成员/管理员userid'
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
+
         $schemas['get_time'] = array(
             'name' => '同步时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
+
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
 
@@ -492,7 +455,7 @@ class ExternalcontactexternaluserfollowuserController extends \App\Backend\Contr
 
     protected function getName()
     {
-        return '企业微信';
+        return '添加外部联系人的企业成员';
     }
 
     protected function getModel()

@@ -5,11 +5,11 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 use App\Backend\Submodules\Qyweixin\Models\Contact\BatchInvite;
 
 /**
- * @title({name="企业微信"})
+ * @title({name="批量邀请成员"})
  *
- * @name 企业微信
+ * @name 批量邀请成员
  */
-class BatchinviteController extends \App\Backend\Controllers\FormController
+class BatchinviteController extends BaseController
 {
     private $modelBatchInvite;
 
@@ -25,155 +25,144 @@ class BatchinviteController extends \App\Backend\Controllers\FormController
             'name' => '第三方服务商应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->providerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['authorizer_appid'] = array(
             'name' => '授权方应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['user'] = array(
-            'name' => '成员ID列表, 最多支持1000个',
+            'name' => '成员ID列表',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '成员ID列表, 最多支持1000个',
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['party'] = array(
-            'name' => '部门ID列表，最多支持100个',
+            'name' => '部门ID列表',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '部门ID列表，最多支持100个',
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['tag'] = array(
-            'name' => '标签ID列表，最多支持100个',
+            'name' => '标签ID列表',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '标签ID列表，最多支持100个',
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['invite_time'] = array(
@@ -181,30 +170,26 @@ class BatchinviteController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['invaliduser'] = array(
@@ -212,30 +197,26 @@ class BatchinviteController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['invalidparty'] = array(
@@ -243,30 +224,26 @@ class BatchinviteController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['invalidtag'] = array(
@@ -274,30 +251,26 @@ class BatchinviteController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['memo'] = array(
@@ -305,30 +278,26 @@ class BatchinviteController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
 
@@ -337,7 +306,7 @@ class BatchinviteController extends \App\Backend\Controllers\FormController
 
     protected function getName()
     {
-        return '企业微信';
+        return '批量邀请成员';
     }
 
     protected function getModel()

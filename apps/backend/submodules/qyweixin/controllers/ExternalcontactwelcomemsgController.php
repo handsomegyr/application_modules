@@ -5,11 +5,11 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\WelcomeMsg;
 
 /**
- * @title({name="企业微信"})
+ * @title({name="新客户欢迎语"})
  *
- * @name 企业微信
+ * @name 新客户欢迎语
  */
-class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormController
+class ExternalcontactwelcomemsgController extends BaseController
 {
     private $modelExternalcontactWelcomeMsg;
 
@@ -19,223 +19,363 @@ class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormC
         parent::initialize();
     }
 
+    protected function getFormTools2($tools)
+    {
+        $tools['uploadmedia'] = array(
+            'title' => '上传临时素材',
+            'action' => 'uploadmedia',
+            'is_show' => function ($row) {
+                $weixinopenService = new \App\Qyweixin\Services\QyService($row['authorizer_appid'], $row['provider_appid'], 0);
+                if (
+                    (!empty($row['image_media']) && $weixinopenService->isMediaTimeExpired($row['image_media_id'], $row['image_media_created_at'])) ||
+                    (!empty($row['miniprogram_pic_media']) && $weixinopenService->isMediaTimeExpired($row['miniprogram_pic_media_id'], $row['miniprogram_pic_media_created_at']))
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['uploadmediaimg'] = array(
+            'title' => '上传图片',
+            'action' => 'uploadmediaimg',
+            'is_show' => function ($row) {
+                if (!empty($row['image_media']) && empty($row['image_pic_url'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="上传临时素材"})
+     *
+     * @name 上传临时素材
+     */
+    public function uploadmediaAction()
+    {
+        // http://www.applicationmodule.com/admin/qyweixin/externalcontactwelcomemsg/uploadmedia?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelExternalcontactWelcomeMsg->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4FormTool();
+                $title = "上传临时素材";
+                $row = $data;
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $agent_agentid = trim($this->request->get('welcomemsg_agentid'));
+                if (empty($agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                if (empty($data['image_media_created_at'])) {
+                    $image_media_created_at = '2020-01-01 00:00:00';
+                } else {
+                    $image_media_created_at = $data['image_media_created_at'];
+                }
+                if (empty($data['miniprogram_pic_media_created_at'])) {
+                    $miniprogram_pic_media_created_at = '2020-01-01 00:00:00';
+                } else {
+                    $miniprogram_pic_media_created_at = $data['miniprogram_pic_media_created_at'];
+                }
+                if (!empty($data['image_media'])) {
+                    $res = $weixinopenService->uploadMediaByApi($data['image_media'], 'image', $data['image_media_id'], $image_media_created_at);
+                    // 发生了改变就更新
+                    if ($res['media_id'] != $data['image_media_id']) {
+                        $updateData = array();
+                        $updateData['image_media_id'] = $res['media_id'];
+                        $updateData['image_media_created_at'] = date("Y-m-d H:i:s", $res['created_at']);
+                        WelcomeMsgModel::where('id', $id)->update($updateData);
+                    }
+                }
+
+                if (!empty($data['miniprogram_pic_media'])) {
+                    $res = $weixinopenService->uploadMediaByApi($data['miniprogram_pic_media'], 'image', $data['miniprogram_pic_media_id'], $miniprogram_pic_media_created_at);
+                    // 发生了改变就更新
+                    if ($res['media_id'] != $data['miniprogram_pic_media_id']) {
+                        $updateData = array();
+                        $updateData['miniprogram_pic_media_id'] = $res['media_id'];
+                        $updateData['miniprogram_pic_media_created_at'] = date("Y-m-d H:i:s", $res['created_at']);
+                        WelcomeMsgModel::where('id', $id)->update($updateData);
+                    }
+                }
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+    /**
+     * @title({name="上传图片"})
+     *
+     * @name 上传图片
+     */
+    public function uploadmediaimgAction()
+    {
+        // http://www.applicationmodule.com/admin/qyweixin/externalcontactwelcomemsg/uploadmediaimg?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelExternalcontactWelcomeMsg->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4FormTool();
+                $title = "上传图片";
+                $row = $data;
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $agent_agentid = trim($this->request->get('welcomemsg_agentid'));
+                if (empty($agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                $res = $weixinopenService->uploadMediaImgByApi($data['image_media']);
+
+                $updateData = array();
+                $updateData['image_pic_url'] = $res['url'];
+                WelcomeMsgModel::where('id', $id)->update($updateData);
+
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+
+    protected function getFields4FormTool()
+    {
+        $fields = array();
+        $fields['welcomemsg_rec_id'] = array(
+            'name' => 'ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'readonly' => true
+            ),
+        );
+        $fields['welcomemsg_name'] = array(
+            'name' => '名称',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'readonly' => true
+            ),
+        );
+        $fields['welcomemsg_agentid'] = array(
+            'name' => '微信企业应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems,
+            ),
+        );
+
+        return $fields;
+    }
+
     protected function getSchemas2($schemas)
     {
         $schemas['provider_appid'] = array(
             'name' => '第三方服务商应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->providerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->providerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['authorizer_appid'] = array(
             'name' => '授权方应用ID',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => $this->authorizerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'search' => array(
+                'input_type' => 'select',
                 'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'items' => $this->authorizerItems
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['name'] = array(
             'name' => '名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 50,
-                'defaultValue' => '',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['text_content'] = array(
-            'name' => '消息文本内容,最长为4000字节',
+            'name' => '消息文本内容',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '消息文本内容,最长为4000字节',
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['image_media'] = array(
             'name' => '图片',
             'data' => array(
-                'type' => 'string',
+                'type' => 'file',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'image',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '图片',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
-                'items' => '',
+                'render' => 'img',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['image_media_id'] = array(
-            'name' => '图片的media_id，可以通过素材管理接口获得',
+            'name' => '图片的media_id',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '图片的media_id，可以通过素材管理接口获得',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
-            )
-        );
-        $schemas['image_pic_url'] = array(
-            'name' => '图片的链接，仅可使用上传图片接口得到的链接',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => '',
-            ),
-            'validation' => array(
-                'required' => false,
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => '',
-            ),
-            'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
-            ),
-            'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['image_media_created_at'] = array(
@@ -243,61 +383,81 @@ class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
-        $schemas['link_title'] = array(
-            'name' => '图文消息标题，最长为128字节',
+        $schemas['image_pic_url'] = array(
+            'name' => '图片的链接',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '图片的链接，仅可使用上传图片接口得到的链接',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
-                'items' => '',
+                'render' => 'img',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['link_title'] = array(
+            'name' => '图文消息标题',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
                 'is_show' => true,
+                'items' => '',
+                'help' => '图文消息标题，最长为128字节',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
         $schemas['link_picurl'] = array(
@@ -305,61 +465,53 @@ class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['link_desc'] = array(
-            'name' => '图文消息的描述，最长为512字节',
+            'name' => '图文消息的描述',
             'data' => array(
-                'type' => 'json',
+                'type' => 'string',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '图文消息的描述，最长为512字节',
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['link_url'] = array(
@@ -367,123 +519,107 @@ class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['miniprogram_title'] = array(
-            'name' => '小程序消息标题，最长为64字节',
+            'name' => '小程序消息标题',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '小程序消息标题，最长为64字节',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['miniprogram_pic_media'] = array(
             'name' => '小程序消息封面图',
             'data' => array(
-                'type' => 'string',
+                'type' => 'file',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'image',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '小程序消息封面图，封面图建议尺寸为520*416',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
-                'items' => '',
+                'render' => 'img',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['miniprogram_pic_media_id'] = array(
-            'name' => '小程序消息封面的mediaid，封面图建议尺寸为520*416',
+            'name' => '小程序消息封面的mediaid',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
-                'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['miniprogram_pic_media_created_at'] = array(
@@ -491,61 +627,54 @@ class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['miniprogram_appid'] = array(
-            'name' => '小程序appid，必须是关联到企业的小程序应用',
+            'name' => '小程序appid',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '',
+                'help' => '小程序appid，必须是关联到企业的小程序应用',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['miniprogram_page'] = array(
@@ -553,30 +682,26 @@ class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
-                'defaultValue' => '',
+                'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['send_time'] = array(
@@ -584,30 +709,26 @@ class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime(),
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
         $schemas['memo'] = array(
@@ -615,30 +736,26 @@ class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormC
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '',
+                'defaultValue' => '{}'
             ),
             'validation' => array(
-                'required' => false,
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'textarea',
                 'is_show' => true,
-                'items' => '',
-                'help' => '',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => false,
                 'list_type' => '',
                 'render' => '',
-                'items' => '',
             ),
             'search' => array(
-                'is_show' => true,
-                'input_type' => 'text',
-                'items' => '',
+                'is_show' => true
             ),
             'export' => array(
-                'is_show' => true,
+                'is_show' => true
             )
         );
 
@@ -647,7 +764,7 @@ class ExternalcontactwelcomemsgController extends \App\Backend\Controllers\FormC
 
     protected function getName()
     {
-        return '企业微信';
+        return '新客户欢迎语';
     }
 
     protected function getModel()
