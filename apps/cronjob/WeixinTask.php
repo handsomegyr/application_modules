@@ -16,7 +16,12 @@ class WeixinTask extends \Phalcon\CLI\Task
 
         try {
             $modelAuthorizer = new \App\Weixin2\Models\Authorize\Authorizer();
-            $query = array();
+            $now = \App\Common\Utils\Helper::getCurrentTime($now);
+            $query = array(
+                'access_token_expire' => array(
+                    '$lte' => $now
+                )
+            );
             $sort = array('_id' => 1);
             $authorizerList = $modelAuthorizer->findAll($query, $sort);
 

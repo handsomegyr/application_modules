@@ -297,7 +297,7 @@ class MiniprogramqrcodeController extends BaseController
             'data' => array(
                 'type' => 'integer',
                 'length' => 11,
-                'defaultValue' => 0
+                'defaultValue' => 430
             ),
             'validation' => array(
                 'required' => false
@@ -486,7 +486,59 @@ class MiniprogramqrcodeController extends BaseController
                 'is_show' => true
             )
         );
-
+        $schemas['is_auto'] = array(
+            'name' => '是否自动创建',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['channel'] = array(
+            'name' => '来源渠道',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         return $schemas;
     }
 
