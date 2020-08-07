@@ -155,7 +155,7 @@ class MiniprogramqrcodeController extends BaseController
             'name' => '二维码名',
             'data' => array(
                 'type' => 'string',
-                'length' => 20,
+                'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -351,15 +351,15 @@ class MiniprogramqrcodeController extends BaseController
         $schemas['line_color'] = array(
             'name' => '线条颜色',
             'data' => array(
-                'type' => 'json',
-                'length' => 1024,
-                'defaultValue' => '{}'
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => '{"r": "0", "g": "0", "b":"0"}'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'textarea',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
                 'help' => '线条颜色,auto_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"} 十进制表示',

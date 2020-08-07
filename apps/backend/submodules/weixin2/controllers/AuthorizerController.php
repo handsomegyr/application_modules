@@ -39,7 +39,19 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             },
             'icon' => 'fa-pencil-square-o',
         );
-
+        $tools['getaccesstoken'] = array(
+            'title' => '获取Accesstoken信息',
+            'action' => 'getaccesstoken',
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['appid'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
         return $tools;
     }
 
@@ -63,6 +75,33 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
 
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['appid'], $data['component_appid']);
             $res = $weixinopenService->getAuthorizerInfo();
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="获取Accesstoken信息"})
+     *
+     * @name 获取Accesstoken信息
+     */
+    public function getaccesstokenAction()
+    {
+        // http://www.applicationmodule.com/admin/weixin2/authorizer/getaccesstoken?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAuthorizer->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['appid'], $data['component_appid']);
+            $res = $weixinopenService->getAppConfig4Authorizer();
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {

@@ -3,7 +3,7 @@
 /**
  * 添加锁定
  *
- * @author Young
+ * @author guoyongrong
  *        
  *         用法：
  *         $key = array(x=>x);
