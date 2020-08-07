@@ -200,17 +200,22 @@ class MiniappController extends ControllerBase
 
             // 如果有头像的话并且头像发生了改变的时候
             if (!empty($decRes['avatarUrl']) && $headimgurl != $decRes['avatarUrl']) {
-                // $stream_opts = [
-                //     "ssl" => [
-                //         "verify_peer" => false,
-                //         "verify_peer_name" => false,
-                //     ]
-                // ];
-                // $path = 'weixinheadimgurl/' . $decRes['openId'] . '.jpg';
-                // $file = file_get_contents($decRes['avatarUrl'], false, stream_context_create($stream_opts));
+                $stream_opts = [
+                    "ssl" => [
+                        "verify_peer" => false,
+                        "verify_peer_name" => false,
+                    ]
+                ];
+                $path = 'weixinheadimgurl/' . $decRes['openId'] . '.jpg';
+                $file = file_get_contents($decRes['avatarUrl'], false, stream_context_create($stream_opts));
+                // 可以将头像内容上传到OSS上或本地地址
                 // $ossService = new OssService();
                 // $ossService->upload_file_by_content($file, $path);
-                // $userInfo4Session['oss_headimgurl'] = $path;
+                $r = file_put_contents(APP_PATH . '/public/' . $path, $file); // 返回的是字节数
+                if (!$r) {
+                    throw new \Exception('保存文件失败');
+                }
+                $userInfo4Session['oss_headimgurl'] = $path;
             }
 
             $userInfo = $this->modelWeixinopenUser->updateUserInfoBySns($openid, $this->authorizer_appid, $this->component_appid, $userInfo4Session);
