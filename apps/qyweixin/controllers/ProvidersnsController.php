@@ -10,7 +10,7 @@ class ComponentsnsController extends ControllerBase
 {
 
     // 活动ID
-    protected $activity_id = 3;
+    protected $activity_id = 1;
 
     /**
      *

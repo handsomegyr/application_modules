@@ -8,7 +8,7 @@ namespace App\Qyweixin\Controllers;
 class ApplicationsnsController extends ControllerBase
 {
     // 活动ID
-    protected $activity_id = 4;
+    protected $activity_id = 1;
 
     /**
      *

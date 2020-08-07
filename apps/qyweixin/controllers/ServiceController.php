@@ -8,7 +8,7 @@ namespace App\Qyweixin\Controllers;
 class ServiceController extends ControllerBase
 {
     // 活动ID
-    protected $activity_id = 6;
+    protected $activity_id = 1;
 
     /**
      * @var \App\Qyweixin\Models\ScriptTracking

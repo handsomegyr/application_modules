@@ -8,7 +8,7 @@ namespace App\Weixin2\Controllers;
 class MiniappController extends ControllerBase
 {
     // 活动ID
-    protected $activity_id = 4;
+    protected $activity_id = 1;
 
     /**
      * @var \App\Weixin2\Models\User\User
@@ -65,197 +65,6 @@ class MiniappController extends ControllerBase
         $this->modelWeixinopenSnsApplication = new \App\Weixin2\Models\SnsApplication();
 
         $_SESSION['miniapp_start_time'] = microtime(true);
-    }
-
-    /**
-     * 引导用户去授权
-     */
-    public function authorizeAction()
-    {
-        // http://wxcrmdemo.jdytoy.com/weixinopen/api/miniappsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://www.miniappmodule.com/weixinopen/api/miniappsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://www.miniappmodule.com/weixinopen/api/miniappsns/authorize?appid=4m9QOrJMzAjpx75Y&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        try {
-            // 初始化
-            $this->doInitializeLogic();
-
-            $redirect = isset($_GET['redirect']) ? (trim($_GET['redirect'])) : ''; // 附加参数存储跳转地址
-
-            // $dc = isset($_GET['dc']) ? intval($_GET['dc']) : 1; // 是否检查回调域名
-            $dc = empty($this->appConfig['is_cb_url_check']) ? 0 : 1; // 是否检查回调域名
-
-            $refresh = isset($_GET['refresh']) ? intval($_GET['refresh']) : 0; // 是否刷新
-
-            if ($dc) {
-                // 添加重定向域的检查
-                // $list = $this->modelWeixinopenCallbackurls->getValidCallbackUrlList($this->authorizer_appid, $this->component_appid, true);
-                // $hostret = $this->modelWeixinopenCallbackurls->getHost($redirect);
-                // return Result::success($hostret);
-                $isValid = $this->modelWeixinopenCallbackurls->isValid($this->authorizer_appid, $this->component_appid, $redirect);
-                if (empty($isValid)) {
-                    throw new \Exception("回调地址不合法");
-                }
-            }
-
-            if (!$refresh && !empty($_SESSION[$this->sessionKey])) {
-                $arrAccessToken = $_SESSION[$this->sessionKey];
-                $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
-                $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
-                header("location:{$redirect}");
-                exit();
-            } else {
-                // 存储跳转地址
-                $_SESSION['redirect'] = $redirect;
-                $_SESSION['state'] = $this->state;
-                $_SESSION['appid'] = $this->appid;
-
-                $moduleName = 'weixin2';
-                $controllerName = $this->controllerName;
-                $scheme = $this->getRequest()->getScheme();
-                $redirectUri = $scheme . '://';
-                $redirectUri .= $_SERVER["HTTP_HOST"];
-                $redirectUri .= '/' . $moduleName;
-                $redirectUri .= '/' . $controllerName;
-                $redirectUri .= '/callback';
-
-                // 授权处理
-                //应用类型 1:公众号 2:小程序 3:订阅号
-                if ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_PUB) {
-                    $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
-                } else {
-                    throw new \Exception('该运用不支持授权操作');
-                }
-                $objSns->setScope($this->scope);
-                $objSns->setState($this->state);
-                $objSns->setRedirectUri($redirectUri);
-                $redirectUri = $objSns->getAuthorizeUrl(false);
-                header("location:{$redirectUri}");
-                exit();
-            }
-        } catch (\Exception $e) {
-            $this->modelErrorLog->log($this->activity_id, $e, $this->now);
-            return abort(500, $e->getMessage());
-        }
-    }
-
-    /**
-     * 第二步：获取code
-     *
-     * 用户允许授权后，将会重定向到redirect_uri的网址上，并且带上code, state以及appid
-     *
-     * redirect_uri?code=CODE&state=STATE&appid=APPID
-     * 若用户禁止授权，则重定向后不会带上code参数，仅会带上state参数
-     *
-     * redirect_uri?state=STATE
-     * 第二步：通过code换取access_token
-     * 请求方法
-     * 获取第一步的code后，请求以下链接获取access_token：
-     */
-    public function callbackAction()
-    {
-        // http://wxcrmdemo.jdytoy.com/weixinopen/api/miniappsns/callback?appid=xxx&code=xxx&scope=auth_user&state=xxx
-        try {
-            $appid = empty($_SESSION['appid']) ? "" : $_SESSION['appid'];
-            if (empty($appid)) {
-                throw new \Exception("appid未定义");
-            }
-            $_GET['appid'] = $appid;
-
-            // 初始化
-            $this->doInitializeLogic();
-
-            $code = isset($_GET['code']) ? ($_GET['code']) : '';
-            if (empty($code)) {
-                // 如果用户未授权登录，点击取消，自行设定取消的业务逻辑
-                throw new \Exception("点击取消,用户未授权登录");
-            }
-            $redirect = empty($_SESSION['redirect']) ? "" : $_SESSION['redirect'];
-            if (empty($redirect)) {
-                throw new \Exception("回调地址未定义");
-            }
-
-            $state = empty($_SESSION['state']) ? "" : $_SESSION['state'];
-            if ($state != $this->state) {
-                throw new \Exception("state发生了改变");
-            }
-
-            $updateInfoFromWx = false;
-            $sourceFromUserName = !empty($_GET['FromUserName']) ? $_GET['FromUserName'] : '';
-
-            // 第二步：通过code换取access_token
-            //应用类型 1:公众号 2:小程序 3:订阅号
-            if ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_PUB) {
-                $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
-                $arrAccessToken = $objSns->getAccessToken();
-                if (!empty($arrAccessToken['errcode'])) {
-                    throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
-                }
-            } else {
-                throw new \Exception('该运用不支持授权操作');
-            }
-
-            // 授权成功后，记录该微信用户的基本信息
-            $updateInfoFromWx = true;
-            $userInfo = array();
-            // 用户授权的作用域，使用逗号（,）分隔
-            $scopeArr = \explode(',', $arrAccessToken['scope']);
-            if (in_array('snsapi_userinfo', $scopeArr) || in_array('snsapi_login', $scopeArr)) {
-                // 先判断用户在数据库中是否存在最近一周产生的openid，如果不存在，则再动用网络请求，进行用户信息获取
-                $userInfo = $this->modelWeixinopenUser->getUserInfoByIdLastWeek($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $this->now);
-                if (true || empty($userInfo)) {
-                    $updateInfoFromWx = true;
-                    //应用类型 1:公众号 2:小程序 3:订阅号
-                    if ($this->app_type == \App\Weixin2\Models\Authorize\Authorizer::APPTYPE_PUB) {
-                        $weixin = new \Weixin\Client();
-                        $weixin->setSnsAccessToken($arrAccessToken['access_token']);
-                        $userInfo = $weixin->getSnsManager()->getSnsUserInfo($arrAccessToken['openid']);
-                    }
-                    if (isset($userInfo['errcode'])) {
-                        throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
-                    }
-                }
-            }
-            $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
-            if (!empty($userInfo)) {
-                if (!empty($userInfo['nickname'])) {
-                    $arrAccessToken['nickname'] = ($userInfo['nickname']);
-                }
-
-                if (!empty($userInfo['headimgurl'])) {
-                    $arrAccessToken['headimgurl'] = stripslashes($userInfo['headimgurl']);
-                }
-
-                if (!empty($userInfo['unionid'])) {
-                    $arrAccessToken['unionid'] = ($userInfo['unionid']);
-                }
-            }
-
-            $_SESSION[$this->sessionKey] = $arrAccessToken;
-            $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
-
-            if ($sourceFromUserName !== null && $sourceFromUserName == $arrAccessToken['openid']) {
-                $redirect = $this->addUrlParameter($redirect, array(
-                    '__self' => true
-                ));
-            }
-
-            // 调整数据库操作的执行顺序，优化跳转速度
-            if ($updateInfoFromWx) {
-                if (!empty($userInfo['headimgurl'])) {
-                    $userInfo['headimgurl'] = stripslashes($userInfo['headimgurl']);
-                }
-                $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['openid'] . $this->authorizer_appid . $this->component_appid);
-                if (!$lock->lock()) {
-                    $this->modelWeixinopenUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $userInfo);
-                }
-            }
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid'], $this->appConfig['_id']);
-            header("location:{$redirect}");
-            exit();
-        } catch (\Exception $e) {
-            $this->modelErrorLog->log($this->activity_id, $e, $this->now);
-            return abort(500, $e->getMessage());
-        }
     }
 
     /**
@@ -367,17 +176,17 @@ class MiniappController extends ControllerBase
             if (empty($decRes)) {
                 return $this->error(71002, "微信解密失败");
             }
-            $openid = $decRes['result']['openId'];
+            $openid = $decRes['openId'];
             $userInfo4Session = [
-                'openid' => $decRes['result']['openId'],
-                'nickname' => $decRes['result']['nickName'],
-                'headimgurl' => $decRes['result']['avatarUrl'],
-                'city' => $decRes['result']['city'],
-                'country' => $decRes['result']['country'],
-                'sex' => $decRes['result']['gender'],
-                'province' => $decRes['result']['province'],
+                'openid' => $decRes['openId'],
+                'nickname' => $decRes['nickName'],
+                'headimgurl' => $decRes['avatarUrl'],
+                'city' => $decRes['city'],
+                'country' => $decRes['country'],
+                'sex' => $decRes['gender'],
+                'province' => $decRes['province'],
                 'subscribe_time' => time(),
-                'unionid' => isset($decRes['result']['unionId']) ? $decRes['result']['unionId'] : '',
+                'unionid' => isset($decRes['unionId']) ? $decRes['unionId'] : '',
             ];
 
             $lock = new \iLock($this->lock_key_prefix . $openid . $this->authorizer_appid . $this->component_appid);
@@ -385,16 +194,20 @@ class MiniappController extends ControllerBase
                 return $this->error(50001, "请稍等,系统繁忙!");
             }
 
-            // 如果有头像的话
-            if (!empty($decRes['result']['avatarUrl'])) {
+            // 获取头像
+            $tokenInfo = $this->getTokenInfo($token);
+            $headimgurl = $tokenInfo['userInfo']['headimgurl'];
+
+            // 如果有头像的话并且头像发生了改变的时候
+            if (!empty($decRes['avatarUrl']) && $headimgurl != $decRes['avatarUrl']) {
                 // $stream_opts = [
                 //     "ssl" => [
                 //         "verify_peer" => false,
                 //         "verify_peer_name" => false,
                 //     ]
                 // ];
-                // $path = 'weixinheadimgurl/' . $decRes['result']['openId'] . '.jpg';
-                // $file = file_get_contents($decRes['result']['avatarUrl'], false, stream_context_create($stream_opts));
+                // $path = 'weixinheadimgurl/' . $decRes['openId'] . '.jpg';
+                // $file = file_get_contents($decRes['avatarUrl'], false, stream_context_create($stream_opts));
                 // $ossService = new OssService();
                 // $ossService->upload_file_by_content($file, $path);
                 // $userInfo4Session['oss_headimgurl'] = $path;
@@ -444,6 +257,14 @@ class MiniappController extends ControllerBase
                 return $this->error(41001, "token不存在");
             }
 
+            $tokenInfo = $this->getTokenInfo($token);
+            $openid = $tokenInfo['userInfo']['openid'];
+
+            $lock = new \iLock($this->lock_key_prefix . $openid . $this->authorizer_appid . $this->component_appid);
+            if ($lock->lock()) {
+                return $this->error(50001, "请稍等,系统繁忙!");
+            }
+
             // 解密处理
             $decRes = $this->decryptAction($this->authorizer_appid, $encryptedData, $iv, $session_key);
             if (empty($decRes)) {
@@ -452,8 +273,6 @@ class MiniappController extends ControllerBase
             $mobile = $decRes['phoneNumber'];
 
             // 更新手机号
-            $tokenInfo = $this->getTokenInfo($token);
-            $openid = $tokenInfo['userInfo']['openid'];
             $userInfo4Session = array(
                 'openid' => $openid,
                 'mobile' => $mobile
@@ -542,57 +361,68 @@ class MiniappController extends ControllerBase
 
             $type = "getwxacodeunlimit";
 
-            $model = new \App\Weixin2\Models\Miniprogram\Qrcode\Qrcocde();
-            \DB::beginTransaction();
-
             switch ($type) {
                 case "getwxacode":
-                    $data = \App\Components\Weixinopen\Models\Miniprogram\Qrcode\QrcodeModel::firstOrCreate([
+                    $query = [
                         'path' => $path,
                         'authorizer_appid' => $this->authorizer_appid,
                         'component_appid' => $this->component_appid,
                         'type' => $type
-                    ]);
+                    ];
                     break;
                 case "getwxacodeunlimit":
-                    $data = \App\Components\Weixinopen\Models\Miniprogram\Qrcode\QrcodeModel::firstOrCreate([
+                    $query = [
                         'pagepath' => $path,
                         'scene' => $scene,
                         'authorizer_appid' => $this->authorizer_appid,
                         'component_appid' => $this->component_appid,
                         'type' => $type
-                    ]);
+                    ];
                     break;
                 case "createwxaqrcode":
-                    $data = \App\Components\Weixinopen\Models\Miniprogram\Qrcode\QrcodeModel::firstOrCreate([
+                    $query = [
                         'path' => $path,
                         'authorizer_appid' => $this->authorizer_appid,
                         'component_appid' => $this->component_appid,
                         'type' => $type
-                    ]);
+                    ];
                     break;
             }
 
+            $lock = new \iLock($this->lock_key_prefix . md5(\json_encode($query)) . $this->authorizer_appid . $this->component_appid);
+            if ($lock->lock()) {
+                return $this->error(50001, "请稍等,系统繁忙!");
+            }
+
+            $modelQrcode = new \App\Weixin2\Models\Miniprogram\Qrcode\Qrcode();
+            $modelQrcode->begin();
+
+            // 查找数据
+            $data = $modelQrcode->findOne($query);
+            // 如果不存在就追加
+            if (empty($data)) {
+                $data = $modelQrcode->insert($query);
+            }
+
             // 没有生成过二维码的话
-            if (empty($data->url)) {
+            if (empty($data['url'])) {
                 $name = $this->authorizer_appid . "_" . uniqid();
                 // 创建service
                 $weixinopenService = new \App\Weixin2\Services\WeixinService($this->authorizer_appid, $this->component_appid);
-                $data->url = $weixinopenService->createMiniappQrcode($data->id, 1, $channel, $name);
+                $data['url'] = $weixinopenService->createMiniappQrcode($data->id, 1, $channel, $name);
             } else {
-                if (!empty($channel) && empty($data->channel)) {
-                    $data->channel = $channel;
-                    $data->save();
+                if (!empty($channel) && empty($data['channel'])) {
+                    $modelQrcode->update(array('_id' => $data['_id']), array('$set' => array('channel' => $channel)));
                 }
             }
 
-            \DB::commit();
+            $modelQrcode->commit();
 
             $ret = array();
-            $ret['qrcode_url'] = $data->url;
+            $ret['qrcode_url'] = $data['url'];
             return $this->result("OK", $ret);
         } catch (\Exception $e) {
-            \DB::rollback();
+            $modelQrcode->rollback();
             return $this->error(50000, "系统发生错误：" . $e->getMessage());
         }
     }

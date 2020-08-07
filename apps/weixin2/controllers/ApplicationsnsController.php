@@ -8,7 +8,7 @@ namespace App\Weixin2\Controllers;
 class ApplicationsnsController extends ControllerBase
 {
     // 活动ID
-    protected $activity_id = 4;
+    protected $activity_id = 1;
 
     /**
      * @var \App\Weixin2\Models\User\User

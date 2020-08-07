@@ -15,7 +15,7 @@ namespace App\Qyweixin\Controllers;
 class ProviderController extends ControllerBase
 {
     // 活动ID
-    protected $activity_id = 2;
+    protected $activity_id = 1;
 
     /**
      *

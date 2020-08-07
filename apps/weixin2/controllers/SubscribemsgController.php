@@ -9,7 +9,7 @@ class SubscribemsgController extends ControllerBase
 {
 
     // 活动ID
-    protected $activity_id = 5;
+    protected $activity_id = 1;
 
     /**
      * @var \App\Weixin2\Models\ScriptTracking
