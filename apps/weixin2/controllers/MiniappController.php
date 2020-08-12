@@ -121,6 +121,7 @@ class MiniappController extends ControllerBase
                 'token' => $token,
                 'sec' => $sec,
                 'userInfo' => [
+                    'openid' => $userInfo['openid'],
                     'nickname' => $userInfo['nickname'],
                     'headimgurl' => $userInfo['headimgurl'],
                     'headimgurl4Oss' => $userInfo['oss_headimgurl'],
@@ -222,6 +223,7 @@ class MiniappController extends ControllerBase
             $this->setUserInfo($userInfo, $session_key);
 
             $ret = [
+                'openid' => $userInfo['openid'],
                 'nickname' => $userInfo['nickname'],
                 'headimgurl' => $userInfo['headimgurl'],
                 'headimgurl4Oss' => $userInfo['oss_headimgurl'],
