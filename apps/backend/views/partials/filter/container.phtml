@@ -7,6 +7,10 @@ $filterID = 'filter-box';
         <div class="row">
             <?php foreach ($this->view->schemas as $key => $field) { ?>
                 <?php
+                $_SESSION['search_filter']['search_' . $key . '_from'] = "";
+                $_SESSION['search_filter']['search_' . $key . '_to'] = "";
+                $_SESSION['search_filter'][$key] = "";
+
                 $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];
                 if (empty($field['search']['is_show'])) {
                     continue;

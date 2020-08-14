@@ -169,7 +169,15 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
 
             if (empty($field['search']['items'])) {
-                $field['search']['items'] =  $field['form']['items'];
+                if (!empty($field['list']['items'])) {
+                    $field['search']['items'] =  $field['list']['items'];
+                } else {
+                    if (!empty($field['form']['items'])) {
+                        $field['search']['items'] =  $field['form']['items'];
+                    } else {
+                        $field['search']['items'] = array();
+                    }
+                }
             }
             if (!isset($field['search']['is_show'])) {
                 $field['search']['is_show'] = $field['form']['is_show'];
@@ -1170,9 +1178,19 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if (empty($id)) {
                 throw new \Exception("id值未指定");
             }
+            // get exist
+            $row = $this->getModel()->getInfoById($id);
+            if (empty($row)) {
+                throw new \Exception("删除的数据未找到");
+            }
+            $input = new \App\Backend\Models\Input();
+            $input->id = $id;
+
+            // 在进行删除处理之前进行检查
+            $this->validate4Delete($input, $row);
 
             // delete
-            $this->delete($id, array());
+            $this->delete($id, $row);
 
             $this->makeJsonResult($this->getUrl("list"), '删除成功！');
         } catch (\Exception $e) {

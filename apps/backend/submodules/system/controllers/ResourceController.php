@@ -69,6 +69,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
                     $datas['controller_name'] = trim($controllerArr[1]);
                     $datas['action'] = trim($resource['method']);
                     $datas['action_name'] = trim($resource['name']);
+                    $datas['name'] = $datas['controller_name'] . "之" . $datas['action_name'];
                     $this->modelResource->insert($datas);
                 }
             }
@@ -80,6 +81,28 @@ class ResourceController extends \App\Backend\Controllers\FormController
 
     protected function getSchemas2($schemas)
     {
+        $schemas['name'] = array(
+            'name' => '资源名',
+            'data' => array(
+                'type' => 'string',
+                'length' => '255'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => true,
+                'placeholder' => '资源名...'
+            )
+        );
+
         $schemas['module'] = array(
             'name' => '模块',
             'data' => array(

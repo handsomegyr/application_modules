@@ -46,7 +46,7 @@ class SourceController extends \App\Backend\Controllers\FormController
             'name' => '值',
             'data' => array(
                 'type' => 'string',
-                'length' => '20'
+                'length' => '30'
             ),
             'validation' => array(
                 'required' => true

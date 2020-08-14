@@ -35,9 +35,12 @@
                         $field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") { ?>
 
         <?php
+            if(!isset($row['id'])){
+                $row['id'] = '';
+            }
             $sortable = true;
             $path = "";
-            if (!empty($field['data'][$field['data']['type']])) {
+            if (!empty($field['data']) && !empty($field['data'][$field['data']['type']])) {
                 $fileInfo = $field['data'][$field['data']['type']];
                 $path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '';
             }

@@ -3,6 +3,9 @@
     if (empty($field['form']['is_show'])) {
         continue;
     }
+    if (!isset($this->view->row[$key])) {
+        $this->view->row[$key] = "";
+    }
     $field['name'] = empty($field['form']['name']) ? $field['name'] : $field['form']['name'];
     $field['form']['placeholder'] = empty($field['form']['placeholder']) ? "输入 " . $field['name'] : $field['form']['placeholder'];
     // 如果没有编辑或新增的权限 那么所有的form表单上的控件只能只读
@@ -17,6 +20,7 @@
         $value = "";
         $input_type = "text";
         if ($field['form']['input_type'] == "hidden") {
+            $value = $this->view->row[$key];
             $this->partial('partials/form/hidden');
             $this->partial('partials/form/display');
         } elseif ($field['form']['input_type'] == "textarea") {

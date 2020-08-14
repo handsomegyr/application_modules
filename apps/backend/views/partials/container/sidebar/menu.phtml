@@ -3,7 +3,8 @@
     <li class="<?php if (!empty($menu['is_active'])) { ?>active<?php } ?> treeview <?php if (!empty($menu['is_active'])) { ?>menu-open<?php } ?>">
 
         <a href="javascript:;">
-            <i class="fa <?php echo empty($menu['icon']) ? 'fa-tasks' : $menu['icon'] ?>"></i>
+            <?php $menu_icon = (empty($menu['icon']) ? '' : (($menu['icon'] == 'images') ? '' : $menu['icon'])) ?>
+            <i class="<?php if (!empty($menu_icon)) { ?>fa<?php } ?> <?php echo $menu_icon ?>"></i>
             <span><?php echo ($menu['name']) ?></span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -20,7 +21,9 @@
                     ?>
                 <?php } else { ?>
                     <li <?php if (!empty($priv['is_active'])) { ?>class="active" <?php } ?>>
-                        <a class="nav-link" href="<?php echo ($this->view->adminConfig->admin->is_tab_iframe_used || empty($priv['url'])) ? 'javascript:;' : $this->view->baseUrl . $priv['url'] ?>" <?php if($this->view->adminConfig->admin->is_tab_iframe_used){?>onclick="addTabs({id:'<?php echo $priv['_id']?>',title: '<?php echo ($priv['name']) ?>',close: true,url: '<?php echo $this->view->baseUrl . $priv['url']?>',urlType: 'relative'});"<?php } ?>><i class="fa <?php echo empty($priv['icon']) ? 'fa-tasks' : $menu['icon'] ?>"></i> <?php echo ($priv['name']) ?></a>             
+                        <a class="nav-link" href="<?php echo ($this->view->adminConfig->admin->is_tab_iframe_used || empty($priv['url'])) ? 'javascript:;' : $this->view->baseUrl . $priv['url'] ?>" <?php if ($this->view->adminConfig->admin->is_tab_iframe_used) { ?>onclick="addTabs({id:'<?php echo $priv['_id'] ?>',title: '<?php echo ($priv['name']) ?>',close: true,url: '<?php echo $this->view->baseUrl . $priv['url'] ?>',urlType: 'relative'});" <?php } ?>>
+                        <?php $priv_menu_icon = ( empty($priv['icon']) ? '' : (($priv['icon'] == 'images') ? '' : $priv['icon'])) ?>
+                        <i class="<?php if (!empty($priv_menu_icon)) { ?>fa<?php } ?> <?php echo $priv_menu_icon ?>"></i> <?php echo ($priv['name']) ?></a>
                     </li>
                 <?php } ?>
                 <?php $index2++ ?>
