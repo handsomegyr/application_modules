@@ -45,6 +45,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
             $module = "admin";
             $moduleName = "后台管理";
             $resourceList = \App\Backend\Tags\MyTags::getList($module);
+
             if (empty($resourceList)) {
                 throw new \Exception('没有任何资源1');
             }
@@ -53,7 +54,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
             }
             $resources = $resourceList[$module];
 
-            $this->modelResource->remove(array());
+            $this->modelResource->physicalRemove(array());
             foreach ($resources as $key => $items) {
                 // $key : admin_form||表管理
                 $controllerArr = explode('||', $key);
@@ -70,6 +71,11 @@ class ResourceController extends \App\Backend\Controllers\FormController
                     $datas['action'] = trim($resource['method']);
                     $datas['action_name'] = trim($resource['name']);
                     $datas['name'] = $datas['controller_name'] . "之" . $datas['action_name'];
+
+                    if ($datas['module'] == 'admin' && $datas['controller'] == 'form') {
+                        continue;
+                    }
+
                     $this->modelResource->insert($datas);
                 }
             }

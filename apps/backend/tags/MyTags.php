@@ -133,7 +133,8 @@ EOT;
     {
         $resources = array();
         $dirbasepath = APP_PATH . "apps/backend";
-
+        require_once($dirbasepath . '/submodules/qyweixin/controllers/BaseController.php');
+        require_once($dirbasepath . '/submodules/weixin2/controllers/BaseController.php');
         self::includeControllerFiles($dirbasepath);
 
         $reader = new \Phalcon\Annotations\Adapter\Memory();
@@ -309,8 +310,8 @@ EOT;
         foreach ($files as $file) {
             include_once $file;
         }
-
         $diritem = new \DirectoryIterator($dirpath);
+
         foreach ($diritem as $item) {
             if ($item->isDot() || $item->isFile()) {
                 continue;
