@@ -1,7 +1,8 @@
 <?php
-namespace App\Backend\Submodules\System\Controllers;
 
-use App\Backend\Submodules\System\Models\Role;
+namespace App\Backend\Submodules\Backend\Controllers;
+
+use App\Backend\Submodules\Backend\Models\Role;
 
 /**
  * @title({name="用户角色管理"})
@@ -11,15 +12,15 @@ use App\Backend\Submodules\System\Models\Role;
 class RoleController extends \App\Backend\Controllers\FormController
 {
     private $modelRole;
-    
+
     public function initialize()
     {
         $this->modelRole = new Role();
         parent::initialize();
     }
-    
+
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['name'] = array(
             'name' => '角色名',
             'data' => array(
@@ -41,7 +42,7 @@ class RoleController extends \App\Backend\Controllers\FormController
                 'placeholder' => '角色名...'
             )
         );
-        
+
         $schemas['alias'] = array(
             'name' => '角色别名',
             'data' => array(
@@ -63,7 +64,7 @@ class RoleController extends \App\Backend\Controllers\FormController
                 'placeholder' => '角色别名...'
             )
         );
-        
+
         $schemas['desc'] = array(
             'name' => '角色描述',
             'data' => array(
@@ -84,7 +85,7 @@ class RoleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['menu_list'] = array(
             'name' => '菜单设置',
             'data' => array(
@@ -97,7 +98,7 @@ class RoleController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'is_show' => true,
-                'partial' => '../submodules/system/views/role/partials/settings'
+                'partial' => '../submodules/backend/views/role/partials/settings'
             ),
             'list' => array(
                 'is_show' => false
@@ -106,7 +107,7 @@ class RoleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['operation_list'] = array(
             'name' => '操作设置',
             'data' => array(
@@ -128,7 +129,7 @@ class RoleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -144,7 +145,8 @@ class RoleController extends \App\Backend\Controllers\FormController
 
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
-        foreach ($list['data'] as &$item) {}
+        foreach ($list['data'] as &$item) {
+        }
         return $list;
     }
 
@@ -155,8 +157,10 @@ class RoleController extends \App\Backend\Controllers\FormController
     }
 
     protected function validate4Update(\App\Backend\Models\Input $input, $row)
-    {}
+    {
+    }
 
     protected function validate4Delete(\App\Backend\Models\Input $input, $row)
-    {}
+    {
+    }
 }

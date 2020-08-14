@@ -61,7 +61,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         // 不在IFRAME中显示的话需要获取菜单信息
         if (empty($this->__SHOWBYIFRAME__)) {
             $menu_list = !empty($_SESSION['roleInfo']) ? $_SESSION['roleInfo']['menu_list'] : array();
-            $modelMenu = new \App\Backend\Submodules\System\Models\Menu();
+            $modelMenu = new \App\Backend\Submodules\Backend\Models\Menu();
             $menus = $modelMenu->getPrivilege($menu_list, $requestUrl);
             // $menus2 = $modelMenu->buildPrivilegeTree($menu_list, $requestUrl);
             // print_r($menus);

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\System\Controllers;
 
 use App\Backend\Submodules\System\Models\Source;
@@ -20,7 +21,7 @@ class SourceController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['key'] = array(
             'name' => '来源',
             'data' => array(
@@ -41,7 +42,7 @@ class SourceController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['value'] = array(
             'name' => '值',
             'data' => array(

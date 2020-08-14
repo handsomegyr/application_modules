@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\System\Controllers;
 
 use App\Backend\Submodules\System\Models\Activity;
@@ -20,7 +21,8 @@ class ActivityController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        $schemas['name'] = array(
+    {
+        $schemas['name'] = array(
             'name' => '活动名称',
             'data' => array(
                 'type' => 'string',
@@ -40,10 +42,10 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
-        
+
         $schemas['start_time'] = array(
             'name' => '开始时间',
             'data' => array(
@@ -65,7 +67,7 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['end_time'] = array(
             'name' => '截止时间',
             'data' => array(
@@ -87,7 +89,7 @@ class ActivityController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_actived'] = array(
             'name' => '是否激活',
             'data' => array(

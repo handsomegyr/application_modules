@@ -4,7 +4,7 @@ namespace App\Backend\Submodules\Company\Controllers;
 
 use App\Backend\Submodules\Company\Models\ProjectUser;
 use App\Backend\Submodules\Company\Models\Project;
-use App\Backend\Submodules\System\Models\User;
+use App\Backend\Submodules\backend\Models\User;
 
 /**
  * @title({name="项目用户管理"})

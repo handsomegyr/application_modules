@@ -1,5 +1,5 @@
 <?php 
-use App\Backend\Submodules\System\Models\Menu;
+use App\Backend\Submodules\Backend\Models\Menu;
 
 $requestUrl=$this->view->moduleName.'/'.$this->view->controllerName;
 $menu_list = ! empty($_SESSION['roleInfo']) ? $_SESSION['roleInfo']['menu_list'] : array();

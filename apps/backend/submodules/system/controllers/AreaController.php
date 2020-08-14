@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\System\Controllers;
 
 use App\Backend\Submodules\System\Models\Area;
@@ -27,10 +28,10 @@ class AreaController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
-        
+
         $schemas['name'] = array(
             'name' => '地区名称',
             'data' => array(
@@ -52,7 +53,7 @@ class AreaController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['code'] = array(
             'name' => '地区编码',
             'data' => array(
@@ -105,8 +106,7 @@ class AreaController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelArea->getList4Tree('');
                 }
             ),
@@ -117,7 +117,7 @@ class AreaController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

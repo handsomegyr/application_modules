@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\System\Controllers;
 
 use App\Backend\Submodules\System\Models\Enum;
@@ -27,10 +28,10 @@ class EnumController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['_id']['list']['is_show'] = false;
         $schemas['_id']['search']['is_show'] = false;
-        
+
         $schemas['name'] = array(
             'name' => '枚举名',
             'data' => array(
@@ -52,7 +53,7 @@ class EnumController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['code'] = array(
             'name' => '枚举值',
             'data' => array(
@@ -73,7 +74,7 @@ class EnumController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['pid'] = array(
             'name' => '上级枚举',
             'data' => array(
@@ -86,8 +87,7 @@ class EnumController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelEnum->getList4Tree('');
                 }
             ),
@@ -98,7 +98,7 @@ class EnumController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_show'] = array(
             'name' => '是否显示',
             'data' => array(
@@ -121,7 +121,7 @@ class EnumController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['show_order'] = array(
             'name' => '排序',
             'data' => array(
@@ -142,7 +142,7 @@ class EnumController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

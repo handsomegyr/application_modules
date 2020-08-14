@@ -10,8 +10,8 @@ use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
 use App\Backend\Models\User;
-use App\Common\Models\System\Resource;
-use App\System\Models\OperationLog;
+use App\Common\Models\Backend\Resource;
+use App\Backend\Models\OperationLog;
 
 /**
  * SecurityPlugin

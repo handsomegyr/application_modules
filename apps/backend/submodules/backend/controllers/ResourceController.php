@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Backend\Submodules\System\Controllers;
+namespace App\Backend\Submodules\Backend\Controllers;
 
-use App\Backend\Submodules\System\Models\Resource;
+use App\Backend\Submodules\Backend\Models\Resource;
 
 /**
  * @title({name="资源管理"})
@@ -40,7 +40,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
      */
     public function createAction()
     {
-        // http://www.applicationmodule.com/admin/system/resource/create
+        // http://www.applicationmodule.com/admin/backend/resource/create
         try {
             $module = "admin";
             $moduleName = "后台管理";

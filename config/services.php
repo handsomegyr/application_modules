@@ -325,6 +325,11 @@ function registerServices($di)
                 'controller' => 1,
                 'action' => 2
             ));
+            $router->add("/admin/backend/:controller/:action", array(
+                'module' => 'admin/backend',
+                'controller' => 1,
+                'action' => 2
+            ));
             $router->add("/admin/system/:controller/:action", array(
                 'module' => 'admin/system',
                 'controller' => 1,
@@ -521,7 +526,7 @@ function registerServices($di)
                 'controller' => 1,
                 'action' => 2
             ));
-            
+
             $router->add("/:module/:controller/:action", array(
                 'module' => 1,
                 'controller' => 2,

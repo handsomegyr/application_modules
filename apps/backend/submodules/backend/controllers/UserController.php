@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Backend\Submodules\System\Controllers;
+namespace App\Backend\Submodules\Backend\Controllers;
 
-use App\Backend\Submodules\System\Models\User;
-use App\Backend\Submodules\System\Models\Role;
+use App\Backend\Submodules\Backend\Models\User;
+use App\Backend\Submodules\Backend\Models\Role;
 
 /**
  * @title({name="用户管理"})

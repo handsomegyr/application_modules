@@ -445,7 +445,7 @@ EOD;
             }
         }
 
-        $modelMenu = new \App\Backend\Submodules\System\Models\Menu();
+        $modelMenu = new \App\Backend\Submodules\Backend\Models\Menu();
 
         // 事务处理
         if ($isCreate) {

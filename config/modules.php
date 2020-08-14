@@ -36,6 +36,10 @@ $application->registerModules(array(
         'className' => 'App\Backend\Lottery\Module',
         'path' => APP_PATH . 'apps/backend/submodules/lottery/Module.php'
     ),
+    'admin/backend' => array(
+        'className' => 'App\Backend\Backend\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/backend/Module.php'
+    ),
     'admin/system' => array(
         'className' => 'App\Backend\System\Module',
         'path' => APP_PATH . 'apps/backend/submodules/system/Module.php'

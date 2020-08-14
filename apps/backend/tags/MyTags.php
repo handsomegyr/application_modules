@@ -2,8 +2,8 @@
 
 namespace App\Backend\Tags;
 
-use App\Backend\Submodules\System\Models\Menu;
-use App\Backend\Submodules\System\Models\Resource;
+use App\Backend\Submodules\Backend\Models\Menu;
+use App\Backend\Submodules\Backend\Models\Resource;
 
 class MyTags extends \Phalcon\Tag
 {

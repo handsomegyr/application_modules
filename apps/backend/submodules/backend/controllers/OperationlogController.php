@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Backend\Submodules\System\Controllers;
+namespace App\Backend\Submodules\Backend\Controllers;
 
-use App\Backend\Submodules\System\Models\OperationLog;
-use App\Backend\Submodules\System\Models\User;
+use App\Backend\Submodules\Backend\Models\OperationLog;
+use App\Backend\Submodules\Backend\Models\User;
 
 /**
  * @title({name="操作日志管理"})
