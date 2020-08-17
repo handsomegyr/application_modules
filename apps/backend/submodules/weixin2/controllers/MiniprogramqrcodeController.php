@@ -25,20 +25,7 @@ class MiniprogramqrcodeController extends BaseController
 
     protected function isCanCreateQrcode($model)
     {
-        // 如果是永久并且已生成的话
-        if (in_array($model['action_name'], array(
-            "QR_LIMIT_SCENE",
-            "QR_LIMIT_STR_SCENE"
-        )) && !empty($model['is_created'])) {
-            // throw new \Exception("二维码记录ID:{$qrcode_id}所对应的二维码是永久二维码并且已生成");
-            return false;
-        }
-        // 如果是临时并且已生成并且没有过期
-        if (in_array($model['action_name'], array(
-            "QR_SCENE",
-            "QR_STR_SCENE"
-        )) && !empty($model['is_created']) && ($model['ticket_time']->sec + $model['expire_seconds']) > time()) {
-            // throw new \Exception("二维码记录ID:{$qrcode_id}所对应的二维码是临时二维码并且已生成并且没有过期");
+        if (!empty($model['is_created']) && !empty($model['url'])) {
             return false;
         }
         return !empty($model['authorizer_appid']) && !empty($model['component_appid']);
@@ -81,7 +68,7 @@ class MiniprogramqrcodeController extends BaseController
             }
 
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
-            $res = $weixinopenService->createQrcode($id);
+            $res = $weixinopenService->createMiniappQrcode($id, 0, $data['channel'], $data['name']);
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
