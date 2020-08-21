@@ -12,7 +12,7 @@
                 <span class="input-group-addon"><?php echo $prepend ?></span>
             <?php } ?>
 
-            <input <?php if (!empty($field['form']['readonly'])) { ?>readonly <?php } ?> <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="<?php echo $input_type ?>" id="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $value ?>" class="form-control <?php echo $key ?>" placeholder="<?php echo $field['form']['placeholder']; ?>">
+            <input <?php if (!empty($field['form']['readonly'])) { ?>readonly <?php } ?> <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="<?php echo $input_type ?>" id="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $value ?>" class="form-control <?php echo ($key=='url')?'':$key ?>" placeholder="<?php echo $field['form']['placeholder']; ?>">
 
             <?php if (!empty($append)) { ?>
                 <span class="input-group-addon clearfix"><?php echo $append ?></span>

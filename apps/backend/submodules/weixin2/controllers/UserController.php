@@ -305,7 +305,7 @@ class UserController extends BaseController
             'name' => '用户所在国家',
             'data' => array(
                 'type' => 'string',
-                'length' => 30,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -332,7 +332,7 @@ class UserController extends BaseController
             'name' => '用户所在省份',
             'data' => array(
                 'type' => 'string',
-                'length' => 30,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -359,7 +359,7 @@ class UserController extends BaseController
             'name' => '用户所在城市',
             'data' => array(
                 'type' => 'string',
-                'length' => 30,
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(

@@ -104,7 +104,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '国家',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
@@ -128,7 +128,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '省份',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
@@ -152,7 +152,7 @@ class UserController extends \App\Backend\Controllers\FormController
             'name' => '城市',
             'data' => array(
                 'type' => 'string',
-                'length' => '30'
+                'length' => '255'
             ),
             'validation' => array(
                 'required' => false
