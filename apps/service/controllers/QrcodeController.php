@@ -24,4 +24,10 @@ class QrcodeController extends ControllerBase
         $url = urldecode($url);
         \QRcode::png($url, false, QR_ECLEVEL_L, 6);
     }
+
+    $url = 'http://www.baidu.com';
+$api_url = 'http://lnurl.cn/tcn-api.json?key=hd3j2ryt&url=http://www.baidu.com;
+$short_url = file_get_contents($api_url);
+echo $short_url;
+
 }
