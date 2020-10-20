@@ -35,19 +35,27 @@ class CronjobTask extends \Phalcon\CLI\Task
             $rst = array();
             foreach ($cmds as $cmd) {
                 if (isset($cmd['last_execute_time']) && $cmd['last_execute_time'] instanceof \MongoDate) {
-                    if (!empty($cmd['cron'])) {
-                        try {
-                            $cron = \Cron\CronExpression::factory($cmd['cron']);
-                            if (!$cron->isDue()) {
-                                continue;
-                            }
-                        } catch (\Exception $e) {
+                    // 如果设定了秒
+                    if (!empty($cmd['sec_cycle'])) {
+                        $sec_cycle = intval($cmd['sec_cycle']);
+                        if ($cmd['last_execute_time']->sec + $sec_cycle > $nowTime) {
                             continue;
                         }
                     } else {
-                        $cycle = isset($cmd['cycle']) ? $cmd['cycle'] : 0;
-                        if ($cmd['last_execute_time']->sec + $cycle * 60 > $nowTime) {
-                            continue;
+                        if (!empty($cmd['cron'])) {
+                            try {
+                                $cron = \Cron\CronExpression::factory($cmd['cron']);
+                                if (!$cron->isDue()) {
+                                    continue;
+                                }
+                            } catch (\Exception $e) {
+                                continue;
+                            }
+                        } else {
+                            $cycle = isset($cmd['cycle']) ? $cmd['cycle'] : 0;
+                            if ($cmd['last_execute_time']->sec + $cycle * 60 > $nowTime) {
+                                continue;
+                            }
                         }
                     }
                 }
@@ -219,19 +227,27 @@ class CronjobTask extends \Phalcon\CLI\Task
             $rst = array();
             foreach ($cmds as $cmd) {
                 if (isset($cmd['last_execute_time']) && $cmd['last_execute_time'] instanceof \MongoDate) {
-                    if (!empty($cmd['cron'])) {
-                        try {
-                            $cron = \Cron\CronExpression::factory($cmd['cron']);
-                            if (!$cron->isDue()) {
-                                continue;
-                            }
-                        } catch (\Exception $e) {
+                    // 如果设定了秒
+                    if (!empty($cmd['sec_cycle'])) {
+                        $sec_cycle = intval($cmd['sec_cycle']);
+                        if ($cmd['last_execute_time']->sec + $sec_cycle > $nowTime) {
                             continue;
                         }
                     } else {
-                        $cycle = isset($cmd['cycle']) ? $cmd['cycle'] : 0;
-                        if ($cmd['last_execute_time']->sec + $cycle * 60 > $nowTime) {
-                            continue;
+                        if (!empty($cmd['cron'])) {
+                            try {
+                                $cron = \Cron\CronExpression::factory($cmd['cron']);
+                                if (!$cron->isDue()) {
+                                    continue;
+                                }
+                            } catch (\Exception $e) {
+                                continue;
+                            }
+                        } else {
+                            $cycle = isset($cmd['cycle']) ? $cmd['cycle'] : 0;
+                            if ($cmd['last_execute_time']->sec + $cycle * 60 > $nowTime) {
+                                continue;
+                            }
                         }
                     }
                 }

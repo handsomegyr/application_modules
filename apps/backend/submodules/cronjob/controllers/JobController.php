@@ -181,6 +181,31 @@ class JobController extends \App\Backend\Controllers\FormController
             )
         );
 
+        $schemas['sec_cycle'] = array(
+            'name' => '执行周期(秒)',
+            'data' => array(
+                'type' => 'integer',
+                'defaultValue' => '0',
+                'length' => 11
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['cron'] = array(
             'name' => 'cron语法',
             'data' => array(
