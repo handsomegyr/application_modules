@@ -75,7 +75,7 @@ class CronjobTask extends \Phalcon\CLI\Task
                 echo "\n";
                 $fp = popen($cmdString, 'r');
                 if (is_resource($fp)) {
-                    $modelJob->startJob($cmd['_id']);
+                    $modelJob->startJob($cmd['_id'], $nowTime);
                     $tmp = array(
                         'resource' => $fp,
                         'cmd' => $cmd,
@@ -267,7 +267,7 @@ class CronjobTask extends \Phalcon\CLI\Task
                 $cmdString = "/usr/bin/php {$cronjobString} {$cmd['cmd']}";
                 echo $cmdString . "\n";
                 $cmd_id = $cmd['_id'];
-                $modelJob->startJob($cmd_id);
+                $modelJob->startJob($cmd_id, $nowTime);
                 $stdout = "/logs/command_{$cmd['_id']}_{$nowTime}.log";
                 $config = array(
                     'command' => $cmdString,
