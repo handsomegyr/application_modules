@@ -25,6 +25,12 @@
 							?>
 						<?php } ?>
 
+						<div class="btn-group pull-right grid-refresh-btn" style="margin-right: 10px">
+							<a href="javascript:void(0);" class="btn btn-sm btn-success container-refresh" title="刷新">
+								<i class="fa fa-refresh"></i><span class="hidden-xs">&nbsp;&nbsp;刷新</span>
+							</a>
+						</div>
+
 						<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'add') && $this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'insert') && !$this->view->readonly) { //|| $grid->showCreateBtn()
 						?>
 							<!--{!! $grid->renderCreateButton() !!}-->
