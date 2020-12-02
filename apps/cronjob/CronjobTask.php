@@ -177,7 +177,7 @@ class CronjobTask extends \Phalcon\CLI\Task
                 $jobby->add($cmd['_id'], array(
                     'command' => $cmdString,
                     'schedule' => $cmd['cron'],
-                    'output' => "/logs/command_{$cmd['_id']}.log",
+                    // 'output' => "/logs/command_{$cmd['_id']}.log",
                     'enabled' => true
                 ));
             }
@@ -271,7 +271,7 @@ class CronjobTask extends \Phalcon\CLI\Task
                 $stdout = "/logs/command_{$cmd['_id']}_{$nowTime}.log";
                 $config = array(
                     'command' => $cmdString,
-                    'output' => $stdout,
+                    // 'output' => $stdout,
                     'runOnHost' => $host,
                     'enabled' => true
                 );
