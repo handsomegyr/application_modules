@@ -10,8 +10,7 @@ use App\Backend\Submodules\Weixin2\Models\TemplateMsg\TemplateMsg;
 use App\Backend\Submodules\Weixin2\Models\CustomMsg\CustomMsg;
 use App\Backend\Submodules\Weixin2\Models\User\Tag;
 use App\Backend\Submodules\Weixin2\Models\Notification\TaskProcess;
-
-
+use App\Backend\Submodules\Weixin2\Models\Miniprogram\SubscribeMsg\Msg;
 
 /**
  * @title({name="推送任务日志"})
@@ -20,6 +19,9 @@ use App\Backend\Submodules\Weixin2\Models\Notification\TaskProcess;
  */
 class NotificationtasklogController extends BaseController
 {
+    // 是否只读
+    protected $readonly = true;
+
     private $modelTaskLog;
     private $modelSendMethod;
     private $modelTask;
@@ -28,6 +30,7 @@ class NotificationtasklogController extends BaseController
     private $modelCustomMsg;
     private $modelUserTag;
     private $modelTaskProcess;
+    private $modelSubscribeMsg;
 
     public function initialize()
     {
@@ -39,6 +42,7 @@ class NotificationtasklogController extends BaseController
         $this->modelCustomMsg = new CustomMsg();
         $this->modelUserTag = new Tag();
         $this->modelTaskProcess = new TaskProcess();
+        $this->modelSubscribeMsg = new Msg();
 
         $this->userTagItems = $this->modelUserTag->getAllByType("tag_id");
         $this->taskItems = $this->modelTask->getAll();
@@ -47,6 +51,7 @@ class NotificationtasklogController extends BaseController
         $this->templateMsgItems = $this->modelTemplateMsg->getAll();
         $this->customMsgItems = $this->modelCustomMsg->getAllByType("", "_id");
         $this->taskProcessItems = $this->modelTaskProcess->getAll();
+        $this->subscribeMsgItems = $this->modelSubscribeMsg->getAll();
 
         parent::initialize();
     }
@@ -57,6 +62,7 @@ class NotificationtasklogController extends BaseController
     protected $templateMsgItems = null;
     protected $customMsgItems = null;
     protected $taskProcessItems = null;
+    protected $subscribeMsgItems = null;
 
     protected function getSchemas2($schemas)
     {
@@ -210,6 +216,7 @@ class NotificationtasklogController extends BaseController
         $notificationMethodOptions['1'] = "模板消息";
         $notificationMethodOptions['2'] = "群发消息";
         $notificationMethodOptions['3'] = "客服消息";
+        $notificationMethodOptions['4'] = "小程序订阅消息";
 
         $schemas['notification_method'] = array(
             'name' => '推送方式',
@@ -225,7 +232,7 @@ class NotificationtasklogController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $notificationMethodOptions,
-                'help' => '推送方式 1:模板消息 2:群发消息 3:客服消息',
+                'help' => '推送方式 1:模板消息 2:群发消息 3:客服消息 4:小程序订阅消息',
             ),
             'list' => array(
                 'is_show' => true,
@@ -250,7 +257,7 @@ class NotificationtasklogController extends BaseController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'select',
@@ -272,6 +279,38 @@ class NotificationtasklogController extends BaseController
                 'is_show' => true
             )
         );
+
+        $schemas['subscribe_msg_id'] = array(
+            'name' => '小程序消息记录ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->subscribeMsgItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->subscribeMsgItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->subscribeMsgItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['template_msg_id'] = array(
             'name' => '模板消息记录ID',
             'data' => array(

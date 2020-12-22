@@ -12,6 +12,9 @@ use App\Backend\Submodules\Weixin2\Models\Notification\Task;
  */
 class NotificationtaskprocessController extends \App\Backend\Controllers\FormController
 {
+    // 是否只读
+    protected $readonly = true;
+
     private $modelTaskProcess;
     private $modelTask;
 

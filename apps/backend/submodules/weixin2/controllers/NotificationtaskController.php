@@ -9,6 +9,7 @@ use App\Backend\Submodules\Weixin2\Models\MassMsg\MassMsg;
 use App\Backend\Submodules\Weixin2\Models\TemplateMsg\TemplateMsg;
 use App\Backend\Submodules\Weixin2\Models\CustomMsg\CustomMsg;
 use App\Backend\Submodules\Weixin2\Models\User\Tag;
+use App\Backend\Submodules\Weixin2\Models\Miniprogram\SubscribeMsg\Msg;
 
 /**
  * @title({name="推送任务"})
@@ -23,6 +24,7 @@ class NotificationtaskController extends BaseController
     private $modelMassMsg;
     private $modelTemplateMsg;
     private $modelCustomMsg;
+    private $modelSubscribeMsg;
 
     public function initialize()
     {
@@ -32,12 +34,14 @@ class NotificationtaskController extends BaseController
         $this->modelTemplateMsg = new TemplateMsg();
         $this->modelCustomMsg = new CustomMsg();
         $this->modelUserTag = new Tag();
+        $this->modelSubscribeMsg = new Msg();
 
         $this->sendMethodItems = $this->modelSendMethod->getAll();
         $this->massMsgItems = $this->modelMassMsg->getAllByType("", "_id");
         $this->templateMsgItems = $this->modelTemplateMsg->getAll();
         $this->customMsgItems = $this->modelCustomMsg->getAllByType("", "_id");
         $this->userTagItems = $this->modelUserTag->getAllByType("tag_id");
+        $this->subscribeMsgItems = $this->modelSubscribeMsg->getAll();
 
         parent::initialize();
     }
@@ -47,6 +51,7 @@ class NotificationtaskController extends BaseController
     protected $templateMsgItems = null;
     protected $customMsgItems = null;
     protected $userTagItems = null;
+    protected $subscribeMsgItems = null;
 
     protected function getSchemas2($schemas)
     {
@@ -142,6 +147,7 @@ class NotificationtaskController extends BaseController
         $notificationMethodOptions['1'] = "模板消息";
         $notificationMethodOptions['2'] = "群发消息";
         $notificationMethodOptions['3'] = "客服消息";
+        $notificationMethodOptions['4'] = "小程序订阅消息";
 
         $schemas['notification_method'] = array(
             'name' => '推送方式',
@@ -157,7 +163,7 @@ class NotificationtaskController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $notificationMethodOptions,
-                'help' => '推送方式 1:模板消息 2:群发消息 3:客服消息',
+                'help' => '推送方式 1:模板消息 2:群发消息 3:客服消息 4:小程序订阅消息',
             ),
             'list' => array(
                 'is_show' => true,
@@ -182,7 +188,7 @@ class NotificationtaskController extends BaseController
                 'defaultValue' => ''
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'select',
@@ -199,6 +205,37 @@ class NotificationtaskController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->sendMethodItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['subscribe_msg_id'] = array(
+            'name' => '小程序消息记录ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->subscribeMsgItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->subscribeMsgItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->subscribeMsgItems
             ),
             'export' => array(
                 'is_show' => true
@@ -356,6 +393,35 @@ class NotificationtaskController extends BaseController
             )
         );
 
+        $schemas['openids'] = array(
+            'name' => 'openid列表',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => 'openid的个数不要太大，尽量保持在一万个以内，并用逗号分隔',
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
         $schemas['openids_sql'] = array(
             'name' => '获取openid的sql文',
             'data' => array(
@@ -370,7 +436,7 @@ class NotificationtaskController extends BaseController
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '当不是按照tag_id进行群发消息时必须指定',
+                'help' => '通过sql文获取openid列表',
             ),
             'list' => array(
                 'is_show' => false,
@@ -402,7 +468,7 @@ class NotificationtaskController extends BaseController
                 'input_type' => 'file',
                 'is_show' => true,
                 'items' => '',
-                'help' => '当不是按照tag_id进行群发消息时必须指定',
+                'help' => '通过上传csv文件的方式获取openid列表，适合openid个数比较大的场景使用',
             ),
             'list' => array(
                 'is_show' => true,

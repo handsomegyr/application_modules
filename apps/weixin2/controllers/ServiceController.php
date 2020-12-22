@@ -125,6 +125,70 @@ class ServiceController extends ControllerBase
     }
 
     /**
+     * 发送小程序统一消息
+     */
+    public function uniformSendAction()
+    {
+        // http://www.applicationmodule.com/weixinopen/api/service/uniform-send?appid=4m9QOrJMzAjpx75Y&touser=&mp_template_msg={}
+        // http://wxcrmdemo.jdytoy.com/weixinopen/api/service/uniform-send?appid=4m9QOrJMzAjpx75Y&touser=&mp_template_msg={}
+        try {
+            $touser = isset($_GET['touser']) ? (trim($_GET['touser'])) : '';
+            if (empty($touser)) {
+                return $this->error(50000, "touser is empty");
+            }
+            $mp_template_msg = isset($_GET['mp_template_msg']) ? (trim($_GET['mp_template_msg'])) : '';
+            if (empty($mp_template_msg)) {
+                return $this->error(50000, "mp_template_msg is empty");
+            }
+            /**
+             * "mp_template_msg":{
+                    "appid":"APPID ",
+                    "template_id":"TEMPLATE_ID",
+                    "url":"http://weixin.qq.com/download",
+                    "miniprogram":{
+                        "appid":"xiaochengxuappid12345",
+                        "pagepath":"index?foo=bar"
+                    },
+                    "data":{
+                        "first":{
+                            "value":"恭喜你购买成功！",
+                            "color":"#173177"
+                        },
+                        "keyword1":{
+                            "value":"巧克力",
+                            "color":"#173177"
+                        },
+                        "keyword2":{
+                            "value":"39.8元",
+                            "color":"#173177"
+                        },
+                        "keyword3":{
+                            "value":"2014年9月22日",
+                            "color":"#173177"
+                        },
+                        "remark":{
+                            "value":"欢迎再次购买！",
+                            "color":"#173177"
+                        }
+                    }
+                }
+             */
+            $mp_template_msg = \json_decode($mp_template_msg, true);
+            if (empty($mp_template_msg)) {
+                return $this->error(50000, "mp_template_msg is not correct");
+            }
+
+            // 初始化
+            $this->doInitializeLogic();
+            $weapp_template_msg = array();
+            $ret = $this->weixinopenService->uniformSend($touser, $mp_template_msg, $weapp_template_msg);
+            return $this->result("OK", $ret);
+        } catch (\Exception $e) {
+            return $this->error(50000, "系统发生错误：" . $e->getMessage());
+        }
+    }
+
+    /**
      * 初始化
      */
     protected function doInitializeLogic()

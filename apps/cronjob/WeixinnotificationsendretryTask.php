@@ -32,6 +32,10 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
     {
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
+        $task_id = empty($params[0]) ? '' : $params[0];
+        if (empty($task_id)) {
+            $task_id = "";
+        }
 
         try {
             $modelTaskProcess = new \App\Weixin2\Models\Notification\TaskProcess();
@@ -78,7 +82,7 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
                             $ret['api_ret'] = array();
                         } else {
                             // 创建service
-                            $weixinopenService = new \App\Components\Weixinopen\Services\WeixinopenService($taskLog['authorizer_appid'], $taskLog['component_appid']);
+                            $weixinopenService = new \App\Weixin2\Services\WeixinService($taskLog['authorizer_appid'], $taskLog['component_appid']);
 
                             // 推送方式
                             if ($taskLog['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_TEMPLATEMSG) { // 1:模板消息
