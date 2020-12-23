@@ -1,3 +1,5 @@
+<?php if($this->view->is_show_export_button){?>
 <div class="btn-group pull-right" style="margin-right: 10px">
     <a href="<?php echo $this->myTag->getUrl($this->view, 'export',array('m'=>'csv'));?>" target="_blank" class="btn btn-sm btn-twitter" title="导出"><i class="fa fa-download"></i><span class="hidden-xs"> 导出</span></a>
 </div>
+<?php }?>

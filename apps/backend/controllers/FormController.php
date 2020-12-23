@@ -20,6 +20,18 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     // 是否只读
     protected $readonly = false;
 
+    // 是否显示编辑按钮
+    protected $is_show_edit_button = true;
+
+    // 是否显示新增按钮
+    protected $is_show_create_button = true;
+
+    // 是否显示导出按钮
+    protected $is_show_export_button = true;
+
+    // 是否显示删除按钮
+    protected $is_show_delete_button = true;    
+
     protected function getName()
     {
         return '';
