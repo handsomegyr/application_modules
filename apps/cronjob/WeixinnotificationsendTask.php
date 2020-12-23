@@ -129,7 +129,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             }
 
                             // 发送模板消息
-                            $ret = $weixinopenService->sendTemplateMsg($taskLog['openid'], "", $templateMsgInfo, $match);
+                            $ret = $weixinopenService->sendTemplateMsg("", $taskLog['openid'], $templateMsgInfo, $match);
                         } elseif ($taskInfo['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_MASSMSG) { // 2:群发消息
 
                             // 获取群发消息发送方式信息
@@ -184,7 +184,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
 
                             // 发送客服消息
                             $match['custom_msg_type'] = $customMsgInfo['msg_type'];
-                            $ret = $weixinopenService->sendCustomMsg($taskLog['openid'], "", $customMsgInfo, $match);
+                            $ret = $weixinopenService->sendCustomMsg("", $taskLog['openid'], $customMsgInfo, $match);
                         } elseif ($taskLog['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_SUBSCRIBETEMPLATEMSG4MINIPROGRAM) { // 4:小程序订阅消息
 
                             // 根据订阅模板消息记录ID获取订阅模板消息配置
@@ -195,7 +195,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             }
 
                             // 发送订阅模板消息
-                            $ret = $weixinopenService->sendMicroappSubscribeMsg($taskLog['openid'], "", $subscribeMsgInfo, $match);
+                            $ret = $weixinopenService->sendMicroappSubscribeMsg("", $taskLog['openid'], $subscribeMsgInfo, $match);
                         } elseif ($taskLog['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_UNIFORMMSG4MINIPROGRAM) { // 5:小程序统一服务消息
 
                             // 根据模板消息记录ID获取模板消息配置
@@ -206,7 +206,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             }
 
                             // 发送模板消息
-                            $ret = $weixinopenService->sendMicroappUniformMsg($taskLog['openid'], "", $templateMsgInfo, $match);
+                            $ret = $weixinopenService->sendMicroappUniformMsg("", $taskLog['openid'], $templateMsgInfo, $match);
                         }
 
                         // 记录发送结果

@@ -95,7 +95,7 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 }
 
                                 // 发送模板消息
-                                $ret = $weixinopenService->sendTemplateMsg($taskLog['openid'], "", $templateMsgInfo, $match);
+                                $ret = $weixinopenService->sendTemplateMsg("", $taskLog['openid'], $templateMsgInfo, $match);
                             } elseif ($taskLog['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_MASSMSG) { // 2:群发消息
 
                                 // 获取群发消息发送方式信息
@@ -146,7 +146,7 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
 
                                 // 发送客服消息
                                 $match['custom_msg_type'] = $customMsgInfo['msg_type'];
-                                $ret = $weixinopenService->sendCustomMsg($taskLog['openid'], "", $customMsgInfo, $match);
+                                $ret = $weixinopenService->sendCustomMsg("", $taskLog['openid'], $customMsgInfo, $match);
                             }
 
                             // 记录发送结果
