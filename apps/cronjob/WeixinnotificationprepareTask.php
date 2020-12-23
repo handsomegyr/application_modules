@@ -167,6 +167,8 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
             if ($isCheckOpenids) {
                 $line_no = 0;
                 $i = 0;
+                // 排重用
+                $openidList4Log = array();
                 // 如果任务信息中配置了openids字段的话就用openids字段中的值进行发送
                 if (!empty($taskInfo['openids'])) {
 
@@ -181,7 +183,11 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         if (empty($openid)) {
                             continue;
                         }
+                        if (isset($openidList4Log[$openid])) {
+                            continue;
+                        }
                         $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], 0, '按openids列表发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                        $openidList4Log[$openid] = $openid;
                         $i++;
                     }
                 } elseif (!empty($taskInfo['openids_file'])) { // 如果任务信息中上传了openids文件的话 那么就用上传文件中的openid进行发送
@@ -211,7 +217,11 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         if (empty($openid)) {
                             continue;
                         }
+                        if (isset($openidList4Log[$openid])) {
+                            continue;
+                        }
                         $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], 0, '按上传文件发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                        $openidList4Log[$openid] = $openid;
                         $i++;
                     }
                 } elseif (!empty($taskInfo['openids_sql'])) { // 如果任务信息中配置了openids_sql字段的话 那么就用openids_sql字段获取的openid列表进行发送
@@ -231,7 +241,11 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         if (empty($openid)) {
                             continue;
                         }
+                        if (isset($openidList4Log[$openid])) {
+                            continue;
+                        }
                         $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], 0, '按sql文发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                        $openidList4Log[$openid] = $openid;
                         $i++;
                     }
                 }
