@@ -152,6 +152,14 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                 if (empty($subscribeMsgInfo)) {
                     throw new \Exception("任务ID:{$taskInfo['id']},订阅消息记录ID:{$taskInfo['subscribe_msg_id']}所对应的记录不存在");
                 }
+            } elseif ($taskInfo['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_UNIFORMMSG4MINIPROGRAM) { // 5:小程序统一服务消息
+
+                // 根据模板消息记录ID获取模板消息配置
+                $modelTemplateMsg = new \App\Weixin2\Models\TemplateMsg\TemplateMsg();
+                $templateMsgInfo = $modelTemplateMsg->getInfoById($taskInfo['template_msg_id']);
+                if (empty($templateMsgInfo)) {
+                    throw new \Exception("任务ID:{$taskInfo['id']},公众号模板消息记录ID:{$taskInfo['template_msg_id']}所对应的记录不存在");
+                }
             }
 
             $j = 0;

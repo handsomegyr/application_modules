@@ -476,6 +476,43 @@ class TemplatemsgsendlogController extends BaseController
             )
         );
 
+        // 发送方式
+        $sendMethodOptions = array();
+        $sendMethodOptions['0'] = "公众号模板消息";
+        $sendMethodOptions['1'] = "小程序统一消息";
+
+        $schemas['send_method'] = array(
+            'name' => '发送方式',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $sendMethodOptions,
+                'help' => '发送方式 0:公众号模板消息 1:小程序统一消息',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $sendMethodOptions
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $sendMethodOptions
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         return $schemas;
     }
 

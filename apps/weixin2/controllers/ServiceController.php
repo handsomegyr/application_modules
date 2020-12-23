@@ -142,36 +142,36 @@ class ServiceController extends ControllerBase
             }
             /**
              * "mp_template_msg":{
-                    "appid":"APPID ",
-                    "template_id":"TEMPLATE_ID",
-                    "url":"http://weixin.qq.com/download",
-                    "miniprogram":{
-                        "appid":"xiaochengxuappid12345",
-                        "pagepath":"index?foo=bar"
-                    },
-                    "data":{
-                        "first":{
-                            "value":"恭喜你购买成功！",
-                            "color":"#173177"
-                        },
-                        "keyword1":{
-                            "value":"巧克力",
-                            "color":"#173177"
-                        },
-                        "keyword2":{
-                            "value":"39.8元",
-                            "color":"#173177"
-                        },
-                        "keyword3":{
-                            "value":"2014年9月22日",
-                            "color":"#173177"
-                        },
-                        "remark":{
-                            "value":"欢迎再次购买！",
-                            "color":"#173177"
-                        }
-                    }
-                }
+             *      "appid":"APPID ",
+             *      "template_id":"TEMPLATE_ID",
+             *      "url":"http://weixin.qq.com/download",
+             *      "miniprogram":{
+             *          "appid":"xiaochengxuappid12345",
+             *          "pagepath":"index?foo=bar"
+             *      },
+             *      "data":{
+             *          "first":{
+             *             "value":"恭喜你购买成功！",
+             *             "color":"#173177"
+             *          },
+             *          "keyword1":{
+             *             "value":"巧克力",
+             *             "color":"#173177"
+             *          },
+             *          "keyword2":{
+             *             "value":"39.8元",
+             *             "color":"#173177"
+             *          },
+             *          "keyword3":{
+             *             "value":"2014年9月22日",
+             *             "color":"#173177"
+             *          },
+             *          "remark":{
+             *             "value":"欢迎再次购买！",
+             *             "color":"#173177"
+             *          }
+             *      }
+             *  }
              */
             $mp_template_msg = \json_decode($mp_template_msg, true);
             if (empty($mp_template_msg)) {

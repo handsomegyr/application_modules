@@ -196,6 +196,17 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
 
                             // 发送订阅模板消息
                             $ret = $weixinopenService->sendMicroappSubscribeMsg($taskLog['openid'], "", $subscribeMsgInfo, $match);
+                        } elseif ($taskLog['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_UNIFORMMSG4MINIPROGRAM) { // 5:小程序统一服务消息
+
+                            // 根据模板消息记录ID获取模板消息配置
+                            $modelTemplateMsg = new \App\Weixin2\Models\TemplateMsg\TemplateMsg();
+                            $templateMsgInfo = $modelTemplateMsg->getInfoById($taskLog['template_msg_id']);
+                            if (empty($templateMsgInfo)) {
+                                throw new \Exception("任务日志记录ID:{$taskLog['id']},公众号模板消息记录ID:{$taskLog['template_msg_id']}所对应的记录不存在");
+                            }
+
+                            // 发送模板消息
+                            $ret = $weixinopenService->sendMicroappUniformMsg($taskLog['openid'], "", $templateMsgInfo, $match);
                         }
 
                         // 记录发送结果
