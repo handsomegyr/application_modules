@@ -18,8 +18,8 @@ class AccessToken
 
     public function getLastestInfo()
     {
-        $connection = $this->getConnection();
-        $info = $connection->fetchOne("SELECT * FROM {$this->table_name} Order by id desc", \Phalcon\Db::FETCH_ASSOC);
+        $connection = $this->getConnection();        
+        $info = $connection->fetchOne("SELECT * FROM {$this->table_name} Order by id desc", MYDB_FETCH_ASSOC);
         return $info;
     }
 }

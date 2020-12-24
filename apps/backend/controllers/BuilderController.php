@@ -301,7 +301,7 @@ EOD;
         $di = \Phalcon\DI::getDefault();
         $db = $di['db'];
         $result = $db->query("SHOW TABLES", array());
-        $result->setFetchMode(\Phalcon\Db::FETCH_ASSOC);
+        $result->setFetchMode(MYDB_FETCH_ASSOC);
         $tables = $result->fetchAll();
         $list = array();
         $time = date('Y-m-d H:i:s');
@@ -322,7 +322,7 @@ EOD;
         $di = \Phalcon\DI::getDefault();
         $db = $di['db'];
         $result = $db->query("SHOW FULL COLUMNS FROM {$table}", array());
-        $result->setFetchMode(\Phalcon\Db::FETCH_ASSOC);
+        $result->setFetchMode(MYDB_FETCH_ASSOC);
         $tableInfo = $result->fetchAll();
         return $this->getDisplayColumns($tableInfo);
     }

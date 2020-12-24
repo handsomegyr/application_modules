@@ -233,7 +233,7 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                     // 加载openids数据
                     $connection = $modelTask->getDb();
                     $result1 = $connection->query($openids_sql, array());
-                    $result1->setFetchMode(\Phalcon\Db::FETCH_ASSOC);
+                    $result1->setFetchMode(MYDB_FETCH_ASSOC);
                     $openids = $result1->fetchAll();
                     foreach ($openids as $col) {
                         $openid = trim($col['openid']);

@@ -18,8 +18,8 @@ class Hongbao
 
     public function getInfoByFromUserName($FromUserName)
     {
-        $connection = $this->getConnection();
-        $info = $connection->fetchOne("SELECT * FROM {$this->table_name} Where FromUserName = :FromUserName", \Phalcon\Db::FETCH_ASSOC, array(
+        $connection = $this->getConnection();        
+        $info = $connection->fetchOne("SELECT * FROM {$this->table_name} Where FromUserName = :FromUserName", MYDB_FETCH_ASSOC, array(
             'FromUserName' => $FromUserName
         ));
         return $info;

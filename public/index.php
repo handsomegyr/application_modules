@@ -16,6 +16,16 @@ ini_set("session.save_path", "192.168.81.129:11211"); // 不要tcp:
 if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
     ini_set('session.lazy_write', 0);
 }
+
+//https://docs.phalcon.io/4.0/en/upgrade
+if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+    define('MYDB_FETCH_ASSOC', \Phalcon\Db::FETCH_ASSOC);
+    define('MYDB_FETCH_OBJ', \Phalcon\Db::FETCH_OBJ);
+} else {
+    define('MYDB_FETCH_ASSOC', \Phalcon\Db\Enum::FETCH_ASSOC);
+    define('MYDB_FETCH_OBJ', \Phalcon\Db\Enum::FETCH_OBJ);
+}
+
 try {
     session_start();
     /**
@@ -59,7 +69,14 @@ try {
      */
     require __DIR__ . '/../config/modules.php';
 
-    echo $application->handle()->getContent();
+    // phalcon从3.4版本升级到4.0版本不兼容变化汇总 https://blog.csdn.net/ligaofeng/article/details/103837168/
+    if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+        echo $application->handle()->getContent();
+    } else {
+        $request = new \Phalcon\Http\Request();
+        $response = $application->handle($request->getURI());
+        $response->send();
+    }
 } catch (\Exception $e) {
     die($e->getMessage());
 }

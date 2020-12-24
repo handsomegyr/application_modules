@@ -3,6 +3,15 @@
 use Phalcon\DI\FactoryDefault\CLI as CliDI;
 use Phalcon\CLI\Console as ConsoleApp;
 
+//https://docs.phalcon.io/4.0/en/upgrade
+if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+    define('MYDB_FETCH_ASSOC', \Phalcon\Db::FETCH_ASSOC);
+    define('MYDB_FETCH_OBJ', \Phalcon\Db::FETCH_OBJ);
+} else {
+    define('MYDB_FETCH_ASSOC', \Phalcon\Db\Enum::FETCH_ASSOC);
+    define('MYDB_FETCH_OBJ', \Phalcon\Db\Enum::FETCH_OBJ);
+}
+
 try {
     /**
      * Include const
