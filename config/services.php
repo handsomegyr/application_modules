@@ -5,7 +5,6 @@
  */
 
 use Phalcon\Mvc\Router;
-use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Loader;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 // use Phalcon\Cache\Backend\File as BackFile;
@@ -551,7 +550,12 @@ function registerServices($di)
          * The URL component is used to generate all kind of urls in the application
          */
         $di['url'] = function () {
-            $url = new UrlResolver();
+            // phalcon从3.4版本升级到4.0版本不兼容变化汇总 https://blog.csdn.net/ligaofeng/article/details/103837168/
+            if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+                $url = new \Phalcon\Mvc\Url();
+            } else {
+                $url = new \Phalcon\Url();
+            }
             $url->setBaseUri('/');
             return $url;
         };
