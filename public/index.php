@@ -6,8 +6,8 @@ use Phalcon\DI;
 // ini_set('display_errors', 'On');
 // die('xxx:' . ini_get('display_errors'));
 error_reporting(E_ALL);
-// ini_set('display_startup_errors', 1);
-// ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
 // error_reporting(- 1);
 
 ini_set("session.save_handler", "memcached"); // 是memcached不是memcache
@@ -33,11 +33,15 @@ try {
      */
     require __DIR__ . '/../config/const.php';
 
+    // chmod(APP_PATH . "cache/", 777);
+
     define('CURRENT_TIMESTAMP', time()); // 当前时间
 
     require __DIR__ . '/../vendor/autoload.php';
 
     require __DIR__ . '/../library/functions.php';
+
+    require __DIR__ . '/../library/iCache.php';
 
     require __DIR__ . '/../library/core.php';
 

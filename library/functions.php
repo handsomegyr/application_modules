@@ -535,7 +535,7 @@ function isJson($string)
 function cacheKey()
 {
     $args = func_get_args();
-    return md5(serialize($args));
+    return md5(serialize($args)) . 'ck';
 }
 
 /**

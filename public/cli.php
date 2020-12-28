@@ -24,6 +24,8 @@ try {
 
     require __DIR__ . '/../library/functions.php';
 
+    require __DIR__ . '/../library/iCache.php';
+
     require __DIR__ . '/../library/core.php';
 
     require __DIR__ . '/../library/MongoDate.php';

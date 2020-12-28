@@ -30,7 +30,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     protected $is_show_export_button = true;
 
     // 是否显示删除按钮
-    protected $is_show_delete_button = true;    
+    protected $is_show_delete_button = true;
 
     protected function getName()
     {
@@ -897,6 +897,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $orginalDataList = array();
             if (!empty($list['data'])) {
                 foreach ($list['data'] as &$item) {
+                    if (!isset($item['id'])) {
+                        $item['id'] = $item['_id'];
+                    }
                     $orginalDataList[$item['id']] = $item;
                     $item = $this->returnRecord4ListShow($item, $schemas);
 

@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Backend\Plugins;
 
 use Phalcon\Events\Event;
-use Phalcon\Mvc\User\Plugin;
 use Phalcon\Dispatcher;
 use Phalcon\Mvc\Dispatcher\Exception as DispatcherException;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
@@ -12,21 +12,26 @@ use Phalcon\Mvc\Dispatcher as MvcDispatcher;
  *
  * Handles not-found controller/actions
  */
-class NotFoundPlugin extends Plugin
-{
 
+// https://docs.phalcon.io/4.0/en/upgrade#upgrade-guide
+// class NotFoundPlugin extends \Phalcon\Mvc\User\Plugin
+class NotFoundPlugin extends \Phalcon\Di\Injectable
+{
     /**
      * This action is executed before execute any action in the application
      *
      * @param Event $event            
      * @param Dispatcher $dispatcher            
      */
-    public function beforeException(Event $event, MvcDispatcher $dispatcher,\Exception $exception)
+    public function beforeException(Event $event, MvcDispatcher $dispatcher, \Exception $exception)
     {
         if ($exception instanceof DispatcherException) {
             switch ($exception->getCode()) {
-                case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
-                case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                    // https://docs.phalcon.io/4.0/en/upgrade#upgrade-guide
+                    // case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+                    // case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                case DispatcherException::EXCEPTION_HANDLER_NOT_FOUND:
+                case DispatcherException::EXCEPTION_ACTION_NOT_FOUND:
                     $dispatcher->forward(array(
                         'controller' => 'error',
                         'action' => 'show404'
@@ -34,7 +39,7 @@ class NotFoundPlugin extends Plugin
                     return false;
             }
         }
-        
+
         if (empty($_SESSION['admin_id'])) {
             $this->view->setVar('errorMsg', $exception->getMessage());
             $dispatcher->forward(array(

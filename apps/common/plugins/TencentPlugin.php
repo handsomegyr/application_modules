@@ -2,7 +2,6 @@
 namespace App\Common\Plugins;
 
 use Phalcon\Events\Event;
-use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
 
 /**
@@ -10,7 +9,9 @@ use Phalcon\Mvc\Dispatcher;
  *
  * This is the Tencent plugin which controls that users only have access to the modules they're assigned to
  */
-class TencentPlugin extends Plugin
+// https://docs.phalcon.io/4.0/en/upgrade#upgrade-guide
+// class TencentPlugin extends \Phalcon\Mvc\User\Plugin
+class TencentPlugin extends \Phalcon\Di\Injectable
 {
 
     /**

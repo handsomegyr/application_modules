@@ -74,6 +74,7 @@ class Module
          * Setting up the view component
          */
         $di['view'] = function () {
+
             $view = new View();
             //$view->setViewsDir(__DIR__ . '/views4backend1/');
             $view->setViewsDir(__DIR__ . '/views/');
@@ -87,18 +88,35 @@ class Module
         /**
          * Setting up volt
          */
-        $di->set('volt', function ($view, $di) {
+        //https://docs.phalcon.io/4.0/en/volt
+        if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+            $di->set('volt', function ($view, $di) {
+                $volt = new VoltEngine($view, $di);
+                $volt->setOptions(array(
+                    "compiledPath" => APP_PATH . "cache/volt/"
+                ));
 
-            $volt = new VoltEngine($view, $di);
+                $compiler = $volt->getCompiler();
+                $compiler->addFunction('is_a', 'is_a');
 
-            $volt->setOptions(array(
-                "compiledPath" => APP_PATH . "cache/volt/"
-            ));
-
-            $compiler = $volt->getCompiler();
-            $compiler->addFunction('is_a', 'is_a');
-
-            return $volt;
-        }, true);
+                return $volt;
+            }, true);
+        } else {
+            $di->set('volt', function (\Phalcon\Mvc\ViewBaseInterface $view) use ($di) {
+                $volt = new VoltEngine($view, $di);
+                $volt->setOptions(
+                    [
+                        'always'    => true,
+                        // 'extension' => '.php',
+                        'separator' => '_',
+                        'stat'      => true,
+                        // 'path'      => appPath('storage/cache/volt/'),
+                        'path'      => APP_PATH . "cache/volt/",
+                        // 'prefix'    => '-prefix-',
+                    ]
+                );
+                return $volt;
+            });
+        }
     }
 }

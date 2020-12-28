@@ -8,7 +8,7 @@
                     $field['name'] = empty($field['search']['name']) ? $field['name'] : $field['search']['name'];
                     $field['search']['placeholder'] = empty($field['search']['placeholder']) ? "输入 " . $field['name'] : $field['search']['placeholder'];
                     $field['search']['input_type'] = empty($field['search']['input_type']) ? $field['form']['input_type'] : $field['search']['input_type'];
-                    $field['search']['items'] = empty($field['search']['items']) ? $field['form']['items'] : $field['search']['items'];
+                    $field['search']['items'] = empty($field['search']['items']) ? (!empty($field['form']['items']) ? $field['form']['items'] : array()) : $field['search']['items'];
                     $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];
                     ?>
                     <?php if (!empty($field['search']['is_show']) && !empty($field['search']['input_type'])) { ?>

@@ -7,9 +7,9 @@
 use Phalcon\Mvc\Router;
 use Phalcon\Loader;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
-// use Phalcon\Cache\Backend\File as BackFile;
-use Phalcon\Cache\Backend\Libmemcached as Libmemcached;
-use Phalcon\Cache\Frontend\Data as FrontData;
+// use Phalcon\Cache\Backend\File as BackFile;    
+// use Phalcon\Cache\Backend\Libmemcached as Libmemcached;
+// use Phalcon\Cache\Frontend\Data as FrontData;
 use Phalcon\Mvc\Model\Transaction\Manager as TransactionManager;
 use Phalcon\Events\Manager as EventsManager;
 use Pheanstalk\Pheanstalk;
@@ -170,32 +170,58 @@ function registerServices($di)
      * Setting up the cache component
      */
     $di['cache'] = function () use ($config) {
-        // Cache the files for 2 days using a Data frontend
-        $frontCache = new FrontData(array(
-            "lifetime" => 172800
-        ));
+        //https://docs.phalcon.io/4.0/en/cache
+        if (version_compare(PHP_VERSION, '7.4.0') < 0) {
 
-        // // Create the component that will cache "Data" to a "File" backend
-        // // Set the cache file directory - important to keep the "/" at the end of
-        // // of the value for the folder
-        // $cache = new BackFile($frontCache, array(
-        // "cacheDir" => APP_PATH . "cache/service/"
-        // ));
+            // Cache the files for 2 days using a Data frontend
+            $frontCache = new \Phalcon\Cache\Frontend\Data(array(
+                "lifetime" => 172800
+            ));
 
-        // Create the Cache setting memcached connection options
-        $cache = new Libmemcached($frontCache, array(
-            'servers' => array(
-                array(
-                    'host' => $config['memcached']['host'],
-                    'port' => $config['memcached']['port'],
-                    'weight' => $config['memcached']['weight']
+            // // Create the component that will cache "Data" to a "File" backend
+            // // Set the cache file directory - important to keep the "/" at the end of
+            // // of the value for the folder
+            // $cache = new BackFile($frontCache, array(
+            // "cacheDir" => APP_PATH . "cache/service/"
+            // ));
+
+            // Create the Cache setting memcached connection options
+            $cache = new \Phalcon\Cache\Backend\Libmemcached($frontCache, array(
+                'servers' => array(
+                    array(
+                        'host' => $config['memcached']['host'],
+                        'port' => $config['memcached']['port'],
+                        'weight' => $config['memcached']['weight']
+                    )
+                ),
+                'client' => array(
+                    Memcached::OPT_HASH => Memcached::HASH_MD5,
+                    Memcached::OPT_PREFIX_KEY => $config['memcached']['prefix_key'] . '.'
                 )
-            ),
-            'client' => array(
-                Memcached::OPT_HASH => Memcached::HASH_MD5,
-                Memcached::OPT_PREFIX_KEY => $config['memcached']['prefix_key'] . '.'
-            )
-        ));
+            ));
+        } else {
+            $serializerFactory = new \Phalcon\Storage\SerializerFactory();
+
+            $options = [
+                'defaultSerializer' => 'php',
+                'lifetime'          => 7200,
+                'servers'           => [
+                    0 => [
+                        'host'   => $config['memcached']['host'],
+                        'port'   => $config['memcached']['port'],
+                        'weight' => $config['memcached']['weight'],
+                    ]
+                ],
+                // 'client' => array(
+                //     Memcached::OPT_HASH => Memcached::HASH_MD5,
+                //     Memcached::OPT_PREFIX_KEY => $config['memcached']['prefix_key'] . '.'
+                // )
+            ];
+
+            $cache = new \Phalcon\Cache\Adapter\Libmemcached($serializerFactory, $options);
+        }
+
+        $cache = new \iCache($cache);
         return $cache;
     };
 
@@ -295,6 +321,7 @@ function registerServices($di)
          * Registering a router
          */
         $di['router'] = function () {
+
             $router = new Router();
 
             $router->setDefaultModule("yungou");
@@ -543,6 +570,7 @@ function registerServices($di)
                 'controller' => 'index',
                 'action' => 'index'
             ));
+
             return $router;
         };
 

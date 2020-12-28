@@ -154,7 +154,7 @@ class LimitController extends \App\Backend\Controllers\FormController
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
-                'defaultValue' => getCurrentTime($now + 3600 * 24 * 2 - 1)
+                'defaultValue' => getCurrentTime($now + 3600 * 24)
             ),
             'validation' => array(
                 'required' => true
@@ -188,15 +188,5 @@ class LimitController extends \App\Backend\Controllers\FormController
     {
         return $this->modelLimit;
     }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $prizeList = $this->modelPrize->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['prize_name'] = isset($prizeList[$item['prize_id']]) ? $prizeList[$item['prize_id']] : '--';
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-        }
-        return $list;
-    }
+    
 }

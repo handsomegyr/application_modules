@@ -241,7 +241,7 @@ EOD;
         try {
             $this->view->disable();
             resetTimeMemLimit();
-            
+
             $settings = $this->get('settings', '');
             $is_create_menu = intval($this->get('is_create_menu', 1));
 

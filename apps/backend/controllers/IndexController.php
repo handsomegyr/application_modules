@@ -166,7 +166,6 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             $this->view->disable();
             $input = $this->getLoginFilterInput();
             if ($input->isValid()) {
-
                 $token = $this->request->get('_token', array(
                     'trim'
                 ), '');
@@ -183,7 +182,6 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             if (intval($input->remember)) {
                 $this->modelUser->storeInCookies($userInfo);
             }
-
             $url = $this->getUrl("index");
             //$this->_redirect($url);
 
@@ -200,7 +198,6 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             $ret['redirect'] = $url;
             $this->makeJsonResult($ret, 'ok');
         } catch (\Exception $e) {
-            // die($e->getMessage());
             // throw $e;
             $this->makeJsonError($e->getMessage());
         }
@@ -287,6 +284,12 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
             )));
 
             $messages = $validation->validate($data);
+            if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+            } else {
+                if (empty($fieldName)) {
+                    $fieldName = "";
+                }
+            }
             $messages = $messages->filter($fieldName);
             $input->messages = $messages;
             if (!empty($messages)) {

@@ -6,7 +6,6 @@ use Phalcon\Acl;
 use Phalcon\Acl\Role as AclRole;
 use Phalcon\Acl\Resource as AclResource;
 use Phalcon\Events\Event;
-use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
 use App\Backend\Models\User;
@@ -18,9 +17,11 @@ use App\Backend\Models\OperationLog;
  *
  * This is the security plugin which controls that users only have access to the modules they're assigned to
  */
-class SecurityPlugin extends Plugin
-{
 
+// https://docs.phalcon.io/4.0/en/upgrade#upgrade-guide
+// class SecurityPlugin extends \Phalcon\Mvc\User\Plugin
+class SecurityPlugin extends \Phalcon\Di\Injectable
+{
     /**
      * This action is executed before execute any action in the application
      *

@@ -11,7 +11,9 @@ use Phalcon\Mvc\Dispatcher;
  * @author Kan
  *        
  */
-class TerminatePlugin extends Plugin
+// https://docs.phalcon.io/4.0/en/upgrade#upgrade-guide
+// class TerminatePlugin extends \Phalcon\Mvc\User\Plugin
+class TerminatePlugin extends \Phalcon\Di\Injectable
 {
 
     /**

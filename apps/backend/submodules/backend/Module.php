@@ -62,8 +62,6 @@ class Module
             $dispatcher->setDefaultNamespace("App\Backend\Submodules\Backend\Controllers");
             // $dispatcher->setModuleName($moduleName)
             $dispatcher->setEventsManager($eventsManager);
-            // var_dump($dispatcher);
-            // die('sdfsdfsdf');
             return $dispatcher;
         });
         
@@ -91,18 +89,37 @@ class Module
         /**
          * Setting up volt
          */
-        $di->set('volt', function ($view, $di) {
-            
-            $volt = new VoltEngine($view, $di);
-            
-            $volt->setOptions(array(
-                "compiledPath" => APP_PATH . "cache/volt/"
-            ));
-            
-            $compiler = $volt->getCompiler();
-            $compiler->addFunction('is_a', 'is_a');
-            
-            return $volt;
-        }, true);
+        //https://docs.phalcon.io/4.0/en/volt
+        if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+            $di->set('volt', function ($view, $di) {
+
+                $volt = new VoltEngine($view, $di);
+
+                $volt->setOptions(array(
+                    "compiledPath" => APP_PATH . "cache/volt/"
+                ));
+
+                $compiler = $volt->getCompiler();
+                $compiler->addFunction('is_a', 'is_a');
+
+                return $volt;
+            }, true);
+        } else {
+            $di->set('volt', function (\Phalcon\Mvc\ViewBaseInterface $view) use ($di) {
+                $volt = new VoltEngine($view, $di);
+                $volt->setOptions(
+                    [
+                        'always'    => true,
+                        // 'extension' => '.php',
+                        'separator' => '_',
+                        'stat'      => true,
+                        // 'path'      => appPath('storage/cache/volt/'),
+                        'path'      => APP_PATH . "cache/volt/",
+                        // 'prefix'    => '-prefix-',
+                    ]
+                );
+                return $volt;
+            });
+        }
     }
 }

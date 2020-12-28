@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Common\Plugins;
 
 use Phalcon\Events\Event;
-use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
 
 /**
@@ -10,7 +10,9 @@ use Phalcon\Mvc\Dispatcher;
  *
  * This is the Weixin plugin which controls that users only have access to the modules they're assigned to
  */
-class WeixinPlugin2 extends Plugin
+// https://docs.phalcon.io/4.0/en/upgrade#upgrade-guide
+// class WeixinPlugin2 extends \Phalcon\Mvc\User\Plugin
+class WeixinPlugin2 extends \Phalcon\Di\Injectable
 {
 
     /**
@@ -22,26 +24,26 @@ class WeixinPlugin2 extends Plugin
     public function beforeDispatch(Event $event, Dispatcher $dispatcher)
     {
         // 不是接口调用的话
-        if (! $this->request->isAjax()) {
+        if (!$this->request->isAjax()) {
             // 对于cookie的操作
             $operation4cookie = trim($this->request->get('operation4cookie'));
             // 没有任何操作的话，一般的流程
             if (empty($operation4cookie)) {
-                
+
                 $actionName = $dispatcher->getActionName();
                 $controllerName = $dispatcher->getControllerName();
                 $moduleName = $dispatcher->getModuleName();
-                
+
                 // 增加需要微信授权的module和controller以及排除的actions
                 $ruleList = array();
                 // $ruleList["livecommunity"]['user'] = [
                 // 'get-info'
                 // ];
-                
+
                 $isNeed = false;
                 foreach ($ruleList as $module => $rule) {
                     foreach ($rule as $controller => $excludeActions) {
-                        if ($moduleName == $module && $controllerName == $controller && ! in_array($actionName, $excludeActions)) {
+                        if ($moduleName == $module && $controllerName == $controller && !in_array($actionName, $excludeActions)) {
                             $isNeed = true;
                             break;
                         }
@@ -59,7 +61,7 @@ class WeixinPlugin2 extends Plugin
                 $headimgurl = trim($this->request->get('headimgurl'));
                 $timestamp = time();
                 $signkey = sha1($FromUserName . "|" . $secretKey . "|" . $timestamp);
-                
+
                 $userInfo = array(
                     'FromUserName' => $FromUserName,
                     'nickname' => trim($nickname),
@@ -73,8 +75,8 @@ class WeixinPlugin2 extends Plugin
                 print_r($_COOKIE);
                 die('cookie has been success to set');
             } elseif ($operation4cookie == 'clear') { // 情况测试用cookie
-                
-                setcookie('Weixin_userInfo', '', - 3600, '/');
+
+                setcookie('Weixin_userInfo', '', -3600, '/');
                 unset($_COOKIE['Weixin_userInfo']);
                 unset($_SESSION['isAuthorizing']);
                 print_r($_COOKIE);
@@ -92,10 +94,10 @@ class WeixinPlugin2 extends Plugin
         $moduleName = $dispatcher->getModuleName();
         // 是否需要授权
         $isAuthorizeNeeded = false;
-        
+
         // 检查cookie有没有值
         $userInfo = empty($_COOKIE['Weixin_userInfo']) ? array() : json_decode($_COOKIE['Weixin_userInfo'], true);
-        if (! empty($userInfo)) {
+        if (!empty($userInfo)) {
             // 检查cookie的有效性
             $config = $this->getDI()->get('config');
             $secretKey = $config['weixinAuthorize']['secretKey'];
@@ -106,23 +108,23 @@ class WeixinPlugin2 extends Plugin
             $signkey = trim($userInfo['signkey']);
             $isValid = empty($secretKey) || $this->validateOpenid($FromUserName, $timestamp, $secretKey, $signkey);
             // 无效的话
-            if (! $isValid) {
+            if (!$isValid) {
                 $userInfo = array();
             }
         }
-        
+
         if (empty($userInfo)) {
             // 如果没有的话就需要授权
             $isAuthorizeNeeded = true;
             // 如果在进行授权处理中的话
-            if (! empty($_SESSION['isAuthorizing'])) {
+            if (!empty($_SESSION['isAuthorizing'])) {
                 if ($actionName == 'weixinauthorizecallback') {
                     $isAuthorizeNeeded = false;
                 }
             }
         } else {
             if ($actionName == 'weixinauthorizebefore') {
-                if (! empty($_SESSION['Weixin_callbackUrl'])) {
+                if (!empty($_SESSION['Weixin_callbackUrl'])) {
                     $callbackUrl = $_SESSION['Weixin_callbackUrl'];
                     header("Location:{$callbackUrl}");
                     exit();
@@ -131,13 +133,13 @@ class WeixinPlugin2 extends Plugin
                 }
             }
         }
-        
+
         // 进行授权处理
         if ($isAuthorizeNeeded) {
             $this->doAuthorize($dispatcher);
         }
     }
-    
+
     // 授权
     private function doAuthorize(Dispatcher $dispatcher)
     {
@@ -146,7 +148,7 @@ class WeixinPlugin2 extends Plugin
             $controllerName = $dispatcher->getControllerName();
             $moduleName = $dispatcher->getModuleName();
             $scheme = $this->request->getScheme();
-            
+
             // 回调地址的处理
             if ($actionName == 'weixinauthorizebefore') {
                 $callbackUrl = $this->request->get('callbackUrl');
@@ -159,24 +161,24 @@ class WeixinPlugin2 extends Plugin
             $_SESSION['Weixin_callbackUrl'] = $callbackUrl;
             $callbackUrl = "";
             // 正在进行授权的处理, 初始化信息
-            setcookie('Weixin_userInfo', '', - 3600, '/');
+            setcookie('Weixin_userInfo', '', -3600, '/');
             unset($_COOKIE['Weixin_userInfo']);
             $_SESSION['isAuthorizing'] = true;
-            
+
             $config = $this->getDI()->get('config');
             $path = '/';
             $authorizeUrl = $config['weixinAuthorize']['authorizeUrl'];
             $scope = empty($config['weixinAuthorize']) ? 'snsapi_userinfo' : $config['weixinAuthorize']['scope'];
-            
+
             $redirectUrl = "{$scheme}://{$_SERVER['HTTP_HOST']}{$path}{$moduleName}/{$controllerName}/weixinauthorizecallback";
-            if (! empty($callbackUrl)) {
+            if (!empty($callbackUrl)) {
                 $redirectUrl .= "?callbackUrl={$callbackUrl}";
             }
-            
+
             // 如果有什么特殊处理的话
             $redirectUrl = urlencode($redirectUrl);
             $url = "{$authorizeUrl}?scope={$scope}&redirect={$redirectUrl}";
-            
+
             header("Location:{$url}");
             exit();
         } catch (\Exception $e) {

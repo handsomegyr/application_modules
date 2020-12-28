@@ -11,6 +11,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
 
     protected function initialize()
     {
+
         parent::initialize();
 
         // $this->tag->prependTitle('INVO | ');
@@ -145,7 +146,15 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
                 $res[$key] = $val;
             }
         }
-        $this->response->setJsonContent($res)->send();
+
+        //https://docs.phalcon.io/4.0/en/controllers#overview
+        if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+            $this->response->setJsonContent($res)->send();
+        } else {
+            $response = new \Phalcon\Http\Response();
+            $response->setStatusCode(200, "OK");
+            $response->setJsonContent($res)->send();
+        }
     }
 
     public function disableLayout()

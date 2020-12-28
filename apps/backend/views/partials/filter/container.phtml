@@ -18,7 +18,7 @@ $filterID = 'filter-box';
                 $field['name'] = empty($field['search']['name']) ? $field['name'] : $field['search']['name'];
                 $field['search']['placeholder'] = empty($field['search']['placeholder']) ? "输入 " . $field['name'] : $field['search']['placeholder'];
                 $field['search']['input_type'] = empty($field['search']['input_type']) ? $field['form']['input_type'] : $field['search']['input_type'];
-                $field['search']['items'] = empty($field['search']['items']) ? $field['form']['items'] : $field['search']['items'];
+                $field['search']['items'] = empty($field['search']['items']) ? (!empty($field['form']['items']) ? $field['form']['items'] : array()) : $field['search']['items'];
                 if (!isset($field['search']['partial'])) {
                     if ($field['search']['input_type'] == "image") {
                         continue;
@@ -82,7 +82,7 @@ $filterID = 'filter-box';
 
                         <?php if (false) { ?>
                             <div class="btn-group pull-left " style="margin-left: 10px;">
-                                <a href="<?php echo $this->myTag->getUrl($this->view, 'list',array('_pjax'=>'%23pjax-container'));?>" class="btn btn-default btn-sm"><i class="fa fa-undo"></i>&nbsp;&nbsp;重置</a>
+                                <a href="<?php echo $this->myTag->getUrl($this->view, 'list', array('_pjax' => '%23pjax-container')); ?>" class="btn btn-default btn-sm"><i class="fa fa-undo"></i>&nbsp;&nbsp;重置</a>
                             </div>
                         <?php } ?>
                     </div>

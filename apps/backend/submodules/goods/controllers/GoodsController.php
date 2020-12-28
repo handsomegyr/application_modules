@@ -530,7 +530,6 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => function () {
-                    // die('sdfsdfsdf');
                     return $this->modelCategory->getList4Tree('');
                 }
             ),
