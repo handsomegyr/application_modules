@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Site\Controllers;
 
 use App\Backend\Submodules\Site\Models\Banner;
@@ -20,7 +21,7 @@ class BannerController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['url'] = array(
             'name' => '菜单地址',
             'data' => array(
@@ -41,7 +42,7 @@ class BannerController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['img'] = array(
             'name' => '图片',
             'data' => array(
@@ -66,10 +67,10 @@ class BannerController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
-        
+
         $schemas['start_time'] = array(
             'name' => '开始时间',
             'data' => array(
@@ -91,7 +92,7 @@ class BannerController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['end_time'] = array(
             'name' => '截止时间',
             'data' => array(
@@ -113,7 +114,7 @@ class BannerController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['is_show'] = array(
             'name' => '是否显示',
             'data' => array(
@@ -137,7 +138,7 @@ class BannerController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['show_order'] = array(
             'name' => '排序',
             'data' => array(
@@ -170,15 +171,5 @@ class BannerController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelBanner;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-        }
-        
-        return $list;
     }
 }

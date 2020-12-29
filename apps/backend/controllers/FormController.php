@@ -1436,7 +1436,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $item[$field] = $value;
             }
             // 如果是数组或对象
-            if (is_array($value) || is_object($value)) {
+            elseif (is_array($value) || is_object($value)) {
                 // 如果是空值那么就是空字符串
                 if (empty($value)) {
                     $value = "";

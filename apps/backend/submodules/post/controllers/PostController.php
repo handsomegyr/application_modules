@@ -519,7 +519,7 @@ class PostController extends \App\Backend\Controllers\FormController
     {
         foreach ($list['data'] as &$item) {
             if ($item['state'] != \App\Common\Models\Post\Post::STATE_NONE) {
-                $item['post_time'] = date('Y-m-d H:i:s', $item['post_time']->sec);
+                $item['post_time'] = $this->adjustDataTime4Show($item['post_time']);
             } else {
                 $item['post_time'] = "";
             }
@@ -527,7 +527,7 @@ class PostController extends \App\Backend\Controllers\FormController
             $item['pic'] = $picArr[0];
 
             if ($item['state'] > \App\Common\Models\Post\Post::STATE0) {
-                $item['verify_time'] = date('Y-m-d H:i:s', $item['verify_time']->sec);
+                $item['verify_time'] = $this->adjustDataTime4Show($item['verify_time']);
             } else {
                 $item['verify_time'] = "";
             }

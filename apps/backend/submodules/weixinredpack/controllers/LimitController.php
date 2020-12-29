@@ -200,8 +200,8 @@ class LimitController extends \App\Backend\Controllers\FormController
             $item['activity_name'] = $activityList[$item['activity']];
             $item['customer_name'] = $customerList[$item['customer']];
             $item['redpack_name'] = $redpackList[$item['redpack']];
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
+            $item['start_time'] = $this->adjustDataTime4Show($item['start_time']);
+            $item['end_time'] = $this->adjustDataTime4Show($item['end_time']);
         }
         return $list;
     }

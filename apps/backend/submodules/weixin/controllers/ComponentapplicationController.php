@@ -579,9 +579,9 @@ class ComponentapplicationController extends \App\Backend\Controllers\FormContro
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
-            $item['access_token_expire'] = !empty($item['access_token_expire']) ? date("Y-m-d H:i:s", $item['access_token_expire']->sec) : "--";
-            $item['jsapi_ticket_expire'] = !empty($item['jsapi_ticket_expire']) ? date("Y-m-d H:i:s", $item['jsapi_ticket_expire']->sec) : "--";
-            $item['wx_card_api_ticket_expire'] = !empty($item['wx_card_api_ticket_expire']) ? date("Y-m-d H:i:s", $item['wx_card_api_ticket_expire']->sec) : "--";
+            $item['access_token_expire'] = !empty($item['access_token_expire']) ? $this->adjustDataTime4Show($item['access_token_expire']) : "--";
+            $item['jsapi_ticket_expire'] = !empty($item['jsapi_ticket_expire']) ? $this->adjustDataTime4Show($item['jsapi_ticket_expire']) : "--";
+            $item['wx_card_api_ticket_expire'] = !empty($item['wx_card_api_ticket_expire']) ? $this->adjustDataTime4Show($item['wx_card_api_ticket_expire']) : "--";
         }
         return $list;
     }

@@ -506,7 +506,7 @@ class SuccessController extends \App\Backend\Controllers\FormController
         $prizeList = $this->modelPrize->getAll();
         foreach ($list['data'] as &$item) {
             $item['prize_name'] = isset($prizeList[$item['prize_id']]) ? $prizeList[$item['prize_id']] : '--';
-            $item['exchange_time'] = date("Y-m-d H:i:s", $item['exchange_time']->sec);
+            $item['exchange_time'] = $this->adjustDataTime4Show($item['exchange_time']);
 
             $item['identity_contact_info'] = array();
             if (isset($item['user_info']['name'])) {

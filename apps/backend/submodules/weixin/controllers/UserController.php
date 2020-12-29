@@ -307,7 +307,7 @@ class UserController extends \App\Backend\Controllers\FormController
     {
         $genderList = $this->modelGender->getAll();
         foreach ($list['data'] as &$item) {
-            $item['subscribe_time'] = !empty($item['subscribe']) ? date("Y-m-d H:i:s", $item['subscribe_time']->sec) : "--";
+            $item['subscribe_time'] = !empty($item['subscribe']) ? $this->adjustDataTime4Show($item['subscribe']) : "--";
             $item['sex'] = isset($genderList[$item['sex']]) ? $genderList[$item['sex']] : "--";
         }
         return $list;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Weixinredpack\Controllers;
 
 use App\Backend\Submodules\Weixinredpack\Models\Rule;
@@ -39,10 +40,11 @@ class RuleController extends \App\Backend\Controllers\FormController
     public function copyAction()
     {
         try {
-            
+
             $input = $this->getFilterInput();
-            
-            if ($input->isValid("id")) {} else {
+
+            if ($input->isValid("id")) {
+            } else {
                 $messageInfo = $this->_getValidationMessage($input);
                 throw new \Exception($messageInfo);
             }
@@ -59,7 +61,7 @@ class RuleController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['activity'] = array(
             'name' => '活动名称',
             'data' => array(
@@ -72,8 +74,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelActivity->getAll();
                 }
             ),
@@ -87,7 +88,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'items' => $this->modelActivity->getAll()
             )
         );
-        
+
         $schemas['customer'] = array(
             'name' => '客户',
             'data' => array(
@@ -100,8 +101,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelCustomer->getAll();
                 }
             ),
@@ -113,7 +113,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['redpack'] = array(
             'name' => '红包',
             'data' => array(
@@ -126,8 +126,7 @@ class RuleController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ()
-                {
+                'items' => function () {
                     return $this->modelRedpack->getAll();
                 }
             ),
@@ -139,10 +138,10 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $now = date('Y-m-d') . " 00:00:00";
         $now = strtotime($now);
-        
+
         $schemas['start_time'] = array(
             'name' => '开始时间',
             'data' => array(
@@ -164,7 +163,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['end_time'] = array(
             'name' => '截止时间',
             'data' => array(
@@ -186,7 +185,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['amount'] = array(
             'name' => '红包发放总金额(分)',
             'data' => array(
@@ -207,7 +206,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['quantity'] = array(
             'name' => '红包发放总数量',
             'data' => array(
@@ -228,7 +227,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['min_cash'] = array(
             'name' => '最小金额(分)',
             'data' => array(
@@ -249,7 +248,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['max_cash'] = array(
             'name' => '最大金额(分)',
             'data' => array(
@@ -270,7 +269,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['personal_can_get_num'] = array(
             'name' => '最大数量(人)',
             'data' => array(
@@ -292,7 +291,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['allow_probability'] = array(
             'name' => '概率(N/10000)',
             'data' => array(
@@ -313,7 +312,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['nick_name'] = array(
             'name' => '提供方名称',
             'data' => array(
@@ -334,7 +333,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['send_name'] = array(
             'name' => '商户名称',
             'data' => array(
@@ -355,7 +354,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['wishing'] = array(
             'name' => '红包祝福',
             'data' => array(
@@ -376,7 +375,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['remark'] = array(
             'name' => '红包备注',
             'data' => array(
@@ -397,7 +396,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['logo_imgurl'] = array(
             'name' => '商户logo',
             'data' => array(
@@ -418,7 +417,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['share_content'] = array(
             'name' => '分享文案',
             'data' => array(
@@ -439,7 +438,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['share_url'] = array(
             'name' => '分享链接 ',
             'data' => array(
@@ -460,7 +459,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         $schemas['share_imgurl'] = array(
             'name' => '分享图片',
             'data' => array(
@@ -481,7 +480,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 
@@ -504,8 +503,8 @@ class RuleController extends \App\Backend\Controllers\FormController
             $item['activity_name'] = $activityList[$item['activity']];
             $item['customer_name'] = $customerList[$item['customer']];
             $item['redpack_name'] = $redpackList[$item['redpack']] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要复制该条规则吗？\', \'copy\')" class="halflings-icon user white"><i></i> 复制</a>';
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
+            $item['start_time'] = $this->adjustDataTime4Show($item['start_time']);
+            $item['end_time'] = $this->adjustDataTime4Show($item['end_time']);
         }
         return $list;
     }

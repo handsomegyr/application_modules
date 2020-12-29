@@ -652,7 +652,7 @@ class SourceController extends \App\Backend\Controllers\FormController
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
-            $item['response_time'] = !empty($item['response_time']) ? date("Y-m-d H:i:s", $item['response_time']->sec) : "--";
+            $item['response_time'] = !empty($item['response_time']) ? $this->adjustDataTime4Show($item['response_time']) : "--";
         }
         return $list;
     }

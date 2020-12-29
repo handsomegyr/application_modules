@@ -216,7 +216,7 @@ class NewsController extends \App\Backend\Controllers\FormController
             // $item['user_name'] = getBuyerName($item['user_name'], $item['user_register_by']);
             $item['user_register_by'] = $this->registerbyDatas[$item['user_register_by']]['name'];
             $item['action'] = $this->actionDatas[$item['action']]['name'];
-            $item['news_time'] = date('Y-m-d H:i:s', $item['news_time']->sec);
+            $item['news_time'] = $this->adjustDataTime4Show($item['news_time']);
         }
         return $list;
     }

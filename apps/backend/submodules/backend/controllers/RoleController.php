@@ -143,13 +143,6 @@ class RoleController extends \App\Backend\Controllers\FormController
         return $this->modelRole;
     }
 
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-        }
-        return $list;
-    }
-
     protected function validate4Insert(\App\Backend\Models\Input $input, $row)
     {
         // do other validation

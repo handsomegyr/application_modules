@@ -148,7 +148,7 @@ class ReportController extends \App\Backend\Controllers\FormController
     {
         foreach ($list['data'] as &$item) {
             $item['type'] = $this->typeDatas[$item['type']]['name'];
-            $item['report_time'] = date('Y-m-d H:i:s', $item['report_time']->sec);
+            $item['report_time'] = $this->adjustDataTime4Show($item['report_time']);
         }
 
         return $list;

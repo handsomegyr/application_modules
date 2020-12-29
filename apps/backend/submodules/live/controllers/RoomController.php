@@ -1239,10 +1239,10 @@ class RoomController extends \App\Backend\Controllers\FormController
     {
         $auchorList = $this->modelAuchor->getAll();
         foreach ($list['data'] as &$item) {
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-            $item['live_start_time'] = date("Y-m-d H:i:s", $item['live_start_time']->sec);
-            $item['live_end_time'] = date("Y-m-d H:i:s", $item['live_end_time']->sec);
+            $item['start_time'] = $this->adjustDataTime4Show($item['start_time']);
+            $item['end_time'] = $this->adjustDataTime4Show($item['end_time']);
+            $item['live_start_time'] = $this->adjustDataTime4Show($item['live_start_time']);
+            $item['live_end_time'] = $this->adjustDataTime4Show($item['live_end_time']);
             $item['auchor_name'] = isset($auchorList[$item['auchor_id']]) ? $auchorList[$item['auchor_id']] : "--";
         }
         return $list;

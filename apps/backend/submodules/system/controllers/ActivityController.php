@@ -125,13 +125,4 @@ class ActivityController extends \App\Backend\Controllers\FormController
     {
         return $this->modelActivity;
     }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            $item['start_time'] = date("Y-m-d H:i:s", $item['start_time']->sec);
-            $item['end_time'] = date("Y-m-d H:i:s", $item['end_time']->sec);
-        }
-        return $list;
-    }
 }

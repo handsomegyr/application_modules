@@ -205,7 +205,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
         $categoryList = array(); // $this->modelCategory->getAll();
         foreach ($list['data'] as &$item) {
             $item['category_name'] = isset($categoryList[$item['category_id']]) ? $categoryList[$item['category_id']] : '';
-            $item['article_time'] = date("Y-m-d H:i:s", $item['article_time']->sec);
+            $item['article_time'] = $this->adjustDataTime4Show($item['article_time']);
             $item['title'] = $item['title'] . '&nbsp&nbsp<a href="javascript:;" class="btn yellow icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要将本地文章上传到elasticsearch吗？\', \'elastic\')" class="halflings-icon user white"><i></i> elasticsearch</a>';
         }
         return $list;

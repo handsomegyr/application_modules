@@ -121,12 +121,4 @@ class SysmsgController extends \App\Backend\Controllers\FormController
     {
         return $this->modelSysMsg;
     }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            $item['msg_time'] = date('Y-m-d H:i:s', $item['msg_time']->sec);
-        }
-        return $list;
-    }
 }

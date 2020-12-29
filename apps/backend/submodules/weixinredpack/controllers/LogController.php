@@ -465,7 +465,7 @@ class LogController extends \App\Backend\Controllers\FormController
             $item['activity_name'] = $activityList[$item['activity']];
             $item['customer_name'] = $customerList[$item['customer']];
             $item['redpack_name'] = $redpackList[$item['redpack']];
-            $item['got_time'] = date("Y-m-d H:i:s", $item['got_time']->sec);
+            $item['got_time'] = $this->adjustDataTime4Show($item['got_time']);
         }
         return $list;
     }

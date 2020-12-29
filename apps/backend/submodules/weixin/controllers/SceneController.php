@@ -252,7 +252,7 @@ class SceneController extends \App\Backend\Controllers\FormController
     protected function getList4Show(\App\Backend\Models\Input $input, array $list)
     {
         foreach ($list['data'] as &$item) {
-            $item['ticket_time'] = ! empty($item['ticket_time']) ? date("Y-m-d H:i:s", $item['ticket_time']->sec) : "--";
+            $item['ticket_time'] = ! empty($item['ticket_time']) ? $this->adjustDataTime4Show($item['ticket_time']) : "--";
         }
         return $list;
     }
