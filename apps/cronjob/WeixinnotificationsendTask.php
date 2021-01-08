@@ -19,9 +19,6 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
     // 监控任务
     private $activity_id = 1;
 
-    // 最大尝试次数
-    private $max_try_num = 1;
-
     /**
      * 处理
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixinnotificationsend handle 5e46128f69dc0a0f8415fe8f.csv
@@ -94,6 +91,8 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                 throw new \Exception("未找到任务ID:{$taskInfo['id']}的推送任务所对应的推送任务日志内容");
             }
 
+            $cache = $this->getDI()->get("cache");
+
             // 5 循环处理任务日志记录
             if (!empty($taskLogList)) {
 
@@ -113,6 +112,17 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                         if ($taskLog['push_status'] != \App\Weixin2\Models\Notification\TaskProcess::PUSHING) {
                             $modelTaskProcess->rollback();
                             continue;
+                        }
+
+                        // 检查任务的推送状态
+                        $taskPushState4InCache = $cache->get('notification:notification_task_id:' . $taskInfo['id']);
+                        $taskPushState = intval($taskPushState4InCache);
+                        if (!empty($taskPushState)) {
+                            // 如果是关闭状态的话就直接返回了
+                            if ($taskPushState == \App\Weixin2\Models\Notification\TaskProcess::PUSH_CLOSE) {
+                                $modelTaskProcess->rollback();
+                                continue;
+                            }
                         }
 
                         // 创建service
