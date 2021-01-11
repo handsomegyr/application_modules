@@ -155,6 +155,7 @@ class NotificationtaskcontentController extends \App\Backend\Controllers\FormCon
         $pushStatusOptions['0'] = "待推送";
         $pushStatusOptions['1'] = "推送中";
         $pushStatusOptions['2'] = "推送完成";
+        $pushStatusOptions['5'] = "推送关闭";
 
         $schemas['push_status'] = array(
             'name' => '推送状态',
@@ -170,7 +171,7 @@ class NotificationtaskcontentController extends \App\Backend\Controllers\FormCon
                 'input_type' => 'radio',
                 'is_show' => true,
                 'items' => $pushStatusOptions,
-                'help' => '推送状态 0:待推送 1:推送中 2:推送完成',
+                'help' => '推送状态 0:待推送 1:推送中 2:推送完成 5:推送关闭',
             ),
             'list' => array(
                 'is_show' => true,

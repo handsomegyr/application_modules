@@ -549,6 +549,7 @@ class NotificationtasklogController extends BaseController
         $pushStatusOptions['2'] = "推送完成";
         $pushStatusOptions['3'] = "推送成功";
         $pushStatusOptions['4'] = "推送失败";
+        $pushStatusOptions['5'] = "推送关闭";
 
         $schemas['push_status'] = array(
             'name' => '推送状态',
@@ -564,7 +565,7 @@ class NotificationtasklogController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $pushStatusOptions,
-                'help' => '推送状态 0:待推送 1:推送中 2:推送完成 3:推送成功 4:推送失败',
+                'help' => '推送状态 0:待推送 1:推送中 2:推送完成 3:推送成功 4:推送失败 5:推送关闭',
             ),
             'list' => array(
                 'is_show' => true,
