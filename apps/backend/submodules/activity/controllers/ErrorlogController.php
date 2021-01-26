@@ -173,8 +173,9 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
     {
         // http://www.applicationmodule.com/admin/activity/errorlog/clearlog
         try {
-            $connection = $this->modelErrorLog->getDb();
-            $connection->query("TRUNCATE `activity_errorlog`", array());
+            $this->modelErrorLog->truncate();
+            // $connection = $this->modelErrorLog->getDb();
+            // $connection->query("TRUNCATE `activity_errorlog`", array());
             return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功清空数据');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
