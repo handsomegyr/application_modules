@@ -25,6 +25,22 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['clearlog'] = array(
+            'title' => '清空日志',
+            'action' => 'clearlog',
+            // 'is_show' => true,
+            'is_show' => function () {
+                return true;
+            },
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
     private $activityList = null;
 
     protected function getSchemas2($schemas)
@@ -144,5 +160,24 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelErrorLog;
+    }
+
+
+    /**
+     * @title({name="清空日志"})
+     * 清空日志
+     *
+     * @name 清空日志
+     */
+    public function clearlogAction()
+    {
+        // http://www.applicationmodule.com/admin/activity/errorlog/clearlog
+        try {
+            $connection = $this->modelErrorLog->getDb();
+            $connection->query("TRUNCATE `activity_errorlog`", array());
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功清空数据');
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
     }
 }

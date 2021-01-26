@@ -194,6 +194,285 @@ class QyweixinTask extends \Phalcon\CLI\Task
         }
     }
 
+    /**
+     * 获取配置了客户联系功能的成员列表
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getfollowuserlist
+     * @param array $params            
+     */
+    public function getfollowuserlistAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        try {
+            $modelAgent = new \App\Qyweixin\Models\Agent\Agent();
+            $query = array(
+                'agentid' => '9999999'
+            );
+            $sort = array('_id' => 1);
+            $agentList = $modelAgent->findAll($query, $sort);
+            if (!empty($agentList)) {
+                foreach ($agentList as $agentItem) {
+
+                    // 进行锁定处理
+                    $provider_appid = $agentItem['provider_appid'];
+                    $authorizer_appid = $agentItem['authorizer_appid'];
+                    $agentid = $agentItem['agentid'];
+
+                    $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock->setExpire(3600 * 8);
+                    if ($lock->lock()) {
+                        continue;
+                    }
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_follow_user_list:' . $provider_appid . ':' . $authorizer_appid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $agentid, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agentid);
+                        $weixinopenService->getFollowUserList();
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
+     * 获取客户列表
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getexternaluserlist
+     * @param array $params            
+     */
+    public function getexternaluserlistAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        $cacheKey1 = 'get_external_user_list_command';
+        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock->setExpire(3600 * 8);
+        if ($lock->lock()) {
+            return;
+        }
+
+        try {
+            $modelFollowUser = new \App\Qyweixin\Models\ExternalContact\FollowUser();
+            $query = array();
+            $sort = array('_id' => 1);
+            $ecFolowUserList = $modelFollowUser->findAll($query, $sort);
+            if (!empty($ecFolowUserList)) {
+                foreach ($ecFolowUserList as $info) {
+
+                    $externaluser_follow_user = $info['follow_user'];
+                    $provider_appid = $info['provider_appid'];
+                    $authorizer_appid = $info['authorizer_appid'];
+                    $externaluser_agent_agentid = '9999999';
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_external_user_list:' . $externaluser_follow_user;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $externaluser_follow_user, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
+                        $weixinopenService->getExternalUserList($externaluser_follow_user);
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
+     * 获取客户详情
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getexternaluserinfo
+     * @param array $params            
+     */
+    public function getexternaluserinfoAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        $cacheKey1 = 'get_external_user_info_command';
+        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock->setExpire(3600 * 8);
+        if ($lock->lock()) {
+            return;
+        }
+
+        try {
+            $modelExternalUser = new \App\Qyweixin\Models\ExternalContact\ExternalUser();
+            $query = array();
+            $sort = array('_id' => 1);
+            $ecUserList = $modelExternalUser->findAll($query, $sort);
+            if (!empty($ecUserList)) {
+                foreach ($ecUserList as $info) {
+
+                    $external_userid = $info['external_userid'];
+                    $provider_appid = $info['provider_appid'];
+                    $authorizer_appid = $info['authorizer_appid'];
+                    $externaluser_agent_agentid = '9999999';
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_external_user_info:' . $external_userid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $external_userid, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
+                        $weixinopenService->getExternalUserInfo($external_userid);
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
+     * 获取客户列表
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupchatlist
+     * @param array $params            
+     */
+    public function getgroupchatlistAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        $cacheKey1 = 'get_group_chat_list_command';
+        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock->setExpire(3600 * 8);
+        if ($lock->lock()) {
+            return;
+        }
+
+        try {
+            $modelFollowUser = new \App\Qyweixin\Models\ExternalContact\FollowUser();
+            $query = array();
+            $sort = array('_id' => 1);
+            $ecFolowUserList = $modelFollowUser->findAll($query, $sort);
+            if (!empty($ecFolowUserList)) {
+                foreach ($ecFolowUserList as $info) {
+
+                    $externaluser_follow_user = $info['follow_user'];
+                    $provider_appid = $info['provider_appid'];
+                    $authorizer_appid = $info['authorizer_appid'];
+                    $externaluser_agent_agentid = '9999999';
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_group_chat_list:' . $externaluser_follow_user;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $externaluser_follow_user, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
+                        $status_filter = 0;
+                        $offset = 0;
+                        $limit = 1000;
+                        $owner_filter = array();
+                        $owner_filter['userid_list'] = array($externaluser_follow_user);
+                        $weixinopenService->getGroupChatList($status_filter, $owner_filter, $offset, $limit);
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
+     * 获取客户详情
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupchatinfo
+     * @param array $params            
+     */
+    public function getgroupchatinfoAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        $cacheKey1 = 'get_group_chat_info_command';
+        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock->setExpire(3600 * 8);
+        if ($lock->lock()) {
+            return;
+        }
+
+        try {
+            $modelGroupChat = new \App\Qyweixin\Models\ExternalContact\GroupChat();
+            $query = array();
+            $sort = array('_id' => 1);
+            $groupChatList = $modelGroupChat->findAll($query, $sort);
+            if (!empty($groupChatList)) {
+                foreach ($groupChatList as $info) {
+
+                    $chat_id = $info['chat_id'];
+                    $provider_appid = $info['provider_appid'];
+                    $authorizer_appid = $info['authorizer_appid'];
+                    $externaluser_agent_agentid = '9999999';
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_group_chat_info:' . $chat_id;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $chat_id, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
+                        $weixinopenService->getGroupChatInfo($chat_id);
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
     private function getChatdata($maxseqInfo, $agentInfo, $snList)
     {
         $chatdataList = array();
