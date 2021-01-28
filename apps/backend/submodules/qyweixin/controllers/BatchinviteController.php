@@ -19,6 +19,113 @@ class BatchinviteController extends BaseController
         parent::initialize();
     }
 
+    protected function isCando($model)
+    {
+        if (!empty($model['authorizer_appid']) && (!empty($model['user']) || !empty($model['party']) || !empty($model['tag']))) {
+            return true;
+        }
+        return false;
+    }
+
+    protected function getFormTools2($tools)
+    {
+        $tools['sendbatchinvite'] = array(
+            'title' => '邀请成员',
+            'action' => 'sendbatchinvite',
+            'is_show' => function ($row) {
+                if ($this->isCando($row)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="邀请"})
+     *
+     * @name 邀请
+     */
+    public function sendbatchinviteAction()
+    {
+        // http://www.applicationmodule.com/admin/qyweixin/batchinvite/sendbatchinvite?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelBatchInvite->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4FormTool();
+                $title = "邀请";
+                $row = $data;
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $agent_agentid = trim($this->request->get('batchinvite_agent_agentid'));
+                if (empty($agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                $res = $weixinopenService->batchInvite($id);
+
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function getFields4FormTool()
+    {
+        $fields = array();
+        $fields['batchinvite_provider_appid'] = array(
+            'name' => '第三方服务商应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+                'readonly' => true
+            ),
+        );
+        $fields['batchinvite_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+                'readonly' => true
+            ),
+        );
+        $fields['batchinvite_agent_agentid'] = array(
+            'name' => '微信企业应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems,
+            ),
+        );
+        return $fields;
+    }
+
     protected function getSchemas2($schemas)
     {
         $schemas['provider_appid'] = array(

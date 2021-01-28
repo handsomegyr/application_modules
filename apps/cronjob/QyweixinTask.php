@@ -195,6 +195,235 @@ class QyweixinTask extends \Phalcon\CLI\Task
     }
 
     /**
+     * 获取部门列表
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getdepartmentlist
+     * @param array $params            
+     */
+    public function getdepartmentlistAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        try {
+            $modelAgent = new \App\Qyweixin\Models\Agent\Agent();
+            $query = array(
+                'agentid' => '9999998'
+            );
+            $sort = array('_id' => 1);
+            $agentList = $modelAgent->findAll($query, $sort);
+            if (!empty($agentList)) {
+                foreach ($agentList as $agentItem) {
+
+                    // 进行锁定处理
+                    $provider_appid = $agentItem['provider_appid'];
+                    $authorizer_appid = $agentItem['authorizer_appid'];
+                    $agentid = $agentItem['agentid'];
+
+                    $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock->setExpire(3600 * 8);
+                    if ($lock->lock()) {
+                        continue;
+                    }
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_department_list:' . $provider_appid . ':' . $authorizer_appid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $agentid, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agentid);
+                        $weixinopenService->getDepartmentList(0);
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
+     * 获取部门成员
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getdepartmentusersimplelist
+     * @param array $params            
+     */
+    public function getdepartmentusersimplelistAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        $cacheKey1 = 'get_department_user_simple_list_command';
+        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock->setExpire(3600 * 8);
+        if ($lock->lock()) {
+            return;
+        }
+
+        try {
+            $modelDepartment = new \App\Qyweixin\Models\Contact\Department();
+            $query = array();
+            $sort = array('_id' => 1);
+            $departmentList = $modelDepartment->findAll($query, $sort);
+            if (!empty($departmentList)) {
+                foreach ($departmentList as $info) {
+
+                    $deptid = $info['deptid'];
+                    $provider_appid = $info['provider_appid'];
+                    $authorizer_appid = $info['authorizer_appid'];
+                    $externaluser_agent_agentid = '9999998';
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_department_user_simple_list:' . $deptid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $deptid, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
+                        $weixinopenService->getDepartmentUserSimpleList($deptid);
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
+     * 从部门人员获取用户列表
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getuserlistfromdepartmentuser
+     * @param array $params            
+     */
+    public function getuserlistfromdepartmentuserAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        $cacheKey1 = 'get_user_list_from_department_user_command';
+        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock->setExpire(3600 * 8);
+        if ($lock->lock()) {
+            return;
+        }
+
+        try {
+            $modelDepartmentUser = new \App\Qyweixin\Models\Contact\DepartmentUser();
+            $query = array();
+            $sort = array('_id' => 1);
+            $departmentUserList = $modelDepartmentUser->findAll($query, $sort);
+            if (!empty($departmentUserList)) {
+                $modelUser = new \App\Qyweixin\Models\User\User();
+                foreach ($departmentUserList as $info) {
+
+                    $userid = $info['userid'];
+                    $name = $info['name'];
+                    $provider_appid = $info['provider_appid'];
+                    $authorizer_appid = $info['authorizer_appid'];
+                    $externaluser_agent_agentid = '9999998';
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_user_list_from_department_user:' . $userid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $userid, $expire_time);
+
+                    try {
+                        $userInfo = $modelUser->getInfoByUserId($userid, $authorizer_appid, $provider_appid);
+                        if (empty($userInfo)) {
+                            $data = array();
+                            $data['userid'] = $userid;
+                            $data['provider_appid'] = $provider_appid;
+                            $data['authorizer_appid'] = $authorizer_appid;
+                            $data['name'] = $name;
+                            // 增加一个user
+                            $userInfo = $modelUser->insert($data);
+                        }
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
+     * 获取用户详情
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getuserinfo
+     * @param array $params            
+     */
+    public function getuserinfoAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        $cacheKey1 = 'get_user_info_command';
+        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock->setExpire(3600 * 8);
+        if ($lock->lock()) {
+            return;
+        }
+
+        try {
+            $modelUser = new \App\Qyweixin\Models\User\User();
+            $query = array();
+            $sort = array('_id' => 1);
+            $userList = $modelUser->findAll($query, $sort);
+            if (!empty($userList)) {
+                foreach ($userList as $info) {
+
+                    $userid = $info['userid'];
+                    $provider_appid = $info['provider_appid'];
+                    $authorizer_appid = $info['authorizer_appid'];
+                    $externaluser_agent_agentid = '9999998';
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_user_info:' . $userid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $userid, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
+                        $weixinopenService->getUserInfo($info['id']);
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
      * 获取配置了客户联系功能的成员列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getfollowuserlist
      * @param array $params            
