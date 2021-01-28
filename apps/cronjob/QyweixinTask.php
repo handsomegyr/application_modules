@@ -424,6 +424,61 @@ class QyweixinTask extends \Phalcon\CLI\Task
     }
 
     /**
+     * 获取标签成员
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin gettagpartyuser
+     * @param array $params            
+     */
+    public function gettagpartyuserAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        $cacheKey1 = 'get_tag_party_user_command';
+        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock->setExpire(3600 * 8);
+        if ($lock->lock()) {
+            return;
+        }
+
+        try {
+            $modelTag = new \App\Qyweixin\Models\Contact\Tag();
+            $query = array();
+            $sort = array('_id' => 1);
+            $tagList = $modelTag->findAll($query, $sort);
+            if (!empty($tagList)) {
+                foreach ($tagList as $info) {
+
+                    $tagid = $info['tagid'];
+                    $provider_appid = $info['provider_appid'];
+                    $authorizer_appid = $info['authorizer_appid'];
+                    $externaluser_agent_agentid = '9999998';
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_tag_party_user:' . $tagid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $tagid, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
+                        $weixinopenService->getTag($tagid);
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
      * 获取配置了客户联系功能的成员列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getfollowuserlist
      * @param array $params            
