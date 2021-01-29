@@ -124,8 +124,8 @@ class ExternalcontactcontactwayController extends BaseController
                     if ($res['media_id'] != $data['conclusions_image_media_id']) {
                         $updateData = array();
                         $updateData['conclusions_image_media_id'] = $res['media_id'];
-                        $updateData['conclusions_image_media_created_at'] = date("Y-m-d H:i:s", $res['created_at']);
-                        ContactWayModel::where('id', $id)->update($updateData);
+                        $updateData['conclusions_image_media_created_at'] = getCurrentTime($res['created_at']);
+                        $this->modelExternalcontactContactWay->update(array('_id' => $id), array('$set' => $updateData));
                     }
                 }
 
@@ -135,8 +135,8 @@ class ExternalcontactcontactwayController extends BaseController
                     if ($res['media_id'] != $data['conclusions_miniprogram_pic_media_id']) {
                         $updateData = array();
                         $updateData['conclusions_miniprogram_pic_media_id'] = $res['media_id'];
-                        $updateData['conclusions_miniprogram_pic_media_created_at'] = date("Y-m-d H:i:s", $res['created_at']);
-                        ContactWayModel::where('id', $id)->update($updateData);
+                        $updateData['conclusions_miniprogram_pic_media_created_at'] = getCurrentTime($res['created_at']);
+                        $this->modelExternalcontactContactWay->update(array('_id' => $id), array('$set' => $updateData));
                     }
                 }
 
@@ -181,7 +181,7 @@ class ExternalcontactcontactwayController extends BaseController
 
                 $updateData = array();
                 $updateData['conclusions_image_pic_url'] = $res['url'];
-                ContactWayModel::where('id', $id)->update($updateData);
+                $this->modelExternalcontactContactWay->update(array('_id' => $id), array('$set' => $updateData));
 
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }

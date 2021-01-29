@@ -100,8 +100,8 @@ class ExternalcontactwelcomemsgController extends BaseController
                     if ($res['media_id'] != $data['image_media_id']) {
                         $updateData = array();
                         $updateData['image_media_id'] = $res['media_id'];
-                        $updateData['image_media_created_at'] = date("Y-m-d H:i:s", $res['created_at']);
-                        WelcomeMsgModel::where('id', $id)->update($updateData);
+                        $updateData['image_media_created_at'] = getCurrentTime($res['created_at']);
+                        $this->modelExternalcontactWelcomeMsg->update(array('_id' => $id), array('$set' => $updateData));
                     }
                 }
 
@@ -111,8 +111,8 @@ class ExternalcontactwelcomemsgController extends BaseController
                     if ($res['media_id'] != $data['miniprogram_pic_media_id']) {
                         $updateData = array();
                         $updateData['miniprogram_pic_media_id'] = $res['media_id'];
-                        $updateData['miniprogram_pic_media_created_at'] = date("Y-m-d H:i:s", $res['created_at']);
-                        WelcomeMsgModel::where('id', $id)->update($updateData);
+                        $updateData['miniprogram_pic_media_created_at'] = getCurrentTime($res['created_at']);
+                        $this->modelExternalcontactWelcomeMsg->update(array('_id' => $id), array('$set' => $updateData));
                     }
                 }
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
@@ -156,7 +156,7 @@ class ExternalcontactwelcomemsgController extends BaseController
 
                 $updateData = array();
                 $updateData['image_pic_url'] = $res['url'];
-                WelcomeMsgModel::where('id', $id)->update($updateData);
+                $this->modelExternalcontactWelcomeMsg->update(array('_id' => $id), array('$set' => $updateData));
 
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }

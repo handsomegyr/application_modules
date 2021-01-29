@@ -121,8 +121,8 @@ class ExternalcontactexternaluserremarkController extends BaseController
                     if ($res['media_id'] != $data['remark_pic_mediaid']) {
                         $updateData = array();
                         $updateData['remark_pic_mediaid'] = $res['media_id'];
-                        $updateData['remark_pic_media_created_at'] = date("Y-m-d H:i:s", $res['created_at']);
-                        ExternalUserRemarkModel::where('id', $id)->update($updateData);
+                        $updateData['remark_pic_media_created_at'] = getCurrentTime($res['created_at']);
+                        $this->modelExternalcontactExternalUserRemark->update(array('_id' => $id), array('$set' => $updateData));
                     }
                 }
 
