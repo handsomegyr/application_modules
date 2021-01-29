@@ -75,7 +75,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['appid'], $data['provider_appid'], 0);
+            $weixinopenService = new \App\Qyweixin\Services\QyService($data['appid'], $data['provider_appid'], 0);
             $res = $weixinopenService->getAccessToken4Authorizer();
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
@@ -102,7 +102,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['appid'], $data['provider_appid']);
+            $weixinopenService = new \App\Qyweixin\Services\QyService($data['appid'], $data['provider_appid']);
             $res = $weixinopenService->getAuthorizerInfo();
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));

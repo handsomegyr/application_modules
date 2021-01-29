@@ -33,6 +33,24 @@ class AgentmsgController extends BaseController
     protected $typeItems = null;
     protected $mediaItems = null;
 
+    protected function getFormTools2($tools)
+    {
+        $tools['sendmsg'] = array(
+            'title' => '发送消息',
+            'action' => 'sendmsg',
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['agentid']) && !empty($row['provider_appid'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
     protected function getSchemas2($schemas)
     {
         $schemas['provider_appid'] = array(
@@ -679,5 +697,111 @@ class AgentmsgController extends BaseController
     protected function getModel()
     {
         return $this->modelAgentMsg;
+    }
+
+    /**
+     * @title({name="发送消息"})
+     * 发送消息
+     *
+     * @name 发送消息
+     */
+    public function sendmsgAction()
+    {
+        // http://www.applicationmodule.com/admin/qyweixin/agentmsg/sendmsg?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $row = $this->modelBlackUser->getInfoById($id);
+            if (empty($row)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = array();
+                $fields['_id'] = array(
+                    'name' => '记录ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'hidden',
+                        'is_show' => true
+                    ),
+                );
+                $fields['agentmsg_name'] = array(
+                    'name' => '应用消息名称',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+
+                $fields['agentmsg_ToUserName'] = array(
+                    'name' => '消息接收者',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                    ),
+                );
+                // $fields['activity_id'] = array(
+                //     'name' => '所属活动',
+                //     'validation' => array(
+                //         'required' => true
+                //     ),
+                //     'form' => array(
+                //         'input_type' => 'select',
+                //         'is_show' => true,
+                //         'items' => $this->modelActivity->getAll(),
+                //         'readonly' => true,
+                //     ),
+                // );
+                // $fields['exchange_activity_id'] = array(
+                //     'name' => '变更所属活动',
+                //     'validation' => array(
+                //         'required' => true
+                //     ),
+                //     'form' => array(
+                //         'input_type' => 'select',
+                //         'is_show' => true,
+                //         'items' => $this->modelActivity->getAll()
+                //     ),
+                // );
+
+                $title = "发送消息";
+                return $this->showModal($title, $fields, $row);
+            } else {
+                // 如果是POST请求的话就是进行具体的处理  
+                $ToUserName = trim($this->request->get('ToUserName'));
+                if (empty($ToUserName)) {
+                    return $this->makeJsonError("ToUserName未指定");
+                }
+                $weixinopenService = new \App\Qyweixin\Services\QyService($row['authorizer_appid'], $row['provider_appid'], $row['agentid']);
+                $FromUserName = "";
+                $agentMsgInfo = $row;
+                $match = array();
+                $match['id'] = 0;
+                $match['keyword'] = '';
+                $match['agent_msg_type'] = $$row['msg_type'];
+                $sendRet = $weixinopenService->sendAgentMsg($FromUserName, $ToUserName, $agentMsgInfo, $match);
+                if ($sendRet['is_ok']) {
+                    return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+                } else {
+                    return $this->makeJsonError($sendRet['api_ret']);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
     }
 }

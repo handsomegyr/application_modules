@@ -30,7 +30,6 @@ class AgentController extends \App\Backend\Controllers\FormController
     protected $providerItems = null;
     protected $authorizerItems = null;
 
-
     protected function getFormTools2($tools)
     {
         $tools['getaccesstoken'] = array(
@@ -38,7 +37,7 @@ class AgentController extends \App\Backend\Controllers\FormController
             'action' => 'getaccesstoken',
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['appid'])) {
+                if (!empty($row) && !empty($row['agentid']) && !empty($row['provider_appid'])) {
                     return true;
                 } else {
                     return false;
@@ -46,7 +45,32 @@ class AgentController extends \App\Backend\Controllers\FormController
             },
             'icon' => 'fa-pencil-square-o',
         );
-
+        $tools['getagentlist'] = array(
+            'title' => '获取access_token对应的应用列表',
+            'action' => 'getagentlist',
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['agentid']) && !empty($row['provider_appid'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['getagentinfo'] = array(
+            'title' => '获取应用详情',
+            'action' => 'getagentinfo',
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['agentid']) && !empty($row['provider_appid']) && ($row['secret_type'] == 0 || $row['secret_type'] == 3)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
         return $tools;
     }
 
@@ -68,8 +92,62 @@ class AgentController extends \App\Backend\Controllers\FormController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
-            $weixinopenService = new \App\Qyweixin\Services\WeixinService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
+            $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
             $res = $weixinopenService->getAccessToken4Agent();
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="获取access_token对应的应用列表"})
+     *
+     * @name 获取access_token对应的应用列表
+     */
+    public function getagentlistAction()
+    {
+        // http://www.applicationmodule.com/admin/qyweixin/agent/getagentlist?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAgent->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
+            $res = $weixinopenService->getAgentList();
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="获取应用详情"})
+     *
+     * @name 获取应用详情
+     */
+    public function getagentinfoAction()
+    {
+        // http://www.applicationmodule.com/admin/qyweixin/agent/getagentinfo?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelAgent->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
+            $res = $weixinopenService->getAgentInfo();
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {
