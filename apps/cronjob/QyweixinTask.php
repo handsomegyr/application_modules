@@ -757,6 +757,81 @@ class QyweixinTask extends \Phalcon\CLI\Task
         }
     }
 
+
+    /**
+     * 获取企业客户朋友圈列表
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getmomentlist
+     * @param array $params            
+     */
+    public function getmomentlistAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        try {
+            $modelAgent = new \App\Qyweixin\Models\Agent\Agent();
+            $query = array(
+                'agentid' => '9999999'
+            );
+            $sort = array('_id' => 1);
+            $agentList = $modelAgent->findAll($query, $sort);
+            if (!empty($agentList)) {
+
+                $yesterday = time() - 24 * 3600;
+                $end_time = mktime(0, 0, 0, date('m', $yesterday), date('d', $yesterday), date('Y', $yesterday));
+                $start_time = strtotime("-1 month", time());
+                $creator = "";
+                $filter_type = 2;
+                $limit = 100;
+                $cursor = "";
+
+                foreach ($agentList as $agentItem) {
+
+                    // 进行锁定处理
+                    $provider_appid = $agentItem['provider_appid'];
+                    $authorizer_appid = $agentItem['authorizer_appid'];
+                    $agentid = $agentItem['agentid'];
+
+                    $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock->setExpire(3600 * 8);
+                    if ($lock->lock()) {
+                        continue;
+                    }
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_moment_list:' . $provider_appid . ':' . $authorizer_appid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $agentid, $expire_time);
+
+                    try {
+                        do {
+                            $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agentid);
+                            $res = $weixinopenService->getMomentList($start_time, $end_time, $creator, $filter_type, $limit, $cursor);
+
+                            // 分页游标，下次请求时填写以获取之后分页的记录，如果已经没有更多的数据则返回空
+                            if (empty($res['next_cursor'])) {
+                                $cursor = "";
+                            } else {
+                                $cursor = $res['next_cursor'];
+                            }
+                        } while (empty($cursor));
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
     private function getChatdata($maxseqInfo, $agentInfo, $snList)
     {
         $chatdataList = array();
