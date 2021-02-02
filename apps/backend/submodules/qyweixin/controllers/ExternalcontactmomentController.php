@@ -21,15 +21,11 @@ class ExternalcontactmomentController extends BaseController
 
     protected function getFormTools2($tools)
     {
-        $tools['uploadmedia'] = array(
-            'title' => '上传临时素材',
-            'action' => 'uploadmedia',
+        $tools['getimagemedia'] = array(
+            'title' => '获取图片',
+            'action' => 'getimagemedia',
             'is_show' => function ($row) {
-                $weixinopenService = new \App\Qyweixin\Services\QyService($row['authorizer_appid'], $row['provider_appid'], 0);
-                if (
-                    (!empty($row['image_media']) && $weixinopenService->isMediaTimeExpired($row['image_media_id'], $row['image_media_created_at'])) ||
-                    (!empty($row['miniprogram_pic_media']) && $weixinopenService->isMediaTimeExpired($row['miniprogram_pic_media_id'], $row['miniprogram_pic_media_created_at']))
-                ) {
+                if (!empty($row['image_media_id']) && empty($row['image_media'])) {
                     return true;
                 } else {
                     return false;
@@ -37,11 +33,11 @@ class ExternalcontactmomentController extends BaseController
             },
             'icon' => 'fa-pencil-square-o',
         );
-        $tools['uploadmediaimg'] = array(
-            'title' => '上传图片',
-            'action' => 'uploadmediaimg',
+        $tools['getvideomedia'] = array(
+            'title' => '获取视频',
+            'action' => 'getvideomedia',
             'is_show' => function ($row) {
-                if (!empty($row['image_media']) && empty($row['image_pic_url'])) {
+                if (!empty($row['video_media_id']) && empty($row['video_media'])) {
                     return true;
                 } else {
                     return false;
@@ -49,18 +45,29 @@ class ExternalcontactmomentController extends BaseController
             },
             'icon' => 'fa-pencil-square-o',
         );
-
+        $tools['getvideothumbmedia'] = array(
+            'title' => '获取视频封面图片',
+            'action' => 'getvideothumbmedia',
+            'is_show' => function ($row) {
+                if (!empty($row['video_thumb_media_id']) && empty($row['video_thumb_media'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
         return $tools;
     }
 
     /**
-     * @title({name="上传临时素材"})
+     * @title({name="获取图片"})
      *
-     * @name 上传临时素材
+     * @name 获取图片
      */
-    public function uploadmediaAction()
+    public function getimagemediaAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/externalcontactgroupwelcometemplate/uploadmedia?id=xxx
+        // http://www.applicationmodule.com/admin/qyweixin/externalcontactmoment/getimagemedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -72,51 +79,47 @@ class ExternalcontactmomentController extends BaseController
             }
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
-
                 // 构建modal里面Form表单内容
                 $fields = $this->getFields4FormTool();
-                $title = "上传临时素材";
+                $title = "获取图片";
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $agent_agentid = trim($this->request->get('groupwelcometemplate_agentid'));
+                $agent_agentid = '9999999';
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
+                $file_ext = "jpg";
+                $media_id = $data['image_media_id'];
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
-                if (empty($data['image_media_created_at'])) {
-                    $image_media_created_at = '2020-01-01 00:00:00';
-                } else {
-                    $image_media_created_at = $data['image_media_created_at'];
-                }
-                if (empty($data['miniprogram_pic_media_created_at'])) {
-                    $miniprogram_pic_media_created_at = '2020-01-01 00:00:00';
-                } else {
-                    $miniprogram_pic_media_created_at = $data['miniprogram_pic_media_created_at'];
-                }
-
-                if (!empty($data['image_media'])) {
-                    $res = $weixinopenService->uploadMediaByApi($data['image_media'], 'image', $data['image_media_id'], $image_media_created_at);
-                    // 发生了改变就更新
-                    if ($res['media_id'] != $data['image_media_id']) {
-                        $updateData = array();
-                        $updateData['image_media_id'] = $res['media_id'];
-                        $updateData['image_media_created_at'] = getCurrentTime($res['created_at']);
-                        $this->modelExternalcontactMoment->update(array('_id' => $id), array('$set' => $updateData));
+                $res = $weixinopenService->getQyWeixinObject()
+                    ->getMediaManager()
+                    ->download($media_id, $file_ext);
+                if (empty($res['errcode'])) {
+                    if (!empty($res['name'])) {
+                        $filename = $res['name'];
+                    } else {
+                        $filename = 'qymedia_' . \uniqid() . '.' . $file_ext;
                     }
-                }
-
-                if (!empty($data['miniprogram_pic_media'])) {
-                    $res = $weixinopenService->uploadMediaByApi($data['miniprogram_pic_media'], 'image', $data['miniprogram_pic_media_id'], $miniprogram_pic_media_created_at);
-                    // 发生了改变就更新
-                    if ($res['media_id'] != $data['miniprogram_pic_media_id']) {
-                        $updateData = array();
-                        $updateData['miniprogram_pic_media_id'] = $res['media_id'];
-                        $updateData['miniprogram_pic_media_created_at'] = getCurrentTime($res['created_at']);
-                        $this->modelExternalcontactMoment->update(array('_id' => $id), array('$set' => $updateData));
+                    // $path = '/nas/var/logs/www/export/' . $filename;
+                    // //$path = \tempnam(\sys_get_temp_dir(), 'media_');
+                    // $fp = fopen($path, 'w');
+                    // $fileContent = $res['bytes'];
+                    // fwrite($fp, $fileContent);
+                    // fclose($fp);
+                    $object = "moment/" . $filename;
+                    $ossService = new \App\Services\OssService();
+                    $res4Oss = $ossService->upload_file_by_content($res['bytes'], $object);
+                    if ($res4Oss->status != 200) {
+                        throw new \Exception('保存文件失败');
                     }
+                    $updateData = array();
+                    $updateData['image_media'] = $object;
+                    $this->modelExternalcontactMoment->update(array('_id' => $id), array('$set' => $updateData));
+                    return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+                } else {
+                    return $this->makeJsonError($res['errmsg']);
                 }
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -124,13 +127,13 @@ class ExternalcontactmomentController extends BaseController
     }
 
     /**
-     * @title({name="上传图片"})
+     * @title({name="获取视频"})
      *
-     * @name 上传图片
+     * @name 获取视频
      */
-    public function uploadmediaimgAction()
+    public function getvideomediaAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/externalcontactgroupwelcometemplate/uploadmediaimg?id=xxx
+        // http://www.applicationmodule.com/admin/qyweixin/externalcontactmoment/getvideomedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -142,25 +145,113 @@ class ExternalcontactmomentController extends BaseController
             }
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
-
                 // 构建modal里面Form表单内容
                 $fields = $this->getFields4FormTool();
-                $title = "上传图片";
+                $title = "获取视频";
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $agent_agentid = trim($this->request->get('groupwelcometemplate_agentid'));
+                $agent_agentid = '9999999';
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
+                $file_ext = "mp4";
+                $media_id = $data['video_media_id'];
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
-                $res = $weixinopenService->uploadMediaImgByApi($data['image_media']);
+                $res = $weixinopenService->getQyWeixinObject()
+                    ->getMediaManager()
+                    ->download($media_id, $file_ext);
+                if (empty($res['errcode'])) {
+                    if (!empty($res['name'])) {
+                        $filename = $res['name'];
+                    } else {
+                        $filename = 'qymedia_' . \uniqid() . '.' . $file_ext;
+                    }
+                    // $path = '/nas/var/logs/www/export/' . $filename;
+                    // //$path = \tempnam(\sys_get_temp_dir(), 'media_');
+                    // $fp = fopen($path, 'w');
+                    // $fileContent = $res['bytes'];
+                    // fwrite($fp, $fileContent);
+                    // fclose($fp);
+                    $object = "moment/" . $filename;
+                    $ossService = new \App\Services\OssService();
+                    $res4Oss = $ossService->upload_file_by_content($res['bytes'], $object);
+                    if ($res4Oss->status != 200) {
+                        throw new \Exception('保存文件失败');
+                    }
+                    $updateData = array();
+                    $updateData['video_media'] = $object;
+                    $this->modelExternalcontactMoment->update(array('_id' => $id), array('$set' => $updateData));
+                    return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+                } else {
+                    return $this->makeJsonError($res['errmsg']);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
 
-                $updateData = array();
-                $updateData['image_pic_url'] = $res['url'];
-                $this->modelExternalcontactMoment->update(array('_id' => $id), array('$set' => $updateData));
-
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+    /**
+     * @title({name="获取视频封面图片"})
+     *
+     * @name 获取视频封面图片
+     */
+    public function getvideothumbmediaAction()
+    {
+        // http://www.applicationmodule.com/admin/qyweixin/externalcontactmoment/getvideothumbmedia?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelExternalcontactMoment->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4FormTool();
+                $title = "获取视频封面图片";
+                $row = $data;
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $agent_agentid = '9999999';
+                if (empty($agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
+                $file_ext = "jpg";
+                $media_id = $data['video_thumb_media_id'];
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                $res = $weixinopenService->getQyWeixinObject()
+                    ->getMediaManager()
+                    ->download($media_id, $file_ext);
+                if (empty($res['errcode'])) {
+                    if (!empty($res['name'])) {
+                        $filename = $res['name'];
+                    } else {
+                        $filename = 'qymedia_' . \uniqid() . '.' . $file_ext;
+                    }
+                    // $path = '/nas/var/logs/www/export/' . $filename;
+                    // //$path = \tempnam(\sys_get_temp_dir(), 'media_');
+                    // $fp = fopen($path, 'w');
+                    // $fileContent = $res['bytes'];
+                    // fwrite($fp, $fileContent);
+                    // fclose($fp);
+                    $object = "moment/" . $filename;
+                    $ossService = new \App\Services\OssService();
+                    $res4Oss = $ossService->upload_file_by_content($res['bytes'], $object);
+                    if ($res4Oss->status != 200) {
+                        throw new \Exception('保存文件失败');
+                    }
+                    $updateData = array();
+                    $updateData['video_thumb_media'] = $object;
+                    $this->modelExternalcontactMoment->update(array('_id' => $id), array('$set' => $updateData));
+                    return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+                } else {
+                    return $this->makeJsonError($res['errmsg']);
+                }
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -170,7 +261,7 @@ class ExternalcontactmomentController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['groupwelcometemplate_rec_id'] = array(
+        $fields['moment_rec_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -181,8 +272,8 @@ class ExternalcontactmomentController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['groupwelcometemplate_name'] = array(
-            'name' => '名称',
+        $fields['moment_id'] = array(
+            'name' => '朋友圈id',
             'validation' => array(
                 'required' => true
             ),
@@ -190,17 +281,6 @@ class ExternalcontactmomentController extends BaseController
                 'input_type' => 'text',
                 'is_show' => true,
                 'readonly' => true
-            ),
-        );
-        $fields['groupwelcometemplate_agentid'] = array(
-            'name' => '微信企业应用ID',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems,
             ),
         );
 
@@ -426,17 +506,17 @@ class ExternalcontactmomentController extends BaseController
             'name' => '图片的media_id',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '视频图片的media_id，可以通过获取临时素材下载资源',
+                'help' => '图片的media_id，可以通过获取临时素材下载资源',
             ),
             'list' => array(
                 'is_show' => true,
@@ -463,7 +543,6 @@ class ExternalcontactmomentController extends BaseController
                 'input_type' => 'image',
                 'is_show' => true,
                 'items' => '',
-                'help' => '图片',
             ),
             'list' => array(
                 'is_show' => true,
@@ -479,20 +558,20 @@ class ExternalcontactmomentController extends BaseController
         );
 
         $schemas['video_media_id'] = array(
-            'name' => '视频图片的media_id',
+            'name' => '视频的media_id',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '图片的media_id，可以通过获取临时素材下载资源',
+                'help' => '视频的media_id，可以通过获取临时素材下载资源',
             ),
             'list' => array(
                 'is_show' => true,
@@ -506,7 +585,7 @@ class ExternalcontactmomentController extends BaseController
             )
         );
         $schemas['video_media'] = array(
-            'name' => '视频图片',
+            'name' => '视频',
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
@@ -516,10 +595,9 @@ class ExternalcontactmomentController extends BaseController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'image',
+                'input_type' => 'file',
                 'is_show' => true,
                 'items' => '',
-                'help' => '图片',
             ),
             'list' => array(
                 'is_show' => true,
@@ -537,17 +615,17 @@ class ExternalcontactmomentController extends BaseController
             'name' => '视频封面图片的media_id',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '图片的media_id，可以通过获取临时素材下载资源',
+                'help' => '视频封面图片的media_id，可以通过获取临时素材下载资源',
             ),
             'list' => array(
                 'is_show' => true,
@@ -574,7 +652,6 @@ class ExternalcontactmomentController extends BaseController
                 'input_type' => 'image',
                 'is_show' => true,
                 'items' => '',
-                'help' => '图片',
             ),
             'list' => array(
                 'is_show' => true,
@@ -668,7 +745,7 @@ class ExternalcontactmomentController extends BaseController
             'export' => array(
                 'is_show' => true
             )
-        );        
+        );
         $schemas['location_longitude'] = array(
             'name' => '地理位置经度',
             'data' => array(
@@ -749,7 +826,7 @@ class ExternalcontactmomentController extends BaseController
             'export' => array(
                 'is_show' => true
             )
-        );        
+        );
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
