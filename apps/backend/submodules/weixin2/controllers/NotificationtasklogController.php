@@ -217,6 +217,7 @@ class NotificationtasklogController extends BaseController
         $notificationMethodOptions['2'] = "群发消息";
         $notificationMethodOptions['3'] = "客服消息";
         $notificationMethodOptions['4'] = "小程序订阅消息";
+        $notificationMethodOptions['5'] = "小程序统一服务消息";
 
         $schemas['notification_method'] = array(
             'name' => '推送方式',
@@ -232,7 +233,7 @@ class NotificationtasklogController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $notificationMethodOptions,
-                'help' => '推送方式 1:模板消息 2:群发消息 3:客服消息 4:小程序订阅消息',
+                'help' => '推送方式 1:模板消息 2:群发消息 3:客服消息 4:小程序订阅消息 5:小程序统一服务消息',
             ),
             'list' => array(
                 'is_show' => true,
