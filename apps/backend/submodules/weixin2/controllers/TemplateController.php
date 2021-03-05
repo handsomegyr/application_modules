@@ -94,7 +94,7 @@ class TemplateController extends BaseController
                 $component_appid = trim($this->request->get('template_component_appid'));
                 $authorizer_appid = trim($this->request->get('template_authorizer_appid'));
                 if (empty($component_appid)) {
-                    return $this->makeJsonError("第三方平台应用ID未设定");
+                    // return $this->makeJsonError("第三方平台应用ID未设定");
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
@@ -130,7 +130,7 @@ class TemplateController extends BaseController
                 $authorizer_appid = trim($this->request->get('template_authorizer_appid'));
                 $user_id = trim($this->request->get('template_user_id'));
                 if (empty($component_appid)) {
-                    return $this->makeJsonError("第三方平台应用ID未设定");
+                    // return $this->makeJsonError("第三方平台应用ID未设定");
                 }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
