@@ -179,6 +179,23 @@ class NotificationtaskController extends BaseController
                         'items' => $this->subscribeMsgItems,
                     ),
                 );
+                $fields['changemsginfo_callback'] = array(
+                    'name' => '消息内容修改回调函数',
+                    'data' => array(
+                        'type' => 'string',
+                        'length' => 190
+                    ),
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'items' => '',
+                        'help' => '以json格式指定类名和方法名，类名可以为空 eg. {"className":"clsXxx","methodName":"changemsg"}',
+                    )
+                );
+
                 $fields['openids'] = array(
                     'name' => 'openid列表，逗号分隔',
                     'data' => array(
@@ -228,7 +245,8 @@ class NotificationtaskController extends BaseController
                 $authorizer_appid = trim($this->request->get('notificationtask_authorizer_appid'));
 
                 $name = trim($this->request->get('name')); // 任务名
-                $subscribe_msg_id = intval($this->request->get('subscribe_msg_id')); // 订阅消息记录ID
+                $subscribe_msg_id = trim($this->request->get('subscribe_msg_id')); // 订阅消息记录ID
+                $changemsginfo_callback = trim($this->request->get('changemsginfo_callback'));
                 $openids = trim($this->request->get('openids')); // openid列表
                 $openids_sql = trim($this->request->get('openids_sql')); // 获取openid的sql文
                 $scheduled_push_time = trim($this->request->get('scheduled_push_time')); // 预定推送时间
@@ -236,8 +254,12 @@ class NotificationtaskController extends BaseController
                 if (empty($name)) {
                     return $this->makeJsonError("任务名未指定");
                 }
-                if ($subscribe_msg_id <= 0) {
+                if (empty($subscribe_msg_id)) {
                     return $this->makeJsonError("订阅消息记录ID未指定");
+                }
+                $isValid = $this->checkChangemsginfoCallbackIsValid($changemsginfo_callback);
+                if (empty($isValid)) {
+                    return $this->makeJsonError("消息内容修改回调函数不合法");
                 }
                 if (empty($scheduled_push_time)) {
                     return $this->makeJsonError("起始日期未设定");
@@ -327,6 +349,7 @@ class NotificationtaskController extends BaseController
                     $data['notification_method'] = 4;
                     $data['mass_msg_send_method_id'] = 0;
                     $data['subscribe_msg_id'] = $subscribe_msg_id;
+                    $data['changemsginfo_callback'] = $changemsginfo_callback;
                     $data['template_msg_id'] = 0;
                     $data['mass_msg_id'] = 0;
                     $data['custom_msg_id'] = 0;
@@ -417,6 +440,22 @@ class NotificationtaskController extends BaseController
                         'items' => $this->templateMsgItems,
                     ),
                 );
+                $fields['changemsginfo_callback'] = array(
+                    'name' => '消息内容修改回调函数',
+                    'data' => array(
+                        'type' => 'string',
+                        'length' => 190
+                    ),
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'items' => '',
+                        'help' => '以json格式指定类名和方法名，类名可以为空 eg. {"className":"clsXxx","methodName":"changemsg"}',
+                    )
+                );
                 $fields['openids'] = array(
                     'name' => 'openid列表，逗号分隔',
                     'data' => array(
@@ -466,7 +505,8 @@ class NotificationtaskController extends BaseController
                 $authorizer_appid = trim($this->request->get('notificationtask_authorizer_appid'));
 
                 $name = trim($this->request->get('name')); // 任务名
-                $template_msg_id = intval($this->request->get('template_msg_id')); // 公众号模板消息ID
+                $template_msg_id = trim($this->request->get('template_msg_id')); // 公众号模板消息ID
+                $changemsginfo_callback = trim($this->request->get('changemsginfo_callback'));
                 $openids = trim($this->request->get('openids')); // openid列表
                 $openids_sql = trim($this->request->get('openids_sql')); // 获取openid的sql文
                 $scheduled_push_time = trim($this->request->get('scheduled_push_time')); // 预定推送时间
@@ -474,8 +514,12 @@ class NotificationtaskController extends BaseController
                 if (empty($name)) {
                     return $this->makeJsonError("任务名未指定");
                 }
-                if ($template_msg_id <= 0) {
+                if (empty($template_msg_id)) {
                     return $this->makeJsonError("公众号模板消息ID未指定");
+                }
+                $isValid = $this->checkChangemsginfoCallbackIsValid($changemsginfo_callback);
+                if (empty($isValid)) {
+                    return $this->makeJsonError("消息内容修改回调函数不合法");
                 }
                 if (empty($scheduled_push_time)) {
                     return $this->makeJsonError("起始日期未设定");
@@ -566,6 +610,7 @@ class NotificationtaskController extends BaseController
                     $data['mass_msg_send_method_id'] = 0;
                     $data['subscribe_msg_id'] = 0;
                     $data['template_msg_id'] = $template_msg_id;
+                    $data['changemsginfo_callback'] = $changemsginfo_callback;
                     $data['mass_msg_id'] = 0;
                     $data['custom_msg_id'] = 0;
                     $data['scheduled_push_time'] = \App\Common\Utils\Helper::getCurrentTime($scheduled_push_time);
@@ -674,6 +719,22 @@ class NotificationtaskController extends BaseController
                         'items' => $this->subscribeMsgItems
                     ),
                 );
+                $fields['changemsginfo_callback'] = array(
+                    'name' => '消息内容修改回调函数',
+                    'data' => array(
+                        'type' => 'string',
+                        'length' => 190
+                    ),
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'items' => '',
+                        'help' => '以json格式指定类名和方法名，类名可以为空 eg. {"className":"clsXxx","methodName":"changemsg"}',
+                    )
+                );
                 $fields['openids'] = array(
                     'name' => 'openid列表，逗号分隔',
                     'data' => array(
@@ -721,7 +782,8 @@ class NotificationtaskController extends BaseController
                 $authorizer_appid = trim($this->request->get('notificationtask_authorizer_appid'));
 
                 $name = trim($this->request->get('name')); // 任务名
-                $subscribe_msg_id = intval($this->request->get('subscribe_msg_id')); // 订阅消息记录ID
+                $subscribe_msg_id = trim($this->request->get('subscribe_msg_id')); // 订阅消息记录ID
+                $changemsginfo_callback = trim($this->request->get('changemsginfo_callback'));
                 $openids = trim($this->request->get('openids')); // openid列表
                 $openids_sql = trim($this->request->get('openids_sql')); // 获取openid的sql文
                 $scheduled_push_time = trim($this->request->get('scheduled_push_time')); // 预定推送时间
@@ -729,8 +791,12 @@ class NotificationtaskController extends BaseController
                 if (empty($name)) {
                     return $this->makeJsonError("任务名未指定");
                 }
-                if ($subscribe_msg_id <= 0) {
+                if (empty($subscribe_msg_id)) {
                     return $this->makeJsonError("订阅消息记录ID未指定");
+                }
+                $isValid = $this->checkChangemsginfoCallbackIsValid($changemsginfo_callback);
+                if (empty($isValid)) {
+                    return $this->makeJsonError("消息内容修改回调函数不合法");
                 }
                 if (empty($scheduled_push_time)) {
                     return $this->makeJsonError("起始日期未设定");
@@ -817,6 +883,7 @@ class NotificationtaskController extends BaseController
                     $data['authorizer_appid'] = $authorizer_appid;
                     $data['name'] = $name;
                     $data['subscribe_msg_id'] = $subscribe_msg_id;
+                    $data['changemsginfo_callback'] = $changemsginfo_callback;
                     $data['scheduled_push_time'] = \App\Common\Utils\Helper::getCurrentTime($scheduled_push_time);
                     $data['openids'] = $openids;
                     $data['openids_sql'] = $openids_sql;
@@ -916,6 +983,22 @@ class NotificationtaskController extends BaseController
                         'items' => $this->templateMsgItems
                     ),
                 );
+                $fields['changemsginfo_callback'] = array(
+                    'name' => '消息内容修改回调函数',
+                    'data' => array(
+                        'type' => 'string',
+                        'length' => 190
+                    ),
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'items' => '',
+                        'help' => '以json格式指定类名和方法名，类名可以为空 eg. {"className":"clsXxx","methodName":"changemsg"}',
+                    )
+                );
                 $fields['openids'] = array(
                     'name' => 'openid列表，逗号分隔',
                     'data' => array(
@@ -964,6 +1047,7 @@ class NotificationtaskController extends BaseController
 
                 $name = trim($this->request->get('name')); // 任务名
                 $template_msg_id = intval($this->request->get('template_msg_id')); // 公众号模板消息ID
+                $changemsginfo_callback = trim($this->request->get('changemsginfo_callback'));
                 $openids = trim($this->request->get('openids')); // openid列表
                 $openids_sql = trim($this->request->get('openids_sql')); // 获取openid的sql文
                 $scheduled_push_time = trim($this->request->get('scheduled_push_time')); // 预定推送时间
@@ -971,8 +1055,12 @@ class NotificationtaskController extends BaseController
                 if (empty($name)) {
                     return $this->makeJsonError("任务名未指定");
                 }
-                if ($template_msg_id <= 0) {
+                if (empty($template_msg_id)) {
                     return $this->makeJsonError("公众号模板消息ID未指定");
+                }
+                $isValid = $this->checkChangemsginfoCallbackIsValid($changemsginfo_callback);
+                if (empty($isValid)) {
+                    return $this->makeJsonError("消息内容修改回调函数不合法");
                 }
                 if (empty($scheduled_push_time)) {
                     return $this->makeJsonError("起始日期未设定");
@@ -1059,6 +1147,7 @@ class NotificationtaskController extends BaseController
                     $data['authorizer_appid'] = $authorizer_appid;
                     $data['name'] = $name;
                     $data['template_msg_id'] = $template_msg_id;
+                    $data['changemsginfo_callback'] = $changemsginfo_callback;
                     $data['scheduled_push_time'] = \App\Common\Utils\Helper::getCurrentTime($scheduled_push_time);
                     $data['openids'] = $openids;
                     $data['openids_sql'] = $openids_sql;
@@ -1168,18 +1257,6 @@ class NotificationtaskController extends BaseController
                     ),
                 );
 
-                $fields['subscribe_msg_id'] = array(
-                    'name' => '订阅消息ID',
-                    'validation' => array(
-                        'required' => true
-                    ),
-                    'form' => array(
-                        'input_type' => 'select',
-                        'is_show' => true,
-                        'items' => $this->subscribeMsgItems,
-                        'readonly' => true,
-                    ),
-                );
                 $fields['openids'] = array(
                     'name' => 'openid列表，逗号分隔',
                     'data' => array(
@@ -1591,6 +1668,36 @@ class NotificationtaskController extends BaseController
                 'is_show' => true
             )
         );
+
+        $schemas['changemsginfo_callback'] = array(
+            'name' => '消息内容修改回调函数',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '以json格式指定类名和方法名，类名可以为空 eg. {"className":"clsXxx","methodName":"changemsg"}',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['scheduled_push_time'] = array(
             'name' => '预定推送时间',
             'data' => array(
@@ -1898,5 +2005,30 @@ class NotificationtaskController extends BaseController
     protected function getModel()
     {
         return $this->modelTask;
+    }
+
+    protected function checkChangemsginfoCallbackIsValid($changemsginfo_callback)
+    {
+        // 如果没有设置回调函数的话 那么就直接返回
+        if (empty($changemsginfo_callback)) {
+            return true;
+        } else {
+            $changemsginfo_callback_info = \json_decode($changemsginfo_callback);
+            // 如果不是有效合法的json格式的话就直接返回
+            if (empty($changemsginfo_callback_info)) {
+                return false;
+            } else {
+                $className = empty($changemsginfo_callback_info['class']) ? "" : trim($changemsginfo_callback_info['class']);
+                $methodName = empty($changemsginfo_callback_info['method']) ? "" : trim($changemsginfo_callback_info['method']);
+
+                if (empty($className)) {
+                    return is_callable($methodName);
+                } else {
+                    $anObject  = new $className();
+                    $methodVariable  = array($anObject,  $methodName);
+                    return is_callable($methodVariable);
+                }
+            }
+        }
     }
 }

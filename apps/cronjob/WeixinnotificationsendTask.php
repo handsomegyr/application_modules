@@ -137,6 +137,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             if (empty($templateMsgInfo)) {
                                 throw new \Exception("任务日志记录ID:{$taskLog['id']},模板消息记录ID:{$taskLog['template_msg_id']}所对应的记录不存在");
                             }
+                            $templateMsgInfo = $this->changeMsgInfo($taskLog, $templateMsgInfo);
 
                             // 发送模板消息
                             $ret = $weixinopenService->sendTemplateMsg("", $taskLog['openid'], $templateMsgInfo, $match);
@@ -191,6 +192,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             if (empty($customMsgInfo)) {
                                 throw new \Exception("任务日志记录ID:{$taskLog['id']},客服消息记录ID:{$taskLog['custom_msg_id']}所对应的记录不存在");
                             }
+                            $customMsgInfo = $this->changeMsgInfo($taskLog, $customMsgInfo);
 
                             // 发送客服消息
                             $match['custom_msg_type'] = $customMsgInfo['msg_type'];
@@ -203,6 +205,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             if (empty($subscribeMsgInfo)) {
                                 throw new \Exception("任务日志记录ID:{$taskLog['id']},订阅消息记录ID:{$taskLog['subscribe_msg_id']}所对应的记录不存在");
                             }
+                            $subscribeMsgInfo = $this->changeMsgInfo($taskLog, $subscribeMsgInfo);
 
                             // 发送订阅模板消息
                             $ret = $weixinopenService->sendMicroappSubscribeMsg("", $taskLog['openid'], $subscribeMsgInfo, $match);
@@ -214,6 +217,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             if (empty($templateMsgInfo)) {
                                 throw new \Exception("任务日志记录ID:{$taskLog['id']},公众号模板消息记录ID:{$taskLog['template_msg_id']}所对应的记录不存在");
                             }
+                            $templateMsgInfo = $this->changeMsgInfo($taskLog, $templateMsgInfo);
 
                             // 发送模板消息
                             $ret = $weixinopenService->sendMicroappUniformMsg("", $taskLog['openid'], $templateMsgInfo, $match);
@@ -273,6 +277,29 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
             }
         } catch (\Exception $e) {
             $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    protected function changeMsgInfo($taskLog, $msgInfo)
+    {
+        // 如果没有设置回调函数的话 那么就直接返回
+        if (empty($taskLog['changemsginfo_callback'])) {
+            return $msgInfo;
+        } else {
+            $changemsginfo_callback_info = \json_decode($taskLog['changemsginfo_callback']);
+            // 如果不是有效合法的json格式的话就直接返回
+            if (empty($changemsginfo_callback_info)) {
+                return $msgInfo;
+            } else {
+                $className = empty($changemsginfo_callback_info['class']) ? "" : trim($changemsginfo_callback_info['class']);
+                $methodName = empty($changemsginfo_callback_info['method']) ? "" : trim($changemsginfo_callback_info['method']);
+                $openid = $taskLog['openid'];
+                if (empty($className)) {
+                    return call_user_func($methodName, $openid, $msgInfo);
+                } else {
+                    return call_user_func(array($className, $methodName), $openid, $msgInfo);
+                }
+            }
         }
     }
 }
