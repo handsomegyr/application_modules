@@ -404,6 +404,35 @@ class NotificationtasklogController extends BaseController
             )
         );
 
+        $schemas['changemsginfo_callback'] = array(
+            'name' => '消息内容修改回调函数',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '以json格式指定类名和方法名，类名可以为空 eg. {"className":"clsXxx","methodName":"changemsg"}',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['notification_task_content_id'] = array(
             'name' => '所属推送任务内容',
             'data' => array(

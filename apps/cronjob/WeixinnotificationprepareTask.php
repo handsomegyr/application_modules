@@ -186,7 +186,7 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         if (isset($openidList4Log[$openid])) {
                             continue;
                         }
-                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], 0, '按openids列表发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按openids列表发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
                         $openidList4Log[$openid] = $openid;
                         $i++;
                     }
@@ -220,7 +220,7 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         if (isset($openidList4Log[$openid])) {
                             continue;
                         }
-                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], 0, '按上传文件发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按上传文件发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
                         $openidList4Log[$openid] = $openid;
                         $i++;
                     }
@@ -244,107 +244,14 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         if (isset($openidList4Log[$openid])) {
                             continue;
                         }
-                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], 0, '按sql文发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按sql文发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
                         $openidList4Log[$openid] = $openid;
                         $i++;
                     }
                 }
             } else {
-                $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], 0, "按tagid发送消息", '', '', $taskInfo['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskInfo['changemsginfo_callback'], 0, "按tagid发送消息", '', '', $taskInfo['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
                 $i = 1;
-            }
-
-            if (false) {
-                // 以下代码准备废弃
-                $taskContentList = array();
-                foreach ($taskContentList as $taskContent) {
-                    $i = 0;
-                    // 推送方式
-                    if ($taskInfo['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_TEMPLATEMSG) { // 1:模板消息
-
-                        if (empty($taskContent['openids'])) {
-                            throw new \Exception("任务ID:{$taskInfo['id']},任务内容ID:{$taskContent['id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段值为空");
-                        }
-
-                        $openids = explode(',', $taskContent['openids']);
-                        if (empty($openids)) {
-                            throw new \Exception("任务ID:{$taskInfo['id']},任务内容ID:{$taskContent['id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段格式不正确");
-                        }
-
-                        // 根据模板消息记录ID获取模板消息配置
-                        $modelTemplateMsg = new \App\Weixin2\Models\TemplateMsg\TemplateMsg();
-                        $templateMsgInfo = $modelTemplateMsg->getInfoById($taskInfo['template_msg_id']);
-                        if (empty($templateMsgInfo)) {
-                            throw new \Exception("任务ID:{$taskInfo['id']},模板消息记录ID:{$taskInfo['template_msg_id']}所对应的记录不存在");
-                        }
-
-                        // 对应每一个openid都生成一条对应的发送日志
-                        foreach ($openids as $openid) {
-                            $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskContent['id'], $taskContent['name'], $taskContent['openids'], $openid, $taskContent['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
-                            $i++;
-                        }
-                    } elseif ($taskInfo['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_MASSMSG) { // 2:群发消息
-
-                        // 获取群发消息发送方式信息
-                        $modelMassMsgSendMethod = new \App\Weixin2\Models\MassMsg\SendMethod();
-                        $sendMethodInfo = $modelMassMsgSendMethod->getInfoById($taskInfo['mass_msg_send_method_id']);
-                        if (empty($sendMethodInfo)) {
-                            throw new \Exception("任务ID:{$taskInfo['id']},群发消息发送方式记录ID:{$taskInfo['mass_msg_send_method_id']}所对应的记录不存在");
-                        }
-
-                        // 按照tag_id发送的话
-                        if ($sendMethodInfo['send_method'] == \App\Weixin2\Models\MassMsg\SendMethod::SEND_BY_TAGID) {
-                            if (empty($taskContent['tag_id'])) {
-                                throw new \Exception("任务ID:{$taskInfo['id']},任务内容ID:{$taskContent['id']}和名称:{$taskContent['name']}的推送任务内容记录的tag_id字段值为空");
-                            }
-                        } elseif ($sendMethodInfo['send_method'] == \App\Weixin2\Models\MassMsg\SendMethod::SEND_BY_OPENIDS) { // 按照openids列表发送
-                            if (empty($taskContent['openids'])) {
-                                throw new \Exception("任务ID:{$taskInfo['id']},任务内容ID:{$taskContent['id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段值为空");
-                            }
-
-                            $openids = explode(',', $taskContent['openids']);
-                            if (empty($openids)) {
-                                throw new \Exception("任务ID:{$taskInfo['id']},任务内容ID:{$taskContent['id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段格式不正确");
-                            }
-                        }
-
-                        // 根据群发消息记录ID获取群发消息配置
-                        $modelMassMsg = new \App\Weixin2\Models\MassMsg\MassMsg();
-                        $massMsgInfo = $modelMassMsg->getInfoById($taskInfo['mass_msg_id']);
-                        if (empty($massMsgInfo)) {
-                            throw new \Exception("任务ID:{$taskInfo['id']},群发消息记录ID:{$taskInfo['mass_msg_id']}所对应的记录不存在");
-                        }
-                        $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskContent['id'], $taskContent['name'], $taskContent['openids'], "", $taskContent['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
-                        $i++;
-                    } elseif ($taskInfo['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_CUSTOMMSG) { // 3:客服消息
-
-                        if (empty($taskContent['openids'])) {
-                            throw new \Exception("任务ID:{$taskInfo['id']},任务内容ID:{$taskContent['id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段值为空");
-                        }
-
-                        $openids = explode(',', $taskContent['openids']);
-                        if (empty($openids)) {
-                            throw new \Exception("任务ID:{$taskInfo['id']},任务内容ID:{$taskContent['id']}和名称:{$taskContent['name']}的推送任务内容记录的openids字段格式不正确");
-                        }
-
-                        // 根据客服消息记录ID获取客服消息配置
-                        $modelCustomMsg = new \App\Weixin2\Models\CustomMsg\CustomMsg();
-                        $customMsgInfo = $modelCustomMsg->getInfoById($taskInfo['custom_msg_id']);
-                        if (empty($customMsgInfo)) {
-                            throw new \Exception("任务ID:{$taskInfo['id']},客服消息记录ID:{$taskInfo['custom_msg_id']}所对应的记录不存在");
-                        }
-                        foreach ($openids as $openid) {
-                            $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['id'], $taskInfo['id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskContent['id'], $taskContent['name'], $taskContent['openids'], $openid, $taskContent['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
-                            $i++;
-                        }
-                    }
-                    $j += $i;
-                    // 6 更新成推送中
-                    $modelTaskContent->updatePushState($taskContent['id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
-
-                    // 7 更新总处理件数
-                    $modelTaskContent->updateTaskProcessTotal($taskContent['id'], $i);
-                }
             }
 
             if (empty($i)) {
