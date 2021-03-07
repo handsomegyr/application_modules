@@ -35,9 +35,9 @@ class NotificationtasklogController extends BaseController
         $this->modelLinkedcorpMsg = new LinkedcorpMsg();
         $this->modelMsgTemplate = new MsgTemplate();
 
-        $this->agentMsgItems = $this->modelAgentMsg->getAllByType("", "id");
-        $this->appchatMsgItems = $this->modelAppchatMsg->getAllByType("", "id");
-        $this->linkedcorpMsgItems = $this->modelLinkedcorpMsg->getAllByType("", "id");
+        $this->agentMsgItems = $this->modelAgentMsg->getAllByType("", "_id");
+        $this->appchatMsgItems = $this->modelAppchatMsg->getAllByType("", "_id");
+        $this->linkedcorpMsgItems = $this->modelLinkedcorpMsg->getAllByType("", "_id");
         $this->msgTemplateItems = $this->modelMsgTemplate->getAll();
         // 默认为single，表示发送给客户，group表示发送给客户群
         $this->msgTemplateChatType = array(

@@ -29,9 +29,9 @@ class NotificationtaskController extends BaseController
         $this->modelLinkedcorpMsg = new LinkedcorpMsg();
         $this->modelMsgTemplate = new MsgTemplate();
 
-        $this->agentMsgItems = $this->modelAgentMsg->getAllByType("", "id");
-        $this->appchatMsgItems = $this->modelAppchatMsg->getAllByType("", "id");
-        $this->linkedcorpMsgItems = $this->modelLinkedcorpMsg->getAllByType("", "id");
+        $this->agentMsgItems = $this->modelAgentMsg->getAllByType("", "_id");
+        $this->appchatMsgItems = $this->modelAppchatMsg->getAllByType("", "_id");
+        $this->linkedcorpMsgItems = $this->modelLinkedcorpMsg->getAllByType("", "_id");
         $this->msgTemplateItems = $this->modelMsgTemplate->getAll();
         // 默认为single，表示发送给客户，group表示发送给客户群
         $this->msgTemplateChatType = array(
@@ -101,10 +101,10 @@ class NotificationtaskController extends BaseController
             'is_show' => function ($row) {
 
                 $pushStatusExcludeList = array(
-                    \App\Qyweixin\Services\Models\Notification\TaskProcess::PUSH_OVER,
-                    \App\Qyweixin\Services\Models\Notification\TaskProcess::PUSH_SUCCESS,
-                    \App\Qyweixin\Services\Models\Notification\TaskProcess::PUSH_FAIL,
-                    \App\Qyweixin\Services\Models\Notification\TaskProcess::PUSH_CLOSE,
+                    \App\Qyweixin\Models\Notification\TaskProcess::PUSH_OVER,
+                    \App\Qyweixin\Models\Notification\TaskProcess::PUSH_SUCCESS,
+                    \App\Qyweixin\Models\Notification\TaskProcess::PUSH_FAIL,
+                    \App\Qyweixin\Models\Notification\TaskProcess::PUSH_CLOSE,
                 );
 
                 if (!in_array(intval($row['push_status']), $pushStatusExcludeList)) {
@@ -1301,12 +1301,12 @@ class NotificationtaskController extends BaseController
                     // DB::beginTransaction();
                     $this->modelTask->begin();
 
-                    $push_status = \App\Weixin2\Services\Models\Notification\TaskProcess::PUSH_CLOSE;
+                    $push_status = \App\Qyweixin\Models\Notification\TaskProcess::PUSH_CLOSE;
                     $pushStatusExcludeList = array(
-                        \App\Weixin2\Services\Models\Notification\TaskProcess::PUSH_OVER,
-                        \App\Weixin2\Services\Models\Notification\TaskProcess::PUSH_SUCCESS,
-                        \App\Weixin2\Services\Models\Notification\TaskProcess::PUSH_FAIL,
-                        \App\Weixin2\Services\Models\Notification\TaskProcess::PUSH_CLOSE,
+                        \App\Qyweixin\Models\Notification\TaskProcess::PUSH_OVER,
+                        \App\Qyweixin\Models\Notification\TaskProcess::PUSH_SUCCESS,
+                        \App\Qyweixin\Models\Notification\TaskProcess::PUSH_FAIL,
+                        \App\Qyweixin\Models\Notification\TaskProcess::PUSH_CLOSE,
                     );
                     $task_id = $row['_id'];
                     $data = array();
@@ -1315,18 +1315,13 @@ class NotificationtaskController extends BaseController
 
                     $data = array();
                     $data['push_status'] = $push_status; // 推送关闭
-                    $modelTaskProcess = new \App\Weixin2\Models\Notification\TaskProcess();
+                    $modelTaskProcess = new \App\Qyweixin\Models\Notification\TaskProcess();
                     $modelTaskProcess->update(array('notification_task_id' => $task_id, 'push_status' => array('$nin' => $pushStatusExcludeList)), array('$set' => $data));
 
                     $data = array();
                     $data['push_status'] = $push_status; // 推送关闭
-                    $modelTaskLog = new \App\Weixin2\Models\Notification\TaskLog();
+                    $modelTaskLog = new \App\Qyweixin\Models\Notification\TaskLog();
                     $modelTaskLog->update(array('notification_task_id' => $task_id, 'push_status' => array('$nin' => $pushStatusExcludeList)), array('$set' => $data));
-
-                    $data = array();
-                    $data['push_status'] = $push_status; // 推送关闭
-                    $modelTaskContent = new \App\Weixin2\Models\Notification\TaskContent();
-                    $modelTaskContent->update(array('notification_task_id' => $task_id, 'push_status' => array('$nin' => $pushStatusExcludeList)), array('$set' => $data));
 
                     $this->modelTask->commit();
 
