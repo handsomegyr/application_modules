@@ -1,58 +1,52 @@
 <?php
 
-namespace App\Backend\Submodules\Weixin2\Controllers;
+namespace App\Backend\Submodules\Qyweixin\Controllers;
 
-use App\Backend\Submodules\Weixin2\Models\Notification\Task;
-
-use App\Backend\Submodules\Weixin2\Models\MassMsg\SendMethod;
-use App\Backend\Submodules\Weixin2\Models\MassMsg\MassMsg;
-use App\Backend\Submodules\Weixin2\Models\TemplateMsg\TemplateMsg;
-use App\Backend\Submodules\Weixin2\Models\CustomMsg\CustomMsg;
-use App\Backend\Submodules\Weixin2\Models\User\Tag;
-use App\Backend\Submodules\Weixin2\Models\Miniprogram\SubscribeMsg\Msg;
+use App\Backend\Submodules\Qyweixin\Models\Notification\Task;
+use App\Backend\Submodules\Qyweixin\Models\AgentMsg\AgentMsg;
+use App\Backend\Submodules\Qyweixin\Models\AppchatMsg\AppchatMsg;
+use App\Backend\Submodules\Qyweixin\Models\LinkedcorpMsg\LinkedcorpMsg;
+use App\Backend\Submodules\Qyweixin\Models\ExternalContact\MsgTemplate;
 
 /**
- * @title({name="推送任务"})
+ * @title({name="企业推送任务"})
  *
- * @name 推送任务
+ * @name 企业推送任务
  */
 class NotificationtaskController extends BaseController
 {
     private $modelTask;
-
-    private $modelSendMethod;
-    private $modelMassMsg;
-    private $modelTemplateMsg;
-    private $modelCustomMsg;
-    private $modelSubscribeMsg;
+    private $modelAppchatMsg;
+    private $modelAgentMsg;
+    private $modelLinkedcorpMsg;
+    private $modelMsgTemplate;
 
     public function initialize()
     {
         $this->modelTask = new Task();
-        $this->modelSendMethod = new SendMethod();
-        $this->modelMassMsg = new MassMsg();
-        $this->modelTemplateMsg = new TemplateMsg();
-        $this->modelCustomMsg = new CustomMsg();
-        $this->modelUserTag = new Tag();
-        $this->modelSubscribeMsg = new Msg();
+        $this->modelAgentMsg = new AgentMsg();
+        $this->modelAppchatMsg = new AppchatMsg();
+        $this->modelLinkedcorpMsg = new LinkedcorpMsg();
+        $this->modelMsgTemplate = new MsgTemplate();
 
-        $this->sendMethodItems = $this->modelSendMethod->getAll();
-        $this->massMsgItems = $this->modelMassMsg->getAllByType("", "_id");
-        $this->templateMsgItems = $this->modelTemplateMsg->getAll();
-        $this->customMsgItems = $this->modelCustomMsg->getAllByType("", "_id");
-        $this->userTagItems = $this->modelUserTag->getAllByType("tag_id");
-        $this->subscribeMsgItems = $this->modelSubscribeMsg->getAll();
+        $this->agentMsgItems = $this->modelAgentMsg->getAllByType("", "id");
+        $this->appchatMsgItems = $this->modelAppchatMsg->getAllByType("", "id");
+        $this->linkedcorpMsgItems = $this->modelLinkedcorpMsg->getAllByType("", "id");
+        $this->msgTemplateItems = $this->modelMsgTemplate->getAll();
+        // 默认为single，表示发送给客户，group表示发送给客户群
+        $this->msgTemplateChatType = array(
+            'single' => '发送给客户',
+            'group' => '发送给客户群'
+        );
 
         parent::initialize();
     }
 
-    protected $sendMethodItems = null;
-    protected $massMsgItems = null;
-    protected $templateMsgItems = null;
-    protected $customMsgItems = null;
-    protected $userTagItems = null;
-    protected $subscribeMsgItems = null;
-
+    protected $msgTemplateChatType = null;
+    protected $agentMsgItems = null;
+    protected $appchatMsgItems = null;
+    protected $linkedcorpMsgItems = null;
+    protected $msgTemplateItems = null;
 
     protected function getHeaderTools2($tools)
     {
@@ -107,10 +101,10 @@ class NotificationtaskController extends BaseController
             'is_show' => function ($row) {
 
                 $pushStatusExcludeList = array(
-                    \App\Weixin2\Services\Models\Notification\TaskProcess::PUSH_OVER,
-                    \App\Weixin2\Services\Models\Notification\TaskProcess::PUSH_SUCCESS,
-                    \App\Weixin2\Services\Models\Notification\TaskProcess::PUSH_FAIL,
-                    \App\Weixin2\Services\Models\Notification\TaskProcess::PUSH_CLOSE,
+                    \App\Qyweixin\Services\Models\Notification\TaskProcess::PUSH_OVER,
+                    \App\Qyweixin\Services\Models\Notification\TaskProcess::PUSH_SUCCESS,
+                    \App\Qyweixin\Services\Models\Notification\TaskProcess::PUSH_FAIL,
+                    \App\Qyweixin\Services\Models\Notification\TaskProcess::PUSH_CLOSE,
                 );
 
                 if (!in_array(intval($row['push_status']), $pushStatusExcludeList)) {
@@ -168,7 +162,7 @@ class NotificationtaskController extends BaseController
                         'is_show' => true
                     ),
                 );
-                $fields['subscribe_msg_id'] = array(
+                $fields['agent_msg_id'] = array(
                     'name' => '订阅消息ID',
                     'validation' => array(
                         'required' => true
@@ -176,7 +170,7 @@ class NotificationtaskController extends BaseController
                     'form' => array(
                         'input_type' => 'select',
                         'is_show' => true,
-                        'items' => $this->subscribeMsgItems,
+                        'items' => $this->agentMsgItems,
                     ),
                 );
                 $fields['changemsginfo_callback'] = array(
@@ -196,8 +190,8 @@ class NotificationtaskController extends BaseController
                     )
                 );
 
-                $fields['openids'] = array(
-                    'name' => 'openid列表，逗号分隔',
+                $fields['userids'] = array(
+                    'name' => 'userid列表，逗号分隔',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -211,8 +205,8 @@ class NotificationtaskController extends BaseController
                         'items' => ''
                     )
                 );
-                $fields['openids_sql'] = array(
-                    'name' => '获取openid的sql文，在select语句中必须要有openid字段',
+                $fields['userids_sql'] = array(
+                    'name' => '获取userid的sql文，在select语句中必须要有userid字段',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -226,8 +220,8 @@ class NotificationtaskController extends BaseController
                         'items' => ''
                     )
                 );
-                $fields['openids_file'] = array(
-                    'name' => '请选择一个首列为openid内容的CSV文件',
+                $fields['userids_file'] = array(
+                    'name' => '请选择一个首列为userid内容的CSV文件',
                     'validation' => array(
                         'required' => false
                     ),
@@ -241,20 +235,20 @@ class NotificationtaskController extends BaseController
                 $row['scheduled_push_time'] = getCurrentTime();
                 return $this->showModal($title, $fields, $row);
             } else {
-                $component_appid = trim($this->request->get('notificationtask_component_appid'));
+                $provider_appid = trim($this->request->get('notificationtask_provider_appid'));
                 $authorizer_appid = trim($this->request->get('notificationtask_authorizer_appid'));
 
                 $name = trim($this->request->get('name')); // 任务名
-                $subscribe_msg_id = trim($this->request->get('subscribe_msg_id')); // 订阅消息记录ID
+                $agent_msg_id = trim($this->request->get('agent_msg_id')); // 订阅消息记录ID
                 $changemsginfo_callback = trim($this->request->get('changemsginfo_callback'));
-                $openids = trim($this->request->get('openids')); // openid列表
-                $openids_sql = trim($this->request->get('openids_sql')); // 获取openid的sql文
+                $userids = trim($this->request->get('userids')); // userid列表
+                $userids_sql = trim($this->request->get('userids_sql')); // 获取userid的sql文
                 $scheduled_push_time = trim($this->request->get('scheduled_push_time')); // 预定推送时间
 
                 if (empty($name)) {
                     return $this->makeJsonError("任务名未指定");
                 }
-                if (empty($subscribe_msg_id)) {
+                if (empty($agent_msg_id)) {
                     return $this->makeJsonError("订阅消息记录ID未指定");
                 }
                 $isValid = $this->checkChangemsginfoCallbackIsValid($changemsginfo_callback);
@@ -268,8 +262,8 @@ class NotificationtaskController extends BaseController
                 if ($scheduled_push_time < time()) {
                     return $this->makeJsonError("预定推送时间小于当前日期");
                 }
-                // if (empty($component_appid)) {
-                //     return $this->makeJsonError("第三方平台应用ID未设定");
+                // if (empty($provider_appid)) {
+                //     return $this->makeJsonError("第三方服务商应用ID未设定");
                 // }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
@@ -283,9 +277,9 @@ class NotificationtaskController extends BaseController
                     }
                 }
                 // 下面的代码获取到上传的文件，然后使用`maatwebsite/excel`等包来处理上传你的文件，保存到数据库
-                $openids_file = "";
+                $userids_file = "";
                 $is_uploadFile = true;
-                if (empty($uploadFiles) || !isset($uploadFiles['openids_file'])) {
+                if (empty($uploadFiles) || !isset($uploadFiles['userids_file'])) {
                     $is_uploadFile = false;
                 }
                 if ($is_uploadFile) {
@@ -302,7 +296,7 @@ class NotificationtaskController extends BaseController
                         );
                     }
 
-                    $file = $uploadFiles['openids_file'];
+                    $file = $uploadFiles['userids_file'];
                     $fileError = $file->getError();
                     if (!empty($fileError)) {
                         return $this->makeJsonError("导入文件上传失败，错误码：{$fileError}");
@@ -325,16 +319,16 @@ class NotificationtaskController extends BaseController
                     $newName = $file->getName();
                     // 5.数据上传导入处理 上传导入表中
                     $uploadPath = $this->modelTask->getUploadPath();
-                    $openids_file = rtrim($$uploadPath, '/') . "/{$newName}";
+                    $userids_file = rtrim($$uploadPath, '/') . "/{$newName}";
                     makeDir($uploadPath);
-                    $isOk = move_uploaded_file($file['tmp_name'], $openids_file);
+                    $isOk = move_uploaded_file($file['tmp_name'], $userids_file);
                     if (!$isOk) {
                         return $this->makeJsonError("文件移动发生错误");
                     }
                 }
 
-                if (empty($openids) && empty($openids_sql) && empty($openids_file)) {
-                    return $this->makeJsonError("openid列表未指定");
+                if (empty($userids) && empty($userids_sql) && empty($userids_file)) {
+                    return $this->makeJsonError("userid列表未指定");
                 }
 
                 try {
@@ -342,22 +336,22 @@ class NotificationtaskController extends BaseController
                     $this->modelTask->begin();
 
                     $data = array();
-                    $data['component_appid'] = $component_appid;
+                    $data['provider_appid'] = $provider_appid;
                     $data['authorizer_appid'] = $authorizer_appid;
                     $data['name'] = $name;
                     // 小程序订阅消息发送
                     $data['notification_method'] = 4;
-                    $data['mass_msg_send_method_id'] = 0;
-                    $data['subscribe_msg_id'] = $subscribe_msg_id;
+                    $data['externalcontact_msg_template_chat_type'] = 0;
+                    $data['agent_msg_id'] = $agent_msg_id;
                     $data['changemsginfo_callback'] = $changemsginfo_callback;
-                    $data['template_msg_id'] = 0;
-                    $data['mass_msg_id'] = 0;
-                    $data['custom_msg_id'] = 0;
+                    $data['appchat_msg_id'] = 0;
+                    $data['externalcontact_msg_template_id'] = 0;
+                    $data['linkedcorp_msg_id'] = 0;
                     $data['scheduled_push_time'] = \App\Common\Utils\Helper::getCurrentTime($scheduled_push_time);
                     $data['tag_id'] = 0;
-                    $data['openids'] = $openids;
-                    $data['openids_sql'] = $openids_sql;
-                    $data['openids_file'] = $openids_file;
+                    $data['userids'] = $userids;
+                    $data['userids_sql'] = $userids_sql;
+                    $data['userids_file'] = $userids_file;
                     $data['push_status'] = 0;
                     $data['push_time'] = \App\Common\Utils\Helper::getCurrentTime('0001-01-01 00:00:00');
                     $data['task_process_total'] = 0;
@@ -429,7 +423,7 @@ class NotificationtaskController extends BaseController
                         'is_show' => true
                     ),
                 );
-                $fields['template_msg_id'] = array(
+                $fields['appchat_msg_id'] = array(
                     'name' => '公众号模板消息ID',
                     'validation' => array(
                         'required' => true
@@ -437,7 +431,7 @@ class NotificationtaskController extends BaseController
                     'form' => array(
                         'input_type' => 'select',
                         'is_show' => true,
-                        'items' => $this->templateMsgItems,
+                        'items' => $this->appchatMsgItems,
                     ),
                 );
                 $fields['changemsginfo_callback'] = array(
@@ -456,8 +450,8 @@ class NotificationtaskController extends BaseController
                         'help' => '以json格式指定类名和方法名，类名可以为空 eg. {"className":"clsXxx","methodName":"changemsg"}',
                     )
                 );
-                $fields['openids'] = array(
-                    'name' => 'openid列表，逗号分隔',
+                $fields['userids'] = array(
+                    'name' => 'userid列表，逗号分隔',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -471,8 +465,8 @@ class NotificationtaskController extends BaseController
                         'items' => ''
                     )
                 );
-                $fields['openids_sql'] = array(
-                    'name' => '获取openid的sql文，在select语句中必须要有openid字段',
+                $fields['userids_sql'] = array(
+                    'name' => '获取userid的sql文，在select语句中必须要有userid字段',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -486,8 +480,8 @@ class NotificationtaskController extends BaseController
                         'items' => ''
                     )
                 );
-                $fields['openids_file'] = array(
-                    'name' => '请选择一个首列为openid内容的CSV文件',
+                $fields['userids_file'] = array(
+                    'name' => '请选择一个首列为userid内容的CSV文件',
                     'validation' => array(
                         'required' => false
                     ),
@@ -501,20 +495,20 @@ class NotificationtaskController extends BaseController
                 $row['scheduled_push_time'] = getCurrentTime();
                 return $this->showModal($title, $fields, $row);
             } else {
-                $component_appid = trim($this->request->get('notificationtask_component_appid'));
+                $provider_appid = trim($this->request->get('notificationtask_provider_appid'));
                 $authorizer_appid = trim($this->request->get('notificationtask_authorizer_appid'));
 
                 $name = trim($this->request->get('name')); // 任务名
-                $template_msg_id = trim($this->request->get('template_msg_id')); // 公众号模板消息ID
+                $appchat_msg_id = trim($this->request->get('appchat_msg_id')); // 公众号模板消息ID
                 $changemsginfo_callback = trim($this->request->get('changemsginfo_callback'));
-                $openids = trim($this->request->get('openids')); // openid列表
-                $openids_sql = trim($this->request->get('openids_sql')); // 获取openid的sql文
+                $userids = trim($this->request->get('userids')); // userid列表
+                $userids_sql = trim($this->request->get('userids_sql')); // 获取userid的sql文
                 $scheduled_push_time = trim($this->request->get('scheduled_push_time')); // 预定推送时间
 
                 if (empty($name)) {
                     return $this->makeJsonError("任务名未指定");
                 }
-                if (empty($template_msg_id)) {
+                if (empty($appchat_msg_id)) {
                     return $this->makeJsonError("公众号模板消息ID未指定");
                 }
                 $isValid = $this->checkChangemsginfoCallbackIsValid($changemsginfo_callback);
@@ -528,8 +522,8 @@ class NotificationtaskController extends BaseController
                 if ($scheduled_push_time < time()) {
                     return $this->makeJsonError("预定推送时间小于当前日期");
                 }
-                // if (empty($component_appid)) {
-                //     return $this->makeJsonError("第三方平台应用ID未设定");
+                // if (empty($provider_appid)) {
+                //     return $this->makeJsonError("第三方服务商应用ID未设定");
                 // }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
@@ -543,9 +537,9 @@ class NotificationtaskController extends BaseController
                     }
                 }
                 // 下面的代码获取到上传的文件，然后使用`maatwebsite/excel`等包来处理上传你的文件，保存到数据库
-                $openids_file = "";
+                $userids_file = "";
                 $is_uploadFile = true;
-                if (empty($uploadFiles) || !isset($uploadFiles['openids_file'])) {
+                if (empty($uploadFiles) || !isset($uploadFiles['userids_file'])) {
                     $is_uploadFile = false;
                 }
                 if ($is_uploadFile) {
@@ -562,7 +556,7 @@ class NotificationtaskController extends BaseController
                         );
                     }
 
-                    $file = $uploadFiles['openids_file'];
+                    $file = $uploadFiles['userids_file'];
                     $fileError = $file->getError();
                     if (!empty($fileError)) {
                         return $this->makeJsonError("导入文件上传失败，错误码：{$fileError}");
@@ -585,16 +579,16 @@ class NotificationtaskController extends BaseController
                     $newName = $file->getName();
                     // 5.数据上传导入处理 上传导入表中
                     $uploadPath = $this->modelTask->getUploadPath();
-                    $openids_file = rtrim($$uploadPath, '/') . "/{$newName}";
+                    $userids_file = rtrim($$uploadPath, '/') . "/{$newName}";
                     makeDir($uploadPath);
-                    $isOk = move_uploaded_file($file['tmp_name'], $openids_file);
+                    $isOk = move_uploaded_file($file['tmp_name'], $userids_file);
                     if (!$isOk) {
                         return $this->makeJsonError("文件移动发生错误");
                     }
                 }
 
-                if (empty($openids) && empty($openids_sql) && empty($openids_file)) {
-                    return $this->makeJsonError("openid列表未指定");
+                if (empty($userids) && empty($userids_sql) && empty($userids_file)) {
+                    return $this->makeJsonError("userid列表未指定");
                 }
 
                 try {
@@ -602,22 +596,22 @@ class NotificationtaskController extends BaseController
                     $this->modelTask->begin();
 
                     $data = array();
-                    $data['component_appid'] = $component_appid;
+                    $data['provider_appid'] = $provider_appid;
                     $data['authorizer_appid'] = $authorizer_appid;
                     $data['name'] = $name;
                     // 小程序统一服务消息发送
                     $data['notification_method'] = 5;
-                    $data['mass_msg_send_method_id'] = 0;
-                    $data['subscribe_msg_id'] = 0;
-                    $data['template_msg_id'] = $template_msg_id;
+                    $data['externalcontact_msg_template_chat_type'] = 0;
+                    $data['agent_msg_id'] = 0;
+                    $data['appchat_msg_id'] = $appchat_msg_id;
                     $data['changemsginfo_callback'] = $changemsginfo_callback;
-                    $data['mass_msg_id'] = 0;
-                    $data['custom_msg_id'] = 0;
+                    $data['externalcontact_msg_template_id'] = 0;
+                    $data['linkedcorp_msg_id'] = 0;
                     $data['scheduled_push_time'] = \App\Common\Utils\Helper::getCurrentTime($scheduled_push_time);
                     $data['tag_id'] = 0;
-                    $data['openids'] = $openids;
-                    $data['openids_sql'] = $openids_sql;
-                    $data['openids_file'] = $openids_file;
+                    $data['userids'] = $userids;
+                    $data['userids_sql'] = $userids_sql;
+                    $data['userids_file'] = $userids_file;
                     $data['push_status'] = 0;
                     $data['push_time'] = \App\Common\Utils\Helper::getCurrentTime('0001-01-01 00:00:00');
                     $data['task_process_total'] = 0;
@@ -708,7 +702,7 @@ class NotificationtaskController extends BaseController
                         'is_show' => true
                     ),
                 );
-                $fields['subscribe_msg_id'] = array(
+                $fields['agent_msg_id'] = array(
                     'name' => '订阅消息ID',
                     'validation' => array(
                         'required' => true
@@ -716,7 +710,7 @@ class NotificationtaskController extends BaseController
                     'form' => array(
                         'input_type' => 'select',
                         'is_show' => true,
-                        'items' => $this->subscribeMsgItems
+                        'items' => $this->agentMsgItems
                     ),
                 );
                 $fields['changemsginfo_callback'] = array(
@@ -735,8 +729,8 @@ class NotificationtaskController extends BaseController
                         'help' => '以json格式指定类名和方法名，类名可以为空 eg. {"className":"clsXxx","methodName":"changemsg"}',
                     )
                 );
-                $fields['openids'] = array(
-                    'name' => 'openid列表，逗号分隔',
+                $fields['userids'] = array(
+                    'name' => 'userid列表，逗号分隔',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -750,8 +744,8 @@ class NotificationtaskController extends BaseController
                         'items' => ''
                     )
                 );
-                $fields['openids_sql'] = array(
-                    'name' => '获取openid的sql文，在select语句中必须要有openid字段',
+                $fields['userids_sql'] = array(
+                    'name' => '获取userid的sql文，在select语句中必须要有userid字段',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -765,8 +759,8 @@ class NotificationtaskController extends BaseController
                         'items' => ''
                     )
                 );
-                $fields['openids_file'] = array(
-                    'name' => '请选择一个首列为openid内容的CSV文件',
+                $fields['userids_file'] = array(
+                    'name' => '请选择一个首列为userid内容的CSV文件',
                     'validation' => array(
                         'required' => false
                     ),
@@ -778,20 +772,20 @@ class NotificationtaskController extends BaseController
                 $title = "修改按小程序订阅消息发送任务";
                 return $this->showModal($title, $fields, $row);
             } else {
-                $component_appid = trim($this->request->get('notificationtask_component_appid'));
+                $provider_appid = trim($this->request->get('notificationtask_provider_appid'));
                 $authorizer_appid = trim($this->request->get('notificationtask_authorizer_appid'));
 
                 $name = trim($this->request->get('name')); // 任务名
-                $subscribe_msg_id = trim($this->request->get('subscribe_msg_id')); // 订阅消息记录ID
+                $agent_msg_id = trim($this->request->get('agent_msg_id')); // 订阅消息记录ID
                 $changemsginfo_callback = trim($this->request->get('changemsginfo_callback'));
-                $openids = trim($this->request->get('openids')); // openid列表
-                $openids_sql = trim($this->request->get('openids_sql')); // 获取openid的sql文
+                $userids = trim($this->request->get('userids')); // userid列表
+                $userids_sql = trim($this->request->get('userids_sql')); // 获取userid的sql文
                 $scheduled_push_time = trim($this->request->get('scheduled_push_time')); // 预定推送时间
 
                 if (empty($name)) {
                     return $this->makeJsonError("任务名未指定");
                 }
-                if (empty($subscribe_msg_id)) {
+                if (empty($agent_msg_id)) {
                     return $this->makeJsonError("订阅消息记录ID未指定");
                 }
                 $isValid = $this->checkChangemsginfoCallbackIsValid($changemsginfo_callback);
@@ -805,8 +799,8 @@ class NotificationtaskController extends BaseController
                 if ($scheduled_push_time < time()) {
                     return $this->makeJsonError("预定推送时间小于当前日期");
                 }
-                // if (empty($component_appid)) {
-                //     return $this->makeJsonError("第三方平台应用ID未设定");
+                // if (empty($provider_appid)) {
+                //     return $this->makeJsonError("第三方服务商应用ID未设定");
                 // }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
@@ -820,9 +814,9 @@ class NotificationtaskController extends BaseController
                     }
                 }
                 // 下面的代码获取到上传的文件，然后使用`maatwebsite/excel`等包来处理上传你的文件，保存到数据库
-                $openids_file = "";
+                $userids_file = "";
                 $is_uploadFile = true;
-                if (empty($uploadFiles) || !isset($uploadFiles['openids_file'])) {
+                if (empty($uploadFiles) || !isset($uploadFiles['userids_file'])) {
                     $is_uploadFile = false;
                 }
                 if ($is_uploadFile) {
@@ -839,7 +833,7 @@ class NotificationtaskController extends BaseController
                         );
                     }
 
-                    $file = $uploadFiles['openids_file'];
+                    $file = $uploadFiles['userids_file'];
                     $fileError = $file->getError();
                     if (!empty($fileError)) {
                         return $this->makeJsonError("导入文件上传失败，错误码：{$fileError}");
@@ -862,16 +856,16 @@ class NotificationtaskController extends BaseController
                     $newName = $file->getName();
                     // 5.数据上传导入处理 上传导入表中
                     $uploadPath = $this->modelTask->getUploadPath();
-                    $openids_file = rtrim($$uploadPath, '/') . "/{$newName}";
+                    $userids_file = rtrim($$uploadPath, '/') . "/{$newName}";
                     makeDir($uploadPath);
-                    $isOk = move_uploaded_file($file['tmp_name'], $openids_file);
+                    $isOk = move_uploaded_file($file['tmp_name'], $userids_file);
                     if (!$isOk) {
                         return $this->makeJsonError("文件移动发生错误");
                     }
                 }
 
-                if (empty($openids) && empty($openids_sql) && empty($openids_file)) {
-                    return $this->makeJsonError("openid列表未指定");
+                if (empty($userids) && empty($userids_sql) && empty($userids_file)) {
+                    return $this->makeJsonError("userid列表未指定");
                 }
 
                 try {
@@ -879,15 +873,15 @@ class NotificationtaskController extends BaseController
                     $this->modelTask->begin();
 
                     $data = array();
-                    $data['component_appid'] = $component_appid;
+                    $data['provider_appid'] = $provider_appid;
                     $data['authorizer_appid'] = $authorizer_appid;
                     $data['name'] = $name;
-                    $data['subscribe_msg_id'] = $subscribe_msg_id;
+                    $data['agent_msg_id'] = $agent_msg_id;
                     $data['changemsginfo_callback'] = $changemsginfo_callback;
                     $data['scheduled_push_time'] = \App\Common\Utils\Helper::getCurrentTime($scheduled_push_time);
-                    $data['openids'] = $openids;
-                    $data['openids_sql'] = $openids_sql;
-                    $data['openids_file'] = $openids_file;
+                    $data['userids'] = $userids;
+                    $data['userids_sql'] = $userids_sql;
+                    $data['userids_file'] = $userids_file;
                     $this->modelTask->update(array('_id' => $row['_id']), array('$set' => $data));
 
                     // DB::commit();
@@ -972,7 +966,7 @@ class NotificationtaskController extends BaseController
                         'is_show' => true
                     ),
                 );
-                $fields['template_msg_id'] = array(
+                $fields['appchat_msg_id'] = array(
                     'name' => '公众号模板消息ID',
                     'validation' => array(
                         'required' => true
@@ -980,7 +974,7 @@ class NotificationtaskController extends BaseController
                     'form' => array(
                         'input_type' => 'select',
                         'is_show' => true,
-                        'items' => $this->templateMsgItems
+                        'items' => $this->appchatMsgItems
                     ),
                 );
                 $fields['changemsginfo_callback'] = array(
@@ -999,8 +993,8 @@ class NotificationtaskController extends BaseController
                         'help' => '以json格式指定类名和方法名，类名可以为空 eg. {"className":"clsXxx","methodName":"changemsg"}',
                     )
                 );
-                $fields['openids'] = array(
-                    'name' => 'openid列表，逗号分隔',
+                $fields['userids'] = array(
+                    'name' => 'userid列表，逗号分隔',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -1014,8 +1008,8 @@ class NotificationtaskController extends BaseController
                         'items' => ''
                     )
                 );
-                $fields['openids_sql'] = array(
-                    'name' => '获取openid的sql文，在select语句中必须要有openid字段',
+                $fields['userids_sql'] = array(
+                    'name' => '获取userid的sql文，在select语句中必须要有userid字段',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -1029,8 +1023,8 @@ class NotificationtaskController extends BaseController
                         'items' => ''
                     )
                 );
-                $fields['openids_file'] = array(
-                    'name' => '请选择一个首列为openid内容的CSV文件',
+                $fields['userids_file'] = array(
+                    'name' => '请选择一个首列为userid内容的CSV文件',
                     'validation' => array(
                         'required' => false
                     ),
@@ -1042,20 +1036,20 @@ class NotificationtaskController extends BaseController
                 $title = "修改按小程序订阅消息发送任务";
                 return $this->showModal($title, $fields, $row);
             } else {
-                $component_appid = trim($this->request->get('notificationtask_component_appid'));
+                $provider_appid = trim($this->request->get('notificationtask_provider_appid'));
                 $authorizer_appid = trim($this->request->get('notificationtask_authorizer_appid'));
 
                 $name = trim($this->request->get('name')); // 任务名
-                $template_msg_id = intval($this->request->get('template_msg_id')); // 公众号模板消息ID
+                $appchat_msg_id = intval($this->request->get('appchat_msg_id')); // 公众号模板消息ID
                 $changemsginfo_callback = trim($this->request->get('changemsginfo_callback'));
-                $openids = trim($this->request->get('openids')); // openid列表
-                $openids_sql = trim($this->request->get('openids_sql')); // 获取openid的sql文
+                $userids = trim($this->request->get('userids')); // userid列表
+                $userids_sql = trim($this->request->get('userids_sql')); // 获取userid的sql文
                 $scheduled_push_time = trim($this->request->get('scheduled_push_time')); // 预定推送时间
 
                 if (empty($name)) {
                     return $this->makeJsonError("任务名未指定");
                 }
-                if (empty($template_msg_id)) {
+                if (empty($appchat_msg_id)) {
                     return $this->makeJsonError("公众号模板消息ID未指定");
                 }
                 $isValid = $this->checkChangemsginfoCallbackIsValid($changemsginfo_callback);
@@ -1069,8 +1063,8 @@ class NotificationtaskController extends BaseController
                 if ($scheduled_push_time < time()) {
                     return $this->makeJsonError("预定推送时间小于当前日期");
                 }
-                // if (empty($component_appid)) {
-                //     return $this->makeJsonError("第三方平台应用ID未设定");
+                // if (empty($provider_appid)) {
+                //     return $this->makeJsonError("第三方服务商应用ID未设定");
                 // }
                 if (empty($authorizer_appid)) {
                     return $this->makeJsonError("授权方应用ID未设定");
@@ -1084,9 +1078,9 @@ class NotificationtaskController extends BaseController
                     }
                 }
                 // 下面的代码获取到上传的文件，然后使用`maatwebsite/excel`等包来处理上传你的文件，保存到数据库
-                $openids_file = "";
+                $userids_file = "";
                 $is_uploadFile = true;
-                if (empty($uploadFiles) || !isset($uploadFiles['openids_file'])) {
+                if (empty($uploadFiles) || !isset($uploadFiles['userids_file'])) {
                     $is_uploadFile = false;
                 }
                 if ($is_uploadFile) {
@@ -1103,7 +1097,7 @@ class NotificationtaskController extends BaseController
                         );
                     }
 
-                    $file = $uploadFiles['openids_file'];
+                    $file = $uploadFiles['userids_file'];
                     $fileError = $file->getError();
                     if (!empty($fileError)) {
                         return $this->makeJsonError("导入文件上传失败，错误码：{$fileError}");
@@ -1126,16 +1120,16 @@ class NotificationtaskController extends BaseController
                     $newName = $file->getName();
                     // 5.数据上传导入处理 上传导入表中
                     $uploadPath = $this->modelTask->getUploadPath();
-                    $openids_file = rtrim($$uploadPath, '/') . "/{$newName}";
+                    $userids_file = rtrim($$uploadPath, '/') . "/{$newName}";
                     makeDir($uploadPath);
-                    $isOk = move_uploaded_file($file['tmp_name'], $openids_file);
+                    $isOk = move_uploaded_file($file['tmp_name'], $userids_file);
                     if (!$isOk) {
                         return $this->makeJsonError("文件移动发生错误");
                     }
                 }
 
-                if (empty($openids) && empty($openids_sql) && empty($openids_file)) {
-                    return $this->makeJsonError("openid列表未指定");
+                if (empty($userids) && empty($userids_sql) && empty($userids_file)) {
+                    return $this->makeJsonError("userid列表未指定");
                 }
 
                 try {
@@ -1143,15 +1137,15 @@ class NotificationtaskController extends BaseController
                     $this->modelTask->begin();
 
                     $data = array();
-                    $data['component_appid'] = $component_appid;
+                    $data['provider_appid'] = $provider_appid;
                     $data['authorizer_appid'] = $authorizer_appid;
                     $data['name'] = $name;
-                    $data['template_msg_id'] = $template_msg_id;
+                    $data['appchat_msg_id'] = $appchat_msg_id;
                     $data['changemsginfo_callback'] = $changemsginfo_callback;
                     $data['scheduled_push_time'] = \App\Common\Utils\Helper::getCurrentTime($scheduled_push_time);
-                    $data['openids'] = $openids;
-                    $data['openids_sql'] = $openids_sql;
-                    $data['openids_file'] = $openids_file;
+                    $data['userids'] = $userids;
+                    $data['userids_sql'] = $userids_sql;
+                    $data['userids_file'] = $userids_file;
                     $this->modelTask->update(array('_id' => $row['_id']), array('$set' => $data));
 
                     // DB::commit();
@@ -1257,8 +1251,8 @@ class NotificationtaskController extends BaseController
                     ),
                 );
 
-                $fields['openids'] = array(
-                    'name' => 'openid列表，逗号分隔',
+                $fields['userids'] = array(
+                    'name' => 'userid列表，逗号分隔',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -1273,8 +1267,8 @@ class NotificationtaskController extends BaseController
                         'readonly' => true,
                     )
                 );
-                $fields['openids_sql'] = array(
-                    'name' => '获取openid的sql文，在select语句中必须要有openid字段',
+                $fields['userids_sql'] = array(
+                    'name' => '获取userid的sql文，在select语句中必须要有userid字段',
                     'data' => array(
                         'type' => 'string',
                         'length' => 1024,
@@ -1289,8 +1283,8 @@ class NotificationtaskController extends BaseController
                         'readonly' => true,
                     )
                 );
-                $fields['openids_file'] = array(
-                    'name' => '请选择一个首列为openid内容的CSV文件',
+                $fields['userids_file'] = array(
+                    'name' => '请选择一个首列为userid内容的CSV文件',
                     'validation' => array(
                         'required' => false
                     ),
@@ -1339,7 +1333,7 @@ class NotificationtaskController extends BaseController
                     $cache = $this->getDI()->get("cache");
                     // 加缓存处理
                     $cacheTime = 60 * 60 * 24; // 1天
-                    $cache->save('weixin2:notification:notification_task_id:' . $task_id, $push_status, $cacheTime);
+                    $cache->save('qyweixin:notification:notification_task_id:' . $task_id, $push_status, $cacheTime);
 
                     // clear output buffer.
                     if (ob_get_length()) {
@@ -1360,8 +1354,8 @@ class NotificationtaskController extends BaseController
     protected function getFields4HeaderTool($readonly = false)
     {
         $fields = array();
-        $fields['notificationtask_component_appid'] = array(
-            'name' => '第三方平台应用ID',
+        $fields['notificationtask_provider_appid'] = array(
+            'name' => '第三方服务商应用ID',
             'validation' => array(
                 'required' => true
             ),
@@ -1389,8 +1383,8 @@ class NotificationtaskController extends BaseController
 
     protected function getSchemas2($schemas)
     {
-        $schemas['component_appid'] = array(
-            'name' => '第三方平台应用ID',
+        $schemas['provider_appid'] = array(
+            'name' => '第三方服务商应用ID',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -1402,18 +1396,18 @@ class NotificationtaskController extends BaseController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->componentItems
+                'items' => $this->providerItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => $this->componentItems
+                'items' => $this->providerItems
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->componentItems
+                'items' => $this->providerItems
             ),
             'export' => array(
                 'is_show' => true
@@ -1478,11 +1472,10 @@ class NotificationtaskController extends BaseController
         );
         // 推送方式
         $notificationMethodOptions = array();
-        $notificationMethodOptions['1'] = "模板消息";
-        $notificationMethodOptions['2'] = "群发消息";
-        $notificationMethodOptions['3'] = "客服消息";
-        $notificationMethodOptions['4'] = "小程序订阅消息";
-        $notificationMethodOptions['5'] = "小程序统一服务消息";
+        $notificationMethodOptions['1'] = "发送应用消息";
+        $notificationMethodOptions['2'] = "发送消息到群聊会话";
+        $notificationMethodOptions['3'] = "发送互联企业消息";
+        $notificationMethodOptions['4'] = "发送企业群发消息";
 
         $schemas['notification_method'] = array(
             'name' => '推送方式',
@@ -1498,7 +1491,7 @@ class NotificationtaskController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $notificationMethodOptions,
-                'help' => '推送方式 1:模板消息 2:群发消息 3:客服消息 4:小程序订阅消息 5:小程序统一服务消息',
+                'help' => '推送方式 1:发送应用消息 2:发送消息到群聊会话 3:发送互联企业消息 4:发送企业群发消息',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1515,8 +1508,8 @@ class NotificationtaskController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['mass_msg_send_method_id'] = array(
-            'name' => '群发消息发送方式记录ID',
+        $schemas['agent_msg_id'] = array(
+            'name' => '应用消息记录ID',
             'data' => array(
                 'type' => 'string',
                 'length' => 24,
@@ -1528,146 +1521,144 @@ class NotificationtaskController extends BaseController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->sendMethodItems
+                'items' => $this->agentMsgItems
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => $this->sendMethodItems
+                'items' => $this->agentMsgItems
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->sendMethodItems
+                'items' => $this->agentMsgItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['appchat_msg_id'] = array(
+            'name' => '群聊会话消息记录ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->appchatMsgItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->appchatMsgItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->appchatMsgItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['linkedcorp_msg_id'] = array(
+            'name' => '互联企业消息记录ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->linkedcorpMsgItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->linkedcorpMsgItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->linkedcorpMsgItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['externalcontact_msg_template_chat_type'] = array(
+            'name' => '群发任务的类型',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->msgTemplateChatType
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->msgTemplateChatType
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->msgTemplateChatType
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['externalcontact_msg_template_id'] = array(
+            'name' => '企业群发消息记录ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->msgTemplateItems,
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->msgTemplateItems,
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->msgTemplateItems,
             ),
             'export' => array(
                 'is_show' => true
             )
         );
 
-        $schemas['subscribe_msg_id'] = array(
-            'name' => '小程序消息记录ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 24,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->subscribeMsgItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->subscribeMsgItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->subscribeMsgItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-
-        $schemas['template_msg_id'] = array(
-            'name' => '模板消息记录ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 24,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->templateMsgItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->templateMsgItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->templateMsgItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['mass_msg_id'] = array(
-            'name' => '群发消息记录ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 24,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->massMsgItems,
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->massMsgItems,
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->massMsgItems,
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-
-        $schemas['custom_msg_id'] = array(
-            'name' => '客服消息记录ID',
-            'data' => array(
-                'type' => 'string',
-                'length' => 24,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->customMsgItems
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->customMsgItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->customMsgItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
 
         $schemas['changemsginfo_callback'] = array(
             'name' => '消息内容修改回调函数',
@@ -1726,40 +1717,8 @@ class NotificationtaskController extends BaseController
             )
         );
 
-        $schemas['tag_id'] = array(
-            'name' => '群发到的标签的tag_id',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->userTagItems,
-                'help' => '群发到的标签的tag_id，参见用户管理中用户分组接口',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->userTagItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->userTagItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-
-        $schemas['openids'] = array(
-            'name' => 'openid列表',
+        $schemas['userids'] = array(
+            'name' => 'userid列表',
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
@@ -1772,7 +1731,7 @@ class NotificationtaskController extends BaseController
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => 'openid的个数不要太大，尽量保持在一万个以内，并用逗号分隔',
+                'help' => 'userid的个数不要太大，尽量保持在一万个以内，并用逗号分隔',
             ),
             'list' => array(
                 'is_show' => false,
@@ -1787,8 +1746,8 @@ class NotificationtaskController extends BaseController
             )
         );
 
-        $schemas['openids_sql'] = array(
-            'name' => '获取openid的sql文',
+        $schemas['userids_sql'] = array(
+            'name' => '获取userid的sql文',
             'data' => array(
                 'type' => 'string',
                 'length' => 1024,
@@ -1801,7 +1760,7 @@ class NotificationtaskController extends BaseController
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '通过sql文获取openid列表',
+                'help' => '通过sql文获取userid列表',
             ),
             'list' => array(
                 'is_show' => false,
@@ -1816,8 +1775,8 @@ class NotificationtaskController extends BaseController
             )
         );
 
-        $schemas['openids_file'] = array(
-            'name' => 'openid列表CSV文件',
+        $schemas['userids_file'] = array(
+            'name' => 'userid列表CSV文件',
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
@@ -1833,7 +1792,7 @@ class NotificationtaskController extends BaseController
                 'input_type' => 'file',
                 'is_show' => true,
                 'items' => '',
-                'help' => '通过上传csv文件的方式获取openid列表，适合openid个数比较大的场景使用',
+                'help' => '通过上传csv文件的方式获取userid列表，适合userid个数比较大的场景使用',
             ),
             'list' => array(
                 'is_show' => true,
@@ -1999,7 +1958,7 @@ class NotificationtaskController extends BaseController
 
     protected function getName()
     {
-        return '推送任务';
+        return '企业推送任务';
     }
 
     protected function getModel()

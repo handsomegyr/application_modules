@@ -59,7 +59,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
             }
 
             // 进行锁定处理 ???
-            $lock = new \iLock('task_id:' . $taskProcessInfo['notification_task_id']);
+            $lock = new \iLock('weixin2:task_id:' . $taskProcessInfo['notification_task_id']);
             $lock->setExpire(3600);
             if ($lock->lock()) {
                 throw new \Exception("taskid为{$taskProcessInfo['notification_task_id']}所对应的推送中的任务在处理中，请等待");
@@ -76,19 +76,12 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
             if ($taskInfo['push_status'] != \App\Weixin2\Models\Notification\TaskProcess::PUSHING) {
                 throw new \Exception("taskid为{$taskProcessInfo['notification_task_id']}所对应的推送任务的推送状态不在推送中");
             }
-            // // 3 获取该任务下的所有的任务内容
-            // $modelTaskContent = new \App\Weixin2\Models\Notification\TaskContent();
-            // $taskContentList = $modelTaskContent->getAndLockListByTaskId($taskInfo['id']);
-            // // 如果没有 说明设置有问题
-            // if (empty($taskContentList)) {
-            //     throw new \Exception("未找到任务ID:{$taskInfo['id']}的推送任务所对应的推送任务内容");
-            // }
 
             // 4 获取该任务下的所有推送中的任务日志
             $modelTaskLog = new \App\Weixin2\Models\Notification\TaskLog();
-            $taskLogList = $modelTaskLog->getAndLockListByTaskId($taskInfo['id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING);
+            $taskLogList = $modelTaskLog->getAndLockListByTaskId($taskInfo['_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING);
             if (empty($taskLogList)) {
-                throw new \Exception("未找到任务ID:{$taskInfo['id']}的推送任务所对应的推送任务日志内容");
+                throw new \Exception("未找到任务ID:{$taskInfo['_id']}的推送任务所对应的推送任务日志内容");
             }
 
             $cache = $this->getDI()->get("cache");
@@ -99,14 +92,14 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                 foreach ($taskLogList as $taskLogItem) {
 
                     $match = array();
-                    $match['id'] = 0;
+                    $match['_id'] = 0;
                     $match['keyword'] = "";
                     $ret = array();
                     try {
                         $modelTaskProcess->begin();
 
                         // 锁定记录ID
-                        $taskLog = $modelTaskLog->lockLog($taskLogItem['id']);
+                        $taskLog = $modelTaskLog->lockLog($taskLogItem['_id']);
 
                         // 再次检查推送状态 如果不是推送中的状态的话就不做处理
                         if ($taskLog['push_status'] != \App\Weixin2\Models\Notification\TaskProcess::PUSHING) {
@@ -115,7 +108,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                         }
 
                         // 检查任务的推送状态
-                        $taskPushState4InCache = $cache->get('notification:notification_task_id:' . $taskInfo['id']);
+                        $taskPushState4InCache = $cache->get('weixin2:notification:notification_task_id:' . $taskInfo['_id']);
                         $taskPushState = intval($taskPushState4InCache);
                         if (!empty($taskPushState)) {
                             // 如果是关闭状态的话就直接返回了
@@ -135,7 +128,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             $modelTemplateMsg = new \App\Weixin2\Models\TemplateMsg\TemplateMsg();
                             $templateMsgInfo = $modelTemplateMsg->getInfoById($taskLog['template_msg_id']);
                             if (empty($templateMsgInfo)) {
-                                throw new \Exception("任务日志记录ID:{$taskLog['id']},模板消息记录ID:{$taskLog['template_msg_id']}所对应的记录不存在");
+                                throw new \Exception("任务日志记录ID:{$taskLog['_id']},模板消息记录ID:{$taskLog['template_msg_id']}所对应的记录不存在");
                             }
                             $templateMsgInfo = $this->changeMsgInfo($taskLog, $templateMsgInfo);
 
@@ -147,14 +140,14 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             $modelMassMsgSendMethod = new \App\Weixin2\Models\MassMsg\SendMethod();
                             $sendMethodInfo = $modelMassMsgSendMethod->getInfoById($taskLog['mass_msg_send_method_id']);
                             if (empty($sendMethodInfo)) {
-                                throw new \Exception("任务日志记录ID:{$taskLog['id']},群发消息发送方式记录ID:{$taskLog['mass_msg_send_method_id']}所对应的记录不存在");
+                                throw new \Exception("任务日志记录ID:{$taskLog['_id']},群发消息发送方式记录ID:{$taskLog['mass_msg_send_method_id']}所对应的记录不存在");
                             }
 
                             // 根据群发消息记录ID获取群发消息配置
                             $modelMassMsg = new \App\Weixin2\Models\MassMsg\MassMsg();
                             $massMsgInfo = $modelMassMsg->getInfoById($taskLog['mass_msg_id']);
                             if (empty($massMsgInfo)) {
-                                throw new \Exception("任务日志记录ID:{$taskLog['id']},群发消息记录ID:{$taskLog['mass_msg_id']}所对应的记录不存在");
+                                throw new \Exception("任务日志记录ID:{$taskLog['_id']},群发消息记录ID:{$taskLog['mass_msg_id']}所对应的记录不存在");
                             }
 
                             $tag_id = "";
@@ -163,13 +156,13 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             // 按照tag_id发送的话
                             if ($sendMethodInfo['send_method'] == \App\Weixin2\Models\MassMsg\SendMethod::SEND_BY_TAGID) {
                                 if (empty($taskLog['tag_id'])) {
-                                    throw new \Exception("任务日志记录ID:{$taskLog['id']},tag_id字段的值为空");
+                                    throw new \Exception("任务日志记录ID:{$taskLog['_id']},tag_id字段的值为空");
                                 }
                                 $tag_id = $taskLog['tag_id'];
                             } elseif ($sendMethodInfo['send_method'] == \App\Weixin2\Models\MassMsg\SendMethod::SEND_BY_OPENIDS) {
                                 // 按照openids列表发送
                                 if (empty($taskLog['openids']) && empty($taskLog['openid'])) {
-                                    throw new \Exception("任务日志记录ID:{$taskLog['id']},openids字段和openid字段的值都为空");
+                                    throw new \Exception("任务日志记录ID:{$taskLog['_id']},openids字段和openid字段的值都为空");
                                 }
                                 if (!empty($taskLog['openids'])) {
                                     $openids = explode(',', $taskLog['openids']);
@@ -177,7 +170,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                                     $openids[] = $taskLog['openid'];
                                 }
                                 if (empty($openids)) {
-                                    throw new \Exception("任务日志记录ID:{$taskLog['id']},openids字段的值为空");
+                                    throw new \Exception("任务日志记录ID:{$taskLog['_id']},openids字段的值为空");
                                 }
                             }
 
@@ -190,7 +183,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             $modelCustomMsg = new \App\Weixin2\Models\CustomMsg\CustomMsg();
                             $customMsgInfo = $modelCustomMsg->getInfoById($taskLog['custom_msg_id']);
                             if (empty($customMsgInfo)) {
-                                throw new \Exception("任务日志记录ID:{$taskLog['id']},客服消息记录ID:{$taskLog['custom_msg_id']}所对应的记录不存在");
+                                throw new \Exception("任务日志记录ID:{$taskLog['_id']},客服消息记录ID:{$taskLog['custom_msg_id']}所对应的记录不存在");
                             }
                             $customMsgInfo = $this->changeMsgInfo($taskLog, $customMsgInfo);
 
@@ -203,7 +196,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             $modelSubscribeMsg = new \App\Weixin2\Models\Miniprogram\SubscribeMsg\Msg();
                             $subscribeMsgInfo = $modelSubscribeMsg->getInfoById($taskInfo['subscribe_msg_id']);
                             if (empty($subscribeMsgInfo)) {
-                                throw new \Exception("任务日志记录ID:{$taskLog['id']},订阅消息记录ID:{$taskLog['subscribe_msg_id']}所对应的记录不存在");
+                                throw new \Exception("任务日志记录ID:{$taskLog['_id']},订阅消息记录ID:{$taskLog['subscribe_msg_id']}所对应的记录不存在");
                             }
                             $subscribeMsgInfo = $this->changeMsgInfo($taskLog, $subscribeMsgInfo);
 
@@ -215,7 +208,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                             $modelTemplateMsg = new \App\Weixin2\Models\TemplateMsg\TemplateMsg();
                             $templateMsgInfo = $modelTemplateMsg->getInfoById($taskLog['template_msg_id']);
                             if (empty($templateMsgInfo)) {
-                                throw new \Exception("任务日志记录ID:{$taskLog['id']},公众号模板消息记录ID:{$taskLog['template_msg_id']}所对应的记录不存在");
+                                throw new \Exception("任务日志记录ID:{$taskLog['_id']},公众号模板消息记录ID:{$taskLog['template_msg_id']}所对应的记录不存在");
                             }
                             $templateMsgInfo = $this->changeMsgInfo($taskLog, $templateMsgInfo);
 
@@ -233,12 +226,10 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                         }
 
                         // 更新状态
-                        $modelTaskLog->updatePushState($taskLog['id'], $status, $now, $ret['is_ok'], $ret['api_ret'], 1);
+                        $modelTaskLog->updatePushState($taskLog['_id'], $status, $now, $ret['is_ok'], $ret['api_ret'], 1);
 
                         // 是否成功了
                         $is_success = ($status == \App\Weixin2\Models\Notification\TaskProcess::PUSH_SUCCESS);
-                        // // 推送任务内容 更新成功处理件数和已处理件数
-                        // $modelTaskContent->incProcessedNum($taskLog['notification_task_content_id'], 1, $is_success);
                         // 推送任务 更新成功处理件数和已处理件数
                         $modelTask->incProcessedNum($taskLog['notification_task_id'], 1, $is_success);
                         // 推送任务处理 更新成功处理件数和已处理件数
@@ -256,18 +247,13 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
                 $modelTaskProcess->begin();
 
                 // 是否还有未处理的数据
-                $taskLogList = $modelTaskLog->getAndLockListByTaskId($taskInfo['id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING);
+                $taskLogList = $modelTaskLog->getAndLockListByTaskId($taskInfo['_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING);
                 // 没有的话就算完成推送
                 if (empty($taskLogList)) {
                     // 处理状态已完成
-                    $modelTaskProcess->updatePushState($taskProcessInfo['id'], \App\Weixin2\Models\Notification\TaskProcess::PUSH_OVER, $now);
+                    $modelTaskProcess->updatePushState($taskProcessInfo['_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSH_OVER, $now);
                     // 推送状态已完成
-                    $modelTask->updatePushState($taskInfo['id'], \App\Weixin2\Models\Notification\TaskProcess::PUSH_OVER, $now);
-
-                    // // 推送任务内容的推送状态已完成
-                    // foreach ($taskContentList as $taskContent) {
-                    //     $modelTaskContent->updatePushState($taskContent['id'], \App\Weixin2\Models\Notification\TaskProcess::PUSH_OVER, $now);
-                    // }
+                    $modelTask->updatePushState($taskInfo['_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSH_OVER, $now);
                 }
 
                 $modelTaskProcess->commit();

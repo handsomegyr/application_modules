@@ -40,7 +40,6 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
         try {
             $modelTaskProcess = new \App\Weixin2\Models\Notification\TaskProcess();
             $modelTask = new \App\Weixin2\Models\Notification\Task();
-            $modelTaskContent = new \App\Weixin2\Models\Notification\TaskContent();
 
             // 1 获取所有推送失败的任务日志
             $modelTaskLog = new \App\Weixin2\Models\Notification\TaskLog();
@@ -57,7 +56,7 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
                 foreach ($taskLogList as $taskLogItem) {
 
                     // 进行锁定处理 ???
-                    $lock = new \iLock('task_log_id:' . $taskLogItem['_id']);
+                    $lock = new \iLock('weixin2:task_log_id:' . $taskLogItem['_id']);
                     $lock->setExpire(3600);
                     if ($lock->lock()) {
                         throw new \Exception("task_log_id为{$taskLogItem['_id']}所对应的任务日志在处理中，请等待");
@@ -165,8 +164,6 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
 
                         // 如果成功了或失败了
                         if ($status == \App\Weixin2\Models\Notification\TaskProcess::PUSH_SUCCESS) {
-                            // 推送任务内容 更新成功处理件数
-                            $modelTaskContent->incSuccessNum($taskLog['notification_task_content_id'], 1);
                             // 推送任务 更新成功处理件数
                             $modelTask->incSuccessNum($taskLog['notification_task_id'], 1);
                             // 推送任务处理 更新成功处理件数
