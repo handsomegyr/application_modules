@@ -8,6 +8,7 @@ use App\Backend\Submodules\Qyweixin\Models\AgentMsg\AgentMsg;
 use App\Backend\Submodules\Qyweixin\Models\AppchatMsg\AppchatMsg;
 use App\Backend\Submodules\Qyweixin\Models\LinkedcorpMsg\LinkedcorpMsg;
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\MsgTemplate;
+use App\Backend\Submodules\Qyweixin\Models\Notification\TaskProcess;
 
 /**
  * @title({name="企业推送任务日志"})
@@ -25,6 +26,7 @@ class NotificationtasklogController extends BaseController
     private $modelAgentMsg;
     private $modelLinkedcorpMsg;
     private $modelMsgTemplate;
+    private $modelTaskProcess;
 
     public function initialize()
     {
@@ -34,11 +36,13 @@ class NotificationtasklogController extends BaseController
         $this->modelAppchatMsg = new AppchatMsg();
         $this->modelLinkedcorpMsg = new LinkedcorpMsg();
         $this->modelMsgTemplate = new MsgTemplate();
+        $this->modelTaskProcess = new TaskProcess();
 
         $this->agentMsgItems = $this->modelAgentMsg->getAllByType("", "_id");
         $this->appchatMsgItems = $this->modelAppchatMsg->getAllByType("", "_id");
         $this->linkedcorpMsgItems = $this->modelLinkedcorpMsg->getAllByType("", "_id");
         $this->msgTemplateItems = $this->modelMsgTemplate->getAll();
+        $this->taskProcessItems = $this->modelTaskProcess->getAll();
         // 默认为single，表示发送给客户，group表示发送给客户群
         $this->msgTemplateChatType = array(
             'single' => '发送给客户',
@@ -53,6 +57,7 @@ class NotificationtasklogController extends BaseController
     protected $appchatMsgItems = null;
     protected $linkedcorpMsgItems = null;
     protected $msgTemplateItems = null;
+    protected $taskProcessItems = null;
 
     protected function getSchemas2($schemas)
     {
