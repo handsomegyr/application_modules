@@ -38,7 +38,7 @@ class ExternalcontactcorptagController extends BaseController
      */
     public function getcorptaglistAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/externalcontactcorptag/getcorptaglist
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactcorptag/getcorptaglist
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

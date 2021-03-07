@@ -2717,7 +2717,7 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function createcardAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/card/createcard?id=xxxx
+        // http://www.myapplicationmodule.com.com/admin/weixincard/card/createcard?id=xxxx
         try {
 
 
@@ -2758,7 +2758,7 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function getcardinfoAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/card/getcardinfo?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
+        // http://www.myapplicationmodule.com.com/admin/weixincard/card/getcardinfo?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k
         try {
 
 
@@ -2793,7 +2793,7 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function masssendAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/card/masssend?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k&toUsers=o4ELSvz-B4_DThF0Vpfrverk3IpY,o4ELSv7CChC3YKmM8WKXX4kXSr8c&preview=1
+        // http://www.myapplicationmodule.com.com/admin/weixincard/card/masssend?card_id=pgW8rt5vzjJ7nFLYxskYGBtxZP3k&toUsers=o4ELSvz-B4_DThF0Vpfrverk3IpY,o4ELSv7CChC3YKmM8WKXX4kXSr8c&preview=1
         try {
 
 
@@ -2902,7 +2902,7 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function updatecardinfoAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/card/updatecardinfo?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixincard/card/updatecardinfo?id=xxx
         try {
 
 
@@ -2942,7 +2942,7 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function modifystockAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/card/modifystock?card_id=p4ELSv6c5tkQvR6ihip_Z1KdNm8c&increase_stock_value=1&reduce_stock_value=0
+        // http://www.myapplicationmodule.com.com/admin/weixincard/card/modifystock?card_id=p4ELSv6c5tkQvR6ihip_Z1KdNm8c&increase_stock_value=1&reduce_stock_value=0
         try {
             $weixin = $this->getWeixin();
             $this->modelCard->setWeixin($weixin);
@@ -3057,7 +3057,7 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function depositecodeAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/card/depositecode?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixincard/card/depositecode?id=xxx
         try {
             $weixin = $this->getWeixin();
             $this->modelCodeDeposit->setWeixin($weixin);
@@ -3091,7 +3091,7 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function checkcodeAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/card/checkcode?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixincard/card/checkcode?id=xxx
         try {
             $weixin = $this->getWeixin();
             $this->modelCodeDeposit->setWeixin($weixin);
@@ -3127,7 +3127,7 @@ class CardController extends \App\Backend\Controllers\FormController
      */
     public function getdepositcodecountAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/card/getdepositcodecount?card_id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixincard/card/getdepositcodecount?card_id=xxx
         try {
 
 

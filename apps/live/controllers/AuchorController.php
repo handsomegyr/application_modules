@@ -3,5 +3,5 @@ namespace App\Live\Controllers;
 
 class AuchorController extends ControllerBase
 {
-    //http://www.applicationmodule.com/live/index.html
+    //http://www.myapplicationmodule.com.com/live/index.html
 }

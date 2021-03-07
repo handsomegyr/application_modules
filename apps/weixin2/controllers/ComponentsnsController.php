@@ -93,7 +93,7 @@ class ComponentsnsController extends ControllerBase
     public function authorizeAction()
     {
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/componentsns/authorize?appid=wxb4c2aa76686ea8f4&component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
-        // http://www.applicationmodule.com/weixinopen/api/componentsns/authorize?appid=wxb4c2aa76686ea8f4&component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
+        // http://www.myapplicationmodule.com.com/weixinopen/api/componentsns/authorize?appid=wxb4c2aa76686ea8f4&component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_userinfo&refresh=1
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化

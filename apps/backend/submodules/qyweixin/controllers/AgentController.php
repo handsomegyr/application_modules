@@ -81,7 +81,7 @@ class AgentController extends \App\Backend\Controllers\FormController
      */
     public function getaccesstokenAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/agent/getaccesstoken?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/agent/getaccesstoken?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -108,7 +108,7 @@ class AgentController extends \App\Backend\Controllers\FormController
      */
     public function getagentlistAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/agent/getagentlist?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/agent/getagentlist?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -135,7 +135,7 @@ class AgentController extends \App\Backend\Controllers\FormController
      */
     public function getagentinfoAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/agent/getagentinfo?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/agent/getagentinfo?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

@@ -73,7 +73,7 @@ class UserController extends BaseController
     //  */
     // public function updateremarkAction()
     // {
-    //     // http://www.applicationmodule.com/admin/qyweixin/user/updateremark?id=xxx
+    //     // http://www.myapplicationmodule.com.com/admin/qyweixin/user/updateremark?id=xxx
     //     try {
     //         $id = trim($this->request->get('id'));
     //         if (empty($id)) {
@@ -104,7 +104,7 @@ class UserController extends BaseController
     //  */
     // public function getuserinfoAction()
     // {
-    //     // http://www.applicationmodule.com/admin/qyweixin/user/getuserinfo?id=xxx
+    //     // http://www.myapplicationmodule.com.com/admin/qyweixin/user/getuserinfo?id=xxx
     //     try {
     //         $id = trim($this->request->get('id'));
     //         if (empty($id)) {
@@ -130,7 +130,7 @@ class UserController extends BaseController
     //  */
     // public function getusertagidlistAction()
     // {
-    //     // http://www.applicationmodule.com/admin/qyweixin/user/getusertagidlist?id=xxx
+    //     // http://www.myapplicationmodule.com.com/admin/qyweixin/user/getusertagidlist?id=xxx
     //     try {
     //         $id = trim($this->request->get('id'));
     //         if (empty($id)) {

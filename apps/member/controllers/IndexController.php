@@ -55,7 +55,7 @@ class IndexController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.applicationmodule.com/member/index/index
+        // http://www.myapplicationmodule.com.com/member/index/index
         // 消息数
         $msgCountInfo = $this->modelMsgCount->getInfoByUserId($_SESSION['member_id']);
         $this->assign('msgCount', $msgCountInfo['sysMsgCount'] + $msgCountInfo['privMsgCount'] + $msgCountInfo['friendMsgCount'] + $msgCountInfo['replyMsgCount']);
@@ -104,7 +104,7 @@ class IndexController extends ControllerBase
      */
     public function userrechargeAction()
     {
-        // http://www.applicationmodule.com/member/index/userrecharge
+        // http://www.myapplicationmodule.com.com/member/index/userrecharge
     }
 
     /**
@@ -112,7 +112,7 @@ class IndexController extends ControllerBase
      */
     public function cardrechargeAction()
     {
-        // http://www.applicationmodule.com/member/index/cardrecharge
+        // http://www.myapplicationmodule.com.com/member/index/cardrecharge
     }
 
     /**
@@ -120,7 +120,7 @@ class IndexController extends ControllerBase
      */
     public function userbuylistAction()
     {
-        // http://www.applicationmodule.com/member/index/userbuylist
+        // http://www.myapplicationmodule.com.com/member/index/userbuylist
     }
 
     /**
@@ -128,7 +128,7 @@ class IndexController extends ControllerBase
      */
     public function userbuydetailAction()
     {
-        // http://www.applicationmodule.com/member/index/userbuydetail?goods_id=xxx
+        // http://www.myapplicationmodule.com.com/member/index/userbuydetail?goods_id=xxx
         $this->view->disableLevel(View::LEVEL_LAYOUT);
         $goods_id = $this->get('goods_id', '');
         if (empty($goods_id)) {
@@ -143,7 +143,7 @@ class IndexController extends ControllerBase
      */
     public function orderlistAction()
     {
-        // http://www.applicationmodule.com/member/index/orderlist
+        // http://www.myapplicationmodule.com.com/member/index/orderlist
     }
 
     /**
@@ -151,7 +151,7 @@ class IndexController extends ControllerBase
      */
     public function orderdetailAction()
     {
-        // http://www.applicationmodule.com/member/index/orderdetail?orderno=xxxx
+        // http://www.myapplicationmodule.com.com/member/index/orderdetail?orderno=xxxx
         $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
         $orderno = $this->get('orderno', '');
         if (empty($orderno)) {
@@ -173,7 +173,7 @@ class IndexController extends ControllerBase
      */
     public function postsinglelistAction()
     {
-        // http://www.applicationmodule.com/member/index/postsinglelist
+        // http://www.myapplicationmodule.com.com/member/index/postsinglelist
     }
 
     /**
@@ -181,7 +181,7 @@ class IndexController extends ControllerBase
      */
     public function postsingleaddAction()
     {
-        // http://www.applicationmodule.com/member/index/postsingleadd?goods_id=xxx
+        // http://www.myapplicationmodule.com.com/member/index/postsingleadd?goods_id=xxx
         $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
         $goods_id = $this->get('goods_id', '');
         if (empty($goods_id)) {
@@ -208,7 +208,7 @@ class IndexController extends ControllerBase
      */
     public function postsingleeditAction()
     {
-        // http://www.applicationmodule.com/member/index/postsingleedit?goods_id=xxx
+        // http://www.myapplicationmodule.com.com/member/index/postsingleedit?goods_id=xxx
         $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
         $goods_id = $this->get('goods_id', '');
         if (empty($goods_id)) {
@@ -235,7 +235,7 @@ class IndexController extends ControllerBase
      */
     public function collectlistAction()
     {
-        // http://www.applicationmodule.com/member/index/collectlist
+        // http://www.myapplicationmodule.com.com/member/index/collectlist
     }
 
     /**
@@ -243,7 +243,7 @@ class IndexController extends ControllerBase
      */
     public function userbalanceAction()
     {
-        // http://www.applicationmodule.com/member/index/userbalance
+        // http://www.myapplicationmodule.com.com/member/index/userbalance
         // 充值总额：￥1.00 消费总额：￥1.00 转入总额：￥0.00 转出总额：￥0.00
         $summaryMoney4Type1 = $this->modelPayLog->getSummaryMoney($_SESSION['member_id'], \App\Payment\Models\Log::TYPE1);
         $this->assign('summaryMoney4Type1', $summaryMoney4Type1);
@@ -263,7 +263,7 @@ class IndexController extends ControllerBase
      */
     public function myfriendsAction()
     {
-        // http://www.applicationmodule.com/member/index/myfriends
+        // http://www.myapplicationmodule.com.com/member/index/myfriends
     }
 
     /**
@@ -271,7 +271,7 @@ class IndexController extends ControllerBase
      */
     public function searchfriendsAction()
     {
-        // http://www.applicationmodule.com/member/index/searchfriends
+        // http://www.myapplicationmodule.com.com/member/index/searchfriends
     }
 
     /**
@@ -279,7 +279,7 @@ class IndexController extends ControllerBase
      */
     public function joingroupAction()
     {
-        // http://www.applicationmodule.com/member/index/joingroup
+        // http://www.myapplicationmodule.com.com/member/index/joingroup
     }
 
     /**
@@ -287,7 +287,7 @@ class IndexController extends ControllerBase
      */
     public function joingroup01Action()
     {
-        // http://www.applicationmodule.com/member/index/joingroup01
+        // http://www.myapplicationmodule.com.com/member/index/joingroup01
     }
 
     /**
@@ -295,7 +295,7 @@ class IndexController extends ControllerBase
      */
     public function joingroup02Action()
     {
-        // http://www.applicationmodule.com/member/index/joingroup02
+        // http://www.myapplicationmodule.com.com/member/index/joingroup02
     }
 
     /**
@@ -303,7 +303,7 @@ class IndexController extends ControllerBase
      */
     public function invitedlistAction()
     {
-        // http://www.applicationmodule.com/member/index/invitedlist
+        // http://www.myapplicationmodule.com.com/member/index/invitedlist
         $myInvitationInfo = $this->modelInvitation->getInfoByUserId($_SESSION['member_id'], YUNGOU_ACTIVITY_ID);
         $this->assign('invitationInfo', $myInvitationInfo);
         // 成功邀请 0 位会员注册，已有 0 位会员参与云购，您通过邀请获得奖励：0 福分
@@ -314,7 +314,7 @@ class IndexController extends ControllerBase
      */
     public function commissionqueryAction()
     {
-        // http://www.applicationmodule.com/member/index/commissionquery
+        // http://www.myapplicationmodule.com.com/member/index/commissionquery
     }
 
     /**
@@ -322,7 +322,7 @@ class IndexController extends ControllerBase
      */
     public function memberpointsAction()
     {
-        // http://www.applicationmodule.com/member/index/memberpoints
+        // http://www.myapplicationmodule.com.com/member/index/memberpoints
     }
 
     /**
@@ -330,7 +330,7 @@ class IndexController extends ControllerBase
      */
     public function usermessageAction()
     {
-        // http://www.applicationmodule.com/member/index/usermessage
+        // http://www.myapplicationmodule.com.com/member/index/usermessage
         // 更新已读
         $this->modelMsgCount->clearSysMsgCount($_SESSION['member_id']);
     }
@@ -340,7 +340,7 @@ class IndexController extends ControllerBase
      */
     public function friendsapplyAction()
     {
-        // http://www.applicationmodule.com/member/index/friendsapply
+        // http://www.myapplicationmodule.com.com/member/index/friendsapply
         // 更新已读
         $this->modelMsgCount->clearFriendMsgCount($_SESSION['member_id']);
     }
@@ -350,7 +350,7 @@ class IndexController extends ControllerBase
      */
     public function replycommentsmsgAction()
     {
-        // http://www.applicationmodule.com/member/index/replycommentsmsg
+        // http://www.myapplicationmodule.com.com/member/index/replycommentsmsg
         // 更新已读
         $this->modelMsgCount->clearReplyMsgCount($_SESSION['member_id']);
     }
@@ -360,7 +360,7 @@ class IndexController extends ControllerBase
      */
     public function userprivmsgAction()
     {
-        // http://www.applicationmodule.com/member/index/userprivmsg
+        // http://www.myapplicationmodule.com.com/member/index/userprivmsg
         // 更新已读
         $this->modelMsgCount->clearPrivateMsgCount($_SESSION['member_id']);
     }
@@ -370,7 +370,7 @@ class IndexController extends ControllerBase
      */
     public function userprivmsgdetailAction()
     {
-        // http://www.applicationmodule.com/member/index/userprivmsgdetail?senderUserID=xxx
+        // http://www.myapplicationmodule.com.com/member/index/userprivmsgdetail?senderUserID=xxx
         $user_id = $this->get('senderUserID', '');
         $this->assign('user_id', $user_id);
 

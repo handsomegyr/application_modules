@@ -54,7 +54,7 @@ class CorpjoinqrcodeController extends BaseController
      */
     public function getjoinqrcodeAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/corpjoinqrcode/getjoinqrcode?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/corpjoinqrcode/getjoinqrcode?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

@@ -38,7 +38,7 @@ class DepartmentController extends BaseController
      */
     public function getdepartmentlistAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/department/getdepartmentlist
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/department/getdepartmentlist
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

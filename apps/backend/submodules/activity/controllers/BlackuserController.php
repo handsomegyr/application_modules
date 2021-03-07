@@ -159,7 +159,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
      */
     public function exportcsvAction()
     {
-        // http://www.applicationmodule.com/admin/activity/blackuser/exportcsv
+        // http://www.myapplicationmodule.com.com/admin/activity/blackuser/exportcsv
         try {
             $input = $this->getListFilterInput();
 
@@ -197,7 +197,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
      */
     public function importcsvAction()
     {
-        // http://www.applicationmodule.com/admin/activity/blackuser/importcsv
+        // http://www.myapplicationmodule.com.com/admin/activity/blackuser/importcsv
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -346,7 +346,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
      */
     public function exchangeactivityAction()
     {
-        // http://www.applicationmodule.com/admin/activity/blackuser/exchangeactivity?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/activity/blackuser/exchangeactivity?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

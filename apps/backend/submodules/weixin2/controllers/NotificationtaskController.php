@@ -131,7 +131,7 @@ class NotificationtaskController extends BaseController
      */
     public function addtask4Action()
     {
-        // http://www.applicationmodule.com/admin/weixin2/notificationtask/addtask4?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/notificationtask/addtask4?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -392,7 +392,7 @@ class NotificationtaskController extends BaseController
      */
     public function addtask5Action()
     {
-        // http://www.applicationmodule.com/admin/weixin2/notificationtask/addtask5?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/notificationtask/addtask5?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -652,7 +652,7 @@ class NotificationtaskController extends BaseController
      */
     public function modifytask4Action()
     {
-        // http://www.applicationmodule.com/admin/weixin2/notificationtask/modifytask4?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/notificationtask/modifytask4?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -916,7 +916,7 @@ class NotificationtaskController extends BaseController
      */
     public function modifytask5Action()
     {
-        // http://www.applicationmodule.com/admin/weixin2/notificationtask/modifytask5?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/notificationtask/modifytask5?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -1180,7 +1180,7 @@ class NotificationtaskController extends BaseController
      */
     public function closetaskAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/notificationtask/closetask?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/notificationtask/closetask?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

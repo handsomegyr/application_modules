@@ -52,7 +52,7 @@ class BatchinviteController extends BaseController
      */
     public function sendbatchinviteAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/batchinvite/sendbatchinvite?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/batchinvite/sendbatchinvite?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

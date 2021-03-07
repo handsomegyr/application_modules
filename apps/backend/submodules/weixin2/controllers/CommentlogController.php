@@ -69,7 +69,7 @@ class CommentlogController extends BaseController
      */
     public function unmarkelectcommentAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/commentlog/unmarkelectcomment?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/commentlog/unmarkelectcomment?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -96,7 +96,7 @@ class CommentlogController extends BaseController
      */
     public function markelectcommentAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/commentlog/markelectcomment?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/commentlog/markelectcomment?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -123,7 +123,7 @@ class CommentlogController extends BaseController
      */
     public function deletecommentlogAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/commentlog/deletecommentlog?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/commentlog/deletecommentlog?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

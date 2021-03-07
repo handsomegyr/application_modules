@@ -35,7 +35,7 @@ class BargainController extends ControllerBase
      */
     public function launchAction()
     {
-        // http://www.applicationmodule.com/campaign/bargain/launch?activity_id=58d4d7b4f3b9530b008b4567&FromUserName=guoyongrong&nickname=guoyongrong&headimgurl=headimgurl&bargain_code=bargain_code1&bargain_name=bargain_name1&worth=1000&quantity=1&bargain_from=100&bargain_to=200&worth_min=500&bargain_max=800&bargain_num_limit=10&bargain_period=24&is_both_bargain=0&start_time=1490284800&end_time=1553356800
+        // http://www.myapplicationmodule.com.com/campaign/bargain/launch?activity_id=58d4d7b4f3b9530b008b4567&FromUserName=guoyongrong&nickname=guoyongrong&headimgurl=headimgurl&bargain_code=bargain_code1&bargain_name=bargain_name1&worth=1000&quantity=1&bargain_from=100&bargain_to=200&worth_min=500&bargain_max=800&bargain_num_limit=10&bargain_period=24&is_both_bargain=0&start_time=1490284800&end_time=1553356800
         try {
             // 活动
             $activity_id = $this->get('activity_id', '');
@@ -89,7 +89,7 @@ class BargainController extends ControllerBase
      */
     public function getAction()
     {
-        // http://www.applicationmodule.com/campaign/bargain/get?bargain_id=58d4dd2af3b9530d008b4568
+        // http://www.myapplicationmodule.com.com/campaign/bargain/get?bargain_id=58d4dd2af3b9530d008b4568
         try {
             $bargain_id = $this->get("bargain_id", '');
             if (empty($bargain_id)) {
@@ -126,7 +126,7 @@ class BargainController extends ControllerBase
      */
     public function getloglistAction()
     {
-        // http://www.applicationmodule.com/campaign/bargain/getloglist?bargain_id=58d4dd2af3b9530d008b4568
+        // http://www.myapplicationmodule.com.com/campaign/bargain/getloglist?bargain_id=58d4dd2af3b9530d008b4568
         try {
             $bargain_id = $this->get("bargain_id", '');
             if (empty($bargain_id)) {
@@ -154,7 +154,7 @@ class BargainController extends ControllerBase
      */
     public function doAction()
     {
-        // http://www.applicationmodule.com/campaign/bargain/do?FromUserName=handsomegyr&nickname=handsomegyr&headimgurl=handsomegyr&bargain_id=58d4dd2af3b9530d008b4568
+        // http://www.myapplicationmodule.com.com/campaign/bargain/do?FromUserName=handsomegyr&nickname=handsomegyr&headimgurl=handsomegyr&bargain_id=58d4dd2af3b9530d008b4568
         try {
             $FromUserName = $this->get('FromUserName', ''); // 砍价者微信号
             $nickname = $this->get('nickname', ''); // 砍价者微信昵称
@@ -206,7 +206,7 @@ class BargainController extends ControllerBase
      */
     public function closeAction()
     {
-        // http://www.applicationmodule.com/campaign/bargain/close?bargain_id=58d4dd2af3b9530d008b4568&FromUserName=guoyongrong
+        // http://www.myapplicationmodule.com.com/campaign/bargain/close?bargain_id=58d4dd2af3b9530d008b4568&FromUserName=guoyongrong
         try {
             $FromUserName = $this->get('FromUserName', ''); // 砍价者微信号
 

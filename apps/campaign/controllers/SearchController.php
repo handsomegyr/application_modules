@@ -21,7 +21,7 @@ class SearchController extends ControllerBase
      */
     public function testAction()
     {
-        // http://www.applicationmodule.com/campaign/search/elastic?keyword=xxxx
+        // http://www.myapplicationmodule.com.com/campaign/search/elastic?keyword=xxxx
         try {
             $keyword = $this->get('keyword', '');
 
@@ -70,7 +70,7 @@ class SearchController extends ControllerBase
      */
     public function elasticAction()
     {
-        // http://www.applicationmodule.com/campaign/search/elastic?keyword=xxxx
+        // http://www.myapplicationmodule.com.com/campaign/search/elastic?keyword=xxxx
         try {
             $keyword = $this->get('keyword', '');
 

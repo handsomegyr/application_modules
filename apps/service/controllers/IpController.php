@@ -14,7 +14,7 @@ class IpController extends ControllerBase
     public function convertAction()
     {
         try {
-            // http://www.applicationmodule.com/service/ip/convert?ip=124.113.229.91
+            // http://www.myapplicationmodule.com.com/service/ip/convert?ip=124.113.229.91
             $ip = $this->get('ip', '');
             $address = convertIp($ip);
             echo ($this->result("OK", $address));

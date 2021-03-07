@@ -25,7 +25,7 @@ class SmsController extends ControllerBase
      */
     public function sendbytemplateAction()
     {
-        // http://www.applicationmodule.com/service/sms/sendbytemplate?mobile=13564100096&code=validate_mobile&contents=eyJzaXRlIjoiXHU1YmI2XHU1YjlkXHU3ZjUxXHU3YWQ5IiwidmNvZGUiOiI0NTY3In0=
+        // http://www.myapplicationmodule.com.com/service/sms/sendbytemplate?mobile=13564100096&code=validate_mobile&contents=eyJzaXRlIjoiXHU1YmI2XHU1YjlkXHU3ZjUxXHU3YWQ5IiwidmNvZGUiOiI0NTY3In0=
         try {
             $mobile = $this->get('mobile', '');
             $code = $this->get('code', '');

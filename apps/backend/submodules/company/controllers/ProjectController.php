@@ -103,7 +103,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
      */
     public function buildprojectsettingsAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/project/buildprojectsettings?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/project/buildprojectsettings?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -134,7 +134,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
      */
     public function rsyncdevtotestAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/project/rsyncdevtotest?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/project/rsyncdevtotest?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -164,7 +164,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
      */
     public function publishtesttoprodAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/project/publishtesttoprod?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/project/publishtesttoprod?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

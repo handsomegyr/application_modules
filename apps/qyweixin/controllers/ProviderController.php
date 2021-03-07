@@ -102,7 +102,7 @@ class ProviderController extends ControllerBase
     public function install3rdappAction()
     {
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/provider/install3rdapp?provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=xx&suite_id=xx
-        // http://www.applicationmodule.com/qyweixin/api/provider/install3rdapp?provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=xx&suite_id=xx
+        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/install3rdapp?provider_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=xx&suite_id=xx
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
@@ -161,7 +161,7 @@ class ProviderController extends ControllerBase
      */
     public function install3rdappcallbackAction()
     {
-        // http://www.applicationmodule.com/qyweixin/api/provider/install3rdappcallback?auth_code=queryauthcode@@@YGWj2XtzxxwQQfpIW6VGOJvDALlLfFwSy9anTBQs0sEMXsXZMrTRVPbhXpmqh265vpKz_YIgj2bJ-WJR2oGABw&expires_in=3600&state=xx
+        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/install3rdappcallback?auth_code=queryauthcode@@@YGWj2XtzxxwQQfpIW6VGOJvDALlLfFwSy9anTBQs0sEMXsXZMrTRVPbhXpmqh265vpKz_YIgj2bJ-WJR2oGABw&expires_in=3600&state=xx
         try {
             $provider_appid = empty($_SESSION['provider_appid']) ? "" : $_SESSION['provider_appid'];
             if (empty($provider_appid)) {
@@ -231,7 +231,7 @@ class ProviderController extends ControllerBase
      */
     public function authorizecallbackAction()
     {
-        // http://www.applicationmodule.com/qyweixin/api/provider/authorizecallback?provider_appid=wxca8519f703c07d32
+        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/authorizecallback?provider_appid=wxca8519f703c07d32
         try {
             /**
              * ==================================================================================

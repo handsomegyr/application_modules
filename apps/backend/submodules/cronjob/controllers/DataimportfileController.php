@@ -40,7 +40,7 @@ class DataimportfileController extends \App\Backend\Controllers\FormController
      */
     public function importcsvAction()
     {
-        // http://www.applicationmodule.com/admin/cronjob/dataimportfile/importcsv
+        // http://www.myapplicationmodule.com.com/admin/cronjob/dataimportfile/importcsv
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

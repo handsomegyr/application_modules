@@ -5,9 +5,9 @@ $config['server'] = array(
     // 监听的端口
     'port' => '9503',
     // WebSocket的URL地址，供浏览器使用的
-    'url' => 'ws://www.applicationmodule.com/chat/',
+    'url' => 'ws://www.myapplicationmodule.com.com/chat/',
     // 用于Comet跨域，必须设置为html所在的URL
-    'origin' => 'http://www.applicationmodule.com/client/'
+    'origin' => 'http://www.myapplicationmodule.com.com/client/'
 );
 
 $server_processors = isset($_SERVER['SERVER_PROCESSORS']) ? $_SERVER['SERVER_PROCESSORS'] : 1;

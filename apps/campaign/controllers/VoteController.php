@@ -39,7 +39,7 @@ class VoteController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.applicationmodule.com/campaign/vote/index
+        // http://www.myapplicationmodule.com.com/campaign/vote/index
 
         // 获取某活动下的所有投票主题
         $activityId = YUNGOU_ACTIVITY_ID;
@@ -59,7 +59,7 @@ class VoteController extends ControllerBase
      */
     public function doAction()
     {
-        // http://www.applicationmodule.com/campaign/vote/do?FromUserName=xxxx
+        // http://www.myapplicationmodule.com.com/campaign/vote/do?FromUserName=xxxx
         try {
             $activityId = $this->get("activityId", YUNGOU_ACTIVITY_ID);
             $subjectId = $this->get("subjectId", '56de9e0a7f50ea8411000029');
@@ -129,7 +129,7 @@ class VoteController extends ControllerBase
      */
     public function syncrankperoidAction()
     {
-        // http://www.applicationmodule.com/campaign/vote/syncrankperoid
+        // http://www.myapplicationmodule.com.com/campaign/vote/syncrankperoid
         try {
             set_time_limit(0);
             $subject_id = $this->get('subject_id', "56de9e0a7f50ea8411000029");

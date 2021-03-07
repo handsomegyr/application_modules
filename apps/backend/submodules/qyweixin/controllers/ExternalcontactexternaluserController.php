@@ -55,7 +55,7 @@ class ExternalcontactexternaluserController extends BaseController
      */
     public function getexternaluserlistAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/externalcontactexternaluser/getexternaluserlist
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactexternaluser/getexternaluserlist
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -150,7 +150,7 @@ class ExternalcontactexternaluserController extends BaseController
      */
     public function getexternaluserinfoAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/externalcontactexternaluser/getexternaluserinfo?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactexternaluser/getexternaluserinfo?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

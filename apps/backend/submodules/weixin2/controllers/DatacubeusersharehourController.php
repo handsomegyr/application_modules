@@ -43,7 +43,7 @@ class DatacubeusersharehourController extends BaseController
      */
     public function syncusersharehourAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/datacubeusersharehour/syncusersharehour?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubeusersharehour/syncusersharehour?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

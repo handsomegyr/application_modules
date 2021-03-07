@@ -16,7 +16,7 @@ class ShorturlController extends ControllerBase
      */
     public function getAction()
     {
-        // http://www.applicationmodule.com/service/shorturl/get?url=http%3A%2F%2Fwww.baidu.com%2F
+        // http://www.myapplicationmodule.com.com/service/shorturl/get?url=http%3A%2F%2Fwww.baidu.com%2F
         error_reporting(E_ERROR);
         $url = $this->get('url', '');
         $url = urldecode($url);

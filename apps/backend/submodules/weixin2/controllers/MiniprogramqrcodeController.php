@@ -56,7 +56,7 @@ class MiniprogramqrcodeController extends BaseController
      */
     public function createqrcodeAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/miniprogramqrcode/createqrcode?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/miniprogramqrcode/createqrcode?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

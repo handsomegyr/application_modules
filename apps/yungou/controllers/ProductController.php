@@ -38,7 +38,7 @@ class ProductController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.applicationmodule.com/yungou/product/index?id=xxx
+        // http://www.myapplicationmodule.com.com/yungou/product/index?id=xxx
         $goods_id = $this->get('id', '');
         if (empty($goods_id)) {
             $this->goToError();
@@ -81,7 +81,7 @@ class ProductController extends ControllerBase
      */
     public function listAction()
     {
-        // http://www.applicationmodule.com/yungou/product/list?i=56360fd4adfb3842018b4569&b=563613f7adfb3809008b4a37&r=10
+        // http://www.myapplicationmodule.com.com/yungou/product/list?i=56360fd4adfb3842018b4569&b=563613f7adfb3809008b4a37&r=10
         $page = $this->get('page', '1');
         $size = $this->get('size', '40');
         $i = $this->get('i', ''); // 商品分类
@@ -130,7 +130,7 @@ class ProductController extends ControllerBase
      */
     public function searchAction()
     {
-        // http://www.applicationmodule.com/yungou/product/search?r=10&q=xxx
+        // http://www.myapplicationmodule.com.com/yungou/product/search?r=10&q=xxx
         // 当前页
         $page = $this->get('page', '1');
         // 每页显示记录数
@@ -163,7 +163,7 @@ class ProductController extends ControllerBase
      */
     public function detailAction()
     {
-        // http://www.applicationmodule.com/yungou/product/detail?id=xxx
+        // http://www.myapplicationmodule.com.com/yungou/product/detail?id=xxx
         $goods_id = $this->get('id', '');
         if (empty($goods_id)) {
             $this->goToError();

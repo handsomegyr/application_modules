@@ -707,7 +707,7 @@ class AgentmsgController extends BaseController
      */
     public function sendmsgAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/agentmsg/sendmsg?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/agentmsg/sendmsg?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

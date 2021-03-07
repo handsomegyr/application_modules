@@ -40,7 +40,7 @@ class ResourceController extends \App\Backend\Controllers\FormController
      */
     public function createAction()
     {
-        // http://www.applicationmodule.com/admin/backend/resource/create
+        // http://www.myapplicationmodule.com.com/admin/backend/resource/create
         try {
             $module = "admin";
             $moduleName = "后台管理";

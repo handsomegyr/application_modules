@@ -59,7 +59,7 @@ class ServiceController extends ControllerBase
      */
     public function getAccessTokenAction()
     {
-        // http://www.applicationmodule.com/qyweixin/api/service/get-access-token?appid=4m9QOrJMzAjpx75Y
+        // http://www.myapplicationmodule.com.com/qyweixin/api/service/get-access-token?appid=4m9QOrJMzAjpx75Y
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/service/get-access-token?appid=4m9QOrJMzAjpx75Y
         try {
             // 初始化
@@ -83,7 +83,7 @@ class ServiceController extends ControllerBase
      */
     public function getJsapiTicketAction()
     {
-        // http://www.applicationmodule.com/qyweixin/api/service/get-jsapi-ticket?appid=4m9QOrJMzAjpx75Y
+        // http://www.myapplicationmodule.com.com/qyweixin/api/service/get-jsapi-ticket?appid=4m9QOrJMzAjpx75Y
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/service/get-jsapi-ticket?appid=4m9QOrJMzAjpx75Y
         try {
             // 初始化
@@ -107,7 +107,7 @@ class ServiceController extends ControllerBase
      */
     public function getWxcardapiTicketAction()
     {
-        // http://www.applicationmodule.com/qyweixin/api/service/get-wxcardapi-ticket?appid=4m9QOrJMzAjpx75Y
+        // http://www.myapplicationmodule.com.com/qyweixin/api/service/get-wxcardapi-ticket?appid=4m9QOrJMzAjpx75Y
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/service/get-wxcardapi-ticket?appid=4m9QOrJMzAjpx75Y
         try {
             // 初始化

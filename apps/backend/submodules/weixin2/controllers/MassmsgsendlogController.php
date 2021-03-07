@@ -79,7 +79,7 @@ class MassmsgsendlogController extends BaseController
      */
     public function getmassAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/massmsgsendlog/getmass?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/massmsgsendlog/getmass?id=xxx
         try {
 
 
@@ -108,7 +108,7 @@ class MassmsgsendlogController extends BaseController
      */
     public function deletemassAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/massmsgsendlog/deletemass?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/massmsgsendlog/deletemass?id=xxx
         try {
 
 

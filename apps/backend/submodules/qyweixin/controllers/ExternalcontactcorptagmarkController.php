@@ -44,7 +44,7 @@ class ExternalcontactcorptagmarkController extends BaseController
      */
     public function marktagAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/externalcontactcorptagmark/marktag?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactcorptagmark/marktag?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

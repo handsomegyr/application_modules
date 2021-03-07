@@ -65,7 +65,7 @@ class MassmsgController extends BaseController
      */
     public function previewmassAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/massmsg/previewmass?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/massmsg/previewmass?id=xxx
         try {
 
 

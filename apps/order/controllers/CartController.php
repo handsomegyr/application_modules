@@ -56,7 +56,7 @@ class CartController extends ControllerBase
     public function addAction()
     {
         try {
-            // http://www.applicationmodule.com/order/cart/add?goods_id=56372bd07f50eab004000443&quantity=1
+            // http://www.myapplicationmodule.com.com/order/cart/add?goods_id=56372bd07f50eab004000443&quantity=1
             $goods_id = $this->get('goods_id', '');
             if (empty($goods_id)) {
                 echo ($this->error(-1, '商品ID为空'));
@@ -92,7 +92,7 @@ class CartController extends ControllerBase
     public function updatenumAction()
     {
         try {
-            // http://www.applicationmodule.com/order/cart/updatenum?goods_id=56372bd07f50eab004000443&quantity=1
+            // http://www.myapplicationmodule.com.com/order/cart/updatenum?goods_id=56372bd07f50eab004000443&quantity=1
             $goods_id = trim($this->get('goods_id', '')); // 商品ID
             $quantity = intval($this->get('quantity')); // 商品数量
 
@@ -128,7 +128,7 @@ class CartController extends ControllerBase
     public function clearAction()
     {
         try {
-            // http://www.applicationmodule.com/order/cart/clear?goods_ids=56372bd07f50eab004000443,xxx,xxx
+            // http://www.myapplicationmodule.com.com/order/cart/clear?goods_ids=56372bd07f50eab004000443,xxx,xxx
             $goods_ids = trim($this->get('goods_ids', '')); // 商品ID,以逗号分隔
             if (!empty($goods_ids)) {
                 $goods_ids = explode(",", $goods_ids);
@@ -158,7 +158,7 @@ class CartController extends ControllerBase
     public function viewAction()
     {
         try {
-            // http://www.applicationmodule.com/order/cart/add?goods_id=56372bd07f50eab004000443&quantity=1
+            // http://www.myapplicationmodule.com.com/order/cart/add?goods_id=56372bd07f50eab004000443&quantity=1
             $buyer_id = empty($_SESSION['member_id']) ? '' : $_SESSION['member_id'];
             // 获取购物车
             $cart = $this->serviceCart->getCartByBuyerId($buyer_id);
@@ -179,7 +179,7 @@ class CartController extends ControllerBase
      */
     public function cartnumAction()
     {
-        // http://www.applicationmodule.com/order/cart/cartnum
+        // http://www.myapplicationmodule.com.com/order/cart/cartnum
         try {
             $info = array(
                 'num' => 0,
@@ -211,7 +211,7 @@ class CartController extends ControllerBase
     {
         // http://cart.1yyg.com/JPData?action=cartlabel&fun=jQuery18105469640658702701_1452515680946&_=1452515713120
         // jQuery18105469640658702701_1452515680946({'code':0,'count':7,'money':4,'listItems':[{'codeID':2890420,'goodsPic':'20151116141603129.jpg','goodsName':'乐扣乐扣（LOCK&LOCK）缤纷马克保温杯 330ml','shopNum':1,'goodsID':22646,'codeQuantity':59,'codeSurplus':50,'codeType':0,'codeLimitBuy':0,'myLimitSales':0},{'codeID':2910467,'goodsPic':'20160107151328394.jpg','goodsName':'奔驰（Benz）长轴距C级 2015款 C 200 L 轿车','shopNum':1,'goodsID':22850,'codeQuantity':428888,'codeSurplus':103046,'codeType':0,'codeLimitBuy':0,'myLimitSales':0},{'codeID':2651601,'goodsPic':'20150831181841658.jpg','goodsName':'小米（MIUI）蓝牙耳机 白色','shopNum':1,'goodsID':22492,'codeQuantity':99,'codeSurplus':96,'codeType':0,'codeLimitBuy':0,'myLimitSales':0},{'codeID':2746052,'goodsPic':'20151119164928786.jpg','goodsName':'苹果（Apple）iPhone 6s Plus 16G版 4G手机','shopNum':1,'goodsID':22667,'codeQuantity':6088,'codeSurplus':1051,'codeType':3,'codeLimitBuy':5,'myLimitSales':0},{'codeID':2882137,'goodsPic':'20151105111557474.jpg','goodsName':'苹果（Apple）iPhone 6s Plus 128G版 4G手机','shopNum':1,'goodsID':22612,'codeQuantity':8090,'codeSurplus':0,'codeType':3,'codeLimitBuy':5,'myLimitSales':0},{'codeID':2919782,'goodsPic':'20150910150825965.jpg','goodsName':'苹果（Apple）iPhone 6s 16G版 4G手机','shopNum':1,'goodsID':22504,'codeQuantity':5188,'codeSurplus':0,'codeType':0,'codeLimitBuy':0,'myLimitSales':0},{'codeID':2785502,'goodsPic':'20151117180200543.jpg','goodsName':'闪迪（SanDisk）至尊高速 MicroSDXC UHS-I 存储卡 64GB-Class10-48Mb/s','shopNum':1,'goodsID':22658,'codeQuantity':109,'codeSurplus':0,'codeType':0,'codeLimitBuy':0,'myLimitSales':0}]})
-        // http://www.applicationmodule.com/order/cart/cartlabel
+        // http://www.myapplicationmodule.com.com/order/cart/cartlabel
         try {
             $buyer_id = empty($_SESSION['member_id']) ? '' : $_SESSION['member_id'];
             // 获取购物车
@@ -271,7 +271,7 @@ class CartController extends ControllerBase
     public function checkoutAction()
     {
         try {
-            // http://www.applicationmodule.com/order/cart/checkout?goods_ids=xx,xxx,xxx&order_from=1&order_message=xxxx&pay_name=online
+            // http://www.myapplicationmodule.com.com/order/cart/checkout?goods_ids=xx,xxx,xxx&order_from=1&order_message=xxxx&pay_name=online
             // 购买商品信息
             $goods_ids = trim($this->get('goods_ids', '')); // 所选商品列表
 

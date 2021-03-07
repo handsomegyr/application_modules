@@ -225,7 +225,7 @@ class SnsController extends ControllerBase
 
     public function geturlAction()
     {
-        // http://www.applicationmodule.com/weixin/sns/geturl?appid=wxa7f90ea22051777d&scope=snsapi_login&state=wx
+        // http://www.myapplicationmodule.com.com/weixin/sns/geturl?appid=wxa7f90ea22051777d&scope=snsapi_login&state=wx
         try {
             $redirect = "http://{$_SERVER["HTTP_HOST"]}/member/passport/weixinauthorize";
             

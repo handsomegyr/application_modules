@@ -164,7 +164,7 @@ class LogoController extends \App\Backend\Controllers\FormController
      */
     public function uploadAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/logo/upload?id=xxxx
+        // http://www.myapplicationmodule.com.com/admin/weixincard/logo/upload?id=xxxx
         try {
             
 

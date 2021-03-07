@@ -71,7 +71,7 @@ class ServiceController extends \App\Backend\Controllers\FormController
      */
     public function processAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/service/process?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/service/process?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

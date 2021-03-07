@@ -38,7 +38,7 @@ class DatacubeusershareController extends BaseController
      */
     public function syncusershareAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/datacubeusershare/syncusershare?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubeusershare/syncusershare?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

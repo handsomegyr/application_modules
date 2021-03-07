@@ -865,7 +865,7 @@ class CardbagController extends \App\Backend\Controllers\FormController
      */
     public function getcodeAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/cardbag/getcode?id=58940256887c2223368b456e
+        // http://www.myapplicationmodule.com.com/admin/weixincard/cardbag/getcode?id=58940256887c2223368b456e
         try {
             
 
@@ -909,7 +909,7 @@ class CardbagController extends \App\Backend\Controllers\FormController
      */
     public function consumecodeAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/cardbag/consumecode?id=58940256887c2223368b456e
+        // http://www.myapplicationmodule.com.com/admin/weixincard/cardbag/consumecode?id=58940256887c2223368b456e
         try {
             
 
@@ -959,7 +959,7 @@ class CardbagController extends \App\Backend\Controllers\FormController
      */
     public function unavailablecodeAction()
     {
-        // http://www.applicationmodule.com/admin/weixincard/cardbag/unavailablecode?id=58940256887c2223368b456e
+        // http://www.myapplicationmodule.com.com/admin/weixincard/cardbag/unavailablecode?id=58940256887c2223368b456e
         try {
             
 

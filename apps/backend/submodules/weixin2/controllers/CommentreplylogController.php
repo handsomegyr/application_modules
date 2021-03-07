@@ -56,7 +56,7 @@ class CommentreplylogController extends BaseController
      */
     public function deletecommentreplyAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/commentlog/deletecommentreply?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/commentlog/deletecommentreply?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -83,7 +83,7 @@ class CommentreplylogController extends BaseController
      */
     public function addcommentreplyAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/commentlog/addcommentreply?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/commentlog/addcommentreply?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

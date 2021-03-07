@@ -4,13 +4,13 @@ namespace App\Campaign\Controllers;
 
 /**
  * 签到事例
- * http://www.applicationmodule.com/campaign/sign/weixinauthorizebefore?operation4cookie=store&FromUserName=oFTgHwbw1xwUz8MgIBLW74kXcqnY&nickname=xxx&headimgurl=xxx
+ * http://www.myapplicationmodule.com.com/campaign/sign/weixinauthorizebefore?operation4cookie=store&FromUserName=oFTgHwbw1xwUz8MgIBLW74kXcqnY&nickname=xxx&headimgurl=xxx
  *
- * http://www.applicationmodule.com/campaign/sign/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.applicationmodule.com%2Fhtml%2FfamilyTrust%2Findex.html
+ * http://www.myapplicationmodule.com.com/campaign/sign/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.myapplicationmodule.com.com%2Fhtml%2FfamilyTrust%2Findex.html
  *
- * http://www.applicationmodule.com/sign/index.html
+ * http://www.myapplicationmodule.com.com/sign/index.html
  *
- * http://www.applicationmodule.com/campaign/sign/weixinauthorizebefore?operation4cookie=clear
+ * http://www.myapplicationmodule.com.com/campaign/sign/weixinauthorizebefore?operation4cookie=clear
  *
  * @author Administrator
  *        
@@ -42,7 +42,7 @@ class SignController extends ControllerBase
      */
     public function getcampaignuserinfoAction()
     {
-        // http://www.applicationmodule.com/campaign/sign/getcampaignuserinfo
+        // http://www.myapplicationmodule.com.com/campaign/sign/getcampaignuserinfo
         try {
             $userInfo = empty($_COOKIE['Weixin_userInfo']) ? array() : json_decode($_COOKIE['Weixin_userInfo'], true);
             if (empty($userInfo)) {
@@ -136,7 +136,7 @@ class SignController extends ControllerBase
      */
     public function doAction()
     {
-        // http://www.applicationmodule.com/campaign/sign/do
+        // http://www.myapplicationmodule.com.com/campaign/sign/do
         try {
             // 获取活动信息
             $activityInfo = $this->modelActivity->getActivityInfo2($this->activity1, $this->now->sec);

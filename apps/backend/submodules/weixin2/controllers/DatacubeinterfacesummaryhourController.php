@@ -43,7 +43,7 @@ class DatacubeinterfacesummaryhourController extends BaseController
      */
     public function syncinterfacesummaryhourAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/datacubeinterfacesummaryhour/syncinterfacesummaryhour?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubeinterfacesummaryhour/syncinterfacesummaryhour?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

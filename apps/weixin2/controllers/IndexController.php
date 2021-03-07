@@ -12,7 +12,7 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
-        // http://www.applicationmodule.com/weixin/index/index
+        // http://www.myapplicationmodule.com.com/weixin/index/index
         die('index');
     }
 }

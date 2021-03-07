@@ -16,7 +16,7 @@ class FileController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.applicationmodule.com/service/file/index?id=xxxx&w=100&h=100&upload_path=post
+        // http://www.myapplicationmodule.com.com/service/file/index?id=xxxx&w=100&h=100&upload_path=post
         $uploadPath = $this->get('upload_path', '');
         $id = $this->request->get('id', array(
             'trim'
@@ -173,7 +173,7 @@ class FileController extends ControllerBase
      */
     public function uploadAction()
     {
-        // http://www.applicationmodule.com/service/file/upload?upload_path=post
+        // http://www.myapplicationmodule.com.com/service/file/upload?upload_path=post
         $uploadPath = $this->get('upload_path', '');
         $rst = array();
         if (!empty($_FILES)) {

@@ -1365,7 +1365,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
         $param = array(
             'goods_id' => $goods_id
         );
-        $ret = doPost("http://www.applicationmodule.com/goods/service/lottery", $param);
+        $ret = doPost("http://www.myapplicationmodule.com.com/goods/service/lottery", $param);
         $ret = (string) $ret;
         if (!empty($ret)) {
             if (isJson($ret)) {

@@ -6,15 +6,15 @@ namespace App\Campaign\Controllers;
  * 例子
  *
  * 授权地址
- * http://www.applicationmodule.com/campaign/index/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
+ * http://www.myapplicationmodule.com.com/campaign/index/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
  *
- * http://www.applicationmodule.com/campaign/index/weixinauthorizebefore?operation4cookie=clear
+ * http://www.myapplicationmodule.com.com/campaign/index/weixinauthorizebefore?operation4cookie=clear
  *
- * http://www.applicationmodule.com/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
+ * http://www.myapplicationmodule.com.com/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
- * http://www.applicationmodule.com/html/index/index.html
+ * http://www.myapplicationmodule.com.com/html/index/index.html
  *
- * http://www.applicationmodule.com/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
+ * http://www.myapplicationmodule.com.com/campaign/index/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
  * @author 郭永荣
  *        
@@ -52,7 +52,7 @@ class IndexController extends ControllerBase
      */
     public function getcampaignuserinfoAction()
     {
-        // http://www.applicationmodule.com/campaign/index/getcampaignuserinfo
+        // http://www.myapplicationmodule.com.com/campaign/index/getcampaignuserinfo
         try {
             $this->view->disable();
 
@@ -145,7 +145,7 @@ class IndexController extends ControllerBase
      */
     public function lotteryAction()
     {
-        // http://www.applicationmodule.com/campaign/index/lottery?name=guoyongrong&mobile=13564100096&address=xxx
+        // http://www.myapplicationmodule.com.com/campaign/index/lottery?name=guoyongrong&mobile=13564100096&address=xxx
         try {
             $this->view->disable();
             // 获取活动信息
@@ -305,7 +305,7 @@ class IndexController extends ControllerBase
      */
     public function recorduserinfoAction()
     {
-        // http://www.applicationmodule.com/campaign/index/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
+        // http://www.myapplicationmodule.com.com/campaign/index/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
         try {
             $this->view->disable();
 
@@ -441,7 +441,7 @@ class IndexController extends ControllerBase
      */
     public function lottery4testAction()
     {
-        // http://www.applicationmodule.com/campaign/index/lottery4test
+        // http://www.myapplicationmodule.com.com/campaign/index/lottery4test
         try {
             $this->view->disable();
             // 获取活动信息
@@ -562,7 +562,7 @@ class IndexController extends ControllerBase
 
     public function bfAction()
     {
-        // http://www.applicationmodule.com/campaign/index/bf?name=xxx
+        // http://www.myapplicationmodule.com.com/campaign/index/bf?name=xxx
         try {
             $name = $this->get('name');
             $cacheKey = cacheKey(__FILE__, __CLASS__, $name);

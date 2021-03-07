@@ -55,7 +55,7 @@ class ExternalcontactgroupchatController extends BaseController
      */
     public function getgroupchatlistAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/externalcontactgroupchat/getgroupchatlist
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactgroupchat/getgroupchatlist
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -154,7 +154,7 @@ class ExternalcontactgroupchatController extends BaseController
      */
     public function getgroupchatinfoAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/externalcontactgroupchat/getgroupchatinfo?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactgroupchat/getgroupchatinfo?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

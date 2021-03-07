@@ -54,7 +54,7 @@ class ServiceController extends ControllerBase
      */
     public function getAccessTokenAction()
     {
-        // http://www.applicationmodule.com/weixinopen/api/service/get-access-token?appid=4m9QOrJMzAjpx75Y
+        // http://www.myapplicationmodule.com.com/weixinopen/api/service/get-access-token?appid=4m9QOrJMzAjpx75Y
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/service/get-access-token?appid=4m9QOrJMzAjpx75Y
         try {
             // 初始化
@@ -78,7 +78,7 @@ class ServiceController extends ControllerBase
      */
     public function getJsapiTicketAction()
     {
-        // http://www.applicationmodule.com/weixinopen/api/service/get-jsapi-ticket?appid=4m9QOrJMzAjpx75Y
+        // http://www.myapplicationmodule.com.com/weixinopen/api/service/get-jsapi-ticket?appid=4m9QOrJMzAjpx75Y
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/service/get-jsapi-ticket?appid=4m9QOrJMzAjpx75Y
         try {
             // 初始化
@@ -102,7 +102,7 @@ class ServiceController extends ControllerBase
      */
     public function getWxcardapiTicketAction()
     {
-        // http://www.applicationmodule.com/weixinopen/api/service/get-wxcardapi-ticket?appid=4m9QOrJMzAjpx75Y
+        // http://www.myapplicationmodule.com.com/weixinopen/api/service/get-wxcardapi-ticket?appid=4m9QOrJMzAjpx75Y
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/service/get-wxcardapi-ticket?appid=4m9QOrJMzAjpx75Y
         try {
             // 初始化
@@ -129,7 +129,7 @@ class ServiceController extends ControllerBase
      */
     public function uniformSendAction()
     {
-        // http://www.applicationmodule.com/weixinopen/api/service/uniform-send?appid=4m9QOrJMzAjpx75Y&touser=&mp_template_msg={}
+        // http://www.myapplicationmodule.com.com/weixinopen/api/service/uniform-send?appid=4m9QOrJMzAjpx75Y&touser=&mp_template_msg={}
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/service/uniform-send?appid=4m9QOrJMzAjpx75Y&touser=&mp_template_msg={}
         try {
             $touser = isset($_GET['touser']) ? (trim($_GET['touser'])) : '';

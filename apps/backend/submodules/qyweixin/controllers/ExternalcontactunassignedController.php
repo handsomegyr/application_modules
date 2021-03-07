@@ -38,7 +38,7 @@ class ExternalcontactunassignedController extends BaseController
      */
     public function getunassignedlistAction()
     {
-        // http://www.applicationmodule.com/admin/qyweixin/externalcontactunassigned/getunassignedlist
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactunassigned/getunassignedlist
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

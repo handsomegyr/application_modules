@@ -30,7 +30,7 @@ class CacheController extends ControllerBase
      */
     public function getkeyAction()
     {
-        // http://www.applicationmodule.com/campaign/cache/getkey?key=xxx
+        // http://www.myapplicationmodule.com.com/campaign/cache/getkey?key=xxx
         try {
             // 获取所有的key
             $key = $this->get('key', '');
@@ -47,7 +47,7 @@ class CacheController extends ControllerBase
      */
     public function setkeyAction()
     {
-        // http://www.applicationmodule.com/campaign/cache/setkey
+        // http://www.myapplicationmodule.com.com/campaign/cache/setkey
         try {
             // 获取所有的key
             $key1 = 'arr1';

@@ -66,7 +66,7 @@ class MediaController extends BaseController
      */
     public function getmediaAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/media/getmedia?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/media/getmedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -132,7 +132,7 @@ class MediaController extends BaseController
      */
     public function uploadmediaAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/media/uploadmedia?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/media/uploadmedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

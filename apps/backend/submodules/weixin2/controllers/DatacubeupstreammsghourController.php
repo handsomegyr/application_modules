@@ -43,7 +43,7 @@ class DatacubeupstreammsghourController extends BaseController
      */
     public function syncupstreammsghourAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/datacubeupstreammsghour/syncupstreammsghour?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubeupstreammsghour/syncupstreammsghour?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

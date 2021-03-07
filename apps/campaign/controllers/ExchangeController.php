@@ -6,15 +6,15 @@ namespace App\Campaign\Controllers;
  * 兑换例子
  *
  * 授权地址
- * http://www.applicationmodule.com/campaign/exchange/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
+ * http://www.myapplicationmodule.com.com/campaign/exchange/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
  *
- * http://www.applicationmodule.com/campaign/exchange/weixinauthorizebefore?operation4cookie=clear
+ * http://www.myapplicationmodule.com.com/campaign/exchange/weixinauthorizebefore?operation4cookie=clear
  *
- * http://www.applicationmodule.com/campaign/exchange/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
+ * http://www.myapplicationmodule.com.com/campaign/exchange/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
- * http://www.applicationmodule.com/html/exchange/index.html
+ * http://www.myapplicationmodule.com.com/html/exchange/index.html
  *
- * http://www.applicationmodule.com/campaign/exchange/weixinauthorizebefore?operation4cookie=store&FromUserName=ok0K2vystcQkKolNr3anJd-soVuI&nickname=郭永荣&headimgurl=xx
+ * http://www.myapplicationmodule.com.com/campaign/exchange/weixinauthorizebefore?operation4cookie=store&FromUserName=ok0K2vystcQkKolNr3anJd-soVuI&nickname=郭永荣&headimgurl=xx
  *
  * @author 郭永荣
  *        
@@ -52,7 +52,7 @@ class LotteryController extends ControllerBase
      */
     public function getcampaignuserinfoAction()
     {
-        // http://www.applicationmodule.com/campaign/exchange/getcampaignuserinfo
+        // http://www.myapplicationmodule.com.com/campaign/exchange/getcampaignuserinfo
         try {
             $this->view->disable();
 
@@ -138,7 +138,7 @@ class LotteryController extends ControllerBase
      */
     public function exchangeAction()
     {
-        // http://www.applicationmodule.com/campaign/exchange/exchange?&rule_id=xxx&name=guoyongrong&mobile=13564100096&address=xxx
+        // http://www.myapplicationmodule.com.com/campaign/exchange/exchange?&rule_id=xxx&name=guoyongrong&mobile=13564100096&address=xxx
         try {
             $this->view->disable();
             // 获取活动信息

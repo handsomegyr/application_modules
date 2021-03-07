@@ -90,7 +90,7 @@ EOD;
      */
     public function getalltablesAction()
     {
-        // http://www.applicationmodule.com/admin/builder/getalltables
+        // http://www.myapplicationmodule.com.com/admin/builder/getalltables
         try {
             $this->view->disable();
             $tables = $this->getAllTables();
@@ -107,10 +107,10 @@ EOD;
      */
     public function createmenuAction()
     {
-        // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Weixin2\Settings\Menu
-        // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Qyweixin\Settings\Menu
-        // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Company\Settings\Menu
-        // http://www.applicationmodule.com/admin/builder/createmenu?settings=App\Backend\Submodules\Database\Settings\Menu
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenu?settings=App\Backend\Submodules\Weixin2\Settings\Menu
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenu?settings=App\Backend\Submodules\Qyweixin\Settings\Menu
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenu?settings=App\Backend\Submodules\Company\Settings\Menu
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenu?settings=App\Backend\Submodules\Database\Settings\Menu
         try {
             $this->view->disable();
             resetTimeMemLimit();
@@ -139,7 +139,7 @@ EOD;
      */
     public function createschemaAction()
     {
-        // http://www.applicationmodule.com/admin/builder/createschema?model=\App\Backend\Submodules\Weixin2\Models\Language
+        // http://www.myapplicationmodule.com.com/admin/builder/createschema?model=\App\Backend\Submodules\Weixin2\Models\Language
         try {
             $this->view->disable();
             resetTimeMemLimit();
@@ -178,7 +178,7 @@ EOD;
      */
     public function createfileAction()
     {
-        // http://www.applicationmodule.com/admin/builder/createfile?model=\App\Backend\Submodules\Weixin2\Models\Language&title=语言
+        // http://www.myapplicationmodule.com.com/admin/builder/createfile?model=\App\Backend\Submodules\Weixin2\Models\Language&title=语言
         try {
             $this->view->disable();
             resetTimeMemLimit();
@@ -216,28 +216,28 @@ EOD;
      */
     public function createmenuwithfilesAction()
     {
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Weixin2\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Cronjob\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Questionnaire\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Activity\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Alipay\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Prize\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Invitation\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Sign\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Lottery\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Exchange\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Vote\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Store\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Bargain\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Weixincard\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Game\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Points\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Payment\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Banner\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Search\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Qyweixin\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Company\Settings\Menu&is_create_menu=1
-        // http://www.applicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Database\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Weixin2\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Cronjob\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Questionnaire\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Activity\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Alipay\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Prize\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Invitation\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Sign\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Lottery\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Exchange\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Vote\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Store\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Bargain\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Weixincard\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Game\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Points\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Payment\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Banner\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Search\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Qyweixin\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Company\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Database\Settings\Menu&is_create_menu=1
         try {
             $this->view->disable();
             resetTimeMemLimit();

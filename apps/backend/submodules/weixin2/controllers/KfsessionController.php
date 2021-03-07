@@ -109,7 +109,7 @@ class KfsessionController extends BaseController
      */
     public function getwaitcaseAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/kfsession/getwaitcase?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/kfsession/getwaitcase?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -154,7 +154,7 @@ class KfsessionController extends BaseController
      */
     public function closesessionAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/kfsession/closesession?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/kfsession/closesession?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -181,7 +181,7 @@ class KfsessionController extends BaseController
      */
     public function createsessionAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/kfsession/createsession?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/kfsession/createsession?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -207,7 +207,7 @@ class KfsessionController extends BaseController
      */
     public function getsessionAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/kfsession/getsession?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/kfsession/getsession?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -239,7 +239,7 @@ class KfsessionController extends BaseController
      */
     public function getsessionlistAction()
     {
-        // http://www.applicationmodule.com/admin/weixin2/kfsession/getsessionlist?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/weixin2/kfsession/getsessionlist?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
