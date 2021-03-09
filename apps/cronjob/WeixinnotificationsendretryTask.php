@@ -92,6 +92,7 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 if (empty($templateMsgInfo)) {
                                     throw new \Exception("任务日志记录ID:{$taskLog['_id']},模板消息记录ID:{$taskLog['template_msg_id']}所对应的记录不存在");
                                 }
+                                $templateMsgInfo = $modelTaskLog->changeMsgInfo($taskLog, $templateMsgInfo);
 
                                 // 发送模板消息
                                 $ret = $weixinopenService->sendTemplateMsg("", $taskLog['openid'], $templateMsgInfo, $match);
@@ -142,10 +143,23 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 if (empty($customMsgInfo)) {
                                     throw new \Exception("任务日志记录ID:{$taskLog['_id']},客服消息记录ID:{$taskLog['custom_msg_id']}所对应的记录不存在");
                                 }
+                                $customMsgInfo = $modelTaskLog->changeMsgInfo($taskLog, $customMsgInfo);
 
                                 // 发送客服消息
                                 $match['custom_msg_type'] = $customMsgInfo['msg_type'];
                                 $ret = $weixinopenService->sendCustomMsg("", $taskLog['openid'], $customMsgInfo, $match);
+                            } elseif ($taskLog['notification_method'] == \App\Weixin2\Models\Notification\Task::NOTIFY_BY_UNIFORMMSG4MINIPROGRAM) { // 5:小程序统一服务消息
+
+                                // 根据模板消息记录ID获取模板消息配置
+                                $modelTemplateMsg = new \App\Weixin2\Models\TemplateMsg\TemplateMsg();
+                                $templateMsgInfo = $modelTemplateMsg->getInfoById($taskLog['template_msg_id']);
+                                if (empty($templateMsgInfo)) {
+                                    throw new \Exception("任务日志记录ID:{$taskLog['_id']},公众号模板消息记录ID:{$taskLog['template_msg_id']}所对应的记录不存在");
+                                }
+                                $templateMsgInfo = $modelTaskLog->changeMsgInfo($taskLog, $templateMsgInfo);
+
+                                // 发送模板消息
+                                $ret = $weixinopenService->sendMicroappUniformMsg("", $taskLog['openid'], $templateMsgInfo, $match);
                             }
 
                             // 记录发送结果

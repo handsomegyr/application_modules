@@ -127,7 +127,7 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
                             if (empty($agentMsgInfo)) {
                                 throw new \Exception("任务日志记录ID:{$taskLog['_id']},应用消息记录ID:{$taskLog['agent_msg_id']}所对应的记录不存在");
                             }
-                            $agentMsgInfo = $this->changeMsgInfo($taskLog, $agentMsgInfo);
+                            $agentMsgInfo = $modelTaskLog->changeMsgInfo($taskLog, $agentMsgInfo);
 
                             // 发送应用消息
                             // 创建service
@@ -141,7 +141,7 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
                             if (empty($appchatInfo)) {
                                 throw new \Exception("任务日志记录ID:{$taskLog['_id']},消息到群聊会话记录ID:{$taskLog['appchat_msg_id']}所对应的记录不存在");
                             }
-                            $appchatInfo = $this->changeMsgInfo($taskLog, $appchatInfo);
+                            $appchatInfo = $modelTaskLog->changeMsgInfo($taskLog, $appchatInfo);
 
                             $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $appchatInfo['agentid']);
                             $ret = $QyweixinService->sendAppchatMsg("", $taskLog['userid'], $appchatInfo, $match);
@@ -153,7 +153,7 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
                             if (empty($linkedcorpMsgInfo)) {
                                 throw new \Exception("任务日志记录ID:{$taskLog['_id']},互联企业消息记录ID:{$taskLog['linkedcorp_msg_id']}所对应的记录不存在");
                             }
-                            $linkedcorpMsgInfo = $this->changeMsgInfo($taskLog, $linkedcorpMsgInfo);
+                            $linkedcorpMsgInfo = $modelTaskLog->changeMsgInfo($taskLog, $linkedcorpMsgInfo);
 
                             $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $linkedcorpMsgInfo['agentid']);
                             $ret = $QyweixinService->sendLinkedcorpMsg("", $taskLog['userid'], $linkedcorpMsgInfo, $match);
@@ -165,7 +165,7 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
                             if (empty($msgTemplateInfo)) {
                                 throw new \Exception("任务日志记录ID:{$taskLog['_id']},企业群发消息记录ID:{$taskLog['externalcontact_msg_template_id']}所对应的记录不存在");
                             }
-                            $msgTemplateInfo = $this->changeMsgInfo($taskLog, $msgTemplateInfo);
+                            $msgTemplateInfo = $modelTaskLog->changeMsgInfo($taskLog, $msgTemplateInfo);
 
                             // 发送企业群发消息
                             $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $msgTemplateInfo['agentid']);
@@ -219,28 +219,6 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
             }
         } catch (\Exception $e) {
             $modelActivityErrorLog->log($this->activity_id, $e, $now);
-        }
-    }
-    protected function changeMsgInfo($taskLog, $msgInfo)
-    {
-        // 如果没有设置回调函数的话 那么就直接返回
-        if (empty($taskLog['changemsginfo_callback'])) {
-            return $msgInfo;
-        } else {
-            $changemsginfo_callback_info = \json_decode($taskLog['changemsginfo_callback'], true);
-            // 如果不是有效合法的json格式的话就直接返回
-            if (empty($changemsginfo_callback_info)) {
-                return $msgInfo;
-            } else {
-                $className = empty($changemsginfo_callback_info['class']) ? "" : trim($changemsginfo_callback_info['class']);
-                $methodName = empty($changemsginfo_callback_info['method']) ? "" : trim($changemsginfo_callback_info['method']);
-                $userid = $taskLog['userid'];
-                if (empty($className)) {
-                    return call_user_func($methodName, $userid, $msgInfo);
-                } else {
-                    return call_user_func(array($className, $methodName), $userid, $msgInfo);
-                }
-            }
         }
     }
 }

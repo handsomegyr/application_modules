@@ -90,7 +90,7 @@ class QyweixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 if (empty($agentMsgInfo)) {
                                     throw new \Exception("任务日志记录ID:{$taskLog['_id']},应用消息记录ID:{$taskLog['agent_msg_id']}所对应的记录不存在");
                                 }
-
+                                $agentMsgInfo = $modelTaskLog->changeMsgInfo($taskLog, $agentMsgInfo);
                                 // 发送应用消息
                                 // 创建service
                                 $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $agentMsgInfo['agentid']);
@@ -103,6 +103,7 @@ class QyweixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 if (empty($sendMethodInfo)) {
                                     throw new \Exception("任务日志记录ID:{$taskLog['_id']},消息到群聊会话记录ID:{$taskLog['appchat_msg_id']}所对应的记录不存在");
                                 }
+                                $appchatInfo = $modelTaskLog->changeMsgInfo($taskLog, $appchatInfo);
                                 // 创建service
                                 $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $appchatInfo['agentid']);
                                 $ret = $QyweixinService->sendAppchatMsg("", $taskLog['userid'], $appchatInfo, $match);
@@ -114,6 +115,7 @@ class QyweixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 if (empty($linkedcorpMsgInfo)) {
                                     throw new \Exception("任务日志记录ID:{$taskLog['_id']},客服消息记录ID:{$taskLog['custom_msg_id']}所对应的记录不存在");
                                 }
+                                $linkedcorpMsgInfo = $modelTaskLog->changeMsgInfo($taskLog, $linkedcorpMsgInfo);
 
                                 // 创建service
                                 $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $linkedcorpMsgInfo['agentid']);
@@ -126,6 +128,7 @@ class QyweixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 if (empty($msgTemplateInfo)) {
                                     throw new \Exception("任务日志记录ID:{$taskLog['_id']},企业群发消息记录ID:{$taskLog['externalcontact_msg_template_id']}所对应的记录不存在");
                                 }
+                                $msgTemplateInfo = $modelTaskLog->changeMsgInfo($taskLog, $msgTemplateInfo);
                                 // 发送企业群发消息
                                 $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $msgTemplateInfo['agentid']);
                                 // $ret = $QyweixinService->sendMicroappSubscribeMsg("", $taskLog['userid'], $msgTemplateInfo, $match);
