@@ -2505,7 +2505,7 @@ class NotificationtaskController extends BaseController
         if (empty($changemsginfo_callback)) {
             return true;
         } else {
-            $changemsginfo_callback_info = \json_decode($changemsginfo_callback);
+            $changemsginfo_callback_info = \json_decode($changemsginfo_callback, true);
             // 如果不是有效合法的json格式的话就直接返回
             if (empty($changemsginfo_callback_info)) {
                 return false;

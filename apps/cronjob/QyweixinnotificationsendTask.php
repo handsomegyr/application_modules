@@ -85,7 +85,7 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
             }
 
             $cache = $this->getDI()->get("cache");
-            
+
             // 5 循环处理任务日志记录
             if (!empty($taskLogList)) {
 
@@ -227,7 +227,7 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
         if (empty($taskLog['changemsginfo_callback'])) {
             return $msgInfo;
         } else {
-            $changemsginfo_callback_info = \json_decode($taskLog['changemsginfo_callback']);
+            $changemsginfo_callback_info = \json_decode($taskLog['changemsginfo_callback'], true);
             // 如果不是有效合法的json格式的话就直接返回
             if (empty($changemsginfo_callback_info)) {
                 return $msgInfo;
