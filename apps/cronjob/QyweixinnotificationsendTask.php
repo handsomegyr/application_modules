@@ -70,10 +70,14 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
             $taskInfo = $modelTask->getInfoById($taskProcessInfo['notification_task_id']);
             // 如果没有找到的话报错
             if (empty($taskInfo)) {
+                // 处理状态已完成
+                $modelTaskProcess->updatePushState($taskProcessInfo['_id'], \App\Qyweixin\Models\Notification\TaskProcess::PUSH_FAIL, $now);
                 throw new \Exception("未找到taskid为{$taskProcessInfo['notification_task_id']}所对应的推送任务");
             }
             // 检查推送状态
             if ($taskInfo['push_status'] != \App\Qyweixin\Models\Notification\TaskProcess::PUSHING) {
+                // 处理状态已完成
+                $modelTaskProcess->updatePushState($taskProcessInfo['_id'], \App\Qyweixin\Models\Notification\TaskProcess::PUSH_OVER, $now);
                 throw new \Exception("taskid为{$taskProcessInfo['notification_task_id']}所对应的推送任务的推送状态不在推送中");
             }
 
@@ -81,6 +85,8 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
             $modelTaskLog = new \App\Qyweixin\Models\Notification\TaskLog();
             $taskLogList = $modelTaskLog->getAndLockListByTaskId($taskInfo['_id'], \App\Qyweixin\Models\Notification\TaskProcess::PUSHING);
             if (empty($taskLogList)) {
+                // 处理状态已完成
+                $modelTaskProcess->updatePushState($taskProcessInfo['_id'], \App\Qyweixin\Models\Notification\TaskProcess::PUSH_OVER, $now);
                 throw new \Exception("未找到任务ID:{$taskInfo['_id']}的推送任务所对应的推送任务日志内容");
             }
 
