@@ -5,9 +5,9 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\MsgTemplate;
 
 /**
- * @title({name="企业群发消息任务"})
+ * @title({name="企业群发消息"})
  *
- * @name 企业群发消息任务
+ * @name 企业群发消息
  */
 class ExternalcontactmsgtemplateController extends BaseController
 {
@@ -220,8 +220,21 @@ class ExternalcontactmsgtemplateController extends BaseController
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
+                $msgtemplate_chat_type = trim($this->request->get('msgtemplate_chat_type'));
+                if (empty($msgtemplate_chat_type)) {
+                    return $this->makeJsonError("群发任务的类型未设定");
+                }
+                $msgtemplate_msg_user = trim($this->request->get('msgtemplate_msg_user'));
+                if (empty($msgtemplate_msg_user)) {
+                    return $this->makeJsonError("消息接收用户未设定");
+                }
+
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
-                $res = $weixinopenService->addMsgTemplate($data);
+                $match = array();
+                $match['id'] = '';
+                $match['keyword'] = "";
+                $match['msg_template_type'] = $msgtemplate_chat_type;
+                $res = $weixinopenService->addMsgTemplate("", $msgtemplate_msg_user, $msgtemplate_chat_type, $data, $match);
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
         } catch (\Exception $e) {
@@ -302,6 +315,32 @@ class ExternalcontactmsgtemplateController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->agentItems,
+            ),
+        );
+        $chatTypeOptions = array();
+        $chatTypeOptions['single'] = '发送给客户';
+        $chatTypeOptions['group'] = '发送给客户群';
+
+        $fields['msgtemplate_chat_type'] = array(
+            'name' => '群发任务的类型',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $chatTypeOptions,
+            ),
+        );
+
+        $fields['msgtemplate_msg_user'] = array(
+            'name' => '消息接收用户',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true
             ),
         );
 
@@ -846,7 +885,7 @@ class ExternalcontactmsgtemplateController extends BaseController
 
     protected function getName()
     {
-        return '企业群发消息任务';
+        return '企业群发消息';
     }
 
     protected function getModel()

@@ -50,18 +50,18 @@ class ExternalcontactmsgtemplatesendlogController extends BaseController
             },
             'icon' => 'fa-pencil-square-o',
         );
-        $tools['addmsgtemplate'] = array(
-            'title' => '发送消息',
-            'action' => 'addmsgtemplate',
-            'is_show' => function ($row) {
-                if (empty($row['msgid'])) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            'icon' => 'fa-pencil-square-o',
-        );
+        // $tools['addmsgtemplate'] = array(
+        //     'title' => '发送消息',
+        //     'action' => 'addmsgtemplate',
+        //     'is_show' => function ($row) {
+        //         if (empty($row['msgid'])) {
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }
+        //     },
+        //     'icon' => 'fa-pencil-square-o',
+        // );
         $tools['getgroupmsgresult'] = array(
             'title' => '获取企业群发消息发送结果',
             'action' => 'getgroupmsgresult',
