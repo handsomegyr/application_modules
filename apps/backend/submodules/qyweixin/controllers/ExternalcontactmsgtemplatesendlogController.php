@@ -3,19 +3,20 @@
 namespace App\Backend\Submodules\Qyweixin\Controllers;
 
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\MsgTemplate;
+use App\Backend\Submodules\Qyweixin\Models\ExternalContact\MsgTemplateSendLog;
 
 /**
- * @title({name="企业群发消息任务"})
+ * @title({name="企业群发消息发送日志"})
  *
- * @name 企业群发消息任务
+ * @name 企业群发消息发送日志
  */
-class ExternalcontactmsgtemplateController extends BaseController
+class ExternalcontactmsgtemplatesendlogController extends BaseController
 {
-    private $modelExternalcontactMsgTemplate;
+    private $modelExternalcontactMsgTemplateSendLog;
 
     public function initialize()
     {
-        $this->modelExternalcontactMsgTemplate = new MsgTemplate();
+        $this->modelExternalcontactMsgTemplateSendLog = new MsgTemplateSendLog();
         parent::initialize();
     }
 
@@ -84,7 +85,7 @@ class ExternalcontactmsgtemplateController extends BaseController
      */
     public function uploadmediaAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/uploadmedia?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplatesendlog/uploadmedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -152,7 +153,7 @@ class ExternalcontactmsgtemplateController extends BaseController
      */
     public function uploadmediaimgAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/uploadmediaimg?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplatesendlog/uploadmediaimg?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -196,7 +197,7 @@ class ExternalcontactmsgtemplateController extends BaseController
      */
     public function addmsgtemplateAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/addmsgtemplate?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplatesendlog/addmsgtemplate?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -236,7 +237,7 @@ class ExternalcontactmsgtemplateController extends BaseController
      */
     public function getgroupmsgresultAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/getgroupmsgresult?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplatesendlog/getgroupmsgresult?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -370,8 +371,35 @@ class ExternalcontactmsgtemplateController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['name'] = array(
-            'name' => '名称',
+        $schemas['msg_template_id'] = array(
+            'name' => '群发消息ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['msg_template_name'] = array(
+            'name' => '群发消息名称',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,
@@ -397,41 +425,97 @@ class ExternalcontactmsgtemplateController extends BaseController
                 'is_show' => true
             )
         );
-        // $chatTypeOptions = array();
-        // $chatTypeOptions['single'] = '发送给客户';
-        // $chatTypeOptions['group'] = '发送给客户群';
+        $chatTypeOptions = array();
+        $chatTypeOptions['single'] = '发送给客户';
+        $chatTypeOptions['group'] = '发送给客户群';
 
-        // $schemas['chat_type'] = array(
-        //     'name' => '群发任务的类型',
-        //     'data' => array(
-        //         'type' => 'string',
-        //         'length' => 20,
-        //         'defaultValue' => 'single'
-        //     ),
-        //     'validation' => array(
-        //         'required' => true
-        //     ),
-        //     'form' => array(
-        //         'input_type' => 'select',
-        //         'is_show' => true,
-        //         'items' => $chatTypeOptions,
-        //         'help' => '群发任务的类型，默认为single，表示发送给客户，group表示发送给客户群',
-        //     ),
-        //     'list' => array(
-        //         'is_show' => true,
-        //         'list_type' => '',
-        //         'render' => '',
-        //         'items' => $chatTypeOptions
-        //     ),
-        //     'search' => array(
-        //         'input_type' => 'select',
-        //         'is_show' => true,
-        //         'items' => $chatTypeOptions
-        //     ),
-        //     'export' => array(
-        //         'is_show' => true
-        //     )
-        // );
+        $schemas['chat_type'] = array(
+            'name' => '群发任务的类型',
+            'data' => array(
+                'type' => 'string',
+                'length' => 20,
+                'defaultValue' => 'single'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $chatTypeOptions,
+                'help' => '群发任务的类型，默认为single，表示发送给客户，group表示发送给客户群',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $chatTypeOptions
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $chatTypeOptions
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['external_userid'] = array(
+            'name' => '客户的外部联系人id列表',
+            'data' => array(
+                'type' => 'array',
+                'length' => 1024,
+                'defaultValue' => '[]'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '客户的外部联系人id列表，仅在chat_type为single时有效，不可与sender同时为空，最多可传入1万个客户',
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['sender'] = array(
+            'name' => '企业成员userid',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '发送企业群发消息的成员userid，当类型为发送给客户群时必填',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['text_content'] = array(
             'name' => '消息文本内容',
             'data' => array(
@@ -841,16 +925,320 @@ class ExternalcontactmsgtemplateController extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['keyword_id'] = array(
+            'name' => '关键词ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 24,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['keyword'] = array(
+            'name' => '关键词',
+            'data' => array(
+                'type' => 'string',
+                'length' => 50,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['keyword_msg_template_chat_type'] = array(
+            'name' => '关键词群发任务的类型',
+            'data' => array(
+                'type' => 'string',
+                'length' => 20,
+                'defaultValue' => 'single'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $chatTypeOptions,
+                'help' => '群发任务的类型，默认为single，表示发送给客户，group表示发送给客户群',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $chatTypeOptions
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $chatTypeOptions
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['ToUserName'] = array(
+            'name' => '开发者微信号',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['FromUserName'] = array(
+            'name' => '发送方帐号',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['msg_template_content'] = array(
+            'name' => '群发消息内容',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['send_time'] = array(
+            'name' => '发送时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => 19,
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['fail_list'] = array(
+            'name' => '发送失败列表',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '无效或无法发送的external_userid列表',
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['msgid'] = array(
+            'name' => '企业群发消息的id',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '企业群发消息的id，可用于获取群发消息发送结果',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['check_status'] = array(
+            'name' => '群发消息状态',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['detail_list'] = array(
+            'name' => '群发消息结果明细列表',
+            'data' => array(
+                'type' => 'array',
+                'length' => 1024,
+                'defaultValue' => '[]'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         return $schemas;
     }
 
     protected function getName()
     {
-        return '企业群发消息任务';
+        return '企业群发消息发送日志';
     }
 
     protected function getModel()
     {
-        return $this->modelExternalcontactMsgTemplate;
+        return $this->modelExternalcontactMsgTemplateSendLog;
     }
 }
