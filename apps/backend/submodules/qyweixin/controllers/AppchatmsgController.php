@@ -127,33 +127,33 @@ class AppchatmsgController extends BaseController
             )
         );
 
-        $schemas['chatid'] = array(
-            'name' => '群聊id',
-            'data' => array(
-                'type' => 'string',
-                'length' => 32,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => ''
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
+        // $schemas['chatid'] = array(
+        //     'name' => '群聊id',
+        //     'data' => array(
+        //         'type' => 'string',
+        //         'length' => 32,
+        //         'defaultValue' => ''
+        //     ),
+        //     'validation' => array(
+        //         'required' => true
+        //     ),
+        //     'form' => array(
+        //         'input_type' => 'text',
+        //         'is_show' => true,
+        //         'items' => ''
+        //     ),
+        //     'list' => array(
+        //         'is_show' => true,
+        //         'list_type' => '',
+        //         'render' => ''
+        //     ),
+        //     'search' => array(
+        //         'is_show' => true
+        //     ),
+        //     'export' => array(
+        //         'is_show' => true
+        //     )
+        // );
 
         $schemas['name'] = array(
             'name' => '群聊会话消息名称',

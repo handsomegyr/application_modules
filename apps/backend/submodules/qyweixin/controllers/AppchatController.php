@@ -111,35 +111,7 @@ class AppchatController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-
-        $schemas['chatid'] = array(
-            'name' => '群聊id',
-            'data' => array(
-                'type' => 'string',
-                'length' => 32,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '群聊的唯一标志，不能与已有的群重复；字符串类型，最长32个字符。只允许字符0-9及字母a-zA-Z。如果不填，系统会随机生成群id'
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => ''
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
+        
         $schemas['name'] = array(
             'name' => '群聊名',
             'data' => array(
@@ -196,7 +168,6 @@ class AppchatController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-
         $schemas['owner'] = array(
             'name' => '指定群主的id',
             'data' => array(
@@ -212,6 +183,34 @@ class AppchatController extends \App\Backend\Controllers\FormController
                 'is_show' => true,
                 'items' => '',
                 'help' => '指定群主的id。如果不指定，系统会随机从userlist中选一人作为群主'
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => ''
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['chatid'] = array(
+            'name' => '群聊id',
+            'data' => array(
+                'type' => 'string',
+                'length' => 32,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '群聊的唯一标志，不能与已有的群重复；字符串类型，最长32个字符。只允许字符0-9及字母a-zA-Z。如果不填，系统会随机生成群id'
             ),
             'list' => array(
                 'is_show' => true,

@@ -122,7 +122,7 @@ class AgentmsgController extends BaseController
                 'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'select',
