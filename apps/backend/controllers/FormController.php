@@ -821,6 +821,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $this->view->disable();
         }
 
+        $this->view->setVar('is_show_edit_button', $this->is_show_edit_button);
+        $this->view->setVar('is_show_create_button', $this->is_show_create_button);
+        $this->view->setVar('is_show_export_button', $this->is_show_export_button);
+        $this->view->setVar('is_show_delete_button', $this->is_show_delete_button);
         $this->view->setVar('readonly', $this->readonly);
         $this->view->setVar('schemas', array());
         $this->view->setVar('formName', $this->getName());
