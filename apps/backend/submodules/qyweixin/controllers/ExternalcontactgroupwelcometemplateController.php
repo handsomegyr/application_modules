@@ -25,12 +25,16 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
             'title' => '上传临时素材',
             'action' => 'uploadmedia',
             'is_show' => function ($row) {
-                $weixinopenService = new \App\Qyweixin\Services\QyService($row['authorizer_appid'], $row['provider_appid'], 0);
-                if (
-                    (!empty($row['image_media']) && $weixinopenService->isMediaTimeExpired($row['image_media_id'], $row['image_media_created_at'])) ||
-                    (!empty($row['miniprogram_pic_media']) && $weixinopenService->isMediaTimeExpired($row['miniprogram_pic_media_id'], $row['miniprogram_pic_media_created_at']))
-                ) {
-                    return true;
+                if (!empty($row['agentid'])) {
+                    $weixinopenService = new \App\Qyweixin\Services\QyService($row['authorizer_appid'], $row['provider_appid'], $row['agentid']);
+                    if (
+                        (!empty($row['image_media']) && $weixinopenService->isMediaTimeExpired($row['image_media_id'], $row['image_media_created_at'])) ||
+                        (!empty($row['miniprogram_pic_media']) && $weixinopenService->isMediaTimeExpired($row['miniprogram_pic_media_id'], $row['miniprogram_pic_media_created_at']))
+                    ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 } else {
                     return false;
                 }
@@ -41,8 +45,12 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
             'title' => '上传图片',
             'action' => 'uploadmediaimg',
             'is_show' => function ($row) {
-                if (!empty($row['image_media']) && empty($row['image_pic_url'])) {
-                    return true;
+                if (!empty($row['agentid'])) {
+                    if (!empty($row['image_media']) && empty($row['image_pic_url'])) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 } else {
                     return false;
                 }
@@ -83,7 +91,7 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
-                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
                 if (empty($data['image_media_created_at'])) {
                     $image_media_created_at = '2020-01-01 00:00:00';
                 } else {
@@ -152,7 +160,7 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
-                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
                 $res = $weixinopenService->uploadMediaImgByApi($data['image_media']);
 
                 $updateData = array();
@@ -201,6 +209,7 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->agentItems,
+                'readonly' => true
             ),
         );
 
@@ -264,6 +273,36 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $this->authorizerItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['agentid'] = array(
+            'name' => '应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
             ),
             'export' => array(
                 'is_show' => true
