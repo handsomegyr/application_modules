@@ -547,7 +547,10 @@ class ExternalcontactmsgtemplateController extends BaseController
             'data' => array(
                 'type' => 'file',
                 'length' => 255,
-                'defaultValue' => ''
+                'defaultValue' => '',
+                'file' => array(
+                    'path' => $this->modelExternalcontactMsgTemplate->getUploadPath()
+                )
             ),
             'validation' => array(
                 'required' => false
@@ -556,7 +559,6 @@ class ExternalcontactmsgtemplateController extends BaseController
                 'input_type' => 'image',
                 'is_show' => true,
                 'items' => '',
-                'help' => '图片',
             ),
             'list' => array(
                 'is_show' => true,
