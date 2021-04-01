@@ -558,7 +558,7 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
             'name' => '图文消息的链接',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(

@@ -696,7 +696,7 @@ class ExternalcontactmomentController extends BaseController
             'name' => '网页链接url',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
