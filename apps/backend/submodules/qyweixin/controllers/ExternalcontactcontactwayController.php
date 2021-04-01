@@ -852,20 +852,20 @@ class ExternalcontactcontactwayController extends BaseController
             'name' => '图片的media_id',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
                 'help' => '结束语，图片的media_id，可以通过素材管理接口获得',
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
             ),
             'search' => array(
@@ -1097,19 +1097,19 @@ class ExternalcontactcontactwayController extends BaseController
             'name' => '小程序消息封面的mediaid',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 1024,
                 'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
             ),
             'search' => array(

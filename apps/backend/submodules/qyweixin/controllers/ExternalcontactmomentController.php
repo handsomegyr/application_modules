@@ -519,7 +519,7 @@ class ExternalcontactmomentController extends BaseController
                 'help' => '图片的media_id，可以通过获取临时素材下载资源',
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
             ),
             'search' => array(
@@ -574,7 +574,7 @@ class ExternalcontactmomentController extends BaseController
                 'help' => '视频的media_id，可以通过获取临时素材下载资源',
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
             ),
             'search' => array(
@@ -628,7 +628,7 @@ class ExternalcontactmomentController extends BaseController
                 'help' => '视频封面图片的media_id，可以通过获取临时素材下载资源',
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
             ),
             'search' => array(
