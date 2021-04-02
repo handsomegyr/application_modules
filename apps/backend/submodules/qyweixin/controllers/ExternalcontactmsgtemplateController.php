@@ -69,12 +69,12 @@ class ExternalcontactmsgtemplateController extends BaseController
             },
             'icon' => 'fa-pencil-square-o',
         );
-        $tools['getgroupmsgresult'] = array(
-            'title' => '获取企业群发消息发送结果',
-            'action' => 'getgroupmsgresult',
+        $tools['getgroupmsgsendresult'] = array(
+            'title' => '获取企业群发成员执行结果',
+            'action' => 'getgroupmsgsendresult',
             'is_show' => function ($row) {
                 if (!empty($row['agentid'])) {
-                    if (!empty($row['msgid'])) {
+                    if (!empty($row['msgid']) && !empty($row['creator'])) {
                         return true;
                     } else {
                         return false;
@@ -255,13 +255,13 @@ class ExternalcontactmsgtemplateController extends BaseController
     }
 
     /**
-     * @title({name="获取企业群发消息发送结果"})
+     * @title({name="获取企业群发成员执行结果"})
      *
-     * @name 获取企业群发消息发送结果
+     * @name 获取企业群发成员执行结果
      */
-    public function getgroupmsgresultAction()
+    public function getgroupmsgsendresultAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/getgroupmsgresult?id=xxx
+        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/getgroupmsgsendresult?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -276,7 +276,7 @@ class ExternalcontactmsgtemplateController extends BaseController
 
                 // 构建modal里面Form表单内容
                 $fields = $this->getFields4FormTool();
-                $title = "获取企业群发消息发送结果";
+                $title = "获取企业群发成员执行结果";
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
@@ -285,7 +285,7 @@ class ExternalcontactmsgtemplateController extends BaseController
                     return $this->makeJsonError("企业应用ID未设定");
                 }
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
-                $res = $weixinopenService->getGroupMsgResult($data);
+                $res = $weixinopenService->getGroupMsgSendResult($data['msgid'], $data['creator']);
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
         } catch (\Exception $e) {

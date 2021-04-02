@@ -783,7 +783,6 @@ class QyweixinTask extends \Phalcon\CLI\Task
                 $creator = "";
                 $filter_type = 2;
                 $limit = 100;
-                $cursor = "";
 
                 foreach ($agentList as $agentItem) {
 
@@ -810,6 +809,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $cache->save($cacheKey, $agentid, $expire_time);
 
                     try {
+                        $cursor = "";
                         do {
                             $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agentid);
                             $res = $weixinopenService->getMomentList($start_time, $end_time, $creator, $filter_type, $limit, $cursor);
@@ -850,15 +850,13 @@ class QyweixinTask extends \Phalcon\CLI\Task
             $sort = array('_id' => 1);
             $agentList = $modelAgent->findAll($query, $sort);
             if (!empty($agentList)) {
-                // chat_type	是	群发任务的类型，默认为single，表示发送给客户，group表示发送给客户群
-                $chat_type = 'single';
+
                 $yesterday = time() - 24 * 3600;
                 $end_time = mktime(0, 0, 0, date('m', $yesterday), date('d', $yesterday), date('Y', $yesterday));
                 $start_time = strtotime("-1 month", time());
                 $creator = "";
                 $filter_type = 2;
                 $limit = 100;
-                $cursor = "";
 
                 foreach ($agentList as $agentItem) {
 
@@ -885,6 +883,9 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $cache->save($cacheKey, $agentid, $expire_time);
 
                     try {
+                        $cursor = "";
+                        // chat_type	是	群发任务的类型，默认为single，表示发送给客户，group表示发送给客户群
+                        $chat_type = 'single';
                         do {
                             $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agentid);
                             $res = $weixinopenService->getGroupmsgList($chat_type, $start_time, $end_time, $creator, $filter_type, $limit, $cursor);
@@ -897,9 +898,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
                             }
                         } while (!empty($cursor));
 
+                        $cursor = "";
+                        // chat_type	是	群发任务的类型，默认为single，表示发送给客户，group表示发送给客户群
+                        $chat_type = 'group';
                         do {
-                            $cursor = "";
-                            $chat_type = 'group';
                             $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agentid);
                             $res = $weixinopenService->getGroupmsgList($chat_type, $start_time, $end_time, $creator, $filter_type, $limit, $cursor);
 
@@ -913,6 +915,94 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     } catch (\Exception $e) {
                         $modelActivityErrorLog->log($this->activity_id, $e, $now);
                     }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
+     * 获取群发成员发送任务列表
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupmsgtasklist
+     * @param array $params            
+     */
+    public function getgroupmsgtasklistAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        $cacheKey1 = 'get_groupmsg_task_list_command';
+        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock->setExpire(3600 * 8);
+        if ($lock->lock()) {
+            return;
+        }
+
+        $limit = 100;
+        $yesterday = time() - 24 * 3600;
+        $end_time = mktime(0, 0, 0, date('m', $yesterday), date('d', $yesterday), date('Y', $yesterday));
+        $start_time = strtotime("-1 month", time());
+
+        $query = array(
+            'create_time' => array(
+                '$lte' => \App\Common\Utils\Helper::getCurrentTime($end_time),
+                '$gte' => \App\Common\Utils\Helper::getCurrentTime($start_time)
+            ),
+            'msgid' => array(
+                '$ne' => ''
+            )
+        );
+        $sort = array('create_time' => 1, '_id' => 1);
+        $modelMsgTemplate = new \App\Qyweixin\Models\ExternalContact\MsgTemplate();
+        $msgidList = $modelMsgTemplate->findAll($query, $sort);
+
+        if (empty($msgidList)) {
+            return;
+        }
+
+        try {
+            foreach ($msgidList as $info) {
+
+                // 进行锁定处理
+                $provider_appid = $info['provider_appid'];
+                $authorizer_appid = $info['authorizer_appid'];
+                $agentid = $info['agentid'];
+                $msgid = $info['msgid'];
+
+                $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid . ' msgid:' . $msgid));
+                $lock->setExpire(3600 * 8);
+                if ($lock->lock()) {
+                    continue;
+                }
+
+                // 如果缓存中已经存在那么就不做处理
+                $cacheKey = 'get_groupmsg_task_list:' . $authorizer_appid . ':' . $agentid . ':' . $msgid;
+                $userFromCache = $cache->get($cacheKey);
+                if (!empty($userFromCache)) {
+                    continue;
+                }
+
+                // 加缓存处理
+                $expire_time = 8 * 60 * 60;
+                $cache->save($cacheKey, $msgid, $expire_time);
+
+                try {
+                    $cursor = "";
+                    do {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agentid);
+                        $res = $weixinopenService->getGroupmsgTask($msgid, $limit, $cursor);
+
+                        // 分页游标，下次请求时填写以获取之后分页的记录，如果已经没有更多的数据则返回空
+                        if (empty($res['next_cursor'])) {
+                            $cursor = "";
+                        } else {
+                            $cursor = $res['next_cursor'];
+                        }
+                    } while (!empty($cursor));
+                } catch (\Exception $e) {
+                    $modelActivityErrorLog->log($this->activity_id, $e, $now);
                 }
             }
         } catch (\Exception $e) {

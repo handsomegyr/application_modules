@@ -22,71 +22,6 @@ class ExternalcontactmsgtemplatesendlogController extends BaseController
 
     protected function getFormTools2($tools)
     {
-        $tools['uploadmedia'] = array(
-            'title' => '上传临时素材',
-            'action' => 'uploadmedia',
-            'is_show' => function ($row) {
-                $weixinopenService = new \App\Qyweixin\Services\QyService($row['authorizer_appid'], $row['provider_appid'], $row['agentid']);
-                if (!empty($row['agentid'])) {
-                    if (
-                        (!empty($row['image_media']) && $weixinopenService->isMediaTimeExpired($row['image_media_id'], $row['image_media_created_at'])) ||
-                        (!empty($row['miniprogram_pic_media']) && $weixinopenService->isMediaTimeExpired($row['miniprogram_pic_media_id'], $row['miniprogram_pic_media_created_at']))
-                    ) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            },
-            'icon' => 'fa-pencil-square-o',
-        );
-        $tools['uploadmediaimg'] = array(
-            'title' => '上传图片',
-            'action' => 'uploadmediaimg',
-            'is_show' => function ($row) {
-                if (!empty($row['agentid'])) {
-                    if (!empty($row['image_media']) && empty($row['image_pic_url'])) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            },
-            'icon' => 'fa-pencil-square-o',
-        );
-        // $tools['addmsgtemplate'] = array(
-        //     'title' => '发送消息',
-        //     'action' => 'addmsgtemplate',
-        //     'is_show' => function ($row) {
-        //         if (empty($row['msgid'])) {
-        //             return true;
-        //         } else {
-        //             return false;
-        //         }
-        //     },
-        //     'icon' => 'fa-pencil-square-o',
-        // );
-        $tools['getgroupmsgresult'] = array(
-            'title' => '获取企业群发消息发送结果',
-            'action' => 'getgroupmsgresult',
-            'is_show' => function ($row) {
-                if (!empty($row['agentid'])) {
-                    if (!empty($row['msgid'])) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            },
-            'icon' => 'fa-pencil-square-o',
-        );
-
         return $tools;
     }
 
@@ -195,45 +130,6 @@ class ExternalcontactmsgtemplatesendlogController extends BaseController
                 $updateData['image_pic_url'] = $res['url'];
                 $this->modelExternalcontactMsgTemplate->update(array('_id' => $id), array('$set' => $updateData));
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
-            }
-        } catch (\Exception $e) {
-            $this->makeJsonError($e->getMessage());
-        }
-    }
-
-    /**
-     * @title({name="获取企业群发消息发送结果"})
-     *
-     * @name 获取企业群发消息发送结果
-     */
-    public function getgroupmsgresultAction()
-    {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplatesendlog/getgroupmsgresult?id=xxx
-        try {
-            $id = trim($this->request->get('id'));
-            if (empty($id)) {
-                return $this->makeJsonError("记录ID未指定");
-            }
-            $data = $this->modelExternalcontactMsgTemplate->getInfoById($id);
-            if (empty($data)) {
-                return $this->makeJsonError("id：{$id}的记录不存在");
-            }
-            // 如果是GET请求的话返回modal的内容
-            if ($this->request->isGet()) {
-
-                // 构建modal里面Form表单内容
-                $fields = $this->getFields4FormTool();
-                $title = "获取企业群发消息发送结果";
-                $row = $data;
-                return $this->showModal($title, $fields, $row);
-            } else {
-                $agent_agentid = trim($this->request->get('msgtemplate_agentid'));
-                if (empty($agent_agentid)) {
-                    return $this->makeJsonError("企业应用ID未设定");
-                }
-                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
-                $res = $weixinopenService->getGroupMsgResult($data);
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
         } catch (\Exception $e) {

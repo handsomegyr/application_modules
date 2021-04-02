@@ -2,20 +2,20 @@
 
 namespace App\Backend\Submodules\Qyweixin\Controllers;
 
-use App\Backend\Submodules\Qyweixin\Models\ExternalContact\GroupMsgResult;
+use App\Backend\Submodules\Qyweixin\Models\ExternalContact\GroupMsgTask;
 
 /**
- * @title({name="企业群发消息发送结果"})
+ * @title({name="企业群发成员发送任务"})
  *
- * @name 企业群发消息发送结果
+ * @name 企业群发成员发送任务
  */
-class ExternalcontactgroupmsgresultController extends BaseController
+class ExternalcontactgroupmsgtaskController extends BaseController
 {
-    private $modelExternalcontactGroupMsgResult;
+    private $modelExternalcontactGroupMsgTask;
 
     public function initialize()
     {
-        $this->modelExternalcontactGroupMsgResult = new GroupMsgResult();
+        $this->modelExternalcontactGroupMsgTask = new GroupMsgTask();
         parent::initialize();
     }
 
@@ -139,60 +139,6 @@ class ExternalcontactgroupmsgresultController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['external_userid'] = array(
-            'name' => '外部联系人userid',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['chat_id'] = array(
-            'name' => '外部客户群id',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
         $schemas['userid'] = array(
             'name' => '企业服务人员的userid',
             'data' => array(
@@ -220,11 +166,11 @@ class ExternalcontactgroupmsgresultController extends BaseController
                 'is_show' => true
             )
         );
+        // 发送状态 0-未发送 1-已确认 2-已发送
         $statusOptions = array();
         $statusOptions['0'] = '未发送';
-        $statusOptions['1'] = '已发送';
-        $statusOptions['2'] = '因客户不是好友导致发送失败';
-        $statusOptions['3'] = '因客户已经收到其他群发消息导致发送失败';
+        $statusOptions['1'] = '已确认';
+        $statusOptions['2'] = '已发送';
 
         $schemas['status'] = array(
             'name' => '发送状态',
@@ -240,7 +186,7 @@ class ExternalcontactgroupmsgresultController extends BaseController
                 'input_type' => 'select',
                 'is_show' => true,
                 'items' => $statusOptions,
-                'help' => '发送状态 0-未发送 1-已发送 2-因客户不是好友导致发送失败 3-因客户已经收到其他群发消息导致发送失败',
+                'help' => '发送状态 0-未发送 1-已确认 2-已发送',
             ),
             'list' => array(
                 'is_show' => true,
@@ -318,11 +264,11 @@ class ExternalcontactgroupmsgresultController extends BaseController
 
     protected function getName()
     {
-        return '企业群发消息发送结果';
+        return '企业群发成员发送任务';
     }
 
     protected function getModel()
     {
-        return $this->modelExternalcontactGroupMsgResult;
+        return $this->modelExternalcontactGroupMsgTask;
     }
 }
