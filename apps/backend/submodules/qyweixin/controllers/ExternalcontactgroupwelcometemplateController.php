@@ -744,6 +744,65 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
                 'is_show' => true
             )
         );
+
+        $schemas['agentid1'] = array(
+            'name' => '授权方安装的应用agentid',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['is_notify'] = array(
+            'name' => '是否通知成员将这条入群欢迎语应用到客户群中',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => '1',
+                'defaultValue' => true
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1'
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['sync_time'] = array(
             'name' => '同步时间',
             'data' => array(
