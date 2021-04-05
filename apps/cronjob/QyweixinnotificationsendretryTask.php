@@ -93,6 +93,7 @@ class QyweixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 $agentMsgInfo = $modelTaskLog->changeMsgInfo($taskLog, $agentMsgInfo);
                                 // 发送应用消息
                                 // 创建service
+                                $match['agent_msg_type'] = $agentMsgInfo['msg_type'];
                                 $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $agentMsgInfo['agentid']);
                                 $ret = $QyweixinService->sendAgentMsg("", $taskLog['userid'], $agentMsgInfo, $match);
                             } elseif ($taskLog['notification_method'] == \App\Qyweixin\Models\Notification\Task::NOTIFY_BY_APPCHAT) { // 2:发送消息到群聊会话
@@ -105,6 +106,7 @@ class QyweixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 }
                                 $appchatInfo = $modelTaskLog->changeMsgInfo($taskLog, $appchatInfo);
                                 // 创建service
+                                $match['appchat_msg_type'] = $appchatInfo['msg_type'];
                                 $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $appchatInfo['agentid']);
                                 $ret = $QyweixinService->sendAppchatMsg("", $taskLog['userid'], $appchatInfo, $match);
                             } elseif ($taskLog['notification_method'] == \App\Qyweixin\Models\Notification\Task::NOTIFY_BY_LINKEDCORP_MESSAGE) { // 3:发送互联企业消息
@@ -118,6 +120,7 @@ class QyweixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 $linkedcorpMsgInfo = $modelTaskLog->changeMsgInfo($taskLog, $linkedcorpMsgInfo);
 
                                 // 创建service
+                                $match['linkedcorp_msg_type'] = $linkedcorpMsgInfo['msg_type'];
                                 $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $linkedcorpMsgInfo['agentid']);
                                 $ret = $QyweixinService->sendLinkedcorpMsg("", $taskLog['userid'], $linkedcorpMsgInfo, $match);
                             } elseif ($taskLog['notification_method'] == \App\Qyweixin\Models\Notification\Task::NOTIFY_BY_EXTERNALCONTACT_ADD_MSG_TEMPLATE) { // 4:发送企业群发消息
@@ -130,8 +133,9 @@ class QyweixinnotificationsendretryTask extends \Phalcon\CLI\Task
                                 }
                                 $msgTemplateInfo = $modelTaskLog->changeMsgInfo($taskLog, $msgTemplateInfo);
                                 // 发送企业群发消息
+                                $match['msg_template_chat_type'] = $msgTemplateInfo['chat_type'];
                                 $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $msgTemplateInfo['agentid']);
-                                // $ret = $QyweixinService->sendMicroappSubscribeMsg("", $taskLog['userid'], $msgTemplateInfo, $match);
+                                $ret = $QyweixinService->addMsgTemplate("", $taskLog['userid'], $msgTemplateInfo, $match);
                             }
 
                             // 记录发送结果

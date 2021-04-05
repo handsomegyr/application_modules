@@ -131,10 +131,6 @@ class QyweixinnotificationprepareTask  extends \Phalcon\CLI\Task
                     if (empty($msgTemplateInfo)) {
                         throw new \Exception("任务ID:{$taskInfo['_id']},企业群发消息记录ID:{$taskInfo['externalcontact_msg_template_id']}所对应的记录不存在");
                     }
-                    // 群发任务的类型，默认为single，表示发送给客户，group表示发送给客户群
-                    if ($taskInfo['externalcontact_msg_template_chat_type'] == 'single') { // 发送给客户
-                    } elseif ($taskInfo['externalcontact_msg_template_chat_type'] == 'group') { // 发送给客户群
-                    }
                 }
 
                 $j = 0;

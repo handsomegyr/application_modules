@@ -824,6 +824,99 @@ class ExternalcontactmsgtemplatesendlogController extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['video_media'] = array(
+            'name' => '视频',
+            'data' => array(
+                'type' => 'file',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'file',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    //display()方法来通过传入的回调函数来处理当前列的值：
+                    return $column->display(function () use ($column) {
+                        return $column->downloadable();
+                    });
+                }
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['video_media_id'] = array(
+            'name' => '视频的media_id',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '视频media_id，可以通过获取临时素材下载资源',
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['video_media_created_at'] = array(
+            'name' => '创建视频的media_id的时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => 19,
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         $schemas['keyword_id'] = array(
             'name' => '关键词ID',
             'data' => array(
