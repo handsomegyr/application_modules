@@ -132,7 +132,10 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 }
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'items' => function () {
+                    return $this->modelArea->getProvinces();
+                }
             ),
             'search' => array(
                 'is_show' => false

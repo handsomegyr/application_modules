@@ -825,6 +825,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $this->view->disable();
         }
 
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = createRandCode(40);
+        }
+        $this->view->setVar('csrf_token', $_SESSION['csrf_token']);
         $this->view->setVar('is_show_edit_button', $this->is_show_edit_button);
         $this->view->setVar('is_show_create_button', $this->is_show_create_button);
         $this->view->setVar('is_show_export_button', $this->is_show_export_button);
