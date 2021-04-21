@@ -80,23 +80,26 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'select2',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ($id) {
-                    return $this->modelGoodsCommon->getAll(array(
-                        $id
-                    ));
+                'items' => function () {
+                    // $id
+                    return $this->modelGoodsCommon->getAll(array());
                 },
-                'select' => array(
-                    'is_remote_load' => true,
-                    'apiUrl' => "admin/goods/goodscommon/getgoodslist"
-                )
+                // 'select' => array(
+                //     'is_remote_load' => true,
+                //     'apiUrl' => "admin/goods/goodscommon/getgoodslist"
+                // )
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => false,
+                'items' => function () {
+                    // $id
+                    return $this->modelGoodsCommon->getAll(array());
+                },
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['name'] = array(
@@ -175,7 +178,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'required' => 0
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(
@@ -541,7 +544,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             )
         );
         $schemas['gc_id_1'] = array(
-            'name' => '多级分类',
+            'name' => '一级分类',
             'data' => array(
                 'type' => 'string',
                 'length' => 24
@@ -551,7 +554,11 @@ class GoodsController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'is_show' => true,
-                'partial' => '../submodules/goods/views/partials/categorycascade'
+                // 'partial' => '../submodules/goods/views/partials/categorycascade',
+                'input_type' => 'select',
+                'items' => function () {
+                    return $this->modelCategory->getCategorys("");
+                }
             ),
             'list' => array(
                 'is_show' => false
@@ -571,7 +578,17 @@ class GoodsController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'is_show' => true,
-                'partial' => 'partials/empty'
+                // 'partial' => 'partials/empty',
+                'input_type' => 'select',
+                'cascade' => 'gc_id_1',
+                'cascadeAjax' => array(
+                    'type' => 'POST',
+                    'url' => "admin/goods/category/getchildcategorys",
+                    'param_name' => 'category_id'
+                ),
+                'items' => function ($category) {
+                    return $this->modelCategory->getCategorys($category);
+                }
             ),
             'list' => array(
                 'is_show' => false
@@ -590,8 +607,18 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'required' => 1
             ),
             'form' => array(
-                'partial' => 'partials/empty',
-                'is_show' => true
+                // 'partial' => 'partials/empty',
+                'is_show' => true,
+                'input_type' => 'select',
+                'cascade' => 'gc_id_2',
+                'cascadeAjax' => array(
+                    'type' => 'POST',
+                    'url' => "admin/goods/category/getchildcategorys",
+                    'param_name' => 'category_id'
+                ),
+                'items' => function ($category) {
+                    return $this->modelCategory->getCategorys($category);
+                }
             ),
             'list' => array(
                 'is_show' => false
@@ -617,7 +644,10 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 }
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'items' => function () {
+                    return $this->modelBrand->getAll();
+                }
             ),
             'search' => array(
                 'is_show' => false

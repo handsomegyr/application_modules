@@ -24,6 +24,30 @@ class CategoryController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
+    /**
+     * @title({name="获取下级分类列表"})
+     *
+     * @name 获取下级分类列表
+     */
+    public function getchildcategorysAction()
+    {
+        try {
+            $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+            $category_id = urldecode($this->get('category_id', ''));
+            $category_id = trim($category_id);
+            $ret = $this->modelCategory->getCategorys($category_id);
+            $data = array();
+            if (!empty($ret)) {
+                foreach ($ret as $key => $value) {
+                    $data[] = array('id' => strval($key), 'text' => strval($value));
+                }
+            }
+            return $this->makeJsonResult($data, '获取成功');
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getSchemas2($schemas)
     {
         $schemas['_id']['list']['is_show'] = false;

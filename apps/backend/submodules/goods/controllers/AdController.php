@@ -35,23 +35,24 @@ class AdController extends \App\Backend\Controllers\FormController
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'select2',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => function ($id) {
-                    return $this->modelGoodsCommon->getAll(array(
-                        $id
-                    ));
+                'items' => function () {
+                    return $this->modelGoodsCommon->getAll(array());
                 },
-                'select' => array(
-                    'is_remote_load' => true,
-                    'apiUrl' => "admin/goods/goodscommon/getgoodslist"
-                )
+                // 'select' => array(
+                //     'is_remote_load' => true,
+                //     'apiUrl' => "admin/goods/goodscommon/getgoodslist"
+                // )
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'items' => function () {
+                    return $this->modelGoodsCommon->getAll(array());
+                }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 

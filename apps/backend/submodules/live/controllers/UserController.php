@@ -310,7 +310,6 @@ class UserController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'condition_type' => '',
                 'defaultValues' => array(),
-                'cascade' => '',
                 'items' => $this->trueOrFalseDatas,
                 'is_show' => true
             ),
@@ -367,7 +366,6 @@ class UserController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'condition_type' => '',
                 'defaultValues' => array(),
-                'cascade' => '',
                 'items' => $this->trueOrFalseDatas,
                 'is_show' => true
             ),
@@ -399,7 +397,6 @@ class UserController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'condition_type' => '',
                 'defaultValues' => array(),
-                'cascade' => '',
                 'items' => $this->trueOrFalseDatas,
                 'is_show' => true
             ),

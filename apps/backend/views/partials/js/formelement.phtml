@@ -15,7 +15,60 @@
                     "id": "",
                     "text": "<?php echo $field['name'] ?>"
                 }
-            });        
+            });
+            <?php if (!empty($field['form']['cascade'])) { ?>
+                $('.<?php echo $field['form']['cascade'] ?>').change(function() {
+                    var cascadeSelect = $('.<?php echo $key ?>');
+                    var selectedValue=$('.<?php echo $field['form']['cascade'] ?>').val();
+                    cascadeSelect.empty();
+                    var data1 = [];
+                    Object.assign(data1, {
+                        _token: LA.token,
+                        <?php echo !empty($field['form']['cascadeAjax']['param_name'])?$field['form']['cascadeAjax']['param_name']:$field['form']['cascade'] ?>: selectedValue,
+                    });
+                    var formData1 = {};
+                    for (var key in data1) {
+                        // formData1.append(key, data1[key]);
+                        formData1[key] = data1[key];
+                    }
+
+                    $.ajax({
+                        type: "<?php echo $field['form']['cascadeAjax']['type'] ?>", //方法类型
+                        url: '/<?php echo $field['form']['cascadeAjax']['url'] ?>',
+                        <!-- cache: false, -->
+                        data: formData1,
+                        dataType: "json", //预期服务器返回的数据类型
+                        success: function(response) {
+                            console.log(response); //打印服务端返回的数据(调试用)
+                            if (!response.error) {
+                                // create the option and append to Select2
+                                var firstData = {
+                                    id: 0,
+                                    text: '请选择...'
+                                };
+                                response.content.unshift(firstData);
+                                response.content.forEach(item=>{
+                                    var option = new Option(item.text, item.id, false, false);
+                                    cascadeSelect.append(option);                                    
+                                });
+                                cascadeSelect.trigger('change');
+                                // manually trigger the `select2:select` event
+                                cascadeSelect.trigger({
+                                    type: 'select2:select',
+                                    params: {
+                                        data: response.content[0]
+                                    }
+                                });                                
+                            } else {
+                                
+                            }
+                        },
+                        error: function(request) {
+                            
+                        }
+                    });
+                });
+            <?php } ?>
         <?php } elseif ($field['form']['input_type'] == "icon") { ?>
             $('.<?php echo $key ?>').iconpicker({placement:'bottomLeft'});            
         <?php } elseif ($field['form']['input_type'] == "ueditor") { ?>

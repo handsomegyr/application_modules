@@ -13,7 +13,7 @@
         $field['form']['readonly'] = true;
     }
 
-    if (!isset($field['form']['partial'])) {
+    if (empty($field['form']['partial'])) {
         //print_r($field);die('xxx');
         $prepend = "";
         $append = "";
@@ -76,7 +76,7 @@
             $this->partial('partials/form/radio');
         } elseif ($field['form']['input_type'] == "select") {
             $inline = true;
-            if (!isset($field['form']['select']) || empty($field['form']['select']['multiple'])) {
+            if (!isset($field['form']['select'])) {
                 if (empty($field['form']['cascade'])) {
                     $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
                 } else {
@@ -91,7 +91,7 @@
             } else {
                 if (!is_array($this->view->row[$key])) {
                     // 先用json转换
-                    $value = \json_decode($this->view->row[$key]);
+                    $value = \json_decode($this->view->row[$key], true);
                     // 如果失败就用逗号分隔
                     if (empty($value)) {
                         $value = explode(',', $this->view->row[$key]);

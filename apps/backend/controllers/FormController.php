@@ -98,6 +98,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
         foreach ($schemas as $key => $field) {
 
+            // 如果input_type没有指定那么指定一个空值
+            if (!isset($field['form']['input_type'])) {
+                $field['form']['input_type'] = '';
+            }
             // 数据类型
             if ($field['data']['type'] == 'json') {
                 $field['data']['defaultValue'] = '{}';

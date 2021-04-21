@@ -25,6 +25,54 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
+    /**
+     * @title({name="获取城市列表"})
+     *
+     * @name 获取城市列表
+     */
+    public function getcitysAction()
+    {
+        try {
+            $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+            $province = urldecode($this->get('province', ''));
+            $province = trim($province);
+            $ret = $this->modelArea->getCitys($province);
+            $data = array();
+            if (!empty($ret)) {
+                foreach ($ret as $key => $value) {
+                    $data[] = array('id' => strval($key), 'text' => strval($value));
+                }
+            }
+            return $this->makeJsonResult($data, '获取成功');
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="获取区县列表"})
+     *
+     * @name 获取区县列表
+     */
+    public function getdistrictsAction()
+    {
+        try {
+            $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
+            $city = urldecode($this->get('city', ''));
+            $city = trim($city);
+            $ret = $this->modelArea->getDistricts($city);
+            $data = array();
+            if (!empty($ret)) {
+                foreach ($ret as $key => $value) {
+                    $data[] = array('id' => strval($key), 'text' => strval($value));
+                }
+            }
+            return $this->makeJsonResult($data, '获取成功');
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getSchemas2($schemas)
     {
         $schemas['member_id'] = array(
@@ -103,6 +151,10 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'cascade' => 'province',
+                'cascadeAjax' => array(
+                    'type' => 'POST',
+                    'url' => "admin/member/consignee/getcitys"
+                ),
                 'items' => function ($province) {
                     return $this->modelArea->getCitys($province);
                 }
@@ -127,6 +179,10 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'input_type' => 'select',
                 'is_show' => true,
                 'cascade' => 'city',
+                'cascadeAjax' => array(
+                    'type' => 'POST',
+                    'url' => "admin/member/consignee/getdistricts"
+                ),
                 'items' => function ($city) {
                     return $this->modelArea->getDistricts($city);
                 }
