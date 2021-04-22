@@ -9,7 +9,10 @@
                     $field['search']['placeholder'] = empty($field['search']['placeholder']) ? "输入 " . $field['name'] : $field['search']['placeholder'];
                     $field['search']['input_type'] = empty($field['search']['input_type']) ? $field['form']['input_type'] : $field['search']['input_type'];
                     $field['search']['items'] = empty($field['search']['items']) ? (!empty($field['form']['items']) ? $field['form']['items'] : array()) : $field['search']['items'];
-                    $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];
+                    $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];                    
+                    $field['search']['cascade'] = empty($field['search']['cascade']) ? (!empty($field['form']['cascade']) ? $field['form']['cascade'] : '') : $field['search']['cascade'];
+                    $field['search']['cascadeAjax'] = empty($field['search']['cascadeAjax']) ? (!empty($field['form']['cascadeAjax']) ? $field['form']['cascadeAjax'] : array()) : $field['search']['cascadeAjax'];
+
                     ?>
                     <?php if (!empty($field['search']['is_show']) && !empty($field['search']['input_type'])) { ?>
 
@@ -37,6 +40,60 @@
                                     "text": "<?php echo $field['name'] ?>"
                                 }
                             });
+                            <?php if ($field['search']['input_type'] == "select" && !empty($field['search']['cascade'])) { ?>
+                                $('.<?php echo $field['search']['cascade'] ?>').change(function() {
+                                    var cascadeSelect = $('.<?php echo $key ?>');
+                                    var selectedValue=$('.<?php echo $field['search']['cascade'] ?>').val();
+                                    cascadeSelect.empty();
+                                    var data1 = [];
+                                    Object.assign(data1, {
+                                        _token: LA.token,
+                                        <?php echo !empty($field['search']['cascadeAjax']['param_name'])?$field['search']['cascadeAjax']['param_name']:$field['search']['cascade'] ?>: selectedValue,
+                                    });
+                                    var formData1 = {};
+                                    for (var key in data1) {
+                                        // formData1.append(key, data1[key]);
+                                        formData1[key] = data1[key];
+                                    }
+
+                                    $.ajax({
+                                        type: "<?php echo $field['search']['cascadeAjax']['type'] ?>", //方法类型
+                                        url: '/<?php echo $field['search']['cascadeAjax']['url'] ?>',
+                                        <!-- cache: false, -->
+                                        data: formData1,
+                                        dataType: "json", //预期服务器返回的数据类型
+                                        success: function(response) {
+                                            console.log(response); //打印服务端返回的数据(调试用)
+                                            if (!response.error) {
+                                                // create the option and append to Select2
+                                                var firstData = {
+                                                    id: 0,
+                                                    text: '请选择...'
+                                                };
+                                                response.content.unshift(firstData);
+                                                response.content.forEach(item=>{
+                                                    var option = new Option(item.text, item.id, false, false);
+                                                    cascadeSelect.append(option);                                    
+                                                });
+                                                cascadeSelect.trigger('change');
+                                                // manually trigger the `select2:select` event
+                                                cascadeSelect.trigger({
+                                                    type: 'select2:select',
+                                                    params: {
+                                                        data: response.content[0]
+                                                    }
+                                                });                                
+                                            } else {
+                                                
+                                            }
+                                        },
+                                        error: function(request) {
+                                            
+                                        }
+                                    });
+                                });
+                            <?php } ?>
+
                         <?php } elseif ($field['search']['input_type'] == "number") { ?>
                             $('.<?php echo $key ?>:not(.initialized)')
                                 .addClass('initialized')

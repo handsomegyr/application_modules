@@ -138,7 +138,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['city'] = array(
@@ -158,15 +158,18 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                     'type' => 'POST',
                     'url' => "admin/member/consignee/getcitys"
                 ),
-                'items' => function ($province) {
-                    return $this->modelArea->getCitys($province);
+                'items' => function () {
+                    return $this->modelArea->getListByLevel(2);
                 }
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'items' => function () {
+                    return $this->modelArea->getListByLevel(2);
+                }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['district'] = array(
@@ -186,15 +189,18 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                     'type' => 'POST',
                     'url' => "admin/member/consignee/getdistricts"
                 ),
-                'items' => function ($city) {
-                    return $this->modelArea->getDistricts($city);
+                'items' => function () {
+                    return $this->modelArea->getListByLevel(3);
                 }
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'items' => function () {
+                    return $this->modelArea->getListByLevel(3);
+                }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['address'] = array(

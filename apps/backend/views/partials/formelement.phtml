@@ -77,12 +77,13 @@
         } elseif ($field['form']['input_type'] == "select") {
             $inline = true;
             if (!isset($field['form']['select'])) {
-                if (empty($field['form']['cascade'])) {
-                    $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
-                } else {
-                    $cascade = $field['form']['cascade'];
-                    $options = is_callable($field['form']['items']) ? $field['form']['items']($this->view->row[$cascade]) : $field['form']['items'];
-                }
+                $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
+                // if (empty($field['form']['cascade'])) {
+                //     $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
+                // } else {
+                //     $cascade = $field['form']['cascade'];
+                //     $options = is_callable($field['form']['items']) ? $field['form']['items']($this->view->row[$cascade]) : $field['form']['items'];
+                // }
             } else {
                 $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
             }

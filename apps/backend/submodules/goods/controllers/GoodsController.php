@@ -561,10 +561,13 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 }
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'items' => function () {
+                    return $this->modelCategory->getCategorys("");
+                }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['gc_id_2'] = array(
@@ -586,15 +589,18 @@ class GoodsController extends \App\Backend\Controllers\FormController
                     'url' => "admin/goods/category/getchildcategorys",
                     'param_name' => 'category_id'
                 ),
-                'items' => function ($category) {
-                    return $this->modelCategory->getCategorys($category);
+                'items' => function () {
+                    return $this->modelCategory->getAllCategorys();
                 }
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'items' => function () {
+                    return $this->modelCategory->getAllCategorys();
+                }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['gc_id_3'] = array(
@@ -616,15 +622,18 @@ class GoodsController extends \App\Backend\Controllers\FormController
                     'url' => "admin/goods/category/getchildcategorys",
                     'param_name' => 'category_id'
                 ),
-                'items' => function ($category) {
-                    return $this->modelCategory->getCategorys($category);
+                'items' => function () {
+                    return $this->modelCategory->getAllCategorys();
                 }
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true,
+                'items' => function () {
+                    return $this->modelCategory->getAllCategorys();
+                }
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['brand_id'] = array(
