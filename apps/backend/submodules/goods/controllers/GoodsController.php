@@ -583,8 +583,8 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'is_show' => true,
                 // 'partial' => 'partials/empty',
                 'input_type' => 'select',
-                'cascade' => 'gc_id_1',
-                'cascadeAjax' => array(
+                'cascadeSettings' => array(
+                    'source' => 'gc_id_1',
                     'type' => 'POST',
                     'url' => "admin/goods/category/getchildcategorys",
                     'param_name' => 'category_id'
@@ -616,8 +616,8 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 // 'partial' => 'partials/empty',
                 'is_show' => true,
                 'input_type' => 'select',
-                'cascade' => 'gc_id_2',
-                'cascadeAjax' => array(
+                'cascadeSettings' => array(
+                    'source' => 'gc_id_2',
                     'type' => 'POST',
                     'url' => "admin/goods/category/getchildcategorys",
                     'param_name' => 'category_id'

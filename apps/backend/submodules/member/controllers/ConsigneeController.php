@@ -25,6 +25,156 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
         parent::initialize();
     }
 
+    protected function getRowTools2($tools)
+    {
+        $tools['exchangeaddress'] = array(
+            'title' => '修改省市区地址',
+            'action' => 'exchangeaddress',
+            // 'is_show' => true,
+            'is_show' => function ($row) {
+                return true;
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    protected function getFormTools2($tools)
+    {
+        $tools['exchangeaddress'] = array(
+            'title' => '修改省市区地址',
+            'action' => 'exchangeaddress',
+            // 'is_show' => true,
+            'is_show' => function ($row) {
+                return true;
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="修改省市区地址"})
+     * 修改省市区地址
+     *
+     * @name 修改省市区地址
+     */
+    public function exchangeaddressAction()
+    {
+        // http://www.myapplicationmodule.com.com/admin/member/consignee/exchangeaddress?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $row = $this->modelConsignee->getInfoById($id);
+            if (empty($row)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = array();
+                $fields['_id'] = array(
+                    'name' => '记录ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'hidden',
+                        'is_show' => true
+                    ),
+                );
+
+                $fields['name'] = array(
+                    'name' => '收货人',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['province'] = array(
+                    'name' => '省份',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'select',
+                        'is_show' => true,
+                        'items' => function () {
+                            return $this->modelArea->getProvinces();
+                        }
+                    ),
+                );
+                $fields['city'] = array(
+                    'name' => '城市',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'select',
+                        'is_show' => true,
+                        'cascadeSettings' => array(
+                            'source' => 'province',
+                            'type' => 'POST',
+                            'url' => "admin/member/consignee/getcitys"
+                        ),
+                        'items' => function () {
+                            return $this->modelArea->getListByLevel(2);
+                        }
+                    ),
+                );
+                $fields['district'] = array(
+                    'name' => '区/县',
+                    'validation' => array(
+                        'required' => 1
+                    ),
+                    'form' => array(
+                        'input_type' => 'select',
+                        'is_show' => true,
+                        'cascadeSettings' => array(
+                            'source' => 'city',
+                            'type' => 'POST',
+                            'url' => "admin/member/consignee/getdistricts"
+                        ),
+                        'items' => function () {
+                            return $this->modelArea->getListByLevel(3);
+                        }
+                    ),
+                );
+
+                $title = "修改省市区地址";
+                return $this->showModal($title, $fields, $row);
+            } else {
+                // 如果是POST请求的话就是进行具体的处理  
+                $province = trim($this->request->get('province'));
+                $city = trim($this->request->get('city'));
+                $district = trim($this->request->get('district'));
+
+                if (empty($province) || empty($city) || empty($district)) {
+                    return $this->makeJsonError("省市区未指定");
+                }
+                // 更新
+                $updateDataInfo = array(
+                    'province' => $province,
+                    'city' => $city,
+                    'district' => $district
+                );
+                $this->modelConsignee->update(array('_id' => $id), array('$set' => $updateDataInfo));
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改');
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     /**
      * @title({name="获取城市列表"})
      *
@@ -32,6 +182,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
      */
     public function getcitysAction()
     {
+        // http://www.myapplicationmodule.com.com/admin/member/consignee/getcitys?province=xxx
         try {
             $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
             $province = urldecode($this->get('province', ''));
@@ -56,6 +207,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
      */
     public function getdistrictsAction()
     {
+        // http://www.myapplicationmodule.com.com/admin/member/consignee/getdistricts?city=xxx
         try {
             $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
             $city = urldecode($this->get('city', ''));
@@ -153,8 +305,8 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'cascade' => 'province',
-                'cascadeAjax' => array(
+                'cascadeSettings' => array(
+                    'source' => 'province',
                     'type' => 'POST',
                     'url' => "admin/member/consignee/getcitys"
                 ),
@@ -184,8 +336,8 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'cascade' => 'city',
-                'cascadeAjax' => array(
+                'cascadeSettings' => array(
+                    'source' => 'city',
                     'type' => 'POST',
                     'url' => "admin/member/consignee/getdistricts"
                 ),

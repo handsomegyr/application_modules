@@ -9,9 +9,8 @@
                     $field['search']['placeholder'] = empty($field['search']['placeholder']) ? "输入 " . $field['name'] : $field['search']['placeholder'];
                     $field['search']['input_type'] = empty($field['search']['input_type']) ? $field['form']['input_type'] : $field['search']['input_type'];
                     $field['search']['items'] = empty($field['search']['items']) ? (!empty($field['form']['items']) ? $field['form']['items'] : array()) : $field['search']['items'];
-                    $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];                    
-                    $field['search']['cascade'] = empty($field['search']['cascade']) ? (!empty($field['form']['cascade']) ? $field['form']['cascade'] : '') : $field['search']['cascade'];
-                    $field['search']['cascadeAjax'] = empty($field['search']['cascadeAjax']) ? (!empty($field['form']['cascadeAjax']) ? $field['form']['cascadeAjax'] : array()) : $field['search']['cascadeAjax'];
+                    $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];
+                    $field['search']['cascadeSettings'] = empty($field['search']['cascadeSettings']) ? (!empty($field['form']['cascadeSettings']) ? $field['form']['cascadeSettings'] : array()) : $field['search']['cascadeSettings'];
 
                     ?>
                     <?php if (!empty($field['search']['is_show']) && !empty($field['search']['input_type'])) { ?>
@@ -40,15 +39,15 @@
                                     "text": "<?php echo $field['name'] ?>"
                                 }
                             });
-                            <?php if ($field['search']['input_type'] == "select" && !empty($field['search']['cascade'])) { ?>
-                                $('.<?php echo $field['search']['cascade'] ?>').change(function() {
+                            <?php if ($field['search']['input_type'] == "select" && !empty($field['search']['cascadeSettings'])) { ?>
+                                $('.<?php echo $field['search']['cascadeSettings']['source'] ?>').change(function() {
                                     var cascadeSelect = $('.<?php echo $key ?>');
-                                    var selectedValue=$('.<?php echo $field['search']['cascade'] ?>').val();
+                                    var selectedValue = $('.<?php echo $field['search']['cascadeSettings']['source'] ?>').val();
                                     cascadeSelect.empty();
                                     var data1 = [];
                                     Object.assign(data1, {
                                         _token: LA.token,
-                                        <?php echo !empty($field['search']['cascadeAjax']['param_name'])?$field['search']['cascadeAjax']['param_name']:$field['search']['cascade'] ?>: selectedValue,
+                                        <?php echo !empty($field['search']['cascadeSettings']['param_name'])?$field['search']['cascadeSettings']['param_name']:$field['search']['cascadeSettings']['source'] ?>: selectedValue,
                                     });
                                     var formData1 = {};
                                     for (var key in data1) {
@@ -57,9 +56,8 @@
                                     }
 
                                     $.ajax({
-                                        type: "<?php echo $field['search']['cascadeAjax']['type'] ?>", //方法类型
-                                        url: '/<?php echo $field['search']['cascadeAjax']['url'] ?>',
-                                        <!-- cache: false, -->
+                                        type: "<?php echo $field['search']['cascadeSettings']['type'] ?>", //方法类型
+                                        url: '/<?php echo $field['search']['cascadeSettings']['url'] ?>',
                                         data: formData1,
                                         dataType: "json", //预期服务器返回的数据类型
                                         success: function(response) {

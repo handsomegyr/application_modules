@@ -16,15 +16,15 @@
                     "text": "<?php echo $field['name'] ?>"
                 }
             });
-            <?php if (!empty($field['form']['cascade'])) { ?>
-                $('.<?php echo $field['form']['cascade'] ?>').change(function() {
+            <?php if (!empty($field['form']['cascadeSettings'])) { ?>
+                $('.<?php echo $field['form']['cascadeSettings']['source'] ?>').change(function() {
                     var cascadeSelect = $('.<?php echo $key ?>');
-                    var selectedValue=$('.<?php echo $field['form']['cascade'] ?>').val();
+                    var selectedValue = $('.<?php echo $field['form']['cascadeSettings']['source'] ?>').val();
                     cascadeSelect.empty();
                     var data1 = [];
                     Object.assign(data1, {
                         _token: LA.token,
-                        <?php echo !empty($field['form']['cascadeAjax']['param_name'])?$field['form']['cascadeAjax']['param_name']:$field['form']['cascade'] ?>: selectedValue,
+                        <?php echo !empty($field['form']['cascadeSettings']['param_name'])?$field['form']['cascadeSettings']['param_name']:$field['form']['cascadeSettings']['source'] ?>: selectedValue,
                     });
                     var formData1 = {};
                     for (var key in data1) {
@@ -33,9 +33,8 @@
                     }
 
                     $.ajax({
-                        type: "<?php echo $field['form']['cascadeAjax']['type'] ?>", //方法类型
-                        url: '/<?php echo $field['form']['cascadeAjax']['url'] ?>',
-                        <!-- cache: false, -->
+                        type: "<?php echo $field['form']['cascadeSettings']['type'] ?>", //方法类型
+                        url: '/<?php echo $field['form']['cascadeSettings']['url'] ?>',
                         data: formData1,
                         dataType: "json", //预期服务器返回的数据类型
                         success: function(response) {
