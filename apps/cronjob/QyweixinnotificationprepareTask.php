@@ -271,6 +271,8 @@ class QyweixinnotificationprepareTask  extends \Phalcon\CLI\Task
      */
     protected function csv2arr($csvString)
     {
+        // 去掉bom
+        $csvString = ltrim($csvString, "\xEF\xBB\xBF");
         $csvString = $this->convertCharacet($csvString);
         $data = str_getcsv($csvString, "\n"); // parse the rows
         foreach ($data as &$row) {

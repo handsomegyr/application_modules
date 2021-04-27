@@ -1888,6 +1888,8 @@ function abort($code, $message = '', array $headers = [])
  */
 function csv2arr($csvString)
 {
+    // 去掉bom
+    $csvString = ltrim($csvString, "\xEF\xBB\xBF");
     $csvString = convertCharacet($csvString);
     $data = str_getcsv($csvString, "\n"); // parse the rows
     foreach ($data as &$row) {
