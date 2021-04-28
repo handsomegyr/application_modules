@@ -66,7 +66,9 @@ class KeywordController extends \App\Backend\Controllers\FormController
                 'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas,
+                'list_type' => '1'
             ),
             'search' => array(
                 'is_show' => false
@@ -91,7 +93,10 @@ class KeywordController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'reply_type_name'
+                // 'list_data_name' => 'reply_type_name',
+                'items' => function () {
+                    return $this->modelReplyType->getAll();
+                }
             ),
             'search' => array(
                 'is_show' => false
@@ -119,7 +124,10 @@ class KeywordController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'reply_ids_show'
+                // 'list_data_name' => 'reply_ids_show',
+                'items' => function () {
+                    return $this->modelReply->getAll();
+                },
             ),
             'search' => array(
                 'is_show' => false
@@ -179,24 +187,5 @@ class KeywordController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelKeyword;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $replyTypeList = $this->modelReplyType->getAll();
-        $replyList = $this->modelReply->getAll();
-
-        foreach ($list['data'] as &$item) {
-            $item['reply_ids_show'] = array();
-            foreach ($item['reply_ids'] as $reply_id) {
-                if (isset($replyList[$reply_id])) {
-                    $item['reply_ids_show'][] = $replyList[$reply_id];
-                }
-            }
-
-            $item['reply_ids_show'] = implode(',', $item['reply_ids_show']);
-            $item['reply_type_name'] = isset($replyTypeList[$item['reply_type']]) ? $replyTypeList[$item['reply_type']] : "--";
-        }
-        return $list;
     }
 }
