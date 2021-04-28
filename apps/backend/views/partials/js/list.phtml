@@ -308,6 +308,9 @@
 											if (data == undefined || data == '') {
 												return '';
 											}
+											if(!Array.isArray(data)){
+												data =JSON.parse(data); 
+											}
 											<?php
 											$path = "";
 											if (!empty($field['data'][$field['data']['type']])) {

@@ -139,14 +139,15 @@
                             }else{
                                 $filename = APP_PATH. 'public/upload/' . $fileInfo;
                             }
-                            // die($filename) ;      
-                            $fi = new finfo(FILEINFO_MIME_TYPE);
-                            $mime_type = $fi->file($filename);
-                            $mime_type_arr = explode('/',$mime_type);
-                            $initialPreviewConfigItem['type'] = $mime_type_arr[0];
-                            $initialPreviewConfigItem['filetype'] = $mime_type;
-                        }                        
-                    }                  
+                            if(file_exists($filename)){
+                                $fi = new finfo(FILEINFO_MIME_TYPE);
+                                $mime_type = $fi->file($filename);
+                                $mime_type_arr = explode('/',$mime_type);
+                                $initialPreviewConfigItem['type'] = $mime_type_arr[0];
+                                $initialPreviewConfigItem['filetype'] = $mime_type;
+                            }
+                        }
+                    }
 
                     $initialPreviewConfig[] = $initialPreviewConfigItem;
                     $initialPreview[] = $data_initial_preview;
