@@ -546,7 +546,7 @@ class SourceController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => false,
-                'list_data_name' => 'coordinate_show'
+                // 'list_data_name' => 'coordinate_show'
             ),
             'search' => array(
                 'is_show' => false
@@ -636,6 +636,29 @@ class SourceController extends \App\Backend\Controllers\FormController
             )
         );
 
+        $schemas['AESInfo'] = array(
+            'name' => 'AESInfo',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false
+            ),
+            'search' => array(
+                'is_show' => false
+            )
+        );
+
         return $schemas;
     }
 
@@ -649,11 +672,11 @@ class SourceController extends \App\Backend\Controllers\FormController
         return $this->modelSource;
     }
 
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            $item['response_time'] = !empty($item['response_time']) ? $this->adjustDataTime4Show($item['response_time']) : "--";
-        }
-        return $list;
-    }
+    // protected function getList4Show(\App\Backend\Models\Input $input, array $list)
+    // {
+    //     foreach ($list['data'] as &$item) {
+    //         $item['response_time'] = !empty($item['response_time']) ? $this->adjustDataTime4Show($item['response_time']) : "--";
+    //     }
+    //     return $list;
+    // }
 }

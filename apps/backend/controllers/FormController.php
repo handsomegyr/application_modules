@@ -141,8 +141,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 if (!empty($field['form']['extensionSettings'])) {
                     if (is_callable($field['form']['extensionSettings'])) {
                         $value = $field['data']['defaultValue'];
-                        if (!empty($row) && isset($row[$field['name']])) {
-                            $value = $row[$field['name']];
+                        if (!empty($row) && isset($row[$key])) {
+                            $value = $row[$key];
                         }
                         $column = new \App\Backend\Models\Column($field, $value, $schemas, $row, $this->url->getBaseUri());
                         $field['form'] = array_merge($field['form'], $field['form']['extensionSettings']($column, $this));

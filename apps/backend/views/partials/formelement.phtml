@@ -3,9 +3,13 @@
     if (empty($field['form']['is_show'])) {
         continue;
     }
-    if (!isset($this->view->row[$key])) {
+    
+    if (!array_key_exists($key, $this->view->row)) {//!isset($this->view->row[$key]) 
         $this->view->row[$key] = "";
+        // echo json_encode($this->view->row,true);
+        // echo $key;
     }
+
     $field['name'] = empty($field['form']['name']) ? $field['name'] : $field['form']['name'];
     $field['form']['placeholder'] = empty($field['form']['placeholder']) ? "输入 " . $field['name'] : $field['form']['placeholder'];
     // 如果没有编辑或新增的权限 那么所有的form表单上的控件只能只读
