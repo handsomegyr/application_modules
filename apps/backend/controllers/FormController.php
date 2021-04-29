@@ -768,6 +768,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if (empty($field['search']['is_show'])) {
                 continue;
             }
+            // 请求参数不存在的话
+            if (!$this->request->has($key)) {
+                continue;
+            }
+
             $input->addSchema($key, $field);
 
             $filters = array(

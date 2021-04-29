@@ -132,8 +132,10 @@
                     $.each(d, function(i, n) {
                         p += ("&" + i + "=" + n);
                     });
-                    window.location.href = "<?php echo $this->myTag->getUrl($this->view, 'export',array('m'=>'csv'));?>" + p;
-                    //window.open("<?php echo $this->myTag->getUrl($this->view, 'export',array('m'=>'csv'));?>" + p, '_blank');
+                    var herf = "<?php echo $this->myTag->getUrl($this->view, 'export',array('m'=>'csv'));?>" + p;
+                    //alert(herf);
+                    window.location.href = herf;
+                    //window.open(herf, '_blank');
                 });
 
                 <?php foreach ($this->view->headerTools as $key => $tool) { ?>
@@ -145,8 +147,9 @@
                             $.each(d, function(i, n) {
                                 p += ("&" + i + "=" + n);
                             });
-                            window.location.href = "<?php echo $this->myTag->getUrl($this->view, $tool['action'],array('m'=>'csv'));?>" + p;
-                            //window.open("<?php echo $this->myTag->getUrl($this->view, $tool['action'],array('m'=>'csv'));?>" + p, '_blank');
+                            var herf = "<?php echo $this->myTag->getUrl($this->view, $tool['action'],array('m'=>'csv'));?>" + p;
+                            window.location.href = herf;
+                            //window.open(herf, '_blank');
                         });
                     <?php } ?>
                 <?php } ?>
@@ -169,10 +172,14 @@
                         }
                         ?>
                         <?php if (!empty($field['search']['condition_type']) && $field['search']['condition_type'] == 'period') { ?>
-                            d.<?php echo $key ?> = encodeURIComponent(($('#search_<?php echo $key ?>_from').val() ? $('#search_<?php echo $key ?>_from').val() : "") + '|' + ($('#search_<?php echo $key ?>_to').val() ? $('#search_<?php echo $key ?>_to').val() : ""));
+                            var searchkeyValue = ($('#search_<?php echo $key ?>_from').val() ? $('#search_<?php echo $key ?>_from').val() : "") + '|' + ($('#search_<?php echo $key ?>_to').val() ? $('#search_<?php echo $key ?>_to').val() : "");
                         <?php } else { ?>
-                            d.<?php echo $key ?> = encodeURIComponent(($('#search_<?php echo $key ?>').val() ? $('#search_<?php echo $key ?>').val() : ""));
+                            var searchkeyValue = ($('#search_<?php echo $key ?>').val() ? $('#search_<?php echo $key ?>').val() : "");
                         <?php } ?>
+                        // 如果是空值或|就不用传递参数
+                        if(searchkeyValue !="" && searchkeyValue !='|'){
+                            d.<?php echo $key ?> = encodeURIComponent(searchkeyValue);
+                        }
                     <?php } ?>
                 <?php } ?>
                 return d;

@@ -114,7 +114,7 @@ function convertIp($ip)
  * @param string $name            
  * @param array $datas            
  */
-function arrayToCVS($name, $datas, $delimiter = "\t")
+function arrayToCVS($name, $datas, $delimiter = ",") //\t
 {
     resetTimeMemLimit();
     $result = array_merge(array(
