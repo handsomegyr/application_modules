@@ -1,8 +1,8 @@
 <script>
 	var List = function() {
-		var remarkShowLength = 10; //默认现实的字符串长度
+		var remarkShowLength = 30; //默认现实的字符串长度
 		return {
-			url: '<?php echo $this->view->baseUrl?><?php echo $this->view->moduleName?>/<?php echo $this->view->controllerName?>',
+			url: '<?php echo $this->view->baseUrl ?><?php echo $this->view->moduleName ?>/<?php echo $this->view->controllerName ?>',
 			imagepath: '<?php echo $this->view->baseUrl ?>backend/',
 			compileFilter: function() {
 				var data = new Object;
@@ -210,6 +210,33 @@
 				return remarks + '&nbsp;&nbsp;<a href="javascript:void(0);" >收起</a>';
 			},
 
+			// 检索
+			search: function() {
+				<?php if ($this->view->list_template != 'tree') { ?>
+					$('#example').DataTable().draw();
+				<?php } else { ?>
+					var data = Search.getConditions({});
+					data._token = LA.token;
+					$.ajax({
+						type: 'POST',
+						url: "<?php echo $this->myTag->getUrl($this->view, 'query', array()); ?>",
+						data: data,
+						success: function(result) {
+							// console.info(result);
+							$('#tree-608a681952aa6').html(result.content);
+							// if (result.message) {
+							// 	alert(result.message);
+							// }
+							// if (result.error == 0) {
+							// 	//
+							// 	$('#tree-608a681952aa6').html(result.content.content);
+							// }
+						},
+						dataType: "json"
+					});
+				<?php } ?>
+			},
+
 			//main function to initiate the module
 			init: function() {
 
@@ -221,6 +248,70 @@
 						$('#filter-box').removeClass('hide');
 					}
 				});
+				<?php if ($this->view->list_template == 'tree') { ?>
+					$('#tree-608a681952aa6').nestable([]);
+					$('.tree-608a681952aa6-tree-tools').on('click', function(e) {
+						var action = $(this).data('action');
+						if (action === 'expand') {
+							$('.dd').nestable('expandAll');
+						}
+						if (action === 'collapse') {
+							$('.dd').nestable('collapseAll');
+						}
+					});
+
+					// $('.tree_branch_delete').click(function() {
+					// 	var id = $(this).data('id');
+					// 	swal({
+					// 		title: "确认删除?",
+					// 		type: "warning",
+					// 		showCancelButton: true,
+					// 		confirmButtonColor: "#DD6B55",
+					// 		confirmButtonText: "确认",
+					// 		showLoaderOnConfirm: true,
+					// 		cancelButtonText: "取消",
+					// 		preConfirm: function() {
+					// 			return new Promise(function(resolve) {
+					// 				$.ajax({
+					// 					method: 'post',
+					// 					url: 'xxxxx/' + id,
+					// 					data: {
+					// 						_method: 'delete',
+					// 						_token: LA.token,
+					// 					},
+					// 					success: function(data) {
+					// 						$.pjax.reload('#pjax-container');
+					// 						toastr.success('删除成功 !');
+					// 						resolve(data);
+					// 					}
+					// 				});
+					// 			});
+					// 		}
+					// 	}).then(function(result) {
+					// 		var data = result.value;
+					// 		if (typeof data === 'object') {
+					// 			if (data.status) {
+					// 				swal(data.message, '', 'success');
+					// 			} else {
+					// 				swal(data.message, '', 'error');
+					// 			}
+					// 		}
+					// 	});
+					// });
+
+					$('.tree-608a681952aa6-save').click(function() {
+						var serialize = $('#tree-608a681952aa6').nestable('serialize');
+
+						$.post('<?php echo $this->myTag->getUrl($this->view, 'update', array()); ?>', {
+								_token: LA.token,
+								_treeList: JSON.stringify(serialize)
+							},
+							function(data) {
+								$.pjax.reload('#pjax-container');
+								toastr.success('保存成功 !');
+							});
+					});
+				<?php } ?>
 
 				<?php foreach ($this->view->headerTools as $key => $tool) { ?>
 					<?php if (!empty($tool['is_show']) && empty($tool['is_export'])) { ?>
@@ -235,64 +326,85 @@
 						});
 					<?php } ?>
 				<?php } ?>
-				//{ "columnDefs": [ //给第一列指定宽度为表格整个宽度的20% { "width": "20%", "targets": 0 } ] }
 
-				//https://datatables.net/reference/option/#Features
-				$('#example').dataTable({
-					//"dom": '<"top"i>rt<"bottom"flp><"clear">',
-					//"jQueryUI": true,
-					"dom": 'rt<"bottom"ilp>',
-					// "dom": 'rt<"clear"ilp>',
-					//dom: 'Bfrtip',
-					//dom": '<"H"lfr>t<"F"ip>',
-					// "buttons": ['csv', 'excel', 'pdf', 'print'],
-					"autoWidth": true,
-					// "columnDefs": [ { "width": "20%", "targets": 2 } ],
-					"scrollX": true,
-					"processing": true,
-					"serverSide": true,
-					"searching": false,
-					"paging": true,
-					"ordering": true,
-					"order": [<?php echo $orderIdx ?>, '<?php echo $orderBy ?>'],
-					"displayStart": 0,
-					"lengthMenu": [10, 20, 30, 50, 100],
-					"lengthChange": true,
-					"pageLength": 20,
-					"pagingType": "full_numbers",
-					"ajax": {
-						"url": "<?php echo $this->myTag->getUrl($this->view, 'query', array()); ?>",
-						"type": 'POST',
-						"data": function(d) {
-							// alert('datatable ajax');
-							d = Search.getConditions(d);
-							d._token = LA.token;
-							console.log(d);
-						}
-					},
-					"columns": [
-						<?php foreach ($this->view->schemas as $key => $field) { ?>
-							<?php if (!empty($field['list']['is_show'])) { ?> {
-									"data": "<?php echo isset($field['list']['list_data_name']) ? $field['list']['list_data_name'] : $key ?>",
-									"name": "<?php echo $key ?>",
-									// "width": "50px",
-									"render": function(data, type, full, meta) {
-										<?php if ($field['data']['type'] == "boolean" && isset($field['list']['list_type']) && $field['list']['list_type'] == 1) { ?>
-											//console.info(data);
-											if (data == 1) {
-												return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly && isset($field['list']['ajax'])) { ?> class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-success">是</span>';
-											} else {
-												return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly && isset($field['list']['ajax'])) { ?> class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-danger">否</span>';
-											};
-										<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "string") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
-											//console.info(data);
-											if (data == undefined || data == '') {
-												return '';
-											}
-											if (data.indexOf("http") != -1) {
-												// 包含http
-												return '<img src="' + data + '" style="max-height: 50px;" alt="">';
-											} else {
+				<?php if ($this->view->list_template == 'tree') { ?>
+					List.search();
+				<?php } else { ?>
+					//{ "columnDefs": [ //给第一列指定宽度为表格整个宽度的20% { "width": "20%", "targets": 0 } ] }
+					//https://datatables.net/reference/option/#Features
+					$('#example').dataTable({
+						//"dom": '<"top"i>rt<"bottom"flp><"clear">',
+						//"jQueryUI": true,
+						"dom": 'rt<"bottom"ilp>',
+						// "dom": 'rt<"clear"ilp>',
+						//dom: 'Bfrtip',
+						//dom": '<"H"lfr>t<"F"ip>',
+						// "buttons": ['csv', 'excel', 'pdf', 'print'],
+						"autoWidth": true,
+						// "columnDefs": [ { "width": "20%", "targets": 2 } ],
+						"scrollX": true,
+						"processing": true,
+						"serverSide": true,
+						"searching": false,
+						"paging": true,
+						"ordering": true,
+						"order": [<?php echo $orderIdx ?>, '<?php echo $orderBy ?>'],
+						"displayStart": 0,
+						"lengthMenu": [10, 20, 30, 50, 100],
+						"lengthChange": true,
+						"pageLength": 20,
+						"pagingType": "full_numbers",
+						"ajax": {
+							"url": "<?php echo $this->myTag->getUrl($this->view, 'query', array()); ?>",
+							"type": 'POST',
+							"data": function(d) {
+								// alert('datatable ajax');
+								d = Search.getConditions(d);
+								d._token = LA.token;
+								console.log(d);
+							}
+						},
+						"columns": [
+							<?php foreach ($this->view->schemas as $key => $field) { ?>
+								<?php if (!empty($field['list']['is_show'])) { ?> {
+										"data": "<?php echo isset($field['list']['list_data_name']) ? $field['list']['list_data_name'] : $key ?>",
+										"name": "<?php echo $key ?>",
+										// "width": "50px",
+										"render": function(data, type, full, meta) {
+											<?php if ($field['data']['type'] == "boolean" && isset($field['list']['list_type']) && $field['list']['list_type'] == 1) { ?>
+												//console.info(data);
+												if (data == 1) {
+													return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly && isset($field['list']['ajax'])) { ?> class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-success">是</span>';
+												} else {
+													return '<span <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly && isset($field['list']['ajax'])) { ?> class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.toggle(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')"<?php } ?>class="label label-danger">否</span>';
+												};
+											<?php } elseif (($field['data']['type'] == "file" || $field['data']['type'] == "string") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
+												//console.info(data);
+												if (data == undefined || data == '') {
+													return '';
+												}
+												if (data.indexOf("http") != -1) {
+													// 包含http
+													return '<img src="' + data + '" style="max-height: 50px;" alt="">';
+												} else {
+													<?php
+													$path = "";
+													if (!empty($field['data'][$field['data']['type']])) {
+														$fileInfo = $field['data'][$field['data']['type']];
+														$path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
+													}
+													?>
+													// return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+													return '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + data + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+												}
+											<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
+												//console.info(data);
+												if (data == undefined || data == '') {
+													return '';
+												}
+												if (!Array.isArray(data)) {
+													data = JSON.parse(data);
+												}
 												<?php
 												$path = "";
 												if (!empty($field['data'][$field['data']['type']])) {
@@ -300,157 +412,140 @@
 													$path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
 												}
 												?>
-												// return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
-												return '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + data + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
-											}
-										<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
-											//console.info(data);
-											if (data == undefined || data == '') {
-												return '';
-											}
-											if(!Array.isArray(data)){
-												data =JSON.parse(data); 
-											}
-											<?php
-											$path = "";
-											if (!empty($field['data'][$field['data']['type']])) {
-												$fileInfo = $field['data'][$field['data']['type']];
-												$path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
-											}
-											?>
-											var imgs = '';
-											$.each(data, function(i, n) {
-												// imgs += '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + n + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
-												imgs += '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + n + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
-											});
-											return imgs;
+												var imgs = '';
+												$.each(data, function(i, n) {
+													// imgs += '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + n + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+													imgs += '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + n + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+												});
+												return imgs;
 
-										<?php } elseif (false && ($field['data']['type'] == "json" || $field['data']['type'] == "array")) { ?>
-											// console.info(data);
-											if (data == undefined || data == '') {
-												return '';
-											}
-											return JSON.stringify(data);
-										<?php } elseif (isset($field['list']['items'])) { ?>
-											// console.info(data);
-											<?php
-											$uniqid = \uniqid();
-											$items = is_callable($field['list']['items']) ? $field['list']['items']() : $field['list']['items'];
-											$listValue = array();
-											foreach ($items as $itemKey => $item) {
-												if (isset($item['value'])) {
-													$listValue['key_' . $item['value']] = $item['name'];
+											<?php } elseif (false && ($field['data']['type'] == "json" || $field['data']['type'] == "array")) { ?>
+												// console.info(data);
+												if (data == undefined || data == '') {
+													return '';
+												}
+												return JSON.stringify(data);
+											<?php } elseif (isset($field['list']['items'])) { ?>
+												// console.info(data);
+												<?php
+												$uniqid = \uniqid();
+												$items = is_callable($field['list']['items']) ? $field['list']['items']() : $field['list']['items'];
+												$listValue = array();
+												foreach ($items as $itemKey => $item) {
+													if (isset($item['value'])) {
+														$listValue['key_' . $item['value']] = $item['name'];
+													} else {
+														$listValue['key_' . $itemKey] = $item;
+													}
+												}
+												?>
+												//var items = {key_0: "开发中", key_1: "部署中", key_2: "已上线", key_3: "已下线"};
+												<?php if (!empty($listValue)) { ?>
+													var items = '<?php echo \json_encode($listValue) ?>';
+													items = JSON.parse(items);
+												<?php } else { ?>
+													var items = {};
+												<?php } ?>
+
+												<?php if (($field['data']['type'] == "array")) { ?>
+													var dataArr = JSON.parse(data);
+												<?php } else { ?>
+													var dataArr = [];
+													dataArr.push(data);
+												<?php } ?>
+
+												var res = [];
+												for (var item1 of dataArr) {
+													if (items['key_' + item1]) {
+														res.push(items['key_' + item1]);
+													}
+												}
+
+												var imgs = '';
+												$.each(res, function(i, n) {
+													imgs += '<span class="label label-info">' + n + '</span>&nbsp;';
+												});
+												return imgs;
+
+												if (false) {
+													return '<span class="label label-info"></span>';
+													<?php $items = array();
+													foreach ($items as $itemKey => $item) { ?>
+														<?php if (isset($item['value'])) { ?>
+												} else if (data == '<?php echo $item['value'] ?>') {
+													return '<span class="label label-info"><?php echo $item['name'] ?></span>';
+												<?php } else { ?>
+												} else if (data == '<?php echo $itemKey ?>') {
+													return '<span class="label label-info"><?php echo $item ?></span>';
+												<?php } ?>
+												<?php } ?>
 												} else {
-													$listValue['key_' . $itemKey] = $item;
-												}
-											}
-											?>
-											//var items = {key_0: "开发中", key_1: "部署中", key_2: "已上线", key_3: "已下线"};
-											<?php if (!empty($listValue)) { ?>
-												var items = '<?php echo \json_encode($listValue) ?>';
-												items = JSON.parse(items);
+													return '<span class="label label-info"></span>';
+												};
+
+											<?php } elseif (isset($field['list']['ajax'])) { ?>
+												<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly) { ?>
+													return '<span class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.edit(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')" >' + data + '</span>';
+												<?php } else { ?>
+													return '<span>' + data + '</span>';
+												<?php } ?>
+
+											<?php } elseif (isset($field['list']['show_type'])) { ?>
+												<?php if ($field['list']['show_type'] == 'icon') { ?>
+													return '<span><i class="fa ' + data + '"></i></span>';
+												<?php } else { ?>
+													return '<span>' + data + '</span>';
+												<?php } ?>
 											<?php } else { ?>
-												var items = {};
+												//return List.htmlEscape(data);
+
+												return List.getPartialHtml(data, 50);
 											<?php } ?>
-
-											<?php if (($field['data']['type'] == "array")) { ?>
-												var dataArr = JSON.parse(data);
-											<?php } else { ?>
-												var dataArr = [];
-												dataArr.push(data);
-											<?php } ?>
-
-											var res = [];
-											for (var item1 of dataArr) {
-												if (items['key_' + item1]) {
-													res.push(items['key_' + item1]);
-												}
-											}
-
-											var imgs = '';
-											$.each(res, function(i, n) {
-												imgs += '<span class="label label-info">' + n + '</span>&nbsp;';
-											});
-											return imgs;
-
-											if (false) {
-												return '<span class="label label-info"></span>';
-												<?php $items = array();
-												foreach ($items as $itemKey => $item) { ?>
-													<?php if (isset($item['value'])) { ?>
-											} else if (data == '<?php echo $item['value'] ?>') {
-												return '<span class="label label-info"><?php echo $item['name'] ?></span>';
-											<?php } else { ?>
-											} else if (data == '<?php echo $itemKey ?>') {
-												return '<span class="label label-info"><?php echo $item ?></span>';
-											<?php } ?>
-											<?php } ?>
-											} else {
-												return '<span class="label label-info"></span>';
-											};
-
-										<?php } elseif (isset($field['list']['ajax'])) { ?>
-											<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit') && !$this->view->readonly) { ?>
-												return '<span class="grid-editable-<?php echo $key ?> editable editable-click" onclick="List.edit(this, \'<?php echo $field['list']['ajax'] ?>\', \'' + full['_id'] + '\', \'<?php echo $key ?>\')" >' + data + '</span>';
-											<?php } else { ?>
-												return '<span>' + data + '</span>';
-											<?php } ?>
-
-										<?php } elseif (isset($field['list']['show_type'])) { ?>
-											<?php if ($field['list']['show_type'] == 'icon') { ?>
-												return '<span><i class="fa ' + data + '"></i></span>';
-											<?php } else { ?>
-												return '<span>' + data + '</span>';
-											<?php } ?>
-										<?php } else { ?>
-											//return List.htmlEscape(data);
-
-											return List.getPartialHtml(data, 50);
-										<?php } ?>
-									}
-								},
-							<?php } ?>
-						<?php } ?> {
-							"data": "operation",
-							"orderable": false,
-							"searchable": false,
-							"render": function(data, type, full, meta) {
-								// console.log(full);
-								var id = full['_id'];
-								var editOp = '';
-								<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit')) { ?>
-									if (full['op']['edit']) {
-										editOp = '<a class="btn btn-sm btn-primary" href="<?php echo $this->myTag->getUrl($this->view, 'edit', array('_t' => time())); ?>&id=' + id + '"><i class="fa fa-edit"></i>编辑</a>';
-									}
+										}
+									},
 								<?php } ?>
-								var deleteOp = '';
-								<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'remove') && !$this->view->readonly) { ?>
-									if (full['op']['remove']) {
-										deleteOp = '<a class="btn btn-sm btn-danger" href="javascript:;" onclick="List.remove(\'' + id + '\', \'你确定要删除这条记录吗？\')"><i class="fa fa-trash"></i>删除</a>';
-									}
-								<?php } ?>
-								var toolOps = [];
-								<?php foreach ($this->view->rowTools as $key => $tool) { ?>
-									<?php if (true || !empty($tool['is_show'])) { ?>
-										<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
-											if (full['op']['<?php echo $key ?>']) {
-												var url = '<?php echo $this->myTag->getUrl($this->view, $tool['action'], array('_t' => time())); ?>&id=' + id;
-												var toolOp = '<a class="btn btn-sm btn-primary row-tool-<?php echo $key ?>" record_id="' + id + '" href="javascript:;" onclick="<?php if (empty($tool['process_without_modal'])) { ?>App.process4Modal<?php } else { ?>App.process4NoModal<?php } ?>(\'' + url + '\',this)" ><i class="fa <?php echo empty($tool['icon']) ? 'fa-edit' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>';
-												toolOps.push(toolOp);
-											}
+							<?php } ?> {
+								"data": "operation",
+								"orderable": false,
+								"searchable": false,
+								"render": function(data, type, full, meta) {
+									// console.log(full);
+									var id = full['_id'];
+									var editOp = '';
+									<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit')) { ?>
+										if (full['op']['edit']) {
+											editOp = '<a class="btn btn-sm btn-primary" href="<?php echo $this->myTag->getUrl($this->view, 'edit', array('_t' => time())); ?>&id=' + id + '"><i class="fa fa-edit"></i>编辑</a>';
+										}
+									<?php } ?>
+									var deleteOp = '';
+									<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'remove') && !$this->view->readonly) { ?>
+										if (full['op']['remove']) {
+											deleteOp = '<a class="btn btn-sm btn-danger" href="javascript:;" onclick="List.remove(\'' + id + '\', \'你确定要删除这条记录吗？\')"><i class="fa fa-trash"></i>删除</a>';
+										}
+									<?php } ?>
+									var toolOps = [];
+									<?php foreach ($this->view->rowTools as $key => $tool) { ?>
+										<?php if (true || !empty($tool['is_show'])) { ?>
+											<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
+												if (full['op']['<?php echo $key ?>']) {
+													var url = '<?php echo $this->myTag->getUrl($this->view, $tool['action'], array('_t' => time())); ?>&id=' + id;
+													var toolOp = '<a class="btn btn-sm btn-primary row-tool-<?php echo $key ?>" record_id="' + id + '" href="javascript:;" onclick="<?php if (empty($tool['process_without_modal'])) { ?>App.process4Modal<?php } else { ?>App.process4NoModal<?php } ?>(\'' + url + '\',this)" ><i class="fa <?php echo empty($tool['icon']) ? 'fa-edit' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>';
+													toolOps.push(toolOp);
+												}
+											<?php } ?>
 										<?php } ?>
 									<?php } ?>
-								<?php } ?>
-								var ops = '';
-								$.each(toolOps, function(i, n) {
-									ops += ("&nbsp;" + n);
-								});
+									var ops = '';
+									$.each(toolOps, function(i, n) {
+										ops += ("&nbsp;" + n);
+									});
 
-								return editOp + '&nbsp;' + deleteOp + '&nbsp;' + ops;
+									return editOp + '&nbsp;' + deleteOp + '&nbsp;' + ops;
+								}
 							}
-						}
-					]
-				});
+						]
+					});
+				<?php } ?>
 			}
 		};
 

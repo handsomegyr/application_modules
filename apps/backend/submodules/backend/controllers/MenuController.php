@@ -11,13 +11,34 @@ use App\Backend\Submodules\Backend\Models\Menu;
  */
 class MenuController extends \App\Backend\Controllers\FormController
 {
-
     private $modelMenu;
+
+    protected $list_template = 'tree';
+
+    // 树形结构设置
+    protected $tree_settings = array(
+        // 父字段
+        'parent_field' => 'pid',
+        // 子字段
+        'child_field' => '_id',
+        // 展示字段
+        'show_field' => 'name',
+        // level字段
+        'level_field' => '',
+        // 排序字段
+        'sort_field' => 'show_order',
+    );
 
     public function initialize()
     {
         $this->modelMenu = new Menu();
         parent::initialize();
+
+        // 回调函数
+        $this->tree_settings['branchCallback'] = function ($branch) {
+            $str = '<i class="fa ' . $branch['icon'] . '"></i>&nbsp;<strong>' . $branch['name'] . '</strong>&nbsp;&nbsp;&nbsp;' . $branch['url'];
+            return $str;
+        };
     }
 
     /**
@@ -108,7 +129,7 @@ class MenuController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'show_name'
+                // 'list_data_name' => 'show_name'
             ),
             'search' => array(
                 'is_show' => true
@@ -242,13 +263,13 @@ class MenuController extends \App\Backend\Controllers\FormController
         return $this->modelMenu;
     }
 
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];
-        }
-        return $list;
-    }
+    // protected function getList4Show(\App\Backend\Models\Input $input, array $list)
+    // {
+    //     foreach ($list['data'] as &$item) {
+    //         $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];
+    //     }
+    //     return $list;
+    // }
 
     protected function validate4Insert(\App\Backend\Models\Input $input, $row)
     {

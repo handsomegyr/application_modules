@@ -14,10 +14,32 @@ class AreaController extends \App\Backend\Controllers\FormController
 
     private $modelArea;
 
+    protected $list_template = 'tree';
+
+    // 树形结构设置
+    protected $tree_settings = array(
+        // 父字段
+        'parent_field' => 'parent_code',
+        // 子字段
+        'child_field' => 'code',
+        // 展示字段
+        'show_field' => 'name',
+        // level字段
+        'level_field' => 'level',
+        // 排序字段
+        'sort_field' => '',
+    );
+
     public function initialize()
     {
         $this->modelArea = new Area();
         parent::initialize();
+
+        // 回调函数
+        $this->tree_settings['branchCallback'] = function ($branch) {
+            $str = '<strong>' . $branch['name'] . '</strong>&nbsp;&nbsp;&nbsp;' . $branch['code'];
+            return $str;
+        };
     }
 
     protected function getDefaultOrder()
@@ -47,7 +69,7 @@ class AreaController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'show_name'
+                // 'list_data_name' => 'show_name'
             ),
             'search' => array(
                 'is_show' => false
@@ -131,11 +153,11 @@ class AreaController extends \App\Backend\Controllers\FormController
         return $this->modelArea;
     }
 
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];
-        }
-        return $list;
-    }
+    // protected function getList4Show(\App\Backend\Models\Input $input, array $list)
+    // {
+    //     foreach ($list['data'] as &$item) {
+    //         $item['show_name'] = str_repeat('&nbsp;', $item['level'] * 4) . $item['name'];
+    //     }
+    //     return $list;
+    // }
 }

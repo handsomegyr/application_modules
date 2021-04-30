@@ -32,6 +32,32 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     // 是否显示删除按钮
     protected $is_show_delete_button = true;
 
+    // 列表页的模板是table还是tree
+    protected $list_template = 'table'; // tree
+
+    // 树形结构设置
+    protected $tree_settings = array(
+        // 父字段
+        'parent_field' => '',
+        // 子字段
+        'child_field' => '',
+        // 展示字段
+        'show_field' => '',
+        // 回调函数
+        'branchCallback' => '',
+        // level字段
+        'level_field' => 'level',
+        // 排序字段
+        'sort_field' => 'show_order',
+    );
+
+    protected function getDefaultOrder()
+    {
+        return array(
+            '_id' => 'desc'
+        );
+    }
+
     protected function getName()
     {
         return '';
@@ -279,7 +305,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => ($this->list_template == 'tree' ? false : true),
                 'width' => '27px'
             ),
             'search' => array(
@@ -307,7 +333,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => false
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => ($this->list_template == 'tree' ? false : true)
             ),
             'search' => array(
                 'is_show' => true
@@ -381,7 +407,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 'is_show' => false
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => ($this->list_template == 'tree' ? false : true)
             ),
             'search' => array(
                 'is_show' => true
@@ -830,10 +856,14 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $this->view->disable();
         }
 
-        if (!isset($_SESSION['csrf_token'])) {
+        if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = createRandCode(40);
         }
         $this->view->setVar('csrf_token', $_SESSION['csrf_token']);
+
+        $this->view->setVar('list_template', $this->list_template);
+        $this->view->setVar("tree_settings", $this->tree_settings);
+
         $this->view->setVar('is_show_edit_button', $this->is_show_edit_button);
         $this->view->setVar('is_show_create_button', $this->is_show_create_button);
         $this->view->setVar('is_show_export_button', $this->is_show_export_button);
@@ -908,6 +938,18 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 throw new \Exception($messageInfo);
             }
 
+            // 树形
+            if ($this->list_template == 'tree') {
+                $input->page = 1;
+                $input->page_size = 100000;
+                $order = $this->getDefaultOrder();
+                foreach ($order as $sort_by => $sort_order) {
+                    $input->sort_by = $sort_by;
+                    $input->sort_order = $sort_order;
+                    break;
+                }
+            }
+
             // 根据检索条件获取列表
             $list = $this->getList($input);
             // 保存一下从数据库中取出的数据行
@@ -939,16 +981,28 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     }
                 }
             }
-
             // 将列表数据按照画面要求进行显示
             $list = $this->getList4Show($input, $list);
-
             $datas = array(
                 'draw' => $input->draw,
                 'recordsTotal' => $list['record_count'],
                 'recordsFiltered' => $list['record_count'],
                 'data' => $list['data']
             );
+
+            // 树形
+            if ($this->list_template == 'tree') {
+                // 构建树状结构数组
+                $treeItems = $this->getTreeItems($list['data']);
+                // print_r($treeItems);
+                // die('treeItems');
+                $this->view->setVar("schemas", $schemas);
+                $this->view->setVar("treeItems", $treeItems);
+                $this->view->setVar("tree_settings", $this->tree_settings);
+                \ob_start();
+                $this->view->partial("partials/tree");
+                $datas['content'] = \ob_get_clean();
+            }
 
             echo (json_encode($datas));
             return true;
@@ -1076,6 +1130,23 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function updateAction()
     {
         try {
+            $treeList = $this->request->get('_treeList');
+            if (!empty($treeList)) {
+                $treeList = \json_decode($treeList, true);
+                if (!empty($treeList)) {
+                    // 递归处理树型数据
+                    $this->processTreeItems($treeList, "", 1, 1);
+
+                    unset($_SESSION['toastr']);
+                    $_SESSION['toastr']['type'] = "success";
+                    $_SESSION['toastr']['message'] = '保存成功!';
+                    $_SESSION['toastr']['options'] = array();
+
+                    $this->makeJsonResult($this->getUrl("list"));
+                    return;
+                }
+            }
+
             $id = $this->request->get('id', array(
                 'trim',
                 'string'
@@ -1728,5 +1799,102 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $value = "";
         }
         return $value;
+    }
+
+    /**
+     * 构建树
+     *
+     * @return array
+     */
+    protected function getTreeItems($list)
+    {
+        $parent_field = $this->tree_settings['parent_field'];
+        $child_field = $this->tree_settings['child_field'];
+
+        if (empty($parent_field)) {
+            throw new \Exception('parent_field is empty');
+        }
+        if (empty($child_field)) {
+            throw new \Exception('child_field is empty');
+        }
+
+        if (!empty($list)) {
+            $parent = array();
+            $new = array();
+            foreach ($list as $a) {
+                if (empty($a[$parent_field])) {
+                    $parent[] = $a;
+                }
+                $new['p_' . $a[$parent_field]][] = $a;
+            }
+            $tree = $this->buildTree($new, $parent, $child_field);
+            return $tree;
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * 循环处理树
+     *
+     * @param array $menus            
+     * @param array $parent            
+     * @return array
+     */
+    protected function buildTree(&$new, $parent, $child_field)
+    {
+        $tree = array();
+        foreach ($parent as $l) {
+            if (isset($new['p_' . $l[$child_field]])) {
+                $l['children'] = $this->buildTree($new, $new['p_' . $l[$child_field]], $child_field);
+            }
+            $tree[] = $l;
+        }
+        return $tree;
+    }
+
+    //递归处理树型数据
+    protected function processTreeItems($treeList, $parent_id = "", $level = 1, $show_order_base = 1)
+    {
+        foreach ($treeList as $idx => $treeItem) {
+            $show_order = ($show_order_base * 100 + $idx);
+            $arr1 = explode('_', $treeItem['id']);
+            $recId = $arr1[0];
+
+            // 更新记录
+            $updateData = array();
+            // 如果有设置level字段那么进行修改
+            if (!empty($this->tree_settings['level_field'])) {
+                $updateData[$this->tree_settings['level_field']] = $level;
+            }
+            // 如果有设置排序字段那么进行修改
+            if (!empty($this->tree_settings['sort_field'])) {
+                $updateData[$this->tree_settings['sort_field']] = $show_order;
+            } else {
+                $show_order = 0;
+            }
+            // 修改父ID的值
+            if (!empty($parent_id)) {
+                $updateData[$this->tree_settings['parent_field']] = $parent_id;
+            }
+            $query = array(
+                '_id' => $recId
+            );
+            // // 检查更新时间是否已经改变 避免并发
+            // if (!empty($__MODIFY_TIME__)) {
+            //     $query['__MODIFY_TIME__'] = $__MODIFY_TIME__;
+            // }
+            $this->getModel()->update($query, array(
+                '$set' => $updateData
+            ));
+            // 处理下级记录
+            if (!empty($treeItem['children'])) {
+                $level++;
+                $parent_id2 = empty($arr1[1]) ? $recId : $arr1[1];
+                $this->processTreeItems($treeItem['children'], $parent_id2, $level, $show_order);
+            }
+        }
+        // die($_order);
+
     }
 }

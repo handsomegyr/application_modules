@@ -1,0 +1,53 @@
+<li class="dd-item" data-id="<?php if ($this->view->tree_settings['child_field'] == '_id') {
+									echo $branch['id'];
+								} else {
+									echo $branch['id'] . "_" . $branch[$this->view->tree_settings['child_field']];
+								} ?>">
+	<div class="dd-handle">
+	<!-- style="overflow: hidden;padding: 2px 10px;" -->
+		<?php if (!empty($this->view->tree_settings['branchCallback'])) { ?>
+			<!--{!! $branchCallback($branch) !!}-->
+			<?php echo $this->view->tree_settings['branchCallback']($branch); ?>
+		<?php } else { ?>
+			<strong><?php echo $branch[$this->view->tree_settings['show_field']]; ?></strong>
+		<?php } ?>
+		<span class="pull-right dd-nodrag" style="margin-top: -5px;">
+			<?php foreach ($this->view->schemas as $key => $field) { ?>
+				<?php if (false && !empty($field['list']['is_show']) && !in_array($key, array($this->view->tree_settings['show_field']))) { ?>
+					<span class="dd-nodrag">
+						<?php echo $branch[$key]; ?>
+					</span>
+				<?php } ?>
+			<?php } ?>
+			<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'edit')) { ?>
+				<?php if (!empty($branch['op']['edit'])) { ?>
+					<a class="btn btn-sm btn-primary" href="<?php echo $this->myTag->getUrl($this->view, 'edit', array('_t' => time())); ?>&id=<?php echo $branch['id']; ?>"><i class="fa fa-edit"></i>编辑</a>
+				<?php } ?>
+			<?php } ?>
+			<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'remove') && !$this->view->readonly) { ?>
+				<?php if (!empty($branch['op']['remove'])) { ?>
+					<a class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="List.remove('<?php echo $branch['id']; ?>', '你确定要删除这条记录吗？');" data-id="<?php echo $branch['id']; ?>" class="tree_branch_delete"><i class="fa fa-trash"></i>删除</a>
+				<?php } ?>
+			<?php } ?>
+			<?php foreach ($this->view->rowTools as $key => $tool) { ?>
+				<?php if (true || !empty($tool['is_show'])) { ?>
+					<?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, $tool['action']) && !$this->view->readonly) { ?>
+						<?php if (!empty($branch['op'][$key])) { ?>
+							<a class="btn btn-sm btn-primary row-tool-<?php echo $key ?>" record_id="<?php echo $branch['id']; ?>" href="javascript:;" onclick="<?php if (empty($tool['process_without_modal'])) { ?>App.process4Modal<?php } else { ?>App.process4NoModal<?php } ?>('<?php echo $this->myTag->getUrl($this->view, $tool['action'], array('_t' => time())); ?>&id=<?php echo $branch['id']; ?>',this)"><i class="fa <?php echo empty($tool['icon']) ? 'fa-edit' : $tool['icon'] ?>"></i><?php echo $tool['title'] ?></a>
+						<?php } ?>
+					<?php } ?>
+				<?php } ?>
+			<?php } ?>
+		</span>
+	</div>
+	<?php if (isset($branch['children'])) { ?>
+		<ol class="dd-list">
+			<?php foreach ($branch['children'] as $childbranch) { ?>
+				<?php
+				$branch = $childbranch;
+				$this->partial("partials/tree/branch");
+				?>
+			<?php } ?>
+		</ol>
+	<?php } ?>
+</li>
