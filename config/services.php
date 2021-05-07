@@ -171,7 +171,7 @@ function registerServices($di)
      */
     $di['cache'] = function () use ($config) {
         //https://docs.phalcon.io/4.0/en/cache
-        if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+        if (version_compare(PHALCON_VERSION, '4.0.0') < 0) {
 
             // Cache the files for 2 days using a Data frontend
             $frontCache = new \Phalcon\Cache\Frontend\Data(array(
@@ -579,7 +579,7 @@ function registerServices($di)
          */
         $di['url'] = function () {
             // phalcon从3.4版本升级到4.0版本不兼容变化汇总 https://blog.csdn.net/ligaofeng/article/details/103837168/
-            if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+            if (version_compare(PHALCON_VERSION, '4.0.0') < 0) {
                 $url = new \Phalcon\Mvc\Url();
             } else {
                 $url = new \Phalcon\Url();

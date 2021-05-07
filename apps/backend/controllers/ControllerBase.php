@@ -148,7 +148,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         }
 
         //https://docs.phalcon.io/4.0/en/controllers#overview
-        if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+        if (version_compare(PHALCON_VERSION, '4.0.0') < 0) {
             $this->response->setJsonContent($res)->send();
         } else {
             $response = new \Phalcon\Http\Response();

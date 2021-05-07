@@ -5,6 +5,7 @@ use Phalcon\DI\FactoryDefault;
 use Phalcon\DI;
 // ini_set('display_errors', 'On');
 // die('xxx:' . ini_get('display_errors'));
+define('PHALCON_VERSION', \Phalcon\Version::get());
 error_reporting(E_ALL);
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
@@ -18,7 +19,7 @@ if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
 }
 
 //https://docs.phalcon.io/4.0/en/upgrade
-if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+if (version_compare(PHALCON_VERSION, '4.0.0') < 0) {
     define('MYDB_FETCH_ASSOC', \Phalcon\Db::FETCH_ASSOC);
     define('MYDB_FETCH_OBJ', \Phalcon\Db::FETCH_OBJ);
 } else {
@@ -74,7 +75,7 @@ try {
     require __DIR__ . '/../config/modules.php';
 
     // phalcon从3.4版本升级到4.0版本不兼容变化汇总 https://blog.csdn.net/ligaofeng/article/details/103837168/
-    if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+    if (version_compare(PHALCON_VERSION, '4.0.0') < 0) {
         echo $application->handle()->getContent();
     } else {
         $request = new \Phalcon\Http\Request();

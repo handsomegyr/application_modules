@@ -91,7 +91,7 @@ class Module
          * Setting up volt
          */
         //https://docs.phalcon.io/4.0/en/volt
-        if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+        if (version_compare(PHALCON_VERSION, '4.0.0') < 0) {
             $di->set('volt', function ($view, $di) {
 
                 $volt = new VoltEngine($view, $di);

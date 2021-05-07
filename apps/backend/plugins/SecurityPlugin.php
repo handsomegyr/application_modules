@@ -76,18 +76,18 @@ class SecurityPlugin extends \Phalcon\Di\Injectable
             // 如果会话不存在那么就检查cookie
             if (empty($_SESSION['admin_id'])) {
                 /* cookie不存在 */
-                if (empty($_COOKIE['ECSCP']['admin_id'])) {
+                if (empty($_COOKIE['backend']['admin_id'])) {
                     throw new \Exception('未登陆1');
                 }
 
                 // 验证cookie信息
-                $user = $adminUser->getInfoById($_COOKIE['ECSCP']['admin_id']);
+                $user = $adminUser->getInfoById($_COOKIE['backend']['admin_id']);
                 if (empty($user)) {
                     throw new \Exception('用户不存在');
                 }
 
                 // 检查密码是否正确
-                if (md5($user['password']) == $_COOKIE['ECSCP']['admin_pass']) {
+                if (md5($user['password']) == $_COOKIE['backend']['admin_pass']) {
                     $adminUser->login($user);
                 } else {
                     throw new \Exception("密码不正确");
