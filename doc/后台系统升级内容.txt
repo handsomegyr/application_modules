@@ -35,6 +35,7 @@
 033 重新实现了is_remote_load功能
 034 列表页实现了树形展示
 035 将select2废弃 统一到select
+036 增加了媒体管理 主要管理 public/upload/目录下的文件资源
 
 
 

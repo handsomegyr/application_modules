@@ -175,7 +175,7 @@
                             // alert(result.message);
                             var str = result.message;
                             var arr = str.split('||');
-                            $errmsg = "";
+                            var $errmsg = "";
                             $.each(arr, function(i, n) {
                                 $errmsg += ("<p>" + n + "</p>");
                             });
@@ -195,6 +195,7 @@
                     },
                     error: function(errormsg) {
                         // alert("异常！");
+                        var $errmsg = "";
                         $errmsg += ("<p>" + errormsg + "</p>");
                         $errmsg = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i>系统发生错误</h4>' + errormsg + '</div>';
                         $('#app-admin-alerts-errs').html($errmsg);

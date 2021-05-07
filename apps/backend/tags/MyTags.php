@@ -252,7 +252,9 @@ EOT;
             $params = array();
         }
         if (!empty($view->__SHOWBYIFRAME__)) {
-            $params['__SHOWBYIFRAME__'] = $view->__SHOWBYIFRAME__;
+            if (!isset($params['__SHOWBYIFRAME__'])) {
+                $params['__SHOWBYIFRAME__'] = $view->__SHOWBYIFRAME__;
+            }
         }
 
         if (!empty($params)) {

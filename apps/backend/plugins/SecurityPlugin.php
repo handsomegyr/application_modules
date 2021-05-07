@@ -77,7 +77,7 @@ class SecurityPlugin extends \Phalcon\Di\Injectable
             if (empty($_SESSION['admin_id'])) {
                 /* cookie不存在 */
                 if (empty($_COOKIE['ECSCP']['admin_id'])) {
-                    throw new \Exception('未登陆');
+                    throw new \Exception('未登陆1');
                 }
 
                 // 验证cookie信息
@@ -94,7 +94,7 @@ class SecurityPlugin extends \Phalcon\Di\Injectable
                 }
             }
             if (empty($_SESSION['admin_id'])) {
-                throw new \Exception('未登陆');
+                throw new \Exception('未登陆2');
             } else {
                 // 权限判断
                 $this->checkPrivilige($dispatcher);

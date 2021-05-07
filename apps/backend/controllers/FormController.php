@@ -888,14 +888,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function listAction()
     {
         try {
+            $defaultSort = $this->getDefaultOrder();
+            if (!empty($this->getModel())) {
+                $defaultSort = $this->getModel()->getDefaultSort();
+            }
             $this->view->setVar('schemas', $this->getSchemas());
             $this->view->setVar('partials4List', $this->getPartials4List());
             // headerTools
             $this->view->setVar('headerTools', $this->getHeaderTools());
             // RowTools
             $this->view->setVar('rowTools', $this->getRowTools());
-            $this->view->setVar('defaultSort', $this->getModel()
-                ->getDefaultSort());
+            $this->view->setVar('defaultSort', $defaultSort);
         } catch (\Exception $e) {
             throw $e;
         }
