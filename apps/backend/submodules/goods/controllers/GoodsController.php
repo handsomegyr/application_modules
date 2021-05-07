@@ -183,7 +183,8 @@ class GoodsController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'render' => 'img'
+                'render' => 'img',
+                'render_method' => 'lightbox_gallery'
             ),
             'search' => array(
                 'is_show' => false

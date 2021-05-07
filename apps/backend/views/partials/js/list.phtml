@@ -176,6 +176,7 @@
 							}
 							if (result.error == 0) {
 								$('#example').DataTable().draw();
+								List.gridGallery('.grid-popup-link');
 							}
 						},
 						dataType: "json"
@@ -214,6 +215,7 @@
 			search: function() {
 				<?php if ($this->view->list_template != 'tree') { ?>
 					$('#example').DataTable().draw();
+					List.gridGallery('.grid-popup-link');
 				<?php } else { ?>
 					var data = Search.getConditions({});
 					data._token = LA.token;
@@ -235,6 +237,30 @@
 						dataType: "json"
 					});
 				<?php } ?>
+			},
+
+			//全部备注信息
+			gridGallery: function(classGridGallery) {
+				setTimeout(function() {
+					$(classGridGallery).magnificPopup({
+						"type": "image",
+						"gallery": {
+							"enabled": true,
+							"preload": [0, 2],
+							"navigateByImgClick": true,
+							"arrowMarkup": "<button title=\"%title%\" type=\"button\" class=\"mfp-arrow mfp-arrow-%dir%\"><\/button>",
+							"tPrev": "Previous (Left arrow key)",
+							"tNext": "Next (Right arrow key)",
+							"tCounter": "<span class=\"mfp-counter\">%curr% of %total%<\/span>"
+						},
+						"mainClass": "mfp-with-zoom",
+						"zoom": {
+							"enabled": true,
+							"duration": 300,
+							"easing": "ease-in-out"
+						}
+					});
+				}, 2000);
 			},
 
 			//main function to initiate the module
@@ -383,9 +409,14 @@
 												if (data == undefined || data == '') {
 													return '';
 												}
+
+												// 包含http
 												if (data.indexOf("http") != -1) {
-													// 包含http
-													return '<img src="' + data + '" style="max-height: 50px;" alt="">';
+													<?php if (!empty($field['list']['render_method']) && $field['list']['render_method'] == 'lightbox_gallery') { ?>
+														return '<a href="' + data + '" class="grid-popup-link"><img src="' + data + '" style="max-width:50px;max-height:50px" class="img img-thumbnail" /></a>';
+													<?php } else { ?>
+														return '<img src="' + data + '" style="max-height: 50px;" alt="">';
+													<?php } ?>
 												} else {
 													<?php
 													$path = "";
@@ -394,8 +425,12 @@
 														$path = empty($fileInfo['path']) ? '' : trim($fileInfo['path'], '/') . '/';
 													}
 													?>
-													// return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
-													return '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + data + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+													<?php if (!empty($field['list']['render_method']) && $field['list']['render_method'] == 'lightbox_gallery') { ?>
+														return '<a href="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + data + '" class="grid-popup-link"><img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + data + '" style="max-width:50px;max-height:50px" class="img img-thumbnail" /></a>';
+													<?php } else { ?>
+														// return '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + data + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+														return '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + data + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+													<?php } ?>
 												}
 											<?php } elseif (($field['data']['type'] == "multifile") && isset($field['list']['render']) && $field['list']['render'] == 'img') { ?>
 												//console.info(data);
@@ -545,6 +580,12 @@
 							}
 						]
 					});
+					// $('#example').DataTable({
+					// 	"ajax": {
+					// 		"url": "<?php echo $this->myTag->getUrl($this->view, 'query', array()); ?>"
+					// 	}
+					// }).draw();
+					List.gridGallery('.grid-popup-link');
 				<?php } ?>
 			}
 		};
