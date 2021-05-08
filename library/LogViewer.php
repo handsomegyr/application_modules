@@ -55,11 +55,10 @@ class LogViewer
      */
     public function __construct($logDir, $file = null)
     {
+        $this->logDir = rtrim($logDir, '/');
         if (is_null($file)) {
             $file = $this->getLastModifiedLog();
         }
-
-        $this->logDir = rtrim($logDir, '/');
         $this->file = $file;
         $this->getFilePath();
     }
@@ -138,7 +137,6 @@ class LogViewer
     public function getLastModifiedLog()
     {
         $logs = $this->getLogFiles();
-
         return current($logs);
     }
 

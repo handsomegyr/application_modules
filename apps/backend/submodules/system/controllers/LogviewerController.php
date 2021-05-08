@@ -51,12 +51,10 @@ class LogviewerController extends \App\Backend\Controllers\FormController
             if (empty($logfile)) {
                 $logfile = $defaultLogFile;
             }
-            $this->view->setVar('logfile', $logfile);
-
-            // 读取文件的内容
+            if (!file_exists(APP_PATH . 'public/logs/' . $logfile)) {
+                $logfile = null;
+            }
             $viewer = new LogViewer(APP_PATH . 'public/logs/', $logfile);
-            $viewer->getLastModifiedLog();
-
             // 'logs'      => $viewer->fetch($offset),
             // 'logFiles'  => $viewer->getLogFiles(),
             // 'fileName'  => $viewer->file,
@@ -78,7 +76,7 @@ class LogviewerController extends \App\Backend\Controllers\FormController
             $prevUrl = $viewer->getPrevPageUrl();
             $nextUrl = $viewer->getNextPageUrl();
             $end = $viewer->getFilesize();
-
+            
             $this->view->setVar('logs', $logs);
             $this->view->setVar('logFiles', $logFiles);
             $this->view->setVar('fileName', $fileName);
