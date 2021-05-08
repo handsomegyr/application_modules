@@ -581,7 +581,7 @@ class PlugincollectionstructureController extends \App\Backend\Controllers\FormC
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),

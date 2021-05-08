@@ -82,7 +82,7 @@ class StoreController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(

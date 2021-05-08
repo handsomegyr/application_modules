@@ -255,7 +255,7 @@ class LogController extends \App\Backend\Controllers\FormController
         $schemas['user_file'] = array(
             'name' => '游戏文件',
             'data' => array(
-                'type' => 'string',
+                'type' => 'false',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -263,7 +263,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'string',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -282,7 +282,7 @@ class LogController extends \App\Backend\Controllers\FormController
         $schemas['user_img'] = array(
             'name' => '游戏图片',
             'data' => array(
-                'type' => 'string',
+                'type' => 'false',
                 'length' => 255,
                 'defaultValue' => ''
             ),
@@ -290,7 +290,7 @@ class LogController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'string',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),

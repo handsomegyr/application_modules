@@ -149,7 +149,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(
@@ -164,7 +164,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '小图标(图文)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100',
+                'length' => '255',
                 'file' => array(
                     'path' => $this->modelReply->getUploadPath()
                 )
@@ -173,7 +173,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(
@@ -188,7 +188,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '音乐(音乐)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100',
+                'length' => '255',
                 'file' => array(
                     'path' => $this->modelReply->getUploadPath()
                 )
@@ -260,7 +260,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
             'name' => '图片(图片)',
             'data' => array(
                 'type' => 'file',
-                'length' => '100',
+                'length' => '255',
                 'file' => array(
                     'path' => $this->modelReply->getUploadPath()
                 )
@@ -269,7 +269,7 @@ class ReplyController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(

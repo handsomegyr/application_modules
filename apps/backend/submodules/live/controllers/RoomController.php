@@ -203,7 +203,7 @@ class RoomController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(
@@ -232,7 +232,7 @@ class RoomController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(
@@ -480,7 +480,7 @@ class RoomController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(
@@ -509,7 +509,7 @@ class RoomController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(

@@ -152,7 +152,15 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     $field['data']['type'] == "file" ||
                     $field['data']['type'] == "multifile"
                 ) {
-                    $field['list']['render'] = 'img';
+                    if ($field['form']['input_type'] == 'image' || $field['form']['input_type'] == 'multipleImage') {
+                        $field['list']['render'] = 'img';
+                    }
+                }
+            }
+
+            if (!isset($field['list']['render_method'])) {
+                if (!empty($field['list']['render']) && $field['list']['render'] == 'img') {
+                    $field['list']['render_method'] = 'lightbox_gallery';
                 }
             }
 

@@ -670,7 +670,7 @@ class ProjectcollectionstructureController extends \App\Backend\Controllers\Form
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'text',
                 'is_show' => true,
                 'items' => ''
             ),

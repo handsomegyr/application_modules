@@ -112,7 +112,7 @@ class ImageController extends \App\Backend\Controllers\FormController
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(

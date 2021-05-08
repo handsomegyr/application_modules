@@ -170,7 +170,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'required' => 0
             ),
             'form' => array(
-                'input_type' => 'file',
+                'input_type' => 'image',
                 'is_show' => true
             ),
             'list' => array(

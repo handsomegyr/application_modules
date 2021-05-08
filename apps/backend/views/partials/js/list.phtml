@@ -449,8 +449,12 @@
 												?>
 												var imgs = '';
 												$.each(data, function(i, n) {
-													// imgs += '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + n + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
-													imgs += '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + n + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+													<?php if (!empty($field['list']['render_method']) && $field['list']['render_method'] == 'lightbox_gallery') { ?>
+														imgs += '<a href="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + n + '" class="grid-popup-link"><img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + n + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt=""></a>&nbsp;';
+													<?php } else { ?>
+														// imgs += '<img src="<?php echo $this->view->baseUrl ?>service/file/index?upload_path=<?php echo trim($path, '/') ?>&id=' + n + '&w=50&h=50" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+														imgs += '<img src="<?php echo $this->myTag->getUploadFilePath(trim($path, '/')) ?>/' + n + '" style="max-width:50px;max-height:50px;" class="img img-thumbnail" alt="">&nbsp;';
+													<?php } ?>
 												});
 												return imgs;
 
