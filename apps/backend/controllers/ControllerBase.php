@@ -9,9 +9,53 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     // 是否在iframe展示
     protected $__SHOWBYIFRAME__ = 0;
 
+    // 是否在应急状态
+    protected $__INEMERGENCY__ = 0;
+
+    // 应急菜单
+    protected $_emergency_menus = <<<EOT
+{
+    "55d6d6b47f50ea380a00001b": {
+        "_id": "55d6d6b47f50ea380a00001b", 
+        "name": "系统管理", 
+        "icon": "", 
+        "relevance": "", 
+        "url": "", 
+        "is_show": true, 
+        "priv": {
+            "6093673269dc0a5a25006afa": {
+                "_id": "6093673269dc0a5a25006afa", 
+                "name": "媒体管理", 
+                "icon": "", 
+                "relevance": "", 
+                "url": "admin/system/media/list", 
+                "is_show": false, 
+                "priv": [ ], 
+                "is_active": 0, 
+                "cando": 0, 
+                "priv_list": ""
+            },
+            "609610af69dc0ada1a6cd10a": {
+                "_id": "609610af69dc0ada1a6cd10a", 
+                "name": "Logviewer管理", 
+                "icon": "", 
+                "relevance": "", 
+                "url": "admin/system/logviewer/list", 
+                "is_show": true, 
+                "priv": [ ], 
+                "is_active": 0, 
+                "cando": 0, 
+                "priv_list": ""
+            }
+        }, 
+        "is_active": 0, 
+        "cando": 0, 
+        "priv_list": "6093673269dc0a5a25006afa,609610af69dc0ada1a6cd10a"
+    }
+}
+EOT;
     protected function initialize()
     {
-
         parent::initialize();
 
         // $this->tag->prependTitle('INVO | ');
@@ -38,6 +82,19 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
         $this->__SHOWBYIFRAME__ = intval($this->request->get('__SHOWBYIFRAME__'));
         $this->view->setVar("__SHOWBYIFRAME__", $this->__SHOWBYIFRAME__);
 
+        // 是否在应急状态
+        $inemergency = intval($this->request->has('__INEMERGENCY__'));
+        // url上有这个参数的话
+        if ($inemergency) {
+            $_SESSION['__INEMERGENCY__'] = true;
+        } else {
+            if (!isset($_SESSION['__INEMERGENCY__'])) {
+                $_SESSION['__INEMERGENCY__'] = false;
+            }
+        }
+        $this->__INEMERGENCY__ = $_SESSION['__INEMERGENCY__'];
+        $this->view->setVar("__INEMERGENCY__", $this->__INEMERGENCY__);
+
         // 不是ajax请求的话
         if (!$this->request->isAjax()) {
             // 构建菜单
@@ -61,13 +118,19 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
 
         // 不在IFRAME中显示的话需要获取菜单信息
         if (empty($this->__SHOWBYIFRAME__)) {
-            $menu_list = !empty($_SESSION['roleInfo']) ? $_SESSION['roleInfo']['menu_list'] : array();
-            $modelMenu = new \App\Backend\Submodules\Backend\Models\Menu();
-            $menus = $modelMenu->getPrivilege($menu_list, $requestUrl);
-            // $menus2 = $modelMenu->buildPrivilegeTree($menu_list, $requestUrl);
-            // print_r($menus);
-            // print_r($menus2);
-            // die($requestUrl);
+            // 应急状态的话
+            if ($this->__INEMERGENCY__) {
+                $menus = \json_decode($this->_emergency_menus, true);
+            } else {
+                $menu_list = !empty($_SESSION['roleInfo']) ? $_SESSION['roleInfo']['menu_list'] : array();
+                $modelMenu = new \App\Backend\Submodules\Backend\Models\Menu();
+                $menus = $modelMenu->getPrivilege($menu_list, $requestUrl);
+                // $menus2 = $modelMenu->buildPrivilegeTree($menu_list, $requestUrl);
+                // print_r($menus);
+                // print_r($menus2);
+                // die($requestUrl);
+                // die(json_encode($menus));
+            }
             $this->view->setVar('menus', $menus);
         }
     }
