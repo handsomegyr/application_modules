@@ -167,8 +167,14 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
 
     protected function checkToken($token)
     {
-        if (empty($token) || empty($_SESSION['csrf_token'])) {
-            throw new \Exception("token is empty");
+        return true;
+
+        if (empty($token)) {
+            throw new \Exception("_token is empty");
+        }
+
+        if (empty($_SESSION['csrf_token'])) {
+            throw new \Exception("session token is empty");
         }
 
         if ($_SESSION['csrf_token'] != $token) {

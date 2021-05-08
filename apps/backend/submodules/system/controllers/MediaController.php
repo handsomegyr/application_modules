@@ -2,8 +2,6 @@
 
 namespace App\Backend\Submodules\System\Controllers;
 
-use App\Backend\Submodules\System\Models\Source;
-
 /**
  * @title({name="媒体管理"})
  *
@@ -108,7 +106,7 @@ class MediaController extends \App\Backend\Controllers\FormController
                     $fileInfo['is_dir'] = true;
                 } else {
                     $modified = filemtime($file);
-                    $fileInfo['size'] = $this->_format_bytes(filesize($file));
+                    $fileInfo['size'] = \formatBytes(filesize($file));
                     $i++;
                 }
                 $fileInfo['modified'] = date('Y-m-d H:i:s', $modified);
@@ -326,29 +324,6 @@ class MediaController extends \App\Backend\Controllers\FormController
             $this->makeJsonResult('', '修改成功');
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
-        }
-    }
-
-    protected function _format_bytes($a_bytes)
-    {
-        if ($a_bytes < 1024) {
-            return $a_bytes . ' B';
-        } elseif ($a_bytes < 1048576) {
-            return round($a_bytes / 1024, 2) . ' KB';
-        } elseif ($a_bytes < 1073741824) {
-            return round($a_bytes / 1048576, 2) . ' MB';
-        } elseif ($a_bytes < 1099511627776) {
-            return round($a_bytes / 1073741824, 2) . ' GB';
-        } elseif ($a_bytes < 1125899906842624) {
-            return round($a_bytes / 1099511627776, 2) . ' TB';
-        } elseif ($a_bytes < 1152921504606846976) {
-            return round($a_bytes / 1125899906842624, 2) . ' PB';
-        } elseif ($a_bytes < 1180591620717411303424) {
-            return round($a_bytes / 1152921504606846976, 2) . ' EB';
-        } elseif ($a_bytes < 1208925819614629174706176) {
-            return round($a_bytes / 1180591620717411303424, 2) . ' ZB';
-        } else {
-            return round($a_bytes / 1208925819614629174706176, 2) . ' YB';
         }
     }
 }

@@ -255,7 +255,7 @@
                                                     <?php echo $fileInfo['name']; ?>
                                                 </a>
                                             <?php } else { ?>
-                                                <a target="_blank" href="<?php echo $this->myTag->getUrl($this->view, 'download', array('file' => $fileInfo['path'], '__SHOWBYIFRAME__' => 0)); ?>" class="file-name" title="files/class.Diff.php">
+                                                <a target="_blank" href="<?php echo $this->myTag->getUrl($this->view, 'download', array('file' => $fileInfo['path'], '__SHOWBYIFRAME__' => 0)); ?>" class="file-name" title="<?php echo $fileInfo['path']; ?>">
                                                     <?php echo $fileInfo['name']; ?>
                                                 </a>
                                             <?php } ?>

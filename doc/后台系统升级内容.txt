@@ -36,7 +36,9 @@
 034 列表页实现了树形展示
 035 将select2废弃 统一到select
 036 增加了媒体管理 主要管理 public/upload/目录下的文件资源
-
+037 增加了chartjs图表展示 https://github.com/laravel-admin-extensions/chartjs
+038 增加了图片lightbox-gallery展示 https://github.com/laravel-admin-extensions/grid-lightbox
+039 增加了logviewer管理 主要管理 public/logs/目录下的文件内容
 
 
 
