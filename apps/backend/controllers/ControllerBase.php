@@ -10,7 +10,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
     protected $__SHOWBYIFRAME__ = 0;
 
     // 是否在应急状态
-    protected $__INEMERGENCY__ = 0;
+    protected $__INEMERGENCY__ = false;
 
     // 应急菜单
     protected $_emergency_menus = <<<EOT

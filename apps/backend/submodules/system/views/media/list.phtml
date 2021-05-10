@@ -437,12 +437,12 @@
                 data: formData,
                 async: false,
                 success: function(data) {
-                    $.pjax.reload('#pjax-container');
                     if (typeof data === 'object') {
                         if (!data.error) {
                             // console.log(data);
                             // console.log(typeof data);
                             toastr.success(data.message);
+                            $.pjax.reload('#pjax-container');
                         } else {
                             toastr.error(data.message);
                         }
@@ -472,11 +472,10 @@
                     _token: LA.token,
                 },
                 success: function(data) {
-                    $.pjax.reload('#pjax-container');
-
                     if (typeof data === 'object') {
                         if (!data.error) {
                             toastr.success(data.message);
+                            $.pjax.reload('#pjax-container');
                         } else {
                             toastr.error(data.message);
                         }
@@ -503,11 +502,11 @@
                 data: formData,
                 async: false,
                 success: function(data) {
-                    $.pjax.reload('#pjax-container');
 
                     if (typeof data === 'object') {
                         if (!data.error) {
                             toastr.success(data.message);
+                            $.pjax.reload('#pjax-container');
                         } else {
                             toastr.error(data.message);
                         }

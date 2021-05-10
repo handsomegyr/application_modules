@@ -39,7 +39,13 @@
 037 增加了chartjs图表展示 https://github.com/laravel-admin-extensions/chartjs
 038 增加了图片lightbox-gallery展示 https://github.com/laravel-admin-extensions/grid-lightbox
 039 增加了logviewer管理 主要管理 public/logs/目录下的文件内容
-
+040 增加了API测试管理
+041 增加了prism功能 https://prismjs.com/
+042 增加了schedule管理
+043 增加了scaffold管理
+044 增加了database terminal管理
+045 增加了laravel artisan管理
+046 增加了应急后台管理(当数据库挂了的时候也能进入后台查看报错信息)
 
 
 

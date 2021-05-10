@@ -1,0 +1,331 @@
+<div class="row">
+    <div class="col-md-12">
+        <script>
+            $(function() {
+
+                var storageKey = function() {
+                    var connection = $('#connections').val();
+                    return 'la-' + connection + '-history'
+                };
+
+                $('#terminal-box').slimScroll({
+                    height: $('#pjax-container').height() - 247 + 'px'
+                });
+
+                function History() {
+                    this.index = this.count() - 1;
+                }
+
+                History.prototype.store = function() {
+                    var history = localStorage.getItem(storageKey());
+                    if (!history) {
+                        history = [];
+                    } else {
+                        history = JSON.parse(history);
+                    }
+                    return history;
+                };
+
+                History.prototype.push = function(record) {
+                    var history = this.store();
+                    history.push(record);
+                    localStorage.setItem(storageKey(), JSON.stringify(history));
+
+                    this.index = this.count() - 1;
+                };
+
+                History.prototype.count = function() {
+                    return this.store().length;
+                };
+
+                History.prototype.up = function() {
+                    if (this.index > 0) {
+                        this.index--;
+                    }
+
+                    return this.store()[this.index];
+                };
+
+                History.prototype.down = function() {
+                    if (this.index < this.count() - 1) {
+                        this.index++;
+                    }
+
+                    return this.store()[this.index];
+                };
+
+                History.prototype.clear = function() {
+                    localStorage.removeItem(storageKey());
+                };
+
+                var history = new History;
+
+                var send = function() {
+
+                    var $input = $('#terminal-query');
+
+                    $.ajax({
+                        url: location.pathname,
+                        method: 'post',
+                        data: {
+                            c: $input.val(),
+                            _token: LA.token
+                        },
+                        success: function(response) {
+
+                            history.push($input.val());
+
+                            $('#terminal-box')
+                                .append('<div class="item"><small class="label label-default"> > artisan ' + $input.val() + '<\/small><\/div>')
+                                .append('<div class="item">' + response + '<\/div>')
+                                .slimScroll({
+                                    scrollTo: $("#terminal-box")[0].scrollHeight
+                                });
+
+                            $input.val('');
+                        }
+                    });
+                };
+
+                $('#terminal-query').on('keyup', function(e) {
+
+                    e.preventDefault();
+
+                    if (e.keyCode == 13) {
+                        send();
+                    }
+
+                    if (e.keyCode == 38) {
+                        $(this).val(history.up());
+                    }
+
+                    if (e.keyCode == 40) {
+                        $(this).val(history.down());
+                    }
+                });
+
+                $('#terminal-clear').click(function() {
+                    $('#terminal-box').text('');
+                    //history.clear();
+                });
+
+                $('.loaded-command').click(function() {
+                    $('#terminal-query').val($(this).html() + ' ');
+                    $('#terminal-query').focus();
+                });
+
+                $('#terminal-send').click(function() {
+                    send();
+                });
+
+            });
+        </script>
+        <!-- Chat box -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <i class="fa fa-terminal"></i>
+            </div>
+            <div class="box-body chat" id="terminal-box">
+                <!-- chat item -->
+
+                <!-- /.item -->
+            </div>
+            <!-- /.chat -->
+            <div class="box-footer with-border">
+
+                <div style="margin-bottom: 10px;">
+
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default btn-flat">admin</button>
+                        <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">admin:make</a></li>
+                            <li><a href="#" class="loaded-command">admin:menu</a></li>
+                            <li><a href="#" class="loaded-command">admin:install</a></li>
+                            <li><a href="#" class="loaded-command">admin:publish</a></li>
+                            <li><a href="#" class="loaded-command">admin:uninstall</a></li>
+                            <li><a href="#" class="loaded-command">admin:import</a></li>
+                            <li><a href="#" class="loaded-command">admin:create-user</a></li>
+                            <li><a href="#" class="loaded-command">admin:reset-password</a></li>
+                            <li><a href="#" class="loaded-command">admin:extend</a></li>
+                            <li><a href="#" class="loaded-command">admin:export-seed</a></li>
+                            <li><a href="#" class="loaded-command">admin:minify</a></li>
+                            <li><a href="#" class="loaded-command">admin:form</a></li>
+                            <li><a href="#" class="loaded-command">admin:permissions</a></li>
+                            <li><a href="#" class="loaded-command">admin:action</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default btn-flat">backup</button>
+                        <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">backup:run</a></li>
+                            <li><a href="#" class="loaded-command">backup:clean</a></li>
+                            <li><a href="#" class="loaded-command">backup:list</a></li>
+                            <li><a href="#" class="loaded-command">backup:monitor</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default btn-flat">cache</button>
+                        <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">cache:clear</a></li>
+                            <li><a href="#" class="loaded-command">cache:forget</a></li>
+                            <li><a href="#" class="loaded-command">cache:table</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default btn-flat">config</button>
+                        <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">config:cache</a></li>
+                            <li><a href="#" class="loaded-command">config:clear</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default btn-flat">make</button>
+                        <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">make:auth</a></li>
+                            <li><a href="#" class="loaded-command">make:command</a></li>
+                            <li><a href="#" class="loaded-command">make:controller</a></li>
+                            <li><a href="#" class="loaded-command">make:event</a></li>
+                            <li><a href="#" class="loaded-command">make:exception</a></li>
+                            <li><a href="#" class="loaded-command">make:factory</a></li>
+                            <li><a href="#" class="loaded-command">make:job</a></li>
+                            <li><a href="#" class="loaded-command">make:listener</a></li>
+                            <li><a href="#" class="loaded-command">make:mail</a></li>
+                            <li><a href="#" class="loaded-command">make:middleware</a></li>
+                            <li><a href="#" class="loaded-command">make:migration</a></li>
+                            <li><a href="#" class="loaded-command">make:model</a></li>
+                            <li><a href="#" class="loaded-command">make:notification</a></li>
+                            <li><a href="#" class="loaded-command">make:policy</a></li>
+                            <li><a href="#" class="loaded-command">make:provider</a></li>
+                            <li><a href="#" class="loaded-command">make:request</a></li>
+                            <li><a href="#" class="loaded-command">make:resource</a></li>
+                            <li><a href="#" class="loaded-command">make:rule</a></li>
+                            <li><a href="#" class="loaded-command">make:seeder</a></li>
+                            <li><a href="#" class="loaded-command">make:test</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default btn-flat">migrate</button>
+                        <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">migrate:fresh</a></li>
+                            <li><a href="#" class="loaded-command">migrate:install</a></li>
+                            <li><a href="#" class="loaded-command">migrate:refresh</a></li>
+                            <li><a href="#" class="loaded-command">migrate:reset</a></li>
+                            <li><a href="#" class="loaded-command">migrate:rollback</a></li>
+                            <li><a href="#" class="loaded-command">migrate:status</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default btn-flat">queue</button>
+                        <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">queue:failed</a></li>
+                            <li><a href="#" class="loaded-command">queue:flush</a></li>
+                            <li><a href="#" class="loaded-command">queue:forget</a></li>
+                            <li><a href="#" class="loaded-command">queue:listen</a></li>
+                            <li><a href="#" class="loaded-command">queue:restart</a></li>
+                            <li><a href="#" class="loaded-command">queue:retry</a></li>
+                            <li><a href="#" class="loaded-command">queue:work</a></li>
+                            <li><a href="#" class="loaded-command">queue:failed-table</a></li>
+                            <li><a href="#" class="loaded-command">queue:table</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default btn-flat">route</button>
+                        <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">route:cache</a></li>
+                            <li><a href="#" class="loaded-command">route:clear</a></li>
+                            <li><a href="#" class="loaded-command">route:list</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default btn-flat">schedule</button>
+                        <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">schedule:finish</a></li>
+                            <li><a href="#" class="loaded-command">schedule:run</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-twitter btn-flat">Other</button>
+                        <button type="button" class="btn btn-twitter btn-flat dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="loaded-command">admin</a></li>
+                            <li><a href="#" class="loaded-command">app:name</a></li>
+                            <li><a href="#" class="loaded-command">auth:clear-resets</a></li>
+                            <li><a href="#" class="loaded-command">clear-compiled</a></li>
+                            <li><a href="#" class="loaded-command">db:seed</a></li>
+                            <li><a href="#" class="loaded-command">debugbar:clear</a></li>
+                            <li><a href="#" class="loaded-command">down</a></li>
+                            <li><a href="#" class="loaded-command">env</a></li>
+                            <li><a href="#" class="loaded-command">event:generate</a></li>
+                            <li><a href="#" class="loaded-command">help</a></li>
+                            <li><a href="#" class="loaded-command">inspire</a></li>
+                            <li><a href="#" class="loaded-command">key:generate</a></li>
+                            <li><a href="#" class="loaded-command">list</a></li>
+                            <li><a href="#" class="loaded-command">migrate</a></li>
+                            <li><a href="#" class="loaded-command">notifications:table</a></li>
+                            <li><a href="#" class="loaded-command">optimize</a></li>
+                            <li><a href="#" class="loaded-command">package:discover</a></li>
+                            <li><a href="#" class="loaded-command">preset</a></li>
+                            <li><a href="#" class="loaded-command">serve</a></li>
+                            <li><a href="#" class="loaded-command">session:table</a></li>
+                            <li><a href="#" class="loaded-command">storage:link</a></li>
+                            <li><a href="#" class="loaded-command">tinker</a></li>
+                            <li><a href="#" class="loaded-command">up</a></li>
+                            <li><a href="#" class="loaded-command">vendor:publish</a></li>
+                            <li><a href="#" class="loaded-command">view:clear</a></li>
+                        </ul>
+                    </div>
+
+                    <button type="button" class="btn btn-success" id="terminal-send"><i class="fa fa-paper-plane"></i> send</button>
+
+                    <button type="button" class="btn btn-warning" id="terminal-clear"><i class="fa fa-refresh"></i> clear</button>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon" style="font-size: 18px; line-height: 1.3333333;">artisan</span>
+                    <input class="form-control input-lg" id="terminal-query" placeholder="command" style="border-left: 0px;padding-left: 0px;">
+                </div>
+            </div>
+        </div>
+        <!-- /.box (chat box) -->
+    </div>
+</div>

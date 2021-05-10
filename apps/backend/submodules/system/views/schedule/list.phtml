@@ -1,0 +1,127 @@
+<div class="row">
+    <div class="col-md-12">
+        <script data-exec-on-popstate>
+            $(function() {
+                $('.run-task').click(function(e) {
+                    var id = $(this).data('id');
+                    NProgress.start();
+                    $.ajax({
+                        method: 'POST',
+                        url: '<?php echo $this->myTag->getUrl($this->view, 'run', array('__SHOWBYIFRAME__' => 0)); ?>',
+                        data: {
+                            id: id,
+                            _token: LA.token
+                        },
+                        success: function(data) {
+                            if (typeof data === 'object') {
+                                if (!data.error) {
+                                    $('.output-box').removeClass('hide');
+                                    $('.output-box .output-body').html(data.data);
+                                }
+                            }
+                            NProgress.done();
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <style>
+            .output-body {
+                white-space: pre-wrap;
+                background: #000000;
+                color: #00fa4a;
+                padding: 10px;
+                border-radius: 0;
+            }
+        </style>
+
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Task</th>
+                            <th>Run at</th>
+                            <th>Next run time</th>
+                            <th>Description</th>
+                            <th>Run</th>
+                        </tr>
+                        <tr>
+                            <td>1.</td>
+                            <td><code>artisan inspire</code></td>
+                            <td><span class="label label-success">0 * * * * *</span>&nbsp;At the hour past every hour on every day.</td>
+                            <td>2021-05-08 18:00:00</td>
+                            <td></td>
+                            <td><a class="btn btn-xs btn-primary run-task" data-id="1">Run</a></td>
+                        </tr>
+                        <tr>
+                            <td>2.</td>
+                            <td><code>artisan route:list</code></td>
+                            <td><span class="label label-success">*/10 * * * * *</span>&nbsp;Every consecutive 10 minutes past every hour on every day.</td>
+                            <td>2021-05-08 17:50:00</td>
+                            <td></td>
+                            <td><a class="btn btn-xs btn-primary run-task" data-id="2">Run</a></td>
+                        </tr>
+                        <tr>
+                            <td>3.</td>
+                            <td><code>ls -al</code></td>
+                            <td><span class="label label-success">0 10 * * 1 *</span>&nbsp;At 10:00 on Mondays.</td>
+                            <td>2021-05-10 10:00:00</td>
+                            <td></td>
+                            <td><a class="btn btn-xs btn-primary run-task" data-id="3">Run</a></td>
+                        </tr>
+                        <tr>
+                            <td>4.</td>
+                            <td><code>date</code></td>
+                            <td><span class="label label-success">0 10 * * 1 *</span>&nbsp;At 10:00 on Mondays.</td>
+                            <td>2021-05-10 10:00:00</td>
+                            <td></td>
+                            <td><a class="btn btn-xs btn-primary run-task" data-id="4">Run</a></td>
+                        </tr>
+                        <tr>
+                            <td>5.</td>
+                            <td><code>cal</code></td>
+                            <td><span class="label label-success">0 10 * * 1-5 *</span>&nbsp;At 10:00 on Mondays, Tuesdays, Wednesdays, Thursdays and Fridays.</td>
+                            <td>2021-05-10 10:00:00</td>
+                            <td>Show the calendar</td>
+                            <td><a class="btn btn-xs btn-primary run-task" data-id="5">Run</a></td>
+                        </tr>
+                        <tr>
+                            <td>6.</td>
+                            <td><code>free -m</code></td>
+                            <td><span class="label label-success">0 10 5 * * *</span>&nbsp;At 10:00 on the 5th of every month.</td>
+                            <td>2021-06-05 10:00:00</td>
+                            <td></td>
+                            <td><a class="btn btn-xs btn-primary run-task" data-id="6">Run</a></td>
+                        </tr>
+                        <tr>
+                            <td>7.</td>
+                            <td><code>uptime</code></td>
+                            <td><span class="label label-success">0,30 * * * * *</span>&nbsp;At the hour and every 30 minutes past every hour on every day.</td>
+                            <td>2021-05-08 18:00:00</td>
+                            <td></td>
+                            <td><a class="btn btn-xs btn-primary run-task" data-id="7">Run</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+        <div class="box box-default output-box hide">
+            <div class="box-header with-border">
+                <i class="fa fa-terminal"></i>
+
+                <h3 class="box-title">Output</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <pre class="output-body"></pre>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>

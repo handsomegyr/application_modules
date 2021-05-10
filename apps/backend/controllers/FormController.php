@@ -152,7 +152,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                     $field['data']['type'] == "file" ||
                     $field['data']['type'] == "multifile"
                 ) {
-                    if ($field['form']['input_type'] == 'image' || $field['form']['input_type'] == 'multipleImage') {
+                    if (!empty($field['form']['input_type']) && ($field['form']['input_type'] == 'image' || $field['form']['input_type'] == 'multipleImage')) {
                         $field['list']['render'] = 'img';
                     }
                 }

@@ -24,8 +24,11 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
 
     public function initialize()
     {
-        $this->modelUser = new User();
         parent::initialize();
+        // 如果不在应急状态下
+        if (!$this->__INEMERGENCY__) {
+            $this->modelUser = new User();
+        }
     }
 
     /**
@@ -127,8 +130,12 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
     public function logoutAction()
     {
         try {
-            // session_destroy();
-            $this->modelUser->clearCookies();
+            @session_destroy();
+
+            // 如果不在应急状态下
+            if (!$this->__INEMERGENCY__) {
+                $this->modelUser->clearCookies();
+            }
             $url = $this->getUrl("login");
             $this->_redirect($url);
         } catch (\Exception $e) {
