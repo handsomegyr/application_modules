@@ -133,6 +133,7 @@ class UserController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'ip',
                 'is_show' => false
             ),
             'list' => array(

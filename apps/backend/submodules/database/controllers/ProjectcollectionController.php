@@ -460,6 +460,7 @@ class ProjectcollectionController extends \App\Backend\Controllers\FormControlle
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -514,6 +515,7 @@ class ProjectcollectionController extends \App\Backend\Controllers\FormControlle
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'email',
                 'is_show' => true,
                 'items' => ''
             ),

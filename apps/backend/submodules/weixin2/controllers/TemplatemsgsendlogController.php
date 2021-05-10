@@ -182,6 +182,7 @@ class TemplatemsgsendlogController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '模板跳转链接（海外帐号没有跳转能力）',
@@ -241,6 +242,7 @@ class TemplatemsgsendlogController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'color',
                 'is_show' => true,
                 'items' => '',
                 'help' => '模板内容字体颜色，不填默认为黑色',
@@ -297,6 +299,7 @@ class TemplatemsgsendlogController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar），要求该小程序已发布，暂不支持小游戏',

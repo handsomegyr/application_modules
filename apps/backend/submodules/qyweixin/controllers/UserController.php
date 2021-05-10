@@ -333,6 +333,7 @@ class UserController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'phone',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -479,6 +480,7 @@ class UserController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'email',
                 'is_show' => true,
                 'items' => '',
                 'help' => '长度6~64个字节，且为有效的email格式。企业内必须唯一，mobile/email二者不能同时为空',
@@ -841,6 +843,7 @@ class UserController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '第三方仅通讯录应用可获取'
@@ -1017,6 +1020,7 @@ class UserController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),

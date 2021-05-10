@@ -245,6 +245,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'phone',
                 'is_show' => false
             ),
             'list' => array(
@@ -264,7 +265,8 @@ class GoodsController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'text',                
+                'content_type' => 'email',
                 'is_show' => false
             ),
             'list' => array(
@@ -329,6 +331,7 @@ class GoodsController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'ip',
                 'is_show' => false
             ),
             'list' => array(

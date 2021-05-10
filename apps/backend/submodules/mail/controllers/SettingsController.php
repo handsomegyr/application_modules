@@ -73,6 +73,7 @@ class SettingsController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'email',
                 'is_show' => true
             ),
             'list' => array(

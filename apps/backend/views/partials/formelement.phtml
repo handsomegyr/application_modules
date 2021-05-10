@@ -3,8 +3,8 @@
     if (empty($field['form']['is_show'])) {
         continue;
     }
-    
-    if (!array_key_exists($key, $this->view->row)) {//!isset($this->view->row[$key]) 
+
+    if (!array_key_exists($key, $this->view->row)) { //!isset($this->view->row[$key]) 
         $this->view->row[$key] = "";
         // echo json_encode($this->view->row,true);
         // echo $key;
@@ -19,6 +19,7 @@
 
     if (empty($field['form']['partial'])) {
         //print_r($field);die('xxx');
+        $otherclassList=array();
         $prepend = "";
         $append = "";
         $value = "";
@@ -45,7 +46,22 @@
             $value = $this->view->row[$key];
             $this->partial('partials/form/ueditor');
         } elseif ($field['form']['input_type'] == "text") {
-            $prepend = '<i class="fa fa-pencil fa-fw"></i>';
+            if (empty($field['form']['content_type'])) {
+                $prepend = '<i class="fa fa-pencil fa-fw"></i>';
+            } else {
+                if ($field['form']['content_type'] == 'email') {
+                    $prepend = '<i class="fa fa-envelope fa-fw"></i>';
+                } elseif ($field['form']['content_type'] == 'phone') {
+                    $prepend = '<i class="fa fa-phone fa-fw"></i>';
+                } elseif ($field['form']['content_type'] == 'url') {
+                    $prepend = '<i class="fa fa-internet-explorer fa-fw"></i>';
+                } elseif ($field['form']['content_type'] == 'ip') {
+                    $prepend = '<i class="fa fa-laptop fa-fw"></i>';
+                } elseif ($field['form']['content_type'] == 'color') {
+                    $otherclassList = array('color');
+                    $prepend = '<i></i>';
+                }
+            }
             $value = $this->view->row[$key];
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "password") {
@@ -57,6 +73,7 @@
             $value = intval($this->view->row[$key]);
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "currency") {
+            $prepend = '$';
             $value = $this->view->row[$key];
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "decimal") {

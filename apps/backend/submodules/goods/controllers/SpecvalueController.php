@@ -127,6 +127,7 @@ class SpecvalueController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'color',
                 'is_show' => true
             ),
             'list' => array(

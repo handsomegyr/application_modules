@@ -276,6 +276,7 @@ class QrcodeController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '获取的二维码ticket，凭借此ticket可以在有效时间内换取二维码。',
@@ -304,6 +305,7 @@ class QrcodeController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '二维码图片解析后的地址，开发者可根据该地址自行生成需要的二维码图片',

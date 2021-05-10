@@ -394,6 +394,7 @@ class UserController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。'
@@ -782,6 +783,7 @@ class UserController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'phone',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -809,6 +811,7 @@ class UserController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),

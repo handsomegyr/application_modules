@@ -193,6 +193,7 @@ class LogController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'ip',
                 'is_show' => true,
                 'items' => ''
             ),

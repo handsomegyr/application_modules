@@ -679,6 +679,7 @@ class MaterialController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '图片素材的图片URL（仅新增图片素材时会返回该字段）',

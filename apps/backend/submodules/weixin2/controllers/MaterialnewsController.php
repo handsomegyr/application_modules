@@ -238,6 +238,7 @@ class MaterialnewsController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '图文消息的原文地址，即点击“阅读原文”后的URL',

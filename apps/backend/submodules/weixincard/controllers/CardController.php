@@ -267,6 +267,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'name' => '卡券的商户logo，尺寸为 300*300 例如http://mmbiz.qpic.cn/',
@@ -748,6 +749,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'phone',
                 'is_show' => true,
                 'items' => '',
                 'help' => '客服电话 例如40012234',
@@ -888,6 +890,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '顶部居中的url，仅在卡券状态正常(可以核销)时显示。例如www.xxx.com',
@@ -916,6 +919,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '自定义跳转外链的入口名字。详情见活用自定义入口 例如立即使用',
@@ -944,6 +948,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '自定义跳转的URL。例如xxxx.com',
@@ -1028,6 +1033,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '入口跳转外链的地址链接。例如xxxx.com',
@@ -1409,6 +1415,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -1686,6 +1693,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -1740,6 +1748,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -1794,6 +1803,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -1929,6 +1939,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '绑定旧卡的 url，与“ activate_url”字段二选一必填，用户领取会员卡后显示“ 绑定会员卡” 。',
@@ -1957,6 +1968,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '激活会员卡的 url，与“ bind_old_card_url”字段二选一必填。 用户领取会员卡后显示“激活会员卡”。',
@@ -2069,6 +2081,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '会员卡类型专属营销入口1入口跳转链接',
@@ -2153,6 +2166,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '会员卡类型专属营销入口2入口跳转链接',
@@ -2377,6 +2391,7 @@ class CardController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '飞机票类型专用，在线值机的链接 例如xxx.com',

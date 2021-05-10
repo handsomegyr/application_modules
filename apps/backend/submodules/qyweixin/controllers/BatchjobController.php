@@ -184,6 +184,7 @@ class BatchjobController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '企业应用接收企业微信推送请求的访问协议和地址，支持http或https协议',

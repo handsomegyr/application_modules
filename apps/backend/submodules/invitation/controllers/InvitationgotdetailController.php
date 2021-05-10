@@ -147,6 +147,7 @@ class InvitationgotdetailController extends \App\Backend\Controllers\FormControl
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -228,6 +229,7 @@ class InvitationgotdetailController extends \App\Backend\Controllers\FormControl
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),

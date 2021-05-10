@@ -424,6 +424,7 @@ class MenuController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '网页链接，用户点击菜单可打开链接，不超过1024字节。view、miniprogram类型必须',

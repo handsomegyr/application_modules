@@ -175,6 +175,7 @@ class ShorturlController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '需要转换的长链接，支持http://、https://、weixin://wxpay 格式的url',
@@ -203,6 +204,7 @@ class ShorturlController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),

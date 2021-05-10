@@ -113,7 +113,8 @@ class UserController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'text',                
+                'content_type' => 'url',
                 'is_show' => true
             ),
             'list' => array(

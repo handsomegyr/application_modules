@@ -33,6 +33,7 @@ class BannerController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true
             ),
             'list' => array(

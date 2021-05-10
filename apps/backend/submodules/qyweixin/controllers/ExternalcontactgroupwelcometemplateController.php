@@ -457,6 +457,7 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '图片的链接，仅可使用上传图片接口得到的链接',
@@ -512,6 +513,7 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),
@@ -566,6 +568,7 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => ''
             ),

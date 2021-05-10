@@ -39,6 +39,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'email',
                 'is_show' => true
             ),
             'list' => array(
@@ -81,6 +82,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'phone',
                 'is_show' => true
             ),
             'list' => array(
@@ -193,6 +195,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'phone',
                 'is_show' => true
             ),
             'list' => array(
@@ -715,6 +718,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'ip',
                 'is_show' => true
             ),
             'list' => array(
@@ -735,6 +739,7 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'ip',
                 'is_show' => true
             ),
             'list' => array(

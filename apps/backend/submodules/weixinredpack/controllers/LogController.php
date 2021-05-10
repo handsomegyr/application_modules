@@ -130,6 +130,7 @@ class LogController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => false
             ),
             'list' => array(
@@ -151,6 +152,7 @@ class LogController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'ip',
                 'is_show' => true
             ),
             'list' => array(

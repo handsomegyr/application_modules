@@ -333,6 +333,7 @@ class AgentmsgController extends BaseController
             ),
             'form' => array(
                 'input_type' => 'text',
+                'content_type' => 'url',
                 'is_show' => true,
                 'items' => '',
                 'help' => '点击后跳转的链接。最长2048字节，请确保包含了协议头(http/https)',
