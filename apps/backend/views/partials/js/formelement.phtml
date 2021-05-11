@@ -69,7 +69,15 @@
                 });
             <?php } ?>
         <?php } elseif ($field['form']['input_type'] == "icon") { ?>
-            $('.<?php echo $key ?>').iconpicker({placement:'bottomLeft'});            
+            $('.<?php echo $key ?>').iconpicker({placement:'bottomLeft'});
+        <?php } elseif ($field['form']['input_type'] == "checkbox") { ?>
+            $('.check-all-<?php echo $key ?>').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChanged', function () {
+                if (this.checked) {
+                    $('.checkbox-<?php echo $key ?>').iCheck('check');
+                } else {
+                    $('.checkbox-<?php echo $key ?>').iCheck('uncheck');
+                }
+            });
         <?php } elseif ($field['form']['input_type'] == "ueditor") { ?>
             UE.delEditor("<?php echo $key ?>");
             var ue_<?php echo $key ?> = UE.getEditor('<?php echo $key ?>');
@@ -221,18 +229,23 @@
     <?php } ?>
 <?php } ?>
 //iCheck for checkbox and radio inputs
-$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-    checkboxClass: 'icheckbox_minimal-blue',
-    radioClass: 'iradio_minimal-blue'
-});
+//$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+    //    checkboxClass: 'icheckbox_minimal-blue',
+    //    radioClass: 'iradio_minimal-blue'
+    //});
 //Red color scheme for iCheck
-$('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-    checkboxClass: 'icheckbox_minimal-red',
-    radioClass: 'iradio_minimal-red'
-});
+//$('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+    //    checkboxClass: 'icheckbox_minimal-red',
+    //    radioClass: 'iradio_minimal-red'
+    //});
 //Flat red color scheme for iCheck
-$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-    checkboxClass: 'icheckbox_flat-green',
-    radioClass: 'iradio_flat-green'
-});
+//$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+    //    checkboxClass: 'icheckbox_flat-green',
+    //    radioClass: 'iradio_flat-green'
+    //});
+$('.radio').iCheck({radioClass:'iradio_minimal-blue'});
+$('.checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'});
 $('.color').parent().colorpicker([]);
+$('.ip').inputmask({"alias":"ip"});
+$('.mobile').inputmask({"mask":"99999999999"});
+//$('.currency').inputmask({"alias":"currency","radixPoint":".","prefix":"","removeMaskOnSubmit":true});

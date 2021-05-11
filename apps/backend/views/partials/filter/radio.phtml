@@ -6,9 +6,9 @@
 
             <label <?php if (!empty($inline)) { ?>class="radio-inline" <?php } ?>>
                 <?php if (isset($label['value'])) { ?>
-                    <input type="radio" id="<?php echo 'search_' . $key ?>" name="<?php echo 'search_' . $key ?>" value="<?php echo $label['value'] ?>" class="minimal <?php echo $key ?>" <?php if (!empty($_SESSION['search_filter'][$key]) && $_SESSION['search_filter'][$key] == $label['value']) { ?>checked<?php } ?> />&nbsp;<?php echo $label['name'] ?>&nbsp;&nbsp;
+                    <input type="radio" id="<?php echo 'search_' . $key ?>" name="<?php echo 'search_' . $key ?>" value="<?php echo $label['value'] ?>" class="minimal radio <?php echo $key ?>" <?php if (!empty($_SESSION['search_filter'][$key]) && $_SESSION['search_filter'][$key] == $label['value']) { ?>checked<?php } ?> />&nbsp;<?php echo $label['name'] ?>&nbsp;&nbsp;
                 <?php } else { ?>
-                    <input type="radio" id="<?php echo 'search_' . $key ?>" name="<?php echo 'search_' . $key ?>" value="<?php echo $option ?>" class="minimal <?php echo $key ?>" <?php if (!empty($_SESSION['search_filter'][$key]) && $_SESSION['search_filter'][$key] == $option) { ?>checked<?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
+                    <input type="radio" id="<?php echo 'search_' . $key ?>" name="<?php echo 'search_' . $key ?>" value="<?php echo $option ?>" class="minimal radio <?php echo $key ?>" <?php if (!empty($_SESSION['search_filter'][$key]) && $_SESSION['search_filter'][$key] == $option) { ?>checked<?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
                 <?php } ?>
             </label>
 

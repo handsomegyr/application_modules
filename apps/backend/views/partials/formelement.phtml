@@ -19,7 +19,8 @@
 
     if (empty($field['form']['partial'])) {
         //print_r($field);die('xxx');
-        $otherclassList=array();
+        $otherclassList = array();
+        $canCheckAll = false;
         $prepend = "";
         $append = "";
         $value = "";
@@ -52,10 +53,12 @@
                 if ($field['form']['content_type'] == 'email') {
                     $prepend = '<i class="fa fa-envelope fa-fw"></i>';
                 } elseif ($field['form']['content_type'] == 'phone') {
+                    $otherclassList = array('mobile');
                     $prepend = '<i class="fa fa-phone fa-fw"></i>';
                 } elseif ($field['form']['content_type'] == 'url') {
                     $prepend = '<i class="fa fa-internet-explorer fa-fw"></i>';
                 } elseif ($field['form']['content_type'] == 'ip') {
+                    $otherclassList = array('ip');
                     $prepend = '<i class="fa fa-laptop fa-fw"></i>';
                 } elseif ($field['form']['content_type'] == 'color') {
                     $otherclassList = array('color');
@@ -74,6 +77,7 @@
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "currency") {
             $prepend = '$';
+            $otherclassList = array('currency');
             $value = $this->view->row[$key];
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "decimal") {
@@ -95,6 +99,21 @@
             $inline = true;
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
             $this->partial('partials/form/radio');
+        } elseif ($field['form']['input_type'] == "checkbox") {
+            $canCheckAll = empty($field['form']['checkbox']['isCheckAll']) ? false : true;
+            if (!is_array($this->view->row[$key])) {
+                // 先用json转换
+                $value = \json_decode($this->view->row[$key], true);
+                // 如果失败就用逗号分隔
+                if (empty($value)) {
+                    $value = explode(',', $this->view->row[$key]);
+                }
+            } else {
+                $value = $this->view->row[$key];
+            }
+            $inline = true;
+            $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
+            $this->partial('partials/form/checkbox');
         } elseif ($field['form']['input_type'] == "select") {
             $inline = true;
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];

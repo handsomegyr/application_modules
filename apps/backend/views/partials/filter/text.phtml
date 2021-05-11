@@ -14,9 +14,12 @@
             </ul>
         </div>
     <?php } ?>
-    <div class="input-group-addon">
-        <i class="fa fa-<?php echo $icon ?>"></i>
-    </div>
 
-    <input type="<?php echo $type ?>" class="form-control <?php echo $key ?>" placeholder="<?php echo $field['search']['placeholder']; ?>" id="<?php echo 'search_' . $key ?>" name="<?php echo 'search_' . $key ?>" value="<?php echo $_SESSION['search_filter'][$key] ?>">
+    <?php if (!empty($prepend)) { ?>
+    <div class="input-group-addon">
+        <!-- <i class="fa fa-<?php echo $icon ?>"></i> -->
+        <?php echo $prepend ?>
+    </div>
+    <?php } ?>
+    <input type="<?php echo $type ?>" class="form-control <?php echo $key ?> <?php echo empty($otherclassList)?'':implode(' ',$otherclassList) ?>" placeholder="<?php echo $field['search']['placeholder']; ?>" id="<?php echo 'search_' . $key ?>" name="<?php echo 'search_' . $key ?>" value="<?php echo $_SESSION['search_filter'][$key] ?>">
 </div>

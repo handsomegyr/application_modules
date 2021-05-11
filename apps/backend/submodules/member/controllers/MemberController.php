@@ -46,7 +46,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['email_bind'] = array(
@@ -68,7 +68,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'list_type' => 1
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['mobile'] = array(
@@ -89,7 +89,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -112,7 +112,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'list_type' => 1
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -135,7 +135,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'list_type' => 1
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -156,7 +156,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['avatar'] = array(
@@ -180,7 +180,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'render' => 'img'
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -202,7 +202,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -224,7 +224,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -245,7 +245,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['constellation'] = array(
@@ -262,10 +262,10 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -283,10 +283,10 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -304,10 +304,10 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['qq'] = array(
@@ -324,10 +324,10 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -345,10 +345,10 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['signature'] = array(
@@ -365,10 +365,10 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['privacy'] = array(
@@ -388,7 +388,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['noticesettings'] = array(
@@ -408,7 +408,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['inviter_id'] = array(
@@ -428,7 +428,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -451,7 +451,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'list_type' => 1
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -474,7 +474,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'list_type' => 1
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -488,17 +488,16 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'required' => 1
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'currency',
                 'is_show' => true
             ),
             'list' => array(
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
-        );
-
+        );        
         $schemas['register_by'] = array(
             'name' => '注册方式',
             'data' => array(
@@ -511,13 +510,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->registerbyDatas
+                'items' => array_column($this->registerbyDatas, 'name', 'value')
             ),
             'list' => array(
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -532,13 +531,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['paypwd'] = array(
@@ -552,13 +551,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -573,13 +572,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['truename'] = array(
@@ -593,13 +592,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -614,13 +613,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -641,7 +640,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['reg_time'] = array(
@@ -662,7 +661,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['login_time'] = array(
@@ -683,7 +682,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['old_login_time'] = array(
@@ -704,7 +703,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['login_ip'] = array(
@@ -722,10 +721,10 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['old_login_ip'] = array(
@@ -743,10 +742,10 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['qqopenid'] = array(
@@ -766,7 +765,7 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['qqinfo'] = array(
@@ -780,13 +779,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'textarea',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
                 'is_show' => false
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['sinaopenid'] = array(
@@ -800,13 +799,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['sinainfo'] = array(
@@ -820,13 +819,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['points'] = array(
@@ -840,104 +839,98 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['available_predeposit'] = array(
             'name' => '预存款可用金额',
             'data' => array(
-                'type' => 'decimal',
-                'length' => 10
+                'type' => 'integer',
+                'length' => 11
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'currency',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['freeze_predeposit'] = array(
             'name' => '预存款冻结金额',
             'data' => array(
-                'type' => 'decimal',
-                'length' => 10
+                'type' => 'integer',
+                'length' => 11
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'currency',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['available_rc_balance'] = array(
             'name' => '可用充值卡余额',
             'data' => array(
-                'type' => 'decimal',
-                'length' => 10
+                'type' => 'integer',
+                'length' => 11
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'currency',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['freeze_rc_balance'] = array(
             'name' => '冻结充值卡余额',
             'data' => array(
-                'type' => 'decimal',
-                'length' => 10
+                'type' => 'integer',
+                'length' => 11
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
                 'input_type' => 'currency',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $informAllowDatas = array(
-            array(
-                'name' => '不可以',
-                'value' => '2'
-            ),
-            array(
-                'name' => '可以',
-                'value' => '1'
-            )
+            '1' => '可以',
+            '2' => '不可以'
         );
         $schemas['inform_allow'] = array(
             'name' => '是否允许举报',
@@ -954,10 +947,10 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'items' => $informAllowDatas
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['is_buy'] = array(
@@ -971,14 +964,14 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'radio',
-                'is_show' => false,
+                'is_show' => true,
                 'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['is_allowtalk'] = array(
@@ -992,14 +985,14 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'radio',
-                'is_show' => false,
+                'is_show' => true,
                 'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -1014,13 +1007,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -1035,13 +1028,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['cityid'] = array(
@@ -1055,13 +1048,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['provinceid'] = array(
@@ -1075,13 +1068,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['areainfo'] = array(
@@ -1095,13 +1088,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -1116,13 +1109,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['exppoints'] = array(
@@ -1136,13 +1129,13 @@ class MemberController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'number',
-                'is_show' => false
+                'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 

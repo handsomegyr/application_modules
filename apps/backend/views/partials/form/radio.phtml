@@ -12,9 +12,9 @@
 
                 <label <?php if (!empty($inline)) { ?>class="radio-inline" <?php } ?>>
                     <?php if (isset($label['value'])) { ?>
-                        <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="radio" name="<?php echo $key ?>" value="<?php echo $label['value'] ?>" class="minimal <?php echo $key ?>" <?php if ($this->view->row[$key] == $label['value']) { ?>checked<?php } ?> />&nbsp;<?php echo $label['name'] ?>&nbsp;&nbsp;
+                        <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="radio" name="<?php echo $key ?>" value="<?php echo $label['value'] ?>" class="minimal radio radio-<?php echo $key ?>" <?php if ($this->view->row[$key] == $label['value']) { ?>checked<?php } ?> />&nbsp;<?php echo $label['name'] ?>&nbsp;&nbsp;
                     <?php } else { ?>
-                        <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="radio" name="<?php echo $key ?>" value="<?php echo $option ?>" class="minimal <?php echo $key ?>" <?php if ($this->view->row[$key] == $option) { ?>checked<?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
+                        <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="radio" name="<?php echo $key ?>" value="<?php echo $option ?>" class="minimal radio radio-<?php echo $key ?>" <?php if ($this->view->row[$key] == $option) { ?>checked<?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
                     <?php } ?>
                 </label>
 

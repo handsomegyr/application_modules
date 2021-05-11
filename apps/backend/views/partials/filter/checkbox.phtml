@@ -5,7 +5,7 @@
             <?php echo !empty($inline) ? '<span class="icheck">' : '<div class="checkbox icheck">'; ?>
 
             <label <?php if (!empty($inline)) { ?>class="checkbox-inline" <?php } ?>>
-                <input type="checkbox" name="<?php echo 'search_' . $key ?>[]" value="<?php echo $option ?>" class="<?php echo $key ?>" <?php if (!empty($_SESSION['search_filter'][$key]) && in_array($option, array($_SESSION['search_filter'][$key]))) { ?>'checked' <?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
+                <input type="checkbox" name="<?php echo 'search_' . $key ?>[]" value="<?php echo $option ?>" class="checkbox <?php echo $key ?>" <?php if (!empty($_SESSION['search_filter'][$key]) && in_array($option, array($_SESSION['search_filter'][$key]))) { ?>'checked' <?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
             </label>
 
             <?php echo !empty($inline) ? '</span>' : '</div>'; ?>

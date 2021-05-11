@@ -11,7 +11,9 @@
                     $field['search']['items'] = empty($field['search']['items']) ? (!empty($field['form']['items']) ? $field['form']['items'] : array()) : $field['search']['items'];
                     $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];
                     $field['search']['cascadeSettings'] = empty($field['search']['cascadeSettings']) ? (!empty($field['form']['cascadeSettings']) ? $field['form']['cascadeSettings'] : array()) : $field['search']['cascadeSettings'];
-
+                    if ($field['search']['input_type'] == 'checkbox') {
+                        $field['search']['input_type'] = 'select';
+                    }
                     ?>
                     <?php if (!empty($field['search']['is_show']) && !empty($field['search']['input_type'])) { ?>
 
@@ -31,7 +33,7 @@
                             $("#search_<?php echo $key ?>_to").on("dp.change", function(e) {
                                 $('#search_<?php echo $key ?>_from').data("DateTimePicker").maxDate(e.date);
                             });
-                        <?php } elseif ($field['search']['input_type'] == "select" || $field['search']['input_type'] == "radio") { ?>
+                        <?php } elseif ($field['search']['input_type'] == "select" || $field['search']['input_type'] == "radio" || $field['search']['input_type'] == "checkbox") { ?>
                             $('.<?php echo $key ?>').select2({
                                 "allowClear": true,
                                 "placeholder": {
@@ -47,7 +49,7 @@
                                     var data1 = [];
                                     Object.assign(data1, {
                                         _token: LA.token,
-                                        <?php echo !empty($field['search']['cascadeSettings']['param_name'])?$field['search']['cascadeSettings']['param_name']:$field['search']['cascadeSettings']['source'] ?>: selectedValue,
+                                        <?php echo !empty($field['search']['cascadeSettings']['param_name']) ? $field['search']['cascadeSettings']['param_name'] : $field['search']['cascadeSettings']['source'] ?>: selectedValue,
                                     });
                                     var formData1 = {};
                                     for (var key in data1) {
@@ -69,9 +71,9 @@
                                                     text: '请选择...'
                                                 };
                                                 response.content.unshift(firstData);
-                                                response.content.forEach(item=>{
+                                                response.content.forEach(item => {
                                                     var option = new Option(item.text, item.id, false, false);
-                                                    cascadeSelect.append(option);                                    
+                                                    cascadeSelect.append(option);
                                                 });
                                                 cascadeSelect.trigger('change');
                                                 // manually trigger the `select2:select` event
@@ -80,19 +82,19 @@
                                                     params: {
                                                         data: response.content[0]
                                                     }
-                                                });                                
+                                                });
                                             } else {
-                                                
+
                                             }
                                         },
                                         error: function(request) {
-                                            
+
                                         }
                                     });
                                 });
                             <?php } ?>
 
-                        <?php } elseif ($field['search']['input_type'] == "number") { ?>
+                        <?php } elseif ($field['search']['input_type'] == "number" || $field['search']['input_type'] == "currency") { ?>
                             $('.<?php echo $key ?>:not(.initialized)')
                                 .addClass('initialized')
                                 .bootstrapNumber({
@@ -104,21 +106,34 @@
                     <?php } ?>
                 <?php } ?>
 
-                //iCheck for checkbox and radio inputs
-                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                    checkboxClass: 'icheckbox_minimal-blue',
+                // //iCheck for checkbox and radio inputs
+                // $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                //     checkboxClass: 'icheckbox_minimal-blue',
+                //     radioClass: 'iradio_minimal-blue'
+                // })
+                // //Red color scheme for iCheck
+                // $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+                //     checkboxClass: 'icheckbox_minimal-red',
+                //     radioClass: 'iradio_minimal-red'
+                // })
+                // //Flat red color scheme for iCheck
+                // $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+                //     checkboxClass: 'icheckbox_flat-green',
+                //     radioClass: 'iradio_flat-green'
+                // })
+                $('.radio').iCheck({
                     radioClass: 'iradio_minimal-blue'
-                })
-                //Red color scheme for iCheck
-                $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-                    checkboxClass: 'icheckbox_minimal-red',
-                    radioClass: 'iradio_minimal-red'
-                })
-                //Flat red color scheme for iCheck
-                $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-                    checkboxClass: 'icheckbox_flat-green',
-                    radioClass: 'iradio_flat-green'
-                })
+                });
+                $('.checkbox').iCheck({
+                    checkboxClass: 'icheckbox_minimal-blue'
+                });
+                $('.color').parent().colorpicker([]);
+                $('.ip').inputmask({
+                    "alias": "ip"
+                });
+                $('.mobile').inputmask({
+                    "mask": "99999999999"
+                });
 
                 $('#btnSearch').click(function(e) {
                     e.preventDefault();
@@ -132,7 +147,7 @@
                     $.each(d, function(i, n) {
                         p += ("&" + i + "=" + n);
                     });
-                    var herf = "<?php echo $this->myTag->getUrl($this->view, 'export',array('m'=>'csv'));?>" + p;
+                    var herf = "<?php echo $this->myTag->getUrl($this->view, 'export', array('m' => 'csv')); ?>" + p;
                     //alert(herf);
                     window.location.href = herf;
                     //window.open(herf, '_blank');
@@ -147,7 +162,7 @@
                             $.each(d, function(i, n) {
                                 p += ("&" + i + "=" + n);
                             });
-                            var herf = "<?php echo $this->myTag->getUrl($this->view, $tool['action'],array('m'=>'csv'));?>" + p;
+                            var herf = "<?php echo $this->myTag->getUrl($this->view, $tool['action'], array('m' => 'csv')); ?>" + p;
                             window.location.href = herf;
                             //window.open(herf, '_blank');
                         });
@@ -177,7 +192,7 @@
                             var searchkeyValue = ($('#search_<?php echo $key ?>').val() ? $('#search_<?php echo $key ?>').val() : "");
                         <?php } ?>
                         // 如果是空值或|就不用传递参数
-                        if(searchkeyValue !="" && searchkeyValue !='|'){
+                        if (searchkeyValue != "" && searchkeyValue != '|') {
                             d.<?php echo $key ?> = encodeURIComponent(searchkeyValue);
                         }
                     <?php } ?>

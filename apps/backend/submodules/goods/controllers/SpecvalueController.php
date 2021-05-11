@@ -134,7 +134,7 @@ class SpecvalueController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['sort'] = array(

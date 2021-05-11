@@ -68,7 +68,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return array();
     }
 
-    //array_column($this->firstLetterDatas, 'value', 'name');
+    //array_column($this->firstLetterDatas, 'name', 'value');
     protected $firstLetterDatas = array(
         'A' => 'A',
         'B' => 'B',

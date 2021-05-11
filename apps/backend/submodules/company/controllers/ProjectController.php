@@ -403,12 +403,16 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => array('AE1' => 'AE1', 'AE2' => 'AE2', 'AE3' => 'AE3', 'AE4' => 'AE4'),
+                // 'input_type' => 'select', 
                 'select' => array(
                     'multiple' => true
                 ),
+                'input_type' => 'checkbox',
+                'checkbox' => array(
+                    'isCheckAll' => true
+                ),
+                'is_show' => true,
+                'items' => array('AE1' => 'AE1', 'AE2' => 'AE2', 'AE3' => 'AE3', 'AE4' => 'AE4'),
                 'help' => '多个AE用逗号间隔'
             ),
             'list' => array(
@@ -418,6 +422,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'items' => array('AE1' => 'AE1', 'AE2' => 'AE2', 'AE3' => 'AE3', 'AE4' => 'AE4'),
             ),
             'search' => array(
+                // 'input_type' => 'select',
                 'is_show' => true
             ),
             'export' => array(

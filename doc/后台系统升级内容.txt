@@ -46,7 +46,8 @@
 044 增加了database terminal管理
 045 增加了laravel artisan管理
 046 增加了应急后台管理(当数据库挂了的时候也能进入后台查看报错信息)
-
+047 增加了FORM表单页和检索页上的输入框的不同ICON展示
+048 增加了FORM表单页的checkbox展示
 
 
 
