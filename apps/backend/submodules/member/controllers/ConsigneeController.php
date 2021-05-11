@@ -244,7 +244,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['name'] = array(
@@ -264,7 +264,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['province'] = array(
@@ -372,7 +372,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['zipcode'] = array(
@@ -392,7 +392,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['telephone'] = array(
@@ -413,7 +413,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['mobile'] = array(
@@ -434,7 +434,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['is_default'] = array(
@@ -455,7 +455,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 

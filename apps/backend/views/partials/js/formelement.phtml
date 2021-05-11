@@ -3,11 +3,11 @@
     <?php if (!empty($field['form']['is_show']) && !empty($field['form']['input_type'])) { ?>
         <?php $field['name'] = empty($field['form']['name']) ? $field['name'] : $field['form']['name']; ?>
         <?php if ($field['form']['input_type'] == "datetimepicker") { ?>
-            $('.<?php echo $key ?>').parent().datetimepicker({
-                "format": "YYYY-MM-DD HH:mm:ss",
-                "allowInputToggle": true,
-                "locale": "zh-CN"
-            });
+            //$('.<?php echo $key ?>').parent().datetimepicker({
+            //    "format": "YYYY-MM-DD HH:mm:ss",
+            //    "allowInputToggle": true,
+            //    "locale": "zh-CN"
+            //});
         <?php } elseif ($field['form']['input_type'] == "select") { ?>
             <?php if(empty($field['form']['select']['is_tag'])){ ?>
             $('.<?php echo $key ?>').select2({
@@ -26,7 +26,7 @@
                     "text": "<?php echo $field['name'] ?>"
                 }
             });
-            <? } ?>
+            <?php } ?>
             <?php if (!empty($field['form']['cascadeSettings'])) { ?>
                 $('.<?php echo $field['form']['cascadeSettings']['source'] ?>').change(function() {
                     var cascadeSelect = $('.<?php echo $key ?>');
@@ -258,5 +258,8 @@ $('.radio').iCheck({radioClass:'iradio_minimal-blue'});
 $('.checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'});
 $('.color').parent().colorpicker([]);
 $('.ip').inputmask({"alias":"ip"});
-$('.mobile').inputmask({"mask":"99999999999"});
+//$('.mobile').inputmask({"mask":"99999999999"});
+$('.date').parent().datetimepicker({"format":"YYYY-MM-DD","locale":"zh-CN","allowInputToggle":true});
+$('.time').parent().datetimepicker({"format":"HH:mm:ss","locale":"zh-CN","allowInputToggle":true});
+$('.datetime').parent().datetimepicker({"format":"YYYY-MM-DD HH:mm:ss","locale":"zh-CN","allowInputToggle":true});
 //$('.currency').inputmask({"alias":"currency","radixPoint":".","prefix":"","removeMaskOnSubmit":true});

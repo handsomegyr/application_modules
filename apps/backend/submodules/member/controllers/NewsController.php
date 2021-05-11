@@ -102,13 +102,13 @@ class NewsController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->registerbyDatas
+                'items' => array_column($this->registerbyDatas, 'name', 'value')
             ),
             'list' => array(
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -124,13 +124,13 @@ class NewsController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->actionDatas
+                'items' => array_column($this->actionDatas, 'name', 'value')
             ),
             'list' => array(
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -151,7 +151,7 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -173,7 +173,7 @@ class NewsController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -211,14 +211,14 @@ class NewsController extends \App\Backend\Controllers\FormController
         return $this->modelNews;
     }
 
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            // $item['user_name'] = getBuyerName($item['user_name'], $item['user_register_by']);
-            $item['user_register_by'] = $this->registerbyDatas[$item['user_register_by']]['name'];
-            $item['action'] = $this->actionDatas[$item['action']]['name'];
-            $item['news_time'] = $this->adjustDataTime4Show($item['news_time']);
-        }
-        return $list;
-    }
+    // protected function getList4Show(\App\Backend\Models\Input $input, array $list)
+    // {
+    //     foreach ($list['data'] as &$item) {
+    //         // $item['user_name'] = getBuyerName($item['user_name'], $item['user_register_by']);
+    //         $item['user_register_by'] = $this->registerbyDatas[$item['user_register_by']]['name'];
+    //         $item['action'] = $this->actionDatas[$item['action']]['name'];
+    //         $item['news_time'] = $this->adjustDataTime4Show($item['news_time']);
+    //     }
+    //     return $list;
+    // }
 }

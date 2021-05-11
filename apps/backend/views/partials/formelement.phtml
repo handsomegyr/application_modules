@@ -85,6 +85,15 @@
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "datetimepicker") {
             $prepend = '<i class="fa fa-calendar fa-fw"></i>';
+            if (empty($field['form']['content_type'])) {
+                $otherclassList = array('datetime');
+            } else {
+                if ($field['form']['content_type'] == 'datetime') {
+                    $otherclassList = array('datetime');
+                } elseif ($field['form']['content_type'] == 'date') {
+                    $otherclassList = array('date');
+                }
+            }
             $value = $this->view->row[$key];
             // $value = date("Y-m-d H:i:s", $this->view->row[$key]->sec);
             // if ($value == '0001-01-01 00:00:00' || $value == '0000-00-00 00:00:00') {

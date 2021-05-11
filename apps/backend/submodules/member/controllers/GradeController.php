@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Backend\Submodules\Member\Controllers;
 
 use App\Backend\Submodules\Member\Models\Grade;
@@ -20,12 +21,12 @@ class GradeController extends \App\Backend\Controllers\FormController
     }
 
     protected function getSchemas2($schemas)
-    {        
+    {
         $schemas['level'] = array(
             'name' => '等级',
             'data' => array(
                 'type' => 'integer',
-                'length' => 4
+                'length' => 11
             ),
             'validation' => array(
                 'required' => 1
@@ -38,7 +39,7 @@ class GradeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['name'] = array(
@@ -58,7 +59,7 @@ class GradeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['exp_from'] = array(
@@ -78,7 +79,7 @@ class GradeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['exp_to'] = array(
@@ -98,30 +99,30 @@ class GradeController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
-                'type' => 'string',
+                'type' => 'json',
                 'length' => 50
             ),
             'validation' => array(
                 'required' => 0
             ),
             'form' => array(
-                'input_type' => 'text',
+                'input_type' => 'textarea',
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'search' => array(
                 'is_show' => false
             )
         );
-        
+
         return $schemas;
     }
 

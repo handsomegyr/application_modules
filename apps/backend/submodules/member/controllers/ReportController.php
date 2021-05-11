@@ -41,7 +41,7 @@ class ReportController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -62,7 +62,7 @@ class ReportController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -78,13 +78,13 @@ class ReportController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->typeDatas
+                'items' => array_column($this->typeDatas, 'name', 'value')
             ),
             'list' => array(
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -105,7 +105,7 @@ class ReportController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -124,10 +124,10 @@ class ReportController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'list' => array(
-                'is_show' => false
+                'is_show' => true
             ),
             'search' => array(
-                'is_show' => false
+                'is_show' => true
             )
         );
 
@@ -144,13 +144,13 @@ class ReportController extends \App\Backend\Controllers\FormController
         return $this->modelReport;
     }
 
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            $item['type'] = $this->typeDatas[$item['type']]['name'];
-            $item['report_time'] = $this->adjustDataTime4Show($item['report_time']);
-        }
+    // protected function getList4Show(\App\Backend\Models\Input $input, array $list)
+    // {
+    //     foreach ($list['data'] as &$item) {
+    //         $item['type'] = $this->typeDatas[$item['type']]['name'];
+    //         $item['report_time'] = $this->adjustDataTime4Show($item['report_time']);
+    //     }
 
-        return $list;
-    }
+    //     return $list;
+    // }
 }

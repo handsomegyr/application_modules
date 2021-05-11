@@ -7,7 +7,7 @@
             //print_r($field);die('xxx');
             $type = "text";
             $icon = "pencil";
-            $prepend = '<i class="fa fa-pencil fa-fw"></i>';
+            $prepend = '<i class="fa fa-pencil"></i>';
             $otherclassList = array();
             if ($field['search']['input_type'] == "textarea") {                
                 $this->partial('partials/filter/text');
@@ -22,18 +22,18 @@
                     }
                 }
                 if (empty($field['search']['content_type'])) {
-                    $prepend = '<i class="fa fa-pencil fa-fw"></i>';
+                    $prepend = '<i class="fa fa-pencil"></i>';
                 } else {
                     if ($field['search']['content_type'] == 'email') {
-                        $prepend = '<i class="fa fa-envelope fa-fw"></i>';
+                        $prepend = '<i class="fa fa-envelope"></i>';
                     } elseif ($field['search']['content_type'] == 'phone') {
                         $otherclassList = array('mobile');
-                        $prepend = '<i class="fa fa-phone fa-fw"></i>';
+                        $prepend = '<i class="fa fa-phone"></i>';
                     } elseif ($field['search']['content_type'] == 'url') {
-                        $prepend = '<i class="fa fa-internet-explorer fa-fw"></i>';
+                        $prepend = '<i class="fa fa-internet-explorer"></i>';
                     } elseif ($field['search']['content_type'] == 'ip') {
                         $otherclassList = array('ip');
-                        $prepend = '<i class="fa fa-laptop fa-fw"></i>';
+                        $prepend = '<i class="fa fa-laptop"></i>';
                     } elseif ($field['search']['content_type'] == 'color') {
                         $otherclassList = array('color');
                         $prepend = '<i></i>';

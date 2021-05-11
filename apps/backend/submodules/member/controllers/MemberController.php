@@ -238,7 +238,9 @@ class MemberController extends \App\Backend\Controllers\FormController
                 'required' => 0
             ),
             'form' => array(
-                'input_type' => 'text',
+                // 'input_type' => 'text',
+                'input_type' => 'datetimepicker',
+                'content_type' => 'date',
                 'is_show' => true
             ),
             'list' => array(
