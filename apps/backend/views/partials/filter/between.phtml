@@ -2,9 +2,9 @@
     <label class="col-sm-2 control-label"><?php echo $field['name'] ?></label>
     <div class="col-sm-8" style="min-width: 390px">
         <div class="input-group input-group-sm">
-            <input type="text" class="form-control <?php echo $key ?>" placeholder="<?php echo $field['name'] ?>" id="<?php echo 'search_' . $key . '_from' ?>" name="<?php echo 'search_' . $key . '_from' ?>" value="<?php echo $_SESSION['search_filter']['search_' . $key . '_from'] ?>">
+            <input type="text" class="form-control <?php echo $key ?> <?php echo empty($otherclassList)?'':implode(' ',$otherclassList) ?>" placeholder="<?php echo $field['name'] ?>" id="<?php echo 'search_' . $key . '_from' ?>" name="<?php echo 'search_' . $key . '_from' ?>" value="<?php echo $_SESSION['search_filter']['search_' . $key . '_from'] ?>">
             <span class="input-group-addon" style="border-left: 0; border-right: 0;">-</span>
-            <input type="text" class="form-control <?php echo $key ?>" placeholder="<?php echo $field['name'] ?>" id="<?php echo 'search_' . $key . '_to' ?>" name="<?php echo 'search_' . $key . '_to' ?>" value="<?php echo $_SESSION['search_filter']['search_' . $key . '_to'] ?>">
+            <input type="text" class="form-control <?php echo $key ?> <?php echo empty($otherclassList)?'':implode(' ',$otherclassList) ?>" placeholder="<?php echo $field['name'] ?>" id="<?php echo 'search_' . $key . '_to' ?>" name="<?php echo 'search_' . $key . '_to' ?>" value="<?php echo $_SESSION['search_filter']['search_' . $key . '_to'] ?>">
         </div>
     </div>
 </div>

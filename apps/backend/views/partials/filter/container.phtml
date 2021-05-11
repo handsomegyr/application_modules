@@ -7,6 +7,7 @@ $filterID = 'filter-box';
         <div class="row">
             <?php foreach ($this->view->schemas as $key => $field) { ?>
                 <?php
+                $otherclassList = array();
                 $_SESSION['search_filter']['search_' . $key . '_from'] = "";
                 $_SESSION['search_filter']['search_' . $key . '_to'] = "";
                 $_SESSION['search_filter'][$key] = "";
@@ -39,8 +40,10 @@ $filterID = 'filter-box';
                             } elseif ($field['search']['input_type'] == "datetimepicker") {
                                 $this->partial('partials/filter/betweenDatetime');
                             } elseif ($field['search']['input_type'] == "number") {
+                                $otherclassList = array('number');                                
                                 $this->partial('partials/filter/between');
                             } elseif ($field['search']['input_type'] == "currency") {
+                                $otherclassList = array('number');
                                 $this->partial('partials/filter/between');
                             } else {
                                 $this->partial('partials/filter/where');

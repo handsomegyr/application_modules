@@ -5,9 +5,9 @@
             <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
             </div>
-            <input type="text" class="form-control" id="<?php echo 'search_' . $key . '_from' ?>" placeholder="<?php echo $field['name'] ?>" name="<?php echo 'search_' . $key . '_from' ?>" value="<?php echo $_SESSION['search_filter']['search_' . $key . '_from'] ?>">
+            <input type="text" class="form-control <?php echo empty($otherclassList)?'':implode(' ',$otherclassList) ?>" id="<?php echo 'search_' . $key . '_from' ?>" placeholder="<?php echo $field['name'] ?>" name="<?php echo 'search_' . $key . '_from' ?>" value="<?php echo $_SESSION['search_filter']['search_' . $key . '_from'] ?>">
             <span class="input-group-addon" style="border-left: 0; border-right: 0;">-</span>
-            <input type="text" class="form-control" id="<?php echo 'search_' . $key . '_to' ?>" placeholder="<?php echo $field['name'] ?>" name="<?php echo 'search_' . $key . '_to' ?>" value="<?php echo $_SESSION['search_filter']['search_' . $key . '_to'] ?>">
+            <input type="text" class="form-control <?php echo empty($otherclassList)?'':implode(' ',$otherclassList) ?>" id="<?php echo 'search_' . $key . '_to' ?>" placeholder="<?php echo $field['name'] ?>" name="<?php echo 'search_' . $key . '_to' ?>" value="<?php echo $_SESSION['search_filter']['search_' . $key . '_to'] ?>">
         </div>
     </div>
 </div>

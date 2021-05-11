@@ -95,13 +95,13 @@
         <?php } elseif ($field['form']['input_type'] == "ckeditor") { ?>
             CKEDITOR.replace('<?php echo $key ?>');
         <?php } elseif ($field['form']['input_type'] == "number") { ?>
-            $('.<?php echo $key ?>:not(.initialized)')
-                .addClass('initialized')
-                .bootstrapNumber({
-                    upClass: 'success',
-                    downClass: 'primary',
-                    center: true
-                });
+            //$('.<?php echo $key ?>:not(.initialized)')
+            //    .addClass('initialized')
+            //    .bootstrapNumber({
+            //        upClass: 'success',
+            //        downClass: 'primary',
+            //        center: true
+            //    });
         <?php } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file" || 
                         $field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") { ?>
 
@@ -263,3 +263,10 @@ $('.date').parent().datetimepicker({"format":"YYYY-MM-DD","locale":"zh-CN","allo
 $('.time').parent().datetimepicker({"format":"HH:mm:ss","locale":"zh-CN","allowInputToggle":true});
 $('.datetime').parent().datetimepicker({"format":"YYYY-MM-DD HH:mm:ss","locale":"zh-CN","allowInputToggle":true});
 //$('.currency').inputmask({"alias":"currency","radixPoint":".","prefix":"","removeMaskOnSubmit":true});
+$('.number:not(.initialized)')
+.addClass('initialized')
+.bootstrapNumber({
+    upClass: 'success',
+    downClass: 'primary',
+    center: true
+});

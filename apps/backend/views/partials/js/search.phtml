@@ -95,13 +95,13 @@
                             <?php } ?>
 
                         <?php } elseif ($field['search']['input_type'] == "number" || $field['search']['input_type'] == "currency") { ?>
-                            $('.<?php echo $key ?>:not(.initialized)')
-                                .addClass('initialized')
-                                .bootstrapNumber({
-                                    upClass: 'success',
-                                    downClass: 'primary',
-                                    center: true
-                                });
+                            //$('.<?php echo $key ?>:not(.initialized)')
+                            //    .addClass('initialized')
+                            //    .bootstrapNumber({
+                            //        upClass: 'success',
+                            //        downClass: 'primary',
+                            //        center: true
+                            //    });
                         <?php } ?>
                     <?php } ?>
                 <?php } ?>
@@ -134,6 +134,13 @@
                 //$('.mobile').inputmask({
                 //    "mask": "99999999999"
                 //});
+                $('.number:not(.initialized)')
+                    .addClass('initialized')
+                    .bootstrapNumber({
+                        upClass: 'success',
+                        downClass: 'primary',
+                        center: true
+                    });
 
                 $('#btnSearch').click(function(e) {
                     e.preventDefault();

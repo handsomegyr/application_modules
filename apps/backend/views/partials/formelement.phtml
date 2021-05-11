@@ -73,6 +73,7 @@
             $input_type = "password";
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "number") {
+            $otherclassList = array('number');
             $value = intval($this->view->row[$key]);
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "currency") {
