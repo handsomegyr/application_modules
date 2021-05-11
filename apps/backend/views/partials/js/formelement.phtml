@@ -9,6 +9,7 @@
                 "locale": "zh-CN"
             });
         <?php } elseif ($field['form']['input_type'] == "select") { ?>
+            <?php if(empty($field['form']['select']['is_tag'])){ ?>
             $('.<?php echo $key ?>').select2({
                 "allowClear": true,
                 "placeholder": {
@@ -16,6 +17,16 @@
                     "text": "<?php echo $field['name'] ?>"
                 }
             });
+            <?php }else{ ?>
+            $(".<?php echo $key ?>").select2({
+                tags: true,
+                tokenSeparators: [','],
+                "placeholder": {
+                    "id": "",
+                    "text": "<?php echo $field['name'] ?>"
+                }
+            });
+            <? } ?>
             <?php if (!empty($field['form']['cascadeSettings'])) { ?>
                 $('.<?php echo $field['form']['cascadeSettings']['source'] ?>').change(function() {
                     var cascadeSelect = $('.<?php echo $key ?>');
@@ -181,9 +192,9 @@
                 "dropZoneEnabled": false,
                 "deleteExtraData": {
                     "<?php echo $key ?>": "_file_del_",
-                    "_file_del_": "",
                     "_token": LA.token,
-                    "_method": "PUT"
+                    //"_method": "PUT"
+                    "_method": "POST"
                 },
                 "deleteUrl": "<?php echo $this->view->baseUrl . $this->view->moduleName . '/' . $this->view->controllerName . '/removefile?id=' . $this->view->row['_id'] . '&_field_del_=' . $key ?>",
                 "fileActionSettings": {
