@@ -98,6 +98,8 @@ class ActivityController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
+                // // 指定它对应的结束时间
+                // 'datetimepicker' => array('end' => 'end_time'),
                 'is_show' => true
             ),
             'list' => array(
@@ -123,6 +125,18 @@ class ActivityController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
+                // 指定它对应的开始时间
+                'datetimepicker' => array('start' => 'start_time'),
+
+                // 'input_type' => 'datetimerange',
+                // 'datetimerange' => array('start' => 'start_time', 'name' => '活动时间'),
+
+                // 'input_type' => 'daterange',
+                // 'daterange' => array('start' => 'start_time', 'name' => '活动时间'),
+
+                // 'input_type' => 'timerange',
+                // 'timerange' => array('start' => 'start_time', 'name' => '活动时间'),
+
                 'is_show' => true
             ),
             'list' => array(

@@ -24,6 +24,7 @@
         $options = array();
         $inline = true;
         $sortable = false;
+        $rangeInfo = array();
         if ($field['form']['input_type'] == "hidden") {
             $this->partial('partials/form/hidden');
             $this->partial('partials/form/display');
@@ -89,11 +90,32 @@
                     $otherclassList = array('form-class-time');
                 }
             }
+            if (!empty($field['form']['datetimepicker']['end']) || !empty($field['form']['datetimepicker']['start'])) {
+                $otherclassList = array();
+            }
             // $value = date("Y-m-d H:i:s", $value->sec);
             // if ($value == '0001-01-01 00:00:00' || $value == '0000-00-00 00:00:00') {
             //     $value = '';
             // }
             $this->partial('partials/form/input');
+        } elseif (in_array($field['form']['input_type'], array("datetimerange", "daterange", "timerange"))) {
+            $rangeInfo = $field['form'][$field['form']['input_type']];
+            if (!empty($rangeInfo['name'])) {
+                $field['name'] = $rangeInfo['name'];
+            }
+            $rangeInfo['start_value'] = '';
+            $rangeInfo['end_value'] = '';
+            $rangeInfo['start_placeholder'] = '';
+            $rangeInfo['end_placeholder'] = '';
+            foreach (array('start' => $rangeInfo['start'], 'end' => $rangeInfo['end']) as $rkey => $rangeField) {
+                $fieldRange = $schemas4Form[$rangeField];
+                $fieldRange['name'] = empty($fieldRange['form']['name']) ? $fieldRange['name'] : $fieldRange['form']['name'];
+                $rangeInfo[$rkey . '_placeholder'] = empty($fieldRange['form']['placeholder']) ? "输入 " . $fieldRange['name'] : $fieldRange['form']['placeholder'];
+                if (array_key_exists($rangeField, $this->view->row)) {
+                    $rangeInfo[$rkey . '_value'] = $this->view->row[$rangeField];
+                }
+            }
+            $this->partial('partials/form/' . $field['form']['input_type']);
         } elseif ($field['form']['input_type'] == "icon") {
             $prepend = '<i class="fa fa-pencil fa-fw"></i>';
             $otherclassList = array('form-class-iconpicker');

@@ -247,6 +247,46 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 }
             }
 
+            // 如果是时间的话
+            if (in_array($field['form']['input_type'], array('datetimepicker'))) {
+                if (!empty($field['form'][$field['form']['input_type']]['start']) || !empty($field['form'][$field['form']['input_type']]['end'])) {
+                    if (!empty($field['form'][$field['form']['input_type']]['start'])) {
+                        $targetField = $field['form'][$field['form']['input_type']]['start'];
+                        $targetKey = 'end';
+                    } elseif (!empty($field['form'][$field['form']['input_type']]['end'])) {
+                        $targetField = $field['form'][$field['form']['input_type']]['end'];
+                        $targetKey = 'start';
+                    }
+                    // 将另一个对应的字段
+                    if ($targetField != $key) {
+                        if (!empty($schemas[$targetField]['form'][$field['form']['input_type']])) {
+                            unset($schemas[$targetField]['form'][$field['form']['input_type']]['start']);
+                            unset($schemas[$targetField]['form'][$field['form']['input_type']]['end']);
+                        }
+                        $schemas[$targetField]['form'][$field['form']['input_type']][$targetKey] = $key;
+                    }
+                }
+            }
+
+            // 如果是时间范围的话
+            if (!empty($field['form']['is_show']) && in_array($field['form']['input_type'], array('datetimerange', 'daterange', 'timerange'))) {
+                if (empty($field['form'][$field['form']['input_type']]['start']) && empty($field['form'][$field['form']['input_type']]['end'])) {
+                    throw new \Exception('开始字段或截止字段都未设置');
+                } else {
+                    if (!empty($field['form'][$field['form']['input_type']]['start'])) {
+                        $targetField = $field['form'][$field['form']['input_type']]['start'];
+                        $field['form'][$field['form']['input_type']]['end'] = $key;
+                    } elseif (!empty($field['form'][$field['form']['input_type']]['end'])) {
+                        $targetField = $field['form'][$field['form']['input_type']]['end'];
+                        $field['form'][$field['form']['input_type']]['start'] = $key;
+                    }
+                    // 将另一个对应的字段改成不显示
+                    if ($targetField != $key) {
+                        $schemas[$targetField]['form']['is_show'] = false;
+                    }
+                }
+            }
+
             $schemas[$key] = $field;
         }
 

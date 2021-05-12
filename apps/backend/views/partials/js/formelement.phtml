@@ -1,7 +1,7 @@
 <?php foreach ($schemas4Form as $key => $field) { ?>
     <?php if (!empty($field['form']['is_show']) && !empty($field['form']['input_type'])) { ?>
         <?php $field['name'] = empty($field['form']['name']) ? $field['name'] : $field['form']['name']; ?>
-        <?php if ($field['form']['input_type'] == "datetimepicker") { ?>
+        <?php if ($field['form']['input_type'] == "datetimepicker") { ?>            
             <?php if(false){ ?>
             $('.<?php echo $key ?>').parent().datetimepicker({
                 "format": "YYYY-MM-DD HH:mm:ss",
@@ -9,6 +9,63 @@
                 "locale": "zh-CN"
             });
             <?php } ?>
+            <?php
+            if (empty($field['form']['content_type'])) {
+                $format = 'YYYY-MM-DD HH:mm:ss';
+            } else {
+                if ($field['form']['content_type'] == 'datetime') {
+                    $format = 'YYYY-MM-DD HH:mm:ss';
+                } elseif ($field['form']['content_type'] == 'date') {
+                    $format = 'YYYY-MM-DD';
+                } elseif ($field['form']['content_type'] == 'time') {
+                    $format = 'HH:mm:ss';
+                }
+            }
+            ?>
+            <?php if(!empty($field['form']['datetimepicker']['end'])){ ?>
+            $('#<?php echo $key ?>').datetimepicker({
+                "format": "<?php echo $format?>",
+                "locale": "zh-CN"
+            });
+            $("#<?php echo $key ?>").on("dp.change", function(e) {
+                $('#<?php echo $field['form']['datetimepicker']['end'] ?>').data("DateTimePicker").minDate(e.date);
+            });
+            <?php }elseif(!empty($field['form']['datetimepicker']['start'])){ ?>
+            $('#<?php echo $key ?>').datetimepicker({
+                "format": "<?php echo $format?>",
+                "locale": "zh-CN",
+                "useCurrent": false
+            });
+            $("#<?php echo $key ?>").on("dp.change", function(e) {
+                $('#<?php echo $field['form']['datetimepicker']['start'] ?>').data("DateTimePicker").maxDate(e.date);
+            });
+            <?php } ?>
+        <?php } elseif (in_array($field['form']['input_type'], array("datetimerange", "daterange", "timerange"))) { ?> 
+            <?php
+            if ($field['form']['input_type'] == 'datetimerange') {
+                $format = 'YYYY-MM-DD HH:mm:ss';
+            } elseif ($field['form']['input_type'] == 'daterange') {
+                $format = 'YYYY-MM-DD';
+            } elseif ($field['form']['input_type'] == 'timerange') {
+                $format = 'HH:mm:ss';
+            }
+            $rangeInfo = $field['form'][$field['form']['input_type']];
+            ?>
+            $('#<?php echo $rangeInfo['start'] ?>').datetimepicker({
+                "format": "<?php echo $format?>",
+                "locale": "zh-CN"
+            });
+            $('#<?php echo $rangeInfo['end'] ?>').datetimepicker({
+                "format": "<?php echo $format?>",
+                "locale": "zh-CN",
+                "useCurrent": false
+            });
+            $("#<?php echo $rangeInfo['start'] ?>").on("dp.change", function(e) {
+                $('#<?php echo $rangeInfo['end'] ?>').data("DateTimePicker").minDate(e.date);
+            });
+            $("#<?php echo $rangeInfo['end'] ?>").on("dp.change", function(e) {
+                $('#<?php echo $rangeInfo['start'] ?>').data("DateTimePicker").maxDate(e.date);
+            });
         <?php } elseif ($field['form']['input_type'] == "select") { ?>
             <?php if(false){ ?>
             <?php if(empty($field['form']['select']['is_tag'])){ ?>
@@ -261,9 +318,9 @@
 $('.form-class-radio').iCheck({radioClass:'iradio_minimal-blue'});
 $('.form-class-checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'});
 $('.form-class-colorpicker').parent().colorpicker([]);
-$('.form-class-date').parent().datetimepicker({"format":"YYYY-MM-DD","locale":"zh-CN"});//,"allowInputToggle":true
-$('.form-class-time').parent().datetimepicker({"format":"HH:mm:ss","locale":"zh-CN"});//,"allowInputToggle":true
-$('.form-class-datetime').parent().datetimepicker({"format":"YYYY-MM-DD HH:mm:ss","locale":"zh-CN"});//,"allowInputToggle":true
+$('.form-class-date').parent().datetimepicker({"format":"YYYY-MM-DD","locale":"zh-CN","allowInputToggle":true});
+$('.form-class-time').parent().datetimepicker({"format":"HH:mm:ss","locale":"zh-CN","allowInputToggle":true});
+$('.form-class-datetime').parent().datetimepicker({"format":"YYYY-MM-DD HH:mm:ss","locale":"zh-CN","allowInputToggle":true});
 $('.form-class-number:not(.initialized)')
 .addClass('initialized')
 .bootstrapNumber({

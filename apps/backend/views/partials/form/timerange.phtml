@@ -1,23 +1,21 @@
-<div class="<?php echo $this->view->viewClass['form-group'] ?> {!! ($errors->has($errorKey['start'].'start') || $errors->has($errorKey['end'].'end')) ? 'has-error' : ''  !!}">
+<div class="<?php echo $this->view->viewClass['form-group'] ?> <?php echo (empty($errors) || !$errors->has($errorKey)) ? '' : 'has-error' ?>">
 
-    <label for="{{$id['start']}}" class="<?php echo $this->view->viewClass['label'] ?> <?php if ($field['validation']['required']) { ?>asterisk<?php } ?> control-label"><?php echo $field['name'] ?></label>
+    <label for="<?php echo $rangeInfo['start'] ?>" class="<?php echo $this->view->viewClass['label'] ?> <?php if ($field['validation']['required']) { ?>asterisk<?php } ?> control-label"><?php echo $field['name'] ?></label>
 
     <div class="<?php echo $this->view->viewClass['field'] ?>">
 
         <?php $this->partial('partials/form/error'); ?>
 
-        <div class="row" style="width: 370px">
-            <div class="col-lg-6">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="text" name="{{$name['start']}}" value="{{ old($column['start'], $value['start']) }}" class="form-control {{$class['start']}}" style="width: 150px" {!! $attributes !!} />
+        <div class="row">
+            <div class="col-lg-12" style="display: flex;">
+                <div class="input-group" style="width:50%">
+                    <span class="input-group-addon"><i class="fa fa-clock-o fa-fw"></i></span>
+                    <input type="text" <?php if (!empty($field['form']['readonly'])) { ?>readonly <?php } ?> <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> id="<?php echo $rangeInfo['start'] ?>" name="<?php echo $rangeInfo['start'] ?>" value="<?php echo $rangeInfo['start_value'] ?>" class="form-control <?php echo empty($otherclassList) ? '' : implode(' ', $otherclassList) ?> " placeholder="<?php echo $rangeInfo['start_placeholder']; ?>">
                 </div>
-            </div>
 
-            <div class="col-lg-6">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="text" name="{{$name['end']}}" value="{{ old($column['end'], $value['end']) }}" class="form-control {{$class['end']}}" style="width: 150px" {!! $attributes !!} />
+                <div class="input-group" style="width:50%">
+                    <span class="input-group-addon"><i class="fa fa-clock-o fa-fw"></i></span>
+                    <input type="text" <?php if (!empty($field['form']['readonly'])) { ?>readonly <?php } ?> <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> id="<?php echo $rangeInfo['end'] ?>" name="<?php echo $rangeInfo['end'] ?>" value="<?php echo $rangeInfo['end_value'] ?>" class="form-control <?php echo empty($otherclassList) ? '' : implode(' ', $otherclassList) ?> " placeholder="<?php echo $rangeInfo['end_placeholder']; ?>">
                 </div>
             </div>
         </div>

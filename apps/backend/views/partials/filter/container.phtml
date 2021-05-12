@@ -57,6 +57,18 @@ $filterID = 'filter-box';
                                     }
                                 }
                                 $this->partial('partials/filter/betweenDatetime');
+                            } elseif ($field['search']['input_type'] == "datetimerange") {
+                                $prepend = '<i class="fa fa-calendar"></i>';
+                                $otherclassList = array('search-class-datetime');
+                                $this->partial('partials/filter/betweenDatetime');
+                            } elseif ($field['search']['input_type'] == "daterange") {
+                                $prepend = '<i class="fa fa-calendar"></i>';
+                                $otherclassList = array('search-class-date');
+                                $this->partial('partials/filter/betweenDatetime');
+                            } elseif ($field['search']['input_type'] == "timerange") {
+                                $prepend = '<i class="fa fa-clock-o"></i>';
+                                $otherclassList = array('search-class-time');
+                                $this->partial('partials/filter/betweenDatetime');
                             } elseif ($field['search']['input_type'] == "number") {
                                 $otherclassList = array('search-class-number');
                                 $this->partial('partials/filter/between');
