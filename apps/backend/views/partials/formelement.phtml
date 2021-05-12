@@ -4,10 +4,8 @@
         continue;
     }
     $rowInfo = $this->view->row;
-    if (!array_key_exists($key, $rowInfo)) { //!isset($this->view->row[$key]) 
+    if (!array_key_exists($key, $rowInfo)) {
         $rowInfo[$key] = "";
-        // echo json_encode($rowInfo,true);
-        // echo $key;
     }
     $field['name'] = empty($field['form']['name']) ? $field['name'] : $field['form']['name'];
     $field['form']['placeholder'] = empty($field['form']['placeholder']) ? "输入 " . $field['name'] : $field['form']['placeholder'];
@@ -15,25 +13,27 @@
     if (!$isCando) {
         $field['form']['readonly'] = true;
     }
+    $value = $rowInfo[$key];
     if (empty($field['form']['partial'])) {
+        $input_type = "text";
         $otherclassList = array();
         $canCheckAll = false;
         $prepend = "";
         $append = "";
-        $value = $rowInfo[$key];
-        $input_type = "text";
         $rows = 0;
-        if ($field['form']['input_type'] == "hidden") {            
+        $options = array();
+        $inline = true;
+        $sortable = false;
+        if ($field['form']['input_type'] == "hidden") {
             $this->partial('partials/form/hidden');
             $this->partial('partials/form/display');
         } elseif ($field['form']['input_type'] == "textarea") {
             if ($field['data']['type'] == "json") {
-                $value = empty($rowInfo[$key]) ? '{}' : (!is_string($rowInfo[$key]) ? \json_encode($rowInfo[$key]) : $rowInfo[$key]);
+                $value = empty($value) ? '{}' : (!is_string($value) ? \json_encode($value) : $value);
             } elseif ($field['data']['type'] == "array") {
-                $value = empty($rowInfo[$key]) ? '[]' : (!is_string($rowInfo[$key]) ? \json_encode($rowInfo[$key]) : $rowInfo[$key]);
+                $value = empty($value) ? '[]' : (!is_string($value) ? \json_encode($value) : $value);
             } else {
-                //$value = nl2br($rowInfo[$key]);
-                $value = $rowInfo[$key];
+                //$value = nl2br($value);
             }
             $rows = 5;
             $this->partial('partials/form/textarea');
@@ -67,7 +67,7 @@
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "number") {
             $otherclassList = array('form-class-number');
-            $value = intval($rowInfo[$key]);
+            $value = intval($value);
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "currency") {
             $prepend = '$';
@@ -89,8 +89,7 @@
                     $otherclassList = array('form-class-time');
                 }
             }
-            $value = $rowInfo[$key];
-            // $value = date("Y-m-d H:i:s", $rowInfo[$key]->sec);
+            // $value = date("Y-m-d H:i:s", $value->sec);
             // if ($value == '0001-01-01 00:00:00' || $value == '0000-00-00 00:00:00') {
             //     $value = '';
             // }
@@ -101,46 +100,39 @@
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "radio") {
             $otherclassList = array('form-class-radio');
-            $inline = true;
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
             $this->partial('partials/form/radio');
         } elseif ($field['form']['input_type'] == "checkbox") {
             $otherclassList = array('form-class-checkbox');
             $canCheckAll = empty($field['form']['checkbox']['isCheckAll']) ? false : true;
-            if (!is_array($rowInfo[$key])) {
+            if (!is_array($value)) {
                 // 先用json转换
-                $value = \json_decode($rowInfo[$key], true);
+                $value = \json_decode($value, true);
                 // 如果失败就用逗号分隔
                 if (empty($value)) {
-                    $value = explode(',', $rowInfo[$key]);
+                    $value = explode(',', $value);
                 }
-            } else {
-                $value = $rowInfo[$key];
             }
-            $inline = true;
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
             $this->partial('partials/form/checkbox');
-        } elseif ($field['form']['input_type'] == "select") {            
-            $inline = true;
+        } elseif ($field['form']['input_type'] == "select") {
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
             if (empty($field['form']['select']['multiple'])) {
                 $otherclassList = array('form-class-select');
                 $this->partial('partials/form/select');
             } else {
-                if (!is_array($rowInfo[$key])) {
+                if (!is_array($value)) {
                     // 先用json转换
-                    $value = \json_decode($rowInfo[$key], true);
+                    $value = \json_decode($value, true);
                     // 如果失败就用逗号分隔
                     if (empty($value)) {
-                        $value = explode(',', $rowInfo[$key]);
+                        $value = explode(',', $value);
                     }
-                } else {
-                    $value = $rowInfo[$key];
                 }
                 $otherclassList = array('form-class-multipleselect');
                 $this->partial('partials/form/multipleselect');
             }
-        } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {            
+        } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {
             $this->partial('partials/form/file');
         } elseif ($field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") {
             $sortable = true;

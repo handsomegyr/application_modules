@@ -9,6 +9,7 @@
             $icon = "pencil";
             $prepend = '<i class="fa fa-pencil"></i>';
             $otherclassList = array();
+            $inline = true;
             if ($field['search']['input_type'] == "textarea") {
                 $this->partial('partials/filter/text');
             } elseif ($field['search']['input_type'] == "ckeditor") {
@@ -33,19 +34,16 @@
                     }
                 }
                 $this->partial('partials/filter/text');
-            } elseif ($field['search']['input_type'] == "radio") {
-                $inline = true;
+            } elseif ($field['search']['input_type'] == "radio") {                
                 $options = is_callable($field['search']['items']) ? $field['search']['items']() : $field['search']['items'];
                 //$this->partial('partials/filter/radio');
                 $otherclassList = array('search-class-select');
                 $this->partial('partials/filter/select');
             } elseif ($field['search']['input_type'] == "select") {
-                $inline = true;
                 $options = is_callable($field['search']['items']) ? $field['search']['items']() : $field['search']['items'];
                 $otherclassList = array('search-class-select');
                 $this->partial('partials/filter/select');
             } elseif ($field['search']['input_type'] == "checkbox") {
-                $inline = true;
                 $options = is_callable($field['search']['items']) ? $field['search']['items']() : $field['search']['items'];
                 //$this->partial('partials/filter/checkbox');
                 $otherclassList = array('search-class-select');
