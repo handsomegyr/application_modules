@@ -1,14 +1,16 @@
-       
 <?php foreach ($schemas4Form as $key => $field) { ?>
     <?php if (!empty($field['form']['is_show']) && !empty($field['form']['input_type'])) { ?>
         <?php $field['name'] = empty($field['form']['name']) ? $field['name'] : $field['form']['name']; ?>
         <?php if ($field['form']['input_type'] == "datetimepicker") { ?>
-            //$('.<?php echo $key ?>').parent().datetimepicker({
-            //    "format": "YYYY-MM-DD HH:mm:ss",
-            //    "allowInputToggle": true,
-            //    "locale": "zh-CN"
-            //});
+            <?php if(false){ ?>
+            $('.<?php echo $key ?>').parent().datetimepicker({
+                "format": "YYYY-MM-DD HH:mm:ss",
+                "allowInputToggle": true,
+                "locale": "zh-CN"
+            });
+            <?php } ?>
         <?php } elseif ($field['form']['input_type'] == "select") { ?>
+            <?php if(false){ ?>
             <?php if(empty($field['form']['select']['is_tag'])){ ?>
             $('.<?php echo $key ?>').select2({
                 "allowClear": true,
@@ -26,6 +28,7 @@
                     "text": "<?php echo $field['name'] ?>"
                 }
             });
+            <?php } ?>
             <?php } ?>
             <?php if (!empty($field['form']['cascadeSettings'])) { ?>
                 $('.<?php echo $field['form']['cascadeSettings']['source'] ?>').change(function() {
@@ -80,7 +83,9 @@
                 });
             <?php } ?>
         <?php } elseif ($field['form']['input_type'] == "icon") { ?>
+            <?php if(false){ ?>
             $('.<?php echo $key ?>').iconpicker({placement:'bottomLeft'});
+            <?php } ?>
         <?php } elseif ($field['form']['input_type'] == "checkbox") { ?>
             $('.check-all-<?php echo $key ?>').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChanged', function () {
                 if (this.checked) {
@@ -95,13 +100,15 @@
         <?php } elseif ($field['form']['input_type'] == "ckeditor") { ?>
             CKEDITOR.replace('<?php echo $key ?>');
         <?php } elseif ($field['form']['input_type'] == "number") { ?>
-            //$('.<?php echo $key ?>:not(.initialized)')
-            //    .addClass('initialized')
-            //    .bootstrapNumber({
-            //        upClass: 'success',
-            //        downClass: 'primary',
-            //        center: true
-            //    });
+            <?php if(false){ ?>
+            $('.<?php echo $key ?>:not(.initialized)')
+                .addClass('initialized')
+                .bootstrapNumber({
+                    upClass: 'success',
+                    downClass: 'primary',
+                    center: true
+            });
+            <?php } ?>
         <?php } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file" || 
                         $field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") { ?>
 
@@ -173,7 +180,6 @@
                 }
             }
             ?>
-            // $("input.<?php echo $key ?>").fileinput();
             $("input.<?php echo $key ?>").fileinput({
             <?php if(!empty($initialPreviewConfig)){?>
                 "initialPreviewConfig": <?php echo \json_encode($initialPreviewConfig) ?>,
@@ -181,7 +187,6 @@
             <?php if(!empty($initialPreview)){?>
                 "initialPreview": <?php echo \json_encode($initialPreview) ?>,
             <?php }?>
-                //"overwriteInitial": false,
                 "overwriteInitial": true,
                 "initialPreviewAsData": true,
                 "browseLabel": "浏览",
@@ -196,7 +201,7 @@
                     //"_method": "PUT"
                     "_method": "POST"
                 },
-                "deleteUrl": "<?php echo $this->view->baseUrl . $this->view->moduleName . '/' . $this->view->controllerName . '/removefile?id=' . $this->view->row['_id'] . '&_field_del_=' . $key ?>",
+                "deleteUrl": "<?php echo $this->view->baseUrl . $this->view->moduleName . '/' . $this->view->controllerName . '/removefile?id=' . (!isset($this->view->row['_id'])?"":$this->view->row['_id']) . '&_field_del_=' . $key ?>",
                 "fileActionSettings": {
                     "showRemove": <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'removefile') && !$this->view->readonly) { ?>true<?php } else { ?>false<?php } ?>,
                     "showDrag": true
@@ -207,9 +212,7 @@
             });
             $("input.<?php echo $key ?>").on('filebeforedelete', function() {
                 return new Promise(function(resolve, reject) {
-
                     var remove = resolve;
-
                     swal({
                         title: "确认删除?",
                         type: "warning",
@@ -227,13 +230,10 @@
                 });
             });
             $("input.<?php echo $key ?>").on('filesorted', function(event, params) {
-
                 var order = [];
-
                 params.stack.forEach(function(item) {
                     order.push(item.key);
                 });
-
                 $("input.<?php echo $key ?>_sort").val(order);
             });
         <?php } ?>
@@ -241,32 +241,43 @@
 <?php } ?>
 //iCheck for checkbox and radio inputs
 //$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-    //    checkboxClass: 'icheckbox_minimal-blue',
-    //    radioClass: 'iradio_minimal-blue'
-    //});
+//    checkboxClass: 'icheckbox_minimal-blue',
+//    radioClass: 'iradio_minimal-blue'
+//});
 //Red color scheme for iCheck
 //$('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-    //    checkboxClass: 'icheckbox_minimal-red',
-    //    radioClass: 'iradio_minimal-red'
-    //});
+//    checkboxClass: 'icheckbox_minimal-red',
+//    radioClass: 'iradio_minimal-red'
+//});
 //Flat red color scheme for iCheck
 //$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-    //    checkboxClass: 'icheckbox_flat-green',
-    //    radioClass: 'iradio_flat-green'
-    //});
-$('.radio').iCheck({radioClass:'iradio_minimal-blue'});
-$('.checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'});
-$('.color').parent().colorpicker([]);
-$('.ip').inputmask({"alias":"ip"});
-//$('.mobile').inputmask({"mask":"99999999999"});
-$('.date').parent().datetimepicker({"format":"YYYY-MM-DD","locale":"zh-CN","allowInputToggle":true});
-$('.time').parent().datetimepicker({"format":"HH:mm:ss","locale":"zh-CN","allowInputToggle":true});
-$('.datetime').parent().datetimepicker({"format":"YYYY-MM-DD HH:mm:ss","locale":"zh-CN","allowInputToggle":true});
-//$('.currency').inputmask({"alias":"currency","radixPoint":".","prefix":"","removeMaskOnSubmit":true});
-$('.number:not(.initialized)')
+//    checkboxClass: 'icheckbox_flat-green',
+//    radioClass: 'iradio_flat-green'
+//});
+//$('.form-class-ip').inputmask({"alias":"ip"});
+//$('.form-class-mobile').inputmask({"mask":"99999999999"});
+//$('.form-class-currency').inputmask({"alias":"currency","radixPoint":".","prefix":"","removeMaskOnSubmit":true});
+
+$('.form-class-radio').iCheck({radioClass:'iradio_minimal-blue'});
+$('.form-class-checkbox').iCheck({checkboxClass:'icheckbox_minimal-blue'});
+$('.form-class-colorpicker').parent().colorpicker([]);
+$('.form-class-date').parent().datetimepicker({"format":"YYYY-MM-DD","locale":"zh-CN"});//,"allowInputToggle":true
+$('.form-class-time').parent().datetimepicker({"format":"HH:mm:ss","locale":"zh-CN"});//,"allowInputToggle":true
+$('.form-class-datetime').parent().datetimepicker({"format":"YYYY-MM-DD HH:mm:ss","locale":"zh-CN"});//,"allowInputToggle":true
+$('.form-class-number:not(.initialized)')
 .addClass('initialized')
 .bootstrapNumber({
     upClass: 'success',
     downClass: 'primary',
     center: true
 });
+$('.form-class-select').select2({
+    "allowClear": true
+});
+$('.form-class-multipleselect').select2({
+    "allowClear": true
+});
+$('.form-class-iconpicker').iconpicker({'placement':'bottomLeft'});
+;
+
+

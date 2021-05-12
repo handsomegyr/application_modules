@@ -16,7 +16,6 @@
                     }
                     ?>
                     <?php if (!empty($field['search']['is_show']) && !empty($field['search']['input_type'])) { ?>
-
                         <?php if ($field['search']['input_type'] == "datetimepicker") { ?>
                             $('#search_<?php echo $key ?>_from').datetimepicker({
                                 "format": "YYYY-MM-DD HH:mm:ss",
@@ -34,13 +33,15 @@
                                 $('#search_<?php echo $key ?>_from').data("DateTimePicker").maxDate(e.date);
                             });
                         <?php } elseif ($field['search']['input_type'] == "select" || $field['search']['input_type'] == "radio" || $field['search']['input_type'] == "checkbox") { ?>
-                            $('.<?php echo $key ?>').select2({
-                                "allowClear": true,
-                                "placeholder": {
-                                    "id": "",
-                                    "text": "<?php echo $field['name'] ?>"
-                                }
-                            });
+                            <?php if (false) { ?>
+                                $('.<?php echo $key ?>').select2({
+                                    "allowClear": true,
+                                    "placeholder": {
+                                        "id": "",
+                                        "text": "<?php echo $field['name'] ?>"
+                                    }
+                                });
+                            <?php } ?>
                             <?php if ($field['search']['input_type'] == "select" && !empty($field['search']['cascadeSettings'])) { ?>
                                 $('.<?php echo $field['search']['cascadeSettings']['source'] ?>').change(function() {
                                     var cascadeSelect = $('.<?php echo $key ?>');
@@ -95,13 +96,15 @@
                             <?php } ?>
 
                         <?php } elseif ($field['search']['input_type'] == "number" || $field['search']['input_type'] == "currency") { ?>
-                            //$('.<?php echo $key ?>:not(.initialized)')
-                            //    .addClass('initialized')
-                            //    .bootstrapNumber({
-                            //        upClass: 'success',
-                            //        downClass: 'primary',
-                            //        center: true
-                            //    });
+                            <?php if (false) { ?>
+                                $('.<?php echo $key ?>:not(.initialized)')
+                                    .addClass('initialized')
+                                    .bootstrapNumber({
+                                        upClass: 'success',
+                                        downClass: 'primary',
+                                        center: true
+                                    });
+                            <?php } ?>
                         <?php } ?>
                     <?php } ?>
                 <?php } ?>
@@ -121,20 +124,20 @@
                 //     checkboxClass: 'icheckbox_flat-green',
                 //     radioClass: 'iradio_flat-green'
                 // })
-                $('.radio').iCheck({
+                $('.search-class-radio').iCheck({
                     radioClass: 'iradio_minimal-blue'
                 });
-                $('.checkbox').iCheck({
+                $('.search-class-checkbox').iCheck({
                     checkboxClass: 'icheckbox_minimal-blue'
                 });
-                $('.color').parent().colorpicker([]);
-                $('.ip').inputmask({
-                    "alias": "ip"
+                $('.search-class-select').select2({
+                    "allowClear": true,
+                    "placeholder": {
+                        "id": ""
+                    }
                 });
-                //$('.mobile').inputmask({
-                //    "mask": "99999999999"
-                //});
-                $('.number:not(.initialized)')
+                $('.search-class-colorpicker').parent().colorpicker([]);
+                $('.search-class-number:not(.initialized)')
                     .addClass('initialized')
                     .bootstrapNumber({
                         upClass: 'success',
@@ -142,11 +145,18 @@
                         center: true
                     });
 
+                //$('.search-class-ip').inputmask({
+                //    "alias": "ip"
+                //});
+                //$('.search-class-mobile').inputmask({
+                //    "mask": "99999999999"
+                //});
+
                 $('#btnSearch').click(function(e) {
                     e.preventDefault();
                     List.search();
                 });
-
+                
                 $('#btnExport').click(function(e) {
                     e.preventDefault();
                     var d = Search.getConditions({});

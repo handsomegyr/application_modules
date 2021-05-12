@@ -12,8 +12,8 @@
                 <?php if ($this->view->actionName == 'edit') { ?>
                     $('.5e217e4051348-delete').unbind('click').click(function() {
                         var id = "<?php echo $this->view->row['_id'] ?>";
-                        var url = '<?php echo $this->myTag->getUrl($this->view, 'remove',array());?>';
-                        var redirectUrl = '<?php echo $this->myTag->getUrl($this->view, 'list',array());?>';
+                        var url = '<?php echo $this->myTag->getUrl($this->view, 'remove', array()); ?>';
+                        var redirectUrl = '<?php echo $this->myTag->getUrl($this->view, 'list', array()); ?>';
 
                         swal({
                             title: "确认删除?",
@@ -63,7 +63,7 @@
                             $('.form-tool-<?php echo $key ?>').off('click').on('click', function(e) {
                                 e.preventDefault();
                                 var id = "<?php echo $this->view->row['_id'] ?>";
-                                var url = '<?php echo $this->myTag->getUrl($this->view, $tool['action'],array('id'=>$this->view->row['_id']));?>';
+                                var url = '<?php echo $this->myTag->getUrl($this->view, $tool['action'], array('id' => $this->view->row['_id'])); ?>';
                                 // alert('ssssssss');
                                 <?php if (empty($tool['process_without_modal'])) { ?>
                                     App.process4Modal(url, this);
@@ -190,7 +190,7 @@
                         } else {
                             // alert(result.message);
                             // location.href = result.content;
-                            location.href = "<?php echo $this->myTag->getUrl($this->view, 'list',array());?>"
+                            location.href = "<?php echo $this->myTag->getUrl($this->view, 'list', array()); ?>"
                         }
                     },
                     error: function(errormsg) {

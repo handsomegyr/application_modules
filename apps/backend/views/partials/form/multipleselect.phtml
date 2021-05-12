@@ -6,7 +6,7 @@
 
         <?php $this->partial('partials/form/error'); ?>
 
-        <select <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> class="form-control <?php echo $key ?>" style="width: 100%;" name="<?php echo $key ?>[]" multiple="multiple" data-placeholder="<?php echo $field['form']['placeholder']; ?>" data-value="<?php echo implode(',',$value); ?>">
+        <select <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> class="form-control <?php echo empty($otherclassList)?'':implode(' ',$otherclassList) ?> <?php echo $key ?>" style="width: 100%;" name="<?php echo $key ?>[]" multiple="multiple" data-placeholder="<?php echo $field['form']['placeholder']; ?>" data-value="<?php echo implode(',',$value); ?>">
             <?php foreach ($options as $select => $option) { ?>
                 <option value="<?php echo $select ?>" <?php if (in_array($select, $value)) { ?>selected<?php } ?>><?php echo $option ?></option>
             <?php } ?>

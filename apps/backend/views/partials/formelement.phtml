@@ -3,48 +3,43 @@
     if (empty($field['form']['is_show'])) {
         continue;
     }
-
-    if (!array_key_exists($key, $this->view->row)) { //!isset($this->view->row[$key]) 
-        $this->view->row[$key] = "";
-        // echo json_encode($this->view->row,true);
+    $rowInfo = $this->view->row;
+    if (!array_key_exists($key, $rowInfo)) { //!isset($this->view->row[$key]) 
+        $rowInfo[$key] = "";
+        // echo json_encode($rowInfo,true);
         // echo $key;
     }
-
     $field['name'] = empty($field['form']['name']) ? $field['name'] : $field['form']['name'];
     $field['form']['placeholder'] = empty($field['form']['placeholder']) ? "输入 " . $field['name'] : $field['form']['placeholder'];
     // 如果没有编辑或新增的权限 那么所有的form表单上的控件只能只读
     if (!$isCando) {
         $field['form']['readonly'] = true;
     }
-
     if (empty($field['form']['partial'])) {
-        //print_r($field);die('xxx');
         $otherclassList = array();
         $canCheckAll = false;
         $prepend = "";
         $append = "";
-        $value = "";
+        $value = $rowInfo[$key];
         $input_type = "text";
-        if ($field['form']['input_type'] == "hidden") {
-            $value = $this->view->row[$key];
+        $rows = 0;
+        if ($field['form']['input_type'] == "hidden") {            
             $this->partial('partials/form/hidden');
             $this->partial('partials/form/display');
         } elseif ($field['form']['input_type'] == "textarea") {
             if ($field['data']['type'] == "json") {
-                $value = empty($this->view->row[$key]) ? '{}' : (!is_string($this->view->row[$key]) ? \json_encode($this->view->row[$key]) : $this->view->row[$key]);
+                $value = empty($rowInfo[$key]) ? '{}' : (!is_string($rowInfo[$key]) ? \json_encode($rowInfo[$key]) : $rowInfo[$key]);
             } elseif ($field['data']['type'] == "array") {
-                $value = empty($this->view->row[$key]) ? '[]' : (!is_string($this->view->row[$key]) ? \json_encode($this->view->row[$key]) : $this->view->row[$key]);
+                $value = empty($rowInfo[$key]) ? '[]' : (!is_string($rowInfo[$key]) ? \json_encode($rowInfo[$key]) : $rowInfo[$key]);
             } else {
-                //$value = nl2br($this->view->row[$key]);
-                $value = $this->view->row[$key];
+                //$value = nl2br($rowInfo[$key]);
+                $value = $rowInfo[$key];
             }
             $rows = 5;
             $this->partial('partials/form/textarea');
         } elseif ($field['form']['input_type'] == "ckeditor") {
-            $value = $this->view->row[$key];
             $this->partial('partials/form/editor');
         } elseif ($field['form']['input_type'] == "ueditor") {
-            $value = $this->view->row[$key];
             $this->partial('partials/form/ueditor');
         } elseif ($field['form']['input_type'] == "text") {
             if (empty($field['form']['content_type'])) {
@@ -53,104 +48,104 @@
                 if ($field['form']['content_type'] == 'email') {
                     $prepend = '<i class="fa fa-envelope fa-fw"></i>';
                 } elseif ($field['form']['content_type'] == 'phone') {
-                    $otherclassList = array('mobile');
+                    $otherclassList = array('form-class-mobile');
                     $prepend = '<i class="fa fa-phone fa-fw"></i>';
                 } elseif ($field['form']['content_type'] == 'url') {
                     $prepend = '<i class="fa fa-internet-explorer fa-fw"></i>';
                 } elseif ($field['form']['content_type'] == 'ip') {
-                    $otherclassList = array('ip');
+                    $otherclassList = array('form-class-ip');
                     $prepend = '<i class="fa fa-laptop fa-fw"></i>';
                 } elseif ($field['form']['content_type'] == 'color') {
-                    $otherclassList = array('color');
+                    $otherclassList = array('form-class-colorpicker');
                     $prepend = '<i></i>';
                 }
             }
-            $value = $this->view->row[$key];
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "password") {
             $prepend = '<i class="fa fa-eye-slash fa-fw"></i>';
-            $value = $this->view->row[$key];
             $input_type = "password";
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "number") {
-            $otherclassList = array('number');
-            $value = intval($this->view->row[$key]);
+            $otherclassList = array('form-class-number');
+            $value = intval($rowInfo[$key]);
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "currency") {
             $prepend = '$';
-            $otherclassList = array('currency');
-            $value = $this->view->row[$key];
+            $otherclassList = array('form-class-currency');
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "decimal") {
-            $value = $this->view->row[$key];
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "datetimepicker") {
             $prepend = '<i class="fa fa-calendar fa-fw"></i>';
             if (empty($field['form']['content_type'])) {
-                $otherclassList = array('datetime');
+                $otherclassList = array('form-class-datetime');
             } else {
                 if ($field['form']['content_type'] == 'datetime') {
-                    $otherclassList = array('datetime');
+                    $otherclassList = array('form-class-datetime');
                 } elseif ($field['form']['content_type'] == 'date') {
-                    $otherclassList = array('date');
+                    $otherclassList = array('form-class-date');
+                } elseif ($field['form']['content_type'] == 'time') {
+                    $prepend = '<i class="fa fa-clock-o fa-fw"></i>';
+                    $otherclassList = array('form-class-time');
                 }
             }
-            $value = $this->view->row[$key];
-            // $value = date("Y-m-d H:i:s", $this->view->row[$key]->sec);
+            $value = $rowInfo[$key];
+            // $value = date("Y-m-d H:i:s", $rowInfo[$key]->sec);
             // if ($value == '0001-01-01 00:00:00' || $value == '0000-00-00 00:00:00') {
             //     $value = '';
             // }
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "icon") {
             $prepend = '<i class="fa fa-pencil fa-fw"></i>';
-            $value = $this->view->row[$key];
+            $otherclassList = array('form-class-iconpicker');
             $this->partial('partials/form/input');
         } elseif ($field['form']['input_type'] == "radio") {
+            $otherclassList = array('form-class-radio');
             $inline = true;
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
             $this->partial('partials/form/radio');
         } elseif ($field['form']['input_type'] == "checkbox") {
+            $otherclassList = array('form-class-checkbox');
             $canCheckAll = empty($field['form']['checkbox']['isCheckAll']) ? false : true;
-            if (!is_array($this->view->row[$key])) {
+            if (!is_array($rowInfo[$key])) {
                 // 先用json转换
-                $value = \json_decode($this->view->row[$key], true);
+                $value = \json_decode($rowInfo[$key], true);
                 // 如果失败就用逗号分隔
                 if (empty($value)) {
-                    $value = explode(',', $this->view->row[$key]);
+                    $value = explode(',', $rowInfo[$key]);
                 }
             } else {
-                $value = $this->view->row[$key];
+                $value = $rowInfo[$key];
             }
             $inline = true;
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
             $this->partial('partials/form/checkbox');
-        } elseif ($field['form']['input_type'] == "select") {
+        } elseif ($field['form']['input_type'] == "select") {            
             $inline = true;
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
             if (empty($field['form']['select']['multiple'])) {
+                $otherclassList = array('form-class-select');
                 $this->partial('partials/form/select');
             } else {
-                if (!is_array($this->view->row[$key])) {
+                if (!is_array($rowInfo[$key])) {
                     // 先用json转换
-                    $value = \json_decode($this->view->row[$key], true);
+                    $value = \json_decode($rowInfo[$key], true);
                     // 如果失败就用逗号分隔
                     if (empty($value)) {
-                        $value = explode(',', $this->view->row[$key]);
+                        $value = explode(',', $rowInfo[$key]);
                     }
                 } else {
-                    $value = $this->view->row[$key];
+                    $value = $rowInfo[$key];
                 }
+                $otherclassList = array('form-class-multipleselect');
                 $this->partial('partials/form/multipleselect');
             }
-        } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {
-            $value = $this->view->row[$key];
+        } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {            
             $this->partial('partials/form/file');
         } elseif ($field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") {
-            // $value = $this->view->row[$key];
             $sortable = true;
             $this->partial('partials/form/multiplefile');
         } else {
-            $value = $this->view->row[$key];
             $this->partial('partials/form/input');
         }
     } else { ?>

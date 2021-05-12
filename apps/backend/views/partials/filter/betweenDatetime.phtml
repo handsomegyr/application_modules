@@ -3,7 +3,7 @@
     <div class="col-sm-8" style="min-width: 390px">
         <div class="input-group input-group-sm">
             <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
+            <?php echo $prepend ?>
             </div>
             <input type="text" class="form-control <?php echo empty($otherclassList)?'':implode(' ',$otherclassList) ?>" id="<?php echo 'search_' . $key . '_from' ?>" placeholder="<?php echo $field['name'] ?>" name="<?php echo 'search_' . $key . '_from' ?>" value="<?php echo $_SESSION['search_filter']['search_' . $key . '_from'] ?>">
             <span class="input-group-addon" style="border-left: 0; border-right: 0;">-</span>

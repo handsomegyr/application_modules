@@ -9,33 +9,26 @@
             $icon = "pencil";
             $prepend = '<i class="fa fa-pencil"></i>';
             $otherclassList = array();
-            if ($field['search']['input_type'] == "textarea") {                
+            if ($field['search']['input_type'] == "textarea") {
                 $this->partial('partials/filter/text');
             } elseif ($field['search']['input_type'] == "ckeditor") {
                 $this->partial('partials/filter/text');
             } elseif ($field['search']['input_type'] == "ueditor") {
                 $this->partial('partials/filter/text');
             } elseif ($field['search']['input_type'] == "text") {
-                if (empty($field['search']['content_type'])) {
-                    if (!empty($field['form']['content_type'])) {
-                        $field['search']['content_type'] = $field['form']['content_type'];
-                    }
-                }
-                if (empty($field['search']['content_type'])) {
-                    $prepend = '<i class="fa fa-pencil"></i>';
-                } else {
+                if (!empty($field['search']['content_type'])) {
                     if ($field['search']['content_type'] == 'email') {
                         $prepend = '<i class="fa fa-envelope"></i>';
                     } elseif ($field['search']['content_type'] == 'phone') {
-                        $otherclassList = array('mobile');
+                        $otherclassList = array('search-class-mobile');
                         $prepend = '<i class="fa fa-phone"></i>';
                     } elseif ($field['search']['content_type'] == 'url') {
                         $prepend = '<i class="fa fa-internet-explorer"></i>';
                     } elseif ($field['search']['content_type'] == 'ip') {
-                        $otherclassList = array('ip');
+                        $otherclassList = array('search-class-ip');
                         $prepend = '<i class="fa fa-laptop"></i>';
                     } elseif ($field['search']['content_type'] == 'color') {
-                        $otherclassList = array('color');
+                        $otherclassList = array('search-class-colorpicker');
                         $prepend = '<i></i>';
                     }
                 }
@@ -44,15 +37,18 @@
                 $inline = true;
                 $options = is_callable($field['search']['items']) ? $field['search']['items']() : $field['search']['items'];
                 //$this->partial('partials/filter/radio');
+                $otherclassList = array('search-class-select');
                 $this->partial('partials/filter/select');
             } elseif ($field['search']['input_type'] == "select") {
                 $inline = true;
                 $options = is_callable($field['search']['items']) ? $field['search']['items']() : $field['search']['items'];
+                $otherclassList = array('search-class-select');
                 $this->partial('partials/filter/select');
             } elseif ($field['search']['input_type'] == "checkbox") {
                 $inline = true;
                 $options = is_callable($field['search']['items']) ? $field['search']['items']() : $field['search']['items'];
                 //$this->partial('partials/filter/checkbox');
+                $otherclassList = array('search-class-select');
                 $this->partial('partials/filter/select');
             }
         } else {
