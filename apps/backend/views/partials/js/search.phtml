@@ -14,15 +14,32 @@
                     if ($field['search']['input_type'] == 'checkbox') {
                         $field['search']['input_type'] = 'select';
                     }
+                    if (empty($field['search']['content_type'])) {
+                        if (!empty($field['form']['content_type'])) {
+                            $field['search']['content_type'] = $field['form']['content_type'];
+                        }
+                    }
                     ?>
                     <?php if (!empty($field['search']['is_show']) && !empty($field['search']['input_type'])) { ?>
                         <?php if ($field['search']['input_type'] == "datetimepicker") { ?>
+                            <?php
+                            $format = 'YYYY-MM-DD HH:mm:ss';
+                            if (!empty($field['search']['content_type'])) {
+                                if ($field['search']['content_type'] == 'datetime') {
+                                    $format = 'YYYY-MM-DD HH:mm:ss';
+                                } elseif ($field['search']['content_type'] == 'date') {
+                                    $format = 'YYYY-MM-DD';
+                                } elseif ($field['search']['content_type'] == 'time') {
+                                    $format = 'HH:mm:ss';
+                                }
+                            }
+                            ?>
                             $('#search_<?php echo $key ?>_from').datetimepicker({
-                                "format": "YYYY-MM-DD HH:mm:ss",
+                                "format": "<?php echo $format?>",
                                 "locale": "zh-CN"
                             });
                             $('#search_<?php echo $key ?>_to').datetimepicker({
-                                "format": "YYYY-MM-DD HH:mm:ss",
+                                "format": "<?php echo $format?>",
                                 "locale": "zh-CN",
                                 "useCurrent": false
                             });
@@ -156,7 +173,7 @@
                     e.preventDefault();
                     List.search();
                 });
-                
+
                 $('#btnExport').click(function(e) {
                     e.preventDefault();
                     var d = Search.getConditions({});

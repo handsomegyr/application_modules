@@ -44,7 +44,7 @@ $filterID = 'filter-box';
                             if ($field['search']['input_type'] == "hidden") {
                                 $this->partial('partials/filter/between');
                             } elseif ($field['search']['input_type'] == "datetimepicker") {
-                                $prepend = '<i class="fa fa-calendar fa-fw"></i>';
+                                $prepend = '<i class="fa fa-calendar"></i>';
                                 if (empty($field['search']['content_type'])) {
                                     $otherclassList = array('search-class-datetime');
                                 } else {
@@ -52,6 +52,8 @@ $filterID = 'filter-box';
                                         $otherclassList = array('search-class-datetime');
                                     } elseif ($field['search']['content_type'] == 'date') {
                                         $otherclassList = array('search-class-date');
+                                    } elseif ($field['search']['content_type'] == 'time') {
+                                        $otherclassList = array('search-class-time');
                                     }
                                 }
                                 $this->partial('partials/filter/betweenDatetime');
