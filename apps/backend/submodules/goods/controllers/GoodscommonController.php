@@ -14,6 +14,20 @@ use App\Backend\Submodules\Goods\Models\GoodsCommon;
  */
 class GoodscommonController extends \App\Backend\Controllers\FormController
 {
+    // 表单页的模板是form还是tabbedform
+    protected $form_template = 'tabbedform';
+
+    // tabbed表单结构设置
+    protected $tabbedform_settings = array(
+        // tab
+        'tabs' => array(
+            0 => array('name' => '基本信息', 'fields' => array('name', 'jingle', 'price', 'image', 'body', 'state', 'verify', 'is_lock', 'is_hot', 'is_new', 'commend')),
+            1 => array('name' => '开奖信息', 'fields' => array('restrict_person_time', 'current_period', 'max_period', 'lottery_code', 'period_goods_id')),
+            2 => array('name' => '分类&品牌', 'fields' => array('gc_id', 'gc_id_1', 'gc_id_2', 'gc_id_3', 'gc_name', 'store_id', 'store_name', 'spec_name', 'spec_value', 'brand_id', 'brand_name', 'type_id', 'attr')),
+            3 => array('name' => '促销信息', 'fields' => array('mobile_body', 'stateremark', 'verifyremark', 'addtime', 'selltime', 'specname', 'marketprice', 'costprice', 'discount', 'serial', 'storage_alarm', 'transport_id', 'transport_title', 'freight')),
+            4 => array('name' => '其他信息', 'fields' => array('vat', 'areaid_1', 'areaid_2', 'goods_stcids', 'plateid_top', 'is_virtual', 'virtual_indate', 'virtual_invalid_refund', 'is_fcode', 'is_appoint', 'appoint_satedate', 'is_presell', 'presell_deliverdate', 'is_own_shop', 'collect')),
+        )
+    );
 
     private $stateDatas = \App\Goods\Models\GoodsCommon::STATEDATAS;
 
@@ -751,6 +765,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
+
         $schemas['mobile_body'] = array(
             'name' => '手机端商品描述',
             'data' => array(
@@ -1041,6 +1056,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
+
         // 是否开具增值税发票 1是，0否
         $schemas['vat'] = array(
             'name' => '是否开具增值税发票',
@@ -1387,7 +1403,6 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-
         $schemas['collect'] = array(
             'name' => '收藏数量',
             'data' => array(
@@ -1408,6 +1423,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
+
         return $schemas;
     }
 

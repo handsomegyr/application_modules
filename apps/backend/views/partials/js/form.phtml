@@ -4,6 +4,13 @@
         return {
             //main function to initiate the module
             init: function() {
+                $(".nav-tabs>li").on("click", function() {
+                    let id = $(this).attr("_id");
+                    $(".tab-content>.tab-pane").removeClass('active');
+                    $("#" + id).addClass('active');
+                    $(this).addClass('active').siblings().removeClass('active');
+                });
+                
                 <?php
                 $schemas4Form = $this->view->schemas;
                 $this->partial('partials/js/formelement');

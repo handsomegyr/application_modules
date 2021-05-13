@@ -1,5 +1,9 @@
 <?php foreach ($schemas4Form as $key => $field) { ?>
     <?php
+    // 如果不在tabbedform的tab中的话就不显示
+    if ($this->view->form_template == 'tabbedform' && !in_array($key, $field4TabForm)) {        
+        continue;
+    }
     if (empty($field['form']['is_show'])) {
         continue;
     }

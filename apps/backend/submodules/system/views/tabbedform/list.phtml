@@ -1,0 +1,1024 @@
+<div class="row">
+    <div class="col-md-12">
+        <form method="POST" action="https://demo.laravel-admin.org/_handle_form_" class="form-horizontal" accept-charset="UTF-8" pjax-container="1" enctype="multipart/form-data">
+
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs nav-tabs">
+
+                    <li _id="tab_816957038" class=active><a href="javascript:;">基本</a></li>
+                    <li _id="tab_1384150007"><a href="javascript:;">网站</a></li>
+                    <li _id="tab_341650983"><a href="javascript:;">上传</a></li>
+                    <li _id="tab_1462323405"><a href="javascript:;">数据库</a></li>
+                    <li _id="tab_648196694"><a href="javascript:;">开发</a></li>
+
+                    <li class="pull-right header"></li>
+                </ul>
+                <div class="tab-content">
+
+                    <div class="tab-pane active" id="tab_816957038">
+
+                        <div class="box-body fields-group">
+
+                            <div class="form-group  ">
+
+                                <label for="website_enable" class="col-sm-2  control-label">站点开关</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <input type="checkbox" class="website_enable la_checkbox" />
+                                    <input type="hidden" class="website_enable" name="website_enable" value="off" />
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;站点关闭后将不能访问，后台可正常登录
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group  ">
+
+                                <label for="website_title" class="col-sm-2  control-label">站点标题</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
+
+                                        <input type="text" id="website_title" name="website_title" value="" class="form-control website_title" placeholder="输入 站点标题" />
+
+
+                                    </div>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;调用方式：config('website_title')
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="website_slogan" class="col-sm-2  control-label">站点标语</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
+
+                                        <input type="text" id="website_slogan" name="website_slogan" value="" class="form-control website_slogan" placeholder="输入 站点标语" />
+
+
+                                    </div>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;站点口号，调用方式：config('website_slogan')
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="website_logo" class="col-sm-2  control-label">站点LOGO</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <input type="file" class="website_logo" name="website_logo" />
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-group  ">
+
+                                <label for="website_text_logo" class="col-sm-2  control-label">站点LOGO文字</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <input type="file" class="website_text_logo" name="website_text_logo" />
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-group  ">
+
+                                <label for="website_desc" class="col-sm-2  control-label">站点描述</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <textarea name="website_desc" class="form-control website_desc" rows="5" placeholder="输入 站点描述"></textarea>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;网站描述，有利于搜索引擎抓取相关信息
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group  ">
+
+                                <label for="website_keywords" class="col-sm-2  control-label">站点关键词</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
+
+                                        <input type="text" id="website_keywords" name="website_keywords" value="" class="form-control website_keywords" placeholder="输入 站点关键词" />
+
+
+                                    </div>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;网站搜索引擎关键字
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="website_copyright" class="col-sm-2  control-label">版权信息</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
+
+                                        <input type="text" id="website_copyright" name="website_copyright" value="" class="form-control website_copyright" placeholder="输入 版权信息" />
+
+
+                                    </div>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;调用方式：config('website_copyright')
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="website_icp" class="col-sm-2  control-label">备案信息</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
+
+                                        <input type="text" id="website_icp" name="website_icp" value="" class="form-control website_icp" placeholder="输入 备案信息" />
+
+
+                                    </div>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;调用方式：config('website_icp')
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="website_statistics" class="col-sm-2  control-label">网站统计代码</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <textarea name="website_statistics" class="form-control website_statistics" rows="5" placeholder="输入 网站统计代码"></textarea>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;网站统计代码，支持百度、Google、cnzz等，调用方式：config('website_statistics')
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="_form_" value="App\Admin\Forms\Settings\Basic" class="_form_" />
+
+
+                        </div>
+
+
+
+
+
+                    </div>
+                    <div class="tab-pane " id="tab_1384150007">
+
+                        <div class="box-body fields-group">
+
+                            <div class="form-group  ">
+
+                                <label for="name" class="col-sm-2 asterisk control-label">Name</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
+
+                                        <input type="text" id="name" name="name" value="John Doe" class="form-control name" placeholder="输入 Name" required="1" />
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="email" class="col-sm-2  control-label">Email</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+
+                                        <input type="email" id="email" name="email" value="John.Doe@gmail.com" class="form-control email" placeholder="输入 Email" />
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="created_at" class="col-sm-2  control-label">Created at</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
+
+                                        <input style="width: 160px" type="text" id="created_at" name="created_at" value="2021-05-13 13:23:10" class="form-control created_at" placeholder="输入 Created at" />
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <input type="hidden" name="_form_" value="App\Admin\Forms\Settings\Site" class="_form_" />
+
+
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="tab_341650983">
+
+                        <div class="box-body fields-group">
+
+                            <div class="form-group  ">
+
+                                <label for="file_size" class="col-sm-2 asterisk control-label">文件上传大小限制</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+
+                                        <input style="width: 100px" type="text" id="file_size" name="file_size" value="100" class="form-control file_size" placeholder="输入 文件上传大小限制" required="1" />
+
+
+                                    </div>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;0为不限制大小，单位：kb
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="file_ext" class="col-sm-2 asterisk control-label">允许上传的文件后缀</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <select class="form-control file_ext" style="width: 100%;" name="file_ext[]" multiple="multiple" data-placeholder="输入 允许上传的文件后缀" required="1">
+
+                                        <option value="doc" selected>doc</option>
+                                        <option value="docx" selected>docx</option>
+                                        <option value="xls" selected>xls</option>
+                                        <option value="ppt" selected>ppt</option>
+                                        <option value="pptx" selected>pptx</option>
+                                        <option value="pdf" selected>pdf</option>
+                                        <option value="wps" selected>wps</option>
+                                        <option value="txt" selected>txt</option>
+                                        <option value="rar" selected>rar</option>
+                                        <option value="zip" selected>zip</option>
+                                        <option value="gz" selected>gz</option>
+                                        <option value="bz2" selected>bz2</option>
+                                        <option value="7z" selected>7z</option>
+
+                                    </select>
+                                    <input type="hidden" name="file_ext[]" />
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;多个后缀用逗号隔开，不填写则不限制类型
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group  ">
+
+                                <label for="image_size" class="col-sm-2 asterisk control-label">图片上传大小限制</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+
+                                        <input style="width: 100px" type="text" id="image_size" name="image_size" value="100" class="form-control image_size" placeholder="输入 图片上传大小限制" required="1" />
+
+
+                                    </div>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;0为不限制大小，单位：kb
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="image_ext" class="col-sm-2 asterisk control-label">允许上传的图片后缀</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <select class="form-control image_ext" style="width: 100%;" name="image_ext[]" multiple="multiple" data-placeholder="输入 允许上传的图片后缀" required="1">
+
+                                        <option value="gif" selected>gif</option>
+                                        <option value="bmp" selected>bmp</option>
+                                        <option value="jpeg" selected>jpeg</option>
+                                        <option value="png" selected>png</option>
+
+                                    </select>
+                                    <input type="hidden" name="image_ext[]" />
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;多个后缀用逗号隔开，不填写则不限制类型
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group  ">
+
+                                <label for="thumbnail_size" class="col-sm-2  control-label">缩略图尺寸</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+
+                                        <input style="width: 100px" type="text" id="thumbnail_size" name="thumbnail_size" value="" class="form-control thumbnail_size" placeholder="输入 缩略图尺寸" />
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <input type="hidden" name="_form_" value="App\Admin\Forms\Settings\Upload" class="_form_" />
+
+
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="tab_1462323405">
+                        <div class="box-body fields-group">
+
+                            <div class="form-group  ">
+
+                                <label for="path" class="col-sm-2 asterisk control-label">备份根路径</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
+
+                                        <input type="text" id="path" name="path" value="../data/" class="form-control path" placeholder="输入 备份根路径" required="1" />
+
+
+                                    </div>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;路径必须以 / 结尾
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="backup_size" class="col-sm-2 asterisk control-label">备份卷大小</label>
+
+                                <div class="col-sm-8">
+
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
+
+                                        <input type="text" id="backup_size" name="backup_size" value="20971520" class="form-control backup_size" placeholder="输入 备份卷大小" required="1" />
+
+
+                                    </div>
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;该值用于限制压缩后的分卷最大长度。单位：B；建议设置20M
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+
+                                <label for="zip" class="col-sm-2  control-label">备份是否压缩</label>
+
+                                <div class="col-sm-8">
+
+
+
+                                    <span class="icheck">
+
+                                        <label class="radio-inline">
+                                            <input type="radio" name="zip" value="1" class="minimal zip" checked />&nbsp;是&nbsp;&nbsp;
+                                        </label>
+
+                                    </span>
+
+
+                                    <span class="icheck">
+
+                                        <label class="radio-inline">
+                                            <input type="radio" name="zip" value="0" class="minimal zip" />&nbsp;否&nbsp;&nbsp;
+                                        </label>
+
+                                    </span>
+
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;压缩备份文件需要PHP环境支持 gzopen, gzwrite函数
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group  ">
+
+                                <label for="zip_level" class="col-sm-2  control-label">备份压缩级别</label>
+
+                                <div class="col-sm-8">
+
+
+
+                                    <span class="icheck">
+
+                                        <label class="radio-inline">
+                                            <input type="radio" name="zip_level" value="1" class="minimal zip_level" />&nbsp;最低&nbsp;&nbsp;
+                                        </label>
+
+                                    </span>
+
+
+                                    <span class="icheck">
+
+                                        <label class="radio-inline">
+                                            <input type="radio" name="zip_level" value="2" class="minimal zip_level" checked />&nbsp;一般&nbsp;&nbsp;
+                                        </label>
+
+                                    </span>
+
+
+                                    <span class="icheck">
+
+                                        <label class="radio-inline">
+                                            <input type="radio" name="zip_level" value="3" class="minimal zip_level" />&nbsp;最高&nbsp;&nbsp;
+                                        </label>
+
+                                    </span>
+
+
+                                    <span class="help-block">
+                                        <i class="fa fa-info-circle"></i>&nbsp;数据库备份文件的压缩级别，该配置在开启压缩时生效
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="_form_" value="App\Admin\Forms\Settings\Database" class="_form_" />
+
+
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="tab_648196694">
+                        <div class="box-body fields-group">
+
+                            <div class="form-group  ">
+
+                                <label for="dev_mode" class="col-sm-2  control-label">开发模式</label>
+
+                                <div class="col-sm-8">
+
+
+
+                                    <div class="radio icheck">
+
+                                        <label>
+                                            <input type="radio" name="dev_mode" value="0" class="minimal dev_mode" />&nbsp;关闭&nbsp;&nbsp;
+                                        </label>
+
+                                    </div>
+
+
+                                    <div class="radio icheck">
+
+                                        <label>
+                                            <input type="radio" name="dev_mode" value="1" class="minimal dev_mode" checked />&nbsp;开启&nbsp;&nbsp;
+                                        </label>
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-group  ">
+
+                                <label for="show_trace" class="col-sm-2  control-label">显示页面Trace</label>
+
+                                <div class="col-sm-8">
+
+
+
+                                    <div class="radio icheck">
+
+                                        <label>
+                                            <input type="radio" name="show_trace" value="0" class="minimal show_trace" />&nbsp;否&nbsp;&nbsp;
+                                        </label>
+
+                                    </div>
+
+
+                                    <div class="radio icheck">
+
+                                        <label>
+                                            <input type="radio" name="show_trace" value="1" class="minimal show_trace" checked />&nbsp;是&nbsp;&nbsp;
+                                        </label>
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="_form_" value="App\Admin\Forms\Settings\Develop" class="_form_" />
+
+
+                        </div>
+                    </div>
+                    <input type="hidden" name="_token" value="Fz08SJJEVxup3rBDxFmqY2BA0A6F29TzsEEq0c5V">
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-8">
+                            <div class="btn-group pull-left">
+                                <button type="reset" class="btn btn-warning pull-right">重置</button>
+                            </div>
+
+                            <div class="btn-group pull-right">
+                                <button type="submit" class="btn btn-info pull-right">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script data-exec-on-popstate>
+    $(function() {
+
+        $(".nav-tabs>li").on("click", function() {
+            let id = $(this).attr("_id");
+            $(".tab-content>.tab-pane").removeClass('active');
+            $("#" + id).addClass('active');
+            $(this).addClass('active').siblings().removeClass('active');
+        });
+    });
+</script>
+
+<script data-exec-on-popstate>
+    $(function() {
+
+        $('.website_enable.la_checkbox').bootstrapSwitch({
+            size: 'small',
+            onText: 'ON',
+            offText: 'OFF',
+            onColor: 'primary',
+            offColor: 'default',
+            onSwitchChange: function(event, state) {
+                $(event.target).closest('.bootstrap-switch').next().val(state ? 'on' : 'off').change();
+            }
+        });
+
+        $("input.website_logo").fileinput({
+            "overwriteInitial": true,
+            "initialPreviewAsData": true,
+            "browseLabel": "\u6d4f\u89c8",
+            "cancelLabel": "\u53d6\u6d88",
+            "showRemove": false,
+            "showUpload": false,
+            "showCancel": false,
+            "dropZoneEnabled": false,
+            "deleteExtraData": {
+                "website_logo": "_file_del_",
+                "_file_del_": "",
+                "_token": "Fz08SJJEVxup3rBDxFmqY2BA0A6F29TzsEEq0c5V",
+                "_method": "PUT"
+            },
+            "fileActionSettings": {
+                "showRemove": false,
+                "showDrag": false
+            },
+            "msgPlaceholder": "\u9009\u62e9\u56fe\u7247",
+            "allowedFileTypes": ["image"]
+        });
+        $("input.website_text_logo").fileinput({
+            "overwriteInitial": true,
+            "initialPreviewAsData": true,
+            "browseLabel": "\u6d4f\u89c8",
+            "cancelLabel": "\u53d6\u6d88",
+            "showRemove": false,
+            "showUpload": false,
+            "showCancel": false,
+            "dropZoneEnabled": false,
+            "deleteExtraData": {
+                "website_text_logo": "_file_del_",
+                "_file_del_": "",
+                "_token": "Fz08SJJEVxup3rBDxFmqY2BA0A6F29TzsEEq0c5V",
+                "_method": "PUT"
+            },
+            "fileActionSettings": {
+                "showRemove": false,
+                "showDrag": false
+            },
+            "msgPlaceholder": "\u9009\u62e9\u56fe\u7247",
+            "allowedFileTypes": ["image"]
+        });
+
+        $('.created_at').parent().datetimepicker({
+            "format": "YYYY-MM-DD HH:mm:ss",
+            "locale": "zh-CN",
+            "allowInputToggle": true
+        });
+        $('.file_size:not(.initialized)')
+            .addClass('initialized')
+            .bootstrapNumber({
+                upClass: 'success',
+                downClass: 'primary',
+                center: true
+            });
+
+        $(".file_ext").select2({
+            tags: true,
+            tokenSeparators: [',']
+        });
+
+        $('.image_size:not(.initialized)')
+            .addClass('initialized')
+            .bootstrapNumber({
+                upClass: 'success',
+                downClass: 'primary',
+                center: true
+            });
+
+        $(".image_ext").select2({
+            tags: true,
+            tokenSeparators: [',']
+        });
+
+        $('.thumbnail_size:not(.initialized)')
+            .addClass('initialized')
+            .bootstrapNumber({
+                upClass: 'success',
+                downClass: 'primary',
+                center: true
+            });
+        $('.zip').iCheck({
+            radioClass: 'iradio_minimal-blue'
+        });
+        $('.zip_level').iCheck({
+            radioClass: 'iradio_minimal-blue'
+        });
+        $('.dev_mode').iCheck({
+            radioClass: 'iradio_minimal-blue'
+        });
+        $('.show_trace').iCheck({
+            radioClass: 'iradio_minimal-blue'
+        });
+
+
+
+        $('.auto-refresh-trigger').off('click').on('click', function() {
+
+            if (typeof $.admin.autoRefresh !== 'undefined') {
+                window.clearInterval($.admin.autoRefresh);
+                delete($.admin.autoRefresh)
+
+                $(".auto-refresh .interval-text").html('');
+            }
+
+            $.admin.autoRefresh = window.setInterval(function() {
+                $.admin.reload();
+                $.admin.toastr.success('刷新成功 !', '', {
+                    positionClass: "toast-bottom-right"
+                });
+            }, $(this).data('interval') * 1000);
+
+            $(".auto-refresh .interval-text").html($(this).html());
+
+            $(".auto-refresh i").removeClass("fa-play").addClass("fa-pause refresh-pause");
+        });
+
+        $('.auto-refresh').off('click').on('click', '.refresh-pause', function(e) {
+            e.preventDefault();
+
+            $(".auto-refresh i").addClass("fa-play").removeClass("fa-pause refresh-pause");
+
+            if (typeof $.admin.autoRefresh !== 'undefined') {
+                window.clearInterval($.admin.autoRefresh);
+                delete($.admin.autoRefresh)
+
+                $(".auto-refresh .interval-text").html('');
+            }
+        });
+
+        var actionResolver = function(response) {
+            if (typeof response !== 'object') {
+                return $.admin.swal({
+                    type: 'error',
+                    title: 'Oops!'
+                });
+            }
+
+            var then = function(then) {
+                if (then.action == 'refresh') {
+                    $.admin.reload();
+                }
+
+                if (then.action == 'download') {
+                    window.open(then.value, '_blank');
+                }
+
+                if (then.action == 'redirect') {
+                    $.admin.redirect(then.value);
+                }
+            };
+
+            if (typeof response.swal === 'object') {
+                var alert = $.admin.swal(response.swal);
+
+                if (response.then) {
+                    then(response.then);
+                }
+            }
+
+            if (typeof response.toastr === 'object') {
+                $.admin.toastr[response.toastr.type](response.toastr.content, '', response.toastr.options);
+
+                if (response.then) {
+                    then(response.then);
+                }
+            }
+        };
+
+        var actionCatcher = function(request) {
+            if (request && typeof request.responseJSON === 'object') {
+                $.admin.toastr.error(request.responseJSON.message, '', {
+                    positionClass: "toast-bottom-center",
+                    timeOut: 10000
+                }).css("width", "500px")
+            }
+        };
+
+        (function($) {
+            $('.clear-cache').off('click').on('click', function() {
+                var data = $(this).data();
+                Object.assign(data, []);
+
+                var process = $.admin.swal({
+                    "type": "question",
+                    "showCancelButton": true,
+                    "showLoaderOnConfirm": true,
+                    "confirmButtonText": "\u63d0\u4ea4",
+                    "cancelButtonText": "\u53d6\u6d88",
+                    "title": "\u786e\u8ba4\u6e05\u9664\u7f13\u5b58",
+                    "text": "",
+                    preConfirm: function(input) {
+                        return new Promise(function(resolve, reject) {
+                            Object.assign(data, {
+                                _token: $.admin.token,
+                                _action: 'App_Admin_Actions_ClearCache',
+                                _input: input,
+                            });
+
+                            $.ajax({
+                                method: 'POST',
+                                url: 'https://demo.laravel-admin.org/_handle_action_',
+                                data: data,
+                                success: function(data) {
+                                    resolve(data);
+                                },
+                                error: function(request) {
+                                    reject(request);
+                                }
+                            });
+                        });
+                    }
+                }).then(function(result) {
+                    if (typeof result.dismiss !== 'undefined') {
+                        return Promise.reject();
+                    }
+
+                    if (typeof result.status === "boolean") {
+                        var response = result;
+                    } else {
+                        var response = result.value;
+                    }
+
+                    return response;
+
+                });
+                process.then(actionResolver).catch(actionCatcher);
+            });
+        })(jQuery);
+
+        // $('.email.action').inputmask({
+        //     "alias": "email"
+        // });
+        // $('.created_at.action').parent().datetimepicker({
+        //     "format": "YYYY-MM-DD HH:mm:ss",
+        //     "locale": "zh-CN",
+        //     "allowInputToggle": true
+        // });
+        // $('.count.action').inputmask({
+        //     "alias": "integer"
+        // });
+
+        (function($) {
+            $('.feedback').off('click').on('click', function() {
+                var data = $(this).data();
+                var modalId = $(this).attr('modal');
+                Object.assign(data, []);
+
+                $('#' + modalId).modal('show');
+                $('#' + modalId + ' form').off('submit').on('submit', function(e) {
+                    e.preventDefault();
+                    var form = this;
+                    var process = new Promise(function(resolve, reject) {
+                        Object.assign(data, {
+                            _token: $.admin.token,
+                            _action: 'App_Admin_Actions_Feedback',
+                        });
+
+                        var formData = new FormData(form);
+                        for (var key in data) {
+                            formData.append(key, data[key]);
+                        }
+
+                        $.ajax({
+                            method: 'POST',
+                            url: 'https://demo.laravel-admin.org/_handle_action_',
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: function(data) {
+                                resolve(data);
+                                if (data.status === true) {
+                                    $('#' + modalId).modal('hide');
+                                }
+                            },
+                            error: function(request) {
+                                reject(request);
+                            }
+                        });
+                    });
+                    process.then(actionResolver).catch(actionCatcher);
+                });
+            });
+        })(jQuery);
+
+
+        (function($) {
+            $('.system').off('click').on('click', function() {
+                var data = $(this).data();
+                var modalId = $(this).attr('modal');
+                Object.assign(data, []);
+
+                $('#' + modalId).modal('show');
+                $('#' + modalId + ' form').off('submit').on('submit', function(e) {
+                    e.preventDefault();
+                    var form = this;
+                    var process = new Promise(function(resolve, reject) {
+                        Object.assign(data, {
+                            _token: $.admin.token,
+                            _action: 'App_Admin_Actions_System',
+                        });
+
+                        var formData = new FormData(form);
+                        for (var key in data) {
+                            formData.append(key, data[key]);
+                        }
+
+                        $.ajax({
+                            method: 'POST',
+                            url: 'https://demo.laravel-admin.org/_handle_action_',
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: function(data) {
+                                resolve(data);
+                                if (data.status === true) {
+                                    $('#' + modalId).modal('hide');
+                                }
+                            },
+                            error: function(request) {
+                                reject(request);
+                            }
+                        });
+                    });
+                    process.then(actionResolver).catch(actionCatcher);
+                });
+            });
+        })(jQuery);
+
+        function launchFullscreen(element) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullScreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+
+        $('.nav-fullscreen').click(function() {
+            if (document.fullscreenElement) {
+                exitFullscreen();
+            } else {
+                launchFullscreen(document.body)
+            }
+        });
+
+        $('.container-refresh').off('click').on('click', function() {
+            $.admin.reload();
+            $.admin.toastr.success('刷新成功 !', '', {
+                positionClass: "toast-top-center"
+            });
+        });
+    });
+</script>

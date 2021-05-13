@@ -51,6 +51,18 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         'sort_field' => 'show_order',
     );
 
+    // 表单页的模板是form还是tabbedform
+    protected $form_template = 'form';
+
+    // tabbed表单结构设置
+    protected $tabbedform_settings = array(
+        // tab
+        'tabs' => array(
+            0 => array('name' => '第一个Tab', 'fields' => array('a', 'b')),
+            1 => array('name' => '第二个Tab', 'fields' => array('c', 'd')),
+        )
+    );
+
     protected function getDefaultOrder()
     {
         return array(
@@ -911,6 +923,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
         $this->view->setVar('list_template', $this->list_template);
         $this->view->setVar("tree_settings", $this->tree_settings);
+
+        $this->view->setVar('form_template', $this->form_template);
+        $this->view->setVar("tabbedform_settings", $this->tabbedform_settings);
 
         $this->view->setVar('is_show_edit_button', $this->is_show_edit_button);
         $this->view->setVar('is_show_create_button', $this->is_show_create_button);

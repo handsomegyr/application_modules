@@ -7,7 +7,7 @@ namespace App\Backend\Submodules\System\Controllers;
  *
  * @name scaffold管理
  */
-class scaffoldController extends \App\Backend\Controllers\FormController
+class ScaffoldController extends \App\Backend\Controllers\FormController
 {
 
     public function initialize()
