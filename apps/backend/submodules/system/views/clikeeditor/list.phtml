@@ -1,0 +1,492 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="callout callout-info">
+            <h4>Clike Editor</h4>
+            <a href="https://github.com/laravel-admin-extensions/clike-editor" target='_blank'>https://github.com/laravel-admin-extensions/clike-editor</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Clike Editor</h3>
+                <div class="box-tools pull-right">
+                </div><!-- /.box-tools -->
+            </div><!-- /.box-header -->
+            <div class="box-body" style="display: block;">
+                <form method="POST" action="" class="form-horizontal" accept-charset="UTF-8" pjax-container="1">
+                    <div class="box-body fields-group">
+
+                        <div class="form-group  ">
+
+                            <label for="clang" class="col-sm-2  control-label">Clang</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="clang" id="clang" name="clang">/* C demo code */
+
+#include &lt;zmq.h&gt;
+#include &lt;pthread.h&gt;
+#include &lt;semaphore.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;malloc.h&gt;
+
+typedef struct {
+  void* arg_socket;
+  zmq_msg_t* arg_msg;
+  char* arg_string;
+  unsigned long arg_len;
+  int arg_int, arg_command;
+
+  int signal_fd;
+  int pad;
+  void* context;
+  sem_t sem;
+} acl_zmq_context;
+
+#define p(X) (context-&gt;arg_##X)
+
+void* zmq_thread(void* context_pointer) {
+  acl_zmq_context* context = (acl_zmq_context*)context_pointer;
+  char ok = &#039;K&#039;, err = &#039;X&#039;;
+  int res;
+
+  while (1) {
+    while ((res = sem_wait(&amp;context-&gt;sem)) == EINTR);
+    if (res) {write(context-&gt;signal_fd, &amp;err, 1); goto cleanup;}
+    switch(p(command)) {
+    case 0: goto cleanup;
+    case 1: p(socket) = zmq_socket(context-&gt;context, p(int)); break;
+    case 2: p(int) = zmq_close(p(socket)); break;
+    case 3: p(int) = zmq_bind(p(socket), p(string)); break;
+    case 4: p(int) = zmq_connect(p(socket), p(string)); break;
+    case 5: p(int) = zmq_getsockopt(p(socket), p(int), (void*)p(string), &amp;p(len)); break;
+    case 6: p(int) = zmq_setsockopt(p(socket), p(int), (void*)p(string), p(len)); break;
+    case 7: p(int) = zmq_send(p(socket), p(msg), p(int)); break;
+    case 8: p(int) = zmq_recv(p(socket), p(msg), p(int)); break;
+    case 9: p(int) = zmq_poll(p(socket), p(int), p(len)); break;
+    }
+    p(command) = errno;
+    write(context-&gt;signal_fd, &amp;ok, 1);
+  }
+ cleanup:
+  close(context-&gt;signal_fd);
+  free(context_pointer);
+  return 0;
+}
+
+void* zmq_thread_init(void* zmq_context, int signal_fd) {
+  acl_zmq_context* context = malloc(sizeof(acl_zmq_context));
+  pthread_t thread;
+
+  context-&gt;context = zmq_context;
+  context-&gt;signal_fd = signal_fd;
+  sem_init(&amp;context-&gt;sem, 1, 0);
+  pthread_create(&amp;thread, 0, &amp;zmq_thread, context);
+  pthread_detach(thread);
+  return context;
+}
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="cpp" class="col-sm-2  control-label">Cpp</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="cpp" id="cpp" name="cpp">/* C demo code */
+
+#include &lt;zmq.h&gt;
+#include &lt;pthread.h&gt;
+#include &lt;semaphore.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;malloc.h&gt;
+
+typedef struct {
+  void* arg_socket;
+  zmq_msg_t* arg_msg;
+  char* arg_string;
+  unsigned long arg_len;
+  int arg_int, arg_command;
+
+  int signal_fd;
+  int pad;
+  void* context;
+  sem_t sem;
+} acl_zmq_context;
+
+#define p(X) (context-&gt;arg_##X)
+
+void* zmq_thread(void* context_pointer) {
+  acl_zmq_context* context = (acl_zmq_context*)context_pointer;
+  char ok = &#039;K&#039;, err = &#039;X&#039;;
+  int res;
+
+  while (1) {
+    while ((res = sem_wait(&amp;context-&gt;sem)) == EINTR);
+    if (res) {write(context-&gt;signal_fd, &amp;err, 1); goto cleanup;}
+    switch(p(command)) {
+    case 0: goto cleanup;
+    case 1: p(socket) = zmq_socket(context-&gt;context, p(int)); break;
+    case 2: p(int) = zmq_close(p(socket)); break;
+    case 3: p(int) = zmq_bind(p(socket), p(string)); break;
+    case 4: p(int) = zmq_connect(p(socket), p(string)); break;
+    case 5: p(int) = zmq_getsockopt(p(socket), p(int), (void*)p(string), &amp;p(len)); break;
+    case 6: p(int) = zmq_setsockopt(p(socket), p(int), (void*)p(string), p(len)); break;
+    case 7: p(int) = zmq_send(p(socket), p(msg), p(int)); break;
+    case 8: p(int) = zmq_recv(p(socket), p(msg), p(int)); break;
+    case 9: p(int) = zmq_poll(p(socket), p(int), p(len)); break;
+    }
+    p(command) = errno;
+    write(context-&gt;signal_fd, &amp;ok, 1);
+  }
+ cleanup:
+  close(context-&gt;signal_fd);
+  free(context_pointer);
+  return 0;
+}
+
+void* zmq_thread_init(void* zmq_context, int signal_fd) {
+  acl_zmq_context* context = malloc(sizeof(acl_zmq_context));
+  pthread_t thread;
+
+  context-&gt;context = zmq_context;
+  context-&gt;signal_fd = signal_fd;
+  sem_init(&amp;context-&gt;sem, 1, 0);
+  pthread_create(&amp;thread, 0, &amp;zmq_thread, context);
+  pthread_detach(thread);
+  return context;
+}
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="objectivec" class="col-sm-2  control-label">Objectivec</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="objectivec" id="objectivec" name="objectivec">/*
+This is a longer comment
+That spans two lines
+*/
+
+#import &lt;Test/Test.h&gt;
+@implementation YourAppDelegate
+
+// This is a one-line comment
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+  char myString[] = &quot;This is a C character array&quot;;
+  int test = 5;
+  return YES;
+}
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="java" class="col-sm-2  control-label">Java</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="java" id="java" name="java">import com.demo.util.MyType;
+import com.demo.util.MyInterface;
+
+public enum Enum {
+  VAL1, VAL2, VAL3
+}
+
+public class Class&lt;T, V&gt; implements MyInterface {
+  public static final MyType&lt;T, V&gt; member;
+  
+  private class InnerClass {
+    public int zero() {
+      return 0;
+    }
+  }
+
+  @Override
+  public MyType method() {
+    return member;
+  }
+
+  public void method2(MyType&lt;T, V&gt; value) {
+    method();
+    value.method3();
+    member = value;
+  }
+}
+
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="kotlin" class="col-sm-2  control-label">Kotlin</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="kotlin" id="kotlin" name="kotlin">package org.wasabi.http
+
+import java.util.concurrent.Executors
+import java.net.InetSocketAddress
+import org.wasabi.app.AppConfiguration
+import io.netty.bootstrap.ServerBootstrap
+import io.netty.channel.nio.NioEventLoopGroup
+import io.netty.channel.socket.nio.NioServerSocketChannel
+import org.wasabi.app.AppServer
+
+public class HttpServer(private val appServer: AppServer) {
+
+    val bootstrap: ServerBootstrap
+    val primaryGroup: NioEventLoopGroup
+    val workerGroup:  NioEventLoopGroup
+
+    init {
+        // Define worker groups
+        primaryGroup = NioEventLoopGroup()
+        workerGroup = NioEventLoopGroup()
+
+        // Initialize bootstrap of server
+        bootstrap = ServerBootstrap()
+
+        bootstrap.group(primaryGroup, workerGroup)
+        bootstrap.channel(javaClass&lt;NioServerSocketChannel&gt;())
+        bootstrap.childHandler(NettyPipelineInitializer(appServer))
+    }
+
+    public fun start(wait: Boolean = true) {
+        val channel = bootstrap.bind(appServer.configuration.port)?.sync()?.channel()
+
+        if (wait) {
+            channel?.closeFuture()?.sync()
+        }
+    }
+
+    public fun stop() {
+        // Shutdown all event loops
+        primaryGroup.shutdownGracefully()
+        workerGroup.shutdownGracefully()
+
+        // Wait till all threads are terminated
+        primaryGroup.terminationFuture().sync()
+        workerGroup.terminationFuture().sync()
+    }
+}
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="scala" class="col-sm-2  control-label">Scala</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="scala" id="scala" name="scala">object FilterTest extends App {
+  def filter(xs: List[Int], threshold: Int) = {
+    def process(ys: List[Int]): List[Int] =
+      if (ys.isEmpty) ys
+      else if (ys.head &lt; threshold) ys.head :: process(ys.tail)
+      else process(ys.tail)
+    process(xs)
+  }
+  println(filter(List(1, 9, 2, 8, 3, 7, 4), 5))
+}
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="ceylon" class="col-sm-2  control-label">Ceylon</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="ceylon" id="ceylon" name="ceylon">&quot;Produces the [[stream|Iterable]] that results from repeated
+ application of the given [[function|next]] to the given
+ [[first]] element of the stream, until the function first
+ returns [[finished]]. If the given function never returns 
+ `finished`, the resulting stream is infinite.
+
+ For example:
+
+     loop(0)(2.plus).takeWhile(10.largerThan)
+
+ produces the stream `{ 0, 2, 4, 6, 8 }`.&quot;
+tagged(&quot;Streams&quot;)
+shared {Element+} loop&lt;Element&gt;(
+        &quot;The first element of the resulting stream.&quot;
+        Element first)(
+        &quot;The function that produces the next element of the
+         stream, given the current element. The function may
+         return [[finished]] to indicate the end of the 
+         stream.&quot;
+        Element|Finished next(Element element))
+    =&gt; let (start = first)
+    object satisfies {Element+} {
+        first =&gt; start;
+        empty =&gt; false;
+        function nextElement(Element element)
+                =&gt; next(element);
+        iterator()
+                =&gt; object satisfies Iterator&lt;Element&gt; {
+            variable Element|Finished current = start;
+            shared actual Element|Finished next() {
+                if (!is Finished result = current) {
+                    current = nextElement(result);
+                    return result;
+                }
+                else {
+                    return finished;
+                }
+            }
+        };
+    };
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+
+                    </div>
+
+                    <input type="hidden" name="_token" value="bpeOq7hhCi1QONgd42hXCGfU3jhH4xzV8afQM7tM">
+
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-8">
+                            <div class="btn-group pull-left">
+                                <button type="reset" class="btn btn-warning pull-right">重置</button>
+                            </div>
+
+                            <div class="btn-group pull-right">
+                                <button type="submit" class="btn btn-info pull-right">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div><!-- /.box-body -->
+        </div>
+
+        <script>
+
+        </script>
+    </div>
+</div>
+<script data-exec-on-popstate>
+    $(function() {
+
+        CodeMirror.fromTextArea(document.getElementById("clang"), {
+            "mode": "text\/x-csrc",
+            "lineNumbers": true,
+            "matchBrackets": true
+        });
+        CodeMirror.fromTextArea(document.getElementById("cpp"), {
+            "mode": "text\/x-c++src",
+            "lineNumbers": true,
+            "matchBrackets": true
+        });
+        CodeMirror.fromTextArea(document.getElementById("objectivec"), {
+            "mode": "text\/x-objectivec",
+            "lineNumbers": true,
+            "matchBrackets": true
+        });
+        CodeMirror.fromTextArea(document.getElementById("java"), {
+            "mode": "text\/x-java",
+            "lineNumbers": true,
+            "matchBrackets": true
+        });
+        CodeMirror.fromTextArea(document.getElementById("kotlin"), {
+            "mode": "text\/x-kotlin",
+            "lineNumbers": true,
+            "matchBrackets": true
+        });
+        CodeMirror.fromTextArea(document.getElementById("scala"), {
+            "mode": "text\/x-scala",
+            "lineNumbers": true,
+            "matchBrackets": true
+        });
+        CodeMirror.fromTextArea(document.getElementById("ceylon"), {
+            "mode": "text\/x-ceylon",
+            "lineNumbers": true,
+            "matchBrackets": true
+        });
+    });
+</script>

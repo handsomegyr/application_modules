@@ -1,0 +1,283 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="callout callout-info">
+            <h4>Javascript Editor</h4>
+            <a href="https://github.com/laravel-admin-extensions/js-editor" target='_blank'>https://github.com/laravel-admin-extensions/js-editor</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Javascript Editor</h3>
+                <div class="box-tools pull-right">
+                </div><!-- /.box-tools -->
+            </div><!-- /.box-header -->
+            <div class="box-body" style="display: block;">
+                <form method="POST" action="" class="form-horizontal" accept-charset="UTF-8" pjax-container="1">
+                    <div class="box-body fields-group">
+
+                        <div class="form-group  ">
+
+                            <label for="js" class="col-sm-2  control-label">Js</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="js" id="js" name="js">// Demo code (the actual new parser character stream implementation)
+
+function StringStream(string) {
+  this.pos = 0;
+  this.string = string;
+}
+
+StringStream.prototype = {
+  done: function() {return this.pos &gt;= this.string.length;},
+  peek: function() {return this.string.charAt(this.pos);},
+  next: function() {
+    if (this.pos &lt; this.string.length)
+      return this.string.charAt(this.pos++);
+  },
+  eat: function(match) {
+    var ch = this.string.charAt(this.pos);
+    if (typeof match == &quot;string&quot;) var ok = ch == match;
+    else var ok = ch &amp;&amp; match.test ? match.test(ch) : match(ch);
+    if (ok) {this.pos++; return ch;}
+  },
+  eatWhile: function(match) {
+    var start = this.pos;
+    while (this.eat(match));
+    if (this.pos &gt; start) return this.string.slice(start, this.pos);
+  },
+  backUp: function(n) {this.pos -= n;},
+  column: function() {return this.pos;},
+  eatSpace: function() {
+    var start = this.pos;
+    while (/\s/.test(this.string.charAt(this.pos))) this.pos++;
+    return this.pos - start;
+  },
+  match: function(pattern, consume, caseInsensitive) {
+    if (typeof pattern == &quot;string&quot;) {
+      function cased(str) {return caseInsensitive ? str.toLowerCase() : str;}
+      if (cased(this.string).indexOf(cased(pattern), this.pos) == this.pos) {
+        if (consume !== false) this.pos += str.length;
+        return true;
+      }
+    }
+    else {
+      var match = this.string.slice(this.pos).match(pattern);
+      if (match &amp;&amp; consume !== false) this.pos += match[0].length;
+      return match;
+    }
+  }
+};
+
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="json" class="col-sm-2  control-label">Json</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="json" id="json" name="json">{
+  &quot;@context&quot;: {
+    &quot;name&quot;: &quot;http://schema.org/name&quot;,
+    &quot;description&quot;: &quot;http://schema.org/description&quot;,
+    &quot;image&quot;: {
+      &quot;@id&quot;: &quot;http://schema.org/image&quot;,
+      &quot;@type&quot;: &quot;@id&quot;
+    },
+    &quot;geo&quot;: &quot;http://schema.org/geo&quot;,
+    &quot;latitude&quot;: {
+      &quot;@id&quot;: &quot;http://schema.org/latitude&quot;,
+      &quot;@type&quot;: &quot;xsd:float&quot;
+    },
+    &quot;longitude&quot;: {
+      &quot;@id&quot;: &quot;http://schema.org/longitude&quot;,
+      &quot;@type&quot;: &quot;xsd:float&quot;
+    },
+    &quot;xsd&quot;: &quot;http://www.w3.org/2001/XMLSchema#&quot;
+  },
+  &quot;name&quot;: &quot;The Empire State Building&quot;,
+  &quot;description&quot;: &quot;The Empire State Building is a 102-story landmark in New York City.&quot;,
+  &quot;image&quot;: &quot;http://www.civil.usherbrooke.ca/cours/gci215a/empire-state-building.jpg&quot;,
+  &quot;geo&quot;: {
+    &quot;latitude&quot;: &quot;40.75&quot;,
+    &quot;longitude&quot;: &quot;73.98&quot;
+  }
+}
+
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="jsond" class="col-sm-2  control-label">Jsond</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="jsond" id="jsond" name="jsond">{
+  &quot;@context&quot;: {
+    &quot;name&quot;: &quot;http://schema.org/name&quot;,
+    &quot;description&quot;: &quot;http://schema.org/description&quot;,
+    &quot;image&quot;: {
+      &quot;@id&quot;: &quot;http://schema.org/image&quot;,
+      &quot;@type&quot;: &quot;@id&quot;
+    },
+    &quot;geo&quot;: &quot;http://schema.org/geo&quot;,
+    &quot;latitude&quot;: {
+      &quot;@id&quot;: &quot;http://schema.org/latitude&quot;,
+      &quot;@type&quot;: &quot;xsd:float&quot;
+    },
+    &quot;longitude&quot;: {
+      &quot;@id&quot;: &quot;http://schema.org/longitude&quot;,
+      &quot;@type&quot;: &quot;xsd:float&quot;
+    },
+    &quot;xsd&quot;: &quot;http://www.w3.org/2001/XMLSchema#&quot;
+  },
+  &quot;name&quot;: &quot;The Empire State Building&quot;,
+  &quot;description&quot;: &quot;The Empire State Building is a 102-story landmark in New York City.&quot;,
+  &quot;image&quot;: &quot;http://www.civil.usherbrooke.ca/cours/gci215a/empire-state-building.jpg&quot;,
+  &quot;geo&quot;: {
+    &quot;latitude&quot;: &quot;40.75&quot;,
+    &quot;longitude&quot;: &quot;73.98&quot;
+  }
+}
+
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="typescript" class="col-sm-2  control-label">Typescript</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="typescript" id="typescript" name="typescript">class Greeter {
+  greeting: string;
+  constructor (message: string) {
+    this.greeting = message;
+  }
+  greet() {
+    return &quot;Hello, &quot; + this.greeting;
+  }
+}   
+
+var greeter = new Greeter(&quot;world&quot;);
+
+var button = document.createElement(&#039;button&#039;)
+button.innerText = &quot;Say Hello&quot;
+button.onclick = function() {
+  alert(greeter.greet())
+}
+
+document.body.appendChild(button)
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+
+                    </div>
+
+                    <input type="hidden" name="_token" value="bpeOq7hhCi1QONgd42hXCGfU3jhH4xzV8afQM7tM">
+
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-8">
+                            <div class="btn-group pull-left">
+                                <button type="reset" class="btn btn-warning pull-right">重置</button>
+                            </div>
+
+                            <div class="btn-group pull-right">
+                                <button type="submit" class="btn btn-info pull-right">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div><!-- /.box-body -->
+        </div>
+
+        <script>
+
+        </script>
+    </div>
+</div>
+<script data-exec-on-popstate>
+    $(function() {
+        CodeMirror.fromTextArea(document.getElementById("js"), {
+            "mode": "javascript",
+            "lineNumbers": true,
+            "matchBrackets": true,
+            "continueComments": true,
+            "extraKeys": {
+                "Ctrl-Q": "toggleComment"
+            }
+        });
+        CodeMirror.fromTextArea(document.getElementById("json"), {
+            "matchBrackets": true,
+            "autoCloseBrackets": true,
+            "lineNumbers": true,
+            "mode": "application\/json",
+            "lineWrapping": true
+        });
+        CodeMirror.fromTextArea(document.getElementById("jsond"), {
+            "matchBrackets": true,
+            "autoCloseBrackets": true,
+            "lineNumbers": true,
+            "mode": "application\/ld+json",
+            "lineWrapping": true
+        });
+        CodeMirror.fromTextArea(document.getElementById("typescript"), {
+            "matchBrackets": true,
+            "autoCloseBrackets": true,
+            "lineNumbers": true,
+            "mode": "text\/typescript",
+            "lineWrapping": true
+        });
+
+    });
+</script>

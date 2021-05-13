@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="callout callout-info">
+            <h4>PHP Editor</h4>
+            <a href="https://github.com/laravel-admin-extensions/php-editor" target='_blank'>https://github.com/laravel-admin-extensions/php-editor</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">PHP Editor</h3>
+                <div class="box-tools pull-right">
+                </div><!-- /.box-tools -->
+            </div><!-- /.box-header -->
+            <div class="box-body" style="display: block;">
+                <form method="POST" action="" class="form-horizontal" accept-charset="UTF-8" pjax-container="1">
+                    <div class="box-body fields-group">
+
+                        <div class="form-group  ">
+
+                            <label for="php" class="col-sm-2  control-label">Php</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="php" id="php" name="php">
+&lt;?php
+$a = array(&#039;a&#039; =&gt; 1, &#039;b&#039; =&gt; 2, 3 =&gt; &#039;c&#039;);
+
+echo &quot;$a[a] ${a[3] /* } comment */} {$a[b]} \$a[a]&quot;;
+
+function hello($who) {
+	return &quot;Hello $who!&quot;;
+}
+?&gt;
+&lt;p&gt;The program says &lt;?= hello(&quot;World&quot;) ?&gt;.&lt;/p&gt;
+&lt;script&gt;
+	alert(&quot;And here is some JS code&quot;); // also colored
+&lt;/script&gt;
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+
+                    </div>
+
+                    <input type="hidden" name="_token" value="bpeOq7hhCi1QONgd42hXCGfU3jhH4xzV8afQM7tM">
+
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-8">
+                            <div class="btn-group pull-left">
+                                <button type="reset" class="btn btn-warning pull-right">重置</button>
+                            </div>
+
+                            <div class="btn-group pull-right">
+                                <button type="submit" class="btn btn-info pull-right">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div><!-- /.box-body -->
+        </div>
+
+        <script>
+
+        </script>
+    </div>
+</div>
+<script data-exec-on-popstate>
+    $(function() {
+
+        CodeMirror.fromTextArea(document.getElementById("php"), {
+            "mode": "application\/x-httpd-php",
+            "lineNumbers": true,
+            "matchBrackets": true,
+            "indentUnit": 4,
+            "indentWithTabs": true
+        });
+    });
+</script>

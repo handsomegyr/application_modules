@@ -1,0 +1,328 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="callout callout-info">
+            <h4>Python Editor</h4>
+            <a href="https://github.com/laravel-admin-extensions/python-editor" target='_blank'>https://github.com/laravel-admin-extensions/python-editor</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Python Editor</h3>
+                <div class="box-tools pull-right">
+                </div><!-- /.box-tools -->
+            </div><!-- /.box-header -->
+            <div class="box-body" style="display: block;">
+                <form method="POST" action="" class="form-horizontal" accept-charset="UTF-8" pjax-container="1">
+                    <div class="box-body fields-group">
+
+                        <div class="form-group  ">
+
+                            <label for="python3" class="col-sm-2  control-label">Python3</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="python3" id="python3" name="python3"># Literals
+1234
+0.0e101
+.123
+0b01010011100
+0o01234567
+0x0987654321abcdef
+7
+2147483647
+3L
+79228162514264337593543950336L
+0x100000000L
+79228162514264337593543950336
+0xdeadbeef
+3.14j
+10.j
+10j
+.001j
+1e100j
+3.14e-10j
+
+
+# String Literals
+&#039;For\&#039;&#039;
+&quot;God\&quot;&quot;
+&quot;&quot;&quot;so loved
+the world&quot;&quot;&quot;
+&#039;&#039;&#039;that he gave
+his only begotten\&#039; &#039;&#039;&#039;
+&#039;that whosoever believeth \
+in him&#039;
+&#039;&#039;
+
+# Identifiers
+__a__
+a.b
+a.b.c
+
+#Unicode identifiers on Python3
+# a = x\ddot
+a⃗ = ẍ
+# a = v\dot
+a⃗ = v̇
+
+#F\vec = m \cdot a\vec
+F⃗ = m•a⃗ 
+
+# Operators
++ - * / % &amp; | ^ ~ &lt; &gt;
+== != &lt;= &gt;= &lt;&gt; &lt;&lt; &gt;&gt; // **
+and or not in is
+
+#infix matrix multiplication operator (PEP 465)
+A @ B
+
+# Delimiters
+() [] {} , : ` = ; @ .  # Note that @ and . require the proper context on Python 2.
++= -= *= /= %= &amp;= |= ^=
+//= &gt;&gt;= &lt;&lt;= **=
+
+# Keywords
+as assert break class continue def del elif else except
+finally for from global if import lambda pass raise
+return try while with yield
+
+# Python 2 Keywords (otherwise Identifiers)
+exec print
+
+# Python 3 Keywords (otherwise Identifiers)
+nonlocal
+
+# Types
+bool classmethod complex dict enumerate float frozenset int list object
+property reversed set slice staticmethod str super tuple type
+
+# Python 2 Types (otherwise Identifiers)
+basestring buffer file long unicode xrange
+
+# Python 3 Types (otherwise Identifiers)
+bytearray bytes filter map memoryview open range zip
+
+# Some Example code
+import os
+from package import ParentClass
+
+@nonsenseDecorator
+def doesNothing():
+    pass
+
+class ExampleClass(ParentClass):
+    @staticmethod
+    def example(inputStr):
+        a = list(inputStr)
+        a.reverse()
+        return &#039;&#039;.join(a)
+
+    def __init__(self, mixin = &#039;Hello&#039;):
+        self.mixin = mixin
+
+# Python 3.6 f-strings (https://www.python.org/dev/peps/pep-0498/)
+f&#039;My name is {name}, my age next year is {age+1}, my anniversary is {anniversary:%A, %B %d, %Y}.&#039;
+f&#039;He said his name is {name!r}.&#039;
+f&quot;&quot;&quot;He said his name is {name!r}.&quot;&quot;&quot;
+f&#039;{&quot;quoted string&quot;}&#039;
+f&#039;{{ {4*10} }}&#039;
+f&#039;This is an error }&#039;
+f&#039;This is ok }}&#039;
+fr&#039;x={4*10}\n&#039;
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+                        <div class="form-group  ">
+
+                            <label for="python2" class="col-sm-2  control-label">Python2</label>
+
+                            <div class="col-sm-8">
+
+
+                                <textarea class="python2" id="python2" name="python2"># Literals
+1234
+0.0e101
+.123
+0b01010011100
+0o01234567
+0x0987654321abcdef
+7
+2147483647
+3L
+79228162514264337593543950336L
+0x100000000L
+79228162514264337593543950336
+0xdeadbeef
+3.14j
+10.j
+10j
+.001j
+1e100j
+3.14e-10j
+
+
+# String Literals
+&#039;For\&#039;&#039;
+&quot;God\&quot;&quot;
+&quot;&quot;&quot;so loved
+the world&quot;&quot;&quot;
+&#039;&#039;&#039;that he gave
+his only begotten\&#039; &#039;&#039;&#039;
+&#039;that whosoever believeth \
+in him&#039;
+&#039;&#039;
+
+# Identifiers
+__a__
+a.b
+a.b.c
+
+#Unicode identifiers on Python3
+# a = x\ddot
+a⃗ = ẍ
+# a = v\dot
+a⃗ = v̇
+
+#F\vec = m \cdot a\vec
+F⃗ = m•a⃗ 
+
+# Operators
++ - * / % &amp; | ^ ~ &lt; &gt;
+== != &lt;= &gt;= &lt;&gt; &lt;&lt; &gt;&gt; // **
+and or not in is
+
+#infix matrix multiplication operator (PEP 465)
+A @ B
+
+# Delimiters
+() [] {} , : ` = ; @ .  # Note that @ and . require the proper context on Python 2.
++= -= *= /= %= &amp;= |= ^=
+//= &gt;&gt;= &lt;&lt;= **=
+
+# Keywords
+as assert break class continue def del elif else except
+finally for from global if import lambda pass raise
+return try while with yield
+
+# Python 2 Keywords (otherwise Identifiers)
+exec print
+
+# Python 3 Keywords (otherwise Identifiers)
+nonlocal
+
+# Types
+bool classmethod complex dict enumerate float frozenset int list object
+property reversed set slice staticmethod str super tuple type
+
+# Python 2 Types (otherwise Identifiers)
+basestring buffer file long unicode xrange
+
+# Python 3 Types (otherwise Identifiers)
+bytearray bytes filter map memoryview open range zip
+
+# Some Example code
+import os
+from package import ParentClass
+
+@nonsenseDecorator
+def doesNothing():
+    pass
+
+class ExampleClass(ParentClass):
+    @staticmethod
+    def example(inputStr):
+        a = list(inputStr)
+        a.reverse()
+        return &#039;&#039;.join(a)
+
+    def __init__(self, mixin = &#039;Hello&#039;):
+        self.mixin = mixin
+
+# Python 3.6 f-strings (https://www.python.org/dev/peps/pep-0498/)
+f&#039;My name is {name}, my age next year is {age+1}, my anniversary is {anniversary:%A, %B %d, %Y}.&#039;
+f&#039;He said his name is {name!r}.&#039;
+f&quot;&quot;&quot;He said his name is {name!r}.&quot;&quot;&quot;
+f&#039;{&quot;quoted string&quot;}&#039;
+f&#039;{{ {4*10} }}&#039;
+f&#039;This is an error }&#039;
+f&#039;This is ok }}&#039;
+fr&#039;x={4*10}\n&#039;
+</textarea>
+
+
+                            </div>
+                        </div>
+
+                        <style>
+                            .CodeMirror {
+                                padding: 0px !important;
+                                height: 300px;
+                            }
+                        </style>
+
+                    </div>
+
+                    <input type="hidden" name="_token" value="bpeOq7hhCi1QONgd42hXCGfU3jhH4xzV8afQM7tM">
+
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-8">
+                            <div class="btn-group pull-left">
+                                <button type="reset" class="btn btn-warning pull-right">重置</button>
+                            </div>
+
+                            <div class="btn-group pull-right">
+                                <button type="submit" class="btn btn-info pull-right">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div><!-- /.box-body -->
+        </div>
+
+        <script>
+
+        </script>
+    </div>
+</div>
+<script data-exec-on-popstate>
+    $(function() {
+
+        CodeMirror.fromTextArea(document.getElementById("python3"), {
+            "mode": {
+                "name": "python",
+                "version": 3,
+                "singleLineStringErrors": false
+            },
+            "lineNumbers": true,
+            "matchBrackets": true,
+            "indentUnit": 4
+        });
+        CodeMirror.fromTextArea(document.getElementById("python2"), {
+            "mode": {
+                "name": "python",
+                "version": 2,
+                "singleLineStringErrors": false
+            },
+            "lineNumbers": true,
+            "matchBrackets": true,
+            "indentUnit": 4
+        });
+    });
+</script>
