@@ -6,8 +6,8 @@
 
         <?php $this->partial('partials/form/error'); ?>
 
-        <input type="checkbox" class="{{$class}} la_checkbox" {{ old($column, $value) == 'on' ? 'checked' : '' }} {!! $attributes !!} />
-        <input type="hidden" class="{{$class}}" name="<?php echo $key ?>" value="{{ old($column, $value) }}" />
+        <input <?php if (!empty($field['form']['readonly'])) { ?>disabled <?php } ?> <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="checkbox" class="<?php echo empty($otherclassList) ? '' : implode(' ', $otherclassList) ?> <?php echo $key ?> <?php echo $key ?>-switch" <?php if (intval($value) == 1) { ?>checked<?php } ?> />
+        <input type="hidden" class="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $value ?>" />
 
         <?php $this->partial('partials/form/help-block'); ?>
 

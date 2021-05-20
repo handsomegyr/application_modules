@@ -1,7 +1,7 @@
 <?php foreach ($schemas4Form as $key => $field) { ?>
     <?php
     // 如果不在tabbedform的tab中的话就不显示
-    if ($this->view->form_template == 'tabbedform' && !in_array($key, $field4TabForm)) {        
+    if ($this->view->form_template == 'tabbedform' && !in_array($key, $field4TabForm)) {
         continue;
     }
     if (empty($field['form']['is_show'])) {
@@ -18,6 +18,9 @@
         $field['form']['readonly'] = true;
     }
     $value = $rowInfo[$key];
+    if (is_bool($value) && empty($value)) {
+        $value = 0;
+    }
     if (empty($field['form']['partial'])) {
         $input_type = "text";
         $otherclassList = array();
@@ -124,6 +127,10 @@
             $prepend = '<i class="fa fa-pencil fa-fw"></i>';
             $otherclassList = array('form-class-iconpicker');
             $this->partial('partials/form/input');
+        } elseif ($field['form']['input_type'] == "switch") {
+            $otherclassList = array('form-class-switch');
+            $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
+            $this->partial('partials/form/switchfield');
         } elseif ($field['form']['input_type'] == "radio") {
             $otherclassList = array('form-class-radio');
             $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];

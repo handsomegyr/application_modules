@@ -6,7 +6,7 @@
 
         <?php $this->partial('partials/form/error'); ?>
 
-        <textarea <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> name="<?php echo $key ?>" class="form-control <?php echo $key ?>" rows="<?php echo $rows ?>" placeholder="<?php echo $field['form']['placeholder']; ?>" ><?php echo $value ?></textarea>
+        <textarea <?php if (!empty($field['form']['readonly'])) { ?>readonly <?php } ?><?php if ($field['validation']['required']) { ?>required="1" <?php } ?> name="<?php echo $key ?>" class="form-control <?php echo $key ?>" rows="<?php echo $rows ?>" placeholder="<?php echo $field['form']['placeholder']; ?>" ><?php echo $value ?></textarea>
 
         <?php $this->partial('partials/form/help-block'); ?>
 

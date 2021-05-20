@@ -51,6 +51,8 @@
 049 增加了FORM表单页的DATE,TIME,DATETIMERANGE,DATERANGE,TIMERANGE展示功能，增强了DATETIME功能
 050 增加了FORM表单页的TAB展示
 051 增加了Multiple step form展示示例
-052 增加了多种editors展示示例
+052 增加了多种editors展示示例 https://codemirror.net/
+053 增加了FORM表单页的开关展示
+054 增加了FORM表单页的readonly的增强
 
 

@@ -12,7 +12,10 @@ use App\Backend\Submodules\Database\Models\Project as DBProject;
  * @name 项目管理
  */
 class ProjectController extends \App\Backend\Controllers\FormController
-{
+{    
+    // 是否只读
+    // protected $readonly = true;
+
     private $modelProject;
     private $modelTask;
     private $modelDbProject;
@@ -305,10 +308,12 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'defaultValue' => false
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'radio',
+                // 'input_type' => 'radio',
+                'input_type' => 'switch',
+                'readonly' => true,
                 'is_show' => true,
                 'items' => $this->trueOrFalseDatas
             ),
@@ -400,7 +405,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'defaultValue' => '[]'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 // 'input_type' => 'select', 
@@ -408,6 +413,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                     'multiple' => true
                 ),
                 'input_type' => 'checkbox',
+                // 'readonly' => true,
                 'checkbox' => array(
                     'isCheckAll' => true
                 ),
@@ -437,7 +443,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'defaultValue' => '[]'
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
                 'input_type' => 'select',

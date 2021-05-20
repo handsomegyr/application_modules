@@ -122,7 +122,7 @@ $isCando = $this->myTag->isCanDo($this->view->moduleName, $this->view->controlle
                         <!-- /.box-body -->
                         <?php
                         $buttons = array();
-                        if ($isCando && !$this->view->readonly) {
+                        if ($isCando) {// && !$this->view->readonly
                             if ($this->view->is_show_edit_button) {
                                 $buttons[] = 'submit';
                             }

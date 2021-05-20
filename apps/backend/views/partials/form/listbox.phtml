@@ -6,7 +6,7 @@
 
         <?php $this->partial('partials/form/error'); ?>
 
-        <select <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> class="form-control {{$class}}" style="width: 100%;" name="<?php echo $key ?>[]" multiple="multiple" data-placeholder="<?php echo $field['form']['placeholder']; ?>" {!! $attributes !!} >
+        <select <?php if (!empty($field['form']['readonly'])) { ?>disabled <?php } ?><?php if ($field['validation']['required']) { ?>required="1" <?php } ?> class="form-control {{$class}}" style="width: 100%;" name="<?php echo $key ?>[]" multiple="multiple" data-placeholder="<?php echo $field['form']['placeholder']; ?>" {!! $attributes !!} >
             @foreach($options as $select => $option)
                 <option value="{{$select}}" {{  in_array($select, (array)old($column, $value)) ?'selected':'' }}>{{$option}}</option>
             @endforeach

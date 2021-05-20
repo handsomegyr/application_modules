@@ -6,7 +6,7 @@
 
         <?php $this->partial('partials/form/error'); ?>
 
-        <input type="text" class="{{$class}}" name="<?php echo $key ?>" data-from="{{ old($column, $value) }}" {!! $attributes !!} />
+        <input <?php if (!empty($field['form']['readonly'])) { ?>readonly <?php } ?> <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="text" class="{{$class}}" name="<?php echo $key ?>" data-from="{{ old($column, $value) }}" {!! $attributes !!} />
 
         <?php $this->partial('partials/form/help-block'); ?>
 

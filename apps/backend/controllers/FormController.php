@@ -1119,6 +1119,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function insertAction()
     {
         try {
+            if ($this->readonly) {
+                throw new \Exception("只读模式下，无法追加数据");
+            }
+
             $schemas = $this->getSchemas();
             $input = $this->getFilterInput($schemas);
             if ($input->isValid()) {
@@ -1178,6 +1182,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             foreach ($row as $field => $value) {
                 $row[$field] = $this->adjustDataTime4Show($value);
             }
+
             $this->view->setVar('row', $row);
             $this->view->setVar('form_act', $this->getUrl("update"));
             $this->view->setVar('list_url', $this->getUrl("list"));
@@ -1196,6 +1201,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function updateAction()
     {
         try {
+            if ($this->readonly) {
+                throw new \Exception("只读模式下，无法更新数据");
+            }
+
             $treeList = $this->request->get('_treeList');
             if (!empty($treeList)) {
                 $treeList = \json_decode($treeList, true);
@@ -1340,6 +1349,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function removeAction()
     {
         try {
+            if ($this->readonly) {
+                throw new \Exception("只读模式下，无法删除数据");
+            }
+
             $id = $this->request->get('id', array(
                 'trim',
                 'string'
@@ -1375,6 +1388,9 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     public function removefileAction()
     {
         try {
+            if ($this->readonly) {
+                throw new \Exception("只读模式下，无法删除文件");
+            }
             $id = $this->request->get('id', array(
                 'trim',
                 'string'
@@ -1861,7 +1877,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
             $value = date("Y-m-d H:i:s", $value->sec);
         }
-        if ($value == '0000-00-00 00:00:00' || $value == '0001-01-01 00:00:00') {
+        if ($value === '0000-00-00 00:00:00' || $value === '0001-01-01 00:00:00') {
             $value = "";
         }
         return $value;

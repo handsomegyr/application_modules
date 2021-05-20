@@ -12,14 +12,18 @@
 
                 <label <?php if (!empty($inline)) { ?>class="radio-inline" <?php } ?>>
                     <?php if (isset($label['value'])) { ?>
-                        <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="radio" name="<?php echo $key ?>" value="<?php echo $label['value'] ?>" class="minimal <?php echo empty($otherclassList)?'':implode(' ',$otherclassList) ?> <?php echo $key ?> radio-<?php echo $key ?>" <?php if ($value == $label['value']) { ?>checked<?php } ?> />&nbsp;<?php echo $label['name'] ?>&nbsp;&nbsp;
+                        <input <?php if (!empty($field['form']['readonly'])) { ?>disabled <?php } ?><?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="radio" name="<?php echo $key ?>" value="<?php echo $label['value'] ?>" class="minimal <?php echo empty($otherclassList) ? '' : implode(' ', $otherclassList) ?> <?php echo $key ?> radio-<?php echo $key ?>" <?php if ($value == $label['value']) { ?>checked<?php } ?> />&nbsp;<?php echo $label['name'] ?>&nbsp;&nbsp;
                     <?php } else { ?>
-                        <input <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="radio" name="<?php echo $key ?>" value="<?php echo $option ?>" class="minimal <?php echo empty($otherclassList)?'':implode(' ',$otherclassList) ?> <?php echo $key ?> radio-<?php echo $key ?>" <?php if ($value == $option) { ?>checked<?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
+                        <input <?php if (!empty($field['form']['readonly'])) { ?>disabled <?php } ?><?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="radio" name="<?php echo $key ?>" value="<?php echo $option ?>" class="minimal <?php echo empty($otherclassList) ? '' : implode(' ', $otherclassList) ?> <?php echo $key ?> radio-<?php echo $key ?>" <?php if ($value == $option) { ?>checked<?php } ?> />&nbsp;<?php echo $label ?>&nbsp;&nbsp;
                     <?php } ?>
                 </label>
 
                 <?php echo !empty($inline) ? '</span>' : '</div>'; ?>
             <?php } ?>
+        <?php } ?>
+
+        <?php if (!empty($field['form']['readonly'])) { ?>
+            <input type="hidden" name="<?php echo $key ?>" value="<?php echo $value ?>">
         <?php } ?>
         <?php $this->partial('partials/form/help-block'); ?>
 

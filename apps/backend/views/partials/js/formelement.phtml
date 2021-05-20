@@ -335,6 +335,20 @@ $('.form-class-multipleselect').select2({
     "allowClear": true
 });
 $('.form-class-iconpicker').iconpicker({'placement':'bottomLeft'});
+$('.form-class-switch').bootstrapSwitch({
+    size:'small',
+    onText: '是',
+    offText: '否',
+    onColor: 'primary',
+    //onColor: 'success',
+    //offColor: 'default',    
+    offColor: 'danger', 
+    //readonly: 'readonly',
+    //disabled: 'disabled',
+    onSwitchChange: function(event, state) {
+        $(event.target).closest('.bootstrap-switch').next().val(state ? '1' : '0').change();
+    }
+});
 ;
 
 

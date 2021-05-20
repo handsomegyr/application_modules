@@ -12,7 +12,6 @@ use App\Backend\Submodules\Activity\Models\Category;
  */
 class ActivityController extends \App\Backend\Controllers\FormController
 {
-
     private $modelActivity;
 
     private $modelCategory;
