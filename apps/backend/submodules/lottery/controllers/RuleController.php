@@ -189,7 +189,15 @@ class RuleController extends \App\Backend\Controllers\FormController
             ),
             'form' => array(
                 'name' => '抽奖概率(0-10000)',
-                'input_type' => 'number',
+                //'input_type' => 'number',
+                'input_type' => 'slider',
+                //http://ionden.com/a/plugins/ion.rangeSlider/api.html
+                //http://ionden.com/a/plugins/ion.rangeSlider/demo_advanced.html
+                'slider' => array(
+                    'min' => 0,
+                    'max' => 10000,
+                ),
+                'readonly' => true,
                 'is_show' => true,
                 'items' => ''
             ),

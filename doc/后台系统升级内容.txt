@@ -54,5 +54,4 @@
 052 增加了多种editors展示示例 https://codemirror.net/
 053 增加了FORM表单页的开关展示
 054 增加了FORM表单页的readonly的增强
-
-
+055 增加了FORM表单页的slider展示

@@ -6,8 +6,12 @@
 
         <?php $this->partial('partials/form/error'); ?>
 
-        <input <?php if (!empty($field['form']['readonly'])) { ?>readonly <?php } ?> <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="text" class="{{$class}}" name="<?php echo $key ?>" data-from="{{ old($column, $value) }}" {!! $attributes !!} />
+        <input <?php if (!empty($field['form']['readonly'])) { ?> readonly data-disable=true <?php } ?> <?php if ($field['validation']['required']) { ?>required="1" <?php } ?> type="text" class="<?php echo empty($otherclassList) ? '' : implode(' ', $otherclassList) ?>" name="<?php echo $key ?>" value="<?php echo $value ?>" data-from="<?php echo $value ?>" <?php if (isset($field['form']['slider']['min'])) { ?>data-min="<?php echo $field['form']['slider']['min'] ?>" <?php } ?> <?php if (isset($field['form']['slider']['max'])) { ?>data-max="<?php echo $field['form']['slider']['max'] ?>" <?php } ?> />
 
+        <?php if (!empty($field['form']['readonly'])) { ?>
+            <input type="hidden" name="<?php echo $key ?>" value="<?php echo $value ?>">
+        <?php } ?>
+        
         <?php $this->partial('partials/form/help-block'); ?>
 
     </div>
