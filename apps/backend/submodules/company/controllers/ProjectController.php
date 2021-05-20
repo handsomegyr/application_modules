@@ -313,7 +313,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'form' => array(
                 // 'input_type' => 'radio',
                 'input_type' => 'switch',
-                'readonly' => true,
+                // 'readonly' => true,
                 'is_show' => true,
                 'items' => $this->trueOrFalseDatas
             ),
@@ -446,12 +446,14 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'select',
+                // 'input_type' => 'select',
+                // 'select' => array(
+                //     'multiple' => true
+                // ),
+                'input_type' => 'listbox',
+                'readonly' => true,
                 'is_show' => true,
                 'items' => array('PE1' => 'PE1', 'PE2' => 'PE2', 'PE3' => 'PE3', 'PE4' => 'PE4'),
-                'select' => array(
-                    'multiple' => true
-                ),
                 'help' => '多个执行人用逗号间隔',
             ),
             'list' => array(

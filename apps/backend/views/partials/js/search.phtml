@@ -11,7 +11,7 @@
                     $field['search']['items'] = empty($field['search']['items']) ? (!empty($field['form']['items']) ? $field['form']['items'] : array()) : $field['search']['items'];
                     $field['search']['is_show'] = !isset($field['search']['is_show']) ? $field['form']['is_show'] : $field['search']['is_show'];
                     $field['search']['cascadeSettings'] = empty($field['search']['cascadeSettings']) ? (!empty($field['form']['cascadeSettings']) ? $field['form']['cascadeSettings'] : array()) : $field['search']['cascadeSettings'];
-                    if ($field['search']['input_type'] == 'checkbox') {
+                    if ($field['search']['input_type'] == 'checkbox' || $field['search']['input_type'] == 'listbox') {
                         $field['search']['input_type'] = 'select';
                     }
                     if (empty($field['search']['content_type'])) {
@@ -35,11 +35,11 @@
                             }
                             ?>
                             $('#search_<?php echo $key ?>_from').datetimepicker({
-                                "format": "<?php echo $format?>",
+                                "format": "<?php echo $format ?>",
                                 "locale": "zh-CN"
                             });
                             $('#search_<?php echo $key ?>_to').datetimepicker({
-                                "format": "<?php echo $format?>",
+                                "format": "<?php echo $format ?>",
                                 "locale": "zh-CN",
                                 "useCurrent": false
                             });

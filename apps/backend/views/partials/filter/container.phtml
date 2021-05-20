@@ -19,7 +19,7 @@ $filterID = 'filter-box';
                 $field['search']['placeholder'] = empty($field['search']['placeholder']) ? "输入 " . $field['name'] : $field['search']['placeholder'];
                 $field['search']['input_type'] = empty($field['search']['input_type']) ? $field['form']['input_type'] : $field['search']['input_type'];
                 $field['search']['items'] = empty($field['search']['items']) ? (!empty($field['form']['items']) ? $field['form']['items'] : array()) : $field['search']['items'];
-                if ($field['search']['input_type'] == 'checkbox') {
+                if ($field['search']['input_type'] == 'checkbox' || $field['search']['input_type'] == 'listbox') {
                     $field['search']['input_type'] = 'select';
                 }
                 if (empty($field['search']['content_type'])) {
@@ -70,6 +70,9 @@ $filterID = 'filter-box';
                                 $otherclassList = array('search-class-time');
                                 $this->partial('partials/filter/betweenDatetime');
                             } elseif ($field['search']['input_type'] == "number") {
+                                $otherclassList = array('search-class-number');
+                                $this->partial('partials/filter/between');
+                            } elseif ($field['search']['input_type'] == "slider") {
                                 $otherclassList = array('search-class-number');
                                 $this->partial('partials/filter/between');
                             } elseif ($field['search']['input_type'] == "currency") {

@@ -168,6 +168,23 @@
                 $otherclassList = array('form-class-multipleselect');
                 $this->partial('partials/form/multipleselect');
             }
+        } elseif ($field['form']['input_type'] == "listbox") {
+            $options = is_callable($field['form']['items']) ? $field['form']['items']() : $field['form']['items'];
+            if (!is_array($value)) {
+                // 先用json转换
+                $value = \json_decode($value, true);
+                // 如果失败就用逗号分隔
+                if (empty($value)) {
+                    $value = explode(',', $value);
+                }
+            }
+            if (empty($field['form']['readonly'])) {
+                $otherclassList = array('form-class-listbox');
+                $this->partial('partials/form/listbox');
+            } else {
+                $otherclassList = array('form-class-multipleselect');
+                $this->partial('partials/form/multipleselect');
+            }
         } elseif ($field['form']['input_type'] == "image" || $field['form']['input_type'] == "file") {
             $this->partial('partials/form/file');
         } elseif ($field['form']['input_type'] == "multipleImage" || $field['form']['input_type'] == "multipleFile") {

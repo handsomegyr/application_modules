@@ -197,7 +197,7 @@ class RuleController extends \App\Backend\Controllers\FormController
                     'min' => 0,
                     'max' => 10000,
                 ),
-                'readonly' => true,
+                // 'readonly' => true,
                 'is_show' => true,
                 'items' => ''
             ),
