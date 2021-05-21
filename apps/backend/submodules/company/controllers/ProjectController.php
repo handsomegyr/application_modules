@@ -761,7 +761,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'export' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         $schemas['description'] = array(
@@ -788,7 +788,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'export' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
         $schemas['svn_log'] = array(
@@ -815,7 +815,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             ),
             'export' => array(
-                'is_show' => true
+                'is_show' => false
             )
         );
 

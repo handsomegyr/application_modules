@@ -980,8 +980,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
             // 根据检索条件获取列表
             resetTimeMemLimit();
-            $list = $this->getModel()->getAllList($input);
-            $this->export($list);
+            // $list = $this->getModel()->getAllList($input);
+            // $excel = $this->export(array(),$list, $schemas);
+            $excel = $this->chunkExport($input, 3, $schemas);
+            $fileName = date('YmdHis');
+            arrayToCVS($fileName, $excel);
             exit();
         } catch (\Exception $e) {
             throw $e;
@@ -1502,6 +1505,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     {
         // 增加默认条件的设置
         $input = $this->setDefaultQuery($input);
+        $input->clearFilter();
         $list = $this->getModel()->getList($input);
         $this->view->setVar('list', $list['data']);
         $this->view->setVar('filter', $list['filter']);
@@ -1636,25 +1640,54 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return $item;
     }
 
-    protected function export(array $dataList)
+    // 分块导出
+    protected function chunkExport(\App\Backend\Models\Input $input, $count, $schemas)
     {
         $excel = array();
+        $page = 1;
+        $page_count = 0;
+        $input->page_size = $count;
+        do {
+            $input->page = $page;
+            $list = $this->getList($input);
+            if ($page_count < 1) {
+                $page_count = intval($list['page_count']) + 1;
+            }
+            $results = empty($list['data']) ? array() : $list['data'];
+            $countResults = count($results);
 
-        $fields = array();
-        $schemas = $this->getSchemas();
-        foreach ($schemas as $key => $field) {
-            if (!isset($field['export']['is_show'])) {
-                $field['export']['is_show'] = empty($field['form']['is_show']) ? false : $field['form']['is_show'];
+            if ($countResults == 0) {
+                break;
             }
-            if (empty($field['export']['is_show'])) {
-                continue;
+
+            $excel = $this->export($excel, $results, $schemas);
+            unset($results);
+
+            $page++;
+        } while ($countResults == $count && $page < $page_count);
+
+        return $excel;
+    }
+
+    protected function export(array $excel, array $dataList, $schemas)
+    {
+        if (!isset($excel['title'])) {
+            $fields = array();
+            foreach ($schemas as $key => $field) {
+                if (!isset($field['export']['is_show'])) {
+                    $field['export']['is_show'] = empty($field['form']['is_show']) ? false : $field['form']['is_show'];
+                }
+                if (empty($field['export']['is_show'])) {
+                    continue;
+                }
+                $fields[] = $field['name'];
             }
-            $fields[] = $field['name'];
+            $excel['title'] = array_values($fields);
+            if (empty($excel['title'])) {
+                throw new \Exception('请设置导出的字段');
+            }
         }
-        $excel['title'] = array_values($fields);
-        if (empty($excel['title'])) {
-            die('请设置导出的字段');
-        }
+
         $datas = array();
         foreach ($dataList as $data) {
             $item = array();
@@ -1703,10 +1736,13 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             }
             $datas[] = $item;
         }
-        $excel['result'] = $datas;
 
-        $fileName = date('YmdHis');
-        arrayToCVS($fileName, $excel);
+        if (!isset($excel['result'])) {
+            $excel['result'] = $datas;
+        } else {
+            $excel['result']  = array_merge($excel['result'], $datas);
+        }
+        return $excel;
 
         // $zip = new \ZipArchive();
         // $filename = "data_export_" . date('YmdHis', time()) . '.zip'; // 随机文件名
