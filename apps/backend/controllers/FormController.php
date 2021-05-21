@@ -982,7 +982,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             resetTimeMemLimit();
             // $list = $this->getModel()->getAllList($input);
             // $excel = $this->export(array(),$list, $schemas);
-            $excel = $this->chunkExport($input, 3, $schemas);
+            $excel = $this->chunkExport($input, 1000, $schemas);
             $fileName = date('YmdHis');
             arrayToCVS($fileName, $excel);
             exit();
