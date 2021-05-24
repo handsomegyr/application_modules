@@ -1689,11 +1689,11 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         $input->clearFilter();
         $is_title = false;
         // 模拟数据量大的时候
-        for ($i = 0; $i < 100; $i++) {
-            $this->getModel()->findAllByCursor($input->getQuery(), $input->getSort(), array(), function ($record) use ($schemas, &$is_title, $fp) {
-                $this->export($is_title, array($record), $schemas, $fp);
-            });
-        }
+        // for ($i = 0; $i < 100; $i++) {
+        $this->getModel()->findAllByCursor($input->getQuery(), $input->getSort(), array(), function ($record) use ($schemas, &$is_title, $fp) {
+            $this->export($is_title, array($record), $schemas, $fp);
+        });
+        // }
         fclose($fp);
     }
 
