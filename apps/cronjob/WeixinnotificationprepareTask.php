@@ -225,24 +225,38 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         if (empty($openids_sql)) {
                             throw new \Exception("任务ID:{$taskInfo['_id']},openids_sql字段为空");
                         }
+                        // // 加载openids数据
+                        // $connection = $modelTask->getDb();
+                        // $result1 = $connection->query($openids_sql, array());
+                        // $result1->setFetchMode(MYDB_FETCH_ASSOC);
+                        // $openids = $result1->fetchAll();
+                        // foreach ($openids as $col) {
+                        //     $openid = trim($col['openid']);
+                        //     $line_no++;
+                        //     if (empty($openid)) {
+                        //         continue;
+                        //     }
+                        //     if (isset($openidList4Log[$openid])) {
+                        //         continue;
+                        //     }
+                        //     $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按sql文发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
+                        //     $openidList4Log[$openid] = $openid;
+                        //     $i++;
+                        // }
                         // 加载openids数据
-                        $connection = $modelTask->getDb();
-                        $result1 = $connection->query($openids_sql, array());
-                        $result1->setFetchMode(MYDB_FETCH_ASSOC);
-                        $openids = $result1->fetchAll();
-                        foreach ($openids as $col) {
+                        $openids = $modelTask->selectRawByCursor($openids_sql, array(), function ($col) use ($openidList4Log, $modelTaskLog, $taskInfo, $taskProcessItem, $now, $i, $line_no) {
                             $openid = trim($col['openid']);
                             $line_no++;
                             if (empty($openid)) {
-                                continue;
+                                return;
                             }
                             if (isset($openidList4Log[$openid])) {
-                                continue;
+                                return;
                             }
                             $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按sql文发送消息', $openid, $openid, 0, \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);
                             $openidList4Log[$openid] = $openid;
                             $i++;
-                        }
+                        });
                     }
                 } else {
                     $modelTaskLog->log($taskInfo['component_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['mass_msg_send_method_id'], $taskInfo['subscribe_msg_id'], $taskInfo['template_msg_id'], $taskInfo['mass_msg_id'], $taskInfo['custom_msg_id'], $taskInfo['changemsginfo_callback'], 0, "按tagid发送消息", '', '', $taskInfo['tag_id'], \App\Weixin2\Models\Notification\TaskProcess::PUSHING, $now);

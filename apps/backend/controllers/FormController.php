@@ -982,9 +982,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             resetTimeMemLimit();
             // $list = $this->getModel()->getAllList($input);
             // $excel = $this->export(array(),$list, $schemas);
-            $excel = $this->chunkExport($input, 1000, $schemas);
-            $fileName = date('YmdHis');
-            arrayToCVS($fileName, $excel);
+            // $this->chunkExport($input, 1000, $schemas);
+            $this->exportByCursor($input, $schemas);
             exit();
         } catch (\Exception $e) {
             throw $e;
@@ -1643,7 +1642,14 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     // 分块导出
     protected function chunkExport(\App\Backend\Models\Input $input, $count, $schemas)
     {
-        $excel = array();
+        $fileName = 'chunk_' . date('YmdHis');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $fileName . '.csv"');
+        header('Cache-Control: max-age=0');
+        $fp = fopen('php://output', 'w');
+        fwrite($fp, "\xEF\xBB\xBF");
+
+        $is_title = false;
         $page = 1;
         $page_count = 0;
         $input->page_size = $count;
@@ -1660,18 +1666,40 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 break;
             }
 
-            $excel = $this->export($excel, $results, $schemas);
+            $this->export($is_title, $results, $schemas, $fp);
             unset($results);
 
             $page++;
         } while ($countResults == $count && $page < $page_count);
-
-        return $excel;
+        fclose($fp);
     }
 
-    protected function export(array $excel, array $dataList, $schemas)
+    // 根据游标来导出数据
+    protected function exportByCursor(\App\Backend\Models\Input $input, $schemas)
     {
-        if (!isset($excel['title'])) {
+        $fileName = date('YmdHis');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $fileName . '.csv"');
+        header('Cache-Control: max-age=0');
+        $fp = fopen('php://output', 'w');
+        fwrite($fp, "\xEF\xBB\xBF");
+
+        // 增加默认条件的设置
+        $input = $this->setDefaultQuery($input);
+        $input->clearFilter();
+        $is_title = false;
+        // 模拟数据量大的时候
+        for ($i = 0; $i < 100; $i++) {
+            $this->getModel()->findAllByCursor($input->getQuery(), $input->getSort(), array(), function ($record) use ($schemas, &$is_title, $fp) {
+                $this->export($is_title, array($record), $schemas, $fp);
+            });
+        }
+        fclose($fp);
+    }
+
+    protected function export(&$is_title, array $dataList, $schemas, $fp)
+    {
+        if (!$is_title) {
             $fields = array();
             foreach ($schemas as $key => $field) {
                 if (!isset($field['export']['is_show'])) {
@@ -1682,10 +1710,18 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 }
                 $fields[] = $field['name'];
             }
-            $excel['title'] = array_values($fields);
-            if (empty($excel['title'])) {
+            $titleRow = array_values($fields);
+            if (empty($titleRow)) {
                 throw new \Exception('请设置导出的字段');
             }
+            $is_title = true;
+            array_walk($titleRow, function (&$value, $key) {
+                $value = htmlspecialchars(preg_replace("/\r|\n|\t|,/i", "", $value), ENT_QUOTES);
+            });
+            fputcsv($fp, $titleRow, ",", '"');
+            //清理输出流的防止乱码
+            ob_flush();
+            flush();
         }
 
         $datas = array();
@@ -1737,13 +1773,17 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             $datas[] = $item;
         }
 
-        if (!isset($excel['result'])) {
-            $excel['result'] = $datas;
-        } else {
-            $excel['result']  = array_merge($excel['result'], $datas);
+        foreach ($datas as $row) {
+            array_walk($row, function (&$value, $key) {
+                $value = htmlspecialchars(preg_replace("/\r|\n|\t|,/i", "", $value), ENT_QUOTES);
+            });
+            fputcsv($fp, $row, ",", '"');
         }
-        return $excel;
+        //清理输出流的防止乱码
+        ob_flush();
+        flush();
 
+        unset($datas);
         // $zip = new \ZipArchive();
         // $filename = "data_export_" . date('YmdHis', time()) . '.zip'; // 随机文件名
         // $zipname = sys_get_temp_dir() . "/" . $filename;
