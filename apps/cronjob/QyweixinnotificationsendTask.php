@@ -179,7 +179,12 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
                             // 发送企业群发消息
                             $match['msg_template_chat_type'] = $msgTemplateInfo['chat_type'];
                             $QyweixinService = new \App\Qyweixin\Services\QyService($taskLog['authorizer_appid'], $taskLog['provider_appid'], $msgTemplateInfo['agentid']);
-                            $ret = $QyweixinService->addMsgTemplate("", $taskLog['userid'], $msgTemplateInfo, $match);
+                            if ($msgTemplateInfo['chat_type'] == 'single') {
+                                $ToUserName = $taskLog['userids'];
+                            } else {
+                                $ToUserName = $taskLog['userid'];
+                            }
+                            $ret = $QyweixinService->addMsgTemplate("", $ToUserName, $msgTemplateInfo, $match);
                         }
 
                         // 记录发送结果

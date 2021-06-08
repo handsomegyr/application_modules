@@ -157,9 +157,18 @@ class QyweixinnotificationprepareTask  extends \Phalcon\CLI\Task
                             if (isset($useridList4Log[$userid])) {
                                 continue;
                             }
-                            $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按userids列表发送消息', $userid, $userid, \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
                             $useridList4Log[$userid] = $userid;
                             $i++;
+                        }
+                        $chunkArr = array_chunk($useridList4Log, 10000);
+                        foreach ($chunkArr as $useridChunk) {
+                            if ($taskInfo['notification_method'] == \App\Qyweixin\Models\Notification\Task::NOTIFY_BY_EXTERNALCONTACT_ADD_MSG_TEMPLATE && $msgTemplateInfo['chat_type'] == 'single') { // 4:发送企业消息到群聊会话
+                                $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按userids列表发送消息', \json_encode($useridChunk), "", \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
+                            } else {
+                                foreach ($useridChunk as $userid) {
+                                    $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按userids列表发送消息', $userid, $userid, \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
+                                }
+                            }
                         }
                     } elseif (!empty($taskInfo['userids_file'])) { // 如果任务信息中上传了userids文件的话 那么就用上传文件中的userid进行发送
                         $filePath = trim($taskInfo['userids_file']);
@@ -191,9 +200,18 @@ class QyweixinnotificationprepareTask  extends \Phalcon\CLI\Task
                             if (isset($useridList4Log[$userid])) {
                                 continue;
                             }
-                            $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按上传文件发送消息', $userid, $userid, \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
                             $useridList4Log[$userid] = $userid;
                             $i++;
+                        }
+                        $chunkArr = array_chunk($useridList4Log, 10000);
+                        foreach ($chunkArr as $useridChunk) {
+                            if ($taskInfo['notification_method'] == \App\Qyweixin\Models\Notification\Task::NOTIFY_BY_EXTERNALCONTACT_ADD_MSG_TEMPLATE && $msgTemplateInfo['chat_type'] == 'single') { // 4:发送企业消息到群聊会话
+                                $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按上传文件发送消息', \json_encode($useridChunk), "", \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
+                            } else {
+                                foreach ($useridChunk as $userid) {
+                                    $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按上传文件发送消息', $userid, $userid, \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
+                                }
+                            }
                         }
                     } elseif (!empty($taskInfo['userids_sql'])) { // 如果任务信息中配置了userids_sql字段的话 那么就用userids_sql字段获取的userid列表进行发送
                         $userids_sql = trim($taskInfo['userids_sql']);
@@ -201,24 +219,6 @@ class QyweixinnotificationprepareTask  extends \Phalcon\CLI\Task
                         if (empty($userids_sql)) {
                             throw new \Exception("任务ID:{$taskInfo['_id']},userids_sql字段为空");
                         }
-                        // // 加载userids数据
-                        // $connection = $modelTask->getDb();
-                        // $result1 = $connection->query($userids_sql, array());
-                        // $result1->setFetchMode(MYDB_FETCH_ASSOC);
-                        // $userids = $result1->fetchAll();
-                        // foreach ($userids as $col) {
-                        //     $userid = trim($col['userid']);
-                        //     $line_no++;
-                        //     if (empty($userid)) {
-                        //         continue;
-                        //     }
-                        //     if (isset($useridList4Log[$userid])) {
-                        //         continue;
-                        //     }
-                        //     $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按sql文发送消息', $userid, $userid, \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
-                        //     $useridList4Log[$userid] = $userid;
-                        //     $i++;
-                        // }
                         // 加载userids数据
                         $userids = $modelTask->selectRawByCursor($userids_sql, array(), function ($col) use ($useridList4Log, $modelTaskLog, $taskInfo, $taskProcessItem, $now, $i, $line_no) {
                             $userid = trim($col['userid']);
@@ -229,10 +229,19 @@ class QyweixinnotificationprepareTask  extends \Phalcon\CLI\Task
                             if (isset($useridList4Log[$userid])) {
                                 return;
                             }
-                            $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按sql文发送消息', $userid, $userid, \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
                             $useridList4Log[$userid] = $userid;
                             $i++;
                         });
+                        $chunkArr = array_chunk($useridList4Log, 10000);
+                        foreach ($chunkArr as $useridChunk) {
+                            if ($taskInfo['notification_method'] == \App\Qyweixin\Models\Notification\Task::NOTIFY_BY_EXTERNALCONTACT_ADD_MSG_TEMPLATE && $msgTemplateInfo['chat_type'] == 'single') { // 4:发送企业消息到群聊会话
+                                $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按sql文发送消息', \json_encode($useridChunk), "", \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
+                            } else {
+                                foreach ($useridChunk as $userid) {
+                                    $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'],  $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, '按sql文发送消息', $userid, $userid, \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
+                                }
+                            }
+                        }
                     }
                 } else {
                     $modelTaskLog->log($taskInfo['provider_appid'], $taskInfo['authorizer_appid'], $taskProcessItem['_id'], $taskInfo['_id'], $taskInfo['name'], $taskInfo['notification_method'], $taskInfo['externalcontact_msg_template_chat_type'], $taskInfo['agent_msg_id'], $taskInfo['appchat_msg_id'], $taskInfo['externalcontact_msg_template_id'], $taskInfo['linkedcorp_msg_id'], $taskInfo['changemsginfo_callback'], 0, "按tagid发送消息", '', '', $taskInfo['tag_id'], \App\Qyweixin\Models\Notification\TaskProcess::PUSHING, $now);
