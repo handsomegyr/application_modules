@@ -274,7 +274,7 @@ class IndexController extends \App\Backend\Controllers\ControllerBase
         // ini_set('default_socket_timeout', -1); // 不超时
         // 返回信息
         $ret = array();
-        $ret['token'] = $_SESSION['csrf_token'];
+        $ret['token'] = empty($_SESSION['csrf_token']) ? "" : $_SESSION['csrf_token'];
         $this->makeJsonResult($ret, 'ok');
     }
 
