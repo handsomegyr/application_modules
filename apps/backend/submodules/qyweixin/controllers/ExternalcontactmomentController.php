@@ -67,7 +67,7 @@ class ExternalcontactmomentController extends BaseController
      */
     public function getimagemediaAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmoment/getimagemedia?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactmoment/getimagemedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -133,7 +133,7 @@ class ExternalcontactmomentController extends BaseController
      */
     public function getvideomediaAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmoment/getvideomedia?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactmoment/getvideomedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -199,7 +199,7 @@ class ExternalcontactmomentController extends BaseController
      */
     public function getvideothumbmediaAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmoment/getvideothumbmedia?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactmoment/getvideothumbmedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

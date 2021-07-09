@@ -68,7 +68,7 @@ class CommentController extends BaseController
      */
     public function closecommentAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/comment/closecomment?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/comment/closecomment?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -95,7 +95,7 @@ class CommentController extends BaseController
      */
     public function opencommentAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/comment/opencomment?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/comment/opencomment?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -122,7 +122,7 @@ class CommentController extends BaseController
      */
     public function synccommentlistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/comment/synccommentlist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/comment/synccommentlist?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

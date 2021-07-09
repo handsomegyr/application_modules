@@ -16,7 +16,7 @@ class EvcardController extends ControllerBase
      */
     public function sendcouponAction()
     {
-        // http://www.myapplicationmodule.com.com/service/evcard/sendcoupon
+        // http://www.myapplicationmodule.com/service/evcard/sendcoupon
         try {
             $currentTime = date('Y-m-d H:i:s');
             // 渠道KEY:cole_test

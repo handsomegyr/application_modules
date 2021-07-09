@@ -38,7 +38,7 @@ class DatacubeuserreadController extends BaseController
      */
     public function syncuserreadAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubeuserread/syncuserread?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/datacubeuserread/syncuserread?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

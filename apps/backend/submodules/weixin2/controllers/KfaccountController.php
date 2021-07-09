@@ -123,7 +123,7 @@ class KfaccountController extends BaseController
      */
     public function syncaccountlistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/kfaccount/syncaccountlist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/kfaccount/syncaccountlist?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -158,7 +158,7 @@ class KfaccountController extends BaseController
      */
     public function synconlineaccountlistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/kfaccount/synconlineaccountlist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/kfaccount/synconlineaccountlist?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -193,7 +193,7 @@ class KfaccountController extends BaseController
      */
     public function updateaccountAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/kfaccount/updateaccount?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/kfaccount/updateaccount?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -220,7 +220,7 @@ class KfaccountController extends BaseController
      */
     public function addaccountAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/kfaccount/addaccount?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/kfaccount/addaccount?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -246,7 +246,7 @@ class KfaccountController extends BaseController
      */
     public function uploadheadimgAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/kfaccount/uploadheadimg?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/kfaccount/uploadheadimg?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -280,7 +280,7 @@ class KfaccountController extends BaseController
      */
     public function deleteaccountAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/kfaccount/deleteaccount?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/kfaccount/deleteaccount?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -306,7 +306,7 @@ class KfaccountController extends BaseController
      */
     public function inviteworkerAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/kfaccount/inviteworker?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/kfaccount/inviteworker?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

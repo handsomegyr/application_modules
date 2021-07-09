@@ -30,7 +30,7 @@ class RedisController extends ControllerBase
      */
     public function testAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/redis/test
+        // http://www.myapplicationmodule.com/campaign/redis/test
         try {
             $this->redis->set('application_modules_key1', uniqid());
             $value = $this->redis->get('application_modules_key1');
@@ -47,7 +47,7 @@ class RedisController extends ControllerBase
      */
     public function getallkeysAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/redis/getallkeys
+        // http://www.myapplicationmodule.com/campaign/redis/getallkeys
         try {
             // 获取所有的key
             $ret['allkeys'] = $this->redis->keys('*');
@@ -64,7 +64,7 @@ class RedisController extends ControllerBase
      */
     public function deletekeysAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/redis/deletekeys
+        // http://www.myapplicationmodule.com/campaign/redis/deletekeys
         try {
             // 获取所有的key
             $allkeys = $this->redis->keys('*');
@@ -94,12 +94,12 @@ class RedisController extends ControllerBase
 
     /**
      * 直播用
-     * http://www.myapplicationmodule.com.com/campaign/redis/deletekeys
-     * http://www.myapplicationmodule.com.com/live/user/login?room_id=5a4f2686cb6ef462f64ee4a1&openid=xxx&nickname=%E9%83%AD%E6%B0%B8%E8%8D%A3&headimgurl=http://qzapp.qlogo.cn/qzapp/221403/12EBD57369718EBF0CC9FC352C2969AB/100&unionid=uxxx&authtype=weixin&source=weixin&channel=weixin
-     * http://www.myapplicationmodule.com.com/live/user/login?room_id=5a4f2686cb6ef462f64ee4a1&openid=xxx1&nickname=%E6%96%BD%E4%B8%B9&headimgurl=https://tfs.alipayobjects.com/images/partner/T1VpheXnCdXXXXXXXX&unionid=uxxx1&authtype=weixin&source=weixin&channel=weixin
-     * http://www.myapplicationmodule.com.com/live/resource/getlist
+     * http://www.myapplicationmodule.com/campaign/redis/deletekeys
+     * http://www.myapplicationmodule.com/live/user/login?room_id=5a4f2686cb6ef462f64ee4a1&openid=xxx&nickname=%E9%83%AD%E6%B0%B8%E8%8D%A3&headimgurl=http://qzapp.qlogo.cn/qzapp/221403/12EBD57369718EBF0CC9FC352C2969AB/100&unionid=uxxx&authtype=weixin&source=weixin&channel=weixin
+     * http://www.myapplicationmodule.com/live/user/login?room_id=5a4f2686cb6ef462f64ee4a1&openid=xxx1&nickname=%E6%96%BD%E4%B8%B9&headimgurl=https://tfs.alipayobjects.com/images/partner/T1VpheXnCdXXXXXXXX&unionid=uxxx1&authtype=weixin&source=weixin&channel=weixin
+     * http://www.myapplicationmodule.com/live/resource/getlist
      * 
-     * http://www.myapplicationmodule.com.com/live/index.html?user_id=1
-     * http://www.myapplicationmodule.com.com/live/index.html?user_id=2
+     * http://www.myapplicationmodule.com/live/index.html?user_id=1
+     * http://www.myapplicationmodule.com/live/index.html?user_id=2
      */
 }

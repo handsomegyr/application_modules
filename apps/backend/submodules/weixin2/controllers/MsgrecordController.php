@@ -43,7 +43,7 @@ class MsgrecordController extends BaseController
      */
     public function syncmsgrecordlistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/msgrecord/syncmsgrecordlist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/msgrecord/syncmsgrecordlist?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

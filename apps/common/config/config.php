@@ -37,12 +37,12 @@ return new \Phalcon\Config(array(
         'openid4developer' => 'on8S7uINhQNNenv2AUE7ytD18eNs'
     ),
     'weixinAuthorize' => array(
-        'authorizeUrl' => 'http://www.myapplicationmodule.com.com/weixin/sns/index',
+        'authorizeUrl' => 'http://www.myapplicationmodule.com/weixin/sns/index',
         'secretKey' => 'jizigou',
         'scope' => 'snsapi_userinfo'
     ),
     'tencentAuthorize' => array(
-        'authorizeUrl' => 'http://www.myapplicationmodule.com.com/tencent/sns/index',
+        'authorizeUrl' => 'http://www.myapplicationmodule.com/tencent/sns/index',
         'secretKey' => '12345667890',
         'scope' => 'get_user_info'
     ),
@@ -50,7 +50,7 @@ return new \Phalcon\Config(array(
         "appid" => 'wxbf9165206b992f39'
     ),
     'alipayAuthorize' => array(
-        'authorizeUrl' => 'http://www.myapplicationmodule.com.com/alipay/sns/index',
+        'authorizeUrl' => 'http://www.myapplicationmodule.com/alipay/sns/index',
         'secretKey' => 'jizigou',
         'scope' => 'auth_user'
     ),

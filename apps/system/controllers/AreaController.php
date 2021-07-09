@@ -27,7 +27,7 @@ class AreaController extends ControllerBase
      */
     public function getprovincesAction()
     {
-        // http://www.myapplicationmodule.com.com/service/area/getprovinces
+        // http://www.myapplicationmodule.com/service/area/getprovinces
         try {
             // 获取省列表
             $list = $this->modelArea->getProvinces();
@@ -46,7 +46,7 @@ class AreaController extends ControllerBase
      */
     public function getcitysAction()
     {
-        // http://www.myapplicationmodule.com.com/service/area/getcitys?province=110000
+        // http://www.myapplicationmodule.com/service/area/getcitys?province=110000
         try {
             $province = $this->get('province', '');
             // 获取省列表
@@ -66,7 +66,7 @@ class AreaController extends ControllerBase
      */
     public function getDistrictsAction()
     {
-        // http://www.myapplicationmodule.com.com/service/area/getdistricts?city=130900
+        // http://www.myapplicationmodule.com/service/area/getdistricts?city=130900
         try {
             $city = $this->get('city', '');
             // 获取省列表

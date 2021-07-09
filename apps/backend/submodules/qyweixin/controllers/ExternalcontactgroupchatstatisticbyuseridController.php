@@ -38,7 +38,7 @@ class ExternalcontactgroupchatstatisticbyuseridController extends BaseController
      */
     public function getgroupchatstatisticAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactgroupchatstatisticbyuserid/getgroupchatstatistic
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactgroupchatstatisticbyuserid/getgroupchatstatistic
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

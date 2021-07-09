@@ -77,7 +77,7 @@ class UsertagController extends BaseController
      */
     public function synctaglistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/usertag/synctaglist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/usertag/synctaglist?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -112,7 +112,7 @@ class UsertagController extends BaseController
      */
     public function deleteusertagAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/usertag/deleteusertag?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/usertag/deleteusertag?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -139,7 +139,7 @@ class UsertagController extends BaseController
      */
     public function addusertagAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/usertag/addusertag?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/usertag/addusertag?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

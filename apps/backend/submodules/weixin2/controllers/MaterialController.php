@@ -134,7 +134,7 @@ class MaterialController extends BaseController
      */
     public function batchgetmaterialAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/material/batchgetmaterial?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/material/batchgetmaterial?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -216,7 +216,7 @@ class MaterialController extends BaseController
      */
     public function getmaterialcountAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/material/getmaterialcount?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/material/getmaterialcount?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -262,7 +262,7 @@ class MaterialController extends BaseController
      */
     public function addmaterialAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/material/addmaterial?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/material/addmaterial?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -289,7 +289,7 @@ class MaterialController extends BaseController
      */
     public function addnewsAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/material/addnews?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/material/addnews?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -315,7 +315,7 @@ class MaterialController extends BaseController
      */
     public function updatenewsAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/material/updatenews?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/material/updatenews?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -341,7 +341,7 @@ class MaterialController extends BaseController
      */
     public function deletematerialAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/material/deletematerial?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/material/deletematerial?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -367,7 +367,7 @@ class MaterialController extends BaseController
      */
     public function getmaterialAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/material/getmaterial?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/material/getmaterial?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

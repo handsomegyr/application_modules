@@ -43,7 +43,7 @@ class DatacubeusercumulateController extends BaseController
      */
     public function syncusercumulateAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubeusercumulate/syncusercumulate?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/datacubeusercumulate/syncusercumulate?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

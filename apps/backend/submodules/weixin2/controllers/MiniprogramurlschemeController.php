@@ -48,7 +48,7 @@ class MiniprogramurlschemeController extends BaseController
      */
     public function createurlschemeAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/miniprogramurlscheme/createurlscheme?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/miniprogramurlscheme/createurlscheme?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

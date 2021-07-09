@@ -40,7 +40,7 @@ class SnsController extends ControllerBase
     }
 
     /**
-     * http://www.myapplicationmodule.com.com/tencent/sns/index?appid=563b20c5bbcb2605038b4568&redirect=http%3A%2F%2Fwwww.baidu.com%2F&state=1234
+     * http://www.myapplicationmodule.com/tencent/sns/index?appid=563b20c5bbcb2605038b4568&redirect=http%3A%2F%2Fwwww.baidu.com%2F&state=1234
      * 引导用户去往登录授权
      */
     public function indexAction()

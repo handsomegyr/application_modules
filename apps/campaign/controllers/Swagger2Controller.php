@@ -13,7 +13,7 @@ use App\Sign\Models\Log;
 /**
  * @SWG\Swagger(
  *     basePath="/",
- *     host="www.myapplicationmodule.com.com",
+ *     host="www.myapplicationmodule.com",
  *     schemes={"http","https"},
  *     produces={"application/json"},
  *     consumes={"application/json"},

@@ -47,7 +47,7 @@ class ShorturlController extends BaseController
      */
     public function shorturlAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/shorturl/shorturl?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/shorturl/shorturl?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

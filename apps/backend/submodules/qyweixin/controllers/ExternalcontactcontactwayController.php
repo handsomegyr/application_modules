@@ -84,7 +84,7 @@ class ExternalcontactcontactwayController extends BaseController
      */
     public function uploadmediaAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/corpjoinqrcode/uploadmedia?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/corpjoinqrcode/uploadmedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -153,7 +153,7 @@ class ExternalcontactcontactwayController extends BaseController
      */
     public function uploadmediaimgAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/corpjoinqrcode/uploadmediaimg?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/corpjoinqrcode/uploadmediaimg?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -197,7 +197,7 @@ class ExternalcontactcontactwayController extends BaseController
      */
     public function addcontactwayAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/corpjoinqrcode/addcontactway?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/corpjoinqrcode/addcontactway?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -238,7 +238,7 @@ class ExternalcontactcontactwayController extends BaseController
      */
     public function getcontactwayAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/corpjoinqrcode/getcontactway?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/corpjoinqrcode/getcontactway?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

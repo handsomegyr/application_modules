@@ -67,7 +67,7 @@ class SnsapplicationController extends BaseController
      */
     public function encodehexappidAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/snsapplication/encodehexappid?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/snsapplication/encodehexappid?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -94,7 +94,7 @@ class SnsapplicationController extends BaseController
      */
     public function encodehexappkeyAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/snsapplication/encodehexappkey?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/snsapplication/encodehexappkey?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -122,7 +122,7 @@ class SnsapplicationController extends BaseController
      */
     public function encodehexsecretkeyAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/snsapplication/encodehexsecretkey?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/snsapplication/encodehexsecretkey?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

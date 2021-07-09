@@ -25,7 +25,7 @@ class VcodeController extends ControllerBase
      */
     public function sendcodeemailAction()
     {
-        // http://www.myapplicationmodule.com.com/service/vcode/sendcodeemail?userEmail=handsomegyr@hotmail.com
+        // http://www.myapplicationmodule.com/service/vcode/sendcodeemail?userEmail=handsomegyr@hotmail.com
         try {
             $userEmail = $this->get('userEmail', '');
             if (empty($userEmail)) {
@@ -93,7 +93,7 @@ class VcodeController extends ControllerBase
      */
     public function sendcodesmsAction()
     {
-        // http://www.myapplicationmodule.com.com/service/vcode/sendcodesms?mobile=13564100096&captcha=xxx
+        // http://www.myapplicationmodule.com/service/vcode/sendcodesms?mobile=13564100096&captcha=xxx
         try {
             $mobile = $this->get('mobile', '');
             if (empty($mobile)) {
@@ -166,7 +166,7 @@ class VcodeController extends ControllerBase
      */
     public function verifyemailsnAction()
     {
-        // http://www.myapplicationmodule.com.com/service/vcode/verifyemailsn?userEmail=handsomegyr@hotmail.com&sn=434343
+        // http://www.myapplicationmodule.com/service/vcode/verifyemailsn?userEmail=handsomegyr@hotmail.com&sn=434343
         try {
             $sn = $this->get('sn', '');
             $userEmail = $this->get('userEmail', '');
@@ -190,7 +190,7 @@ class VcodeController extends ControllerBase
      */
     public function verifymobilesnAction()
     {
-        // http://www.myapplicationmodule.com.com/service/vcode/verifymobilesn?sn=xxxx&mobile=xxxx
+        // http://www.myapplicationmodule.com/service/vcode/verifymobilesn?sn=xxxx&mobile=xxxx
         try {
             $sn = $this->get('sn', '');
             $mobile = $this->get('mobile', '');

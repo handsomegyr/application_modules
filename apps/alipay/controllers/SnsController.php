@@ -53,7 +53,7 @@ class SnsController extends ControllerBase
     /**
      * scope接口权限值，目前只支持auth_user和auth_base两个值
      * http://www.example.com/alipay/sns/index?appid=xxx&redirect=回调地址&scope=[auth_user(default)|auth_base]&dc=1&state=xxx
-     * http://www.myapplicationmodule.com.com/alipay/sns/index?appid=2017071707783020&redirect=https%3A%2F%2Fwww.baidu.com%2F&scope=auth_user&state=xxx&refresh=1
+     * http://www.myapplicationmodule.com/alipay/sns/index?appid=2017071707783020&redirect=https%3A%2F%2Fwww.baidu.com%2F&scope=auth_user&state=xxx&refresh=1
      * 引导用户去往登录授权
      */
     public function indexAction()

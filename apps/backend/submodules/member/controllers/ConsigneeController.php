@@ -63,7 +63,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
      */
     public function exchangeaddressAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/member/consignee/exchangeaddress?id=xxx
+        // http://www.myapplicationmodule.com/admin/member/consignee/exchangeaddress?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -182,7 +182,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
      */
     public function getcitysAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/member/consignee/getcitys?province=xxx
+        // http://www.myapplicationmodule.com/admin/member/consignee/getcitys?province=xxx
         try {
             $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
             $province = urldecode($this->get('province', ''));
@@ -207,7 +207,7 @@ class ConsigneeController extends \App\Backend\Controllers\FormController
      */
     public function getdistrictsAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/member/consignee/getdistricts?city=xxx
+        // http://www.myapplicationmodule.com/admin/member/consignee/getdistricts?city=xxx
         try {
             $this->response->setHeader("Content-Type", "application/json; charset=utf-8");
             $city = urldecode($this->get('city', ''));

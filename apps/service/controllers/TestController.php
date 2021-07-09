@@ -14,7 +14,7 @@ class TestController extends ControllerBase
     public function indexAction()
     {
         try {
-            // http://www.myapplicationmodule.com.com/service/test/index
+            // http://www.myapplicationmodule.com/service/test/index
             $modelMsgCount = new \App\Message\Models\MsgCount();
             // $modelMsgCount->setDebug(true);
             $modelMsgCount->setPhql(false);
@@ -202,8 +202,8 @@ class TestController extends ControllerBase
     public function selectrawAction()
     {
         try {
-            // http://www.myapplicationmodule.com.com/service/test/selectraw
-            // http://www.myapplicationmodule.com.com/service/test/selectraw
+            // http://www.myapplicationmodule.com/service/test/selectraw
+            // http://www.myapplicationmodule.com/service/test/selectraw
             $modelMsgCount = new \App\Message\Models\MsgCount();
             // $modelMsgCount->setDebug(true);
             $modelMsgCount->setPhql(false);

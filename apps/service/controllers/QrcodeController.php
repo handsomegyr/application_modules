@@ -16,7 +16,7 @@ class QrcodeController extends ControllerBase
      */
     public function createAction()
     {
-        // http://www.myapplicationmodule.com.com/service/qrcode/create?url=http%3A%2F%2Fwww.baidu.com%2F
+        // http://www.myapplicationmodule.com/service/qrcode/create?url=http%3A%2F%2Fwww.baidu.com%2F
         error_reporting(E_ERROR);
         require_once APP_PATH . 'library/phpqrcode/qrlib.php';
 

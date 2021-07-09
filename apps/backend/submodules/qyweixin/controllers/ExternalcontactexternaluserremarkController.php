@@ -85,7 +85,7 @@ class ExternalcontactexternaluserremarkController extends BaseController
      */
     public function uploadmediaAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactexternaluserremark/uploadmedia?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactexternaluserremark/uploadmedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -139,7 +139,7 @@ class ExternalcontactexternaluserremarkController extends BaseController
      */
     public function remarkexternaluserAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactexternaluserremark/remarkexternaluser?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactexternaluserremark/remarkexternaluser?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

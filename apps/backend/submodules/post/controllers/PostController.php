@@ -561,8 +561,8 @@ class PostController extends \App\Backend\Controllers\FormController
             'user_id' => $_SESSION['admin_id'],
             'user_name' => $_SESSION['admin_name']
         );
-        // http://www.myapplicationmodule.com.com/order/service/passpost?post_id=xxx&point=800&is_recommend=1
-        $ret = $this->verify("http://www.myapplicationmodule.com.com/post/service/passpost", $param);
+        // http://www.myapplicationmodule.com/order/service/passpost?post_id=xxx&point=800&is_recommend=1
+        $ret = $this->verify("http://www.myapplicationmodule.com/post/service/passpost", $param);
     }
 
     function doUnPassPost($post_id, $fail_reason)
@@ -573,13 +573,13 @@ class PostController extends \App\Backend\Controllers\FormController
             'user_id' => $_SESSION['admin_id'],
             'user_name' => $_SESSION['admin_name']
         );
-        // http://www.myapplicationmodule.com.com/order/service/unpasspost?post_id=xxx&fail_reason=xxxx&user_id=xx&user_name=xx
-        $ret = $this->verify("http://www.myapplicationmodule.com.com/post/service/unpasspost", $param);
+        // http://www.myapplicationmodule.com/order/service/unpasspost?post_id=xxx&fail_reason=xxxx&user_id=xx&user_name=xx
+        $ret = $this->verify("http://www.myapplicationmodule.com/post/service/unpasspost", $param);
     }
 
     function verify($url, $param)
     {
-        $ret = doPost("http://www.myapplicationmodule.com.com/post/service/passpost", $param);
+        $ret = doPost("http://www.myapplicationmodule.com/post/service/passpost", $param);
         $ret = (string) $ret;
         if (!empty($ret)) {
             if (isJson($ret)) {

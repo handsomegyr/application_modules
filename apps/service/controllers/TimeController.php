@@ -16,7 +16,7 @@ class TimeController extends ControllerBase
      */
     public function servertimeAction()
     {
-        // http://www.myapplicationmodule.com.com/service/time/servertime?time=2015-12-13 18:29:40
+        // http://www.myapplicationmodule.com/service/time/servertime?time=2015-12-13 18:29:40
         // $time = $this->get('time', '');
         try {
             $currentTime = date('Y-m-d H:i:s');

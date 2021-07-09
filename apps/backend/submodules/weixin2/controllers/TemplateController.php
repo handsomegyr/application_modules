@@ -81,7 +81,7 @@ class TemplateController extends BaseController
      */
     public function synctemplatelistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/template/synctemplatelist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/template/synctemplatelist?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -116,7 +116,7 @@ class TemplateController extends BaseController
      */
     public function getindustryAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/template/getindustry?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/template/getindustry?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -162,7 +162,7 @@ class TemplateController extends BaseController
      */
     public function deletetemplateAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/template/deletetemplate?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/template/deletetemplate?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -189,7 +189,7 @@ class TemplateController extends BaseController
      */
     public function addtemplateAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/template/addtemplate?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/template/addtemplate?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

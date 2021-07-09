@@ -68,7 +68,7 @@ class ExternalcontactwelcomemsgController extends BaseController
      */
     public function uploadmediaAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactwelcomemsg/uploadmedia?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactwelcomemsg/uploadmedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -136,7 +136,7 @@ class ExternalcontactwelcomemsgController extends BaseController
      */
     public function uploadmediaimgAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactwelcomemsg/uploadmediaimg?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactwelcomemsg/uploadmediaimg?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

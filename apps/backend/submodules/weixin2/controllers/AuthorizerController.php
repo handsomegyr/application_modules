@@ -62,7 +62,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
      */
     public function getauthorizerinfoAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/authorizer/getauthorizerinfo?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/authorizer/getauthorizerinfo?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -89,7 +89,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
      */
     public function getaccesstokenAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/authorizer/getaccesstoken?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/authorizer/getaccesstoken?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

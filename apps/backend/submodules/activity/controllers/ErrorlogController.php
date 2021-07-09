@@ -171,7 +171,7 @@ class ErrorlogController extends \App\Backend\Controllers\FormController
      */
     public function clearlogAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/activity/errorlog/clearlog
+        // http://www.myapplicationmodule.com/admin/activity/errorlog/clearlog
         try {
             $this->modelErrorLog->truncate();
             // $connection = $this->modelErrorLog->getDb();

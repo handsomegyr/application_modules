@@ -38,7 +38,7 @@ class DatacubearticlesummaryController extends BaseController
      */
     public function syncarticlesummaryAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubearticlesummary/syncarticlesummary?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/datacubearticlesummary/syncarticlesummary?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

@@ -140,7 +140,7 @@ class CategoryController extends \App\Backend\Controllers\FormController
      */
     public function elasticAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/article/category/elastic?id=xxx
+        // http://www.myapplicationmodule.com/admin/article/category/elastic?id=xxx
         try {
 
             $id = $this->get('id', '');

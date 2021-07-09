@@ -43,7 +43,7 @@ class DatacubeusersummaryController extends BaseController
      */
     public function syncusersummaryAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubeusersummary/syncusersummary?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/datacubeusersummary/syncusersummary?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

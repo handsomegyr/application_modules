@@ -75,7 +75,7 @@ class BlackuserController extends BaseController
      */
     public function getblacklistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/blackuser/getblacklist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/blackuser/getblacklist?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -110,7 +110,7 @@ class BlackuserController extends BaseController
      */
     public function batchunblacklistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/blackuser/batchunblacklist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/blackuser/batchunblacklist?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -137,7 +137,7 @@ class BlackuserController extends BaseController
      */
     public function batchblacklistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/blackuser/batchblacklist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/blackuser/batchblacklist?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

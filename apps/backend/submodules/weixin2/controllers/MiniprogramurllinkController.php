@@ -48,7 +48,7 @@ class MiniprogramurllinkController extends BaseController
      */
     public function createurllinkAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/miniprogramurllink/createurllink?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/miniprogramurllink/createurllink?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

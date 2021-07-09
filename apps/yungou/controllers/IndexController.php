@@ -44,7 +44,7 @@ class IndexController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.myapplicationmodule.com.com/yungou/index/index
+        // http://www.myapplicationmodule.com/yungou/index/index
         // 邀请ID
         $invited_id = $this->get('invited_id', '');
         if (! empty($invited_id)) {
@@ -67,13 +67,13 @@ class IndexController extends ControllerBase
     
     public function historybuyrecordsAction()
     {
-        // http://www.myapplicationmodule.com.com/yungou/index/historybuyrecords
+        // http://www.myapplicationmodule.com/yungou/index/historybuyrecords
         
     }
 
     public function newestbuyrecordsAction()
     {
-        // http://www.myapplicationmodule.com.com/yungou/index/newestbuyrecords
+        // http://www.myapplicationmodule.com/yungou/index/newestbuyrecords
         
     }
 
@@ -82,7 +82,7 @@ class IndexController extends ControllerBase
      */
     public function limitbuyAction()
     {
-        // http://www.myapplicationmodule.com.com/yungou/index/index
+        // http://www.myapplicationmodule.com/yungou/index/index
     }
 }
 

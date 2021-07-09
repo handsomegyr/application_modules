@@ -6,15 +6,15 @@ namespace App\Campaign\Controllers;
  * 例子
  *
  * 授权地址
- * http://www.myapplicationmodule.com.com/campaign/cny/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
+ * http://www.myapplicationmodule.com/campaign/cny/weixinauthorizebefore?callbackUrl=http%3A%2F%2Fwww.baidu.com%2F
  *
- * http://www.myapplicationmodule.com.com/campaign/cny/weixinauthorizebefore?operation4cookie=clear
+ * http://www.myapplicationmodule.com/campaign/cny/weixinauthorizebefore?operation4cookie=clear
  *
- * http://www.myapplicationmodule.com.com/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
+ * http://www.myapplicationmodule.com/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=xxxx&nickname=xx&headimgurl=xx
  *
- * http://www.myapplicationmodule.com.com/html/cny/index.html
+ * http://www.myapplicationmodule.com/html/cny/index.html
  *
- * http://www.myapplicationmodule.com.com/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=ok0K2vystcQkKolNr3anJd-soVuI&nickname=郭永荣&headimgurl=xx
+ * http://www.myapplicationmodule.com/campaign/cny/weixinauthorizebefore?operation4cookie=store&FromUserName=ok0K2vystcQkKolNr3anJd-soVuI&nickname=郭永荣&headimgurl=xx
  *
  * @author 郭永荣
  *        
@@ -53,7 +53,7 @@ class CnyController extends ControllerBase
      */
     public function getcampaignuserinfoAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/cny/getcampaignuserinfo
+        // http://www.myapplicationmodule.com/campaign/cny/getcampaignuserinfo
         try {
             $this->view->disable();
 
@@ -148,7 +148,7 @@ class CnyController extends ControllerBase
      */
     public function lotteryAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/cny/lottery?name=guoyongrong&mobile=13564100096&address=xxx
+        // http://www.myapplicationmodule.com/campaign/cny/lottery?name=guoyongrong&mobile=13564100096&address=xxx
         try {
             $this->view->disable();
             // 获取活动信息
@@ -299,7 +299,7 @@ class CnyController extends ControllerBase
      */
     public function recorduserinfoAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/cny/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
+        // http://www.myapplicationmodule.com/campaign/cny/recorduserinfo?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&name=guoyongrong&mobile=13564100096&address=shanghai
         try {
             $this->view->disable();
 
@@ -413,7 +413,7 @@ class CnyController extends ControllerBase
      */
     public function sendsmsAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/cny/sendsms?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&mobile=13564100096
+        // http://www.myapplicationmodule.com/campaign/cny/sendsms?exchange_id=5865f1edfcc2b60a008b456c&identity_id=xxxx&mobile=13564100096
         try {
             $this->view->disable();
 
@@ -566,7 +566,7 @@ class CnyController extends ControllerBase
      */
     public function testsendsmsAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/cny/testsendsms?code=xxxx&mobile=13564100096
+        // http://www.myapplicationmodule.com/campaign/cny/testsendsms?code=xxxx&mobile=13564100096
         try {
             $this->view->disable();
 

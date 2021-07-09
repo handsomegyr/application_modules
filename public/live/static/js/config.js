@@ -1,3 +1,3 @@
 var webim = {
-    'server' : 'ws://www.myapplicationmodule.com.com:9503'
+    'server' : 'ws://www.myapplicationmodule.com:9503'
 }

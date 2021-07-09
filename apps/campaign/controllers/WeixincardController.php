@@ -33,7 +33,7 @@ class WeixincardController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/weixincard/index?wechat_card_js=1&openid=xx&card_id=556d2bb249961986398b45db&card_code=code1&balance=0&outer_id=0&cb_url=http%3A%2F%2Fwww.baidu.com%2F&FromUserName=ogW8rtyob18sg_MBKH-V2qYe2tt4&istest=1&sign=xxx
+        // http://www.myapplicationmodule.com/campaign/weixincard/index?wechat_card_js=1&openid=xx&card_id=556d2bb249961986398b45db&card_code=code1&balance=0&outer_id=0&cb_url=http%3A%2F%2Fwww.baidu.com%2F&FromUserName=ogW8rtyob18sg_MBKH-V2qYe2tt4&istest=1&sign=xxx
         try {
             // 回调地址
             $cb_url = $this->get('cb_url', '');
@@ -143,7 +143,7 @@ class WeixincardController extends ControllerBase
      */
     public function getAction()
     {
-        // http://www.myapplicationmodule.com.com/weixincard/index/get
+        // http://www.myapplicationmodule.com/weixincard/index/get
         try {
             // 领取卡券事件推送
             /**
@@ -220,7 +220,7 @@ class WeixincardController extends ControllerBase
      */
     public function getbyfriendAction()
     {
-        // http://www.myapplicationmodule.com.com/weixincard/index/getbyfriend
+        // http://www.myapplicationmodule.com/weixincard/index/getbyfriend
         try {
             // 领取卡券事件推送
             /**
@@ -301,7 +301,7 @@ class WeixincardController extends ControllerBase
      */
     public function consumeAction()
     {
-        // http://www.myapplicationmodule.com.com/weixincard/index/consume
+        // http://www.myapplicationmodule.com/weixincard/index/consume
         try {
             // 核销卡券事件推送
             /**
@@ -383,7 +383,7 @@ class WeixincardController extends ControllerBase
      */
     public function deleteAction()
     {
-        // http://www.myapplicationmodule.com.com/weixincard/index/delete
+        // http://www.myapplicationmodule.com/weixincard/index/delete
         try {
             // 删除事件推送
             /**

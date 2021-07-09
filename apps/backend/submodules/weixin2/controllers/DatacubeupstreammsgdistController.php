@@ -38,7 +38,7 @@ class DatacubeupstreammsgdistController extends BaseController
      */
     public function syncupstreammsgdistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubeupstreammsgdist/syncupstreammsgdist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/datacubeupstreammsgdist/syncupstreammsgdist?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

@@ -219,7 +219,7 @@ class ArticleController extends \App\Backend\Controllers\FormController
      */
     public function elasticAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/article/article/elastic?id=xxx
+        // http://www.myapplicationmodule.com/admin/article/article/elastic?id=xxx
         try {
             $id = $this->get('id', '');
             if (empty($id)) {

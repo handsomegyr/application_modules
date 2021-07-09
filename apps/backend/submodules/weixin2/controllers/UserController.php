@@ -73,7 +73,7 @@ class UserController extends BaseController
      */
     public function updateremarkAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/user/updateremark?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/user/updateremark?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -104,7 +104,7 @@ class UserController extends BaseController
      */
     public function getuserinfoAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/user/getuserinfo?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/user/getuserinfo?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -130,7 +130,7 @@ class UserController extends BaseController
      */
     public function getusertagidlistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/user/getusertagidlist?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/user/getusertagidlist?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

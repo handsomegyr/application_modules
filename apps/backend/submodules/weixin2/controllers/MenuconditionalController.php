@@ -93,7 +93,7 @@ class MenuconditionalController extends BaseController
      */
     public function getmenuAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/menuconditional/getmenu?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/menuconditional/getmenu?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -138,7 +138,7 @@ class MenuconditionalController extends BaseController
      */
     public function trymatchAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/menuconditional/trymatch?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/menuconditional/trymatch?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -197,7 +197,7 @@ class MenuconditionalController extends BaseController
      */
     public function addconditionalAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/menuconditional/addconditional?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/menuconditional/addconditional?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -224,7 +224,7 @@ class MenuconditionalController extends BaseController
      */
     public function deleteconditionalAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/menuconditional/deleteconditional?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/menuconditional/deleteconditional?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

@@ -4,13 +4,13 @@ use App\Alipay\Models\Application;
 
 /**
  * 基金财富号
- * http://www.myapplicationmodule.com.com/campaign/fund/alipayauthorizebefore?operation4cookie=store&user_id=xxx&nickname=xxx&headimgurl=xxx
+ * http://www.myapplicationmodule.com/campaign/fund/alipayauthorizebefore?operation4cookie=store&user_id=xxx&nickname=xxx&headimgurl=xxx
  *
- * http://www.myapplicationmodule.com.com/campaign/fund/alipayauthorizebefore?callbackUrl=https%3A%2F%2Fwww.baidu.com%2F
+ * http://www.myapplicationmodule.com/campaign/fund/alipayauthorizebefore?callbackUrl=https%3A%2F%2Fwww.baidu.com%2F
  *
  * https://cloud.huaan.com.cn/one/index.html
  *
- * http://www.myapplicationmodule.com.com/campaign/fund/alipayauthorizebefore?operation4cookie=clear
+ * http://www.myapplicationmodule.com/campaign/fund/alipayauthorizebefore?operation4cookie=clear
  *
  * @author 郭永荣
  *        
@@ -34,7 +34,7 @@ class FundController extends ControllerBase
      */
     public function getcampaignuserinfoAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/sign/getcampaignuserinfo
+        // http://www.myapplicationmodule.com/campaign/sign/getcampaignuserinfo
         try {
             $userInfo = empty($_COOKIE['Alipay_userInfo']) ? array() : json_decode($_COOKIE['Alipay_userInfo'], true);
             if (empty($userInfo)) {
@@ -103,7 +103,7 @@ class FundController extends ControllerBase
      */
     public function answerAction()
     {
-        // http://www.myapplicationmodule.com.com/campaign/fund/answer?answer=0
+        // http://www.myapplicationmodule.com/campaign/fund/answer?answer=0
         try {
             $answer = intval($this->get('answer', '0'));
             // 获取活动信息
@@ -206,7 +206,7 @@ class FundController extends ControllerBase
      */
     public function fundperformancechart2Action()
     {
-        // http://www.myapplicationmodule.com.com/campaign/fund/fundperformancechart2?fundcodes=040008
+        // http://www.myapplicationmodule.com/campaign/fund/fundperformancechart2?fundcodes=040008
         try {
             $fundcodes = $this->get('fundcodes', '');
 
@@ -246,7 +246,7 @@ class FundController extends ControllerBase
      */
     public function test1Action()
     {
-        // http://www.myapplicationmodule.com.com/campaign/fund/test1&camp_id=170921821480493
+        // http://www.myapplicationmodule.com/campaign/fund/test1&camp_id=170921821480493
         try {
             $user_id = $this->get('user_id', '2088602345138428');
             $camp_id = $this->get('camp_id', '170921821480493');
@@ -273,7 +273,7 @@ class FundController extends ControllerBase
      */
     public function test2Action()
     {
-        // http://www.myapplicationmodule.com.com/campaign/fund/test2?camp_id=170921821480493&prize_id=xx
+        // http://www.myapplicationmodule.com/campaign/fund/test2?camp_id=170921821480493&prize_id=xx
         try {
             $camp_id = $this->get('camp_id', '170921821480493');
             $prize_id = $this->get('prize_id', '20170921000730018232000BP4C6');
@@ -300,7 +300,7 @@ class FundController extends ControllerBase
      */
     public function test3Action()
     {
-        // http://www.myapplicationmodule.com.com/campaign/fund/test3?camp_id=170921821480493
+        // http://www.myapplicationmodule.com/campaign/fund/test3?camp_id=170921821480493
         try {
             $camp_id = $this->get('camp_id', '170921821480493');
 

@@ -67,7 +67,7 @@ class MenuController extends BaseController
      */
     public function createmenuAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/menu/createmenu?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/menu/createmenu?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -102,7 +102,7 @@ class MenuController extends BaseController
      */
     public function deletemenuAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/menu/deletemenu?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/menu/deletemenu?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -147,7 +147,7 @@ class MenuController extends BaseController
      */
     public function getcurrentselfmenuinfoAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/menu/getcurrentselfmenuinfo?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/menu/getcurrentselfmenuinfo?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -191,7 +191,7 @@ class MenuController extends BaseController
      */
     public function getmenuAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/menu/getmenu?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/menu/getmenu?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

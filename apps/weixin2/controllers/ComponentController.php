@@ -75,9 +75,9 @@ class ComponentController extends ControllerBase
      */
     public function loginAction()
     {
-        // http://www.myapplicationmodule.com.com/component/login.html
+        // http://www.myapplicationmodule.com/component/login.html
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/component/login?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
-        // http://www.myapplicationmodule.com.com/weixinopen/api/component/login?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
+        // http://www.myapplicationmodule.com/weixinopen/api/component/login?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
@@ -130,9 +130,9 @@ class ComponentController extends ControllerBase
      */
     public function bindAction()
     {
-        // http://www.myapplicationmodule.com.com/component/bind.html
+        // http://www.myapplicationmodule.com/component/bind.html
         // http://wxcrmdemo.jdytoy.com/weixinopen/api/component/bind?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
-        // http://www.myapplicationmodule.com.com/weixinopen/api/component/bind?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
+        // http://www.myapplicationmodule.com/weixinopen/api/component/bind?component_appid=wxca8519f703c07d32&redirect=https%3A%2F%2Fwww.baidu.com%2F
         $_SESSION['oauth_start_time'] = microtime(true);
         try {
             // 初始化
@@ -191,7 +191,7 @@ class ComponentController extends ControllerBase
      */
     public function logincallbackAction()
     {
-        // http://www.myapplicationmodule.com.com/weixinopen/api/component/logincallback?auth_code=queryauthcode@@@YGWj2XtzxxwQQfpIW6VGOJvDALlLfFwSy9anTBQs0sEMXsXZMrTRVPbhXpmqh265vpKz_YIgj2bJ-WJR2oGABw&expires_in=3600
+        // http://www.myapplicationmodule.com/weixinopen/api/component/logincallback?auth_code=queryauthcode@@@YGWj2XtzxxwQQfpIW6VGOJvDALlLfFwSy9anTBQs0sEMXsXZMrTRVPbhXpmqh265vpKz_YIgj2bJ-WJR2oGABw&expires_in=3600
         try {
             $component_appid = empty($_SESSION['component_appid']) ? "" : $_SESSION['component_appid'];
             if (empty($component_appid)) {
@@ -268,7 +268,7 @@ class ComponentController extends ControllerBase
      */
     public function authorizecallbackAction()
     {
-        // http://www.myapplicationmodule.com.com/weixinopen/api/component/authorizecallback?component_appid=wxca8519f703c07d32
+        // http://www.myapplicationmodule.com/weixinopen/api/component/authorizecallback?component_appid=wxca8519f703c07d32
         try {
             // 兼容的写法
             $appid = isset($_GET['appid']) ? trim($_GET['appid']) : '';
@@ -421,7 +421,7 @@ class ComponentController extends ControllerBase
      */
     public function authorizerTokenAction()
     {
-        // http://www.myapplicationmodule.com.com/weixinopen/api/component/authorizer-token?component_appid=wxca8519f703c07d32&authorizer_appid=xxx
+        // http://www.myapplicationmodule.com/weixinopen/api/component/authorizer-token?component_appid=wxca8519f703c07d32&authorizer_appid=xxx
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -454,7 +454,7 @@ class ComponentController extends ControllerBase
      */
     public function getComponentAccessTokenAction()
     {
-        // http://www.myapplicationmodule.com.com/weixinopen/api/component/get-component-access-token?component_appid=wxca8519f703c07d32
+        // http://www.myapplicationmodule.com/weixinopen/api/component/get-component-access-token?component_appid=wxca8519f703c07d32
         try {
             // 初始化
             $this->doInitializeLogic();

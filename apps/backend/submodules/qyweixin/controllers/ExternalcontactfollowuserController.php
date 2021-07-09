@@ -38,7 +38,7 @@ class ExternalcontactfollowuserController extends BaseController
      */
     public function getfollowuserlistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactfollowuser/getfollowuserlist
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactfollowuser/getfollowuserlist
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

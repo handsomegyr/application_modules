@@ -44,7 +44,7 @@ class ExternalcontacttransferController extends BaseController
      */
     public function transferAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontacttransfer/transfer?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontacttransfer/transfer?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

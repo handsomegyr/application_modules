@@ -96,7 +96,7 @@ class ExternalcontactmsgtemplateController extends BaseController
      */
     public function uploadmediaAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/uploadmedia?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactmsgtemplate/uploadmedia?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -164,7 +164,7 @@ class ExternalcontactmsgtemplateController extends BaseController
      */
     public function uploadmediaimgAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/uploadmediaimg?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactmsgtemplate/uploadmediaimg?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -208,7 +208,7 @@ class ExternalcontactmsgtemplateController extends BaseController
      */
     public function addmsgtemplateAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/addmsgtemplate?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactmsgtemplate/addmsgtemplate?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -261,7 +261,7 @@ class ExternalcontactmsgtemplateController extends BaseController
      */
     public function getgroupmsgsendresultAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactmsgtemplate/getgroupmsgsendresult?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactmsgtemplate/getgroupmsgsendresult?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

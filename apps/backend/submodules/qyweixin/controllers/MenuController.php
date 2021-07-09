@@ -59,7 +59,7 @@ class MenuController extends BaseController
      */
     public function createmenuAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/menu/createmenu?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/menu/createmenu?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -98,7 +98,7 @@ class MenuController extends BaseController
      */
     public function deletemenuAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/menu/deletemenu?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/menu/deletemenu?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -147,7 +147,7 @@ class MenuController extends BaseController
      */
     public function getmenuAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/menu/getmenu?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/menu/getmenu?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

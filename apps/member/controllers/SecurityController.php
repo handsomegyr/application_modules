@@ -20,7 +20,7 @@ class SecurityController extends ControllerBase
      */
     public function indexAction()
     {
-        // http://www.myapplicationmodule.com.com/member/security/index
+        // http://www.myapplicationmodule.com/member/security/index
     }
 
     /**
@@ -28,7 +28,7 @@ class SecurityController extends ControllerBase
      */
     public function updatepasswordAction()
     {
-        // http://www.myapplicationmodule.com.com/member/security/updatepassword
+        // http://www.myapplicationmodule.com/member/security/updatepassword
     }
 
     /**
@@ -36,7 +36,7 @@ class SecurityController extends ControllerBase
      */
     public function setpaypwdAction()
     {
-        // http://www.myapplicationmodule.com.com/member/security/setpaypwd
+        // http://www.myapplicationmodule.com/member/security/setpaypwd
     }
 
     /**
@@ -44,7 +44,7 @@ class SecurityController extends ControllerBase
      */
     public function setsmallmoneyAction()
     {
-        // http://www.myapplicationmodule.com.com/member/security/setsmallmoney
+        // http://www.myapplicationmodule.com/member/security/setsmallmoney
     }
 
     /**
@@ -52,7 +52,7 @@ class SecurityController extends ControllerBase
      */
     public function userauthAction()
     {
-        // http://www.myapplicationmodule.com.com/member/security/userauth
+        // http://www.myapplicationmodule.com/member/security/userauth
     }
 
     /**
@@ -60,7 +60,7 @@ class SecurityController extends ControllerBase
      */
     public function userauth10Action()
     {
-        // http://www.myapplicationmodule.com.com/member/security/userauth10
+        // http://www.myapplicationmodule.com/member/security/userauth10
     }
 
     /**
@@ -68,7 +68,7 @@ class SecurityController extends ControllerBase
      */
     public function userauth40Action()
     {
-        // http://www.myapplicationmodule.com.com/member/security/userauth40
+        // http://www.myapplicationmodule.com/member/security/userauth40
     }
 
     /**
@@ -76,7 +76,7 @@ class SecurityController extends ControllerBase
      */
     public function userauth50Action()
     {
-        // http://www.myapplicationmodule.com.com/member/security/userauth50
+        // http://www.myapplicationmodule.com/member/security/userauth50
     }
 }
 

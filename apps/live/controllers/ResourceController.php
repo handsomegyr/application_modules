@@ -17,7 +17,7 @@ class ResourceController extends ControllerBase
      */
     public function getrandomAction()
     {
-        // http://www.myapplicationmodule.com.com/live/resource/getrandom?type=1
+        // http://www.myapplicationmodule.com/live/resource/getrandom?type=1
         try {
             $type = $this->get('type', '');
             if (empty($type)) {
@@ -40,7 +40,7 @@ class ResourceController extends ControllerBase
      */
     public function getlistAction()
     {
-        // http://www.myapplicationmodule.com.com/live/resource/getlist?next_id=xxxx&type=1
+        // http://www.myapplicationmodule.com/live/resource/getlist?next_id=xxxx&type=1
         try {
             $next_id = $this->get('next_id', '');
             $type = $this->get('type', '');
@@ -82,7 +82,7 @@ class ResourceController extends ControllerBase
      */
     public function removefromredisAction()
     {
-        // http://www.myapplicationmodule.com.com/live/resource/removefromredis?id=xxxx
+        // http://www.myapplicationmodule.com/live/resource/removefromredis?id=xxxx
         try {
             $id = $this->get('id', '');
             if (empty($id)) {
@@ -112,7 +112,7 @@ class ResourceController extends ControllerBase
      */
     public function removeallfromredisAction()
     {
-        // http://www.myapplicationmodule.com.com/live/resource/removeallfromredis&type=1
+        // http://www.myapplicationmodule.com/live/resource/removeallfromredis&type=1
         try {
             $type = $this->get('type', '');
             if (empty($type)) {

@@ -43,7 +43,7 @@ class DatacubeupstreammsgdisthourController extends BaseController
      */
     public function syncupstreammsgdisthourAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/datacubeupstreammsgdisthour/syncupstreammsgdisthour?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/datacubeupstreammsgdisthour/syncupstreammsgdisthour?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

@@ -118,7 +118,7 @@ class MsgController extends ControllerBase
     public function callbackAction()
     {
         // http://wxcrmdemo.jdytoy.com/qyweixin/api/msg/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff&agentid=999999
-        // http://www.myapplicationmodule.com.com/qyweixin/api/msg/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff&agentid=999999
+        // http://www.myapplicationmodule.com/qyweixin/api/msg/callback?provider_appid=qy_ww975831ac45517bff&authorizer_appid=ww975831ac45517bff&agentid=999999
         try {
             /**
              * ==================================================================================
@@ -350,7 +350,7 @@ class MsgController extends ControllerBase
      */
     public function testDecryptMsgAction()
     {
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-decrypt-msg?appid=wxca8519f703c07d32
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-decrypt-msg?appid=wxca8519f703c07d32
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -400,7 +400,7 @@ class MsgController extends ControllerBase
      */
     public function testGetUserAction()
     {
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-get-user?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&FromUserName=o8IA5v7Dwz8tk_EcVsRITf7fA9Fk
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-get-user?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&FromUserName=o8IA5v7Dwz8tk_EcVsRITf7fA9Fk
         try {
             // 初始化
             $this->doInitializeLogic();
@@ -421,15 +421,15 @@ class MsgController extends ControllerBase
      */
     public function testKeywordAction()
     {
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=xxx
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=xxx
 
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试文本1
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试图片1
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试语音1
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试视频1
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试音乐1
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试单图文1
-        // http://www.myapplicationmodule.com.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试多图文1
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试文本1
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试图片1
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试语音1
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试视频1
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试音乐1
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试单图文1
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/test-keyword?provider_appid=wxca8519f703c07d32&authorizer_appid=wxe735383666834fc9&keyword=测试多图文1
         try {
             // 初始化
             $this->doInitializeLogic();

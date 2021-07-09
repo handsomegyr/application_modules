@@ -47,7 +47,7 @@ class DepartmentuserController extends BaseController
      */
     public function getdepartmentusersimplelistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/departmentuser/getdepartmentusersimplelist
+        // http://www.myapplicationmodule.com/admin/qyweixin/departmentuser/getdepartmentusersimplelist
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -89,7 +89,7 @@ class DepartmentuserController extends BaseController
      */
     public function getdepartmentuserdetaillistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/departmentuser/getdepartmentuserdetaillist
+        // http://www.myapplicationmodule.com/admin/qyweixin/departmentuser/getdepartmentuserdetaillist
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

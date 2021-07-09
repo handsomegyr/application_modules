@@ -112,7 +112,7 @@ class ColorController extends \App\Backend\Controllers\FormController
      */
     public function getcolorsAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixincard/color/getcolors
+        // http://www.myapplicationmodule.com/admin/weixincard/color/getcolors
         try {
             $weixin = $this->getWeixin();
             $ret = $weixin->getCardManager()->getcolors();

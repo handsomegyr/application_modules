@@ -61,7 +61,7 @@ class UsertousertagController extends BaseController
      */
     public function untaguserAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/usertousertag/untaguser?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/usertousertag/untaguser?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -87,7 +87,7 @@ class UsertousertagController extends BaseController
      */
     public function taguserAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/weixin2/usertousertag/taguser?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/usertousertag/taguser?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

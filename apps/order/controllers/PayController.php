@@ -51,7 +51,7 @@ class PayController extends ControllerBase
     public function createAction()
     {
         try {
-            // http://www.myapplicationmodule.com.com/order/pay/create?pay_sn=567e1fd8887c22034a8b45a3&integral=0&predeposit=1&payway=weixin&pay_pwd=xxxx
+            // http://www.myapplicationmodule.com/order/pay/create?pay_sn=567e1fd8887c22034a8b45a3&integral=0&predeposit=1&payway=weixin&pay_pwd=xxxx
             // 订单支付单号
             $pay_sn = trim($this->get('pay_sn', ''));
             // 是否使用福分
@@ -219,7 +219,7 @@ class PayController extends ControllerBase
     public function rechargeAction()
     {
         try {
-            // http://www.myapplicationmodule.com.com/order/pay/recharge?predeposit=10&payway=weixin&pay_pwd=xxx
+            // http://www.myapplicationmodule.com/order/pay/recharge?predeposit=10&payway=weixin&pay_pwd=xxx
             // 预付款
             $predeposit = intval($this->get('predeposit', '0'));
             // 支付方式
@@ -330,7 +330,7 @@ class PayController extends ControllerBase
     public function finishAction()
     {
         try {
-            // http://www.myapplicationmodule.com.com/order/pay/finish?out_trade_no=577791f1887c22a4328b457a
+            // http://www.myapplicationmodule.com/order/pay/finish?out_trade_no=577791f1887c22a4328b457a
             // 订单支付单号
             $out_trade_no = trim($this->get('out_trade_no', ''));
             $ret = $this->servicePay->finishPay($out_trade_no);
@@ -352,7 +352,7 @@ class PayController extends ControllerBase
     public function getpayresultAction()
     {
         try {
-            // http://www.myapplicationmodule.com.com/order/pay/getpayresult?id=56640956887c22014a8b457c
+            // http://www.myapplicationmodule.com/order/pay/getpayresult?id=56640956887c22014a8b457c
             // 支付id
             $id = trim($this->get('id', ''));
             

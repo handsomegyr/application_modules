@@ -165,7 +165,7 @@ class NotificationtaskController extends BaseController
      */
     public function addtask1Action()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/notificationtask/addtask1?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/notificationtask/addtask1?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -426,7 +426,7 @@ class NotificationtaskController extends BaseController
      */
     public function addtask2Action()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/notificationtask/addtask2?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/notificationtask/addtask2?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -684,7 +684,7 @@ class NotificationtaskController extends BaseController
      */
     public function addtask3Action()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/notificationtask/addtask3?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/notificationtask/addtask3?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -942,7 +942,7 @@ class NotificationtaskController extends BaseController
      */
     public function addtask4Action()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/notificationtask/addtask3?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/notificationtask/addtask3?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
@@ -1200,7 +1200,7 @@ class NotificationtaskController extends BaseController
      */
     public function modifytask1Action()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/notificationtask/modifytask1?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/notificationtask/modifytask1?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -1464,7 +1464,7 @@ class NotificationtaskController extends BaseController
      */
     public function modifytask2Action()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/notificationtask/modifytask2?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/notificationtask/modifytask2?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -1728,7 +1728,7 @@ class NotificationtaskController extends BaseController
      */
     public function modifytask3Action()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/notificationtask/modifytask3?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/notificationtask/modifytask3?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -1992,7 +1992,7 @@ class NotificationtaskController extends BaseController
      */
     public function modifytask4Action()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/notificationtask/modifytask4?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/notificationtask/modifytask4?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -2256,7 +2256,7 @@ class NotificationtaskController extends BaseController
      */
     public function closetaskAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/notificationtask/closetask?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/notificationtask/closetask?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

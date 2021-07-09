@@ -20,7 +20,7 @@ class AdminController extends ControllerBase
      */
     public function membermodifyAction()
     {
-        // http://www.myapplicationmodule.com.com/member/admin/membermodify
+        // http://www.myapplicationmodule.com/member/admin/membermodify
     }
 
     /**
@@ -28,7 +28,7 @@ class AdminController extends ControllerBase
      */
     public function userphotoAction()
     {
-        // http://www.myapplicationmodule.com.com/member/admin/userphoto
+        // http://www.myapplicationmodule.com/member/admin/userphoto
     }
 
     /**
@@ -36,7 +36,7 @@ class AdminController extends ControllerBase
      */
     public function addressAction()
     {
-        // http://www.myapplicationmodule.com.com/member/admin/address
+        // http://www.myapplicationmodule.com/member/admin/address
         $consigneeList = $this->modelConsignee->getListByMemberId($_SESSION['member_id']);
         $this->assign('consigneeList', $consigneeList);
     }
@@ -46,7 +46,7 @@ class AdminController extends ControllerBase
      */
     public function privacysettingsAction()
     {
-        // http://www.myapplicationmodule.com.com/member/admin/privacysettings
+        // http://www.myapplicationmodule.com/member/admin/privacysettings
     }
 
     /**
@@ -54,7 +54,7 @@ class AdminController extends ControllerBase
      */
     public function noticesettingsAction()
     {
-        // http://www.myapplicationmodule.com.com/member/admin/noticesettings
+        // http://www.myapplicationmodule.com/member/admin/noticesettings
     }
 
 }

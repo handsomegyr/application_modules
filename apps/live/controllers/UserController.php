@@ -27,9 +27,9 @@ class UserController extends ControllerBase
      */
     public function loginAction()
     {
-        // http://www.myapplicationmodule.com.com/live/user/login?room_id=xxxxx&openid=xxx&nickname=xxx&headimgurl=xxx&authtype=anonymous,weixin,weibo&source=anonymous,weixin&channel=anonymous,weixin
-        // http://www.myapplicationmodule.com.com/live/user/login?room_id=5a4f2686cb6ef462f64ee4a1&openid=xxx&nickname=郭永荣&headimgurl=http://qzapp.qlogo.cn/qzapp/221403/12EBD57369718EBF0CC9FC352C2969AB/100&unionid=uxxx&authtype=weixin&source=weixin&channel=weixin
-        // http://www.myapplicationmodule.com.com/live/user/login?room_id=5a4f2686cb6ef462f64ee4a1&openid=xxx1&nickname=%E6%96%BD%E4%B8%B9&headimgurl=https://tfs.alipayobjects.com/images/partner/T1VpheXnCdXXXXXXXX&unionid=uxxx1&authtype=weixin&source=weixin&channel=weixin
+        // http://www.myapplicationmodule.com/live/user/login?room_id=xxxxx&openid=xxx&nickname=xxx&headimgurl=xxx&authtype=anonymous,weixin,weibo&source=anonymous,weixin&channel=anonymous,weixin
+        // http://www.myapplicationmodule.com/live/user/login?room_id=5a4f2686cb6ef462f64ee4a1&openid=xxx&nickname=郭永荣&headimgurl=http://qzapp.qlogo.cn/qzapp/221403/12EBD57369718EBF0CC9FC352C2969AB/100&unionid=uxxx&authtype=weixin&source=weixin&channel=weixin
+        // http://www.myapplicationmodule.com/live/user/login?room_id=5a4f2686cb6ef462f64ee4a1&openid=xxx1&nickname=%E6%96%BD%E4%B8%B9&headimgurl=https://tfs.alipayobjects.com/images/partner/T1VpheXnCdXXXXXXXX&unionid=uxxx1&authtype=weixin&source=weixin&channel=weixin
         try {
             $room_id = trim($this->get('room_id', ''));
             $authtype = trim($this->get('authtype', 'anonymous'));

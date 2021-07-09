@@ -44,7 +44,7 @@ class ExternalcontactgroupchattransferController extends BaseController
      */
     public function transferAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactgroupchattransfer/transfer?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactgroupchattransfer/transfer?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {

@@ -38,7 +38,7 @@ class TagController  extends BaseController
      */
     public function gettaglistAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/tag/gettaglist
+        // http://www.myapplicationmodule.com/admin/qyweixin/tag/gettaglist
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

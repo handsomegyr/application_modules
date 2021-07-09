@@ -38,7 +38,7 @@ class ExternalcontactuserbehaviordatabyuseridController extends BaseController
      */
     public function getuserbehaviordataAction()
     {
-        // http://www.myapplicationmodule.com.com/admin/qyweixin/externalcontactuserbehaviordatabyuserid/getuserbehaviordata
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactuserbehaviordatabyuserid/getuserbehaviordata
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {

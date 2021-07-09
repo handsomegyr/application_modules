@@ -36,7 +36,7 @@ class ServiceController extends ControllerBase
      */
     public function insertuserprivatemsgAction()
     {
-        // http://www.myapplicationmodule.com.com/message/service/insertuserprivatemsg?msgToUID=10605005&msgContent=hello
+        // http://www.myapplicationmodule.com/message/service/insertuserprivatemsg?msgToUID=10605005&msgContent=hello
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -88,7 +88,7 @@ class ServiceController extends ControllerBase
     public function getuserprivmsglistAction()
     {
         // http://member.1yyg.com/JPData?action=getUserPrivMsgList&FIdx=1&EIdx=5&isCount=1&fun=jsonp1451059658328&_=1451059658486
-        // http://www.myapplicationmodule.com.com/message/service/getuserprivmsglist?page=1&limit=5
+        // http://www.myapplicationmodule.com/message/service/getuserprivmsglist?page=1&limit=5
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -166,7 +166,7 @@ class ServiceController extends ControllerBase
     {
         // jsonp1451060106301({"code":0,"count":6,"data":[{"userName":"18917****57","userPhoto":"00000000000000000.jpg","userWeb":"1011789946","msgID":1212280,"senderUserID":10605005,"msgContents":"kjkjkjk","showTime":"昨天 23:50"},{"userName":"郭永荣","userPhoto":"20151106195125381.jpg","userWeb":"1010381532","msgID":1212279,"senderUserID":9563477,"msgContents":"nnnnnn","showTime":"昨天 23:47"},{"userName":"郭永荣","userPhoto":"20151106195125381.jpg","userWeb":"1010381532","msgID":1211267,"senderUserID":9563477,"msgContents":"hello","showTime":"昨天 09:39"},{"userName":"郭永荣","userPhoto":"20151106195125381.jpg","userWeb":"1010381532","msgID":1209762,"senderUserID":9563477,"msgContents":"vvvvvv","showTime":"12月23日 23:02"},{"userName":"郭永荣","userPhoto":"20151106195125381.jpg","userWeb":"1010381532","msgID":1209758,"senderUserID":9563477,"msgContents":"nvvbvb","showTime":"12月23日 22:59"}]})
         // http://member.1yyg.com/JPData?action=getUserPrivMsgDetailList&sendUserID=9533390&FIdx=1&EIdx=5&isCount=1&fun=jsonp1451049461581&_=1451049461724
-        // http://www.myapplicationmodule.com.com/message/service/getuserprivmsgdetaillist?page=1&limit=5&sendUserID=9533390
+        // http://www.myapplicationmodule.com/message/service/getuserprivmsgdetaillist?page=1&limit=5&sendUserID=9533390
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -233,7 +233,7 @@ class ServiceController extends ControllerBase
     {
         // http://member.1yyg.com/JPData?action=ignoreUserFriend&applyID=37301058&fun=jsonp1451046553987&_=1451046593893
         // http://member.1yyg.com/JPData?action=ignoreUserFriend&applyID=0&fun=jsonp1451046733341&_=1451046741989
-        // http://www.myapplicationmodule.com.com/message/service/ignoreuserfriend?applyID=37233515
+        // http://www.myapplicationmodule.com/message/service/ignoreuserfriend?applyID=37233515
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -261,7 +261,7 @@ class ServiceController extends ControllerBase
     {
         // http://member.1yyg.com/JPData?action=getUserMessageList&FIdx=1&EIdx=10&isCount=1&fun=jsonp1451058226199&_=1451058226317
         // jsonp1451058226199({"code":0,"count":2,"countEx":0,"data":[{"msgID":4432753,"msgContent":"<a href=\"http://u.1yyg.com/1010381532\" class=\"blue\" target=\"_blank\">郭永荣</a> 已通过您的好友请求。","msgRead":0,"showTime":"1分钟前"},{"msgID":4386968,"msgContent":"<a href=\"http://u.1yyg.com/1010381532\" class=\"blue\" target=\"_blank\">郭永荣</a> 已通过您的好友请求。","msgRead":1,"showTime":"12月23日 20:39"}]})
-        // http://www.myapplicationmodule.com.com/message/service/getusermessagelist?page=1&limit=10
+        // http://www.myapplicationmodule.com/message/service/getusermessagelist?page=1&limit=10
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -311,7 +311,7 @@ class ServiceController extends ControllerBase
     {
         // http://member.1yyg.com/JPData?action=insertMsg&msgTouserWeb=1010029819&msgContent=bbbbbb
         // ({'code':1})
-        // http://www.myapplicationmodule.com.com/message/service/insertmsg?msgTouserWeb=1010029819&msgContent=bbbbbb
+        // http://www.myapplicationmodule.com/message/service/insertmsg?msgTouserWeb=1010029819&msgContent=bbbbbb
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -365,7 +365,7 @@ class ServiceController extends ControllerBase
     {
         // http://member.1yyg.com/JPData?action=getReplyMsgPageByUserID&FIdx=1&EIdx=10&isCount=1&fun=jsonp1450968515994&_=1450968516380
         // jsonp1452319344045({"code":0,"count":7,"data":[{"relateID":"125584","msgType":"1","youContent":"运气很好运气很好","heContent":"太牛逼","replyTime":"2015-12-24 22:19","replyUserID":"9563477","userName":"郭永荣","userWeb":"1010381532","msgID":229235},{"relateID":"125584","msgType":"1","youContent":"运气很好运气很好","heContent":"very&nbsp;goods","replyTime":"2015-12-24 21:57","replyUserID":"9563477","userName":"郭永荣","userWeb":"1010381532","msgID":229135},{"relateID":"125584","msgType":"1","youContent":"运气很好运气很好","heContent":"very&nbsp;lucky","replyTime":"2015-12-24 21:55","replyUserID":"9563477","userName":"郭永荣","userWeb":"1010381532","msgID":229127},{"relateID":"125584","msgType":"1","youContent":"运气很好运气很好","heContent":"真的很好","replyTime":"2015-12-24 21:32","replyUserID":"9563477","userName":"郭永荣","userWeb":"1010381532","msgID":229051},{"relateID":"125584","msgType":"1","youContent":"很是让人羡慕啊","heContent":"看来我也要去买一个","replyTime":"2015-12-24 09:47","replyUserID":"9563477","userName":"郭永荣","userWeb":"1010381532","msgID":228252},{"relateID":"125584","msgType":"1","youContent":"很是让人羡慕啊","heContent":"我也想中一个","replyTime":"2015-12-21 18:24","replyUserID":"9563477","userName":"郭永荣","userWeb":"1010381532","msgID":222547},{"relateID":"125584","msgType":"1","youContent":"很是让人羡慕啊","heContent":"让人羡慕啊","replyTime":"2015-12-21 18:21","replyUserID":"9563477","userName":"郭永荣","userWeb":"1010381532","msgID":222538}]})
-        // http://www.myapplicationmodule.com.com/message/service/getreplymsgpagebyuserid?page=1&limit=10
+        // http://www.myapplicationmodule.com/message/service/getreplymsgpagebyuserid?page=1&limit=10
         try {
             // 会员登录检查
             $isLogin = $this->modelMember->checkloginMember();
@@ -426,7 +426,7 @@ class ServiceController extends ControllerBase
     public function deletereplymsgbyuseridAction()
     {
         // http://member.1yyg.com/JPData?action=deleteReplyMsgByUserID&msgID=229135&fun=jsonp1452414464329&_=1452414485008
-        // http://www.myapplicationmodule.com.com/message/service/deletereplymsgbyuserid&msgID=229135
+        // http://www.myapplicationmodule.com/message/service/deletereplymsgbyuserid&msgID=229135
         try {
             $msgID = ($this->get('msgID', ''));
             // 会员登录检查
@@ -463,7 +463,7 @@ class ServiceController extends ControllerBase
      */
     public function getusermsgcountAction()
     {
-        // http://www.myapplicationmodule.com.com/message/service/getusermsgcount
+        // http://www.myapplicationmodule.com/message/service/getusermsgcount
         try {
             $this->view->disable();
             
@@ -501,7 +501,7 @@ class ServiceController extends ControllerBase
     {
         // http://member.1yyg.com/JPData?action=deleteUserMessage&msgID=4797501&fun=jsonp1453019249148&_=1453019255911
         // http://member.1yyg.com/JPData?action=deleteUserMessageAll&fun=jsonp1453019249151&_=1453019287487
-        // http://www.myapplicationmodule.com.com/message/service/deleteusermessage?msgID=37233515
+        // http://www.myapplicationmodule.com/message/service/deleteusermessage?msgID=37233515
         try {
             $msgID = ($this->get('msgID', ''));
             // 会员登录检查
