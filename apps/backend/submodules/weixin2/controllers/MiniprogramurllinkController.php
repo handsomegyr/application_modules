@@ -20,7 +20,7 @@ class MiniprogramurllinkController extends BaseController
 
     protected function isCanCreateUrllink($model)
     {
-        return !empty($model['authorizer_appid']) && !empty($model['component_appid']);
+        return !empty($model['authorizer_appid']);
     }
 
     protected function getFormTools2($tools)

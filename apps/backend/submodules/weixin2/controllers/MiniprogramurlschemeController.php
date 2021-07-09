@@ -20,7 +20,7 @@ class MiniprogramurlschemeController extends BaseController
 
     protected function isCanCreateUrlscheme($model)
     {
-        return !empty($model['authorizer_appid']) && !empty($model['component_appid']);
+        return !empty($model['authorizer_appid']);
     }
 
     protected function getFormTools2($tools)
