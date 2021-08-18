@@ -12,7 +12,7 @@ use App\Backend\Submodules\Database\Models\Project as DBProject;
  * @name 项目管理
  */
 class ProjectController extends \App\Backend\Controllers\FormController
-{    
+{
     // 是否只读
     // protected $readonly = true;
 
@@ -356,7 +356,6 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-
         $schemas['db_pwd'] = array(
             'name' => '数据库密码',
             'data' => array(
@@ -396,7 +395,34 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => false
             )
         );
-
+        $schemas['redis_db_id'] = array(
+            'name' => 'REDIS数据库ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'is_editable' => true
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
         $schemas['ae'] = array(
             'name' => 'AE信息',
             'data' => array(
@@ -620,6 +646,83 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['oss_url'] = array(
+            'name' => 'OSS地址',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '多个地址用逗号间隔',
+                // 'extensionSettings' => function ($column, $Grid) {
+                //     $settings = array();
+                //     $row = $column->getRow();
+                //     if (empty($row->_id)) {
+                //         // 新增的时候不显示
+                //         $settings['is_show'] = false;
+                //     }
+                //     return $settings;
+                // }
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+                // 'is_editable' => Admin::user()->isRole('administrator')
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['cdn_url'] = array(
+            'name' => 'CDN地址',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => '',
+                'help' => '多个地址用逗号间隔',
+                // 'extensionSettings' => function ($column, $Grid) {
+                //     $settings = array();
+                //     $row = $column->getRow();
+                //     if (empty($row->_id)) {
+                //         // 新增的时候不显示
+                //         $settings['is_show'] = false;
+                //     }
+                //     return $settings;
+                // }
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+                // 'is_editable' => Admin::user()->isRole('administrator')
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
         $schemas['server_id'] = array(
             'name' => '项目所在服务器',
             'data' => array(
@@ -674,12 +777,55 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['components'] = array(
+            'name' => '组件列表',
+            'data' => array(
+                'type' => 'array',
+                'length' => 1024,
+                'defaultValue' => '[]'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'select' => array(
+                    'multiple' => false
+                ),
+                // 'input_type' => 'checkbox',
+                // 'checkbox' => array(
+                //     'isCheckAll' => true
+                // ),
+                'is_show' => false,
+                'items' => array(),
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+                'items' => array(),
+            ),
+            'search' => array(
+                // 'input_type' => 'select',
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
+        $enabledDatas = array(
+            0 => '否',
+            1 => '同步',
+            2 => '全量同步',
+            3 => '目录同步'
+        );
         $schemas['enabled'] = array(
             'name' => '允许发布',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => false
@@ -687,15 +833,19 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $enabledDatas
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1',
                 'render' => '',
+                'items' => $enabledDatas,
+                'editable_type' => 'select',
+                'is_editable' => true
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => true,
+                'input_type' => 'select',
+                'items' => $enabledDatas
             ),
             'export' => array(
                 'is_show' => true
@@ -740,25 +890,25 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $schemas['last_upload_time'] = array(
             'name' => '最后发布时间',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'datetime',
+                'length' => 19,
+                'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'datetimepicker',
                 'is_show' => true,
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => true,
+                'is_show' => false,
                 'list_type' => '',
                 'render' => '',
             ),
             'search' => array(
-                'is_show' => true
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => false
@@ -813,6 +963,63 @@ class ProjectController extends \App\Backend\Controllers\FormController
             ),
             'search' => array(
                 'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+
+        $schemas['include_folder'] = array(
+            'name' => '同步目录',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => false,
+                'items' => '',
+                'help' => '用逗号间隔'
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['exclude_folder'] = array(
+            'name' => '排除目录',
+            'data' => array(
+                'type' => 'string',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => false,
+                'items' => '',
+                'help' => '用逗号间隔'
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
             ),
             'export' => array(
                 'is_show' => false
