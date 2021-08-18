@@ -76,6 +76,51 @@ class ProjectController extends \App\Backend\Controllers\FormController
             },
             'icon' => 'fa-pencil-square-o',
         );
+
+        $tools['updateurl'] = array(
+            'title' => '修改url',
+            'action' => 'updateurl',
+            'process_without_modal' => false,
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['project_code'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['grantpriv'] = array(
+            'title' => '数据库用户授权',
+            'action' => 'grantpriv',
+            'process_without_modal' => false,
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['project_code'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['grantpriv'] = array(
+            'title' => '数据库用户授权',
+            'action' => 'grantpriv',
+            'process_without_modal' => false,
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['project_code'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
         return $tools;
     }
 
@@ -106,7 +151,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
      */
     public function buildprojectsettingsAction()
     {
-        // http://www.myapplicationmodule.com/admin/weixin2/project/buildprojectsettings?id=xxx
+        // http://www.myapplicationmodule.com/admin/company/project/buildprojectsettings?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -137,7 +182,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
      */
     public function rsyncdevtotestAction()
     {
-        // http://www.myapplicationmodule.com/admin/weixin2/project/rsyncdevtotest?id=xxx
+        // http://www.myapplicationmodule.com/admin/company/project/rsyncdevtotest?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -167,7 +212,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
      */
     public function publishtesttoprodAction()
     {
-        // http://www.myapplicationmodule.com/admin/weixin2/project/publishtesttoprod?id=xxx
+        // http://www.myapplicationmodule.com/admin/company/project/publishtesttoprod?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -185,6 +230,226 @@ class ProjectController extends \App\Backend\Controllers\FormController
             $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
             $res['taskInfo'] = $taskInfo;
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="修改url"})
+     * 修改url
+     *
+     * @name 修改url
+     */
+    public function updateurlAction()
+    {
+        // http://www.myapplicationmodule.com/admin/company/project/updateurl?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $row = $this->modelProject->getInfoById($id);
+            if (empty($row)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = array();
+                $fields['_id'] = array(
+                    'name' => '记录ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'hidden',
+                        'is_show' => true
+                    ),
+                );
+                $fields['project_code'] = array(
+                    'name' => '项目编号',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['project_name'] = array(
+                    'name' => '项目名称',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['svn_url'] = array(
+                    'name' => '项目SVN地址',
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => false,
+                    ),
+                );
+                $fields['test_url'] = array(
+                    'name' => '测试地址',
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => false,
+                    ),
+                );
+                $fields['product_url'] = array(
+                    'name' => '正式地址',
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => false,
+                    ),
+                );
+                $fields['oss_url'] = array(
+                    'name' => 'OSS地址',
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => false,
+                    ),
+                );
+                $fields['cdn_url'] = array(
+                    'name' => 'CDN地址',
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => false,
+                    ),
+                );
+
+                $title = "修改url";
+                return $this->showModal($title, $fields, $row);
+            } else {
+                // 如果是POST请求的话就是进行具体的处理  
+                $svn_url = trim($this->request->get('svn_url'));
+                $test_url = trim($this->request->get('test_url'));
+                $product_url = trim($this->request->get('product_url'));
+                $oss_url = trim($this->request->get('oss_url'));
+                $cdn_url = trim($this->request->get('cdn_url'));
+                $updateData = array(
+                    'svn_url' => $svn_url,
+                    'test_url' => $test_url,
+                    'product_url' => $product_url,
+                    'oss_url' => $oss_url,
+                    'cdn_url' => $cdn_url
+                );
+                $this->modelBlackUser->update(array('_id' => $id), array('$set' => $updateData));
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改');
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="数据库用户授权"})
+     * 数据库用户授权
+     *
+     * @name 数据库用户授权
+     */
+    public function grantprivAction()
+    {
+        // http://www.myapplicationmodule.com/admin/company/project/grantpriv?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $row = $this->modelProject->getInfoById($id);
+            if (empty($row)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = array();
+                $fields['_id'] = array(
+                    'name' => '记录ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'hidden',
+                        'is_show' => true
+                    ),
+                );
+                $fields['project_code'] = array(
+                    'name' => '项目编号',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['project_name'] = array(
+                    'name' => '项目名称',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['db_user'] = array(
+                    'name' => '数据库用户',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => false,
+                    ),
+                );
+
+                $title = "数据库用户授权";
+                return $this->showModal($title, $fields, $row);
+            } else {
+                // 如果是POST请求的话就是进行具体的处理  
+                $db_user = trim($this->request->get('db_user'));
+                if (empty($db_user)) {
+                    return $this->makeJsonError("数据库用户为空");
+                }
+                // 创建数据库用户和权限
+                $db_name = $row['project_code'];
+                $this->grantDatabaseUser($db_name, $db_user);
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+            }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -1095,6 +1360,37 @@ class ProjectController extends \App\Backend\Controllers\FormController
         } catch (\Exception $e) {
             $this->modelDbProject->rollback();
             throw $e;
+        }
+    }
+
+    // 创建数据库用户
+    protected function grantDatabaseUser($db_name, $db_user)
+    {
+        //GRANT SELECT,INSERT,UPDATE,REFERENCES,DELETE,CREATE,DROP,ALTER,INDEX,TRIGGER,CREATE VIEW,SHOW VIEW,EXECUTE,ALTER ROUTINE,CREATE ROUTINE,CREATE TEMPORARY TABLES,LOCK TABLES,EVENT ON `210616fg0882`.* TO 'lichenglong'@'%';
+
+        /*高级选项*/
+        /*服务器权限设置*/
+        /*数据库权限设置*/
+        // 检查用户是否存在
+        $di = \Phalcon\DI::getDefault();
+        $connection = $di['db4admin'];
+        // 检查用户是否存在
+        $dbUserInfo = $connection->fetchOne("SELECT * FROM user where User='{$db_user}' and Host='%'", MYDB_FETCH_ASSOC);
+        // print_r($typeInfo);
+        if (empty($dbUserInfo)) {
+            // 创建数据库的用户
+            $dbret2 = $connection->execute("CREATE USER '{$db_user}'@'%' IDENTIFIED BY '{$db_user}'", array());
+            // 如果是失败的话
+            if (empty($dbret2)) {
+            }
+            // 授权数据库的用户
+            $dbret3 = $connection->execute("GRANT SELECT,INSERT,UPDATE,REFERENCES,DELETE,CREATE,ALTER,DROP,INDEX,TRIGGER,CREATE VIEW,SHOW VIEW,EXECUTE,ALTER ROUTINE,CREATE ROUTINE,CREATE TEMPORARY TABLES,LOCK TABLES,EVENT ON `{$db_name}`.* TO '{$db_user}'@'%' IDENTIFIED BY '{$db_user}' WITH GRANT OPTION", array());
+            // $dbret3 = $connection->execute("GRANT ALL PRIVILEGES ON `{$db_name}`.* TO '{$db_user}'@'%' IDENTIFIED BY '{$db_user}' WITH GRANT OPTION", array());
+            // 如果是失败的话
+            if (empty($dbret3)) {
+            };
+            // 刷新
+            $connection->execute("FLUSH PRIVILEGES");
         }
     }
 }

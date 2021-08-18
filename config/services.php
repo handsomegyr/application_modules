@@ -125,6 +125,23 @@ function registerServices($di)
         return $connection;
     };
 
+    $di['db4admin'] = function () use ($config) {
+        $connection = new DbAdapter(array(
+            //$connection = new \App\Common\Models\Base\Mysql\Pdo\DbAdapter(array(
+            "host" => $config->database4admin->host,
+            "username" => $config->database4admin->username,
+            "password" => $config->database4admin->password,
+            "dbname" => $config->database4admin->dbname,
+            "charset" => $config->database4admin->charset,
+            "collation" => $config->database4admin->collation,
+            'options'  => [
+                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$config->database4admin->charset} COLLATE {$config->database4admin->collation};",
+                //\PDO::ATTR_CASE => PDO::CASE_LOWER,
+            ],
+        ));
+        return $connection;
+    };
+
     /**
      * Database connection is created based in the parameters defined in the configuration file
      */

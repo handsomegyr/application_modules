@@ -9,6 +9,15 @@ return new \Phalcon\Config(array(
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci'
     ),
+    'database4admin' => array(
+        'adapter' => 'Mysql',
+        'host' => '192.168.81.129',
+        'username' => 'root',
+        'password' => 'guotingyu0324',
+        'dbname' => 'mysql',
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci'
+    ),
     // 'database' => array(
     // 'adapter' => 'Mysql',
     // 'host' => '192.168.81.129',
