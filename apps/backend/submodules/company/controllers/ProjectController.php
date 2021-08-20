@@ -3,6 +3,7 @@
 namespace App\Backend\Submodules\Company\Controllers;
 
 use App\Backend\Submodules\Company\Models\Project;
+use App\Backend\Submodules\Company\Models\Component;
 use App\Cronjob\Models\Task;
 use App\Backend\Submodules\Database\Models\Project as DBProject;
 
@@ -17,6 +18,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
     // protected $readonly = true;
 
     private $modelProject;
+    private $modelComponent;
     private $modelTask;
     private $modelDbProject;
 
@@ -26,6 +28,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
     public function initialize()
     {
         $this->modelProject = new Project();
+        $this->modelComponent = new Component();
         $this->modelTask = new Task();
         $this->modelDbProject = new DBProject();
         parent::initialize();
@@ -107,9 +110,9 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'icon' => 'fa-pencil-square-o',
         );
 
-        $tools['grantpriv'] = array(
-            'title' => '数据库用户授权',
-            'action' => 'grantpriv',
+        $tools['buildcomponent'] = array(
+            'title' => '构建组件',
+            'action' => 'buildcomponent',
             'process_without_modal' => false,
             // 'is_show' =>true,
             'is_show' => function ($row) {
@@ -362,7 +365,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                     'oss_url' => $oss_url,
                     'cdn_url' => $cdn_url
                 );
-                $this->modelBlackUser->update(array('_id' => $id), array('$set' => $updateData));
+                $this->modelProject->update(array('_id' => $id), array('$set' => $updateData));
                 return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改');
             }
         } catch (\Exception $e) {
@@ -449,6 +452,172 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 $db_name = $row['project_code'];
                 $this->grantDatabaseUser($db_name, $db_user);
                 return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="构建组件"})
+     * 构建组件
+     *
+     * @name 构建组件
+     */
+    public function buildcomponentAction()
+    {
+        // http://www.myapplicationmodule.com/admin/company/project/buildcomponent?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $row = $this->modelProject->getInfoById($id);
+            if (empty($row)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = array();
+                $fields['_id'] = array(
+                    'name' => '记录ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'hidden',
+                        'is_show' => true
+                    ),
+                );
+                $fields['project_code'] = array(
+                    'name' => '项目编号',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['project_name'] = array(
+                    'name' => '项目名称',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['components'] = array(
+                    'name' => '组件列表',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'checkbox',
+                        'is_show' => true,
+                        'readonly' => false,
+                    ),
+                );
+
+                $title = "构建组件";
+                return $this->showModal($title, $fields, $row);
+            } else {
+                // 如果是POST请求的话就是进行具体的处理  
+                $project_components = trim($this->request->get('components'));
+                if (empty($project_components)) {
+                    return $this->makeJsonError("组件未指定");
+                }
+                if (!is_array($project_components)) {
+                    $project_components = array($project_components);
+                }
+                $project_components2 = array();
+                $isDbSqlExist = false;
+                $isZipFileExist = false;
+                foreach ($project_components as $componentId) {
+                    if (!empty($componentId)) {
+                        $componentInfo = $this->modelComponent->getInfoById($componentId);
+                        if (empty($componentInfo)) {
+                            return $this->makeJsonError("id:{$componentId}的组件不存在");
+                        }
+                        if (empty($componentInfo['is_publish'])) {
+                            return $this->makeJsonError("id:{$componentId}的组件还是未发布的状态");
+                        }
+                        if (!empty($componentInfo['db_sql'])) {
+                            $isDbSqlExist = true;
+                        }
+                        if (!empty($componentInfo['zip_file'])) {
+                            $isZipFileExist = true;
+                        }
+                        $project_components2[strval($componentId)] = $componentInfo;
+                    }
+                }
+                $project_components = $project_components2;
+                if (empty($project_components)) {
+                    return $this->makeJsonError("组件未指定");
+                }
+
+                // 如果需要处理数据库操作的话
+                if ($isDbSqlExist) {
+                    // 创建数据库
+                    $db_name = $row['project_code'];
+                    // 数据库转换
+                    foreach ($project_components as $componentInfo) {
+                        $this->createComponents($db_name, $componentInfo['db_sql']);
+                    }
+                }
+
+                $ret = array();
+                $errorList = array();
+
+                // 成功的话
+                if (empty($ret)) {
+                    $success = true;
+                    $updateData = array();
+                    $updateData['components'] = \json_encode(array_keys($project_components));
+                    $updateData['last_upload_time'] = getCurrentTime();
+                    $this->modelProject->update(array('_id' => $id), array('$set' => $updateData));
+                } else {
+                    $success = false;
+                }
+
+                if ($success) {
+                    // 如果需要下载zip文件的话
+                    if ($isZipFileExist) {
+                        // $tmp = \tempnam(\sys_get_temp_dir(), 'zip_');
+                        $fileName = $row['project_code'] . '_component_' . date("YmdHis") . '.zip';
+                        $tmp = APP_PATH . "public/upload/components/{$fileName}";
+                        $zip = new \ZipArchive();
+                        $res = $zip->open($tmp, \ZipArchive::CREATE);
+                        if ($res === true) {
+                            foreach ($project_components as $componentInfo) {
+                                if (empty($componentInfo['zip_file'])) {
+                                    continue;
+                                }
+                                // 获取config内容
+                                $fileStrRet = file_get_contents($componentInfo['zip_file']);
+                                $filename = tempnam(sys_get_temp_dir(), $componentInfo['code'] . '_' . uniqid() . "_");
+                                $fp = fopen($filename, 'w');
+                                fwrite($fp,  $fileStrRet);
+                                fclose($fp);
+                                $zip->addFile($filename, $componentInfo['code'] . '.zip');
+                                // unlink($filename);
+                            }
+                            $zip->close();
+                            $url = $this->url->get("service/file/index") . '?upload_path=components&id=' . $fileName;
+                            return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $url)), '操作成功:');
+                        } else {
+                            return $this->makeJsonError("Zip文件创建失败");
+                        }
+                    } else {
+                        return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+                    }
+                }
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -1392,5 +1561,61 @@ class ProjectController extends \App\Backend\Controllers\FormController
             // 刷新
             $connection->execute("FLUSH PRIVILEGES");
         }
+    }
+
+    // 创建组件
+    protected function createComponents($db_name, $sql)
+    {
+        $sqlList = $this->getSqlList($sql);
+        if (!empty($sqlList)) {
+            // echo \json_encode($sqlList);
+            // die('createComponents');
+            $di = \Phalcon\DI::getDefault();
+            $connection = $di['db4admin'];
+            foreach ($sqlList as $query) {
+                // 查找是否有危险的操作
+                $isFound = $this->sqlFind(array(
+                    'delete', 'drop', 'update', 'replace',
+                    'truncate', 'rename', 'alter', 'call',
+                    'revoke', 'grant', 'set', 'kill'
+                ), $query);
+                // 如果没有的话就执行
+                if (!$isFound) {
+                    // $dbret3 = $connection->execute("USE `{$db_name}`;" . $query);
+                }
+            }
+        }
+    }
+
+    protected function getSqlList($sql)
+    {
+        $sql = trim($sql);
+        if (empty($sql)) {
+            return array();
+        }
+        $sql = str_replace("\r\n", "\n", $sql);
+        $sql = str_replace("\r", "\n", $sql);
+
+        $num = 0;
+        foreach (explode(";\n", trim($sql)) as $query) {
+            $ret[$num] = '';
+            $queries = explode("\n", trim($query));
+            foreach ($queries as $query) {
+                // $ret[$num] .= (isset($query[0]) && $query[0] == '#') || (isset($query[1]) && isset($query[1]) && $query[0] . $query[1] == '--') ? '' : $query;
+                $ret[$num] .= $query;
+            }
+            $num++;
+        }
+        return $ret;
+    }
+
+    protected function sqlFind($sqlArr, $sql)
+    {
+        foreach ($sqlArr as  $value) {
+            if (stripos($sql, $value) !== false) {
+                return true;
+            }
+        }
+        return false;
     }
 }
