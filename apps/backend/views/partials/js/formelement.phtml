@@ -228,6 +228,9 @@
                                 $mime_type_arr = explode('/',$mime_type);
                                 $initialPreviewConfigItem['type'] = $mime_type_arr[0];
                                 $initialPreviewConfigItem['filetype'] = $mime_type;
+                                if($initialPreviewConfigItem['filetype'] == 'application/zip'){
+                                    $initialPreviewConfigItem['type'] = 'other';
+                                }
                             }
                         }
                     }
@@ -258,6 +261,7 @@
                     //"_method": "PUT"
                     "_method": "POST"
                 },
+                "allowedPreviewTypes": false,
                 "deleteUrl": "<?php echo $this->view->baseUrl . $this->view->moduleName . '/' . $this->view->controllerName . '/removefile?id=' . (!isset($this->view->row['_id'])?"":$this->view->row['_id']) . '&_field_del_=' . $key ?>",
                 "fileActionSettings": {
                     "showRemove": <?php if ($this->myTag->isCanDo($this->view->moduleName, $this->view->controllerName, 'removefile') && !$this->view->readonly) { ?>true<?php } else { ?>false<?php } ?>,

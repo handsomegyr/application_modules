@@ -31,8 +31,13 @@ class ProjectController extends \App\Backend\Controllers\FormController
         $this->modelComponent = new Component();
         $this->modelTask = new Task();
         $this->modelDbProject = new DBProject();
+
+        $this->componentList = $this->modelComponent->getAll();
+
         parent::initialize();
     }
+
+    private $componentList = null;
 
     protected function getRowTools2($tools)
     {
@@ -520,16 +525,22 @@ class ProjectController extends \App\Backend\Controllers\FormController
                     ),
                     'form' => array(
                         'input_type' => 'checkbox',
+                        // 'readonly' => true,
+                        'checkbox' => array(
+                            'isCheckAll' => true
+                        ),
                         'is_show' => true,
                         'readonly' => false,
+                        'items' => $this->componentList,
                     ),
                 );
-
+                // print_r($row);
+                // die('xxxxxxxxx');
                 $title = "构建组件";
                 return $this->showModal($title, $fields, $row);
             } else {
                 // 如果是POST请求的话就是进行具体的处理  
-                $project_components = trim($this->request->get('components'));
+                $project_components = $this->request->get('components');
                 if (empty($project_components)) {
                     return $this->makeJsonError("组件未指定");
                 }
@@ -561,7 +572,6 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 if (empty($project_components)) {
                     return $this->makeJsonError("组件未指定");
                 }
-
                 // 如果需要处理数据库操作的话
                 if ($isDbSqlExist) {
                     // 创建数据库
@@ -590,8 +600,9 @@ class ProjectController extends \App\Backend\Controllers\FormController
                     // 如果需要下载zip文件的话
                     if ($isZipFileExist) {
                         // $tmp = \tempnam(\sys_get_temp_dir(), 'zip_');
+                        $uploadPath = $this->modelProject->getUploadPath();
                         $fileName = $row['project_code'] . '_component_' . date("YmdHis") . '.zip';
-                        $tmp = APP_PATH . "public/upload/components/{$fileName}";
+                        $tmp = APP_PATH . "public/upload/{$uploadPath}/{$fileName}";
                         $zip = new \ZipArchive();
                         $res = $zip->open($tmp, \ZipArchive::CREATE);
                         if ($res === true) {
@@ -600,7 +611,9 @@ class ProjectController extends \App\Backend\Controllers\FormController
                                     continue;
                                 }
                                 // 获取config内容
-                                $fileStrRet = file_get_contents($componentInfo['zip_file']);
+                                $uploadPath4Component = $this->modelComponent->getUploadPath();
+                                $zip_file = APP_PATH . "public/upload/{$uploadPath4Component}/{$componentInfo['zip_file']}";
+                                $fileStrRet = file_get_contents($zip_file);
                                 $filename = tempnam(sys_get_temp_dir(), $componentInfo['code'] . '_' . uniqid() . "_");
                                 $fp = fopen($filename, 'w');
                                 fwrite($fp,  $fileStrRet);
@@ -609,7 +622,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                                 // unlink($filename);
                             }
                             $zip->close();
-                            $url = $this->url->get("service/file/index") . '?upload_path=components&id=' . $fileName;
+                            $url = $this->url->get("service/file/index") . "?upload_path={$uploadPath}&id={$fileName}";
                             return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $url)), '操作成功:');
                         } else {
                             return $this->makeJsonError("Zip文件创建失败");
@@ -1571,18 +1584,45 @@ class ProjectController extends \App\Backend\Controllers\FormController
             // echo \json_encode($sqlList);
             // die('createComponents');
             $di = \Phalcon\DI::getDefault();
-            $connection = $di['db4admin'];
-            foreach ($sqlList as $query) {
-                // 查找是否有危险的操作
-                $isFound = $this->sqlFind(array(
-                    'delete', 'drop', 'update', 'replace',
-                    'truncate', 'rename', 'alter', 'call',
-                    'revoke', 'grant', 'set', 'kill'
-                ), $query);
-                // 如果没有的话就执行
-                if (!$isFound) {
-                    // $dbret3 = $connection->execute("USE `{$db_name}`;" . $query);
+            $config = $di->get('config');
+            $connection = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+                //$connection = new \App\Common\Models\Base\Mysql\Pdo\DbAdapter(array(
+                "host" => $config->database4admin->host,
+                "username" => $config->database4admin->username,
+                "password" => $config->database4admin->password,
+                "dbname" => $db_name,
+                "charset" => $config->database4admin->charset,
+                "collation" => $config->database4admin->collation,
+                'options'  => [
+                    \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$config->database4admin->charset} COLLATE {$config->database4admin->collation};",
+                    //\PDO::ATTR_CASE => PDO::CASE_LOWER,
+                ],
+            ));
+            // $dbUserInfo = $connection->fetchOne("SELECT * FROM user", MYDB_FETCH_ASSOC);
+            // print_r($dbUserInfo);
+            // die('xxxxxxxxx');
+            $dbret1 = true;
+            if (!empty($dbret1)) {
+                // echo \json_encode($sqlList);
+                foreach ($sqlList as $query) {
+                    // 查找是否有危险的操作
+                    $isFound = $this->sqlFind(array(
+                        'delete', 'drop', 'update', 'replace',
+                        'truncate', 'rename', 'alter', 'call',
+                        'revoke', 'grant', 'set', 'kill'
+                    ), $query);
+                    // 如果没有的话就执行
+                    if (!$isFound) {
+                        $dbret3 = $connection->execute($query);
+                        if (empty($dbret3)) {
+                            throw new \Exception('创建组件发生了错误,sql:' . $query);
+                        }
+                    }
+
+                    // die('query:' . $query);
                 }
+            } else {
+                throw new \Exception('创建组件发生了错误,sql:');
             }
         }
     }
