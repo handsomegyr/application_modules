@@ -1581,8 +1581,6 @@ class ProjectController extends \App\Backend\Controllers\FormController
     {
         $sqlList = $this->getSqlList($sql);
         if (!empty($sqlList)) {
-            // echo \json_encode($sqlList);
-            // die('createComponents');
             $di = \Phalcon\DI::getDefault();
             $config = $di->get('config');
             $connection = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
@@ -1603,23 +1601,21 @@ class ProjectController extends \App\Backend\Controllers\FormController
             // die('xxxxxxxxx');
             $dbret1 = true;
             if (!empty($dbret1)) {
-                // echo \json_encode($sqlList);
                 foreach ($sqlList as $query) {
                     // 查找是否有危险的操作
                     $isFound = $this->sqlFind(array(
                         'delete', 'drop', 'update', 'replace',
                         'truncate', 'rename', 'alter', 'call',
-                        'revoke', 'grant', 'set', 'kill'
+                        'revoke', 'grant', 'kill'
+                        // , 'set'
                     ), $query);
                     // 如果没有的话就执行
                     if (!$isFound) {
-                        $dbret3 = $connection->execute($query);
+                        $dbret3 = $connection->execute($query, array());
                         if (empty($dbret3)) {
                             throw new \Exception('创建组件发生了错误,sql:' . $query);
                         }
                     }
-
-                    // die('query:' . $query);
                 }
             } else {
                 throw new \Exception('创建组件发生了错误,sql:');
@@ -1653,6 +1649,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
     {
         foreach ($sqlArr as  $value) {
             if (stripos($sql, $value) !== false) {
+                throw new \Exception("We found '$value' in '$sql'");
                 return true;
             }
         }
