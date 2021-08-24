@@ -33,8 +33,6 @@ try {
 
     require __DIR__ . '/../library/MongoId.php';
 
-    require __DIR__ . '/../library/MongoRegex.php';
-
     // Using the CLI factory default services container
     $di = new CliDI();
 
