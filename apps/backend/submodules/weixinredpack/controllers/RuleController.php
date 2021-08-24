@@ -80,7 +80,9 @@ class RuleController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'activity_name'
+                'items' => function () {
+                    return $this->modelActivity->getAll();
+                }
             ),
             'search' => array(
                 'input_type' => 'select',
@@ -107,7 +109,9 @@ class RuleController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'customer_name'
+                'items' => function () {
+                    return $this->modelCustomer->getAll();
+                }
             ),
             'search' => array(
                 'is_show' => false
@@ -132,7 +136,9 @@ class RuleController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'redpack_name'
+                'items' => function () {
+                    return $this->modelRedpack->getAll();
+                }
             ),
             'search' => array(
                 'is_show' => false
@@ -496,19 +502,5 @@ class RuleController extends \App\Backend\Controllers\FormController
     {
         return $this->modelRule;
     }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $customerList = $this->modelCustomer->getAll();
-        $redpackList = $this->modelRedpack->getAll();
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = $activityList[$item['activity']];
-            $item['customer_name'] = $customerList[$item['customer']];
-            $item['redpack_name'] = $redpackList[$item['redpack']] . '<br/><a href="javascript:;" class="btn blue icn-only" onclick="List.call(\'' . $item['_id'] . '\', \'你确定要复制该条规则吗？\', \'copy\')" class="halflings-icon user white"><i></i> 复制</a>';
-            $item['start_time'] = $this->adjustDataTime4Show($item['start_time']);
-            $item['end_time'] = $this->adjustDataTime4Show($item['end_time']);
-        }
-        return $list;
-    }
+    
 }

@@ -181,7 +181,7 @@ class LogController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'activity_name'
+                'items' => $this->modelActivity->getAll()
             ),
             'search' => array(
                 'input_type' => 'select',
@@ -208,7 +208,9 @@ class LogController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'customer_name'
+                'items' => function () {
+                    return $this->modelCustomer->getAll();
+                }
             ),
             'search' => array(
                 'is_show' => false
@@ -233,7 +235,9 @@ class LogController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_data_name' => 'redpack_name'
+                'items' => function () {
+                    return $this->modelRedpack->getAll();
+                }
             ),
             'search' => array(
                 'is_show' => false
@@ -456,19 +460,5 @@ class LogController extends \App\Backend\Controllers\FormController
     protected function getModel()
     {
         return $this->modelGotLog;
-    }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        $customerList = $this->modelCustomer->getAll();
-        $redpackList = $this->modelRedpack->getAll();
-        $activityList = $this->modelActivity->getAll();
-        foreach ($list['data'] as &$item) {
-            $item['activity_name'] = $activityList[$item['activity']];
-            $item['customer_name'] = $customerList[$item['customer']];
-            $item['redpack_name'] = $redpackList[$item['redpack']];
-            $item['got_time'] = $this->adjustDataTime4Show($item['got_time']);
-        }
-        return $list;
     }
 }
