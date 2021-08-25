@@ -58,7 +58,7 @@ class CnyController extends ControllerBase
             $this->view->disable();
 
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity_id, $this->now->sec);
+            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity_id, $this->now);
 
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {
@@ -152,7 +152,7 @@ class CnyController extends ControllerBase
         try {
             $this->view->disable();
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity_id, $this->now->sec);
+            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity_id, $this->now);
 
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {

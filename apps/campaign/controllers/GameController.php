@@ -85,7 +85,7 @@ class SignController extends ControllerBase
 
             // 根据具体的业务返回相应的信息
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo($this->activity1, $this->now->sec, true);
+            $activityInfo = $this->modelActivity->getActivityInfo($this->activity1, $this->now, true);
             unset($activityInfo['activityInfo']);
 
             // 计算活动的公布时间
@@ -118,7 +118,7 @@ class SignController extends ControllerBase
         // http://www.myapplicationmodule.com/campaign/game/viewnoviceguide
         try {
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity1, $this->now->sec);
+            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity1, $this->now);
 
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {
@@ -202,7 +202,7 @@ class SignController extends ControllerBase
             }
 
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity1, $this->now->sec);
+            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity1, $this->now);
 
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {
@@ -345,7 +345,7 @@ class SignController extends ControllerBase
             $page = intval($this->get("page", '1'));
             $limit = intval($this->get("limit", '15'));
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity1, $this->now->sec);
+            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity1, $this->now);
 
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {

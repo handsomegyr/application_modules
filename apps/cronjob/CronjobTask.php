@@ -34,11 +34,11 @@ class CronjobTask extends \Phalcon\CLI\Task
             }
             $rst = array();
             foreach ($cmds as $cmd) {
-                if (isset($cmd['last_execute_time']) && $cmd['last_execute_time'] instanceof \MongoDate) {
+                if (isset($cmd['last_execute_time'])) {
                     // 如果设定了秒
                     if (!empty($cmd['sec_cycle'])) {
                         $sec_cycle = intval($cmd['sec_cycle']);
-                        if ($cmd['last_execute_time']->sec + $sec_cycle > $nowTime) {
+                        if (strtotime($cmd['last_execute_time']) + $sec_cycle > $nowTime) {
                             continue;
                         }
                     } else {
@@ -53,7 +53,7 @@ class CronjobTask extends \Phalcon\CLI\Task
                             }
                         } else {
                             $cycle = isset($cmd['cycle']) ? $cmd['cycle'] : 0;
-                            if ($cmd['last_execute_time']->sec + $cycle * 60 > $nowTime) {
+                            if (strtotime($cmd['last_execute_time']) + $cycle * 60 > $nowTime) {
                                 continue;
                             }
                         }
@@ -226,11 +226,11 @@ class CronjobTask extends \Phalcon\CLI\Task
 
             $rst = array();
             foreach ($cmds as $cmd) {
-                if (isset($cmd['last_execute_time']) && $cmd['last_execute_time'] instanceof \MongoDate) {
+                if (isset($cmd['last_execute_time'])) {
                     // 如果设定了秒
                     if (!empty($cmd['sec_cycle'])) {
                         $sec_cycle = intval($cmd['sec_cycle']);
-                        if ($cmd['last_execute_time']->sec + $sec_cycle > $nowTime) {
+                        if (strtotime($cmd['last_execute_time']) + $sec_cycle > $nowTime) {
                             continue;
                         }
                     } else {
@@ -245,7 +245,7 @@ class CronjobTask extends \Phalcon\CLI\Task
                             }
                         } else {
                             $cycle = isset($cmd['cycle']) ? $cmd['cycle'] : 0;
-                            if ($cmd['last_execute_time']->sec + $cycle * 60 > $nowTime) {
+                            if (strtotime($cmd['last_execute_time']) + $cycle * 60 > $nowTime) {
                                 continue;
                             }
                         }

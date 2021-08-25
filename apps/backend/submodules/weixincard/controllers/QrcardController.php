@@ -40,7 +40,7 @@ class QrcardController extends \App\Backend\Controllers\FormController
                     if (empty($item['expire_seconds']) && !empty($item['is_created'])) { // 如果是永久并且已生成的话
                         return false;
                     }
-                    if (!empty($item['expire_seconds']) && !empty($item['is_created']) && ($item['ticket_time']->sec + $item['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
+                    if (!empty($item['expire_seconds']) && !empty($item['is_created']) && (strtotime($item['ticket_time']) + $item['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
                         return false;
                     }
                 }
@@ -485,7 +485,7 @@ class QrcardController extends \App\Backend\Controllers\FormController
                 if (empty($card['expire_seconds']) && !empty($card['is_created'])) { // 如果是永久并且已生成的话
                     continue;
                 }
-                if (!empty($card['expire_seconds']) && !empty($card['is_created']) && ($card['ticket_time']->sec + $card['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
+                if (!empty($card['expire_seconds']) && !empty($card['is_created']) && (strtotime($card['ticket_time']) + $card['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
                     continue;
                 }
 
@@ -559,7 +559,7 @@ class QrcardController extends \App\Backend\Controllers\FormController
                 if (empty($card['expire_seconds']) && !empty($card['is_created'])) { // 如果是永久并且已生成的话
                     continue;
                 }
-                if (!empty($card['expire_seconds']) && !empty($card['is_created']) && ($card['ticket_time']->sec + $card['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
+                if (!empty($card['expire_seconds']) && !empty($card['is_created']) && (strtotime($card['ticket_time']) + $card['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
                     continue;
                 }
 

@@ -45,7 +45,7 @@ class MediaController extends BaseController
                 if (!empty($row) && !empty($row['authorizer_appid']) && !empty($row['type'])) {
                     // 媒体文件在微信后台保存时间为3天，即3天后media_id失效。
                     $expire_seconds = 24 * 3600 * 2.5;
-                    if (!empty($row['media_id']) && (($row['media_time']->sec + $expire_seconds) > time())) {
+                    if (!empty($row['media_id']) && ((strtotime($row['media_time']) + $expire_seconds) > time())) {
                         return false;
                     } else {
                         return true;

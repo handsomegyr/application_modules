@@ -162,13 +162,4 @@ class SuggestionController extends \App\Backend\Controllers\FormController
     {
         return $this->modelSuggestion;
     }
-
-    protected function getList4Show(\App\Backend\Models\Input $input, array $list)
-    {
-        foreach ($list['data'] as &$item) {
-            $item['log_time'] = date("Y-m-d H:i:s", $item['log_time']->sec);
-        }
-
-        return $list;
-    }
 }

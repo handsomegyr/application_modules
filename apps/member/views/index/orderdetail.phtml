@@ -112,7 +112,7 @@
               <ul>
               <?php if(!empty($this->view->logList)){?>
               <?php foreach ($this->view->logList as $logInfo) {?>
-                  <li><span><?php echo date('Y-m-d H:i:s',$logInfo['log_time']->sec)?></span><span class="ope-text"><?php echo $logInfo['msg']?></span><span class="gray9"><?php echo \App\Order\Views\Helpers\OrderHelper::getLogName($logInfo)?></span></li>
+                  <li><span><?php echo date('Y-m-d H:i:s',strtotime($logInfo['log_time']))?></span><span class="ope-text"><?php echo $logInfo['msg']?></span><span class="gray9"><?php echo \App\Order\Views\Helpers\OrderHelper::getLogName($logInfo)?></span></li>
               <?php }?>
               <?php }?>
               </ul>

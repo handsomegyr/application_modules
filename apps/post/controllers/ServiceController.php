@@ -94,7 +94,7 @@ class ServiceController extends ControllerBase
                         'userWeb' => $item['goods_info']['prize_buyer_id'],
                         'userName' => getBuyerName($item['goods_info']['prize_buyer_name'], $item['goods_info']['prize_buyer_register_by']),
                         'userPhoto' => $this->modelMember->getImagePath($this->baseUrl, $item['goods_info']['prize_buyer_avatar']),
-                        'postTime' => date('Y-m-d H:i:s', $item['post_time']->sec),
+                        'postTime' => date('Y-m-d H:i:s', strtotime($item['post_time'])),
                         'postImg' => $item['pic'],
                         'postContent' => $item['content']
                     );
@@ -165,7 +165,7 @@ class ServiceController extends ControllerBase
                         'userPhoto' => $this->modelMember->getImagePath($this->baseUrl, $item['goods_info']['prize_buyer_avatar']),
                         'postID' => $item['_id'],
                         'postTitle' => $item['title'],
-                        'postTime' => date('Y-m-d H:i:s', $item['post_time']->sec),
+                        'postTime' => date('Y-m-d H:i:s', strtotime($item['post_time'])),
                         'postImg' => $item['pic'],
                         'postContent' => $item['content']
                     );
@@ -236,7 +236,7 @@ class ServiceController extends ControllerBase
                         'userPhoto' => $this->modelMember->getImagePath($this->baseUrl, $item['goods_info']['prize_buyer_avatar']),
                         'postID' => $item['_id'],
                         'postTitle' => $item['title'],
-                        'postTime' => date('Y-m-d H:i:s', $item['post_time']->sec),
+                        'postTime' => date('Y-m-d H:i:s', strtotime($item['post_time'])),
                         'postImg' => $item['pic'],
                         'postContent' => $item['content'],
                         'reply_num' => $item['reply_num'],
@@ -332,7 +332,7 @@ class ServiceController extends ControllerBase
                         'postTitle' => $item['title'],
                         'postPic' => $item['pic'],
                         'postContent' => $item['content'],
-                        'postTime' => date('Y-m-d H:i:s', $item['post_time']->sec),
+                        'postTime' => date('Y-m-d H:i:s', strtotime($item['post_time'])),
                         'postState' => $item['state'],
                         'postFailReason' => $item['fail_reason'],
                         'postPoint' => $item['point'],
@@ -401,7 +401,7 @@ class ServiceController extends ControllerBase
                         'postID' => $item['_id'],
                         'postTitle' => $item['title'],
                         'postContent' => $item['content'],
-                        'postTime' => date('Y-m-d H:i:s', $item['post_time']->sec),
+                        'postTime' => date('Y-m-d H:i:s', strtotime($item['post_time'])),
                         'cutpicture' => $item['pic'][0],
                         'postHits' => $item['vote_num'],
                         'postReplyCount' => $item['reply_num'],
@@ -607,7 +607,7 @@ class ServiceController extends ControllerBase
                         'replyUserName' => $this->modelMember->getRegisterName($memberInfo, true),
                         'replyUserWeb' => $memberInfo['_id'],
                         'replyContent' => $item['user_content'],
-                        'replyTime' => date('Y-m-d H:i:s', $item['reply_time']->sec),
+                        'replyTime' => date('Y-m-d H:i:s', strtotime($item['reply_time'])),
                         'replyID' => $item['_id'],
                         'replyCount' => $item['num'] - $item['del_num'],
                         'userPhoto' => $this->modelMember->getImagePath($this->baseUrl, $memberInfo['avatar']),
@@ -671,7 +671,7 @@ class ServiceController extends ControllerBase
                         'replyUserWeb' => $memberInfo['_id'],
                         'replyID' => $item['_id'],
                         'floorID' => $item['floor'],
-                        'replyTime' => date('Y-m-d H:i:s', $item['reply_time']->sec),
+                        'replyTime' => date('Y-m-d H:i:s', strtotime($item['reply_time'])),
                         'replyContent' => $item['user_content'],
                         'isDel' => (!empty($_SESSION['member_id']) && $item['user_id'] == $_SESSION['member_id']), // 可以删除
                         'replyRefFloor' => $item['ref_floor']
@@ -796,7 +796,7 @@ class ServiceController extends ControllerBase
                         'postTitle' => $item['title'],
                         'postContent' => $item['content'],
                         'postAllPic' => $item['pic'],
-                        'postTimeEx' => date('Y-m-d H:i:s', $item['post_time']->sec),
+                        'postTimeEx' => date('Y-m-d H:i:s', strtotime($item['post_time'])),
                         'postHits' => $item['vote_num'],
                         'postReplyCount' => $item['reply_num'],
                         'grade' => str_pad($gradeInfo['current']['level'], 2, '0', STR_PAD_LEFT),

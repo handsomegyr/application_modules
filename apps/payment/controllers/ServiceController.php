@@ -70,7 +70,7 @@ class ServiceController extends ControllerBase
                         // "logType":"2"
                         $datas[] = array(
                             'logMoney' => abs($item['money']),
-                            'logTime' => date('Y-m-d H:i:s', $item['log_time']->sec),
+                            'logTime' => date('Y-m-d H:i:s', strtotime($item['log_time'])),
                             'typeName' => $item['desc'],
                             'logType' => $item['type']
                         );

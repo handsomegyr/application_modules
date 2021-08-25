@@ -29,8 +29,6 @@ try {
 
     require __DIR__ . '/../library/core.php';
 
-    require __DIR__ . '/../library/MongoDate.php';
-
     require __DIR__ . '/../library/MongoId.php';
 
     // Using the CLI factory default services container

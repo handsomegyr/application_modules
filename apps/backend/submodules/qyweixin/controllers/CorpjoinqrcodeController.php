@@ -22,7 +22,7 @@ class CorpjoinqrcodeController extends BaseController
     protected function isGetJoinQrcode($model)
     {
         if (!empty($model['authorizer_appid']) && !empty($model['size_type'])) {
-            if (empty($model['is_created']) || ((($model['create_time']->sec) + 6.5 * 24 * 3600) < time())) {
+            if (empty($model['is_created']) || ((strtotime($model['create_time']) + 6.5 * 24 * 3600) < time())) {
                 return true;
             }
         }

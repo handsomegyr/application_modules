@@ -75,7 +75,7 @@ class ServiceController extends ControllerBase
                         // "logPointNum":"3",
                         // "logDescript":"2015-12-25评论获得福分"
                         $datas[] = array(
-                            'logTime' => date('Y-m-d H:i:s', $log['add_time']->sec),
+                            'logTime' => date('Y-m-d H:i:s', strtotime($log['add_time'])),
                             'logPointNum' => empty($log['is_consumed']) ? abs($log['points']) : -abs($log['points']),
                             'logDescript' => $log['desc']
                         );

@@ -144,7 +144,7 @@ class ServiceController extends ControllerBase
                         'msgContents' => $item['content'],
                         'msgNum' => $item['msg_num'],
                         'unReadNum' => ($item['msg_user_id'] == $item['user1_id']) ? $item['user2_unread_num'] : $item['user1_unread_num'],
-                        'showTime' => date('Y-m-d H:i:s', $item['msg_time']->sec)
+                        'showTime' => date('Y-m-d H:i:s', strtotime($item['msg_time']))
                     );
                 }
             }
@@ -211,7 +211,7 @@ class ServiceController extends ControllerBase
                         'userWeb' => $memberInfo['_id'],
                         'msgContents' => $item['content'],
                         'msgID' => $item['_id'],
-                        'showTime' => date('Y-m-d H:i:s', $item['msg_time']->sec)
+                        'showTime' => date('Y-m-d H:i:s', strtotime($item['msg_time']))
                     );
                 }
             }
@@ -290,7 +290,7 @@ class ServiceController extends ControllerBase
                         'msgID' => $item['_id'],
                         'msgContent' => $item['content'],
                         'msgRead' => 0,
-                        'showTime' => date('Y-m-d H:i:s', $item['msg_time']->sec)
+                        'showTime' => date('Y-m-d H:i:s', strtotime($item['msg_time']))
                     );
                 }
             }
@@ -403,7 +403,7 @@ class ServiceController extends ControllerBase
                         'msgType' => empty($item['to_user_content']) ? 0 : 1,
                         'youContent' => $item['reply_content'],
                         'heContent' => $item['to_user_content'],
-                        'replyTime' => date('Y-m-d H:i:s', $item['msg_time']->sec),
+                        'replyTime' => date('Y-m-d H:i:s', strtotime($item['msg_time'])),
                         'replyUserID' => $item['reply_user_id'],
                         'userName' => getBuyerName($item['reply_user_name'], $item['reply_user_register_by']),
                         'userWeb' => $item['reply_user_id'],

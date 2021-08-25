@@ -263,7 +263,7 @@ class ImportfileTask extends \Phalcon\CLI\Task
 
                 $rowString = \implode(",", $row);
                 $content_sign = \sha1($rowString . "|" . $content_type);
-                $cron_time = $cronjobInfo['cron_time']->sec;
+                $cron_time = strtotime($cronjobInfo['cron_time']);
 
                 // 检查是否已经导入了
                 $info = $modelFileContent->getInfoByContentSign($content_sign, $cronjob_id, $content_type);

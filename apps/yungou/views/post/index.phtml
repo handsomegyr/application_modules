@@ -99,7 +99,7 @@
                             <?php echo $post['content']?>
                         </li>
                         <li class="gray9">
-                            <?php echo date('Y-m-d H:i:s',$post['post_time']->sec)?>
+                            <?php echo date('Y-m-d H:i:s',strtotime($post['post_time']))?>
                         </li>
                         <li class="sig-xmjdh">
                             <span class="xmjdh_left">

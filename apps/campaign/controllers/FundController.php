@@ -107,7 +107,7 @@ class FundController extends ControllerBase
         try {
             $answer = intval($this->get('answer', '0'));
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo($this->activity1, $this->now->sec);
+            $activityInfo = $this->modelActivity->getActivityInfo($this->activity1, $this->now);
 
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {

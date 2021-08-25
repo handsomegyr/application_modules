@@ -75,7 +75,7 @@
                                         <?php }elseif($field['form']['input_type'] == "datetimepicker"){?>
                                             <div class="input-append date form_datetime">
 
-												<input class="m-wrap" size="16" type="text" name="<?php echo $key?>" <?php if($field['validation']['required']){?>data-required="1"<?php }?> value="<?php echo date("Y-m-d H:i:s",$this->view->row[$key]->sec)?>">
+												<input class="m-wrap" size="16" type="text" name="<?php echo $key?>" <?php if($field['validation']['required']){?>data-required="1"<?php }?> value="<?php echo date("Y-m-d H:i:s",strtotime($this->view->row[$key]))?>">
 
 												<span class="add-on"><i class="icon-remove"></i></span>
 

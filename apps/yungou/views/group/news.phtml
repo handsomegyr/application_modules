@@ -13,7 +13,7 @@
                         <?php echo $this->view->newsInfo['title']?>
                     </p>
                     <div class="detail-Ctit gray03">
-                        <span class="time gray02"><?php echo date('Y-m-d H:i:s',$this->view->newsInfo['article_time']->sec)?></span>
+                        <span class="time gray02"><?php echo date('Y-m-d H:i:s',strtotime($this->view->newsInfo['article_time']))?></span>
                         &nbsp;&nbsp;
                         <span class="gray03">人气(5863)</span>
                     </div>

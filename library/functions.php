@@ -483,10 +483,8 @@ function convertToPureArray($arr)
         if (is_array($value)) {
             $newArr[$key] = convertToPureArray($value);
         } else {
-            if ($value instanceof \MongoId || $value instanceof \MongoInt64 || $value instanceof \MongoInt32) {
+            if ($value instanceof \MongoId) {
                 $value = $value->__toString();
-            } elseif ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
-                $value = date("Y-m-d H:i:s", $value->sec);
             }
             $newArr[$key] = $value;
         }
@@ -1749,15 +1747,6 @@ function setCookieValue($name, $value, $expire = null, $path = null, $domain = n
 function getCurrentTime($time = 0)
 {
     return \App\Common\Utils\Helper::getCurrentTime($time);
-    if (empty($time)) {
-        if (defined('CURRENT_TIMESTAMP')) {
-            return new \MongoDate(CURRENT_TIMESTAMP);
-        } else {
-            return new \MongoDate();
-        }
-    } else {
-        return new \MongoDate($time);
-    }
 }
 
 function getNewId()

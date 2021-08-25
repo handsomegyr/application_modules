@@ -81,7 +81,7 @@
                 <div class="single-info clrfix">
                     <dl>
                         <dt class="gray3"><?php echo $this->view->postInfo['title']?></dt>
-                        <dd class="single-fufen"><cite><?php echo date('Y-m-d H:i:s',$this->view->postInfo['post_time']->sec)?></cite><cite>
+                        <dd class="single-fufen"><cite><?php echo date('Y-m-d H:i:s',strtotime($this->view->postInfo['post_time']))?></cite><cite>
                         <em><?php echo $this->view->postInfo['read_num']?></em>人阅读</cite><cite><em id="b_ReplayCount"><?php echo $this->view->postInfo['reply_num']?></em>人评论</cite><span class="transparent-png"><b><?php echo $this->view->postInfo['point']?></b></span></dd><dd class="gray6">
                         <p><?php echo $this->view->postInfo['content']?></p>
                         </dd>

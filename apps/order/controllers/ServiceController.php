@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Order\Controllers;
 
 /**
@@ -77,7 +78,7 @@ class ServiceController extends ControllerBase
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '9'));
             $otherConditions = array();
-            if (! empty($id)) {
+            if (!empty($id)) {
                 $otherConditions['_id'] = array(
                     '$gt' => $id
                 );
@@ -86,7 +87,7 @@ class ServiceController extends ControllerBase
             $ret['total'] = $list['total'];
             $maxId = '';
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // 'userName':'扯淡的一元购',
                     // 'goodsID':22612,
@@ -136,20 +137,20 @@ class ServiceController extends ControllerBase
         try {
             $goods_id = $this->get('codeID', '');
             if (empty($goods_id)) {
-                echo ($this->error(- 1, '商品ID为空'));
+                echo ($this->error(-1, '商品ID为空'));
                 return false;
             }
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '10'));
-            
+
             $otherConditions = array();
             $otherConditions['goods_id'] = $goods_id;
             $list = $this->modelOrderGoods->getUserBuyList('', $page, $limit, 0, 0, 0, $otherConditions);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // "userName":"13921****67",
                     // "userPhoto":"00000000000000000.jpg",
@@ -197,20 +198,20 @@ class ServiceController extends ControllerBase
         try {
             $goods_id = $this->get('codeID', '');
             if (empty($goods_id)) {
-                echo ($this->error(- 1, '商品ID为空'));
+                echo ($this->error(-1, '商品ID为空'));
                 return false;
             }
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '10'));
-            
+
             $otherConditions = array();
             $otherConditions['goods_id'] = $goods_id;
             $list = $this->modelOrderGoods->getUserBuyList('', $page, $limit, 0, 0, 0, $otherConditions);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // "userName":"13921****67",
                     // "userPhoto":"00000000000000000.jpg",
@@ -256,31 +257,31 @@ class ServiceController extends ControllerBase
         try {
             $beginTime = $this->get('BTime', '');
             if (empty($beginTime)) {
-                echo ($this->error(- 1, '开始时间为空'));
+                echo ($this->error(-1, '开始时间为空'));
                 return false;
             }
             $endTime = $this->get('ETime', '');
             if (empty($endTime)) {
-                echo ($this->error(- 2, '结束时间为空'));
+                echo ($this->error(-2, '结束时间为空'));
                 return false;
             }
-            
+
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '20'));
-            
+
             $otherConditions = array();
-            if (! empty($beginTime)) {
+            if (!empty($beginTime)) {
                 $beginTime = (strtotime($beginTime));
             }
-            if (! empty($endTime)) {
+            if (!empty($endTime)) {
                 $endTime = (strtotime($endTime));
             }
             $list = $this->modelOrderGoods->getUserBuyList('', $page, $limit, 0, $beginTime, $endTime, $otherConditions);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // "buyID":327888632,
                     // "buyTime":"2016-01-01 20:16:58.999",
@@ -334,12 +335,12 @@ class ServiceController extends ControllerBase
             $limit = intval($this->get('limit', '10'));
             $userID = $this->get('userID', '');
             if (empty($userID)) {
-                echo ($this->error(- 1, 'userID为空'));
+                echo ($this->error(-1, 'userID为空'));
                 return false;
             }
             $memberInfo = $this->modelMember->getInfoById($userID);
             if (empty($memberInfo)) {
-                echo ($this->error(- 2, 'userID不正确'));
+                echo ($this->error(-2, 'userID不正确'));
                 return false;
             }
             $isCan = false;
@@ -348,7 +349,7 @@ class ServiceController extends ControllerBase
                 // 个人主页-云购记录 0:所有人可见 1:好友可见 2:仅自己可见
                 $isCan = true;
                 $limit = empty($memberInfo['privacy']['buyShowNum']) ? $limit : $memberInfo['privacy']['buyShowNum'];
-                if (! empty($memberInfo['privacy']['buySet'])) {
+                if (!empty($memberInfo['privacy']['buySet'])) {
                     if (empty($_SESSION['member_id'])) {
                         $isCan = false;
                     } else {
@@ -360,7 +361,7 @@ class ServiceController extends ControllerBase
                 // 个人主页-获得的商品 0:所有人可见 1:好友可见 2:仅自己可见
                 $isCan = true;
                 $limit = empty($memberInfo['privacy']['rafShowNum']) ? $limit : $memberInfo['privacy']['rafShowNum'];
-                if (! empty($memberInfo['privacy']['rafSet'])) {
+                if (!empty($memberInfo['privacy']['rafSet'])) {
                     if (empty($_SESSION['member_id'])) {
                         $isCan = false;
                     } else {
@@ -372,7 +373,7 @@ class ServiceController extends ControllerBase
                 // 个人主页-晒单 0:所有人可见 1:好友可见 2:仅自己可见
                 $isCan = true;
                 $limit = empty($memberInfo['privacy']['postShowNum']) ? $limit : $memberInfo['privacy']['postShowNum'];
-                if (! empty($memberInfo['privacy']['postSet'])) {
+                if (!empty($memberInfo['privacy']['postSet'])) {
                     if (empty($_SESSION['member_id'])) {
                         $isCan = false;
                     } else {
@@ -395,10 +396,10 @@ class ServiceController extends ControllerBase
                     $otherConditions['state'] = \App\Post\Models\Post::STATE2;
                     $list = $this->modelPost->getPageListByBuyerId($userID, $page, $limit, $otherConditions);
                 }
-                
+
                 $ret['total'] = $list['total'];
                 $datas = array();
-                if (! empty($list['datas'])) {
+                if (!empty($list['datas'])) {
                     foreach ($list['datas'] as $item) {
                         if ($type == 2) {
                             // 2 晒单
@@ -424,10 +425,10 @@ class ServiceController extends ControllerBase
                                 'postPic' => $picArr[0],
                                 'postTitle' => $item['title'],
                                 'postContent' => $item['content'],
-                                'postTime' => date('Y-m-d H:i:s', $item['post_time']->sec),
+                                'postTime' => date('Y-m-d H:i:s', strtotime($item['post_time'])),
                                 'postHits' => $item['vote_num'],
                                 'postReplyCount' => $item['reply_num'],
-                                
+
                                 'replyUserPhoto' => '',
                                 'replyUserName' => '',
                                 'replyUserWeb' => '',
@@ -456,7 +457,7 @@ class ServiceController extends ControllerBase
                             // "buyIPAddr":"安徽省滁州市",
                             // "buyDevice":"3",
                             // "buyID":"322265804"
-                            
+
                             $codeSales = $item['goods_total_person_time'];
                             if ($item['state'] == \App\Order\Models\Goods::STATE1) {
                                 $goodsInfo = $this->modelGoods->getInfoById($item['goods_id']);
@@ -516,19 +517,19 @@ class ServiceController extends ControllerBase
             $page = intval($this->get('page', '1'));
             $limit = intval($this->get('limit', '100'));
             $otherConditions = array();
-            if (! empty($id)) {
+            if (!empty($id)) {
                 $otherConditions['_id'] = array(
                     '$gt' => $id
                 );
             }
             $endTime = getMilliTime();
             $list = $this->modelOrderGoods->getUserBuyList('', $page, $limit, 0, 0, $endTime, $otherConditions);
-            
+
             $ret = array();
             $ret['total'] = $list['total'];
             $maxId = '';
             $datas = array();
-            if (! empty($list['datas'])) {
+            if (!empty($list['datas'])) {
                 foreach ($list['datas'] as $item) {
                     // "buyTime":"2016-01-01 20:20:11.376",
                     // "buyName":"13690****36",
@@ -584,31 +585,31 @@ class ServiceController extends ControllerBase
             $limit = intval($this->get('limit', '9'));
             $beginTime = $this->get('beginTime', '');
             $endTime = $this->get('endTime', '');
-            
+
             $ret = array();
             $ret['total'] = 0;
             $ret['datas'] = array();
-            
-            if (! empty($_SESSION['member_id'])) {
-                
-                if (! empty($beginTime)) {
+
+            if (!empty($_SESSION['member_id'])) {
+
+                if (!empty($beginTime)) {
                     $beginTime = strtotime($beginTime . " 00:00:00");
                 }
-                if (! empty($endTime)) {
+                if (!empty($endTime)) {
                     $endTime = strtotime($endTime . " 23:59:59");
                 }
                 $list = $this->modelOrderGoods->getUserBuyList($_SESSION['member_id'], $page, $limit, $state, $beginTime, $endTime);
                 $ret['total'] = $list['total'];
                 $datas = array();
-                if (! empty($list['datas'])) {
+                if (!empty($list['datas'])) {
                     $goodsIds = array();
                     foreach ($list['datas'] as $item) {
                         $goodsIds[] = $item['goods_id'];
                     }
                     $goodsList = $this->modelGoods->getListByIds($goodsIds);
                     foreach ($list['datas'] as $item) {
-                        if (! isset($goodsList[$item['goods_id']])) {
-                            echo ($this->error(- 2, "商品号为{$item['goods_id']}的商品不存在"));
+                        if (!isset($goodsList[$item['goods_id']])) {
+                            echo ($this->error(-2, "商品号为{$item['goods_id']}的商品不存在"));
                             return false;
                         }
                         $goodsInfo = $goodsList[$item['goods_id']];
@@ -628,7 +629,7 @@ class ServiceController extends ControllerBase
                         // "codeRTime":"2015-12-20 21:37:19.245",
                         // "codeType":"0",
                         // "goodsID":"22504"
-                        
+
                         $datas[] = array(
                             'codeState' => $goodsInfo['sale_state'],
                             'codeID' => $goodsInfo['_id'],
@@ -677,27 +678,27 @@ class ServiceController extends ControllerBase
             $limit = intval($this->get('limit', '5'));
             $beginTime = $this->get('beginTime', '');
             $endTime = $this->get('endTime', '');
-            
+
             $ret = array();
             $ret['total'] = 0;
             $ret['datas'] = array();
-            
-            if (! empty($_SESSION['member_id'])) {
-                
-                if (! empty($beginTime)) {
+
+            if (!empty($_SESSION['member_id'])) {
+
+                if (!empty($beginTime)) {
                     $beginTime = strtotime($beginTime . " 00:00:00");
                 }
-                if (! empty($endTime)) {
+                if (!empty($endTime)) {
                     $endTime = strtotime($endTime . " 23:59:59");
                 }
-                
+
                 $list = $this->modelOrderGoods->getUserWinList($_SESSION['member_id'], $page, $limit, $orderState, $beginTime, $endTime);
-                
+
                 $ret['total'] = $list['total'];
                 $datas = array();
-                if (! empty($list['datas'])) {
+                if (!empty($list['datas'])) {
                     foreach ($list['datas'] as $item) {
-                        
+
                         // "codeID":"2489811",
                         // "goodsPic":"20151215155940353.jpg",
                         // "goodsName":"川宇（Kawau）Micro SD/T-Flash TF读卡器 C289",
@@ -741,7 +742,7 @@ class ServiceController extends ControllerBase
                 }
                 $ret['datas'] = $datas;
             }
-            
+
             echo ($this->result("OK", $ret));
             return true;
         } catch (\Exception $e) {
@@ -759,47 +760,47 @@ class ServiceController extends ControllerBase
         try {
             $order_no = ($this->get('order_no', ''));
             if (empty($order_no)) {
-                echo ($this->error(- 2, '订单NO为空'));
+                echo ($this->error(-2, '订单NO为空'));
                 return false;
             }
             $consignee_id = ($this->get('consignee_id', ''));
             if (empty($consignee_id)) {
-                echo ($this->error(- 3, '收货地址为空'));
+                echo ($this->error(-3, '收货地址为空'));
                 return false;
             }
             $message = urldecode($this->get('message', ''));
             if (empty($message)) {
-                echo ($this->error(- 4, '备注信息为空'));
+                echo ($this->error(-4, '备注信息为空'));
                 return false;
             }
             if (empty($_SESSION['member_id'])) {
-                echo ($this->error(- 1, '非法访问'));
+                echo ($this->error(-1, '非法访问'));
                 return false;
             }
             $orderInfo = $this->modelOrderGoods->getInfoByOrderNo($order_no);
             if (empty($orderInfo)) {
-                echo ($this->error(- 6, '订单信息不存在'));
+                echo ($this->error(-6, '订单信息不存在'));
                 return false;
             }
-            
+
             if ($orderInfo['buyer_id'] != $_SESSION['member_id']) {
-                echo ($this->error(- 7, '订单信息不存在'));
+                echo ($this->error(-7, '订单信息不存在'));
                 return false;
             }
-            
+
             if ($orderInfo['order_state'] != \App\Order\Models\Goods::ORDER_STATE1) {
-                echo ($this->error(- 5, '订单已完善了收货地址'));
+                echo ($this->error(-5, '订单已完善了收货地址'));
                 return false;
             }
-            
+
             $consigneeInfo = $this->modelMemberConsignee->getInfoById($consignee_id);
             if (empty($consigneeInfo)) {
-                echo ($this->error(- 8, '收货信息不存在'));
+                echo ($this->error(-8, '收货信息不存在'));
                 return false;
             }
             // 确认收货地址
             $this->modelOrderGoods->confirmOrderConsignee($order_no, $message, $consigneeInfo);
-            
+
             // 记录订单日志记录
             $this->modelOrderLog->log($order_no, \App\Order\Models\Goods::ORDER_STATE2, "会员已填写配送地址信息，等待商城发货！", \App\Order\Models\Log::ROLE_BUYER, $_SESSION['member_id'], $_SESSION['member_name']);
             echo ($this->result("OK"));
@@ -819,40 +820,40 @@ class ServiceController extends ControllerBase
         try {
             $order_no = ($this->get('order_no', ''));
             if (empty($order_no)) {
-                echo ($this->error(- 1, '订单NO为空'));
+                echo ($this->error(-1, '订单NO为空'));
                 return false;
             }
             $user_id = ($this->get('user_id', ''));
             $user_name = ($this->get('user_name', ''));
             if (empty($user_id)) {
-                echo ($this->error(- 2, '操作者ID为空'));
+                echo ($this->error(-2, '操作者ID为空'));
                 return false;
             }
             $delivery_sn = ($this->get('delivery_sn', ''));
             if (empty($delivery_sn)) {
-                echo ($this->error(- 3, '快递单号为空'));
+                echo ($this->error(-3, '快递单号为空'));
                 return false;
             }
             $orderInfo = $this->modelOrderGoods->getInfoByOrderNo($order_no);
             if (empty($orderInfo)) {
-                echo ($this->error(- 4, '订单信息不存在'));
+                echo ($this->error(-4, '订单信息不存在'));
                 return false;
             }
             if ($orderInfo['order_state'] != \App\Order\Models\Goods::ORDER_STATE2) {
-                echo ($this->error(- 5, '订单已发货'));
+                echo ($this->error(-5, '订单已发货'));
                 return false;
             }
-            
+
             $deliveryInfo = array(
                 'delivery_sn' => $delivery_sn,
                 'name' => '申通速递'
             );
             // 发货
             $this->modelOrderGoods->deliveryOrder($order_no, $deliveryInfo);
-            
+
             // 记录订单日志记录
             $this->modelOrderLog->log($order_no, \App\Order\Models\Goods::ORDER_STATE2, "您的配送信息已确认。将由【{$deliveryInfo['name']}】配送,快递单号【{$deliveryInfo['delivery_sn']}】", \App\Order\Models\Log::ROLE_ADMIN, $user_id, $user_name);
-            
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -870,27 +871,27 @@ class ServiceController extends ControllerBase
         try {
             $order_no = ($this->get('order_no', ''));
             if (empty($order_no)) {
-                echo ($this->error(- 2, '订单NO为空'));
+                echo ($this->error(-2, '订单NO为空'));
                 return false;
             }
             if (empty($_SESSION['member_id'])) {
-                echo ($this->error(- 1, '非法访问'));
+                echo ($this->error(-1, '非法访问'));
                 return false;
             }
             $orderInfo = $this->modelOrderGoods->getInfoByOrderNo($order_no);
             if (empty($orderInfo)) {
-                echo ($this->error(- 6, '订单信息不存在'));
+                echo ($this->error(-6, '订单信息不存在'));
                 return false;
             }
             if ($orderInfo['buyer_id'] != $_SESSION['member_id']) {
-                echo ($this->error(- 7, '订单信息不存在'));
+                echo ($this->error(-7, '订单信息不存在'));
                 return false;
             }
             if ($orderInfo['order_state'] != \App\Order\Models\Goods::ORDER_STATE3) {
-                echo ($this->error(- 5, '订单还没有发货'));
+                echo ($this->error(-5, '订单还没有发货'));
                 return false;
             }
-            
+
             // 确认收货
             $this->modelOrderGoods->confirmOrderReceive($order_no);
             // 记录订单日志记录
@@ -899,12 +900,12 @@ class ServiceController extends ControllerBase
             $goodsInfo = $this->modelGoods->getInfoById($orderInfo['goods_id']);
             $postInfo = $this->modelPost->create($_SESSION['member_id'], $goodsInfo);
             if (empty($postInfo)) {
-                echo ($this->error(- 3, '晒单数据生成失败'));
+                echo ($this->error(-3, '晒单数据生成失败'));
                 return false;
             }
             // 记录晒单ID
             $this->modelOrderGoods->recordPostId($order_no, $postInfo['_id']);
-            
+
             echo ($this->result("OK"));
             return true;
         } catch (\Exception $e) {
@@ -913,4 +914,3 @@ class ServiceController extends ControllerBase
         }
     }
 }
-

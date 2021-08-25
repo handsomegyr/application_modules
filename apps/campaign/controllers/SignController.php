@@ -84,7 +84,7 @@ class SignController extends ControllerBase
 
             // 根据具体的业务返回相应的信息
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo($this->activity1, $this->now->sec, true);
+            $activityInfo = $this->modelActivity->getActivityInfo($this->activity1, $this->now, true);
             $activityInfoDetail = $activityInfo['activityInfo'];
             unset($activityInfo['activityInfo']);
 
@@ -139,7 +139,7 @@ class SignController extends ControllerBase
         // http://www.myapplicationmodule.com/campaign/sign/do
         try {
             // 获取活动信息
-            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity1, $this->now->sec);
+            $activityInfo = $this->modelActivity->getActivityInfo2($this->activity1, $this->now);
 
             // 活动是否开始了
             if (empty($activityInfo['is_activity_started'])) {

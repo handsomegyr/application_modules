@@ -352,7 +352,7 @@ class IndexController extends ControllerBase
                 if (empty($scene['is_temporary']) && !empty($scene['is_created'])) { // 如果是永久并且已生成的话
                     continue;
                 }
-                if (!empty($scene['is_temporary']) && !empty($scene['is_created']) && ($scene['ticket_time']->sec + $scene['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
+                if (!empty($scene['is_temporary']) && !empty($scene['is_created']) && (strtotime($scene['ticket_time']) + $scene['expire_seconds']) > (time())) { // 如果是临时并且已生成并且没有过期
                     continue;
                 }
                 $ticketInfo = $this->_weixin->getQrcodeManager()->create($scene['sence_id'], !empty($scene['is_temporary']) ? $scene['is_temporary'] : false, !empty($scene['expire_seconds']) ? $scene['expire_seconds'] : 0);
@@ -507,7 +507,7 @@ class IndexController extends ControllerBase
             } else {
                 $rs = array();
                 $rs['access_token'] = $this->_appConfig['access_token'];
-                $rs['expire_time'] = $this->_appConfig['access_token_expire']->sec;
+                $rs['expire_time'] = strtotime($this->_appConfig['access_token_expire']);
                 echo $this->result("OK", $rs);
                 return true;
             }
@@ -533,7 +533,7 @@ class IndexController extends ControllerBase
             } else {
                 $rs = array();
                 $rs['jsapi_ticket'] = $this->_appConfig['jsapi_ticket'];
-                $rs['expire_time'] = $this->_appConfig['jsapi_ticket_expire']->sec;
+                $rs['expire_time'] = strtotime($this->_appConfig['jsapi_ticket_expire']);
                 $rs['appid'] = $this->_appConfig['appid'];
                 echo $this->result("OK", $rs);
                 return true;

@@ -284,7 +284,7 @@
 	                    <p class="fl"><a href="javascript:;" target="_blank"> <img src=".jpg"><i class="u-personal"></i></a></p>
 	                    <cite class="fl">
 	                        <span><a href="javascript:;" target="_blank" class="blue"><?php echo getBuyerName($news['user_name'], $news['user_register_by'])?></a></span>
-	                        <?php echo date('Y-m-d H:i',$news['msg_time']->sec)?><br>
+	                        <?php echo date('Y-m-d H:i',strtotime($news['msg_time']))?><br>
 	                        <?php if($news['action'] == \App\Member\Models\News::ACTION1){ ?>
 	                                                集资购了<a href="<?php echo $this->view->baseUrl?>yungou/product/detail?id=<?php echo $news['content_id']?>" target="_blank" class="tit-con blue"><?php echo $news['memo']['name']?></a>
 	                        <?php }elseif($news['action'] == \App\Member\Models\News::ACTION2){?>

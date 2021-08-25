@@ -37,7 +37,7 @@ class QrcodeController extends BaseController
         if (in_array($model['action_name'], array(
             "QR_SCENE",
             "QR_STR_SCENE"
-        )) && !empty($model['is_created']) && ($model['ticket_time']->sec + $model['expire_seconds']) > time()) {
+        )) && !empty($model['is_created']) && (strtotime($model['ticket_time']) + $model['expire_seconds']) > time()) {
             // throw new \Exception("二维码记录ID:{$qrcode_id}所对应的二维码是临时二维码并且已生成并且没有过期");
             return false;
         }

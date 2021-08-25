@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Order\Controllers;
 
 /**
@@ -32,7 +33,7 @@ class PayController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        
+
         $this->modelMember = new \App\Member\Models\Member();
         $this->modelOrder = new \App\Order\Models\Order();
         $this->modelOrderPay = new \App\Order\Models\Pay();
@@ -62,22 +63,22 @@ class PayController extends ControllerBase
             $payment_code = $payway = ($this->get('payway', ''));
             // 支付密码
             $pay_pwd = ($this->get('pay_pwd', ''));
-            
+
             if (empty($pay_sn)) {
-                echo ($this->error(- 3, '订单支付单号为空'));
+                echo ($this->error(-3, '订单支付单号为空'));
                 return false;
             }
-            
+
             // 买家信息
             $buyer_id = $_SESSION['member_id'];
             if (empty($buyer_id)) {
-                echo ($this->error(- 1, '购买者为空'));
+                echo ($this->error(-1, '购买者为空'));
                 return false;
             }
             // 获取会员信息
             $buyerInfo = $this->modelMember->getInfoById($buyer_id);
             if (empty($buyerInfo)) {
-                echo ($this->error(- 2, '购买者不存在'));
+                echo ($this->error(-2, '购买者不存在'));
                 return false;
             }
             $buyerInfo['buyer_id'] = $buyerInfo['_id'];
@@ -86,11 +87,11 @@ class PayController extends ControllerBase
             $buyerInfo['buyer_mobile'] = $buyerInfo['mobile'];
             $buyerInfo['buyer_avatar'] = $buyerInfo['avatar'];
             $buyerInfo['buyer_register_by'] = $buyerInfo['register_by'];
-            
+
             // 获取订单列表信息
             $orderList = $this->modelOrder->getListByPaySn($pay_sn, $buyer_id);
             if (empty($orderList)) {
-                echo ($this->error(- 4, '订单不存在'));
+                echo ($this->error(-4, '订单不存在'));
                 return false;
             }
             // 福分金额
@@ -113,37 +114,37 @@ class PayController extends ControllerBase
             // }
             // $init_points_amount = $currentIntegral / 100;
             // }
-            
+
             // 检查预存款
-            if (! empty($predeposit)) {
+            if (!empty($predeposit)) {
                 $predepositInfo = $this->modelPointsUser->getInfoByUserId($buyer_id, POINTS_CATEGORY3); // 预付款
                 if (empty($predepositInfo)) {
-                    echo ($this->error(- 6, '预存款金额不够'));
+                    echo ($this->error(-6, '预存款金额不够'));
                     return false;
                 }
                 if (($predepositInfo['current'] < 100)) {
-                    echo ($this->error(- 6, '预存款金额不够'));
+                    echo ($this->error(-6, '预存款金额不够'));
                     return false;
                 }
                 $init_pd_amount = $predepositInfo['current'];
                 $is_pd_used = true;
             }
-            
+
             // 计算支付金额
             $amounts = $this->modelOrderPay->calculateAmounts($orderList, 0.00, 0.00, $init_pd_amount, $init_points_amount, 0.00, $is_points_used, $is_pd_used);
-            
+
             // 判断是否需要支付密码
             $isPaypwdOk = $this->modelMember->checkPaypwd($buyerInfo, $pay_pwd, $amounts['pay_amount']);
             if (empty($isPaypwdOk)) {
-                echo ($this->error(- 4, '支付密码为空或不正确'));
+                echo ($this->error(-4, '支付密码为空或不正确'));
                 return false;
             }
-            
+
             // 生成订单支付记录
             $orderPayInfo = $this->modelOrderPay->create($pay_sn, $buyerInfo, $payment_code, $amounts['order_amount'], $amounts['goods_amount'], $amounts['rcb_amount'], $amounts['pd_amount'], $amounts['points_amount'], $amounts['shipping_fee'], $amounts['refund_amount'], $is_points_used, $is_pd_used);
-            
+
             if (empty($orderPayInfo)) {
-                throw new \Exception('支付订单生成失败', - 5);
+                throw new \Exception('支付订单生成失败', -5);
             }
             $orderPayInfo['order_pay_id'] = $orderPayInfo['_id'];
             $out_trade_no = $orderPayInfo['_id'];
@@ -159,8 +160,8 @@ class PayController extends ControllerBase
                     if (true) {
                         $body = "一元云购";
                         $attach = "";
-                        $time_start = date("YmdHis", $orderPayInfo['__CREATE_TIME__']->sec);
-                        $time_expire = date("YmdHis", $orderPayInfo['__CREATE_TIME__']->sec + 3600 * 2);
+                        $time_start = date("YmdHis", strtotime($orderPayInfo['__CREATE_TIME__']));
+                        $time_expire = date("YmdHis", strtotime($orderPayInfo['__CREATE_TIME__']) + 3600 * 2);
                         $goods_tag = "";
                         $notify_url = "{$scheme}://{$_SERVER['HTTP_HOST']}/order/weixinpay/goods";
                         $product_id = $orderPayInfo['pay_sn'];
@@ -194,17 +195,17 @@ class PayController extends ControllerBase
                     'out_trade_no' => $out_trade_no
                 ));
             }
-            
+
             $key = $this->getCacheKey4Payresult($out_trade_no);
             $cache = $this->getDI()->get("cache");
             $cache->save($key, $orderPayInfo, 60 * 1); // 1分钟
-            
+
             echo ($this->result("OK", array(
                 'out_trade_no' => $out_trade_no,
                 'pay_state' => false,
                 'pay_url' => $pay_url
             )));
-            
+
             //
             return true;
         } catch (\Exception $e) {
@@ -227,43 +228,43 @@ class PayController extends ControllerBase
             // 支付密码
             // $pay_pwd = ($this->get('pay_pwd', ''));
             if ($predeposit <= 0) {
-                echo ($this->error(- 3, '预付款金额不正确'));
+                echo ($this->error(-3, '预付款金额不正确'));
                 return false;
             }
-            
+
             // 买家信息
             $buyer_id = $_SESSION['member_id'];
             if (empty($buyer_id)) {
-                echo ($this->error(- 1, '购买者为空'));
+                echo ($this->error(-1, '购买者为空'));
                 return false;
             }
             // 获取会员信息
             $buyerInfo = $this->modelMember->getInfoById($buyer_id);
             if (empty($buyerInfo)) {
-                echo ($this->error(- 2, '购买者不存在'));
+                echo ($this->error(-2, '购买者不存在'));
                 return false;
             }
-            
+
             // // 判断是否需要支付密码
             // $isPaypwdOk = $this->modelMember->checkPaypwd($buyerInfo, $pay_pwd, $predeposit);
             // if (empty($isPaypwdOk)) {
             // echo ($this->error(- 4, '支付密码为空或不正确'));
             // return false;
             // }
-            
+
             $buyerInfo['buyer_id'] = $buyerInfo['_id'];
             $buyerInfo['buyer_name'] = $this->modelMember->getRegisterName($buyerInfo);
             $buyerInfo['buyer_email'] = $buyerInfo['email'];
             $buyerInfo['buyer_mobile'] = $buyerInfo['mobile'];
             $buyerInfo['buyer_avatar'] = $buyerInfo['avatar'];
             $buyerInfo['buyer_register_by'] = $buyerInfo['register_by'];
-            
+
             // 生成订单支付记录
             $pay_sn = $this->modelOrderPay->makePaySn();
             $order_amount = $goods_amount = $predeposit;
             $orderPayInfo = $this->modelOrderPay->create($pay_sn, $buyerInfo, $payment_code, $order_amount, $goods_amount, 0, 0, 0, 0, 0, false, false, 'predeposit');
             if (empty($orderPayInfo)) {
-                throw new \Exception('支付订单生成失败', - 5);
+                throw new \Exception('支付订单生成失败', -5);
             }
             $out_trade_no = $orderPayInfo['_id'];
             $total_fee = $orderPayInfo['pay_amount'];
@@ -278,8 +279,8 @@ class PayController extends ControllerBase
                     if (false) {
                         $body = "一元云购";
                         $attach = "";
-                        $time_start = date("YmdHis", $orderPayInfo['__CREATE_TIME__']->sec);
-                        $time_expire = date("YmdHis", $orderPayInfo['__CREATE_TIME__']->sec + 3600 * 2);
+                        $time_start = date("YmdHis", strtotime($orderPayInfo['__CREATE_TIME__']));
+                        $time_expire = date("YmdHis", strtotime($orderPayInfo['__CREATE_TIME__']) + 3600 * 2);
                         $goods_tag = "";
                         $notify_url = "{$scheme}://{$_SERVER['HTTP_HOST']}/order/weixinpay/predeposit";
                         $product_id = $orderPayInfo['pay_sn'];
@@ -309,17 +310,17 @@ class PayController extends ControllerBase
                 // 将该支付单号入队列处理???
                 // $this->servicePay->finishPay($out_trade_no);
             }
-            
+
             $key = $this->getCacheKey4Payresult($out_trade_no);
             $cache = $this->getDI()->get("cache");
             $cache->save($key, $orderPayInfo, 60 * 1); // 1分钟
-            
+
             echo ($this->result("OK", array(
                 'out_trade_no' => $out_trade_no,
                 'pay_state' => false,
                 'pay_url' => $pay_url
             )));
-            
+
             return true;
         } catch (\Exception $e) {
             echo ($this->error($e->getCode(), $e->getMessage()));
@@ -334,7 +335,7 @@ class PayController extends ControllerBase
             // 订单支付单号
             $out_trade_no = trim($this->get('out_trade_no', ''));
             $ret = $this->servicePay->finishPay($out_trade_no);
-            if (! empty($ret['error_code'])) {
+            if (!empty($ret['error_code'])) {
                 echo ($this->error($ret['error_code'], $ret['error_msg']));
                 return false;
             }
@@ -355,33 +356,33 @@ class PayController extends ControllerBase
             // http://www.myapplicationmodule.com/order/pay/getpayresult?id=56640956887c22014a8b457c
             // 支付id
             $id = trim($this->get('id', ''));
-            
+
             if (empty($id)) {
-                echo ($this->error(- 1, '支付ID为空'));
+                echo ($this->error(-1, '支付ID为空'));
                 return false;
             }
-            
+
             $key = $this->getCacheKey4Payresult($id);
             $cache = $this->getDI()->get("cache");
             $orderPayInfo = $cache->get($key);
             if (empty($orderPayInfo)) {
                 $orderPayInfo = $this->modelOrderPay->getInfoById($id);
                 if (empty($orderPayInfo)) {
-                    echo ($this->error(- 2, '支付ID不正确'));
+                    echo ($this->error(-2, '支付ID不正确'));
                     return false;
                 }
-                
+
                 $cache->save($key, $orderPayInfo, 60 * 1); // 1分钟
             }
             // 检查是否已支付
             if ($orderPayInfo['api_pay_state'] != \App\Order\Models\Pay::STATE1) {
-                echo ($this->error(- 3, '该支付订单还未支付'));
+                echo ($this->error(-3, '该支付订单还未支付'));
                 return false;
             }
-            
+
             // 检查是否处理完成
             if (empty($orderPayInfo['process_state'])) {
-                echo ($this->error(- 4, '该支付订单还未处理完成'));
+                echo ($this->error(-4, '该支付订单还未处理完成'));
                 return false;
             }
             echo ($this->result("OK"));
@@ -398,4 +399,3 @@ class PayController extends ControllerBase
         return $key;
     }
 }
-

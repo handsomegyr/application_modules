@@ -1255,7 +1255,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
             if ($input->isValid()) {
                 if (!empty($__MODIFY_TIME__)) {
                     // 检查更新时间是否已经改变 避免并发
-                    if (date('Y-m-d H:i:s', $row['__MODIFY_TIME__']->sec) != $__MODIFY_TIME__) {
+                    if (date('Y-m-d H:i:s', strtotime($row['__MODIFY_TIME__'])) != $__MODIFY_TIME__) {
                         throw new \Exception("该数据已被他人修改过");
                     }
                 }
@@ -1604,12 +1604,10 @@ class FormController extends \App\Backend\Controllers\ControllerBase
     protected function returnRecord4ListShow($item, $schemas)
     {
         foreach ($item as $field => $value) {
-            if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
-                $value = $this->adjustDataTime4Show($value);
-                $item[$field] = $value;
-            }
+            $value = $this->adjustDataTime4Show($value);
+            $item[$field] = $value;
             // 如果是数组或对象
-            elseif (is_array($value) || is_object($value)) {
+            if (is_array($value) || is_object($value)) {
                 // 如果是空值那么就是空字符串
                 if (empty($value)) {
                     $value = "";
@@ -1950,9 +1948,6 @@ class FormController extends \App\Backend\Controllers\ControllerBase
 
     protected function adjustDataTime4Show($value)
     {
-        if ($value instanceof \MongoDate || $value instanceof \MongoTimestamp) {
-            $value = date("Y-m-d H:i:s", $value->sec);
-        }
         if ($value === '0000-00-00 00:00:00' || $value === '0001-01-01 00:00:00') {
             $value = "";
         }

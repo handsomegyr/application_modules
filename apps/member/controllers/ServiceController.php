@@ -1661,7 +1661,7 @@ class ServiceController extends ControllerBase
                     $datas[] = array(
                         'address' => '',
                         'applyID' => $item['_id'],
-                        'applyTime' => date('Y-m-d H:i:s', $item['apply_time']->sec),
+                        'applyTime' => date('Y-m-d H:i:s', strtotime($item['apply_time'])),
                         'grade' => str_pad($gradeInfo['current']['level'], 2, '0', STR_PAD_LEFT),
                         'gradeName' => $gradeInfo['current']['name'],
                         'sign' => $memberInfo['signature'],
@@ -1770,7 +1770,7 @@ class ServiceController extends ControllerBase
                     // gradeLevel":"01"
 
                     $datas[] = array(
-                        'browserTime' => date('Y-m-d H:i:s', $item['browser_time']->sec),
+                        'browserTime' => date('Y-m-d H:i:s', strtotime($item['browser_time'])),
                         'gradeLevel' => str_pad($gradeInfo['current']['level'], 2, '0', STR_PAD_LEFT),
                         'gradeName' => $gradeInfo['current']['name'],
                         'sign' => $memberInfo['signature'],
@@ -1940,7 +1940,7 @@ class ServiceController extends ControllerBase
                     // "userCode":"1011789946"
                     $datas[] = array(
                         'userName' => $item['got_user_name'],
-                        'regTime' => date('Y-m-d H:i:s', $item['got_time']->sec),
+                        'regTime' => date('Y-m-d H:i:s', strtotime($item['got_time'])),
                         'state' => $item['got_worth2'],
                         'userWeb' => $item['got_user_id'],
                         'userPhoto' => $this->modelMember->getImagePath($this->baseUrl, $item['got_user_headimgurl']),

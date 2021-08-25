@@ -35,7 +35,7 @@
         <?php if(!empty($this->view->logList['datas'])){?>
         <?php foreach ($this->view->logList['datas'] as $log) {?>
         <li>
-        <span class="time"><?php echo date('Y.m.d H:i:s',$log['addtime']->sec)?></span>
+        <span class="time"><?php echo date('Y.m.d H:i:s',strtotime($log['addtime']))?></span>
         <span class="order add"><em><?php if($log['points']>0){?>+<?php }else{?>-<?php }?><?php echo abs($log['points'])?></em></span>
         <span class="protail"><?php echo $log['desc']?></span>
         </li>

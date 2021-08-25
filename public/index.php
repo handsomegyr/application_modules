@@ -46,8 +46,6 @@ try {
 
     require __DIR__ . '/../library/core.php';
 
-    require __DIR__ . '/../library/MongoDate.php';
-
     require __DIR__ . '/../library/MongoId.php';
     /**
      * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
