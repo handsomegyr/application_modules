@@ -116,7 +116,7 @@ class UserController extends BaseController
             }
 
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
-            $res = $weixinopenService->getUserInfo($id);
+            $res = $weixinopenService->getUserInfo($data);
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
         } catch (\Exception $e) {

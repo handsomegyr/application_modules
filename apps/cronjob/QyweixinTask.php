@@ -412,7 +412,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
 
                     try {
                         $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
-                        $weixinopenService->getUserInfo($info['id']);
+                        $weixinopenService->getUserInfo($info);
                     } catch (\Exception $e) {
                         $modelActivityErrorLog->log($this->activity_id, $e, $now);
                     }
