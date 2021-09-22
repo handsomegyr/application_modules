@@ -632,7 +632,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
 
                     try {
                         $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
-                        $weixinopenService->getExternalUserInfo($external_userid);
+                        $weixinopenService->getExternalUserInfo($info);
                     } catch (\Exception $e) {
                         $modelActivityErrorLog->log($this->activity_id, $e, $now);
                     }
@@ -746,7 +746,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
 
                     try {
                         $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
-                        $weixinopenService->getGroupChatInfo($chat_id);
+                        $weixinopenService->getGroupChatInfo($info);
                     } catch (\Exception $e) {
                         $modelActivityErrorLog->log($this->activity_id, $e, $now);
                     }

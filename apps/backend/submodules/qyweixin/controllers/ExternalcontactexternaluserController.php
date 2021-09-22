@@ -175,7 +175,7 @@ class ExternalcontactexternaluserController extends BaseController
                 }
 
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
-                $res = $weixinopenService->getExternalUserInfo($data['external_userid']);
+                $res = $weixinopenService->getExternalUserInfo($data);
 
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }

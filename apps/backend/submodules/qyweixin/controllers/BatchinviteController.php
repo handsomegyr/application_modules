@@ -76,7 +76,7 @@ class BatchinviteController extends BaseController
                     return $this->makeJsonError("企业应用ID未设定");
                 }
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
-                $res = $weixinopenService->batchInvite($id);
+                $res = $weixinopenService->batchInvite($data);
 
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }

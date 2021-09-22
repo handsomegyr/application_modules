@@ -69,7 +69,7 @@ class ExternalcontacttransferController extends BaseController
                     return $this->makeJsonError("企业应用ID未设定");
                 }
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
-                $res = $weixinopenService->transfer($data['external_userid'], $data['handover_userid'], $data['takeover_userid']);
+                $res = $weixinopenService->transfer($data);
 
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
             }
