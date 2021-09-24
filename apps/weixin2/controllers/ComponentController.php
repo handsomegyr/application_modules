@@ -302,7 +302,7 @@ class ComponentController extends ControllerBase
             $AESInfo['receiveId'] = $receiveId;
             $this->requestLogDatas['aes_info'] = $AESInfo;
             if (empty($verifyToken)) {
-                throw new \Exception('application verify_token is null. config:' . \json_encode($this->componentConfig));
+                throw new \Exception('application verify_token is null. config:' . \\App\Common\Utils\Helper::myJsonEncode($this->componentConfig));
             }
 
             // 签名正确，将接受到的xml转化为数组数据并记录数据

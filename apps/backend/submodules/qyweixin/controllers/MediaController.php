@@ -98,7 +98,7 @@ class MediaController extends BaseController
                     $res['bytes'] = \json_decode($res['bytes'], true);
                     // $fileContent = file_get_contents($res['bytes']['video_url']);
                     //"then":{"action":"download","value":"http:\/\/190821fg0463demo.jdytoy.com\/admin\/admin-build\/download-file?file_id=20200203192717.csv"},
-                    return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $res['bytes']['video_url'])), '操作成功:' . \json_encode($res));
+                    return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $res['bytes']['video_url'])), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
                     //return Response::redirectTo($res['bytes']['video_url'], 302);
                 } else {
                     if (!empty($res['name'])) {
@@ -114,7 +114,7 @@ class MediaController extends BaseController
                     fclose($fp);
                     $fileName = basename($path);
                     $url = $this->url->get("service/file/index") . '?upload_path=qymedia&id=' . $fileName;
-                    return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $url)), '操作成功:' . \json_encode($res));
+                    return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $url)), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
                     //return Response::download($path, $filename);
                 }
             } else {
@@ -144,7 +144,7 @@ class MediaController extends BaseController
             }
             $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
             $res = $weixinopenService->uploadMedia($id);
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

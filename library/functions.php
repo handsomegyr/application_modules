@@ -268,7 +268,7 @@ function arrayToExcel($name, $datas)
                     ->setTooltip($cellName . ':' . $cellDesc);
             } else 
                 if (is_array($cell)) {
-                $objPHPExcel->getActiveSheet()->setCellValueExplicit(excelTitle($j) . $i, json_encode($cell), PHPExcel_Cell_DataType::TYPE_STRING);
+                $objPHPExcel->getActiveSheet()->setCellValueExplicit(excelTitle($j) . $i, \App\Common\Utils\Helper::myJsonEncode($cell), PHPExcel_Cell_DataType::TYPE_STRING);
             } else {
                 $objPHPExcel->getActiveSheet()->setCellValueExplicit(excelTitle($j) . $i, $cell, PHPExcel_Cell_DataType::TYPE_STRING);
             }
@@ -1450,13 +1450,13 @@ function jsonpcallback($jsonpcallback = "", $stat = true, $msg = "OK", $result =
 {
     if ($stat) {
         if (!empty($jsonpcallback)) {
-            return $jsonpcallback . '(' . json_encode(array(
+            return $jsonpcallback . '(' . \App\Common\Utils\Helper::myJsonEncode(array(
                 'success' => $stat,
                 'message' => $msg,
                 'result' => $result
             )) . ')';
         } else {
-            return json_encode(array(
+            return \App\Common\Utils\Helper::myJsonEncode(array(
                 'success' => $stat,
                 'message' => $msg,
                 'result' => $result
@@ -1464,7 +1464,7 @@ function jsonpcallback($jsonpcallback = "", $stat = true, $msg = "OK", $result =
         }
     } else {
         if (!empty($jsonpcallback)) {
-            return $jsonpcallback . '(' . json_encode(array(
+            return $jsonpcallback . '(' . \App\Common\Utils\Helper::myJsonEncode(array(
                 'success' => false,
                 'error_code' => $result,
                 'error_msg' => $msg,
@@ -1472,7 +1472,7 @@ function jsonpcallback($jsonpcallback = "", $stat = true, $msg = "OK", $result =
                 'errorMsg' => $msg
             )) . ')';
         } else {
-            return json_encode(array(
+            return \App\Common\Utils\Helper::myJsonEncode(array(
                 'success' => false,
                 'error_code' => $result,
                 'error_msg' => $msg,
@@ -1521,7 +1521,7 @@ function isRequestRestricted($cacheKey, $timeSpanLimit = 60, $numLimit = 10)
 // 将对象转化成数组
 function object2Array($object)
 {
-    return @json_decode(@json_encode($object), 1);
+    return @json_decode(@\App\Common\Utils\Helper::myJsonEncode($object), 1);
 }
 
 /**

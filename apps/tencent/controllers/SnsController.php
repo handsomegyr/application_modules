@@ -158,7 +158,7 @@ class SnsController extends ControllerBase
             $_SESSION['iTencent']["accessToken_{$this->appid}_{$this->scope}"] = $userInfo;
             $path = '/';
             $expireTime = time() + 1.5 * 3600;
-            setcookie("__iTencent_accessToken_{$this->appid}_{$this->scope}__", json_encode($userInfo), $expireTime, $path);
+            setcookie("__iTencent_accessToken_{$this->appid}_{$this->scope}__", \App\Common\Utils\Helper::myJsonEncode($userInfo), $expireTime, $path);
             
             $redirect = $this->getRedirectUrl($redirect, $userInfo);
             

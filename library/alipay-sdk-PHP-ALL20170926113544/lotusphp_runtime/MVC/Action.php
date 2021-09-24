@@ -181,7 +181,7 @@ abstract class LtAction
 		switch ($this->responseType)
 		{
 			case 'json':
-				echo json_encode(array("code" => $this->code,
+				echo \App\Common\Utils\Helper::myJsonEncode(array("code" => $this->code,
 						"message" => $this->message,
 						"data" => $this->data
 						));

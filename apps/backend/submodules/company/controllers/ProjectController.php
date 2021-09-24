@@ -177,7 +177,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             $taskContent['process_list'] = 'create_project';
             $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
             $res['taskInfo'] = $taskInfo;
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -207,7 +207,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             $taskContent['process_list'] = 'rsync_dev_to_test';
             $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
             $res['taskInfo'] = $taskInfo;
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -237,7 +237,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             $taskContent['process_list'] = 'publish_test_to_prod';
             $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
             $res['taskInfo'] = $taskInfo;
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -589,7 +589,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 if (empty($ret)) {
                     $success = true;
                     $updateData = array();
-                    $updateData['components'] = \json_encode(array_keys($project_components));
+                    $updateData['components'] = \\App\Common\Utils\Helper::myJsonEncode(array_keys($project_components));
                     $updateData['last_upload_time'] = getCurrentTime();
                     $this->modelProject->update(array('_id' => $id), array('$set' => $updateData));
                 } else {

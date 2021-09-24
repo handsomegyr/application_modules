@@ -85,7 +85,7 @@ class MassmsgController extends BaseController
             $match['mass_msg_type'] = $data['msg_type'];
             $res = $weixinopenService->sendMassMsg(0, array(), $data, array(), $match, false);
 
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

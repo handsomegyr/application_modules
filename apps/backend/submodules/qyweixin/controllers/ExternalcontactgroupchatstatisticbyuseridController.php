@@ -87,7 +87,7 @@ class ExternalcontactgroupchatstatisticbyuseridController extends BaseController
                 $offset = 0;
                 $limit = 1000;
                 $res = $weixinopenService->getGroupChatStatistic($groupchatstatistic_day_begin_time, $owner_filter,  $order_by, $order_asc, $offset, $limit);
-                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

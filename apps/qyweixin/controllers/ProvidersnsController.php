@@ -409,7 +409,7 @@ class ComponentsnsController extends ControllerBase
             $suite_access_token = $this->authorizerConfig['suite_access_token'];
             $arrAccessToken = $objQyProvider->getUserInfo3rd($suite_access_token, $code);
             if (!empty($arrAccessToken['errcode'])) {
-                throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+                throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
             }
 
             $arrAccessToken['scope'] = $this->scope;
@@ -525,7 +525,7 @@ class ComponentsnsController extends ControllerBase
             $provider_access_token = $this->providerConfig['access_token'];
             $arrAccessToken = $objQyProvider->getLoginInfo($provider_access_token, $auth_code);
             if (!empty($arrAccessToken['errcode'])) {
-                throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+                throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
             }
 
             $arrAccessToken['scope'] = $this->scope;
@@ -734,7 +734,7 @@ class ComponentsnsController extends ControllerBase
             //         if (!empty($arrAccessToken['user_ticket'])) {
             //             $userInfo = $objQyProvider->getUserDetail3rd($arrAccessToken['access_token'], $arrAccessToken['user_ticket']);
             //             if (isset($userInfo['errcode'])) {
-            //                 throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
+            //                 throw new \Exception("获取用户信息失败，原因:" . \App\Common\Utils\Helper::myJsonEncode($userInfo));
             //             }
             //         }
             //     }

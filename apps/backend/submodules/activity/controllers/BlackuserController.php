@@ -237,7 +237,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
                         $uploadFiles[$file->getKey()] = $file;
                     }
                 }
-                //return $this->makeJsonError(\json_encode($uploadFiles));                    
+                //return $this->makeJsonError(\\App\Common\Utils\Helper::myJsonEncode($uploadFiles));                    
                 if (empty($uploadFiles) || !isset($uploadFiles['csv_file'])) {
                     return $this->makeJsonError("没有上传导入文件2");
                 }
@@ -276,7 +276,7 @@ class BlackuserController extends \App\Backend\Controllers\FormController
                     $arr = csv2arr($csv);
                     unset($csv); // 释放内存
 
-                    //return $this->makeJsonError(\json_encode($arr));
+                    //return $this->makeJsonError(\\App\Common\Utils\Helper::myJsonEncode($arr));
 
                     $data_num = 0;
                     $line_no = 0;

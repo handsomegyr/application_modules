@@ -182,7 +182,7 @@ class SnsController extends ControllerBase
                     $_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$this->scope}"] = $arrAccessToken;
                     $path = $this->_config['global']['path'];
                     $expireTime = time() + 1.5 * 3600;
-                    setcookie("__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__", json_encode($arrAccessToken), $expireTime, $path);
+                    setcookie("__{$this->cookie_session_key}_{$this->appid}_{$this->scope}__", \App\Common\Utils\Helper::myJsonEncode($arrAccessToken), $expireTime, $path);
 
                     $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
 
@@ -208,7 +208,7 @@ class SnsController extends ControllerBase
                 // header("location:{$_SESSION['weixin_sns_url']}");
                 // exit();
                 // 如果用户未授权登录，点击取消，自行设定取消的业务逻辑
-                throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+                throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
             }
         } catch (\Exception $e) {
             print_r($e->getFile());

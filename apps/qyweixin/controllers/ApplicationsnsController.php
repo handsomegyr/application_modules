@@ -350,7 +350,7 @@ class ApplicationsnsController extends ControllerBase
 
             $arrAccessToken = $objSns->getUserInfo($access_token);
             if (!empty($arrAccessToken['errcode'])) {
-                throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+                throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
             }
             $arrAccessToken['scope'] = $this->scope;
             $arrAccessToken['access_token'] = $access_token;
@@ -547,7 +547,7 @@ class ApplicationsnsController extends ControllerBase
             // $weixin->setAccessToken($arrAccessToken['access_token']);
             // $userInfo = $weixin->getUserManager()->get($arrAccessToken['userid']);
             // if (!empty($userInfo['errcode'])) {
-            // throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
+            // throw new \Exception("获取用户信息失败，原因:" . \App\Common\Utils\Helper::myJsonEncode($userInfo));
             // }
             // }
         } // b) 非企业成员授权时

@@ -196,7 +196,7 @@ class ApplicationsnsController extends ControllerBase
                 $objSns = new \Weixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
                 $arrAccessToken = $objSns->getAccessToken();
                 if (!empty($arrAccessToken['errcode'])) {
-                    throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+                    throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
                 }
             } else {
                 throw new \Exception('该运用不支持授权操作');
@@ -219,7 +219,7 @@ class ApplicationsnsController extends ControllerBase
                         $userInfo = $weixin->getSnsManager()->getSnsUserInfo($arrAccessToken['openid']);
                     }
                     if (isset($userInfo['errcode'])) {
-                        throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
+                        throw new \Exception("获取用户信息失败，原因:" . \App\Common\Utils\Helper::myJsonEncode($userInfo));
                     }
                 }
             }

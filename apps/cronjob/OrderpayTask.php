@@ -60,7 +60,7 @@ class OrderpayTask extends \Phalcon\CLI\Task
                             'op' => 'finishpayorder',
                             'out_trade_no' => $out_trade_no
                         );
-                        // $pheanstalk2->put(json_encode($data));
+                        // $pheanstalk2->put(\App\Common\Utils\Helper::myJsonEncode($data));
                     }
                 } else {
                     echo ("empty finishpayorder queue \n");

@@ -55,7 +55,7 @@ class Editor extends Field
 
         $config = (array) Simplemde::config('config');
 
-        $config = json_encode($config);
+        $config = \App\Common\Utils\Helper::myJsonEncode($config);
 
         $varName = 'simplemde_'.uniqid();
 

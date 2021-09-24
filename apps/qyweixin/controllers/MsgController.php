@@ -170,7 +170,7 @@ class MsgController extends ControllerBase
             $this->requestLogDatas['aes_info'] = $AESInfo;
 
             if (empty($verifyToken)) {
-                throw new \Exception('application verify_token is null. config:' . \json_encode($errorConfig));
+                throw new \Exception('application verify_token is null. config:' . \\App\Common\Utils\Helper::myJsonEncode($errorConfig));
             }
 
             // get执行的代码
@@ -196,7 +196,7 @@ class MsgController extends ControllerBase
                 // 合法性校验
                 $ret4CheckSignature = $this->objQyWeixin->checkSignature($verifyToken, $encodingAESKey);
                 if (empty($ret4CheckSignature)) {
-                    $debug = \json_encode($this->requestLogDatas);
+                    $debug = \\App\Common\Utils\Helper::myJsonEncode($this->requestLogDatas);
                     throw new \Exception('签名错误' . $debug);
                 } else {
                     return $ret4CheckSignature['replyEchoStr'];
@@ -303,7 +303,7 @@ class MsgController extends ControllerBase
                 $response = $datas['response'];
                 // 业务逻辑结束
 
-                // $e = new \Exception("Post请求" . \json_encode($datas));
+                // $e = new \Exception("Post请求" . \\App\Common\Utils\Helper::myJsonEncode($datas));
                 // $this->modelErrorLog->log($this->activity_id, $e, $this->now);
                 // return '';
 
@@ -2087,7 +2087,7 @@ class MsgController extends ControllerBase
 
         $match['reply_msg_ids'] = $this->modelQyweixinKeywordToReplyMsg->getReplyMsgIdsByKeywordId($match['id']);
         $match['agent_msg_ids'] = $this->modelQyweixinKeywordToAgentMsg->getAgentMsgIdsByKeywordId($match['id']);
-        // $e = new \Exception("Post请求" . \json_encode($match));
+        // $e = new \Exception("Post请求" . \\App\Common\Utils\Helper::myJsonEncode($match));
         // $this->modelErrorLog->log($this->activity_id, $e, $this->now);
         // return '';
         if (!empty($match['agent_msg_ids'])) {

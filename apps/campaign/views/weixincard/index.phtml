@@ -14,7 +14,7 @@
 var wx_card_id = "<?php echo $this->view->ret['wx_card_id']?>";
 var callbackUrl = "<?php echo $this->view->ret['callbackUrl']?>";
 var card_ext = '<?php echo $this->view->ret['signatureInfo']['card_ext']?>';
-var error = '<?php echo empty($this->view->error)?'':json_encode($this->view->error)?>';
+var error = '<?php echo empty($this->view->error)?'':\App\Common\Utils\Helper::myJsonEncode($this->view->error)?>';
 </script>
 </head>
 <body>

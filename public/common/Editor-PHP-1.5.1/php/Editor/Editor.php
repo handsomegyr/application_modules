@@ -357,10 +357,10 @@ class Editor extends Ext {
 	public function json ( $print=true )
 	{
 		if ( $print ) {
-			echo json_encode( $this->_out );
+			echo \App\Common\Utils\Helper::myJsonEncode( $this->_out );
 			return $this;
 		}
-		return json_encode( $this->_out );
+		return \App\Common\Utils\Helper::myJsonEncode( $this->_out );
 	}
 
 
@@ -383,7 +383,7 @@ class Editor extends Ext {
 			throw new \Exception("Invalid JSONP callback function name");
 		}
 
-		echo $callback.'('.json_encode( $this->_out ).');';
+		echo $callback.'('.\App\Common\Utils\Helper::myJsonEncode( $this->_out ).');';
 		return $this;
 	}
 

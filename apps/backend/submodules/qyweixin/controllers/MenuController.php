@@ -84,7 +84,7 @@ class MenuController extends BaseController
                 $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $mmenu_agent_agentid);
                 $res = $weixinopenService->createMenu();
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -130,7 +130,7 @@ class MenuController extends BaseController
                 // }
                 // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
                 if (empty($res['errcode'])) {
-                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
                 } else {
                     return $this->makeJsonError($res['errmsg']);
                 }
@@ -179,7 +179,7 @@ class MenuController extends BaseController
                 // }
                 // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
                 if (empty($res['errcode'])) {
-                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
                 } else {
                     return $this->makeJsonError($res['errmsg']);
                 }

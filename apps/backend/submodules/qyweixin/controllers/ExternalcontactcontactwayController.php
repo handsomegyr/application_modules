@@ -140,7 +140,7 @@ class ExternalcontactcontactwayController extends BaseController
                     }
                 }
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -183,7 +183,7 @@ class ExternalcontactcontactwayController extends BaseController
                 $updateData['conclusions_image_pic_url'] = $res['url'];
                 $this->modelExternalcontactContactWay->update(array('_id' => $id), array('$set' => $updateData));
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -224,7 +224,7 @@ class ExternalcontactcontactwayController extends BaseController
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
                 $res = $weixinopenService->addContactWay($data);
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -268,7 +268,7 @@ class ExternalcontactcontactwayController extends BaseController
                 if (!empty($res['errcode'])) {
                     throw new \Exception($res['errmsg'], $res['errcode']);
                 }
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

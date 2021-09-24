@@ -65,8 +65,8 @@ class ExternalcontactunassignedController extends BaseController
                 $page_id = 0;
                 $page_size = 1000;
                 $res = $weixinopenService->getUnassignedList($page_id, $page_size);
-                return $this->response()->success('操作成功:' . \json_encode($res))->refresh();
-                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                return $this->response()->success('操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res))->refresh();
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

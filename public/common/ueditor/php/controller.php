@@ -10,7 +10,7 @@ $action = $_GET['action'];
 
 switch ($action) {
     case 'config':
-        $result =  json_encode($CONFIG);
+        $result =  \App\Common\Utils\Helper::myJsonEncode($CONFIG);
         break;
 
     /* 上传图片 */
@@ -39,7 +39,7 @@ switch ($action) {
         break;
 
     default:
-        $result = json_encode(array(
+        $result = \App\Common\Utils\Helper::myJsonEncode(array(
             'state'=> '请求地址出错'
         ));
         break;
@@ -50,7 +50,7 @@ if (isset($_GET["callback"])) {
     if (preg_match("/^[\w_]+$/", $_GET["callback"])) {
         echo htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
     } else {
-        echo json_encode(array(
+        echo \App\Common\Utils\Helper::myJsonEncode(array(
             'state'=> 'callback参数不合法'
         ));
     }

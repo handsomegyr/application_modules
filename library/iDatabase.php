@@ -550,7 +550,7 @@ class iDatabase
                 $fileBytes = file_get_contents($_FILES[$fileFieldName]['tmp_name']);
                 $fileName = $_FILES[$fileFieldName]['name'];
                 $rst[$fileFieldName] = $this->_client->uploadFile($fileBytes, $fileName);
-                return json_decode(json_encode($rst), true);
+                return json_decode(\App\Common\Utils\Helper::myJsonEncode($rst), true);
             } else {
                 $client = new Zend_Http_Client();
                 $client->setUri($this->_uploadUrl);
@@ -583,7 +583,7 @@ class iDatabase
     {
         if ($this->_local) {
             $rst['file'] = $this->_client->uploadFile($fileBytes, $fileName);
-            return json_decode(json_encode($rst), true);
+            return json_decode(\App\Common\Utils\Helper::myJsonEncode($rst), true);
         } else {
             $client = new Zend_Http_Client();
             $client->setUri($this->_uploadUrl);

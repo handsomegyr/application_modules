@@ -1072,14 +1072,14 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 $datas['content'] = \ob_get_clean();
             }
 
-            echo (json_encode($datas));
+            echo (\App\Common\Utils\Helper::myJsonEncode($datas));
             return true;
         } catch (\Exception $e) {
             $datas = array(
                 'draw' => $input->draw,
                 'error' => $e->getMessage()
             );
-            echo (json_encode($datas));
+            echo (\App\Common\Utils\Helper::myJsonEncode($datas));
             return false;
         }
     }
@@ -1612,7 +1612,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 if (empty($value)) {
                     $value = "";
                 } else {
-                    $value = \json_encode($value);
+                    $value = \\App\Common\Utils\Helper::myJsonEncode($value);
                 }
                 $item[$field] = $value;
             }
@@ -1747,7 +1747,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                                 $item[] = "";
                             }
                         } else {
-                            $item[] = \json_encode($data[$key]);
+                            $item[] = \\App\Common\Utils\Helper::myJsonEncode($data[$key]);
                         }
                     } else {
                         $item[] = "";
@@ -1942,7 +1942,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
         return array(
             'signature' => $signature,
             'timestamp' => $timestamp,
-            'card_ext' => json_encode($card_ext)
+            'card_ext' => \App\Common\Utils\Helper::myJsonEncode($card_ext)
         );
     }
 

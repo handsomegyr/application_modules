@@ -102,7 +102,7 @@ class TemplateController extends BaseController
 
                 $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->syncTemplateList();
-                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -145,7 +145,7 @@ class TemplateController extends BaseController
                 // }
                 // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
                 if (empty($res['errcode'])) {
-                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
                 } else {
                     return $this->makeJsonError($res['errmsg']);
                 }
@@ -176,7 +176,7 @@ class TemplateController extends BaseController
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->deleteTemplate($id);
 
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -207,7 +207,7 @@ class TemplateController extends BaseController
                 ->getTemplateSender()
                 ->addTemplate($template_id_short);
             if (empty($res['errcode'])) {
-                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             } else {
                 return $this->makeJsonError($res['errmsg']);
             }

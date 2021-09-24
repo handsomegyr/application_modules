@@ -25,7 +25,7 @@ $modelCategory = new \App\Backend\Submodules\Goods\Models\Category();
 $categoryList= $modelCategory->getList4Tree('',1);
 ?>
 function Category() {
-	this.items	= <?php echo json_encode($categoryList)?>;
+	this.items	= <?php echo \App\Common\Utils\Helper::myJsonEncode($categoryList)?>;
 }
 
 Category.prototype.find	= function(id) {

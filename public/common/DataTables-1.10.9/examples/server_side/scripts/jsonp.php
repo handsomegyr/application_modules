@@ -69,7 +69,7 @@ $jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ?
 	false;
 
 if ( $jsonp ) {
-	echo $jsonp.'('.json_encode(
+	echo $jsonp.'('.\App\Common\Utils\Helper::myJsonEncode(
 		SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
 	).');';
 }

@@ -40,7 +40,7 @@ class RetryTask extends \Phalcon\CLI\Task
                         // 'op' => 'createnewperiodgoods',
                         // 'goods_commonid' => $goods_commonid
                         // );
-                        // $pheanstalk2->put(json_encode($data));
+                        // $pheanstalk2->put(\App\Common\Utils\Helper::myJsonEncode($data));
                     }
                 } else {
                     usleep(200000);

@@ -893,8 +893,8 @@ class CardbagController extends \App\Backend\Controllers\FormController
             if (!empty($info['errcode'])) {
                 throw new \Exception($info['errmsg'], $info['errcode']);
             }
-            // $this->makeJsonResult(json_encode($info), 'OK');
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功查询code:' . \json_encode($info));
+            // $this->makeJsonResult(\App\Common\Utils\Helper::myJsonEncode($info), 'OK');
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功查询code:' . \\App\Common\Utils\Helper::myJsonEncode($info));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -941,8 +941,8 @@ class CardbagController extends \App\Backend\Controllers\FormController
             if (!empty($info['errcode'])) {
                 throw new \Exception($info['errmsg'], $info['errcode']);
             }
-            // $this->makeJsonResult(json_encode($info), 'OK');
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功核销code:' . \json_encode($info));
+            // $this->makeJsonResult(\App\Common\Utils\Helper::myJsonEncode($info), 'OK');
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功核销code:' . \\App\Common\Utils\Helper::myJsonEncode($info));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -994,8 +994,8 @@ class CardbagController extends \App\Backend\Controllers\FormController
 
             // print_r($info);
             // die('');
-            // $this->makeJsonResult(json_encode($info), 'OK');
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功设置卡券失效:' . \json_encode($info));
+            // $this->makeJsonResult(\App\Common\Utils\Helper::myJsonEncode($info), 'OK');
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功设置卡券失效:' . \\App\Common\Utils\Helper::myJsonEncode($info));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

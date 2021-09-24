@@ -480,7 +480,7 @@
 												?>
 												//var items = {key_0: "开发中", key_1: "部署中", key_2: "已上线", key_3: "已下线"};
 												<?php if (!empty($listValue)) { ?>
-													var items = '<?php echo \json_encode($listValue) ?>';
+													var items = '<?php echo \\App\Common\Utils\Helper::myJsonEncode($listValue) ?>';
 													items = JSON.parse(items);
 												<?php } else { ?>
 													var items = {};

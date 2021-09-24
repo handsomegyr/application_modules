@@ -142,7 +142,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
      */
     protected function object2array($object)
     {
-        // return @json_decode(@json_encode($object), 1);
-        return @json_decode(preg_replace('/{}/', '""', @json_encode($object)), 1);
+        // return @json_decode(@\App\Common\Utils\Helper::myJsonEncode($object), 1);
+        return @json_decode(preg_replace('/{}/', '""', @\App\Common\Utils\Helper::myJsonEncode($object)), 1);
     }
 }

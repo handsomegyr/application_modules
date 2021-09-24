@@ -197,7 +197,7 @@ class ComponentsnsController extends ControllerBase
             $objComponent = new \Weixin\Token\Component($this->authorizer_appid, $this->component_appid, $this->componentConfig['access_token']);
             $arrAccessToken = $objComponent->getAccessToken();
             if (isset($arrAccessToken['errcode'])) {
-                throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+                throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
             }
 
             // 授权成功后，记录该微信用户的基本信息
@@ -214,7 +214,7 @@ class ComponentsnsController extends ControllerBase
                     $weixin->setSnsAccessToken($arrAccessToken['access_token']);
                     $userInfo = $weixin->getSnsManager()->getSnsUserInfo($arrAccessToken['openid']);
                     if (isset($userInfo['errcode'])) {
-                        throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
+                        throw new \Exception("获取用户信息失败，原因:" . \App\Common\Utils\Helper::myJsonEncode($userInfo));
                     }
                 }
             }

@@ -8,7 +8,7 @@
 // See the PHP manual - http://editor.datatables.net/manual/php - for
 // information on how to use the Editor PHP libraries.
 
-echo json_encode( array(
+echo \App\Common\Utils\Helper::myJsonEncode( array(
 	"data" => array( $_POST['data']['keyless'] )
 ) );
 

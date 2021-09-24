@@ -48,4 +48,4 @@ if ( Editor::action( $_POST ) === Editor::ACTION_READ ) {
 }
 
 // Send it back to the client
-echo json_encode( $out );
+echo \App\Common\Utils\Helper::myJsonEncode( $out );

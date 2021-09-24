@@ -3,7 +3,7 @@
     $toastr     = $_SESSION['toastr'];
     $type       = empty($toastr['type']) ? 'success' : $toastr['type'];
     $message    = empty($toastr['message']) ? '保存成功' : $toastr['message'];
-    $options    = empty($toastr['options']) ? json_encode([]) : json_encode($toastr['options']);
+    $options    = empty($toastr['options']) ? \App\Common\Utils\Helper::myJsonEncode([]) : \App\Common\Utils\Helper::myJsonEncode($toastr['options']);
     unset($_SESSION['toastr']);
     ?>
     <script>

@@ -38,7 +38,7 @@ foreach ($source as $imgUrl) {
 }
 
 /* 返回抓取数据 */
-return json_encode(array(
+return \App\Common\Utils\Helper::myJsonEncode(array(
     'state'=> count($list) ? 'SUCCESS':'ERROR',
     'list'=> $list
 ));

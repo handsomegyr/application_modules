@@ -192,10 +192,10 @@ class Test2Controller extends ControllerBase
             $options['new'] = true; // 返回更新之后的值
             $rst = $modelMsgCount->findAndModify($options);
             if (empty($rst['ok'])) {
-                throw new \Exception("findAndModify执行错误，返回结果为:" . json_encode($rst));
+                throw new \Exception("findAndModify执行错误，返回结果为:" . \App\Common\Utils\Helper::myJsonEncode($rst));
             }
             if (empty($rst['value'])) {
-                throw new \Exception("findAndModify执行错误，返回结果为:" . json_encode($rst));
+                throw new \Exception("findAndModify执行错误，返回结果为:" . \App\Common\Utils\Helper::myJsonEncode($rst));
             }
             $ret = $rst['value'];
             print_r($ret);

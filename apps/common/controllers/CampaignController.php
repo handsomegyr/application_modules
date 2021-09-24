@@ -147,8 +147,8 @@ class CampaignController extends ControllerBase
                                 'signkey' => $signkey,
                                 'timestamp' => $timestamp
                             );
-                            setcookie('Weixin_userInfo', json_encode($userInfo), time() + 3600 * 24 * 30, '/');
-                            $_COOKIE['Weixin_userInfo'] = json_encode($userInfo);
+                            setcookie('Weixin_userInfo', \App\Common\Utils\Helper::myJsonEncode($userInfo), time() + 3600 * 24 * 30, '/');
+                            $_COOKIE['Weixin_userInfo'] = \App\Common\Utils\Helper::myJsonEncode($userInfo);
 
                             // 授权成功之后的处理
                             $this->authorize();
@@ -222,8 +222,8 @@ class CampaignController extends ControllerBase
                                 'signkey' => $signkey,
                                 'timestamp' => $timestamp
                             );
-                            setcookie('Alipay_userInfo', json_encode($userInfo), time() + 3600 * 24 * 30, '/');
-                            $_COOKIE['Alipay_userInfo'] = json_encode($userInfo);
+                            setcookie('Alipay_userInfo', \App\Common\Utils\Helper::myJsonEncode($userInfo), time() + 3600 * 24 * 30, '/');
+                            $_COOKIE['Alipay_userInfo'] = \App\Common\Utils\Helper::myJsonEncode($userInfo);
 
                             // 授权成功之后的处理
                             $this->alipayauthorize();

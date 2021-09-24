@@ -22,7 +22,7 @@ class Editor extends Field
 
         $config = (array) WangEditor::config('config');
 
-        $config = json_encode(array_merge([
+        $config = \App\Common\Utils\Helper::myJsonEncode(array_merge([
             'zIndex'              => 0,
             'uploadImgShowBase64' => true,
         ], $config, $this->options));

@@ -251,7 +251,7 @@ class FileController extends ControllerBase
                 'err' => '未发现有效的上传文件'
             );
         }
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+        echo \App\Common\Utils\Helper::myJsonEncode($rst);
         return;
     }
 }

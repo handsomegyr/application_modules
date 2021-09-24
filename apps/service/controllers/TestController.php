@@ -177,10 +177,10 @@ class TestController extends ControllerBase
             $options['new'] = true; // 返回更新之后的值
             $rst = $modelMsgCount->findAndModify($options);
             if (empty($rst['ok'])) {
-                throw new \Exception("findAndModify执行错误，返回结果为:" . json_encode($rst));
+                throw new \Exception("findAndModify执行错误，返回结果为:" . \App\Common\Utils\Helper::myJsonEncode($rst));
             }
             if (empty($rst['value'])) {
-                throw new \Exception("findAndModify执行错误，返回结果为:" . json_encode($rst));
+                throw new \Exception("findAndModify执行错误，返回结果为:" . \App\Common\Utils\Helper::myJsonEncode($rst));
             }
             $ret = $rst['value'];
             print_r($ret);
@@ -211,18 +211,18 @@ class TestController extends ControllerBase
             echo ("<br/>select raw1:<br/>");
 
             $ret = $modelMsgCount->selectRaw('select `openid` from `iweixin2_user` where `sex`= 1');
-            echo \json_encode($ret);
+            echo \\App\Common\Utils\Helper::myJsonEncode($ret);
 
 
             echo ("<br/>select raw2:<br/>");
 
             $ret = $modelMsgCount->selectRaw('select `openid` from `iweixin2_user` where `sex`= ?', array(1));
-            echo \json_encode($ret);
+            echo \\App\Common\Utils\Helper::myJsonEncode($ret);
 
             echo ("<br/>select raw3:<br/>");
 
             $ret = $modelMsgCount->selectRaw('select count(*) as num from `iweixin2_user`');
-            echo \json_encode($ret);
+            echo \\App\Common\Utils\Helper::myJsonEncode($ret);
         } catch (\Exception $e) {
             die($e->getMessage());
         }

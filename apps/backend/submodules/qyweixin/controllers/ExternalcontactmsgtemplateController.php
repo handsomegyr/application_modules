@@ -151,7 +151,7 @@ class ExternalcontactmsgtemplateController extends BaseController
                     }
                 }
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -194,7 +194,7 @@ class ExternalcontactmsgtemplateController extends BaseController
                 $updateData['image_pic_url'] = $res['url'];
                 $this->modelExternalcontactMsgTemplate->update(array('_id' => $id), array('$set' => $updateData));
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -247,7 +247,7 @@ class ExternalcontactmsgtemplateController extends BaseController
                 $match['keyword'] = "";
                 $match['msg_template_chat_type'] = $msgtemplate_chat_type;
                 $res = $weixinopenService->addMsgTemplate("", $msgtemplate_msg_user, $data, $match);
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -286,7 +286,7 @@ class ExternalcontactmsgtemplateController extends BaseController
                 }
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
                 $res = $weixinopenService->getGroupMsgSendResult($data['msgid'], $data['creator']);
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \json_encode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

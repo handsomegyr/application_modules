@@ -31,7 +31,7 @@ class SmsController extends ControllerBase
             $code = $this->get('code', '');
             $contents = $this->get('contents', '');
             $contents = base64_decode($contents);
-            // $contents = json_encode(array(
+            // $contents = \App\Common\Utils\Helper::myJsonEncode(array(
             // 'site' => '家宝网站',
             // 'vcode' => '4567'
             // ));

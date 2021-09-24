@@ -75,7 +75,7 @@ class GoodsTask extends \Phalcon\CLI\Task
                             'op' => 'createnewperiodgoods',
                             'goods_commonid' => $goods_commonid
                         );
-                        // $pheanstalk2->put(json_encode($data));
+                        // $pheanstalk2->put(\App\Common\Utils\Helper::myJsonEncode($data));
                     }
                 } else {
                     echo ("empty newperiodgoods queue \n");
@@ -112,7 +112,7 @@ class GoodsTask extends \Phalcon\CLI\Task
                             'op' => 'lotterygoods',
                             'goods_id' => $goods_id
                         );
-                        // $pheanstalk2->put(json_encode($data));
+                        // $pheanstalk2->put(\App\Common\Utils\Helper::myJsonEncode($data));
                     }
                 } else {
                     echo ("empty lotterygoods queue \n");

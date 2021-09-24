@@ -448,7 +448,7 @@ class SSP {
 	 */
 	static function fatal ( $msg )
 	{
-		echo json_encode( array( 
+		echo \App\Common\Utils\Helper::myJsonEncode( array( 
 			"error" => $msg
 		) );
 

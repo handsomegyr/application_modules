@@ -70,8 +70,8 @@ class WeixinPlugin2 extends \Phalcon\Di\Injectable
                     'timestamp' => $timestamp
                 );
                 // 存储微信信息到cookie
-                setcookie('Weixin_userInfo', json_encode($userInfo), time() + 3600 * 24 * 30, '/');
-                $_COOKIE['Weixin_userInfo'] = json_encode($userInfo);
+                setcookie('Weixin_userInfo', \App\Common\Utils\Helper::myJsonEncode($userInfo), time() + 3600 * 24 * 30, '/');
+                $_COOKIE['Weixin_userInfo'] = \App\Common\Utils\Helper::myJsonEncode($userInfo);
                 print_r($_COOKIE);
                 die('cookie has been success to set');
             } elseif ($operation4cookie == 'clear') { // 情况测试用cookie

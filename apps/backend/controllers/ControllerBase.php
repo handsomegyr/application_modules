@@ -129,7 +129,7 @@ EOT;
                 // print_r($menus);
                 // print_r($menus2);
                 // die($requestUrl);
-                // die(json_encode($menus));
+                // die(\App\Common\Utils\Helper::myJsonEncode($menus));
             }
             $this->view->setVar('menus', $menus);
         }

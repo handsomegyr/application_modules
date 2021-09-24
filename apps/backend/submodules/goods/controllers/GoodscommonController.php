@@ -100,7 +100,7 @@ class GoodscommonController extends \App\Backend\Controllers\FormController
             // $data["stargazers_count"] = 1313;
             // $data["watchers_count"] = 1313;
             // $ret['items'][0] = $data;
-            echo json_encode($ret);
+            echo \App\Common\Utils\Helper::myJsonEncode($ret);
             // $this->response->setJsonContent($ret)->send();
             return true;
         } catch (\Exception $e) {

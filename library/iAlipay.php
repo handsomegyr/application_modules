@@ -607,7 +607,7 @@ class iAlipay
         if (! empty($camp_source)) {
             $bizContent['camp_source'] = $camp_source;
         }
-        $request->setBizContent(json_encode($bizContent));
+        $request->setBizContent(\App\Common\Utils\Helper::myJsonEncode($bizContent));
         $result = $this->aopclient_request_execute($request);
         
         return $result;
@@ -725,7 +725,7 @@ class iAlipay
         $bizContent = array();
         $bizContent['camp_id'] = $camp_id;
         $bizContent['prize_id'] = $prize_id;
-        $request->setBizContent(json_encode($bizContent));
+        $request->setBizContent(\App\Common\Utils\Helper::myJsonEncode($bizContent));
         $result = $this->aopclient_request_execute($request);
         
         return $result;
@@ -994,7 +994,7 @@ class iAlipay
         $request = new AlipayMarketingCampaignDrawcampQueryRequest();
         $bizContent = array();
         $bizContent['camp_id'] = $camp_id;
-        $str = json_encode($bizContent);
+        $str = \App\Common\Utils\Helper::myJsonEncode($bizContent);
         // $str = "{" . "\"camp_id\":\"{$camp_id}\"" . "}";
         // die($str);
         $request->setBizContent($str);
@@ -1150,7 +1150,7 @@ class iAlipay
         $request = new AlipayFinanceFundFundquotationQueryRequest();
         $bizContent = array();
         $bizContent['fund_code'] = $fund_code;
-        $request->setBizContent(json_encode($bizContent));
+        $request->setBizContent(\App\Common\Utils\Helper::myJsonEncode($bizContent));
         $result = $this->aopclient_request_execute($request);
         
         return $result;
@@ -1232,7 +1232,7 @@ class iAlipay
 
     protected function convertToArray($json)
     {
-        $json = json_encode($json);
+        $json = \App\Common\Utils\Helper::myJsonEncode($json);
         return json_decode($json, true);
     }
 }

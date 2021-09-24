@@ -22,7 +22,7 @@ class Editor extends Field
 
         $config = (array) Summernote::config('config');
 
-        $config = json_encode(array_merge([
+        $config = \App\Common\Utils\Helper::myJsonEncode(array_merge([
             'height' => 300,
         ], $config));
 

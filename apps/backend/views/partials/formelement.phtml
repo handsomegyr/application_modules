@@ -37,9 +37,9 @@
             $this->partial('partials/form/display');
         } elseif ($field['form']['input_type'] == "textarea") {
             if ($field['data']['type'] == "json") {
-                $value = empty($value) ? '{}' : (!is_string($value) ? \json_encode($value) : $value);
+                $value = empty($value) ? '{}' : (!is_string($value) ? \\App\Common\Utils\Helper::myJsonEncode($value) : $value);
             } elseif ($field['data']['type'] == "array") {
-                $value = empty($value) ? '[]' : (!is_string($value) ? \json_encode($value) : $value);
+                $value = empty($value) ? '[]' : (!is_string($value) ? \\App\Common\Utils\Helper::myJsonEncode($value) : $value);
             } else {
                 //$value = nl2br($value);
             }

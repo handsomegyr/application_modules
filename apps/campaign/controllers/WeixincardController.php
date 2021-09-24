@@ -134,7 +134,7 @@ class WeixincardController extends ControllerBase
         return array(
             'signature' => $signature,
             'timestamp' => $timestamp,
-            'card_ext' => json_encode($card_ext)
+            'card_ext' => \App\Common\Utils\Helper::myJsonEncode($card_ext)
         );
     }
 
@@ -455,6 +455,6 @@ class WeixincardController extends ControllerBase
      */
     public function object2array($object)
     {
-        return @json_decode(preg_replace('/{}/', '""', @json_encode($object)), 1);
+        return @json_decode(preg_replace('/{}/', '""', @\App\Common\Utils\Helper::myJsonEncode($object)), 1);
     }
 }

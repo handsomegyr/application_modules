@@ -161,7 +161,7 @@ class SnsController extends ControllerBase
                         $weixin->setSnsAccessToken($arrAccessToken['access_token']);
                         $userInfo = $weixin->getSnsManager()->getSnsUserInfo($arrAccessToken['openid']);
                         if (isset($userInfo['errcode'])) {
-                            throw new \Exception("获取用户信息失败，原因:" . json_encode($userInfo, JSON_UNESCAPED_UNICODE));
+                            throw new \Exception("获取用户信息失败，原因:" . \App\Common\Utils\Helper::myJsonEncode($userInfo));
                         }
                     }
                     $t2elapsed = microtime(true) - $microtime_start;
@@ -187,7 +187,7 @@ class SnsController extends ControllerBase
                     $_SESSION[$this->cookie_session_key]["accessToken_{$this->appid}_{$arrAccessToken['scope']}"] = $arrAccessToken;
                     $path = '/';
                     $expireTime = time() + 1.5 * 3600;
-                    setcookie("__{$this->cookie_session_key}_{$this->appid}_{$arrAccessToken['scope']}__", json_encode($arrAccessToken), $expireTime, $path);
+                    setcookie("__{$this->cookie_session_key}_{$this->appid}_{$arrAccessToken['scope']}__", \App\Common\Utils\Helper::myJsonEncode($arrAccessToken), $expireTime, $path);
                     
                     $redirect = $this->getRedirectUrl($redirect, $arrAccessToken);
                     
@@ -214,7 +214,7 @@ class SnsController extends ControllerBase
                 exit();
             } else {
                 // 如果用户未授权登录，点击取消，自行设定取消的业务逻辑
-                throw new \Exception("获取token失败,原因:" . json_encode($arrAccessToken, JSON_UNESCAPED_UNICODE));
+                throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
             }
         } catch (\Exception $e) {
             print_r($e->getFile());

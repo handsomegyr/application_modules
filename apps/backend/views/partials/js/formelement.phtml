@@ -242,10 +242,10 @@
             ?>
             $("input.<?php echo $key ?>").fileinput({
             <?php if(!empty($initialPreviewConfig)){?>
-                "initialPreviewConfig": <?php echo \json_encode($initialPreviewConfig) ?>,
+                "initialPreviewConfig": <?php echo \\App\Common\Utils\Helper::myJsonEncode($initialPreviewConfig) ?>,
             <?php }?>
             <?php if(!empty($initialPreview)){?>
-                "initialPreview": <?php echo \json_encode($initialPreview) ?>,
+                "initialPreview": <?php echo \\App\Common\Utils\Helper::myJsonEncode($initialPreview) ?>,
             <?php }?>
                 "overwriteInitial": true,
                 "initialPreviewAsData": true,

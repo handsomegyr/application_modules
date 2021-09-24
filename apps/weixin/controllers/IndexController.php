@@ -1102,7 +1102,7 @@ class IndexController extends ControllerBase
             $postStr = file_get_contents('php://input');
             $this->_sourceDatas['request_xml'] = $postStr;
             if (isset($this->_sourceDatas['AESInfo'])) {
-                $this->_sourceDatas['AESInfo'] = json_encode($this->_sourceDatas['AESInfo']);
+                $this->_sourceDatas['AESInfo'] = \App\Common\Utils\Helper::myJsonEncode($this->_sourceDatas['AESInfo']);
             }
             unset($datas['__UNDO_SPECIAL_']);
             $this->_source->save($this->_sourceDatas);

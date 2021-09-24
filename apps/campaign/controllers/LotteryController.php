@@ -508,7 +508,7 @@ class LotteryController extends ControllerBase
                 'key' => $pass, // your secret key
                 'opcode' => 'O12345', // operation code to be used
                 'message' => '6HIb4XwaP', // Spring message id
-                'rcpts' => json_encode($rcpts)
+                'rcpts' => \App\Common\Utils\Helper::myJsonEncode($rcpts)
             ); // recipients
 
             // Trigger SMS API documentation Splio development team

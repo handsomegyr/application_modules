@@ -437,7 +437,7 @@ class Join extends DataTables\Ext {
 
 			if ( strpos( $field->dbField() , "." ) !== false ) {
 				if ( $field->set() !== Field::SET_NONE && $this->_set ) {
-					echo json_encode( array(
+					echo \App\Common\Utils\Helper::myJsonEncode( array(
 						"sError" => "Table selected fields (i.e. '{table}.{column}') in `Join` ".
 							"must be read only. Use `set(false)` for the field to disable writing."
 					) );
@@ -445,7 +445,7 @@ class Join extends DataTables\Ext {
 				}
 
 				if ( strpos( $field->name() , "." ) !== false ) {
-					echo json_encode( array(
+					echo \App\Common\Utils\Helper::myJsonEncode( array(
 						"sError" => "Table selected fields (i.e. '{table}.{column}') in `Join` ".
 							"must have a name alias which does not contain a period ('.'). Use ".
 							"name('---') to set a name for the field"
@@ -518,7 +518,7 @@ class Join extends DataTables\Ext {
 		// any other field. If the instance's pkey, then we've got that in the DT_RowId
 		// parameter, so we can use that. Otherwise, the key must be in the field list.
 		if ( !$pkeyIsJoin && count($data) > 0 && !isset($data[0][ $joinField ]) ) {
-			echo json_encode( array(
+			echo \App\Common\Utils\Helper::myJsonEncode( array(
 				"sError" => "Join was performed on the field '{$joinField}' which was not "
 					."included in the Editor field list. The join field must be included "
 					."as a regular field in the Editor instance."
