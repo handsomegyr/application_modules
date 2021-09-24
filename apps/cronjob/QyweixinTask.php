@@ -32,7 +32,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $authorizer_appid = $agentItem['authorizer_appid'];
                     $agentid = $agentItem['agentid'];
 
-                    $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
                     $lock->setExpire(3600);
                     if ($lock->lock()) {
                         continue;
@@ -174,7 +174,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $component_appid = $agentItem['component_appid'];
                     $agent_appid = $agentItem['appid'];
 
-                    $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, 'component_appid:' . $component_appid . ' agent_appid:' . $agent_appid));
+                    $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, 'component_appid:' . $component_appid . ' agent_appid:' . $agent_appid));
                     $lock->setExpire(3600);
                     if ($lock->lock()) {
                         continue;
@@ -220,7 +220,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $authorizer_appid = $agentItem['authorizer_appid'];
                     $agentid = $agentItem['agentid'];
 
-                    $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
                     $lock->setExpire(3600 * 8);
                     if ($lock->lock()) {
                         continue;
@@ -262,7 +262,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         $cache = $this->getDI()->get("cache");
 
         $cacheKey1 = 'get_department_user_simple_list_command';
-        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, $cacheKey1));
         $lock->setExpire(3600 * 8);
         if ($lock->lock()) {
             return;
@@ -316,7 +316,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         $cache = $this->getDI()->get("cache");
 
         $cacheKey1 = 'get_user_list_from_department_user_command';
-        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, $cacheKey1));
         $lock->setExpire(3600 * 8);
         if ($lock->lock()) {
             return;
@@ -380,7 +380,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         $cache = $this->getDI()->get("cache");
 
         $cacheKey1 = 'get_user_info_command';
-        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, $cacheKey1));
         $lock->setExpire(3600 * 8);
         if ($lock->lock()) {
             return;
@@ -435,7 +435,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         $cache = $this->getDI()->get("cache");
 
         $cacheKey1 = 'get_tag_party_user_command';
-        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, $cacheKey1));
         $lock->setExpire(3600 * 8);
         if ($lock->lock()) {
             return;
@@ -504,7 +504,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $authorizer_appid = $agentItem['authorizer_appid'];
                     $agentid = $agentItem['agentid'];
 
-                    $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
                     $lock->setExpire(3600 * 8);
                     if ($lock->lock()) {
                         continue;
@@ -546,7 +546,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         $cache = $this->getDI()->get("cache");
 
         $cacheKey1 = 'get_external_user_list_command';
-        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, $cacheKey1));
         $lock->setExpire(3600 * 8);
         if ($lock->lock()) {
             return;
@@ -600,7 +600,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         $cache = $this->getDI()->get("cache");
 
         $cacheKey1 = 'get_external_user_info_command';
-        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, $cacheKey1));
         $lock->setExpire(3600 * 8);
         if ($lock->lock()) {
             return;
@@ -655,7 +655,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         $cache = $this->getDI()->get("cache");
 
         $cacheKey1 = 'get_group_chat_list_command';
-        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, $cacheKey1));
         $lock->setExpire(3600 * 8);
         if ($lock->lock()) {
             return;
@@ -714,7 +714,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         $cache = $this->getDI()->get("cache");
 
         $cacheKey1 = 'get_group_chat_info_command';
-        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, $cacheKey1));
         $lock->setExpire(3600 * 8);
         if ($lock->lock()) {
             return;
@@ -791,7 +791,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $authorizer_appid = $agentItem['authorizer_appid'];
                     $agentid = $agentItem['agentid'];
 
-                    $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
                     $lock->setExpire(3600 * 8);
                     if ($lock->lock()) {
                         continue;
@@ -865,7 +865,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $authorizer_appid = $agentItem['authorizer_appid'];
                     $agentid = $agentItem['agentid'];
 
-                    $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
                     $lock->setExpire(3600 * 8);
                     if ($lock->lock()) {
                         continue;
@@ -934,7 +934,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         $cache = $this->getDI()->get("cache");
 
         $cacheKey1 = 'get_groupmsg_task_list_command';
-        $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, $cacheKey1));
+        $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, $cacheKey1));
         $lock->setExpire(3600 * 8);
         if ($lock->lock()) {
             return;
@@ -971,7 +971,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                 $agentid = $info['agentid'];
                 $msgid = $info['msgid'];
 
-                $lock = new \iLock(cacheKey(__FILE__, __CLASS__, __METHOD__, ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid . ' msgid:' . $msgid));
+                $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid . ' msgid:' . $msgid));
                 $lock->setExpire(3600 * 8);
                 if ($lock->lock()) {
                     continue;

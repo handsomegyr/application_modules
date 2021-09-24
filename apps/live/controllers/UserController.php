@@ -72,7 +72,7 @@ class UserController extends ControllerBase
                     return false;
                 }
                 // 检查是否锁定，如果没有锁定加锁
-                $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $openid);
+                $key = cacheKey(__CLASS__, __METHOD__, $openid);
                 $objLock = new \iLock($key);
                 if ($objLock->lock()) {
                     echo $this->error(- 888, "上次操作还未完成,请等待");

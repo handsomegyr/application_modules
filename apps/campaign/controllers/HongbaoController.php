@@ -94,7 +94,7 @@ class HongbaoController extends ControllerBase
             }
 
             // 检查是否锁定，如果没有锁定加锁
-            $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
+            $key = cacheKey(__CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(-99, "上次操作还未完成,请等待");
@@ -202,7 +202,7 @@ class HongbaoController extends ControllerBase
                 // 校验微信id,上线测试时需要加上去
                 if ($this->validateOpenid4Guotai($FromUserName, $timestamp, $secretKey, $signkey)) {
 
-                    $key = cacheKey(__FILE__, __CLASS__, $FromUserName);
+                    $key = cacheKey(__CLASS__, $FromUserName);
                     $objLock = new \iLock($key);
                     if ($objLock->lock()) {
                         $this->refreshPage(5);

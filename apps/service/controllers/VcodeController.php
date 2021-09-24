@@ -223,7 +223,7 @@ class VcodeController extends ControllerBase
 
     private function getCacheKey($key)
     {
-        $key = cacheKey(__FILE__, __CLASS__, __METHOD__, date('Ymd'), $key);
+        $key = cacheKey(__CLASS__, __METHOD__, date('Ymd'), $key);
         return $key;
     }
 }

@@ -90,7 +90,7 @@ class CnyController extends ControllerBase
             $signkey = trim($userInfo['signkey']);
 
             // 检查是否锁定，如果没有锁定加锁
-            $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
+            $key = cacheKey(__CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(-40499, "上次操作还未完成,请等待");
@@ -210,7 +210,7 @@ class CnyController extends ControllerBase
             }
 
             // 检查是否锁定，如果没有锁定加锁
-            $key = cacheKey(__FILE__, __CLASS__, __METHOD__, $FromUserName);
+            $key = cacheKey(__CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(-40499, "请等待");
