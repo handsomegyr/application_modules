@@ -526,17 +526,6 @@ function isJson($string)
 }
 
 /**
- * 范围cache key字符串
- *
- * @return string
- */
-function cacheKey()
-{
-    $args = func_get_args();
-    return md5(serialize($args)) . 'ck';
-}
-
-/**
  * 中奖概率 百分比 0.0001-100之间的浮点数
  *
  * @param double $percent            

@@ -32,7 +32,7 @@ class WeixinTask extends \Phalcon\CLI\Task
                     $component_appid = $authorizerItem['component_appid'];
                     $appid = $authorizerItem['appid'];
 
-                    $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, 'component_appid:' . $component_appid . ' appid:' . $appid));
+                    $lock = new \iLock(\App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, 'component_appid:' . $component_appid . ' appid:' . $appid));
                     $lock->setExpire(3600);
                     if ($lock->lock()) {
                         continue;
@@ -74,7 +74,7 @@ class WeixinTask extends \Phalcon\CLI\Task
                     $component_appid = $authorizerItem['component_appid'];
                     $authorizer_appid = $authorizerItem['appid'];
 
-                    $lock = new \iLock(cacheKey(__CLASS__, __METHOD__, 'component_appid:' . $component_appid . ' authorizer_appid:' . $authorizer_appid));
+                    $lock = new \iLock(\App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, 'component_appid:' . $component_appid . ' authorizer_appid:' . $authorizer_appid));
                     $lock->setExpire(3600);
                     if ($lock->lock()) {
                         continue;

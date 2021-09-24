@@ -89,7 +89,7 @@ class IndexController extends ControllerBase
             $signkey = trim($userInfo['signkey']);
 
             // 检查是否锁定，如果没有锁定加锁
-            $key = cacheKey(__CLASS__, __METHOD__, $FromUserName);
+            $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(-40499, "上次操作还未完成,请等待");
@@ -207,7 +207,7 @@ class IndexController extends ControllerBase
             }
 
             // 检查是否锁定，如果没有锁定加锁
-            $key = cacheKey(__CLASS__, __METHOD__, $FromUserName);
+            $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(-40499, "上次操作还未完成,请等待");
@@ -502,7 +502,7 @@ class IndexController extends ControllerBase
             }
 
             // 检查是否锁定，如果没有锁定加锁
-            $key = cacheKey(__CLASS__, __METHOD__, $FromUserName);
+            $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, $FromUserName);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(-40499, "上次操作还未完成,请等待");
@@ -565,7 +565,7 @@ class IndexController extends ControllerBase
         // http://www.myapplicationmodule.com/campaign/index/bf?name=xxx
         try {
             $name = $this->get('name');
-            $cacheKey = cacheKey(__CLASS__, $name);
+            $cacheKey = \App\Common\Utils\Helper::myCacheKey(__CLASS__, $name);
             echo $cacheKey;
             $oLock = new \iLock($cacheKey);
             $l = $oLock->lock();

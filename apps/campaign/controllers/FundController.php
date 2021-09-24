@@ -56,7 +56,7 @@ class FundController extends ControllerBase
             }
 
             // 检查是否锁定，如果没有锁定加锁
-            $key = cacheKey(__CLASS__, __METHOD__, $user_id);
+            $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, $user_id);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(-888, "上次操作还未完成,请等待");
@@ -145,7 +145,7 @@ class FundController extends ControllerBase
             }
 
             // 检查是否锁定，如果没有锁定加锁
-            $key = cacheKey(__CLASS__, __METHOD__, $user_id);
+            $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, $user_id);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(-40499, "上次操作还未完成,请等待");
@@ -215,7 +215,7 @@ class FundController extends ControllerBase
                 return false;
             }
 
-            $cacheKey = cacheKey(__CLASS__, __METHOD__, $fundcodes);
+            $cacheKey = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, $fundcodes);
             $cache = Zend_Registry::get('cache');
             $ret = $cache->load($cacheKey);
             if (empty($ret)) {

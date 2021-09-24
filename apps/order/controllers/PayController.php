@@ -395,7 +395,7 @@ class PayController extends ControllerBase
 
     private function getCacheKey4Payresult($id)
     {
-        $key = cacheKey(__CLASS__, __METHOD__, $id);
+        $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, $id);
         return $key;
     }
 }

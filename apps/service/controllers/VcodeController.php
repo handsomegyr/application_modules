@@ -56,7 +56,7 @@ class VcodeController extends ControllerBase
                 }
 
                 // 记录调用次数
-                $key = $this->getCacheKey($userEmail);
+                $key = $this->get\App\Common\Utils\Helper::myCacheKey($userEmail);
                 $cache = $this->getDI()->get("cache");
                 $count = $cache->get($key);
                 if (empty($count)) {
@@ -129,7 +129,7 @@ class VcodeController extends ControllerBase
                 }
 
                 // 记录调用次数
-                $key = $this->getCacheKey($mobile);
+                $key = $this->get\App\Common\Utils\Helper::myCacheKey($mobile);
                 $cache = $this->getDI()->get("cache");
                 $count = $cache->get($key);
                 if (empty($count)) {
@@ -213,7 +213,7 @@ class VcodeController extends ControllerBase
     {
         return false;
         // 一个手机号的次数超过$num的话就出现验证码
-        $key = $this->getCacheKey($key);
+        $key = $this->get\App\Common\Utils\Helper::myCacheKey($key);
         $cache = $this->getDI()->get("cache");
         $count = $cache->get($key);
         $isCaptchaNeed = ($count >= $num);
@@ -221,9 +221,9 @@ class VcodeController extends ControllerBase
         return $isCaptchaNeed;
     }
 
-    private function getCacheKey($key)
+    private function get\App\Common\Utils\Helper::myCacheKey($key)
     {
-        $key = cacheKey(__CLASS__, __METHOD__, date('Ymd'), $key);
+        $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, date('Ymd'), $key);
         return $key;
     }
 }

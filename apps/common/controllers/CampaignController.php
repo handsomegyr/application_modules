@@ -60,7 +60,7 @@ class CampaignController extends ControllerBase
          * 根据用户信息中的subscribe字段判断是否关注
          * 如果关注的话，将这条用户信息存入缓存中，缓存时间一天
          */
-        $cacheKey = cacheKey(__CLASS__, __METHOD__, $FromUserName);
+        $cacheKey = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, $FromUserName);
         $cache = $this->getDI()->get("cache");
         $is_subscribe = false; // $cache->get($cacheKey);
 

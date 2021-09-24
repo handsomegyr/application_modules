@@ -9,7 +9,7 @@ class iQueue
         $cache = $di->get("cache");
         
         $data = serialize($data);
-        $key = cacheKey(__CLASS__, $data);
+        $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, $data);
         $exist = $cache->get($key);
         if (empty($exist)) {
             $pheanstalk = $di->get('pheanstalk');

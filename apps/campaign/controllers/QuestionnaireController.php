@@ -195,7 +195,7 @@ class QuestionnaireController extends ControllerBase
 
             // 答题
             // 检查是否锁定，如果没有锁定加锁
-            $key = cacheKey(__CLASS__, __METHOD__, $userId, $questionnaireId);
+            $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, $userId, $questionnaireId);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 echo $this->error(-40499, "上次操作还未完成,请等待");

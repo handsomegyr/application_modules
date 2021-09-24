@@ -52,7 +52,7 @@ class iLock4Memcached
         
         $this->_cache = $di->get('memcached'); // Zend_Registry::get('memcached');
         
-        $this->_key = cacheKey($key);
+        $this->_key = \App\Common\Utils\Helper::myCacheKey($key);
         $this->_expire = ini_get('max_execution_time');
     }
 

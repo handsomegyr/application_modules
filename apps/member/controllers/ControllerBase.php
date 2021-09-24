@@ -231,7 +231,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             $headimgurl = $userInfo['user_headimgurl'];
 
             // 加锁
-            $key = cacheKey(__CLASS__, $openid);
+            $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, $openid);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 $this->refreshPage(5);
@@ -324,7 +324,7 @@ class ControllerBase extends \App\Common\Controllers\ControllerBase
             $headimgurl = $userInfo['user_headimgurl'];
 
             // 加锁
-            $key = cacheKey(__CLASS__, $openid);
+            $key = \App\Common\Utils\Helper::myCacheKey(__CLASS__, $openid);
             $objLock = new \iLock($key);
             if ($objLock->lock()) {
                 $this->refreshPage(5);

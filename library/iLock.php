@@ -66,7 +66,7 @@ class iLock
         // }
         $redis->select(2); // 指定库
         $this->_cache = $redis;
-        $this->_key = $key; // cacheKey($key);
+        $this->_key = $key; // \App\Common\Utils\Helper::myCacheKey($key);
         $this->_expire = ini_get('max_execution_time') > 0 ? ini_get('max_execution_time') : 30;
         
         //die(uniqid() . $host . $port);
