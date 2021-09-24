@@ -97,7 +97,7 @@ class DatacubeupstreammsgweekController extends BaseController
 
                 $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->syncUpstreamMsgWeek($start_ref_date, $end_ref_date);
-                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

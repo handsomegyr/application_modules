@@ -89,7 +89,7 @@ class UserController extends BaseController
                 ->getUserManager()
                 ->updateRemark($data['openid'], $data['remark']);
             if (empty($res['errcode'])) {
-                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             } else {
                 return $this->makeJsonError($res['errmsg']);
             }
@@ -118,7 +118,7 @@ class UserController extends BaseController
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->getUserInfo($data);
 
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -143,7 +143,7 @@ class UserController extends BaseController
 
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->getUserTagIdList($id);
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

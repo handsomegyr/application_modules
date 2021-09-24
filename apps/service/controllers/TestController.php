@@ -211,18 +211,18 @@ class TestController extends ControllerBase
             echo ("<br/>select raw1:<br/>");
 
             $ret = $modelMsgCount->selectRaw('select `openid` from `iweixin2_user` where `sex`= 1');
-            echo \\App\Common\Utils\Helper::myJsonEncode($ret);
+            echo \App\Common\Utils\Helper::myJsonEncode($ret);
 
 
             echo ("<br/>select raw2:<br/>");
 
             $ret = $modelMsgCount->selectRaw('select `openid` from `iweixin2_user` where `sex`= ?', array(1));
-            echo \\App\Common\Utils\Helper::myJsonEncode($ret);
+            echo \App\Common\Utils\Helper::myJsonEncode($ret);
 
             echo ("<br/>select raw3:<br/>");
 
             $ret = $modelMsgCount->selectRaw('select count(*) as num from `iweixin2_user`');
-            echo \\App\Common\Utils\Helper::myJsonEncode($ret);
+            echo \App\Common\Utils\Helper::myJsonEncode($ret);
         } catch (\Exception $e) {
             die($e->getMessage());
         }

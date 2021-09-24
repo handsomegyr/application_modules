@@ -89,7 +89,7 @@ class ExternalcontactgroupchatController extends BaseController
                 $owner_filter = array();
                 $owner_filter['userid_list'] = array($groupchat_userid);
                 $res = $weixinopenService->getGroupChatList($status_filter, $owner_filter, $offset, $limit);
-                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -181,7 +181,7 @@ class ExternalcontactgroupchatController extends BaseController
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
                 $res = $weixinopenService->getGroupChatInfo($data);
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

@@ -894,7 +894,7 @@ class CardbagController extends \App\Backend\Controllers\FormController
                 throw new \Exception($info['errmsg'], $info['errcode']);
             }
             // $this->makeJsonResult(\App\Common\Utils\Helper::myJsonEncode($info), 'OK');
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功查询code:' . \\App\Common\Utils\Helper::myJsonEncode($info));
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功查询code:' . \App\Common\Utils\Helper::myJsonEncode($info));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -942,7 +942,7 @@ class CardbagController extends \App\Backend\Controllers\FormController
                 throw new \Exception($info['errmsg'], $info['errcode']);
             }
             // $this->makeJsonResult(\App\Common\Utils\Helper::myJsonEncode($info), 'OK');
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功核销code:' . \\App\Common\Utils\Helper::myJsonEncode($info));
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功核销code:' . \App\Common\Utils\Helper::myJsonEncode($info));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -995,7 +995,7 @@ class CardbagController extends \App\Backend\Controllers\FormController
             // print_r($info);
             // die('');
             // $this->makeJsonResult(\App\Common\Utils\Helper::myJsonEncode($info), 'OK');
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功设置卡券失效:' . \\App\Common\Utils\Helper::myJsonEncode($info));
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功设置卡券失效:' . \App\Common\Utils\Helper::myJsonEncode($info));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

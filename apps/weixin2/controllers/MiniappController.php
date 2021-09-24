@@ -396,7 +396,7 @@ class MiniappController extends ControllerBase
                     break;
             }
 
-            $lock = new \iLock($this->lock_key_prefix . md5(\\App\Common\Utils\Helper::myJsonEncode($query)) . $this->authorizer_appid . $this->component_appid);
+            $lock = new \iLock($this->lock_key_prefix . md5(\App\Common\Utils\Helper::myJsonEncode($query)) . $this->authorizer_appid . $this->component_appid);
             if ($lock->lock()) {
                 return $this->error(50001, "请稍等,系统繁忙!");
             }

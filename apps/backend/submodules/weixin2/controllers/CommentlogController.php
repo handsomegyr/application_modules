@@ -83,7 +83,7 @@ class CommentlogController extends BaseController
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->unmarkelectComment($id);
 
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -110,7 +110,7 @@ class CommentlogController extends BaseController
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->markelectComment($id);
 
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -137,7 +137,7 @@ class CommentlogController extends BaseController
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->deleteCommentLog($id);
 
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

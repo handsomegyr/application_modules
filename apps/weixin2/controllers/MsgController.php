@@ -150,7 +150,7 @@ class MsgController extends ControllerBase
             $this->requestLogDatas['aes_info'] = $AESInfo;
 
             if (empty($verifyToken)) {
-                throw new \Exception('application verify_token is null. config:' . \\App\Common\Utils\Helper::myJsonEncode($errorConfig));
+                throw new \Exception('application verify_token is null. config:' . \App\Common\Utils\Helper::myJsonEncode($errorConfig));
             }
 
             // 合法性校验

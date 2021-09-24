@@ -2795,7 +2795,7 @@ class CardController extends \App\Backend\Controllers\FormController
 
             $ret = $weixin->getCardManager()->get($card_id);
             // $this->makeJsonResult($ret);
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功获取卡券信息:' . \\App\Common\Utils\Helper::myJsonEncode($ret));
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功获取卡券信息:' . \App\Common\Utils\Helper::myJsonEncode($ret));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -2901,7 +2901,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 }
 
                 // $this->makeJsonResult($ret);
-                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改库存:' . \\App\Common\Utils\Helper::myJsonEncode($ret));
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改库存:' . \App\Common\Utils\Helper::myJsonEncode($ret));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -3047,7 +3047,7 @@ class CardController extends \App\Backend\Controllers\FormController
                 $this->modelCard->getAndUpdateCardInfo($card_id);
 
                 // $this->makeJsonResult(\App\Common\Utils\Helper::myJsonEncode($rst));
-                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改库存:' . \\App\Common\Utils\Helper::myJsonEncode($rst));
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改库存:' . \App\Common\Utils\Helper::myJsonEncode($rst));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -3093,7 +3093,7 @@ class CardController extends \App\Backend\Controllers\FormController
             $rst = $this->modelCodeDeposit->depositeCode($cardInfo['card_id']);
 
             // $this->makeJsonResult();
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改库存:' . \\App\Common\Utils\Helper::myJsonEncode($rst));
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功修改库存:' . \App\Common\Utils\Helper::myJsonEncode($rst));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -3127,7 +3127,7 @@ class CardController extends \App\Backend\Controllers\FormController
             $rst = $this->modelCodeDeposit->checkCode($cardInfo['card_id']);
 
             // $this->makeJsonResult();
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功核查code:' . \\App\Common\Utils\Helper::myJsonEncode($rst));
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功核查code:' . \App\Common\Utils\Helper::myJsonEncode($rst));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -3165,7 +3165,7 @@ class CardController extends \App\Backend\Controllers\FormController
 
             $ret = $weixin->getCardManager()->codeGetDepositCount($card_id);
             // $this->makeJsonResult($ret);
-            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功查询导入code数目' . \\App\Common\Utils\Helper::myJsonEncode($ret));
+            return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '已成功查询导入code数目' . \App\Common\Utils\Helper::myJsonEncode($ret));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

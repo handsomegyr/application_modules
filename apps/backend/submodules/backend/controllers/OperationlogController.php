@@ -180,8 +180,8 @@ class OperationlogController extends \App\Backend\Controllers\FormController
             $item['method'] = '<span class="badge bg-blue">' . $item['method'] . '</span>';
             $item['path'] = '<span class="label label-info">' . $item['path'] . '</span>';
             $item['ip'] = '<span class="label label-primary">' . $item['ip'] . '</span>';
-            // $item['params'] = '<pre>' . \\App\Common\Utils\Helper::myJsonEncode($item['params']) . '</pre>';
-            $item['params'] = \\App\Common\Utils\Helper::myJsonEncode($item['params']);
+            // $item['params'] = '<pre>' . \App\Common\Utils\Helper::myJsonEncode($item['params']) . '</pre>';
+            $item['params'] = \App\Common\Utils\Helper::myJsonEncode($item['params']);
         }
         return $list;
     }

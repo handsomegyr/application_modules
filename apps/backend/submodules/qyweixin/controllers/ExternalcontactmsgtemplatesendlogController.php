@@ -87,7 +87,7 @@ class ExternalcontactmsgtemplatesendlogController extends BaseController
                     }
                 }
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -130,7 +130,7 @@ class ExternalcontactmsgtemplatesendlogController extends BaseController
                 $updateData['image_pic_url'] = $res['url'];
                 $this->modelExternalcontactMsgTemplate->update(array('_id' => $id), array('$set' => $updateData));
 
-                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

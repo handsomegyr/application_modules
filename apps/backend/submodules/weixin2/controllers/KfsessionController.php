@@ -137,7 +137,7 @@ class KfsessionController extends BaseController
                 // }
                 // return 'errcode:' . $res['errcode'] . '  msg:' . $res['errmsg'];
                 if (empty($res['errcode'])) {
-                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+                    return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
                 } else {
                     return $this->makeJsonError($res['errmsg']);
                 }
@@ -168,7 +168,7 @@ class KfsessionController extends BaseController
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->closeKfSession($id);
 
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -194,7 +194,7 @@ class KfsessionController extends BaseController
 
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->createKfSession($id);
-            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
@@ -223,7 +223,7 @@ class KfsessionController extends BaseController
                 ->getCustomServiceManager()
                 ->kfsessionGetSession($data['openid']);
             if (empty($res['errcode'])) {
-                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             } else {
                 return $this->makeJsonError($res['errmsg']);
             }
@@ -255,7 +255,7 @@ class KfsessionController extends BaseController
                 ->getCustomServiceManager()
                 ->kfsessionGetSessionList($data['kf_account']);
             if (empty($res['errcode'])) {
-                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             } else {
                 return $this->makeJsonError($res['errmsg']);
             }

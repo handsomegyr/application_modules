@@ -62,7 +62,7 @@ class MiniprogramurllinkController extends BaseController
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->createMiniappUrlLink($id);
 
-            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \\App\Common\Utils\Helper::myJsonEncode($res));
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }

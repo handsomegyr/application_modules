@@ -80,7 +80,7 @@ class DataimportfileController extends \App\Backend\Controllers\FormController
                         $uploadFiles[$file->getKey()] = $file;
                     }
                 }
-                //return $this->makeJsonError(\\App\Common\Utils\Helper::myJsonEncode($uploadFiles));                
+                //return $this->makeJsonError(\App\Common\Utils\Helper::myJsonEncode($uploadFiles));                
                 if (empty($uploadFiles) || !isset($uploadFiles['csv_file'])) {
                     return $this->makeJsonError("没有上传导入文件2");
                 }

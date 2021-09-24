@@ -224,7 +224,7 @@ class ImportfileTask extends \Phalcon\CLI\Task
                 echo '发送邮件成功，请查收！';
                 return true;
             } else {
-                echo '发送邮件失败，错误原因：' . \\App\Common\Utils\Helper::myJsonEncode(\Mail::failures());
+                echo '发送邮件失败，错误原因：' . \App\Common\Utils\Helper::myJsonEncode(\Mail::failures());
                 return false;
             }
         } catch (\Exception $th) {
@@ -258,7 +258,7 @@ class ImportfileTask extends \Phalcon\CLI\Task
                 //print_r($row);
 
                 // 文件内容
-                $content = \\App\Common\Utils\Helper::myJsonEncode($row);
+                $content = \App\Common\Utils\Helper::myJsonEncode($row);
                 //echo 'content:' . $content . "<br>";
 
                 $rowString = \implode(",", $row);

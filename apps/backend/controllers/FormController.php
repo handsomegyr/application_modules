@@ -1612,7 +1612,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                 if (empty($value)) {
                     $value = "";
                 } else {
-                    $value = \\App\Common\Utils\Helper::myJsonEncode($value);
+                    $value = \App\Common\Utils\Helper::myJsonEncode($value);
                 }
                 $item[$field] = $value;
             }
@@ -1747,7 +1747,7 @@ class FormController extends \App\Backend\Controllers\ControllerBase
                                 $item[] = "";
                             }
                         } else {
-                            $item[] = \\App\Common\Utils\Helper::myJsonEncode($data[$key]);
+                            $item[] = \App\Common\Utils\Helper::myJsonEncode($data[$key]);
                         }
                     } else {
                         $item[] = "";

@@ -146,7 +146,7 @@ class SyncthirdpartyorderTask extends \Phalcon\CLI\Task
                     //     $updateData['order_amount'] = $order_amount;
 
                     //     // goods_details 商品信息
-                    //     $updateData['goods_details'] = \\App\Common\Utils\Helper::myJsonEncode($goodsList);
+                    //     $updateData['goods_details'] = \App\Common\Utils\Helper::myJsonEncode($goodsList);
 
                     //     $memo = $orderInfo['memo'];
 
