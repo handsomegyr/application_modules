@@ -328,7 +328,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
             $sort = array('_id' => 1);
             $departmentUserList = $modelDepartmentUser->findAll($query, $sort);
             if (!empty($departmentUserList)) {
-                $modelUser = new \App\Qyweixin\Models\User\User();
+                $modelUser = new \App\Qyweixin\Models\Contact\User();
                 foreach ($departmentUserList as $info) {
 
                     $userid = $info['userid'];
@@ -387,7 +387,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
         }
 
         try {
-            $modelUser = new \App\Qyweixin\Models\User\User();
+            $modelUser = new \App\Qyweixin\Models\Contact\User();
             $query = array();
             $sort = array('_id' => 1);
             $userList = $modelUser->findAll($query, $sort);

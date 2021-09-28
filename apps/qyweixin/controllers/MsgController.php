@@ -12,7 +12,7 @@ class MsgController extends ControllerBase
     protected $activity_id = 1;
     /**
      *
-     * @var \App\Qyweixin\Models\User\User
+     * @var \App\Qyweixin\Models\Contact\User
      */
     private $modelQyweixinUser;
     /**
@@ -100,7 +100,7 @@ class MsgController extends ControllerBase
     {
         $this->isNeedDecryptAndEncrypt = true;
 
-        $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
+        $this->modelQyweixinUser = new \App\Qyweixin\Models\Contact\User();
         $this->modelQyweixinProvider = new \App\Qyweixin\Models\Provider\Provider();
         $this->modelQyweixinAuthorizer = new \App\Qyweixin\Models\Authorize\Authorizer();
         $this->modelQyweixinMsgLog = new \App\Qyweixin\Models\Msg\Log();

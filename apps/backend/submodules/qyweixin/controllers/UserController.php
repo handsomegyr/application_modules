@@ -2,7 +2,7 @@
 
 namespace App\Backend\Submodules\Qyweixin\Controllers;
 
-use App\Backend\Submodules\Qyweixin\Models\User\User;
+use App\Backend\Submodules\Qyweixin\Models\Contact\User;
 
 /**
  * @title({name="用户"})

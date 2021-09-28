@@ -12,7 +12,7 @@ class ApplicationsnsController extends ControllerBase
 
     /**
      *
-     * @var \App\Qyweixin\Models\User\User
+     * @var \App\Qyweixin\Models\Contact\User
      */
     private $modelQyweixinUser;
 
@@ -86,7 +86,7 @@ class ApplicationsnsController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-        $this->modelQyweixinUser = new \App\Qyweixin\Models\User\User();
+        $this->modelQyweixinUser = new \App\Qyweixin\Models\Contact\User();
         // $this->modelQyweixinProvider = new \App\Qyweixin\Models\Provider\Provider();
         $this->modelQyweixinAuthorizer = new \App\Qyweixin\Models\Authorize\Authorizer();
         $this->modelQyweixinAgent = new \App\Qyweixin\Models\Agent\Agent();
