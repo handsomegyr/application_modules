@@ -1476,8 +1476,8 @@ function jsonpcallback($jsonpcallback = "", $stat = true, $msg = "OK", $result =
  * 请求限制函数
  *
  * @param string $cacheKey            
- * @param number $timeSpanLimit            
- * @param number $numLimit            
+ * @param int $timeSpanLimit            
+ * @param int $numLimit            
  * @return boolean
  */
 function isRequestRestricted($cacheKey, $timeSpanLimit = 60, $numLimit = 10)
@@ -1545,7 +1545,7 @@ function getClassMethodArgumentCacheKey($class, $method)
 /**
  * 显示金额
  *
- * @param number $money            
+ * @param int $money            
  * @return string
  */
 function showMoney($money)
@@ -1556,7 +1556,7 @@ function showMoney($money)
 /**
  * 获取弧度
  *
- * @param number $d            
+ * @param int $d            
  * @return number
  */
 function rad($d)
@@ -1567,10 +1567,10 @@ function rad($d)
 /**
  * 获取2个经纬度之间的距离（米）
  *
- * @param number $lat1            
- * @param number $lng1            
- * @param number $lat2            
- * @param number $lng2            
+ * @param int $lat1            
+ * @param int $lng1            
+ * @param int $lat2            
+ * @param int $lng2            
  * @return number
  */
 function GetDistance($lat1, $lng1, $lat2, $lng2)
@@ -1644,8 +1644,8 @@ function invokeResource($module, $controller, $action, $params)
 /**
  * 随机数，默认为0-1之间的随机数
  *
- * @param number $min            
- * @param number $max            
+ * @param int $min            
+ * @param int $max            
  * @return number
  */
 function randomFloat($min = 0, $max = 1)

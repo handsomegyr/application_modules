@@ -706,9 +706,9 @@ class ExchangeController extends \App\Backend\Controllers\FormController
         $schemas['score_category'] = array(
             'name' => '积分分类',
             'data' => array(
-                'type' => 'integer',
-                'length' => 1,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 30,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true

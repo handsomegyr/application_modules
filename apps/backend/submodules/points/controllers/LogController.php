@@ -45,8 +45,9 @@ class LogController extends \App\Backend\Controllers\FormController
         $schemas['category'] = array(
             'name' => '积分分类',
             'data' => array(
-                'type' => 'integer',
-                'length' => 1
+                'type' => 'string',
+                'length' => 30,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true

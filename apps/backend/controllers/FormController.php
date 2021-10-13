@@ -1898,8 +1898,8 @@ class FormController extends \App\Backend\Controllers\ControllerBase
      * @param string $card_id            
      * @param string $code            
      * @param string $openid            
-     * @param number $outer_id            
-     * @param number $balance            
+     * @param int $outer_id            
+     * @param int $balance            
      * @return array
      */
     protected function getSignature($card_id, $code, $openid, $outer_id = 0, $balance = 0)

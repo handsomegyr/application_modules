@@ -110,7 +110,7 @@ class PostController extends ControllerBase
     /**
      * 根据 最新 精华 推荐 人气等排序字段进行排序
      *
-     * @param number $r            
+     * @param int $r            
      * @return array
      */
     private function getSort($r)

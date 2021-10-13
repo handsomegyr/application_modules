@@ -29,7 +29,7 @@ class Hongbao
      * 更新使用金额
      *
      * @param string $customer_id            
-     * @param number $total_amount            
+     * @param int $total_amount            
      */
     public function incAmount($FromUserName, $get_money)
     {

@@ -75,7 +75,7 @@ class iLock
     /**
      * 设定缓存的强制锁定时间,必须锁定足够时间才能解锁
      *
-     * @param number $sec            
+     * @param int $sec            
      */
     public function setExpire($sec = 5)
     {

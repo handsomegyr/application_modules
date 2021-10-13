@@ -203,7 +203,7 @@ class ProductController extends ControllerBase
     /**
      * 根据 即将揭晓 人气 剩余人次 最新 价值 限购等排序字段进行排序
      *
-     * @param number $r            
+     * @param int $r            
      * @return array
      */
     private function getSort($r)
@@ -244,7 +244,7 @@ class ProductController extends ControllerBase
      *
      * @param string $i            
      * @param string $b            
-     * @param number $tag            
+     * @param int $tag            
      * @param string $q            
      */
     private function getQuery($r, $i, $b, $tag, $q)
