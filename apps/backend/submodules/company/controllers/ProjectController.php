@@ -114,7 +114,20 @@ class ProjectController extends \App\Backend\Controllers\FormController
             },
             'icon' => 'fa-pencil-square-o',
         );
-
+        $tools['checkcollation'] = array(
+            'title' => '检查表及列的字符集',
+            'action' => 'checkcollation',
+            'process_without_modal' => false,
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['project_code'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
         $tools['buildcomponent'] = array(
             'title' => '构建组件',
             'action' => 'buildcomponent',
@@ -630,6 +643,145 @@ class ProjectController extends \App\Backend\Controllers\FormController
                     } else {
                         return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
                     }
+                }
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="检查表及列的字符集"})
+     * 检查表及列的字符集
+     *
+     * @name 检查表及列的字符集
+     */
+    public function checkcollationAction()
+    {
+        // http://www.myapplicationmodule.com/admin/company/project/checkcollation?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $row = $this->modelProject->getInfoById($id);
+            if (empty($row)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = array();
+                $fields['_id'] = array(
+                    'name' => '记录ID',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'hidden',
+                        'is_show' => true
+                    ),
+                );
+                $fields['project_code'] = array(
+                    'name' => '项目编号',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['project_name'] = array(
+                    'name' => '项目名称',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['db_name'] = array(
+                    'name' => '数据库名',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                // print_r($row);
+                // die('xxxxxxxxx');
+                $title = "检查表及列的字符集";
+                return $this->showModal($title, $fields, $row);
+            } else {
+                // 如果是POST请求的话就是进行具体的处理  
+                $db_name = $this->request->get('db_name');
+                if (empty($db_name)) {
+                    return $this->makeJsonError("数据库未指定");
+                }
+
+                $connection = $this->getConnection4Db($db_name);
+
+                $show_tables_sql = "SHOW TABLE STATUS";
+                $result1 = $connection->query($show_tables_sql, array());
+                $result1->setFetchMode(MYDB_FETCH_OBJ);
+                $all_tables = $result1->fetchAll();
+
+                $tables_info = array();
+                foreach ($all_tables as $table) {
+                    if (!empty($table->Collation)) {
+                        if ($table->Collation != 'utf8mb4_unicode_ci') {
+                            $arr = [
+                                'table_name' => $table->Name,
+                                'collation' => $table->Collation
+                            ];
+                            $tables_info[$table->Name] = $arr;
+                        }
+                    }
+                    $column_arr = [];
+                    
+                    $sql = "SHOW FULL COLUMNS FROM " . $table->Name;
+                    $result2 = $connection->query($sql, array());
+                    $result2->setFetchMode(MYDB_FETCH_OBJ);
+                    $show_table_columns = $result2->fetchAll();
+
+                    foreach ($show_table_columns as $column) {
+                        if (!empty($column->Collation)) {
+                            if ($column->Collation != 'utf8mb4_unicode_ci') {
+                                $arr = [
+                                    'table_name' => $table->Name,
+                                    'collation' => $table->Collation
+                                ];
+                                $tables_info[$table->Name] = $arr;
+                                $arr = [
+                                    'field' => $column->Field,
+                                    'type' => $column->Type,
+                                    'collation' => $column->Collation
+                                ];
+                                array_push($column_arr, $arr);
+                            }
+                        }
+                    }
+                    if (!empty($column_arr)) {
+                        $tables_info[$table->Name]['fields'] = $column_arr;
+                    }
+                }
+                if (empty($tables_info)) {
+                    return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '恭喜你,未找到utf8mb4_unicode_ci以外的表或字段');
+                } else {
+                    $uploadPath = $this->modelProject->getUploadPath();
+                    $fileName = $row['project_code'] . '_checkcollation_' . date("YmdHis") . '.txt';
+                    $tmp = APP_PATH . "public/upload/{$uploadPath}/{$fileName}";
+                    file_put_contents($tmp, \json_encode(array_values($tables_info)));
+                    $url = $this->url->get("service/file/index") . "?upload_path={$uploadPath}&id={$fileName}";
+                    return $this->makeJsonResult(array('then' => array('action' => 'download', 'value' => $url)), '很遗憾,找到utf8mb4_unicode_ci以外的表或字段:');
                 }
             }
         } catch (\Exception $e) {
@@ -1581,21 +1733,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
     {
         $sqlList = $this->getSqlList($sql);
         if (!empty($sqlList)) {
-            $di = \Phalcon\DI::getDefault();
-            $config = $di->get('config');
-            $connection = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-                //$connection = new \App\Common\Models\Base\Mysql\Pdo\DbAdapter(array(
-                "host" => $config->database4admin->host,
-                "username" => $config->database4admin->username,
-                "password" => $config->database4admin->password,
-                "dbname" => $db_name,
-                "charset" => $config->database4admin->charset,
-                "collation" => $config->database4admin->collation,
-                'options'  => [
-                    \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$config->database4admin->charset} COLLATE {$config->database4admin->collation};",
-                    //\PDO::ATTR_CASE => PDO::CASE_LOWER,
-                ],
-            ));
+            $connection = $this->getConnection4Db($db_name);
             // $dbUserInfo = $connection->fetchOne("SELECT * FROM user", MYDB_FETCH_ASSOC);
             // print_r($dbUserInfo);
             // die('xxxxxxxxx');
@@ -1654,5 +1792,25 @@ class ProjectController extends \App\Backend\Controllers\FormController
             }
         }
         return false;
+    }
+
+    protected function getConnection4Db($db_name)
+    {
+        $di = \Phalcon\DI::getDefault();
+        $config = $di->get('config');
+        $connection = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+            //$connection = new \App\Common\Models\Base\Mysql\Pdo\DbAdapter(array(
+            "host" => $config->database4admin->host,
+            "username" => $config->database4admin->username,
+            "password" => $config->database4admin->password,
+            "dbname" => $db_name,
+            "charset" => $config->database4admin->charset,
+            "collation" => $config->database4admin->collation,
+            'options'  => [
+                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$config->database4admin->charset} COLLATE {$config->database4admin->collation};",
+                //\PDO::ATTR_CASE => PDO::CASE_LOWER,
+            ],
+        ));
+        return $connection;
     }
 }
