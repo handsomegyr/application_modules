@@ -47,7 +47,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'process_without_modal' => true,
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['project_code']) && !empty($row['db_pwd'])) {
+                if (!empty($row) && !empty($row['project_code']) && !empty($row['db_pwd']) && !empty($row['db_name'])) {
                     return true;
                 } else {
                     return false;
@@ -153,7 +153,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
             'process_without_modal' => true,
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['project_code']) && !empty($row['db_pwd'])) {
+                if (!empty($row) && !empty($row['project_code']) && !empty($row['db_pwd']) && !empty($row['db_name'])) {
                     return true;
                 } else {
                     return false;
@@ -182,10 +182,18 @@ class ProjectController extends \App\Backend\Controllers\FormController
             if (empty($data)) {
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
+
+            // 创建数据库
+            $this->createDatabase($data['db_name']);
+
+            //数据库用户授权
+            $this->grantDatabaseUser($data['db_name'], $data['project_code'], $data['db_pwd']);
+
             // 登录一个任务
             $taskContent = array();
             $taskContent['project_code'] = $data['project_code'];
             $taskContent['project_id'] = $data['_id'];
+            $taskContent['db_name'] = $data['db_name'];
             $taskContent['db_pwd'] = $data['db_pwd'];
             $taskContent['process_list'] = 'create_project';
             $taskInfo = $this->modelTask->log($this->COMPANY_CUT_TASKTYPE, $taskContent);
@@ -446,6 +454,17 @@ class ProjectController extends \App\Backend\Controllers\FormController
                         'readonly' => true,
                     ),
                 );
+                $fields['db_name'] = array(
+                    'name' => '数据库名称',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
                 $fields['db_user'] = array(
                     'name' => '数据库用户',
                     'validation' => array(
@@ -467,8 +486,8 @@ class ProjectController extends \App\Backend\Controllers\FormController
                     return $this->makeJsonError("数据库用户为空");
                 }
                 // 创建数据库用户和权限
-                $db_name = $row['project_code'];
-                $this->grantDatabaseUser($db_name, $db_user);
+                $db_name = $row['db_name'];
+                $this->grantDatabaseUser($db_name, $db_user, $db_user);
                 return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
             }
         } catch (\Exception $e) {
@@ -522,6 +541,17 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 );
                 $fields['project_name'] = array(
                     'name' => '项目名称',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => true,
+                    ),
+                );
+                $fields['db_name'] = array(
+                    'name' => '数据库名称',
                     'validation' => array(
                         'required' => true
                     ),
@@ -588,7 +618,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 // 如果需要处理数据库操作的话
                 if ($isDbSqlExist) {
                     // 创建数据库
-                    $db_name = $row['project_code'];
+                    $db_name = $row['db_name'];
                     // 数据库转换
                     foreach ($project_components as $componentInfo) {
                         $this->createComponents($db_name, $componentInfo['db_sql']);
@@ -746,7 +776,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                         }
                     }
                     $column_arr = [];
-                    
+
                     $sql = "SHOW FULL COLUMNS FROM " . $table->Name;
                     $result2 = $connection->query($sql, array());
                     $result2->setFetchMode(MYDB_FETCH_OBJ);
@@ -777,7 +807,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
                     return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '恭喜你,未找到utf8mb4_unicode_ci以外的表或字段');
                 } else {
                     $uploadPath = $this->modelProject->getUploadPath();
-                    $fileName = $row['project_code'] . '_checkcollation_' . date("YmdHis") . '.txt';
+                    $fileName = $row['project_code'] . '_checkcollation_' . $db_name . '_' . date("YmdHis") . '.txt';
                     $tmp = APP_PATH . "public/upload/{$uploadPath}/{$fileName}";
                     file_put_contents($tmp, \json_encode(array_values($tables_info)));
                     $url = $this->url->get("service/file/index") . "?upload_path={$uploadPath}&id={$fileName}";
@@ -955,8 +985,47 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['db_name'] = array(
+            'name' => '测试数据库名',
+            'data' => array(
+                'type' => 'string',
+                'length' => 100,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'extensionSettings' => function ($column, $Grid) {
+                    $settings = array();
+                    $row = $column->getRow();
+                    if (empty($row->_id)) {
+                        // 新增的时候显示
+                        $settings['is_show'] = true;
+                    } else {
+                        // 修改的时候不能修改
+                        $settings['readonly'] = true;
+                    }
+                    return $settings;
+                }
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
         $schemas['db_pwd'] = array(
-            'name' => '数据库密码',
+            'name' => '测试数据库密码',
             'data' => array(
                 'type' => 'string',
                 'length' => 30,
@@ -975,6 +1044,84 @@ class ProjectController extends \App\Backend\Controllers\FormController
                     if (empty($row->_id)) {
                         // 新增的时候显示
                         $settings['is_show'] = true;
+                    } else {
+                        // 修改的时候不能修改
+                        $settings['readonly'] = true;
+                    }
+                    return $settings;
+                }
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['db_name_product'] = array(
+            'name' => '正式数据库名',
+            'data' => array(
+                'type' => 'string',
+                'length' => 100,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'extensionSettings' => function ($column, $Grid) {
+                    $settings = array();
+                    $row = $column->getRow();
+                    if (empty($row->_id)) {
+                        // 新增的时候显示
+                        $settings['is_show'] = false;
+                    } else {
+                        // 修改的时候不能修改
+                        $settings['readonly'] = true;
+                    }
+                    return $settings;
+                }
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
+        $schemas['db_pwd_product'] = array(
+            'name' => '正式数据库密码',
+            'data' => array(
+                'type' => 'string',
+                'length' => 30,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'extensionSettings' => function ($column, $Grid) {
+                    $settings = array();
+                    $row = $column->getRow();
+                    if (empty($row->_id)) {
+                        // 新增的时候显示
+                        $settings['is_show'] = false;
                     } else {
                         // 修改的时候不能修改
                         $settings['readonly'] = true;
@@ -1697,8 +1844,17 @@ class ProjectController extends \App\Backend\Controllers\FormController
         }
     }
 
+    // 创建数据库
+    protected function createDatabase($db_name)
+    {
+        $di = \Phalcon\DI::getDefault();
+        $connection = $di['db4admin'];
+        $dbret1 = $connection->execute("CREATE DATABASE IF NOT EXISTS `{$db_name}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        return $dbret1;
+    }
+
     // 创建数据库用户
-    protected function grantDatabaseUser($db_name, $db_user)
+    protected function grantDatabaseUser($db_name, $db_user, $db_pwd)
     {
         //GRANT SELECT,INSERT,UPDATE,REFERENCES,DELETE,CREATE,DROP,ALTER,INDEX,TRIGGER,CREATE VIEW,SHOW VIEW,EXECUTE,ALTER ROUTINE,CREATE ROUTINE,CREATE TEMPORARY TABLES,LOCK TABLES,EVENT ON `210616fg0882`.* TO 'lichenglong'@'%';
 
@@ -1713,7 +1869,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
         // print_r($typeInfo);
         if (empty($dbUserInfo)) {
             // 创建数据库的用户
-            $dbret2 = $connection->execute("CREATE USER '{$db_user}'@'%' IDENTIFIED BY '{$db_user}'", array());
+            $dbret2 = $connection->execute("CREATE USER '{$db_user}'@'%' IDENTIFIED BY '{$db_pwd}'", array());
             // 如果是失败的话
             if (empty($dbret2)) {
             }
