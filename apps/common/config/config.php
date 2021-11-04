@@ -84,6 +84,19 @@ return new \Phalcon\Config(array(
         "host" => '192.168.81.129',
         "port" => 6379
     ),
+    // 腾讯乐享
+    'lexiangla' => array(
+        //开发者ID(AppKey)
+        'AppKey' => '',
+        //开发者密码(AppSecret)
+        'AppSecret' => '',
+        //公司Code
+        'company_code' => '',
+        //StaffID
+        'staffID' => '',
+        //回调密钥 (Secret)
+        'secret' => ''
+    ),
     'cronjobdataimport' => [
         // 订单数据导入
         "orderDataImput" => [

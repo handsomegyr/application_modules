@@ -1,52 +1,86 @@
 <?php
 
-namespace App\Backend\Submodules\Task\Controllers;
+namespace App\Backend\Submodules\Lexiangla\Controllers;
 
-use App\Backend\Submodules\Task\Models\Log;
+use App\Backend\Submodules\Lexiangla\Models\Contact\Tag;
 
 /**
- * @title({name="任务日志管理"})
+ * @title({name="乐享标签"})
  *
- * @name 任务日志管理
+ * @name 乐享标签
  */
-class LogController extends \App\Backend\Controllers\FormController
+class TagController extends \App\Backend\Controllers\FormController
 {
-
-    private $modelLog;
+    private $modelTag;
 
     public function initialize()
     {
-        $this->modelLog = new Log();
+        $this->modelTag = new Tag();
         parent::initialize();
     }
 
     protected function getSchemas2($schemas)
     {
-        $schemas['task'] = array(
-            'name' => '任务名',
+        $schemas['tagid'] = array(
+            'name' => '标签id',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 190,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
+                'is_show' => true,
+                'items' => ''
             ),
             'list' => array(
-                'is_show' => true
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
             )
         );
-        $schemas['is_success'] = array(
-            'name' => '是否成功',
+        $schemas['tagname'] = array(
+            'name' => '标签名称',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['is_exist'] = array(
+            'name' => '是否存在',
             'data' => array(
                 'type' => 'boolean',
-                'length' => '1'
+                'length' => 1,
+                'defaultValue' => false
             ),
             'validation' => array(
                 'required' => false
@@ -58,30 +92,7 @@ class LogController extends \App\Backend\Controllers\FormController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => 1
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['request'] = array(
-            'name' => '请求参数',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => false,
-                'list_type' => '',
+                'list_type' => '1',
                 'render' => '',
             ),
             'search' => array(
@@ -91,42 +102,15 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['result'] = array(
-            'name' => '获得结果',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => false,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['log_time'] = array(
-            'name' => '日志时间',
+        $schemas['sync_time'] = array(
+            'name' => '同步时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
                 'defaultValue' => getCurrentTime()
             ),
             'validation' => array(
-                'required' => true
+                'required' => false
             ),
             'form' => array(
                 'input_type' => 'datetimepicker',
@@ -145,16 +129,44 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['memo'] = array(
+            'name' => '备注',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         return $schemas;
     }
 
     protected function getName()
     {
-        return '任务日志';
+        return '乐享标签';
     }
 
     protected function getModel()
     {
-        return $this->modelLog;
+        return $this->modelTag;
     }
 }

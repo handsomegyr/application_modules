@@ -570,6 +570,18 @@ function registerServices($di)
                 'action' => 2
             ));
 
+            $router->add("/admin/lexiangla/:controller/:action", array(
+                'module' => 'admin/lexiangla',
+                'controller' => 1,
+                'action' => 2
+            ));
+
+            $router->add("/admin/tag/:controller/:action", array(
+                'module' => 'admin/tag',
+                'controller' => 1,
+                'action' => 2
+            ));
+
             $router->add("/:module/:controller/:action", array(
                 'module' => 1,
                 'controller' => 2,

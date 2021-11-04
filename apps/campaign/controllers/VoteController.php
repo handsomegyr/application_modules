@@ -116,6 +116,40 @@ class VoteController extends ControllerBase
             $this->modelItem->incVoteCount($itemId);
             $this->modelSubject->incVoteCount($subjectId);
 
+            //检查是否已超过每日的限制次数
+            $modelMemberBehaviorDailyStat = new \App\Member\Models\BehaviorDailyStat();
+            $mobile = "";
+            // 阅读文章
+            $act_type = \App\Member\Services\MemberService::ACT_TYPE_YDWZ;
+            $act_daily_num = 0;
+            $behaviorStatDailyInfo = $modelMemberBehaviorDailyStat->getInfoByMobile($mobile, $this->now, $act_type);
+            if (empty($behaviorStatDailyInfo) || intval($behaviorStatDailyInfo['total_num']) < 5) {
+                $act_daily_num = 1;
+            }
+            // 阅读文章或观看视频次数增加一次
+            $serviceMember = new \App\Member\Services\MemberService();
+            $serviceMember->logBehavior(
+                $act_type,
+                1,
+                $act_daily_num,
+                0,
+                $mobile,
+                $FromUserName,
+                '',
+                '',
+                '',
+                '',
+                '',
+                $ip,
+                $this->now,
+                '',
+                '',
+                $subjectId,
+                $activityId,
+                '',
+                array('subjectInfo' => $subjectInfo)
+            );
+
             // 发送成功
             echo ($this->result("OK"));
         } catch (\Exception $e) {

@@ -1,86 +1,43 @@
 <?php
 
-namespace App\Backend\Submodules\Task\Controllers;
+namespace App\Backend\Submodules\Lexiangla\Controllers;
 
-use App\Backend\Submodules\Task\Models\Log;
+use App\Backend\Submodules\Lexiangla\Models\Contact\TagSync;
 
 /**
- * @title({name="任务日志管理"})
+ * @title({name="乐享标签同步"})
  *
- * @name 任务日志管理
+ * @name 乐享标签同步
  */
-class LogController extends \App\Backend\Controllers\FormController
+class TagsyncController extends \App\Backend\Controllers\FormController
 {
-
-    private $modelLog;
+    private $modelTagSync;
 
     public function initialize()
     {
-        $this->modelLog = new Log();
+        $this->modelTagSync = new TagSync();
         parent::initialize();
     }
 
     protected function getSchemas2($schemas)
     {
-        $schemas['task'] = array(
-            'name' => '任务名',
+        $schemas['tagid'] = array(
+            'name' => '标签id',
             'data' => array(
                 'type' => 'string',
-                'length' => 50
+                'length' => 190,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
                 'input_type' => 'text',
-                'is_show' => true
-            ),
-            'list' => array(
-                'is_show' => true
-            ),
-            'search' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['is_success'] = array(
-            'name' => '是否成功',
-            'data' => array(
-                'type' => 'boolean',
-                'length' => '1'
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'radio',
-                'is_show' => true,
-                'items' => $this->trueOrFalseDatas
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => 1
-            ),
-            'search' => array(
-                'is_show' => false
-            )
-        );
-        $schemas['request'] = array(
-            'name' => '请求参数',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -91,23 +48,23 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['result'] = array(
-            'name' => '获得结果',
+        $schemas['qyweixin_tagid'] = array(
+            'name' => '企业微信的标签id',
             'data' => array(
-                'type' => 'json',
-                'length' => 1024,
-                'defaultValue' => ''
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
             ),
             'validation' => array(
-                'required' => false
+                'required' => true
             ),
             'form' => array(
-                'input_type' => 'textarea',
+                'input_type' => 'number',
                 'is_show' => true,
                 'items' => ''
             ),
             'list' => array(
-                'is_show' => false,
+                'is_show' => true,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -118,8 +75,8 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-        $schemas['log_time'] = array(
-            'name' => '日志时间',
+        $schemas['sync_time'] = array(
+            'name' => '同步时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
@@ -145,16 +102,44 @@ class LogController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['memo'] = array(
+            'name' => '备注',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '{}'
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
         return $schemas;
     }
 
     protected function getName()
     {
-        return '任务日志';
+        return '乐享标签同步';
     }
 
     protected function getModel()
     {
-        return $this->modelLog;
+        return $this->modelTagSync;
     }
 }

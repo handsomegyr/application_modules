@@ -164,6 +164,14 @@ $application->registerModules(array(
         'className' => 'App\Backend\Database\Module',
         'path' => APP_PATH . 'apps/backend/submodules/database/Module.php'
     ),
+    'admin/tag' => array(
+        'className' => 'App\Backend\Tag\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/tag/Module.php'
+    ),
+    'admin/lexiangla' => array(
+        'className' => 'App\Backend\Lexiangla\Module',
+        'path' => APP_PATH . 'apps/backend/submodules/lexiangla/Module.php'
+    ),
     'weixin' => array(
         'className' => 'App\Weixin\Module',
         'path' => APP_PATH . 'apps/weixin/Module.php'
@@ -175,6 +183,10 @@ $application->registerModules(array(
     'qyweixin' => array(
         'className' => 'App\Qyweixin\Module',
         'path' => APP_PATH . 'apps/qyweixin/Module.php'
+    ),
+    'lexiangla' => array(
+        'className' => 'App\Lexiangla\Module',
+        'path' => APP_PATH . 'apps/lexiangla/Module.php'
     ),
     'exchange' => array(
         'className' => 'App\Exchange\Module',

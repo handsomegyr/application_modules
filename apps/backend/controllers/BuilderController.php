@@ -28,7 +28,7 @@ class BuilderController extends  \App\Backend\Controllers\ControllerBase
         'form' => array(
             'input_type' => '%s',
             'is_show' => true,
-            'items' => %s
+            'items' => %s,
         ),
         'list' => array(
             'is_show' => %s,
@@ -238,6 +238,10 @@ EOD;
         // http://www.myapplicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Qyweixin\Settings\Menu&is_create_menu=1
         // http://www.myapplicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Company\Settings\Menu&is_create_menu=1
         // http://www.myapplicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Database\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Tag\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Lexiangla\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Member\Settings\Menu&is_create_menu=1
+        // http://www.myapplicationmodule.com/admin/builder/createmenuwithfiles?settings=App\Backend\Submodules\Task\Settings\Menu&is_create_menu=1
         try {
             $this->view->disable();
             resetTimeMemLimit();
