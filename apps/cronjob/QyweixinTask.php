@@ -31,13 +31,6 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $provider_appid = $agentItem['provider_appid'];
                     $authorizer_appid = $agentItem['authorizer_appid'];
                     $agentid = $agentItem['agentid'];
-
-                    $lock = new \iLock(\App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
-                    $lock->setExpire(3600);
-                    if ($lock->lock()) {
-                        continue;
-                    }
-
                     try {
                         // 更新
                         $modelAgent->getTokenByAppid($provider_appid, $authorizer_appid, $agentid);
@@ -149,7 +142,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                         }
                     }
                     if ($max_seq > $old_max_seq) {
-                        $modelMaxseq->updateById($maxseqItem['id'], array('max_seq' => $max_seq));
+                        $modelMaxseq->update(array('_id', $maxseqItem['_id']), array('$set' => array('max_seq' => $max_seq)));
                     }
                     $modelMaxseq->commit();
                 } catch (\Exception $e) {
@@ -159,38 +152,6 @@ class QyweixinTask extends \Phalcon\CLI\Task
             } catch (\Exception $e2) {
                 $modelActivityErrorLog->log($this->activity_id, $e, $now);
             }
-        }
-
-        try {
-            $modelAgent = new \App\Weixin2\Models\Authorize\Agent();
-            $query = array();
-            $sort = array('_id' => 1);
-            $agentList = $modelAgent->findAll($query, $sort);
-
-            if (!empty($agentList)) {
-                foreach ($agentList as $agentItem) {
-
-                    // 进行锁定处理
-                    $component_appid = $agentItem['component_appid'];
-                    $agent_appid = $agentItem['appid'];
-
-                    $lock = new \iLock(\App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, 'component_appid:' . $component_appid . ' agent_appid:' . $agent_appid));
-                    $lock->setExpire(3600);
-                    if ($lock->lock()) {
-                        continue;
-                    }
-
-                    try {
-                        // 获取
-                        $weixinopenService = new \App\Weixin2\Services\WeixinService($agent_appid, $component_appid);
-                        $weixinopenService->syncSubscribeUserList($now, $agentItem['preview_openid']);
-                    } catch (\Exception $e) {
-                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
-                    }
-                }
-            }
-        } catch (\Exception $e) {
-            $modelActivityErrorLog->log($this->activity_id, $e, $now);
         }
     }
 

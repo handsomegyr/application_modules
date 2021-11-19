@@ -235,5 +235,5 @@ class QyweixinnotificationsendTask extends \Phalcon\CLI\Task
         } catch (\Exception $e) {
             $modelActivityErrorLog->log($this->activity_id, $e, $now);
         }
-    }
+    }    
 }
