@@ -19,34 +19,6 @@ class ExternalcontactexternaluserremarkController extends BaseController
         parent::initialize();
     }
 
-    protected function addCustomTool4Form(\Encore\Admin\Form $form)
-    {
-        $model = $form->model();
-        //request()->route()=>{"uri":"admin\/order\/order\/{order}\/edit","methods":["GET","HEAD"],"action":{"middleware":["web","App\\Http\\Middleware\\VerifyCsrfToken","admin"],"as":"order.edit","uses":"App\\Admin\\Controllers\\Order\\OrderController@edit","controller":"App\\Admin\\Controllers\\Order\\OrderController@edit","namespace":"App\\Admin\\Controllers","prefix":"admin\/order","where":[]},"isFallback":false,"controller":{},"defaults":[],"wheres":[],"parameters":{"order":"6"},"parameterNames":["order"],"computedMiddleware":["web","App\\Http\\Middleware\\VerifyCsrfToken","admin"],"compiled":{}}
-        $id = request()->route("ecexternaluserremark");
-
-        $form->tools(function (\Encore\Admin\Form\Tools $tools) use ($model, $id) {
-            if (!empty($id)) {
-                $model = $model->find($id);
-                $weixinopenService = new \App\Components\Qyweixin\Services\QyService($model->authorizer_appid, $model->provider_appid, 0);
-
-                if ((!empty($model->remark_pic_media) && $weixinopenService->isMediaTimeExpired($model->remark_pic_mediaid, $model->remark_pic_media_created_at))) {
-                    $action = new \App\Admin\Controllers\Qyweixin\Actions\ExternalContact\ExternalUserRemark\UploadMedia();
-                    $action->setName('上传临时素材');
-                    $action->setModel($model);
-                    $tools->append($action);
-                }
-
-                if (!empty($model->userid) && !empty($model->external_userid)) {
-                    $action = new \App\Admin\Controllers\Qyweixin\Actions\ExternalContact\ExternalUserRemark\RemarkExternalUser();
-                    $action->setName('修改客户备注信息');
-                    $action->setModel($model);
-                    $tools->append($action);
-                }
-            }
-        });
-    }
-
     protected function getFormTools2($tools)
     {
         $tools['uploadmedia'] = array(
@@ -175,7 +147,7 @@ class ExternalcontactexternaluserremarkController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['external_user_remark_img_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -186,7 +158,7 @@ class ExternalcontactexternaluserremarkController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['external_user_remark_img_name'] = array(
+        $fields['name'] = array(
             'name' => '名称',
             'validation' => array(
                 'required' => true

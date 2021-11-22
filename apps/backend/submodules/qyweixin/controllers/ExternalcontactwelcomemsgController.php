@@ -87,7 +87,7 @@ class ExternalcontactwelcomemsgController extends BaseController
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $agent_agentid = trim($this->request->get('welcomemsg_agentid'));
+                $agent_agentid = $data['agentid'];
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
@@ -155,7 +155,7 @@ class ExternalcontactwelcomemsgController extends BaseController
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $agent_agentid = trim($this->request->get('welcomemsg_agentid'));
+                $agent_agentid = $data['agentid'];
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
@@ -176,7 +176,7 @@ class ExternalcontactwelcomemsgController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['welcomemsg_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -187,7 +187,7 @@ class ExternalcontactwelcomemsgController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['welcomemsg_name'] = array(
+        $fields['name'] = array(
             'name' => '名称',
             'validation' => array(
                 'required' => true
@@ -198,7 +198,7 @@ class ExternalcontactwelcomemsgController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['welcomemsg_agentid'] = array(
+        $fields['agentid'] = array(
             'name' => '微信企业应用ID',
             'validation' => array(
                 'required' => true

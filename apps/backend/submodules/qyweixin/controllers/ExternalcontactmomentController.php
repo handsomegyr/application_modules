@@ -101,18 +101,18 @@ class ExternalcontactmomentController extends BaseController
                     } else {
                         $filename = 'qymedia_' . \uniqid() . '.' . $file_ext;
                     }
-                    // $path = '/nas/var/logs/www/export/' . $filename;
-                    // //$path = \tempnam(\sys_get_temp_dir(), 'media_');
-                    // $fp = fopen($path, 'w');
-                    // $fileContent = $res['bytes'];
-                    // fwrite($fp, $fileContent);
-                    // fclose($fp);
-                    $object = "moment/" . $filename;
-                    $ossService = new \App\Services\OssService();
-                    $res4Oss = $ossService->upload_file_by_content($res['bytes'], $object);
-                    if ($res4Oss->status != 200) {
+
+                    $object = 'moment/' . $filename;
+                    $r = file_put_contents(APP_PATH . '/public/' . $object, $res['bytes']); // 返回的是字节数
+                    if (!$r) {
                         throw new \Exception('保存文件失败');
                     }
+                    // $object = "moment/" . $filename;
+                    // $ossService = new \App\Services\OssService();
+                    // $res4Oss = $ossService->upload_file_by_content($res['bytes'], $object);
+                    // if ($res4Oss->status != 200) {
+                    //     throw new \Exception('保存文件失败');
+                    // }
                     $updateData = array();
                     $updateData['image_media'] = $object;
                     $this->modelExternalcontactMoment->update(array('_id' => $id), array('$set' => $updateData));
@@ -167,18 +167,17 @@ class ExternalcontactmomentController extends BaseController
                     } else {
                         $filename = 'qymedia_' . \uniqid() . '.' . $file_ext;
                     }
-                    // $path = '/nas/var/logs/www/export/' . $filename;
-                    // //$path = \tempnam(\sys_get_temp_dir(), 'media_');
-                    // $fp = fopen($path, 'w');
-                    // $fileContent = $res['bytes'];
-                    // fwrite($fp, $fileContent);
-                    // fclose($fp);
-                    $object = "moment/" . $filename;
-                    $ossService = new \App\Services\OssService();
-                    $res4Oss = $ossService->upload_file_by_content($res['bytes'], $object);
-                    if ($res4Oss->status != 200) {
+                    $object = 'moment/' . $filename;
+                    $r = file_put_contents(APP_PATH . '/public/' . $object, $res['bytes']); // 返回的是字节数
+                    if (!$r) {
                         throw new \Exception('保存文件失败');
                     }
+                    // $object = "moment/" . $filename;
+                    // $ossService = new \App\Services\OssService();
+                    // $res4Oss = $ossService->upload_file_by_content($res['bytes'], $object);
+                    // if ($res4Oss->status != 200) {
+                    //     throw new \Exception('保存文件失败');
+                    // }
                     $updateData = array();
                     $updateData['video_media'] = $object;
                     $this->modelExternalcontactMoment->update(array('_id' => $id), array('$set' => $updateData));
@@ -233,18 +232,17 @@ class ExternalcontactmomentController extends BaseController
                     } else {
                         $filename = 'qymedia_' . \uniqid() . '.' . $file_ext;
                     }
-                    // $path = '/nas/var/logs/www/export/' . $filename;
-                    // //$path = \tempnam(\sys_get_temp_dir(), 'media_');
-                    // $fp = fopen($path, 'w');
-                    // $fileContent = $res['bytes'];
-                    // fwrite($fp, $fileContent);
-                    // fclose($fp);
-                    $object = "moment/" . $filename;
-                    $ossService = new \App\Services\OssService();
-                    $res4Oss = $ossService->upload_file_by_content($res['bytes'], $object);
-                    if ($res4Oss->status != 200) {
+                    $object = 'moment/' . $filename;
+                    $r = file_put_contents(APP_PATH . '/public/' . $object, $res['bytes']); // 返回的是字节数
+                    if (!$r) {
                         throw new \Exception('保存文件失败');
                     }
+                    // $object = "moment/" . $filename;
+                    // $ossService = new \App\Services\OssService();
+                    // $res4Oss = $ossService->upload_file_by_content($res['bytes'], $object);
+                    // if ($res4Oss->status != 200) {
+                    //     throw new \Exception('保存文件失败');
+                    // }
                     $updateData = array();
                     $updateData['video_thumb_media'] = $object;
                     $this->modelExternalcontactMoment->update(array('_id' => $id), array('$set' => $updateData));
@@ -261,7 +259,7 @@ class ExternalcontactmomentController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['moment_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true

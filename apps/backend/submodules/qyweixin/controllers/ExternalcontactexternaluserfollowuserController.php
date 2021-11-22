@@ -3,6 +3,7 @@
 namespace App\Backend\Submodules\Qyweixin\Controllers;
 
 use App\Backend\Submodules\Qyweixin\Models\ExternalContact\ExternalUserFollowUser;
+use App\Backend\Submodules\Qyweixin\Models\ExternalContact\Addway;
 
 /**
  * @title({name="添加外部联系人的企业成员"})
@@ -12,12 +13,17 @@ use App\Backend\Submodules\Qyweixin\Models\ExternalContact\ExternalUserFollowUse
 class ExternalcontactexternaluserfollowuserController extends BaseController
 {
     private $modelExternalcontactExternalUserFollowUser;
+    private $modelExternalcontactAddway;
 
     public function initialize()
     {
         $this->modelExternalcontactExternalUserFollowUser = new ExternalUserFollowUser();
+        $this->modelExternalcontactAddway = new Addway();
+
+        $this->addwayItems = $this->modelExternalcontactAddway->getAll();
         parent::initialize();
     }
+    protected $addwayItems = null;
 
     protected function getSchemas2($schemas)
     {
@@ -317,19 +323,19 @@ class ExternalcontactexternaluserfollowuserController extends BaseController
             'form' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => AddwayModel::getAll(),
+                'items' => $this->addwayItems,
                 'help' => '该成员添加此客户的来源，具体含义详见来源定义',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => AddwayModel::getAll()
+                'items' => $this->addwayItems
             ),
             'search' => array(
                 'input_type' => 'select',
                 'is_show' => true,
-                'items' => AddwayModel::getAll()
+                'items' => $this->addwayItems
             ),
             'export' => array(
                 'is_show' => true

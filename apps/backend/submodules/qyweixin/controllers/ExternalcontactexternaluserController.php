@@ -187,7 +187,7 @@ class ExternalcontactexternaluserController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['external_user_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -209,7 +209,7 @@ class ExternalcontactexternaluserController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['external_user_name'] = array(
+        $fields['name'] = array(
             'name' => '名称',
             'validation' => array(
                 'required' => true

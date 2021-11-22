@@ -191,7 +191,7 @@ class ExternalcontactgroupchatController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['groupchat_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -202,7 +202,7 @@ class ExternalcontactgroupchatController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['groupchatid'] = array(
+        $fields['chat_id'] = array(
             'name' => '客户群ID',
             'validation' => array(
                 'required' => true

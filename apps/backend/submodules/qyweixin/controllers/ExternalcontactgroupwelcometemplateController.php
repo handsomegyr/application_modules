@@ -178,7 +178,7 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['groupwelcometemplate_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -189,7 +189,7 @@ class ExternalcontactgroupwelcometemplateController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['groupwelcometemplate_name'] = array(
+        $fields['name'] = array(
             'name' => '名称',
             'validation' => array(
                 'required' => true

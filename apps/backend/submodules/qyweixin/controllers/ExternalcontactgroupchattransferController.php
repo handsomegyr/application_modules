@@ -81,7 +81,7 @@ class ExternalcontactgroupchattransferController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['groupchattransfer_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -92,7 +92,7 @@ class ExternalcontactgroupchattransferController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['groupchattransfer_chat_id'] = array(
+        $fields['chat_id'] = array(
             'name' => '客户群ID',
             'validation' => array(
                 'required' => true
@@ -103,7 +103,7 @@ class ExternalcontactgroupchattransferController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['groupchattransfer_new_owner'] = array(
+        $fields['new_owner'] = array(
             'name' => '新群主ID',
             'validation' => array(
                 'required' => true

@@ -115,7 +115,7 @@ class ExternalcontactmsgtemplateController extends BaseController
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $agent_agentid = trim($this->request->get('msgtemplate_agentid'));
+                $agent_agentid = $data['agentid'];
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
@@ -224,15 +224,43 @@ class ExternalcontactmsgtemplateController extends BaseController
 
                 // 构建modal里面Form表单内容
                 $fields = $this->getFields4FormTool();
+
+                $chatTypeOptions = array();
+                $chatTypeOptions['single'] = '发送给客户';
+                $chatTypeOptions['group'] = '发送给客户群';
+                $fields['chat_type'] = array(
+                    'name' => '群发任务的类型',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'select',
+                        'is_show' => true,
+                        'items' => $chatTypeOptions,
+                        // 'readonly' => true
+                    ),
+                );
+
+                $fields['msgtemplate_msg_user'] = array(
+                    'name' => '消息接收用户',
+                    'validation' => array(
+                        'required' => true
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true
+                    ),
+                );
+
                 $title = "发送消息";
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $agent_agentid = trim($this->request->get('msgtemplate_agentid'));
+                $agent_agentid = $data['agentid'];
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
-                $msgtemplate_chat_type = trim($this->request->get('msgtemplate_chat_type'));
+                $msgtemplate_chat_type = $data['chat_type'];
                 if (empty($msgtemplate_chat_type)) {
                     return $this->makeJsonError("群发任务的类型未设定");
                 }
@@ -240,7 +268,6 @@ class ExternalcontactmsgtemplateController extends BaseController
                 if (empty($msgtemplate_msg_user)) {
                     return $this->makeJsonError("消息接收用户未设定");
                 }
-                $msgtemplate_chat_type = $data['chat_type'];
                 $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
                 $match = array();
                 $match['id'] = '';
@@ -280,7 +307,7 @@ class ExternalcontactmsgtemplateController extends BaseController
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $agent_agentid = trim($this->request->get('msgtemplate_agentid'));
+                $agent_agentid = $data['agentid'];
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
@@ -296,7 +323,7 @@ class ExternalcontactmsgtemplateController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['msgtemplate_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -307,7 +334,7 @@ class ExternalcontactmsgtemplateController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['msgtemplate_name'] = array(
+        $fields['name'] = array(
             'name' => '名称',
             'validation' => array(
                 'required' => true
@@ -318,7 +345,7 @@ class ExternalcontactmsgtemplateController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['msgtemplate_agentid'] = array(
+        $fields['agentid'] = array(
             'name' => '微信企业应用ID',
             'validation' => array(
                 'required' => true
@@ -330,34 +357,6 @@ class ExternalcontactmsgtemplateController extends BaseController
                 'readonly' => true
             ),
         );
-        $chatTypeOptions = array();
-        $chatTypeOptions['single'] = '发送给客户';
-        $chatTypeOptions['group'] = '发送给客户群';
-
-        $fields['msgtemplate_chat_type'] = array(
-            'name' => '群发任务的类型',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $chatTypeOptions,
-                'readonly' => true
-            ),
-        );
-
-        $fields['msgtemplate_msg_user'] = array(
-            'name' => '消息接收用户',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true
-            ),
-        );
-
         return $fields;
     }
 

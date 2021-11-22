@@ -80,7 +80,7 @@ class ExternalcontactcorptagmarkController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['corptagmark_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -91,7 +91,7 @@ class ExternalcontactcorptagmarkController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['external_user_id'] = array(
+        $fields['userid'] = array(
             'name' => '企业成员的userid',
             'validation' => array(
                 'required' => true
@@ -102,7 +102,7 @@ class ExternalcontactcorptagmarkController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['external_external_userid'] = array(
+        $fields['external_userid'] = array(
             'name' => '外部联系人的userid',
             'validation' => array(
                 'required' => true
@@ -114,7 +114,7 @@ class ExternalcontactcorptagmarkController extends BaseController
             ),
         );
 
-        $fields['corptagmark_name'] = array(
+        $fields['name'] = array(
             'name' => '名称',
             'validation' => array(
                 'required' => true

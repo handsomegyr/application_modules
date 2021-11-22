@@ -81,7 +81,7 @@ class ExternalcontacttransferController extends BaseController
     protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['transfer_rec_id'] = array(
+        $fields['_id'] = array(
             'name' => 'ID',
             'validation' => array(
                 'required' => true
@@ -92,7 +92,7 @@ class ExternalcontacttransferController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['transfer_external_userid'] = array(
+        $fields['external_userid'] = array(
             'name' => '外部联系人的userid',
             'validation' => array(
                 'required' => true
@@ -103,7 +103,7 @@ class ExternalcontacttransferController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['transfer_handover_userid'] = array(
+        $fields['handover_userid'] = array(
             'name' => '离职成员的userid',
             'validation' => array(
                 'required' => true
@@ -114,7 +114,7 @@ class ExternalcontacttransferController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['transfer_takeover_userid'] = array(
+        $fields['takeover_userid'] = array(
             'name' => '接替成员的userid',
             'validation' => array(
                 'required' => true
