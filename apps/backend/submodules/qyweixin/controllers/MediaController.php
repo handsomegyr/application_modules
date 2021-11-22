@@ -143,7 +143,7 @@ class MediaController extends BaseController
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
             $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
-            $res = $weixinopenService->uploadMedia($id);
+            $res = $weixinopenService->uploadMedia($data);
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());

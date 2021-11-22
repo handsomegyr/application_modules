@@ -22,10 +22,10 @@ class SnsapplicationController extends BaseController
     protected function getFormTools2($tools)
     {
         $tools['encodehexappid'] = array(
-            'title' => '生成应用ID',
+            'title' => '重新生成应用ID',
             'action' => 'encodehexappid',
             'is_show' => function ($row) {
-                if (!empty($row) && empty($row['appid'])) {
+                if (!empty($row)) {
                     return true;
                 } else {
                     return false;
@@ -61,9 +61,9 @@ class SnsapplicationController extends BaseController
     }
 
     /**
-     * @title({name="生成应用ID"})
+     * @title({name="重新生成应用ID"})
      *
-     * @name 生成应用ID
+     * @name 重新生成应用ID
      */
     public function encodehexappidAction()
     {

@@ -5,9 +5,9 @@ namespace App\Backend\Submodules\Qyweixin\Controllers;
 use App\Backend\Submodules\Qyweixin\Models\Contact\User;
 
 /**
- * @title({name="用户"})
+ * @title({name="企业成员"})
  *
- * @name 用户
+ * @name 企业成员
  */
 class UserController extends BaseController
 {
@@ -19,52 +19,207 @@ class UserController extends BaseController
         parent::initialize();
     }
 
-    // protected function getFormTools2($tools)
-    // {
-    //     $tools['updateremark'] = array(
-    //         'title' => '设置用户备注名',
-    //         'action' => 'updateremark',
-    //         'is_show' => function ($row) {
-    //             if (
-    //                 !empty($row) && !empty($row['authorizer_appid'])
-    //             ) {
-    //                 return true;
-    //             } else {
-    //                 return false;
-    //             }
-    //         },
-    //         'icon' => 'fa-pencil-square-o',
-    //     );
-    //     $tools['getuserinfo'] = array(
-    //         'title' => '获取用户基本信息',
-    //         'action' => 'getuserinfo',
-    //         'is_show' => function ($row) {
-    //             if (
-    //                 !empty($row) && !empty($row['authorizer_appid'])
-    //             ) {
-    //                 return true;
-    //             } else {
-    //                 return false;
-    //             }
-    //         },
-    //         'icon' => 'fa-pencil-square-o',
-    //     );
-    //     $tools['getusertagidlist'] = array(
-    //         'title' => '获取用户身上的标签列表',
-    //         'action' => 'getusertagidlist',
-    //         'is_show' => function ($row) {
-    //             if (
-    //                 !empty($row) && !empty($row['authorizer_appid'])
-    //             ) {
-    //                 return true;
-    //             } else {
-    //                 return false;
-    //             }
-    //         },
-    //         'icon' => 'fa-pencil-square-o',
-    //     );
-    //     return $tools;
-    // }
+    protected function getFormTools2($tools)
+    {
+        $tools['getuserinfo'] = array(
+            'title' => '获取用户基本信息',
+            'action' => 'getuserinfo',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['userid'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['converttoopenid'] = array(
+            'title' => 'userid转openid',
+            'action' => 'converttoopenid',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['userid']) && empty($row['openid'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['converttouserid'] = array(
+            'title' => 'openid转userid',
+            'action' => 'converttouserid',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && empty($row['userid']) && !empty($row['openid'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        // $tools['updateremark'] = array(
+        //     'title' => '设置用户备注名',
+        //     'action' => 'updateremark',
+        //     'is_show' => function ($row) {
+        //         if (
+        //             !empty($row) && !empty($row['authorizer_appid'])
+        //         ) {
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }
+        //     },
+        //     'icon' => 'fa-pencil-square-o',
+        // );
+
+        // $tools['getusertagidlist'] = array(
+        //     'title' => '获取用户身上的标签列表',
+        //     'action' => 'getusertagidlist',
+        //     'is_show' => function ($row) {
+        //         if (
+        //             !empty($row) && !empty($row['authorizer_appid'])
+        //         ) {
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }
+        //     },
+        //     'icon' => 'fa-pencil-square-o',
+        // );
+        return $tools;
+    }
+    
+    /**
+     * @title({name="获取用户基本信息"})
+     *
+     * @name 获取用户基本信息
+     */
+    public function getuserinfoAction()
+    {
+        // http://www.myapplicationmodule.com/admin/qyweixin/user/getuserinfo?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelUser->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4FormTool();
+                $title = "获取用户基本信息";
+                $row = $data;
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $agent_agentid = trim($this->request->get('agent_agentid'));
+                if (empty($agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                $res = $weixinopenService->getUserInfo($data);
+
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="userid转openid"})
+     *
+     * @name userid转openid
+     */
+    public function converttoopenidAction()
+    {
+        // http://www.myapplicationmodule.com/admin/qyweixin/user/converttoopenid?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelUser->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4FormTool();
+                $title = "userid转openid";
+                $row = $data;
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $agent_agentid = trim($this->request->get('agent_agentid'));
+                if (empty($agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                $res = $weixinopenService->convertToOpenid($data);
+
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="openid转userid"})
+     *
+     * @name openid转userid
+     */
+    public function converttouseridAction()
+    {
+        // http://www.myapplicationmodule.com/admin/qyweixin/user/converttouserid?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelUser->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4FormTool();
+                $title = "openid转userid";
+                $row = $data;
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $agent_agentid = trim($this->request->get('agent_agentid'));
+                if (empty($agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                $res = $weixinopenService->convertToUserid($data);
+
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
 
     // /**
     //  * @title({name="设置用户备注名"})
@@ -97,32 +252,7 @@ class UserController extends BaseController
     //         $this->makeJsonError($e->getMessage());
     //     }
     // }
-    // /**
-    //  * @title({name="获取用户基本信息"})
-    //  *
-    //  * @name 获取用户基本信息
-    //  */
-    // public function getuserinfoAction()
-    // {
-    //     // http://www.myapplicationmodule.com/admin/qyweixin/user/getuserinfo?id=xxx
-    //     try {
-    //         $id = trim($this->request->get('id'));
-    //         if (empty($id)) {
-    //             return $this->makeJsonError("记录ID未指定");
-    //         }
-    //         $data = $this->modelUser->getInfoById($id);
-    //         if (empty($data)) {
-    //             return $this->makeJsonError("id：{$id}的记录不存在");
-    //         }
 
-    //         $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid']);
-    //         $res = $weixinopenService->getUserInfo($data);
-
-    //         $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
-    //     } catch (\Exception $e) {
-    //         $this->makeJsonError($e->getMessage());
-    //     }
-    // }
     // /**
     //  * @title({name="获取用户身上的标签列表"})
     //  *

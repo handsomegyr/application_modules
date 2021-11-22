@@ -11,6 +11,8 @@ use App\Backend\Submodules\Qyweixin\Models\Authorize\AuthorizeLog;
  */
 class AuthorizelogController extends \App\Backend\Controllers\FormController
 {
+    // 是否只读
+    protected $readonly = true;
     private $modelAuthorizeLog;
 
     public function initialize()

@@ -40,7 +40,7 @@ class AgentmsgController extends BaseController
             'action' => 'sendmsg',
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['agentid']) && !empty($row['provider_appid'])) {
+                if (!empty($row) && !empty($row['agentid']) && !empty($row['authorizer_appid'])) {
                     return true;
                 } else {
                     return false;
@@ -714,7 +714,7 @@ class AgentmsgController extends BaseController
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
             }
-            $row = $this->modelBlackUser->getInfoById($id);
+            $row = $this->modelAgentMsg->getInfoById($id);
             if (empty($row)) {
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
@@ -783,7 +783,7 @@ class AgentmsgController extends BaseController
                 return $this->showModal($title, $fields, $row);
             } else {
                 // 如果是POST请求的话就是进行具体的处理  
-                $ToUserName = trim($this->request->get('ToUserName'));
+                $ToUserName = trim($this->request->get('agentmsg_ToUserName'));
                 if (empty($ToUserName)) {
                     return $this->makeJsonError("ToUserName未指定");
                 }
@@ -793,10 +793,10 @@ class AgentmsgController extends BaseController
                 $match = array();
                 $match['id'] = 0;
                 $match['keyword'] = '';
-                $match['agent_msg_type'] = $$row['msg_type'];
+                $match['agent_msg_type'] = $row['msg_type'];
                 $sendRet = $weixinopenService->sendAgentMsg($FromUserName, $ToUserName, $agentMsgInfo, $match);
                 if ($sendRet['is_ok']) {
-                    return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功');
+                    return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($sendRet));
                 } else {
                     return $this->makeJsonError($sendRet['api_ret']);
                 }

@@ -14,8 +14,6 @@ class MsglogController extends BaseController
 {
     private $modelLog;
     private $modelType;
-    private $modelAuthorizer;
-    private $modelProvider;
     public function initialize()
     {
         $this->modelLog = new Log();
@@ -971,6 +969,34 @@ class MsglogController extends BaseController
             )
         );
 
+        $schemas['Status'] = array(
+            'name' => '发送状态',
+            'data' => array(
+                'type' => 'string',
+                'length' => 50,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        
         $schemas['AppId'] = array(
             'name' => '用于接收事件推送的公众号的AppId',
             'data' => array(

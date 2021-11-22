@@ -73,7 +73,7 @@ class CorpjoinqrcodeController extends BaseController
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $agent_agentid = trim($this->request->get('corpjoinqrcode_agent_agentid'));
+                $agent_agentid = trim($this->request->get('agent_agentid'));
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
@@ -85,47 +85,6 @@ class CorpjoinqrcodeController extends BaseController
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
-    }
-
-    protected function getFields4FormTool()
-    {
-        $fields = array();
-        $fields['corpjoinqrcode_provider_appid'] = array(
-            'name' => '第三方服务商应用ID',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->componentItems,
-                'readonly' => true
-            ),
-        );
-        $fields['corpjoinqrcode_authorizer_appid'] = array(
-            'name' => '授权方应用ID',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->authorizerItems,
-                'readonly' => true
-            ),
-        );
-        $fields['corpjoinqrcode_agent_agentid'] = array(
-            'name' => '微信企业应用ID',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems,
-            ),
-        );
-        return $fields;
     }
 
     protected function getSchemas2($schemas)
@@ -199,9 +158,9 @@ class CorpjoinqrcodeController extends BaseController
         $schemas['size_type'] = array(
             'name' => 'qrcode尺寸类型',
             'data' => array(
-                'type' => 'boolean',
+                'type' => 'integer',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => false

@@ -10,7 +10,9 @@ use App\Backend\Submodules\Qyweixin\Models\ScriptTracking;
  * @name 授权执行时间跟踪统计
  */
 class ScripttrackingController extends BaseController
-{
+{    
+    protected $readonly = true;
+
     private $modelScriptTracking;
 
     public function initialize()

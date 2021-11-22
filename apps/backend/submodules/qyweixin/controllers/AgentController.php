@@ -37,7 +37,7 @@ class AgentController extends \App\Backend\Controllers\FormController
             'action' => 'getaccesstoken',
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['agentid']) && !empty($row['provider_appid'])) {
+                if (!empty($row) && !empty($row['agentid']) && !empty($row['authorizer_appid'])) {
                     return true;
                 } else {
                     return false;
@@ -50,7 +50,7 @@ class AgentController extends \App\Backend\Controllers\FormController
             'action' => 'getagentlist',
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['agentid']) && !empty($row['provider_appid'])) {
+                if (!empty($row) && !empty($row['agentid']) && !empty($row['authorizer_appid'])) {
                     return true;
                 } else {
                     return false;
@@ -63,7 +63,7 @@ class AgentController extends \App\Backend\Controllers\FormController
             'action' => 'getagentinfo',
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['agentid']) && !empty($row['provider_appid']) && ($row['secret_type'] == 0 || $row['secret_type'] == 3)) {
+                if (!empty($row) && !empty($row['agentid']) && !empty($row['authorizer_appid']) && ($row['secret_type'] == 0 || $row['secret_type'] == 3)) {
                     return true;
                 } else {
                     return false;
