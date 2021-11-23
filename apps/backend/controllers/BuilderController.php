@@ -83,6 +83,76 @@ class #_controllerName_#Controller extends \App\Backend\Controllers\FormControll
 }
 EOD;
 
+    protected $common_model_mysql_file_template = <<<'EOD'
+<?php
+
+namespace App\Common\Models\#_namespacename_#\Mysql;
+
+use App\Common\Models\Base\Mysql\Base;
+
+class #_model_# extends Base
+{
+    /**
+     * #_tablecomment_#管理
+     * This model is mapped to the table #_tablename_#
+     */
+    public function getSource()
+    {
+        return '#_tablename_#';
+    }
+
+    public function reorganize(array $data)
+    {
+        $data = parent::reorganize($data);
+        #_schemas_#
+        return $data;
+    }
+}
+EOD;
+
+    protected $common_model_file_template = <<<'EOD'
+<?php
+
+namespace App\Common\Models\#_namespacename_#;
+
+use App\Common\Models\Base\Base;
+
+class #_model_# extends Base
+{
+
+    function __construct()
+    {
+        $this->setModel(new \App\Common\Models\#_namespacename_#\Mysql\#_model_#());
+    }
+}
+EOD;
+
+    protected $backend_model_file_template = <<<'EOD'
+<?php
+
+namespace App\Backend\Submodules\#_namespacename_#\Models;
+
+class #_model_# extends \App\Common\Models\#_namespacename_#\#_model_#
+{
+
+    use \App\Backend\Models\Base;
+}
+EOD;
+
+    protected $model_file_template = <<<'EOD'
+<?php
+
+namespace App\#_namespacename_#\Models;
+
+class #_model_# extends \App\Common\Models\#_namespacename_#\#_model_#
+{
+}
+EOD;
+
+    protected $reorganize_shema_template = <<<'EOD'
+$data['#_field_#'] = $this->#_fieldop_#($data['#_field_#']);
+EOD;
+
     /**
      * @title({name="创建实体schema"})
      *
@@ -299,6 +369,121 @@ EOD;
         }
     }
 
+
+    /**
+     * @title({name="创建后台菜单和文件"})
+     *
+     * @name 创建后台菜单和文件
+     */
+    public function createmodelsAction()
+    {
+        // http://www.myapplicationmodule.com/admin/builder/createmodels?module=lexiangla
+        try {
+            $this->view->disable();
+            resetTimeMemLimit();
+
+            $module = $this->get('module', '');
+            if (empty($module)) {
+                throw new \Exception("module is empty");
+            }
+
+            $di = \Phalcon\DI::getDefault();
+            $db = $di['db'];
+            $result = $db->query("SHOW TABLE STATUS LIKE 'i{$module}_%'", array());
+            $result->setFetchMode(MYDB_FETCH_ASSOC);
+            $tables = $result->fetchAll();
+            if (empty($tables)) {
+                throw new \Exception("table is no found");
+            }
+            // print_r($tables);
+            // die('xxxxxxxxxx');
+            $tmp = \tempnam(\sys_get_temp_dir(), 'zip_');
+            $zip = new \ZipArchive();
+            $res = $zip->open($tmp, \ZipArchive::CREATE);
+            if ($res === true) {
+                $namespacename = ucfirst($module);
+                // lib\App\Lexiangla\Models
+                // lib\App\Common\Models\Lexiangla\Models
+                // lib\App\Common\Models\Lexiangla\Mysql
+                // lib\App\Backend\Submodules\Lexiangla\Models
+                $dir1 = "lib/App/{$namespacename}/Models";
+                $dir2 = "lib/App/Common/Models/{$namespacename}/Models";
+                $dir3 = "lib/App/Common/Models/{$namespacename}/Mysql";
+                $dir4 = "lib/App/Backend/Submodules/{$namespacename}/Models";
+                $zip->addEmptyDir($dir1);
+                $zip->addEmptyDir($dir2);
+                $zip->addEmptyDir($dir3);
+                $zip->addEmptyDir($dir4);
+
+                $items = array(
+                    array('file_template' => $this->model_file_template, 'dir' => $dir1),
+                    array('file_template' => $this->backend_model_file_template, 'dir' => $dir4),
+                    array('file_template' => $this->common_model_file_template, 'dir' => $dir2),
+                    array('file_template' => $this->common_model_mysql_file_template, 'dir' => $dir3)
+                );
+
+                foreach ($tables as $tableInfo) {
+                    // [Name] => ilexiangla_department_sync
+                    // [Engine] => InnoDB
+                    // [Version] => 10
+                    // [Row_format] => Compact
+                    // [Rows] => 0
+                    // [Avg_row_length] => 0
+                    // [Data_length] => 16384
+                    // [Max_data_length] => 0
+                    // [Index_length] => 32768
+                    // [Data_free] => 0
+                    // [Auto_increment] => 
+                    // [Create_time] => 2021-10-14 17:50:47
+                    // [Update_time] => 
+                    // [Check_time] => 
+                    // [Collation] => utf8mb4_unicode_ci
+                    // [Checksum] => 
+                    // [Create_options] => 
+                    // [Comment] => 乐享-通讯录管理-部门同步
+                    $table = $tableInfo['Name'];
+                    $tableComment = empty($tableInfo['Comment']) ? $table : $tableInfo['Comment'];
+                    $model = (str_replace("i{$module}_", '', $table));
+                    $model = ucwords($model, '_');
+                    $model = (str_replace("_", '', $model));
+
+                    // 获取config内容
+                    $fileStr = $this->getReorganizeContent($table);
+                    $schemas = "";
+                    foreach ($fileStr as $item) {
+                        $schemas .= ($item . "\n");
+                    }
+                    foreach ($items as $item) {
+                        $fileStr = str_replace("#_namespacename_#", $namespacename, $item['file_template']);
+                        $fileStr = str_replace("#_model_#", $model, $fileStr);
+                        $fileStr = str_replace("#_tablename_#", $table, $fileStr);
+                        $fileStr = str_replace("#_tablecomment_#", $tableComment, $fileStr);
+                        $fileStr = str_replace("#_schemas_#", $schemas, $fileStr);
+                        $fileStrRet = array('fileStr' => $fileStr, 'fileName' => $model);
+
+                        $filename = tempnam(sys_get_temp_dir(), 'php_' . uniqid() . "_");
+                        $fp = fopen($filename, 'w');
+                        fwrite($fp,  $fileStrRet['fileStr']);
+                        fclose($fp);
+                        $zip->addFile($filename, $item['dir'] . "/" . $fileStrRet['fileName'] . '.php');
+                        // unlink($filename);
+                    }
+                }
+            }
+            $zip->close();
+
+            ob_end_clean();
+            header('Content-type: application/octet-stream;');
+            header('Content-Disposition: attachment; filename="' .  $module . '_' . date("YmdHis") . '.zip"');
+            header("Content-Length:" . filesize($tmp));
+            echo file_get_contents($tmp);
+            unlink($tmp);
+            exit();
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
     protected function getAllTables()
     {
         // $tableInfo = DB::select("SHOW FULL COLUMNS FROM {$table}");
@@ -320,7 +505,8 @@ EOD;
         return $list;
     }
 
-    protected function getConfigContent($table)
+    // 获取表的字段
+    protected function getFields4Table($table)
     {
         // $tableInfo = DB::select("SHOW FULL COLUMNS FROM {$table}");
         $di = \Phalcon\DI::getDefault();
@@ -328,6 +514,12 @@ EOD;
         $result = $db->query("SHOW FULL COLUMNS FROM {$table}", array());
         $result->setFetchMode(MYDB_FETCH_ASSOC);
         $tableInfo = $result->fetchAll();
+        return $tableInfo;
+    }
+
+    protected function getConfigContent($table)
+    {
+        $tableInfo = $this->getFields4Table($table);
         return $this->getDisplayColumns($tableInfo);
     }
 
@@ -421,6 +613,48 @@ EOD;
             $schemaStr = sprintf($this->shema_template, $field, $name, $dataType, $dataLength, $dataDefaultValue, $formInputType, $formItems, $listIsShow, $listListType, $listRender);
 
             $columns[$col['Field']] = $schemaStr;
+        }
+        return $columns;
+    }
+
+    protected function getReorganizeContent($table)
+    {
+        $tableInfo = $this->getFields4Table($table);
+        return $this->getReorganizeColumns($tableInfo);
+    }
+
+    protected function getReorganizeColumns($tableInfo)
+    {
+        $columns = array();
+        foreach ($tableInfo as $col) {
+            // 某些字段不用输出显示
+            if (in_array($col['Field'], array(
+                '_id', '__CREATE_TIME__',  '__CREATE_USER_ID__', '__CREATE_USER_NAME__',
+                '__MODIFY_TIME__', '__MODIFY_USER_ID__', '__MODIFY_USER_NAME__',
+                '__REMOVED__', '__REMOVE_TIME__', '__REMOVE_USER_ID__', '__REMOVE_USER_NAME__', 'memo'
+            ))) {
+                continue;
+            }
+
+            $field = $col['Field'];
+            // text
+            if ("text" == $col['Type']) {
+                $schemaStr = str_replace("#_field_#", $field, $this->reorganize_shema_template);
+                $schemaStr = str_replace("#_fieldop_#", 'changeToArray', $schemaStr);
+                $columns[$field] = $schemaStr;
+            }
+            //tinyint(1) unsigned
+            elseif (self::startsWith($col['Type'], "tinyint")) {
+                $schemaStr = str_replace("#_field_#", $field, $this->reorganize_shema_template);
+                $schemaStr = str_replace("#_fieldop_#", 'changeToBoolean', $schemaStr);
+                $columns[$field] = $schemaStr;
+            }
+            //datetime
+            elseif ($col['Type'] == 'datetime') {
+                $schemaStr = str_replace("#_field_#", $field, $this->reorganize_shema_template);
+                $schemaStr = str_replace("#_fieldop_#", 'changeToValidDate', $schemaStr);
+                $columns[$field] = $schemaStr;
+            }
         }
         return $columns;
     }
