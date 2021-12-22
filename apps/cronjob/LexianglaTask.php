@@ -731,10 +731,10 @@ class LexianglaTask extends \Phalcon\CLI\Task
 
         if (!empty($retApi['code'])) {
             // 1002 不算错误 
-            if (intval($retApi['code'] == 1002)) {
-            } elseif (intval($retApi['code'] == 1004)) {
+            if (intval($retApi['code']) == 1002) {
+            } elseif (intval($retApi['code']) == 1004) {
                 return $retApi['code'];
-            } elseif (intval($retApi['code'] == 1005)) {
+            } elseif (intval($retApi['code']) == 1005) {
                 return $retApi['code'];
             } else {
                 throw new \Exception("删除部门失败:" . \App\Common\Utils\Helper::myJsonEncode($params));
@@ -1133,7 +1133,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
 
         if (!empty($retApi['code'])) {
             // 20010 不算错误 
-            if (intval($retApi['code'] == 20010)) {
+            if (intval($retApi['code']) == 20010) {
             } else {
                 throw new \Exception("删除标签失败:" . \App\Common\Utils\Helper::myJsonEncode($params));
             }
@@ -1759,7 +1759,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
 
         if (!empty($retApi['code'])) {
             // 3001 不算错误 
-            if (intval($retApi['code'] == 3001)) {
+            if (intval($retApi['code']) == 3001) {
             } else {
                 throw new \Exception("删除成员失败:" . \App\Common\Utils\Helper::myJsonEncode($params));
             }
@@ -2338,7 +2338,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
 
         if (!empty($retApi['code'])) {
             // 20010 不算错误 
-            if (intval($retApi['code'] == 20010)) {
+            if (intval($retApi['code']) == 20010) {
             } else {
                 throw new \Exception("删除标签成员失败:" . \App\Common\Utils\Helper::myJsonEncode($params));
             }
@@ -2480,7 +2480,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
 
         if (!empty($retApi['code'])) {
             // 20010 不算错误 
-            if (intval($retApi['code'] == 20010)) {
+            if (intval($retApi['code']) == 20010) {
             } else {
                 throw new \Exception("删除标签成员失败:" . \App\Common\Utils\Helper::myJsonEncode($params));
             }
