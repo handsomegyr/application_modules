@@ -130,6 +130,39 @@ class ServiceController extends ControllerBase
     }
 
     /**
+     * 获取JSSDK信息
+     *
+     * @param Request $request            
+     * @return \Illuminate\Http\JsonResponse|string
+     */
+    public function getJssdkInfoAction()
+    {
+        // http://www.myapplicationmodule.com/qyweixin/api/service/get-jssdk-info?appid=4m9QOrJMzAjpx75Y?url=xx
+        // http://wxcrmdemo.jdytoy.com/qyweixin/api/service/get-jssdk-info?appid=4m9QOrJMzAjpx75Y?url=xx
+        try {
+            $url = isset($_GET['url']) ? trim($_GET['url']) : "";
+
+            // 初始化
+            $this->doInitializeLogic();
+
+            $serviceQyweixin = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, "9999998");
+            $ret1 = $serviceQyweixin->getSignPackage($url);
+            $ret1['appid'] = $this->authorizer_appid;
+
+            $ret2 = $this->weixinopenService->getSignPackage($url);
+            $ret2['corpid'] = $this->authorizer_appid;
+            $ret2['agentid'] = $this->agentid;
+
+            $ret = array();
+            $ret['config'] = $ret1;
+            $ret['agentConfig'] = $ret2;
+            return $this->result("OK", $ret);
+        } catch (\Exception $e) {
+            return $this->error(50000, "系统发生错误：" . $e->getMessage());
+        }
+    }
+
+    /**
      * 初始化
      */
     protected function doInitializeLogic()
@@ -160,6 +193,7 @@ class ServiceController extends ControllerBase
         if (empty($this->authorizer_appid)) {
             throw new \Exception("authorizer_appid为空");
         }
+        $this->agentid = $this->appConfig['agentid'];
         // 创建service
         $this->weixinopenService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $this->agentid);
     }
