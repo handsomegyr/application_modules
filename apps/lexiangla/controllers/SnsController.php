@@ -48,6 +48,12 @@ class SnsController extends ControllerBase
                 //qyweixin/api/applicationsns/snsauthorize?appid=4O9dl1v24jEmXJRD&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&scope=snsapi_base&refresh=1
                 $redirectUri = $redirectUri . ("qyweixin/api/applicationsns/snsauthorize?appid=4O9dl1v24jEmXJRD&state={$state}&scope=snsapi_base&redirect={$redirect}");
 
+                // 如果不在企业微信的环境下的话
+                if (!$this->getRuntimeEnvironment()) {
+                    //ssoqrconnect?appid=6RV80AorwYP39QXp&redirect=https%3A%2F%2Fwww.baidu.com%2F&state=qwerty&refresh=1
+                    $redirectUri = $redirectUri . ("qyweixin/api/applicationsns/ssoqrconnect?appid=4O9dl1v24jEmXJRD&state={$state}&redirect={$redirect}");
+                }
+
                 header("location:{$redirectUri}");
                 exit();
             }
@@ -102,5 +108,25 @@ class SnsController extends ControllerBase
         }
         echo \json_encode($ret);
         return;
+    }
+
+    /**
+     * 判断当前环境
+     * @return boolean [description]
+     */
+    protected function getRuntimeEnvironment()
+    {
+        // 是否在企业微信环境下
+        if (strpos($_SERVER['HTTP_USER_AGENT'], 'wxwork') !== false) {
+            return true;
+        } else {
+            return false;
+            // 是否在微信环境下
+            if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }
