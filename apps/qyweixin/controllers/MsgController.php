@@ -199,6 +199,8 @@ class MsgController extends ControllerBase
                     $debug = \App\Common\Utils\Helper::myJsonEncode($this->requestLogDatas);
                     throw new \Exception('签名错误' . $debug);
                 } else {
+                    $AESInfo['replyEchoStr'] = $ret4CheckSignature['replyEchoStr'];
+                    $this->requestLogDatas['aes_info'] = $AESInfo;
                     return $ret4CheckSignature['replyEchoStr'];
                 }
             } elseif ($this->request->isPost()) {
@@ -2054,6 +2056,32 @@ class MsgController extends ControllerBase
              */
             $Mode = isset($datas['Mode']) ? trim($datas['Mode']) : "";
             $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : "";
+            $response = "success";
+        } elseif ($Event == 'kf_msg_or_event') { // 微信客服 会话分配与消息收发           
+            /**
+             * 微信客服 会话分配与消息收发
+             * 当微信客户、接待人员发消息或有行为动作时，企业微信后台会将事件的回调数据包发送到企业指定URL；企业收到请求后，再通过读取消息接口主动读取具体的消息内容
+             * 回调事件
+             * 接收并解析事件的方法见：接收事件。
+             * 示例
+             *<xml>
+             *   <ToUserName><![CDATA[ww12345678910]]></ToUserName>
+             *   <CreateTime>1348831860</CreateTime>
+             *   <MsgType><![CDATA[event]]></MsgType>
+             *   <Event><![CDATA[kf_msg_or_event]]></Event>
+             *   <Token><![CDATA[ENCApHxnGDNAVNY4AaSJKj4Tb5mwsEMzxhFmHVGcra996NR]]></Token>
+             *</xml>
+             * 参数说明：
+             *
+             * 参数 说明
+             *ToUserName	企业微信CorpID
+             *CreateTime	消息创建时间，unix时间戳
+             *MsgType	消息的类型，此时固定为：event
+             *Event	事件的类型，此时固定为：kf_msg_or_event
+             *Token	调用拉取消息接口时，需要传此token，用于校验请求的合法性
+             */
+            $Token = isset($datas['Token']) ? trim($datas['Token']) : "";
+            // 记录数据
             $response = "success";
         } else {
             $response = "";

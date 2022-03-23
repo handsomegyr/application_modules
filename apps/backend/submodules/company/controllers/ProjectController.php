@@ -319,6 +319,17 @@ class ProjectController extends \App\Backend\Controllers\FormController
                         'readonly' => true,
                     ),
                 );
+                $fields['git_url'] = array(
+                    'name' => '项目GIT地址',
+                    'validation' => array(
+                        'required' => false
+                    ),
+                    'form' => array(
+                        'input_type' => 'text',
+                        'is_show' => true,
+                        'readonly' => false,
+                    ),
+                );
                 $fields['svn_url'] = array(
                     'name' => '项目SVN地址',
                     'validation' => array(
@@ -378,13 +389,15 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 $title = "修改url";
                 return $this->showModal($title, $fields, $row);
             } else {
-                // 如果是POST请求的话就是进行具体的处理  
+                // 如果是POST请求的话就是进行具体的处理
+                $git_url = trim($this->request->get('git_url'));
                 $svn_url = trim($this->request->get('svn_url'));
                 $test_url = trim($this->request->get('test_url'));
                 $product_url = trim($this->request->get('product_url'));
                 $oss_url = trim($this->request->get('oss_url'));
                 $cdn_url = trim($this->request->get('cdn_url'));
                 $updateData = array(
+                    'git_url' => $git_url,
                     'svn_url' => $svn_url,
                     'test_url' => $test_url,
                     'product_url' => $product_url,
@@ -1233,6 +1246,46 @@ class ProjectController extends \App\Backend\Controllers\FormController
                 'list_type' => '',
                 'render' => '',
                 'items' => array('PE1' => 'PE1', 'PE2' => 'PE2', 'PE3' => 'PE3', 'PE4' => 'PE4'),
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['git_url'] = array(
+            'name' => '项目GIT地址',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'content_type' => 'url',
+                'is_show' => true,
+                'items' => '',
+                'extensionSettings' => function ($column, $Grid) {
+                    $settings = array();
+                    $row = $column->getRow();
+                    if (empty($row->_id)) {
+                        // 新增的时候不显示
+                        $settings['is_show'] = false;
+                    } else {
+                        // 修改的时候不能修改
+                        $settings['readonly'] = true;
+                    }
+                    return $settings;
+                }
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
             ),
             'search' => array(
                 'is_show' => true

@@ -1024,6 +1024,34 @@ class MsglogController extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['Token'] = array(
+            'name' => 'Token',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '调用拉取消息接口时，需要传此token，用于校验请求的合法性',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => false
+            ),
+            'export' => array(
+                'is_show' => false
+            )
+        );
         $schemas['Source'] = array(
             'name' => '授权来源',
             'data' => array(
