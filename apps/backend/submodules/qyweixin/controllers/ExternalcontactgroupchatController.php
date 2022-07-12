@@ -452,6 +452,33 @@ class ExternalcontactgroupchatController extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['admin_list'] = array(
+            'name' => '群管理员列表',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $statusOptions = array();
         $statusOptions['0'] = '正常';
         $statusOptions['1'] = '跟进人离职';

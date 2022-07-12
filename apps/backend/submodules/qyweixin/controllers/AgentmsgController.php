@@ -200,8 +200,35 @@ class AgentmsgController extends BaseController
             'export' => array(
                 'is_show' => true
             )
+        );        
+        $schemas['msg_settings'] = array(
+            'name' => '应用消息配置',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'help' => '应用消息配置',
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => ''
+            ),
+            'search' => array(
+                'input_type' => 'text',
+                'is_show' => false,
+            ),
+            'export' => array(
+                'is_show' => false
+            )
         );
-
         $schemas['media'] = array(
             'name' => '临时素材',
             'data' => array(

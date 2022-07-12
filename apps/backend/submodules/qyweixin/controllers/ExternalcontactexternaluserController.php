@@ -298,7 +298,7 @@ class ExternalcontactexternaluserController extends BaseController
             )
         );
         $schemas['external_userid'] = array(
-            'name' => 'userid',
+            'name' => '外部联系人的userid',
             'data' => array(
                 'type' => 'string',
                 'length' => 255,

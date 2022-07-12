@@ -2,103 +2,130 @@
 
 namespace App\Backend\Submodules\Qyweixin\Controllers;
 
-use App\Backend\Submodules\Qyweixin\Models\Contact\Department;
+use App\Backend\Submodules\Qyweixin\Models\ExternalContact\ResignedTransferResult;
 
 /**
- * @title({name="部门"})
+ * @title({name="离职成员的客户分配情况"})
  *
- * @name 部门
+ * @name 离职成员的客户分配情况
  */
-class DepartmentController extends BaseController
+class ExternalcontactresignedtransferresultController extends BaseController
 {
-    private $modelDepartment;
+    private $modelExternalcontactResignedTransferResult;
 
     public function initialize()
     {
-        $this->modelDepartment = new Department();
+        $this->modelExternalcontactResignedTransferResult = new ResignedTransferResult();
         parent::initialize();
     }
 
-    protected function getHeaderTools2($tools)
+    protected function getFormTools2($tools)
     {
-        $tools['getdepartmentlist'] = array(
-            'title' => '获取部门列表',
-            'action' => 'getdepartmentlist',
-            'is_show' => true,
-            'is_export' => false,
+        $tools['ResignedTransferResult'] = array(
+            'title' => '再分配',
+            'action' => 'ResignedTransferResult',
+            'is_show' => function ($row) {
+                if (!empty($row['external_userid']) && !empty($row['handover_userid']) && !empty($row['takeover_userid']) && empty($row['is_ResignedTransferResulted']) && !empty($row['authorizer_appid'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
             'icon' => 'fa-pencil-square-o',
         );
+
         return $tools;
     }
 
     /**
-     * @title({name="获取部门列表"})
+     * @title({name="再分配"})
      *
-     * @name 获取部门列表
+     * @name 再分配
      */
-    public function getdepartmentlistAction()
+    public function ResignedTransferResultAction()
     {
-        // http://www.myapplicationmodule.com/admin/qyweixin/department/getdepartmentlist
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactResignedTransferResult/ResignedTransferResult?id=xxx
         try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelExternalcontactResignedTransferResult->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
+
                 // 构建modal里面Form表单内容
-                $fields = $this->getFields4HeaderTool();
-                $title = "获取部门列表";
-                $row = array();
+                $fields = $this->getFields4FormTool();
+                $title = "再分配";
+                $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $provider_appid = trim($this->request->get('department_provider_appid'));
-                $authorizer_appid = trim($this->request->get('department_authorizer_appid'));
-                $agent_agentid = trim($this->request->get('department_agent_agentid'));
-                $department_id = trim($this->request->get('department_id'));
-                if (empty($provider_appid)) {
-                    // return $this->response()->error("第三方服务商应用ID未设定");
-                }
-                if (empty($authorizer_appid)) {
-                    return $this->makeJsonError("授权方应用ID未设定");
-                }
+                $agent_agentid = trim($this->request->get('ResignedTransferResult_agentid'));
                 if (empty($agent_agentid)) {
                     return $this->makeJsonError("企业应用ID未设定");
                 }
-                if (empty($department_id)) {
-                }
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
+                $res = $weixinopenService->ResignedTransferResult($data);
 
-                $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agent_agentid);
-                $res = $weixinopenService->getDepartmentList($department_id);
-                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
         }
     }
 
-    protected function getFields4HeaderTool()
+    protected function getFields4FormTool()
     {
         $fields = array();
-        $fields['department_provider_appid'] = array(
-            'name' => '第三方服务商应用ID',
+        $fields['_id'] = array(
+            'name' => 'ID',
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'select',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => $this->componentItems,
+                'readonly' => true
             ),
         );
-        $fields['department_authorizer_appid'] = array(
-            'name' => '授权方应用ID',
+        $fields['external_userid'] = array(
+            'name' => '外部联系人的userid',
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'select',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => $this->authorizerItems,
+                'readonly' => true
             ),
         );
-        $fields['department_agent_agentid'] = array(
+        $fields['handover_userid'] = array(
+            'name' => '离职成员的userid',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'readonly' => true
+            ),
+        );
+        $fields['takeover_userid'] = array(
+            'name' => '接替成员的userid',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'readonly' => true
+            ),
+        );
+        $fields['ResignedTransferResult_agentid'] = array(
             'name' => '微信企业应用ID',
             'validation' => array(
                 'required' => true
@@ -110,19 +137,9 @@ class DepartmentController extends BaseController
             ),
         );
 
-        $fields['department_id'] = array(
-            'name' => '部门id',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-            ),
-        );
-
         return $fields;
     }
+
 
     protected function getSchemas2($schemas)
     {
@@ -186,21 +203,20 @@ class DepartmentController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['deptid'] = array(
-            'name' => '部门id',
+        $schemas['handover_userid'] = array(
+            'name' => '原添加成员的userid',
             'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'number',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => '',
-                'help' => '部门id，32位整型，指定时必须大于1。若不填该参数，将自动生成id',
+                'items' => ''
             ),
             'list' => array(
                 'is_show' => true,
@@ -214,11 +230,38 @@ class DepartmentController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['name'] = array(
-            'name' => '部门名称',
+        $schemas['takeover_userid'] = array(
+            'name' => '接替成员的userid',
             'data' => array(
                 'type' => 'string',
-                'length' => 32,
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['external_userid'] = array(
+            'name' => '外部联系人的userid',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -228,7 +271,7 @@ class DepartmentController extends BaseController
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '部门名称。同一个层级的部门名称不能重复。长度限制为1~32个字符，字符不能包括:?”<>｜',
+                'help' => '外部联系人的userid，注意不是企业成员的帐号',
             ),
             'list' => array(
                 'is_show' => true,
@@ -242,147 +285,45 @@ class DepartmentController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['name_en'] = array(
-            'name' => '英文名称',
-            'data' => array(
-                'type' => 'string',
-                'length' => 32,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '英文名称，需要在管理后台开启多语言支持才能生效。长度限制为1~32个字符，字符不能包括:?”<>｜',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );        
-        $schemas['department_leader'] = array(
-            'name' => '部门负责人的UserID',
-            'data' => array(
-                'type' => 'json',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => '',
-                'help' => '返回在应用可见范围内的部门负责人列表；第三方仅通讯录应用或者授权了“组织架构信息-应用可获取企业的部门组织架构信息-部门负责人”的第三方应用可获取'
-            ),
-            'list' => array(
-                'is_show' => false,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['parentid'] = array(
-            'name' => '父部门id',
+        //接替状态， 1-接替完毕 2-等待接替 3-客户拒绝 4-接替成员客户达到上限
+        $statusOptions = array();
+        $statusOptions['1'] = '接替完毕';
+        $statusOptions['2'] = '等待接替';
+        $statusOptions['3'] = '客户拒绝';
+        $statusOptions['4'] = '接替成员客户达到上限';
+        $schemas['status'] = array(
+            'name' => '接替状态',
             'data' => array(
                 'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true,
-                'items' => '',
-                'help' => '父部门id，32位整型',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['order'] = array(
-            'name' => '在父部门中的次序值',
-            'data' => array(
-                'type' => 'integer',
-                'length' => 11,
-                'defaultValue' => 0
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'number',
-                'is_show' => true,
-                'items' => '',
-                'help' => '在父部门中的次序值。order值大的排序靠前。有效的值范围是[0, 2^32)',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['is_exist'] = array(
-            'name' => '是否存在',
-            'data' => array(
-                'type' => 'boolean',
                 'length' => 1,
-                'defaultValue' => false
+                'defaultValue' => 0
             ),
             'validation' => array(
                 'required' => true
             ),
             'form' => array(
-                'input_type' => 'radio',
+                'input_type' => 'select',
                 'is_show' => true,
-                'items' => $this->trueOrFalseDatas
+                'items' => $statusOptions,
+                'help' => '接替状态， 1-接替完毕 2-等待接替 3-客户拒绝 4-接替成员客户达到上限',
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '1',
+                'list_type' => '',
                 'render' => '',
+                'items' => $statusOptions
             ),
             'search' => array(
-                'is_show' => true
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $statusOptions
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-        $schemas['sync_time'] = array(
-            'name' => '同步时间',
+        $schemas['takeover_time'] = array(
+            'name' => '接替客户的时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
@@ -394,7 +335,8 @@ class DepartmentController extends BaseController
             'form' => array(
                 'input_type' => 'datetimepicker',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '接替客户的时间，如果是等待接替状态，则为未来的自动接替时间',
             ),
             'list' => array(
                 'is_show' => true,
@@ -441,11 +383,11 @@ class DepartmentController extends BaseController
 
     protected function getName()
     {
-        return '部门';
+        return '离职成员的客户分配情况';
     }
 
     protected function getModel()
     {
-        return $this->modelDepartment;
+        return $this->modelExternalcontactResignedTransferResult;
     }
 }
