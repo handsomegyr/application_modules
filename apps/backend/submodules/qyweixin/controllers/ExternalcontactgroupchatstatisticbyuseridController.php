@@ -613,6 +613,33 @@ class ExternalcontactgroupchatstatisticbyuseridController extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['migrate_trainee_chat_cnt'] = array(
+            'name' => '截至当天新增迁移群数(仅教培行业返回)',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['get_time'] = array(
             'name' => '获取时间',
             'data' => array(

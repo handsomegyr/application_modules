@@ -790,14 +790,12 @@ class ExternalcontactcontactwayController extends BaseController
                 'is_show' => true
             )
         );
-
-        //结束语，会话结束时自动发送给客户，可参考“结束语定义”，仅在is_temp为true时有效
-        $schemas['conclusions_text_content'] = array(
-            'name' => '消息文本内容',
+        $schemas['conclusions'] = array(
+            'name' => '结束语',
             'data' => array(
-                'type' => 'string',
+                'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => ''
+                'defaultValue' => '{}'
             ),
             'validation' => array(
                 'required' => false
@@ -806,7 +804,7 @@ class ExternalcontactcontactwayController extends BaseController
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '结束语，消息文本内容,最长为3000字节',
+                'help' => '结束语，会话结束时自动发送给客户，可参考“结束语定义”，仅在is_temp为true时有效',
             ),
             'list' => array(
                 'is_show' => false,
@@ -820,390 +818,421 @@ class ExternalcontactcontactwayController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['conclusions_image_media'] = array(
-            'name' => '图片',
-            'data' => array(
-                'type' => 'file',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'image',
-                'is_show' => true,
-                'items' => '',
-                'help' => '图片',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => 'img',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_image_media_id'] = array(
-            'name' => '图片的media_id',
-            'data' => array(
-                'type' => 'string',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => '',
-                'help' => '结束语，图片的media_id，可以通过素材管理接口获得',
-            ),
-            'list' => array(
-                'is_show' => false,
-                'list_type' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_image_media_created_at'] = array(
-            'name' => '创建图片的media_id的时间',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime()
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_image_pic_url'] = array(
-            'name' => '图片的链接',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'content_type' => 'url',
-                'is_show' => true,
-                'items' => '',
-                'help' => '结束语，图片的链接，仅可使用上传图片接口得到的链接',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => 'img',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_link_title'] = array(
-            'name' => '图文消息标题',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '结束语，图文消息标题，最长为128字节',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_link_picurl'] = array(
-            'name' => '图文消息封面的url',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'content_type' => 'url',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_link_desc'] = array(
-            'name' => '图文消息的描述',
-            'data' => array(
-                'type' => 'string',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => '',
-                'help' => '结束语，图文消息的描述，最长为512字节',
-            ),
-            'list' => array(
-                'is_show' => false,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_link_url'] = array(
-            'name' => '图文消息的链接',
-            'data' => array(
-                'type' => 'string',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'content_type' => 'url',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_miniprogram_title'] = array(
-            'name' => '小程序消息标题',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '结束语，小程序消息标题，最长为64字节',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_miniprogram_pic_media'] = array(
-            'name' => '小程序消息封面图',
-            'data' => array(
-                'type' => 'file',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'image',
-                'is_show' => true,
-                'items' => '',
-                'help' => '结束语，小程序消息封面图，封面图建议尺寸为520*416',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => 'img',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_miniprogram_pic_media_id'] = array(
-            'name' => '小程序消息封面的mediaid',
-            'data' => array(
-                'type' => 'string',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => false,
-                'list_type' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_miniprogram_pic_media_created_at'] = array(
-            'name' => '创建小程序消息封面的mediaid的时间',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime()
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_miniprogram_appid'] = array(
-            'name' => '小程序appid',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '结束语，小程序appid，必须是关联到企业的小程序应用',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['conclusions_miniprogram_page'] = array(
-            'name' => '小程序page路径',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
+        if (false) {
+            //结束语，会话结束时自动发送给客户，可参考“结束语定义”，仅在is_temp为true时有效
+            $schemas['conclusions_text_content'] = array(
+                'name' => '消息文本内容',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 1024,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'textarea',
+                    'is_show' => true,
+                    'items' => '',
+                    'help' => '结束语，消息文本内容,最长为3000字节',
+                ),
+                'list' => array(
+                    'is_show' => false,
+                    'list_type' => '',
+                    'render' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_image_media'] = array(
+                'name' => '图片',
+                'data' => array(
+                    'type' => 'file',
+                    'length' => 255,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'image',
+                    'is_show' => true,
+                    'items' => '',
+                    'help' => '图片',
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                    'render' => 'img',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_image_media_id'] = array(
+                'name' => '图片的media_id',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 1024,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'textarea',
+                    'is_show' => true,
+                    'items' => '',
+                    'help' => '结束语，图片的media_id，可以通过素材管理接口获得',
+                ),
+                'list' => array(
+                    'is_show' => false,
+                    'list_type' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_image_media_created_at'] = array(
+                'name' => '创建图片的media_id的时间',
+                'data' => array(
+                    'type' => 'datetime',
+                    'length' => 19,
+                    'defaultValue' => getCurrentTime()
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'datetimepicker',
+                    'is_show' => true,
+                    'items' => ''
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                    'render' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_image_pic_url'] = array(
+                'name' => '图片的链接',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 255,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'text',
+                    'content_type' => 'url',
+                    'is_show' => true,
+                    'items' => '',
+                    'help' => '结束语，图片的链接，仅可使用上传图片接口得到的链接',
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                    'render' => 'img',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_link_title'] = array(
+                'name' => '图文消息标题',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 255,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'text',
+                    'is_show' => true,
+                    'items' => '',
+                    'help' => '结束语，图文消息标题，最长为128字节',
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_link_picurl'] = array(
+                'name' => '图文消息封面的url',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 255,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'text',
+                    'content_type' => 'url',
+                    'is_show' => true,
+                    'items' => ''
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_link_desc'] = array(
+                'name' => '图文消息的描述',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 1024,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'textarea',
+                    'is_show' => true,
+                    'items' => '',
+                    'help' => '结束语，图文消息的描述，最长为512字节',
+                ),
+                'list' => array(
+                    'is_show' => false,
+                    'list_type' => '',
+                    'render' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_link_url'] = array(
+                'name' => '图文消息的链接',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 1024,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'text',
+                    'content_type' => 'url',
+                    'is_show' => true,
+                    'items' => ''
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_miniprogram_title'] = array(
+                'name' => '小程序消息标题',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 255,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'text',
+                    'is_show' => true,
+                    'items' => '',
+                    'help' => '结束语，小程序消息标题，最长为64字节',
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                    'render' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_miniprogram_pic_media'] = array(
+                'name' => '小程序消息封面图',
+                'data' => array(
+                    'type' => 'file',
+                    'length' => 255,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'image',
+                    'is_show' => true,
+                    'items' => '',
+                    'help' => '结束语，小程序消息封面图，封面图建议尺寸为520*416',
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                    'render' => 'img',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_miniprogram_pic_media_id'] = array(
+                'name' => '小程序消息封面的mediaid',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 1024,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'textarea',
+                    'is_show' => true,
+                    'items' => ''
+                ),
+                'list' => array(
+                    'is_show' => false,
+                    'list_type' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_miniprogram_pic_media_created_at'] = array(
+                'name' => '创建小程序消息封面的mediaid的时间',
+                'data' => array(
+                    'type' => 'datetime',
+                    'length' => 19,
+                    'defaultValue' => getCurrentTime()
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'datetimepicker',
+                    'is_show' => true,
+                    'items' => ''
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                    'render' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_miniprogram_appid'] = array(
+                'name' => '小程序appid',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 255,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'text',
+                    'is_show' => true,
+                    'items' => '',
+                    'help' => '结束语，小程序appid，必须是关联到企业的小程序应用',
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                    'render' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+            $schemas['conclusions_miniprogram_page'] = array(
+                'name' => '小程序page路径',
+                'data' => array(
+                    'type' => 'string',
+                    'length' => 255,
+                    'defaultValue' => ''
+                ),
+                'validation' => array(
+                    'required' => false
+                ),
+                'form' => array(
+                    'input_type' => 'text',
+                    'is_show' => true,
+                    'items' => ''
+                ),
+                'list' => array(
+                    'is_show' => true,
+                    'list_type' => '',
+                    'render' => '',
+                ),
+                'search' => array(
+                    'is_show' => true
+                ),
+                'export' => array(
+                    'is_show' => true
+                )
+            );
+        }
         $schemas['qr_code'] = array(
             'name' => '联系二维码的URL',
             'data' => array(

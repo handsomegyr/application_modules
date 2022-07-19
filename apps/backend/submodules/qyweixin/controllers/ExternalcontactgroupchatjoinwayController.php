@@ -2,20 +2,20 @@
 
 namespace App\Backend\Submodules\Qyweixin\Controllers;
 
-use App\Backend\Submodules\Qyweixin\Models\ExternalContact\GroupChatMember;
+use App\Backend\Submodules\Qyweixin\Models\ExternalContact\GroupChatJoinWay;
 
 /**
- * @title({name="客户群成员"})
+ * @title({name="配置客户群进群方式"})
  *
- * @name 客户群成员
+ * @name 配置客户群进群方式
  */
-class ExternalcontactgroupchatmemberController extends BaseController
+class ExternalcontactgroupchatjoinwayController extends BaseController
 {
-    private $modelExternalcontactGroupChatMember;
+    private $modelExternalcontactGroupChatJoinWay;
 
     public function initialize()
     {
-        $this->modelExternalcontactGroupChatMember = new GroupChatMember();
+        $this->modelExternalcontactGroupChatJoinWay = new GroupChatJoinWay();
         parent::initialize();
     }
 
@@ -81,11 +81,11 @@ class ExternalcontactgroupchatmemberController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['chat_id'] = array(
-            'name' => '客户群ID',
+        $schemas['name'] = array(
+            'name' => '名称',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 50,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -108,11 +108,11 @@ class ExternalcontactgroupchatmemberController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['userid'] = array(
-            'name' => '群成员id',
+        $schemas['config_id'] = array(
+            'name' => '配置id',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 190,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -135,20 +135,55 @@ class ExternalcontactgroupchatmemberController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['join_time'] = array(
-            'name' => '入群时间',
+        $sceneOptions = array();
+        $sceneOptions['1'] = '群的小程序插件';
+        $sceneOptions['2'] = '群的二维码插件';
+        $schemas['scene'] = array(
+            'name' => '场景',
             'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime()
+                'type' => 'integer',
+                'length' => 1,
+                'defaultValue' => 1
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $sceneOptions,
+                'help' => '场景。 1 - 群的小程序插件 2 - 群的二维码插件',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $sceneOptions
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $sceneOptions
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['remark'] = array(
+            'name' => '联系方式的备注信息',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'datetimepicker',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => ''
+                'items' => '',
+                'help' => '联系方式的备注信息，用于助记，超过30个字符将被截断',
             ),
             'list' => array(
                 'is_show' => true,
@@ -162,16 +197,12 @@ class ExternalcontactgroupchatmemberController extends BaseController
                 'is_show' => true
             )
         );
-        $typeOptions = array();
-        $typeOptions['1'] = '企业成员';
-        $typeOptions['2'] = '外部联系人';
-
-        $schemas['type'] = array(
-            'name' => '成员类型',
+        $schemas['auto_create_room'] = array(
+            'name' => '当群满了后，是否自动新建群',
             'data' => array(
-                'type' => 'integer',
+                'type' => 'boolean',
                 'length' => 1,
-                'defaultValue' => 1
+                'defaultValue' => true
             ),
             'validation' => array(
                 'required' => false
@@ -179,68 +210,83 @@ class ExternalcontactgroupchatmemberController extends BaseController
             'form' => array(
                 'input_type' => 'radio',
                 'is_show' => true,
-                'items' => $typeOptions,
-                'help' => '成员类型。1 - 企业成员 2 - 外部联系人',
+                'items' => $this->trueOrFalseDatas,
+                'help' => '当群满了后，是否自动新建群。0-否；1-是。 默认为1',
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
+                'list_type' => '1',
                 'render' => '',
-                'items' => $typeOptions,
             ),
             'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $typeOptions,
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-
-        $joinSceneOptions = array();
-        $joinSceneOptions['1'] = '由成员邀请入群（直接邀请入群）';
-        $joinSceneOptions['2'] = '由成员邀请入群（通过邀请链接入群）';
-        $joinSceneOptions['3'] = '通过扫描群二维码入群';
-
-        $schemas['join_scene'] = array(
-            'name' => '入群方式',
+        $schemas['room_base_name'] = array(
+            'name' => '自动建群的群名前缀',
             'data' => array(
-                'type' => 'integer',
-                'length' => 1,
-                'defaultValue' => 1
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
             ),
             'form' => array(
-                'input_type' => 'radio',
+                'input_type' => 'text',
                 'is_show' => true,
-                'items' => $joinSceneOptions,
-                'help' => '入群方式。1 - 由成员邀请入群（直接邀请入群）2 - 由成员邀请入群（通过邀请链接入群）3 - 通过扫描群二维码入群',
+                'items' => '',
+                'help' => '自动建群的群名前缀，当auto_create_room为1时有效。最长40个utf8字符',
             ),
             'list' => array(
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-                'items' => $joinSceneOptions,
             ),
             'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $joinSceneOptions,
+                'is_show' => true
             ),
             'export' => array(
                 'is_show' => true
             )
         );
-
-        $schemas['invitor'] = array(
-            'name' => '邀请者',
+        $schemas['room_base_id'] = array(
+            'name' => '自动建群的群起始序号',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'number',
+                'is_show' => true,
+                'items' => '',
+                'help' => '自动建群的群起始序号，当auto_create_room为1时有效',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['chat_id_list'] = array(
+            'name' => '客户群ID列表',
             'data' => array(
                 'type' => 'json',
                 'length' => 1024,
-                'defaultValue' => '{}'
+                'defaultValue' => ''
             ),
             'validation' => array(
                 'required' => false
@@ -249,7 +295,7 @@ class ExternalcontactgroupchatmemberController extends BaseController
                 'input_type' => 'textarea',
                 'is_show' => true,
                 'items' => '',
-                'help' => '邀请者。目前仅当是由本企业内部成员邀请入群时会返回该值',
+                'help' => '使用该配置的客户群ID列表，支持5个。见客户群ID获取方法',
             ),
             'list' => array(
                 'is_show' => false,
@@ -263,38 +309,11 @@ class ExternalcontactgroupchatmemberController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['group_nickname'] = array(
-            'name' => '在群里的昵称',
+        $schemas['state'] = array(
+            'name' => 'state参数',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['name'] = array(
-            'name' => '名字',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
+                'length' => 30,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -304,7 +323,7 @@ class ExternalcontactgroupchatmemberController extends BaseController
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '仅当 need_name = 1 时返回如果是微信用户，则返回其在微信中设置的名字如果是企业微信联系人，则返回其设置对外展示的别名或实名',
+                'help' => '企业自定义的state参数，用于区分不同的添加渠道，在调用“获取外部联系人详情”时会返回该参数值，不超过30个字符',
             ),
             'list' => array(
                 'is_show' => true,
@@ -318,7 +337,6 @@ class ExternalcontactgroupchatmemberController extends BaseController
                 'is_show' => true
             )
         );
-        
         $schemas['sync_time'] = array(
             'name' => '同步时间',
             'data' => array(
@@ -379,11 +397,11 @@ class ExternalcontactgroupchatmemberController extends BaseController
 
     protected function getName()
     {
-        return '客户群成员';
+        return '配置客户群进群方式';
     }
 
     protected function getModel()
     {
-        return $this->modelExternalcontactGroupChatMember;
+        return $this->modelExternalcontactGroupChatJoinWay;
     }
 }
