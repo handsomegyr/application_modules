@@ -106,8 +106,9 @@ class ApplicationsnsController extends ControllerBase
      * appid 是 企业的CorpID
      * redirect_uri 是 授权后重定向的回调链接地址，请使用urlencode对链接进行处理
      * response_type 是 返回类型，此时固定为：code
-     * scope 是 应用授权作用域。企业自建应用固定填写：snsapi_base
+     * scope 是 scope 是 应用授权作用域。snsapi_base：静默授权，可获取成员的基础信息（UserId与DeviceId）；snsapi_privateinfo：手动授权，可获取成员的详细信息，包含头像、二维码等敏感信息。
      * state 否 重定向后会带上state参数，企业可以填写a-zA-Z0-9的参数值，长度不可超过128个字节
+     * agentid	是	应用agentid，snsapi_privateinfo时必填
      * #wechat_redirect 是 终端使用此参数判断是否需要带上身份信息
      *
      * 示例：
@@ -177,8 +178,10 @@ class ApplicationsnsController extends ControllerBase
                 } else {
                     throw new \Exception('该运用不支持授权操作');
                 }
+                $objSns->setScope($this->scope);
                 $objSns->setState($this->state);
                 $objSns->setRedirectUri($redirectUri);
+                $objSns->setAgentid($this->agentid);
                 $redirectUri = $objSns->getQrConnectUrl($this->agentid, false);
                 header("location:{$redirectUri}");
                 exit();
@@ -356,23 +359,9 @@ class ApplicationsnsController extends ControllerBase
             $arrAccessToken['access_token'] = $access_token;
             $arrAccessToken['refresh_token'] = "";
 
-            $userInfoAndAccessTokenRet = $this->getUserInfo4AccessToken($arrAccessToken);
+            $userInfoAndAccessTokenRet = $this->getUserInfo4AccessToken($objSns, $arrAccessToken);
             $arrAccessToken = $userInfoAndAccessTokenRet['arrAccessToken'];
             $userInfo = $userInfoAndAccessTokenRet['userInfo'];
-
-            if (!empty($userInfo)) {
-                if (!empty($userInfo['name'])) {
-                    $arrAccessToken['name'] = ($userInfo['name']);
-                }
-
-                if (!empty($userInfo['avatar'])) {
-                    $arrAccessToken['avatar'] = stripslashes($userInfo['avatar']);
-                }
-
-                if (!empty($userInfo['unionid'])) {
-                    $arrAccessToken['unionid'] = ($userInfo['unionid']);
-                }
-            }
 
             $_SESSION[$this->sessionKey] = $arrAccessToken;
             $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
@@ -466,7 +455,6 @@ class ApplicationsnsController extends ControllerBase
                 'it_avatar' => urlencode(stripslashes($arrAccessToken['avatar']))
             ));
         }
-
         // if (!empty($arrAccessToken['unionid'])) {
         //     $redirect = $this->addUrlParameter($redirect, array(
         //         'it_unionid' => $arrAccessToken['unionid']
@@ -476,6 +464,44 @@ class ApplicationsnsController extends ControllerBase
         //         'it_signkey2' => $signkey
         //     ));
         // }
+
+        //     "gender":"1",
+        //     "avatar":"http://shp.qpic.cn/bizmp/xxxxxxxxxxx/0",
+        //     "qr_code":"https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=vcfc13b01dfs78e981c",
+        //     "mobile": "13800000000",
+        //      "email": "zhangsan@gzdev.com",
+        //      "biz_mail":"zhangsan@qyycs2.wecom.work",
+        //      "address": "广州市海珠区新港中路"
+        if (!empty($arrAccessToken['qr_code'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_qr_code' => urlencode(stripslashes($arrAccessToken['qr_code']))
+            ));
+        }
+        if (!empty($arrAccessToken['mobile'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_mobile' => urlencode(stripslashes($arrAccessToken['mobile']))
+            ));
+        }
+        if (!empty($arrAccessToken['email'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_email' => urlencode(stripslashes($arrAccessToken['email']))
+            ));
+        }
+        if (!empty($arrAccessToken['biz_mail'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_biz_mail' => urlencode(stripslashes($arrAccessToken['biz_mail']))
+            ));
+        }
+        if (!empty($arrAccessToken['address'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_address' => urlencode(stripslashes($arrAccessToken['address']))
+            ));
+        }
+        if (isset($arrAccessToken['gender'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_gender' => urlencode(stripslashes($arrAccessToken['gender']))
+            ));
+        }
 
         return $redirect;
     }
@@ -529,7 +555,7 @@ class ApplicationsnsController extends ControllerBase
         $this->sessionKey = $this->cookie_session_key . "_accessToken_{$this->appid}_{$this->provider_appid}_{$this->authorizer_appid}_{$this->agentid}_{$this->scope}";
     }
 
-    protected function getUserInfo4AccessToken($arrAccessToken)
+    protected function getUserInfo4AccessToken(\Qyweixin\Token\Sns $arrAccessToken)
     {
         // a) 当用户为企业成员时
         // UserId 成员UserID。若需要获得用户详情信息，可调用通讯录接口：读取成员
@@ -559,11 +585,35 @@ class ApplicationsnsController extends ControllerBase
             $arrAccessToken['is_qy_member'] = 0;
             $arrAccessToken['qyuserid'] = $arrAccessToken['openid'];
         }
-
+        // user_ticket	成员票据，最大为512字节。
+        // scope为snsapi_privateinfo，且用户在应用可见范围之内时返回此参数。
+        // 后续利用该参数可以获取用户信息或敏感信息，参见"获取访问用户敏感信息"。暂时不支持上下游或/企业互联场景
+        $userDetailInfo = array();
+        if (!empty($arrAccessToken['user_ticket'])) {
+            //获取访问用户敏感信息
+            $userDetailInfo = $objSns->getUserDetail($arrAccessToken['access_token'], $arrAccessToken['user_ticket']);
+            if (!empty($userDetailInfo['errcode'])) {
+                throw new \Exception("获取访问用户敏感信息,原因:" . \App\Common\Utils\Helper::myJsonEncode($userDetailInfo));
+            }
+            // {
+            //     "errcode": 0,
+            //     "errmsg": "ok",
+            //     "userid":"lisi",
+            //     "gender":"1",
+            //     "avatar":"http://shp.qpic.cn/bizmp/xxxxxxxxxxx/0",
+            //     "qr_code":"https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=vcfc13b01dfs78e981c",
+            //     "mobile": "13800000000",
+            //      "email": "zhangsan@gzdev.com",
+            //      "biz_mail":"zhangsan@qyycs2.wecom.work",
+            //      "address": "广州市海珠区新港中路"
+            //  }
+        }
         $userInfo = array();
         $userInfo['userid'] = $arrAccessToken['userid'];
         $userInfo['openid'] = $arrAccessToken['openid'];
-        $userInfo['access_token'] = array_merge($arrAccessToken, $userInfo);
+        $userInfo = array_merge($userInfo, $userDetailInfo);
+        $arrAccessToken = array_merge($arrAccessToken, $userInfo);
+        $userInfo['access_token'] = $arrAccessToken;
 
         return array('arrAccessToken' => $arrAccessToken, 'userInfo' => $userInfo);
     }
