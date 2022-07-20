@@ -63,7 +63,6 @@ class MsgController extends ControllerBase
 
     // lock key
     private $lock_key_prefix = 'qyweixin_qy_';
-
     private $trackingKey = "公众号授权给第三方服务商流程";
 
     /** @var  \Weixin\Component */
@@ -71,17 +70,11 @@ class MsgController extends ControllerBase
 
     /** @var  \Qyweixin\Client */
     private $objQyWeixin;
-
     private $provider_appid;
-
     private $providerConfig;
-
     private $authorizer_appid;
-
     private $authorizerConfig;
-
     private $agentid;
-
     private $agentConfig;
 
     /**
@@ -95,7 +88,6 @@ class MsgController extends ControllerBase
 
     // 是否加解密
     private $isNeedDecryptAndEncrypt = TRUE;
-
     public function initialize()
     {
         $this->isNeedDecryptAndEncrypt = true;
@@ -488,7 +480,6 @@ class MsgController extends ControllerBase
             $this->objQyWeixin = $this->qyweixinService->getQyWeixinObject();
         }
     }
-
     protected function getDataFromWeixinServer()
     {
         $postStr = file_get_contents('php://input');
@@ -510,7 +501,6 @@ class MsgController extends ControllerBase
         }
         return $datas;
     }
-
     protected function responseToWeixinServer($response)
     {
         if ($response != "success") {
@@ -538,7 +528,7 @@ class MsgController extends ControllerBase
      * 处理请求返回响应
      * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140453
      *
-     * @param array $datas            
+     * @param array $datas        	
      * @return array
      */
     protected function handleRequestAndGetResponseByMsgType(array $datas)
@@ -841,7 +831,7 @@ class MsgController extends ControllerBase
      * 企业微信iPhone1.2.2/Android1.2.2版本开始支持菜单事件，旧版本企业微信成员点击后将没有回应，应用不能正常接收到事件推送。
      * 自定义菜单可以在管理后台的应用设置界面配置。
      *
-     * @param array $datas            
+     * @param array $datas        	
      * @return array
      */
     protected function handleRequestAndGetResponseByEvent(array $datas)
@@ -1263,6 +1253,8 @@ class MsgController extends ControllerBase
             if ($ChangeType == 'create_user') { // 成员变更通知-新增成员事件
                 /**
                  * 新增成员事件
+                 * 该事件会回调给通讯录同步助手，代开发自建应用以及上游企业共享的应用
+                 *
                  * 请求示例：
                  *
                  * <xml>
@@ -1275,11 +1267,14 @@ class MsgController extends ControllerBase
                  * <UserID><![CDATA[zhangsan]]></UserID>
                  * <Name><![CDATA[张三]]></Name>
                  * <Department><![CDATA[1,2,3]]></Department>
+                 * <MainDepartment>1</MainDepartment>
                  * <IsLeaderInDept><![CDATA[1,0,0]]></IsLeaderInDept>
+                 * <DirectLeader><![CDATA[lisi,wangwu]]></DirectLeader>
                  * <Position><![CDATA[产品经理]]></Position>
                  * <Mobile>13800000000</Mobile>
                  * <Gender>1</Gender>
                  * <Email><![CDATA[zhangsan@gzdev.com]]></Email>
+                 * <BizMail><![CDATA[zhangsan@qyycs2.wecom.work]]></BizMail>
                  * <Status>1</Status>
                  * <Avatar><![CDATA[http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0]]></Avatar>
                  * <Alias><![CDATA[zhangsan]]></Alias>
@@ -1313,19 +1308,22 @@ class MsgController extends ControllerBase
                  * Event 事件的类型，此时固定为change_contact
                  * ChangeType 此时固定为create_user
                  * UserID 成员UserID
-                 * Name 成员名称
+                 * Name 成员名称;代开发自建应用需要管理员授权才返回
                  * Department 成员部门列表，仅返回该应用有查看权限的部门id
-                 * IsLeaderInDept 表示所在部门是否为上级，0-否，1-是，顺序与Department字段的部门逐一对应
-                 * Mobile 手机号码
-                 * Position 职位信息。长度为0~64个字节
-                 * Gender 性别，1表示男性，2表示女性
-                 * Email 邮箱
-                 * Status 激活状态：1=已激活 2=已禁用 4=未激活 已激活代表已激活企业微信或已关注微工作台（原企业号）。
-                 * Avatar 头像url。注：如果要获取小图将url最后的”/0”改成”/100”即可。
-                 * Alias 成员别名
-                 * Telephone 座机
-                 * Address 地址
-                 * ExtAttr 扩展属性
+                 * MainDepartment 主部门
+                 * IsLeaderInDept 表示所在部门是否为部门负责人，0-否，1-是，顺序与Department字段的部门逐一对应。上游共享的应用不返回该字段
+                 * DirectLeader 直属上级UserID，最多5个。代开发的自建应用和上游共享的应用不返回该字段
+                 * Mobile 手机号码，代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * Position 职位信息。长度为0~64个字节;代开发自建应用需要管理员授权才返回。上游共享的应用不返回该字段
+                 * Gender 性别。0表示未定义，1表示男性，2表示女性。代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段。注：不可获取指返回值0
+                 * Email 邮箱，代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * BizMail 企业邮箱，代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * Status 激活状态：1=已激活 2=已禁用 4=未激活 已激活代表已激活企业微信或已关注微信插件（原企业号）5=成员退出
+                 * Avatar 头像url。 注：如果要获取小图将url最后的”/0”改成”/100”即可。代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * Alias 成员别名。上游共享的应用不返回该字段
+                 * Telephone 座机;代开发自建应用需要管理员授权才返回。上游共享的应用不返回该字段
+                 * Address 地址。代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * ExtAttr 扩展属性;代开发自建应用需要管理员授权才返回。上游共享的应用不返回该字段
                  * Type 扩展属性类型: 0-本文 1-网页
                  * Text 文本属性类型，扩展属性类型为0时填写
                  * Value 文本属性内容
@@ -1337,6 +1335,8 @@ class MsgController extends ControllerBase
             } elseif ($ChangeType == 'update_user') { // 成员变更通知-更新成员事件
                 /**
                  * 更新成员事件
+                 * 该事件会回调给通讯录同步助手，代开发自建应用以及上游企业共享的应用
+                 *
                  * 请求示例：
                  *
                  * <xml>
@@ -1350,6 +1350,7 @@ class MsgController extends ControllerBase
                  * <NewUserID><![CDATA[zhangsan001]]></NewUserID>
                  * <Name><![CDATA[张三]]></Name>
                  * <Department><![CDATA[1,2,3]]></Department>
+                 * <MainDepartment>1</MainDepartment>
                  * <IsLeaderInDept><![CDATA[1,0,0]]></IsLeaderInDept>
                  * <Position><![CDATA[产品经理]]></Position>
                  * <Mobile>13800000000</Mobile>
@@ -1389,30 +1390,36 @@ class MsgController extends ControllerBase
                  * ChangeType 此时固定为update_user
                  * UserID 变更信息的成员UserID
                  * NewUserID 新的UserID，变更时推送（userid由系统生成时可更改一次）
-                 * Name 成员名称，变更时推送
+                 * Name 成员名称，变更时推送;代开发自建应用需要管理员授权才返回
                  * Department 成员部门列表，变更时推送，仅返回该应用有查看权限的部门id
-                 * IsLeaderInDept 表示所在部门是否为上级，0-否，1-是，顺序与Department字段的部门逐一对应
-                 * Mobile 手机号码，变更时推送
-                 * Position 职位信息。长度为0~64个字节，变更时推送
-                 * Gender 性别，变更时推送。1表示男性，2表示女性
-                 * Email 邮箱，变更时推送
-                 * Status 激活状态：1=激活或关注， 2=禁用， 4=未激活（重新启用未激活用户或者退出企业并且取消关注时触发）
-                 * Avatar 头像url。注：如果要获取小图将url最后的”/0”改成”/100”即可。变更时推送
-                 * Alias 成员别名，变更时推送
-                 * Telephone 座机，变更时推送
-                 * Address 地址
-                 * ExtAttr 扩展属性，变更时推送
+                 * MainDepartment 主部门
+                 * IsLeaderInDept 表示所在部门是否为部门负责人，0-否，1-是，顺序与Department字段的部门逐一对应。上游共享的应用不返回该字段
+                 * DirectLeader 直属上级UserID，最多5个。代开发的自建应用和上游共享的应用不返回该字段
+                 * Mobile 手机号码，变更时推送。代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * Position 职位信息。长度为0~64个字节，变更时推送;代开发自建应用需要管理员授权才返回。上游共享的应用不返回该字段
+                 * Gender 性别，变更时推送。0表示未定义，1表示男性，2表示女性。代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段。注：不可获取指返回值0
+                 * Email 邮箱，变更时推送;代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * BizMail 企业邮箱，变更时推送;代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * Status 激活状态：1=激活或关注， 2=禁用， 4=未激活（重新启用未激活用户或者退出企业并且取消关注时触发），5=成员退出
+                 * Avatar 头像url。注：如果要获取小图将url最后的”/0”改成”/100”即可。变更时推送。代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * Alias 成员别名，变更时推送。上游共享的应用不返回该字段
+                 * Telephone 座机，变更时推送;代开发自建应用需要管理员授权才返回。上游共享的应用不返回该字段
+                 * Address 地址;代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+                 * ExtAttr 扩展属性，变更时推送;代开发自建应用需要管理员授权才返回。上游共享的应用不返回该字段
                  * Type 扩展属性类型: 0-本文 1-网页
                  * Text 文本属性类型，扩展属性类型为0时填写
                  * Value 文本属性内容
                  * Web 网页类型属性，扩展属性类型为1时填写
                  * Title 网页的展示标题
                  * Url 网页的url
+                 *
                  * 说明： 由通讯录同步助手通过api发起的更新成员触发的事件不回调给通讯录同步助手应用。
                  */
             } elseif ($ChangeType == 'delete_user') { // 成员变更通知-删除成员事件
                 /**
                  * 删除成员事件
+                 * 该事件会回调给通讯录同步助手，代开发自建应用以及上游企业共享的应用。
+                 *
                  * 请求示例：
                  *
                  * <xml>
@@ -1434,12 +1441,15 @@ class MsgController extends ControllerBase
                  * Event 事件的类型，此时固定为change_contact
                  * ChangeType 此时固定为delete_user
                  * UserID 变更信息的成员UserID
+                 *
                  * 说明： 由通讯录同步助手通过api发起的删除成员触发的事件不回调给通讯录同步助手应用。
                  */
             } elseif ($ChangeType == 'create_party') { // 部门变更通知-新增部门事件
                 /**
                  * 新增部门事件
-                 * 请求示例：
+                 * 该事件会回调给通讯录同步助手以及代开发自建应用
+                 *
+                 * xml请求示例：
                  *
                  * <xml>
                  * <ToUserName><![CDATA[toUser]]></ToUserName>
@@ -1453,6 +1463,8 @@ class MsgController extends ControllerBase
                  * <ParentId><![CDATA[1]]></ParentId>
                  * <Order>1</Order>
                  * </xml>
+                 *
+                 *
                  * 参数说明：
                  *
                  * 参数 说明
@@ -1463,7 +1475,7 @@ class MsgController extends ControllerBase
                  * Event 事件的类型，此时固定为change_contact
                  * ChangeType 此时固定为create_party
                  * Id 部门Id
-                 * Name 部门名称
+                 * Name 部门名称;代开发自建应用需要管理员授权才返回
                  * ParentId 父部门id
                  * Order 部门排序
                  * 说明： 由通讯录同步助手通过api发起的新增部门触发的事件不回调给通讯录同步助手应用。
@@ -1471,7 +1483,9 @@ class MsgController extends ControllerBase
             } elseif ($ChangeType == 'update_party') { // 部门变更通知-更新部门事件
                 /**
                  * 更新部门事件
-                 * 请求示例：
+                 * 该事件会回调给通讯录同步助手以及代开发自建应用
+                 *
+                 * xml请求示例：
                  *
                  * <xml>
                  * <ToUserName><![CDATA[toUser]]></ToUserName>
@@ -1494,14 +1508,16 @@ class MsgController extends ControllerBase
                  * Event 事件的类型，此时固定为change_contact
                  * ChangeType 此时固定为update_party
                  * Id 部门Id
-                 * Name 部门名称，仅当该字段发生变更时传递
+                 * Name 部门名称，仅当该字段发生变更时传递;代开发自建应用需要管理员授权才返回
                  * ParentId 父部门id，仅当该字段发生变更时传递
                  * 说明： 由通讯录同步助手通过api发起的更新部门触发的事件不回调给通讯录同步助手应用。
                  */
             } elseif ($ChangeType == 'delete_party') { // 部门变更通知-删除部门事件
                 /**
                  * 删除部门事件
-                 * 请求示例：
+                 * 该事件会回调给通讯录同步助手以及代开发自建应用
+                 *
+                 * xml请求示例：
                  *
                  * <xml>
                  * <ToUserName><![CDATA[toUser]]></ToUserName>
@@ -1528,7 +1544,9 @@ class MsgController extends ControllerBase
                 /**
                  * 标签变更通知
                  * 标签成员变更事件
-                 * 请求示例：
+                 * 该事件会回调给通讯录同步助手以及代开发自建应用
+                 *
+                 * xml请求示例：
                  *
                  * <xml>
                  * <ToUserName><![CDATA[toUser]]></ToUserName>
@@ -1543,6 +1561,8 @@ class MsgController extends ControllerBase
                  * <AddPartyItems><![CDATA[1,2]]></AddPartyItems>
                  * <DelPartyItems><![CDATA[3,4]]></DelPartyItems>
                  * </xml>
+                 *
+                 *
                  * 参数说明：
                  *
                  * 参数 说明
@@ -1570,6 +1590,7 @@ class MsgController extends ControllerBase
              *
              * 请求示例：
              *
+             *
              * <xml><ToUserName><![CDATA[wx28dbb14e3720FAKE]]></ToUserName>
              * <FromUserName><![CDATA[FromUser]]></FromUserName>
              * <CreateTime>1425284517</CreateTime>
@@ -1581,6 +1602,8 @@ class MsgController extends ControllerBase
              * <ErrMsg><![CDATA[ok]]></ErrMsg>
              * </BatchJob>
              * </xml>
+             *
+             *
              * 参数说明：
              *
              * 参数 说明
@@ -1724,6 +1747,7 @@ class MsgController extends ControllerBase
                  * <ChangeType><![CDATA[del_external_contact]]></ChangeType>
                  * <UserID><![CDATA[zhangsan]]></UserID>
                  * <ExternalUserID><![CDATA[woAJ2GCAAAXtWyujaWJHDDGi0mACAAAA]]></ExternalUserID>
+                 * <Source><![CDATA[DELETE_BY_TRANSFER]]></Source>
                  * </xml>
                  * 参数说明：
                  *
@@ -1766,6 +1790,40 @@ class MsgController extends ControllerBase
                  * UserID 企业服务人员的UserID
                  * ExternalUserID 外部联系人的userid，注意不是企业成员的帐号
                  */
+            } elseif ($ChangeType == 'transfer_fail') { // 客户接替失败事件
+                /**
+                 * 客户接替失败事件
+                 * 企业将客户分配给新的成员接替后，客户添加失败时回调该事件
+                 *
+                 * 事件示例：
+                 *
+                 * <xml>
+                 * <ToUserName><![CDATA[toUser]]></ToUserName>
+                 * <FromUserName><![CDATA[sys]]></FromUserName>
+                 * <CreateTime>1403610513</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[change_external_contact]]></Event>
+                 * <ChangeType><![CDATA[transfer_fail]]></ChangeType>
+                 * <FailReason><![CDATA[customer_refused]]></FailReason>
+                 * <UserID><![CDATA[zhangsan]]></UserID>
+                 * <ExternalUserID><![CDATA[woAJ2GCAAAXtWyujaWJHDDGi0mAAAA]]></ExternalUserID>
+                 * </xml>
+                 *
+                 *
+                 * 参数说明：
+                 *
+                 * 参数 说明
+                 * ToUserName 企业微信CorpID
+                 * FromUserName 此事件该值固定为sys，表示该消息由系统生成
+                 * CreateTime 消息创建时间 （整型）
+                 * MsgType 消息的类型，此时固定为event
+                 * Event 事件的类型，此时固定为change_external_contact
+                 * ChangeType 此时固定为transfer_fail
+                 * FailReason 接替失败的原因, customer_refused-客户拒绝， customer_limit_exceed-接替成员的客户数达到上限
+                 * UserID 接替失败的企业服务人员的UserID
+                 * ExternalUserID 外部联系人的userid，注意不是企业成员的帐号
+                 * 如果此客户在企业内仍有其他在职的跟进人，则企业仍可以根据ExternalUserID调用“获取客户详情”读取详情，否则无法获取。
+                 */
             } elseif ($ChangeType == 'msg_audit_approved') { // 客户同意进行聊天内容存档事件回调
                 /**
                  * 客户同意进行聊天内容存档事件回调
@@ -1805,30 +1863,242 @@ class MsgController extends ControllerBase
             }
             $response = "success";
         } elseif ($Event == 'change_external_chat') { // 客户群变更事件
-            /**
-             * 客户群变更事件
-             * 客户群被修改后（群名变更，群成员增加或移除），回调该事件。收到该事件后，企业需要再调用获取客户群详情接口，以获取最新的群详情。
-             *
-             * 请求示例：
-             *
-             * <xml>
-             * <ToUserName><![CDATA[toUser]]></ToUserName>
-             * <FromUserName><![CDATA[sys]]></FromUserName>
-             * <CreateTime>1403610513</CreateTime>
-             * <MsgType><![CDATA[event]]></MsgType>
-             * <Event><![CDATA[change_external_chat]]></Event>
-             * <ChatId><![CDATA[CHAT_ID]]></ChatId>
-             * </xml>
-             * 参数说明：
-             *
-             * 参数 说明
-             * ToUserName 企业微信CorpID
-             * FromUserName 此事件该值固定为sys，表示该消息由系统生成
-             * CreateTime 消息创建时间 （unix时间戳）
-             * MsgType 消息的类型，此时固定为event
-             * Event 事件的类型，此时固定为 change_external_chat
-             * ChatId 群ID
-             */
+
+            if ($ChangeType == 'create') {
+                /**
+                 * 客户群创建事件
+                 * 有新增客户群时，回调该事件。收到该事件后，企业可以调用获取客户群详情接口获取客户群详情。
+                 *
+                 * 事件示例：
+                 *
+                 * <xml>
+                 * <ToUserName><![CDATA[toUser]]></ToUserName>
+                 * <FromUserName><![CDATA[sys]]></FromUserName>
+                 * <CreateTime>1403610513</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[change_external_chat]]></Event>
+                 * <ChatId><![CDATA[CHAT_ID]]></ChatId>
+                 * <ChangeType><![CDATA[create]]></ChangeType>
+                 * </xml>
+                 *
+                 *
+                 * 参数说明：
+                 *
+                 * 参数 说明
+                 * ToUserName 企业微信CorpID
+                 * FromUserName 此事件该值固定为sys，表示该消息由系统生成
+                 * CreateTime 消息创建时间 （unix时间戳）
+                 * MsgType 消息的类型，此时固定为event
+                 * Event 事件的类型，此时固定为change_external_chat
+                 * ChatId 群ID
+                 * ChangeType 此时固定为create
+                 */
+            } elseif ($ChangeType == 'update') {
+                /**
+                 * 客户群变更事件
+                 * 客户群被修改后（群名变更，群成员增加或移除，群主变更，群公告变更），回调该事件。收到该事件后，企业需要再调用获取客户群详情接口，以获取最新的群详情。
+                 *
+                 * 事件示例：
+                 *
+                 * <xml>
+                 * <ToUserName><![CDATA[ww55ca070cb9b7eb22]]></ToUserName>
+                 * <FromUserName><![CDATA[sys]]></FromUserName>
+                 * <CreateTime>1403610513</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[change_external_chat]]></Event>
+                 * <ChatId><![CDATA[wrx7HUARsKwGRaQBVKPBTcEyzdHA4HrQ]]></ChatId>
+                 * <ChangeType><![CDATA[update]]></ChangeType>
+                 * <UpdateDetail><![CDATA[add_member]]></UpdateDetail>
+                 * <JoinScene>1</JoinScene>
+                 * <QuitScene>0</QuitScene>
+                 * <MemChangeCnt>10</MemChangeCnt>
+                 * </xml>
+                 *
+                 *
+                 * 参数说明：
+                 *
+                 * 参数 说明
+                 * ToUserName 企业微信CorpID
+                 * FromUserName 此事件该值固定为sys，表示该消息由系统生成
+                 * CreateTime 消息创建时间 （unix时间戳）
+                 * MsgType 消息的类型，此时固定为event
+                 * Event 事件的类型，此时固定为change_external_chat
+                 * ChatId 群ID
+                 * ChangeType 此时固定为update
+                 * UpdateDetail 变更详情。目前有以下几种：
+                 * add_member : 成员入群
+                 * del_member : 成员退群
+                 * change_owner : 群主变更
+                 * change_name : 群名变更
+                 * change_notice : 群公告变更
+                 * JoinScene 当是成员入群时有值。表示成员的入群方式
+                 * 0 - 由成员邀请入群（包括直接邀请入群和通过邀请链接入群）
+                 * 3 - 通过扫描群二维码入群
+                 * QuitScene 当是成员退群时有值。表示成员的退群方式
+                 * 0 - 自己退群
+                 * 1 - 群主/群管理员移出
+                 * MemChangeCnt 当是成员入群或退群时有值。表示成员变更数量
+                 */
+            } elseif ($ChangeType == 'dismiss') {
+                /**
+                 * 客户群解散事件
+                 * 当客户群被群主解散后，回调该事件。
+                 * 需注意的是，如果发生群信息变动，会立即收到此事件，但是部分信息是异步处理，可能需要等一段时间(例如2秒)调用获取客户群详情接口才能得到最新结果
+                 *
+                 * 事件示例：
+                 *
+                 * <xml>
+                 * <ToUserName><![CDATA[toUser]]></ToUserName>
+                 * <FromUserName><![CDATA[sys]]></FromUserName>
+                 * <CreateTime>1403610513</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[change_external_chat]]></Event>
+                 * <ChatId><![CDATA[CHAT_ID]]></ChatId>
+                 * <ChangeType><![CDATA[dismiss]]></ChangeType>
+                 * </xml>
+                 *
+                 *
+                 * 参数说明：
+                 *
+                 * 参数 说明
+                 * ToUserName 企业微信CorpID
+                 * FromUserName 此事件该值固定为sys，表示该消息由系统生成
+                 * CreateTime 消息创建时间 （unix时间戳）
+                 * MsgType 消息的类型，此时固定为event
+                 * Event 事件的类型，此时固定为change_external_chat
+                 * ChatId 群ID
+                 * ChangeType 此时固定为dismiss
+                 */
+            }
+            $response = "success";
+        } elseif ($Event == 'change_external_tag') { // 企业客户标签创建事件
+            if ($ChangeType == 'create') {
+                /**
+                 * 企业客户标签创建事件
+                 * 企业/管理员创建客户标签/标签组时（包括规则组的标签），回调此事件。收到该事件后，企业需要调用获取企业标签库来获取标签/标签组的详细信息。
+                 *
+                 * 事件示例：
+                 *
+                 * <xml>
+                 * <ToUserName><![CDATA[CORPID]]></ToUserName>
+                 * <FromUserName><![CDATA[sys]]></FromUserName>
+                 * <CreateTime>1403610513</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[change_external_tag]]></Event>
+                 * <Id><![CDATA[TAG_ID]]></Id>
+                 * <TagType><![CDATA[tag]]></TagType>
+                 * <ChangeType><![CDATA[create]]></ChangeType>
+                 * <StrategyId>1</StrategyId>
+                 * </xml>
+                 * 参数说明：
+                 *
+                 * 参数 说明
+                 * ToUserName 企业微信CorpID
+                 * FromUserName 此事件该值固定为sys，表示该消息由系统生成
+                 * CreateTime 消息创建时间 （unix时间戳）
+                 * MsgType 消息的类型，此时固定为event
+                 * Event 事件的类型，此时固定为change_external_tag
+                 * Id 标签或标签组的ID
+                 * TagType 创建标签时，此项为tag，创建标签组时，此项为tag_group
+                 * ChangeType 此时固定为create
+                 * StrategyId 标签或标签组所属的规则组id，只回调给“客户联系”应用
+                 */
+            } elseif ($ChangeType == 'update') {
+                /**
+                 * 企业客户标签变更事件
+                 * 当企业客户标签/标签组（包括规则组的标签）被修改时，回调此事件。收到该事件后，企业需要调用获取企业标签库来获取标签/标签组的详细信息。
+                 *
+                 * 事件示例：
+                 *
+                 * <xml>
+                 * <ToUserName><![CDATA[CORPID]]></ToUserName>
+                 * <FromUserName><![CDATA[sys]]></FromUserName>
+                 * <CreateTime>1403610513</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[change_external_tag]]></Event>
+                 * <Id><![CDATA[TAG_ID]]></Id>
+                 * <TagType><![CDATA[tag]]></TagType>
+                 * <ChangeType><![CDATA[update]]></ChangeType>
+                 * <StrategyId>1</StrategyId>
+                 * </xml>
+                 * 参数说明：
+                 *
+                 * 参数 说明
+                 * ToUserName 企业微信CorpID
+                 * FromUserName 此事件该值固定为sys，表示该消息由系统生成
+                 * CreateTime 消息创建时间 （unix时间戳）
+                 * MsgType 消息的类型，此时固定为event
+                 * Event 事件的类型，此时固定为change_external_tag
+                 * Id 标签或标签组的ID
+                 * TagType 变更标签时，此项为tag，变更标签组时，此项为tag_group
+                 * ChangeType 此时固定为update
+                 * StrategyId 标签或标签组所属的规则组id，只回调给“客户联系”应用
+                 */
+            } elseif ($ChangeType == 'delete') {
+                /**
+                 * 企业客户标签删除事件
+                 * 当企业客户标签/标签组被删除改时，回调此事件。删除标签组时，该标签组下的所有标签将被同时删除，但不会进行回调。
+                 *
+                 *
+                 *
+                 * 事件示例：
+                 *
+                 * <xml>
+                 * <ToUserName><![CDATA[CORPID]]></ToUserName>
+                 * <FromUserName><![CDATA[sys]]></FromUserName>
+                 * <CreateTime>1403610513</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[change_external_tag]]></Event>
+                 * <Id><![CDATA[TAG_ID]]></Id>
+                 * <TagType><![CDATA[tag]]></TagType>
+                 * <ChangeType><![CDATA[delete]]></ChangeType>
+                 * <StrategyId>1</StrategyId>
+                 * </xml>
+                 * 参数说明：
+                 *
+                 * 参数 说明
+                 * ToUserName 企业微信CorpID
+                 * FromUserName 此事件该值固定为sys，表示该消息由系统生成
+                 * CreateTime 消息创建时间 （unix时间戳）
+                 * MsgType 消息的类型，此时固定为event
+                 * Event 事件的类型，此时固定为change_external_tag
+                 * Id 标签或标签组的ID
+                 * TagType 删除标签时，此项为tag，删除标签组时，此项为tag_group
+                 * ChangeType 此时固定为delete
+                 * StrategyId 标签或标签组所属的规则组id，只回调给“客户联系”应用
+                 */
+            } elseif ($ChangeType == 'shuffle') {
+                /**
+                 * 企业客户标签重排事件
+                 * 当企业管理员在终端/管理端调整标签顺序时，可能导致标签顺序整体调整重排，引起大部分标签的order值发生变化，此时会回调此事件，收到此事件后企业应尽快全量同步标签的order值，防止后续调用接口排序出现非预期结果。
+                 *
+                 *
+                 *
+                 * 事件示例：
+                 *
+                 * <xml>
+                 * <ToUserName><![CDATA[CORPID]]></ToUserName>
+                 * <FromUserName><![CDATA[sys]]></FromUserName>
+                 * <CreateTime>1403610513</CreateTime>
+                 * <MsgType><![CDATA[event]]></MsgType>
+                 * <Event><![CDATA[change_external_tag]]></Event>
+                 * <Id><![CDATA[TAG_ID]]></Id>
+                 * <StrategyId><![CDATA[STRATEGY_ID]]></StrategyId>
+                 * <ChangeType><![CDATA[shuffle]]></ChangeType>
+                 * </xml>
+                 * 参数说明：
+                 *
+                 * 参数 说明
+                 * ToUserName 企业微信CorpID
+                 * FromUserName 此事件该值固定为sys，表示该消息由系统生成
+                 * CreateTime 消息创建时间 （unix时间戳）
+                 * MsgType 消息的类型，此时固定为event
+                 * Event 事件的类型，此时固定为change_external_tag
+                 * Id 标签组的id，表示只有此标签组内的标签发生了重排，如果为空，则表示全部标签组顺序都发生了变化
+                 * StrategyId 规则组id，如果修改了规则组标签的顺序，则回调时会带上此标签所属规则组的id
+                 * ChangeType 此时固定为shuffle
+                 */
+            }
             $response = "success";
         } elseif ($Event == 'open_approval_change') { // 审批状态通知事件
 
@@ -2057,28 +2327,28 @@ class MsgController extends ControllerBase
             $Mode = isset($datas['Mode']) ? trim($datas['Mode']) : "";
             $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : "";
             $response = "success";
-        } elseif ($Event == 'kf_msg_or_event') { // 微信客服 会话分配与消息收发           
+        } elseif ($Event == 'kf_msg_or_event') { // 微信客服 会话分配与消息收发
             /**
              * 微信客服 会话分配与消息收发
              * 当微信客户、接待人员发消息或有行为动作时，企业微信后台会将事件的回调数据包发送到企业指定URL；企业收到请求后，再通过读取消息接口主动读取具体的消息内容
              * 回调事件
              * 接收并解析事件的方法见：接收事件。
              * 示例
-             *<xml>
-             *   <ToUserName><![CDATA[ww12345678910]]></ToUserName>
-             *   <CreateTime>1348831860</CreateTime>
-             *   <MsgType><![CDATA[event]]></MsgType>
-             *   <Event><![CDATA[kf_msg_or_event]]></Event>
-             *   <Token><![CDATA[ENCApHxnGDNAVNY4AaSJKj4Tb5mwsEMzxhFmHVGcra996NR]]></Token>
-             *</xml>
+             * <xml>
+             * <ToUserName><![CDATA[ww12345678910]]></ToUserName>
+             * <CreateTime>1348831860</CreateTime>
+             * <MsgType><![CDATA[event]]></MsgType>
+             * <Event><![CDATA[kf_msg_or_event]]></Event>
+             * <Token><![CDATA[ENCApHxnGDNAVNY4AaSJKj4Tb5mwsEMzxhFmHVGcra996NR]]></Token>
+             * </xml>
              * 参数说明：
              *
              * 参数 说明
-             *ToUserName	企业微信CorpID
-             *CreateTime	消息创建时间，unix时间戳
-             *MsgType	消息的类型，此时固定为：event
-             *Event	事件的类型，此时固定为：kf_msg_or_event
-             *Token	调用拉取消息接口时，需要传此token，用于校验请求的合法性
+             * ToUserName 企业微信CorpID
+             * CreateTime 消息创建时间，unix时间戳
+             * MsgType 消息的类型，此时固定为：event
+             * Event 事件的类型，此时固定为：kf_msg_or_event
+             * Token 调用拉取消息接口时，需要传此token，用于校验请求的合法性
              */
             $Token = isset($datas['Token']) ? trim($datas['Token']) : "";
             // 记录数据
@@ -2096,12 +2366,12 @@ class MsgController extends ControllerBase
     /**
      * 匹配文本并进行自动回复
      *
-     * @param string $FromUserName            
-     * @param string $ToUserName            
-     * @param string $content            
-     * @param string $authorizer_appid            
-     * @param string $provider_appid            
-     * @param string $agentid            
+     * @param string $FromUserName        	
+     * @param string $ToUserName        	
+     * @param string $content        	
+     * @param string $authorizer_appid        	
+     * @param string $provider_appid        	
+     * @param string $agentid        	
      * @return boolean
      */
     protected function answer($FromUserName, $ToUserName, $content, $authorizer_appid, $provider_appid, $agentid)
@@ -2132,7 +2402,6 @@ class MsgController extends ControllerBase
     {
         $this->doRecordMsgLog();
     }
-
     protected function doRecordMsgLog()
     {
         if (!empty($this->requestLogDatas)) {
