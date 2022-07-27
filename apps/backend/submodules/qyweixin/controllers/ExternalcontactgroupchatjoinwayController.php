@@ -337,6 +337,34 @@ class ExternalcontactgroupchatjoinwayController extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['qr_code'] = array(
+            'name' => '联系二维码的URL',
+            'data' => array(
+                'type' => 'string',
+                'length' => 255,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => '',
+                'help' => '联系二维码的URL，仅在控件样式scene为2时返回',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['sync_time'] = array(
             'name' => '同步时间',
             'data' => array(

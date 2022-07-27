@@ -18,6 +18,65 @@ class ProviderController extends \App\Backend\Controllers\FormController
         $this->modelProvider = new Provider();
         parent::initialize();
     }
+    protected function getFormTools2($tools)
+    {
+        $tools['getaccesstoken'] = array(
+            'title' => '获取服务商凭证',
+            'action' => 'getaccesstoken',
+            // 'is_show' =>true,
+            'is_show' => function ($row) {
+                if (!empty($row) && !empty($row['appid'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        // $tools['getauthorizerinfo'] = array(
+        //     'title' => '获取帐号基本信息',
+        //     'action' => 'getauthorizerinfo',
+        //     // 'is_show' =>true,
+        //     'is_show' => function ($row) {
+        //         if (!empty($row) && !empty($row['appid'])) {
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }
+        //     },
+        //     'icon' => 'fa-pencil-square-o',
+        // );
+
+        return $tools;
+    }
+
+    /**
+     * @title({name="获取服务商凭证"})
+     *
+     * @name 获取服务商凭证
+     */
+    public function getaccesstokenAction()
+    {
+        // http://www.myapplicationmodule.com/admin/qyweixin/authorizer/getaccesstoken?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelProvider->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Qyweixin\Services\QyService("", $data['appid'], 0);
+            $res = $weixinopenService->getAccessToken4Provider();
+
+            $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
 
     protected function getSchemas2($schemas)
     {
