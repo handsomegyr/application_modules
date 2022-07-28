@@ -138,7 +138,7 @@ class MsgController extends ControllerBase
             $AESInfo['echostr'] = isset($_GET['echostr']) ? $_GET['echostr'] : '';
 
             // 如果是第3方服务商的话
-            if (!empty($this->providerConfig) && empty($this->authorizerConfig)) {
+            if (!empty($this->providerConfig)) {
                 $verifyToken = isset($this->providerConfig['verify_token']) ? $this->providerConfig['verify_token'] : '';
                 $encodingAESKey = isset($this->providerConfig['EncodingAESKey']) ? $this->providerConfig['EncodingAESKey'] : '';
                 $receiveId = $this->provider_appid;

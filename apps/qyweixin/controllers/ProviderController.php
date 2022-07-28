@@ -114,9 +114,12 @@ class ProviderController extends ControllerBase
             if (empty($redirect)) {
                 return abort(500, "回调地址未定义");
             }
+            if (empty($this->authorizerConfig)) {
+                return abort(500, "suite_id未定义");
+            }
 
             // 2 获取预授权码（pre_auth_code）
-            $suite_access_token = $this->agentConfig['access_token'];
+            $suite_access_token = $this->authorizerConfig['suite_access_token'];
             $preAuthCodeInfo = $this->objQyProvider->getPreAuthCode($suite_access_token);
             $pre_auth_code = $preAuthCodeInfo['pre_auth_code'];
 
@@ -184,8 +187,8 @@ class ProviderController extends ControllerBase
             if (empty($auth_code)) {
                 return abort(500, "auth_code不能为空");
             }
-            $state = empty($_SESSION['state']) ? "" : $_SESSION['state'];
-            if ($state != $this->state) {
+            $oldstate = empty($_SESSION['state']) ? "" : $_SESSION['state'];
+            if ($state != $oldstate) {
                 return abort(500, "state发生了改变");
             }
             $redirect = empty($_SESSION['redirect']) ? "" : $_SESSION['redirect'];
@@ -217,6 +220,7 @@ class ProviderController extends ControllerBase
     }
 
     /**
+     * 指令回调URL
      * 概述
      * 在发生授权、通讯录变更、ticket变化等事件时，企业微信服务器会向应用的“指令回调URL”推送相应的事件消息。消息结构体将使用创建应用时的EncodingAESKey进行加密（特别注意, 在第三方回调事件中使用加解密算法，receiveid的内容为suiteid），请参考接收消息解析数据包。
      *
@@ -231,7 +235,7 @@ class ProviderController extends ControllerBase
      */
     public function authorizecallbackAction()
     {
-        // http://www.myapplicationmodule.com/qyweixin/api/provider/authorizecallback?provider_appid=wxca8519f703c07d32
+        // http://www.myapplicationmodule.com/qyweixin/api/provider/authorizecallback?provider_appid=wxca8519f703c07d32&suite_id=ww4be715bb538715d3&agentid=
         try {
             /**
              * ==================================================================================
@@ -255,6 +259,12 @@ class ProviderController extends ControllerBase
             $encodingAESKey = isset($this->providerConfig['EncodingAESKey']) ? $this->providerConfig['EncodingAESKey'] : '';
             $verifyToken = isset($this->providerConfig['verify_token']) ? $this->providerConfig['verify_token'] : '';
             $receiveId = $this->provider_appid;
+            if (!empty($this->authorizerConfig)) {
+                $encodingAESKey = isset($this->authorizerConfig['EncodingAESKey']) ? $this->authorizerConfig['EncodingAESKey'] : '';
+                $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
+                $receiveId = $this->authorizer_appid;
+            }
+
             $AESInfo['EncodingAESKey'] = $encodingAESKey;
             $AESInfo['verify_token'] = $verifyToken;
             $AESInfo['receiveId'] = $receiveId;
@@ -263,180 +273,207 @@ class ProviderController extends ControllerBase
                 throw new \Exception('application verify_token is null. config:' . \App\Common\Utils\Helper::myJsonEncode($this->providerConfig));
             }
 
-            // 签名正确，将接受到的xml转化为数组数据并记录数据
-            $datas = $this->getDataFromWeixinServer();
-            foreach ($datas as $dtkey => $dtvalue) {
-                $this->requestLogDatas[$dtkey] = $dtvalue;
-            }
-            $this->requestLogDatas['response'] = 'success';
-
-            $SuiteId = isset($datas['SuiteId']) ? trim($datas['SuiteId']) : '';
-            $InfoType = isset($datas['InfoType']) ? trim($datas['InfoType']) : '';
-            $CreateTime = isset($datas['CreateTime']) ? ($datas['CreateTime']) : time();
-
-            // 关于重试的消息排重
-            $uniqueKey = $SuiteId . "-" . $CreateTime . "-" . $InfoType;
-            $this->requestLogDatas['lock_uniqueKey'] = $uniqueKey;
-            if (!empty($uniqueKey)) {
-                $objLock = new \iLock(md5($uniqueKey));
-                if ($objLock->lock()) {
-                    return "success";
+            // get执行的代码
+            if ($this->request->isGet()) {
+                // 3.1 支持Http Get请求验证URL有效性
+                // 假设企业的接收消息的URL设置为http://api.3dept.com。
+                // 企业管理员在保存回调配置信息时，企业微信会发送一条验证消息到填写的URL，请求内容如下：
+                // 请求方式：GET
+                // 请求地址：http://api.3dept.com/?msg_signature=ASDFQWEXZCVAQFASDFASDFSS&timestamp=13500001234&nonce=123412323&echostr=ENCRYPT_STR
+                // 参数说明：
+                // 参数 类型 说明
+                // msg_signature String 企业微信加密签名，msg_signature计算结合了企业填写的token、请求中的timestamp、nonce、加密的消息体。签名计算方法参考 消息体签名检验
+                // timestamp Integer 时间戳。与nonce结合使用，用于防止请求重放攻击。
+                // nonce String 随机数。与timestamp结合使用，用于防止请求重放攻击。
+                // echostr String 加密的字符串。需要解密得到消息内容明文，解密后有random、msg_len、msg、receiveid四个字段，其中msg即为消息内容明文
+                // 回调服务需要作出正确的响应才能通过URL验证，具体操作如下：
+                // 对收到的请求，解析上述的各个参数值（参数值需要做Urldecode处理）
+                // 根据已有的token，结合第1步获取的参数timestamp, nonce, echostr重新计算签名，然后与参数msg_signature检查是否一致，确认调用者的合法性。计算方法参考：消息体签名检验
+                // 解密echostr参数得到消息内容（即msg字段）
+                // 在1秒内响应GET请求，响应内容为上一步得到的明文消息内容（不能加引号，不能带bom头，不能带换行符）
+                // 步骤2~3可以直接使用验证URL函数一步到位。
+                // 你可以访问 接口调试工具 （接口类型：建立连接，接口列表：测试回调模式）进行调试
+                // 合法性校验
+                $objQyWeixin = new \Qyweixin\Client($this->providerConfig['appid'], $this->providerConfig['appsecret']);
+                if (!empty($providerConfig['access_token'])) {
+                    $objQyWeixin->setAccessToken($this->providerConfig['access_token']);
                 }
-            }
-
-            // 授权方ID
-            $this->authorizer_appid = $SuiteId;
-            if (!empty($this->authorizer_appid)) {
-                $this->authorizerConfig = $this->qyService->getAppConfig4Authorizer();
-                if (empty($this->authorizerConfig)) {
-                    return "success";
-                    // throw new \Exception("provider_appid:{$this->provider_appid}和authorizer_appid:{$this->authorizer_appid}所对应的记录不存在");
+                $ret4CheckSignature = $objQyWeixin->checkSignature($verifyToken, $encodingAESKey);
+                if (empty($ret4CheckSignature)) {
+                    $debug = \App\Common\Utils\Helper::myJsonEncode($this->requestLogDatas);
+                    throw new \Exception('签名错误' . $debug);
+                } else {
+                    $AESInfo['replyEchoStr'] = $ret4CheckSignature['replyEchoStr'];
+                    $this->requestLogDatas['aes_info'] = $AESInfo;
+                    return $ret4CheckSignature['replyEchoStr'];
                 }
+            } elseif ($this->request->isPost()) {
+                // 支持Http Post请求接收业务数据
+                // 签名正确，将接受到的xml转化为数组数据并记录数据
+                $datas = $this->getDataFromWeixinServer();
+                foreach ($datas as $dtkey => $dtvalue) {
+                    $this->requestLogDatas[$dtkey] = $dtvalue;
+                }
+                $this->requestLogDatas['response'] = 'success';
+
+                $SuiteId = isset($datas['SuiteId']) ? trim($datas['SuiteId']) : '';
+                $InfoType = isset($datas['InfoType']) ? trim($datas['InfoType']) : '';
+                $CreateTime = isset($datas['CreateTime']) ? ($datas['CreateTime']) : time();
+
+                // 关于重试的消息排重
+                $uniqueKey = $SuiteId . "-" . $CreateTime . "-" . $InfoType;
+                $this->requestLogDatas['lock_uniqueKey'] = $uniqueKey;
+                if (!empty($uniqueKey)) {
+                    $objLock = new \iLock(md5($uniqueKey));
+                    if ($objLock->lock()) {
+                        return "success";
+                    }
+                }
+
+                /**
+                 * ==================================================================================
+                 * ====================================以上逻辑请勿修改===================================
+                 * ==================================================================================
+                 */
+
+                if ($InfoType == 'suite_ticket') { // 推送suite_ticket
+                    /**
+                     * 推送suite_ticket
+                     * 企业微信服务器会定时（每十分钟）推送ticket。ticket会实时变更，并用于后续接口的调用。
+                     *
+                     * 若开发者想立即获得ticket推送值，可登录服务商平台，在第三方应用详情-回调配置，手动刷新ticket推送。
+                     *
+                     * 请求方式：POST（HTTPS）
+                     * 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
+                     *
+                     * 请求包体：
+                     *
+                     * <xml>
+                     * <SuiteId><![CDATA[ww4asffe99e54c0fxxxx]]></SuiteId>
+                     * <InfoType> <![CDATA[suite_ticket]]></InfoType>
+                     * <TimeStamp>1403610513</TimeStamp>
+                     * <SuiteTicket><![CDATA[asdfasfdasdfasdf]]></SuiteTicket>
+                     * </xml>
+                     * 参数说明：
+                     *
+                     * 参数 说明
+                     * SuiteId 第三方应用的SuiteId
+                     * InfoType suite_ticket
+                     * TimeStamp 时间戳
+                     * SuiteTicket Ticket内容，最长为512字节
+                     */
+                    $SuiteTicket = isset($datas['SuiteTicket']) ? trim($datas['SuiteTicket']) : ''; // Ticket内容
+                    // 获取第三方应用suite_access_token
+                    $suite_secret = $this->authorizerConfig['appsecret'];
+                    $suiteToken = $this->objQyProvider->getSuiteToken($SuiteId, $suite_secret, $SuiteTicket);
+
+                    // 更新suite_access_token
+                    $this->modelQyweixinAuthorizer->updateSuiteAccessToken($this->authorizerConfig['_id'], $suiteToken['component_access_token'], $suiteToken['expires_in'], $SuiteTicket);
+                } elseif ($InfoType == 'create_auth') { // 授权成功通知
+                    /**
+                     * 授权通知事件
+                     * 授权成功通知
+                     * 从企业微信应用市场发起授权时，企业微信后台会推送授权成功通知。
+                     *
+                     * 从第三方服务商网站发起的应用授权流程，由于授权完成时会跳转第三方服务商管理后台，因此不会通过此接口向第三方服务商推送授权成功通知。
+                     *
+                     * 请求方式：POST（HTTPS）
+                     * 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
+                     *
+                     * 请求包体：
+                     *
+                     * <xml>
+                     * <SuiteId><![CDATA[ww4asffe9xxx4c0f4c]]></ SuiteId>
+                     * <AuthCode><![CDATA[AUTHCODE]]></AuthCode>
+                     * <InfoType><![CDATA[create_auth]]></InfoType>
+                     * <TimeStamp>1403610513</TimeStamp>
+                     * </xml>
+                     * 服务商的响应必须在1000ms内完成，以保证用户安装应用的体验。建议在接收到此事件时，先记录下AuthCode，并立即回应企业微信，之后再做相关业务的处理。
+                     *
+                     * 参数说明：
+                     *
+                     * 参数 说明
+                     * SuiteId 第三方应用的SuiteId
+                     * AuthCode 授权的auth_code,最长为512字节。用于获取企业的永久授权码。5分钟内有效
+                     * InfoType create_auth
+                     * TimeStamp 时间戳
+                     */
+                    $AuthCode = isset($datas['AuthCode']) ? trim($datas['AuthCode']) : ''; // 授权的auth_code,最长为512字节。用于获取企业的永久授权码。5分钟内有效
+                } elseif ($InfoType == 'change_auth') { // 变更授权通知
+                    /**
+                     * 变更授权通知
+                     * 当授权方（即授权企业）在企业微信管理端的授权管理中，修改了对应用的授权后，企业微信服务器推送变更授权通知。
+                     * 服务商接收到变更通知之后，需自行调用获取企业授权信息进行授权内容变更比对。
+                     *
+                     * 请求方式：POST（HTTPS）
+                     * 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
+                     *
+                     * 请求包体：
+                     *
+                     * <xml>
+                     * <SuiteId><![CDATA[ww4asffe99exxx0f4c]]></SuiteId>
+                     * <InfoType><![CDATA[change_auth]]></InfoType>
+                     * <TimeStamp>1403610513</TimeStamp>
+                     * <AuthCorpId><![CDATA[wxf8b4f85f3a794e77]]></AuthCorpId>
+                     * </xml>
+                     * 服务商的响应必须在1000ms内完成，以保证用户变更授权的体验。建议在接收到此事件时，立即回应企业微信，之后再做相关业务的处理。
+                     *
+                     * 参数说明：
+                     *
+                     * 参数 说明
+                     * SuiteId 第三方应用的SuiteId
+                     * InfoType change_auth
+                     * TimeStamp 时间戳
+                     * AuthCorpId 授权方的corpid
+                     */
+                    $AuthCorpId = isset($datas['AuthCorpId']) ? trim($datas['AuthCorpId']) : ''; // 授权方的corpid
+                } elseif ($InfoType == 'cancel_auth') { // 取消授权通知
+                    /**
+                     * 取消授权通知
+                     * 当授权方（即授权企业）在企业微信管理端的授权管理中，取消了对应用的授权托管后，企业微信后台会推送取消授权通知。
+                     * 请求方式：POST（HTTPS）
+                     * 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
+                     *
+                     * 请求包体：
+                     *
+                     * <xml>
+                     * <SuiteId><![CDATA[ww4asffe99e54cxxxx]]></ SuiteId>
+                     * <InfoType><![CDATA[cancel_auth]]></InfoType>
+                     * <TimeStamp>1403610513</TimeStamp>
+                     * <AuthCorpId><![CDATA[wxf8b4f85fxx794xxx]]></AuthCorpId>
+                     * </xml>
+                     * 服务商的响应必须在1000ms内完成，以保证用户取消授权的体验。建议在接收到此事件时，立即回应企业微信，之后再做相关业务的处理。注意，服务商收到取消授权事件后，应当确保删除该企业所有相关的数据。
+                     *
+                     * 参数说明：
+                     *
+                     * 参数 说明
+                     * SuiteId 第三方应用的SuiteId
+                     * InfoType cancel_auth
+                     * TimeStamp 时间戳
+                     * AuthCorpId 授权方企业的corpid
+                     */
+                    $AuthCorpId = isset($datas['AuthCorpId']) ? trim($datas['AuthCorpId']) : ''; // 授权方企业的corpid
+                }
+
+                /**
+                 * ==================================================================================
+                 * ====================================以下逻辑请勿修改===================================
+                 * ==================================================================================
+                 */
+                if (empty($response)) {
+                    $response = "success";
+                }
+
+                $this->requestLogDatas['response'] = $response;
+
+                /**
+                 * ==================================================================================
+                 * ====================================以上逻辑请勿修改===================================
+                 * ==================================================================================
+                 */
+                // 输出响应结果
+                return $response;
             }
-
-            /**
-             * ==================================================================================
-             * ====================================以上逻辑请勿修改===================================
-             * ==================================================================================
-             */
-
-            if ($InfoType == 'suite_ticket') { // 推送suite_ticket
-                /**
-                 * 推送suite_ticket
-                 * 企业微信服务器会定时（每十分钟）推送ticket。ticket会实时变更，并用于后续接口的调用。
-                 *
-                 * 若开发者想立即获得ticket推送值，可登录服务商平台，在第三方应用详情-回调配置，手动刷新ticket推送。
-                 *
-                 * 请求方式：POST（HTTPS）
-                 * 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
-                 *
-                 * 请求包体：
-                 *
-                 * <xml>
-                 * <SuiteId><![CDATA[ww4asffe99e54c0fxxxx]]></SuiteId>
-                 * <InfoType> <![CDATA[suite_ticket]]></InfoType>
-                 * <TimeStamp>1403610513</TimeStamp>
-                 * <SuiteTicket><![CDATA[asdfasfdasdfasdf]]></SuiteTicket>
-                 * </xml>
-                 * 参数说明：
-                 *
-                 * 参数 说明
-                 * SuiteId 第三方应用的SuiteId
-                 * InfoType suite_ticket
-                 * TimeStamp 时间戳
-                 * SuiteTicket Ticket内容，最长为512字节
-                 */
-                $SuiteTicket = isset($datas['SuiteTicket']) ? trim($datas['SuiteTicket']) : ''; // Ticket内容
-                // 获取第三方应用suite_access_token
-                $suite_secret = $this->authorizerConfig['appsecret'];
-                $suiteToken = $this->objQyProvider->getSuiteToken($SuiteId, $suite_secret, $SuiteTicket);
-
-                // 更新suite_access_token
-                $this->modelQyweixinAuthorizer->updateSuiteAccessToken($this->authorizerConfig['_id'], $suiteToken['component_access_token'], $suiteToken['expires_in'], $SuiteTicket);
-            } elseif ($InfoType == 'create_auth') { // 授权成功通知
-                /**
-                 * 授权通知事件
-                 * 授权成功通知
-                 * 从企业微信应用市场发起授权时，企业微信后台会推送授权成功通知。
-                 *
-                 * 从第三方服务商网站发起的应用授权流程，由于授权完成时会跳转第三方服务商管理后台，因此不会通过此接口向第三方服务商推送授权成功通知。
-                 *
-                 * 请求方式：POST（HTTPS）
-                 * 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
-                 *
-                 * 请求包体：
-                 *
-                 * <xml>
-                 * <SuiteId><![CDATA[ww4asffe9xxx4c0f4c]]></ SuiteId>
-                 * <AuthCode><![CDATA[AUTHCODE]]></AuthCode>
-                 * <InfoType><![CDATA[create_auth]]></InfoType>
-                 * <TimeStamp>1403610513</TimeStamp>
-                 * </xml>
-                 * 服务商的响应必须在1000ms内完成，以保证用户安装应用的体验。建议在接收到此事件时，先记录下AuthCode，并立即回应企业微信，之后再做相关业务的处理。
-                 *
-                 * 参数说明：
-                 *
-                 * 参数 说明
-                 * SuiteId 第三方应用的SuiteId
-                 * AuthCode 授权的auth_code,最长为512字节。用于获取企业的永久授权码。5分钟内有效
-                 * InfoType create_auth
-                 * TimeStamp 时间戳
-                 */
-                $AuthCode = isset($datas['AuthCode']) ? trim($datas['AuthCode']) : ''; // 授权的auth_code,最长为512字节。用于获取企业的永久授权码。5分钟内有效
-            } elseif ($InfoType == 'change_auth') { // 变更授权通知
-                /**
-                 * 变更授权通知
-                 * 当授权方（即授权企业）在企业微信管理端的授权管理中，修改了对应用的授权后，企业微信服务器推送变更授权通知。
-                 * 服务商接收到变更通知之后，需自行调用获取企业授权信息进行授权内容变更比对。
-                 *
-                 * 请求方式：POST（HTTPS）
-                 * 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
-                 *
-                 * 请求包体：
-                 *
-                 * <xml>
-                 * <SuiteId><![CDATA[ww4asffe99exxx0f4c]]></SuiteId>
-                 * <InfoType><![CDATA[change_auth]]></InfoType>
-                 * <TimeStamp>1403610513</TimeStamp>
-                 * <AuthCorpId><![CDATA[wxf8b4f85f3a794e77]]></AuthCorpId>
-                 * </xml>
-                 * 服务商的响应必须在1000ms内完成，以保证用户变更授权的体验。建议在接收到此事件时，立即回应企业微信，之后再做相关业务的处理。
-                 *
-                 * 参数说明：
-                 *
-                 * 参数 说明
-                 * SuiteId 第三方应用的SuiteId
-                 * InfoType change_auth
-                 * TimeStamp 时间戳
-                 * AuthCorpId 授权方的corpid
-                 */
-                $AuthCorpId = isset($datas['AuthCorpId']) ? trim($datas['AuthCorpId']) : ''; // 授权方的corpid
-            } elseif ($InfoType == 'cancel_auth') { // 取消授权通知
-                /**
-                 * 取消授权通知
-                 * 当授权方（即授权企业）在企业微信管理端的授权管理中，取消了对应用的授权托管后，企业微信后台会推送取消授权通知。
-                 * 请求方式：POST（HTTPS）
-                 * 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
-                 *
-                 * 请求包体：
-                 *
-                 * <xml>
-                 * <SuiteId><![CDATA[ww4asffe99e54cxxxx]]></ SuiteId>
-                 * <InfoType><![CDATA[cancel_auth]]></InfoType>
-                 * <TimeStamp>1403610513</TimeStamp>
-                 * <AuthCorpId><![CDATA[wxf8b4f85fxx794xxx]]></AuthCorpId>
-                 * </xml>
-                 * 服务商的响应必须在1000ms内完成，以保证用户取消授权的体验。建议在接收到此事件时，立即回应企业微信，之后再做相关业务的处理。注意，服务商收到取消授权事件后，应当确保删除该企业所有相关的数据。
-                 *
-                 * 参数说明：
-                 *
-                 * 参数 说明
-                 * SuiteId 第三方应用的SuiteId
-                 * InfoType cancel_auth
-                 * TimeStamp 时间戳
-                 * AuthCorpId 授权方企业的corpid
-                 */
-                $AuthCorpId = isset($datas['AuthCorpId']) ? trim($datas['AuthCorpId']) : ''; // 授权方企业的corpid
-            }
-
-            /**
-             * ==================================================================================
-             * ====================================以下逻辑请勿修改===================================
-             * ==================================================================================
-             */
-            if (empty($response)) {
-                $response = "success";
-            }
-
-            $this->requestLogDatas['response'] = $response;
-
-            /**
-             * ==================================================================================
-             * ====================================以上逻辑请勿修改===================================
-             * ==================================================================================
-             */
-            // 输出响应结果
-            return $response;
         } catch (\Exception $e) {
             $this->modelErrorLog->log($this->activity_id, $e, $this->now);
             // 如果脚本执行中发现异常，则记录返回的异常信息
