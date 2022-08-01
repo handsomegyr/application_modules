@@ -218,7 +218,7 @@ class ProviderController extends ControllerBase
             return abort(500, $e->getMessage());
         }
     }
-
+    
     /**
      * 指令回调URL
      * 概述
@@ -235,7 +235,8 @@ class ProviderController extends ControllerBase
      */
     public function authorizecallbackAction()
     {
-        // http://www.myapplicationmodule.com/qyweixin/api/provider/authorizecallback?provider_appid=wxca8519f703c07d32&suite_id=ww4be715bb538715d3&agentid=
+        // 指令回调URL http://www.myapplicationmodule.com/qyweixin/api/provider/authorizecallback?provider_appid=wxca8519f703c07d32&suite_id=ww4be715bb538715d3&agentid=
+        // 通用开发参数 系统事件接收URL https://doublec.intonecc.com/qyweixin/api/provider/authorizecallback?provider_appid=ww975831ac45517bff&log_type=syslog
         try {
             /**
              * ==================================================================================
@@ -264,7 +265,7 @@ class ProviderController extends ControllerBase
                 $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
                 $receiveId = $this->authorizer_appid;
             }
-
+            
             $AESInfo['EncodingAESKey'] = $encodingAESKey;
             $AESInfo['verify_token'] = $verifyToken;
             $AESInfo['receiveId'] = $receiveId;
@@ -295,7 +296,7 @@ class ProviderController extends ControllerBase
                 // 你可以访问 接口调试工具 （接口类型：建立连接，接口列表：测试回调模式）进行调试
                 // 合法性校验
                 $objQyWeixin = new \Qyweixin\Client($this->providerConfig['appid'], $this->providerConfig['appsecret']);
-                if (!empty($providerConfig['access_token'])) {
+                if (!empty($this->providerConfig['access_token'])) {
                     $objQyWeixin->setAccessToken($this->providerConfig['access_token']);
                 }
                 $ret4CheckSignature = $objQyWeixin->checkSignature($verifyToken, $encodingAESKey);
@@ -515,7 +516,7 @@ class ProviderController extends ControllerBase
         $datas = $this->revieve($postStr);
         // 需要解密
         if ($this->isNeedDecryptAndEncrypt) {
-
+            $this->requestLogDatas['aes_info']['receiveId'] = $datas['ToUserName'];
             if (empty($this->requestLogDatas['aes_info']['EncodingAESKey'])) {
                 throw new \Exception('application EncodingAESKey is null');
             }

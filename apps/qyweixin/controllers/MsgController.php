@@ -143,6 +143,12 @@ class MsgController extends ControllerBase
                 $encodingAESKey = isset($this->providerConfig['EncodingAESKey']) ? $this->providerConfig['EncodingAESKey'] : '';
                 $receiveId = $this->provider_appid;
                 $errorConfig = $this->providerConfig;
+                if (!empty($this->authorizerConfig)) {
+                    $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
+                    $encodingAESKey = isset($this->authorizerConfig['EncodingAESKey']) ? $this->authorizerConfig['EncodingAESKey'] : '';
+                    $receiveId = $this->authorizer_appid;
+                    $errorConfig = $this->authorizerConfig;
+                }
             } else {
                 if (!empty($this->agentConfig)) {
                     $verifyToken = isset($this->agentConfig['verify_token']) ? $this->agentConfig['verify_token'] : '';
@@ -186,7 +192,16 @@ class MsgController extends ControllerBase
                 // 步骤2~3可以直接使用验证URL函数一步到位。
                 // 你可以访问 接口调试工具 （接口类型：建立连接，接口列表：测试回调模式）进行调试
                 // 合法性校验
-                $ret4CheckSignature = $this->objQyWeixin->checkSignature($verifyToken, $encodingAESKey);
+
+                // 如果是第3方服务商的话
+                if (!empty($this->providerConfig)) {
+                    $objQyWeixin = new \Qyweixin\Client($this->providerConfig['appid'], $this->providerConfig['appsecret']);
+                    if (!empty($this->providerConfig['access_token'])) {
+                        $objQyWeixin->setAccessToken($this->providerConfig['access_token']);
+                    }
+                } else {
+                    $objQyWeixin = $this->objQyWeixin;
+                }
                 if (empty($ret4CheckSignature)) {
                     $debug = \App\Common\Utils\Helper::myJsonEncode($this->requestLogDatas);
                     throw new \Exception('签名错误' . $debug);
@@ -246,12 +261,8 @@ class MsgController extends ControllerBase
                 }
                 $this->requestLogDatas['response'] = 'success';
 
-                // 开始处理相关的业务逻辑                
-                $SuiteId = isset($datas['SuiteId']) ? trim($datas['SuiteId']) : '';
+                // 开始处理相关的业务逻辑
                 $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : '0';
-                if (isset($datas['SuiteId'])) {
-                    $AgentID = $SuiteId;
-                }
                 $this->requestLogDatas['AgentID'] = $AgentID;
 
                 $FromUserName = isset($datas['FromUserName']) ? trim($datas['FromUserName']) : '';
@@ -259,10 +270,6 @@ class MsgController extends ControllerBase
                 $content = isset($datas['Content']) ? trim($datas['Content']) : '';
                 $MsgId = isset($datas['MsgId']) ? trim($datas['MsgId']) : '';
                 $CreateTime = isset($datas['CreateTime']) ? ($datas['CreateTime']) : time();
-                $TimeStamp = isset($datas['TimeStamp']) ? ($datas['TimeStamp']) : time();
-                if (isset($datas['SuiteId'])) {
-                    $CreateTime = $TimeStamp;
-                }
 
                 // 关于重试的消息排重，有msgid的消息推荐使用msgid排重。事件类型消息推荐使用FromUserName + CreateTime 排重。
                 if (!empty($MsgId)) {
@@ -277,35 +284,31 @@ class MsgController extends ControllerBase
                         return "success";
                     }
                 }
-                if (isset($datas['SuiteId'])) {
-                    // 业务逻辑开始
-                    // $response = "success";
-                    $datas = $this->handleRequestAndGetResponseBySuite($datas);
-                } else {
-                    // 如果有AgentId的话那么重新获取接口对象
-                    if (!empty($AgentID) && ($AgentID != $this->agentid)) {
-                        // 创建service
-                        $this->qyweixinService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $AgentID);
-                        $this->objQyWeixin = $this->qyweixinService->getQyWeixinObject();
-                    }
-                    // // 获取微信用户的个人信息
-                    // if (!empty($this->authorizerConfig['access_token'])) {
-                    $this->modelQyweixinUser->setQyweixinInstance($this->objQyWeixin);
-                    $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
-                    // }
-                    // 设定来源和目标用户的openid
-                    $this->objQyWeixin->setFromAndTo($FromUserName, $ToUserName);
 
-                    /**
-                     * ==================================================================================
-                     * ====================================以上逻辑请勿修改===================================
-                     * ==================================================================================
-                     */
-
-                    // 业务逻辑开始
-                    // $response = "success";
-                    $datas = $this->handleRequestAndGetResponseByMsgType($datas);
+                // 如果有AgentId的话那么重新获取接口对象
+                if (!empty($AgentID) && ($AgentID != $this->agentid)) {
+                    // 创建service
+                    $this->qyweixinService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $AgentID);
+                    $this->objQyWeixin = $this->qyweixinService->getQyWeixinObject();
                 }
+                // // 获取微信用户的个人信息
+                // if (!empty($this->authorizerConfig['access_token'])) {
+                $this->modelQyweixinUser->setQyweixinInstance($this->objQyWeixin);
+                $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
+                // }
+                // 设定来源和目标用户的openid
+                $this->objQyWeixin->setFromAndTo($FromUserName, $ToUserName);
+
+                /**
+                 * ==================================================================================
+                 * ====================================以上逻辑请勿修改===================================
+                 * ==================================================================================
+                 */
+
+                // 业务逻辑开始
+                // $response = "success";
+                $datas = $this->handleRequestAndGetResponseByMsgType($datas);
+
                 $content = $datas['content_process'];
                 $response = $datas['response'];
                 // 业务逻辑结束
@@ -498,6 +501,10 @@ class MsgController extends ControllerBase
         $datas = $this->revieve($postStr);
         // 需要解密
         if ($this->isNeedDecryptAndEncrypt) {
+            // 如果是第3方服务商的话
+            if (!empty($this->providerConfig)) {
+                $this->requestLogDatas['aes_info']['receiveId'] = $datas['ToUserName'];
+            }
             if (empty($this->requestLogDatas['aes_info']['EncodingAESKey'])) {
                 throw new \Exception('application EncodingAESKey is null');
             }
@@ -534,64 +541,6 @@ class MsgController extends ControllerBase
             }
         }
         return $response;
-    }
-
-    /**
-     * 处理请求返回响应
-     * https://developer.work.weixin.qq.com/document/path/90628
-     *
-     * @param array $datas        	
-     * @return array
-     */
-    protected function handleRequestAndGetResponseBySuite(array $datas)
-    {
-        $SuiteId = isset($datas['SuiteId']) ? trim($datas['SuiteId']) : '';
-        $InfoType = isset($datas['InfoType']) ? trim($datas['InfoType']) : '';
-        $TimeStamp = isset($datas['TimeStamp']) ? trim($datas['TimeStamp']) : '';
-        $SuiteTicket = isset($datas['SuiteTicket']) ? trim($datas['SuiteTicket']) : '';
-        $response = isset($datas['response']) ? (trim($datas['response'])) : '';
-        $content = "";
-
-        // 不同项目特定的业务逻辑开始
-        if ($InfoType == 'suite_ticket') { // 推送suite_ticket
-
-            // 推送suite_ticket
-            // 企业微信服务器会定时（每十分钟）向指令回调url推送ticket。ticket会实时变更，并用于后续接口的调用。
-
-            // 若开发者想立即获得ticket推送值，可登录服务商平台，在第三方应用详情-回调配置，手动刷新ticket推送。
-            // 请求方式：POST（HTTPS）
-            // 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
-
-            // 请求包体：
-            // xml请求示例：
-
-            // 	<xml>
-            // 		<SuiteId><![CDATA[ww4asffe99e54c0fxxxx]]></SuiteId>
-            // 		<InfoType> <![CDATA[suite_ticket]]></InfoType>
-            // 		<TimeStamp>1403610513</TimeStamp>
-            // 		<SuiteTicket><![CDATA[asdfasfdasdfasdf]]></SuiteTicket>
-            // 	</xml>
-
-
-            // 参数说明：
-
-            // 参数	说明
-            // SuiteId	第三方应用的SuiteId
-            // InfoType	suite_ticket
-            // TimeStamp	时间戳
-            // SuiteTicket	Ticket内容，最长为512字节            
-            $SuiteTicket = isset($datas['SuiteTicket']) ? trim($datas['SuiteTicket']) : '';
-            if (!empty($SuiteTicket) && !empty($this->authorizerConfig)) {
-                $this->modelQyweixinAuthorizer->updateSuiteTicket($this->authorizerConfig['_id'], $SuiteTicket, array());
-            }
-            $response = "success";
-        } // 推送suite_ticket逻辑结束        
-
-        // 不同项目特定的业务逻辑结束
-
-        $datas['content_process'] = $content;
-        $datas['response'] = $response;
-        return $datas;
     }
 
     /**

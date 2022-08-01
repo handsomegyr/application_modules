@@ -350,6 +350,33 @@ class ExternalcontactonjobtransferresultController extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['sync_time'] = array(
+            'name' => '同步时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => 19,
+                'defaultValue' => getCurrentTime()
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['memo'] = array(
             'name' => '备注',
             'data' => array(
