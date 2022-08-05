@@ -1144,6 +1144,180 @@ class QyweixinTask extends \Phalcon\CLI\Task
     }
 
     /**
+     * 获取「联系客户统计」数据
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getuserbehaviordata
+     * @param array $params
+     */
+    public function getuserbehaviordataAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $yesterday = date("Y-m-d", $now - 24 * 3600);
+        $start_time = strtotime($yesterday . " 00:00:00");
+        $end_time = strtotime($yesterday . " 23:59:59");
+        $cache = $this->getDI()->get("cache");
+
+        try {
+            $modelAgent = new \App\Qyweixin\Models\Agent\Agent();
+            $query = array(
+                'agentid' => '9999999'
+            );
+            $sort = array('_id' => 1);
+            $agentList = $modelAgent->findAll($query, $sort);
+            if (!empty($agentList)) {
+                foreach ($agentList as $agentItem) {
+
+                    // 进行锁定处理
+                    $provider_appid = $agentItem['provider_appid'];
+                    $authorizer_appid = $agentItem['authorizer_appid'];
+                    $agentid = $agentItem['agentid'];
+
+                    $lock = new \iLock(\App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock->setExpire(3600 * 8);
+                    if ($lock->lock()) {
+                        continue;
+                    }
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'getuserbehaviordata:' . $authorizer_appid . ':' . $agentid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $agentid, $expire_time);
+
+                    try {
+                        $modelFollowUser = new \App\Qyweixin\Models\ExternalContact\FollowUser();
+                        $query = array();
+                        $sort = array('_id' => 1);
+                        $ecFolowUserList = $modelFollowUser->findAll($query, $sort);
+                        if (!empty($ecFolowUserList)) {
+                            foreach ($ecFolowUserList as $info) {
+
+                                $externaluser_follow_user = $info['follow_user'];
+                                $provider_appid = $info['provider_appid'];
+                                $authorizer_appid = $info['authorizer_appid'];
+                                $externaluser_agent_agentid = '9999999';
+
+                                // 如果缓存中已经存在那么就不做处理
+                                $cacheKey = 'getuserbehaviordata:' . $authorizer_appid . ":" . $externaluser_follow_user;
+                                $userFromCache = $cache->get($cacheKey);
+                                if (!empty($userFromCache)) {
+                                    continue;
+                                }
+                                // 加缓存处理
+                                $expire_time = 8 * 60 * 60;
+                                $cache->save($cacheKey, $externaluser_follow_user, $expire_time);
+
+                                try {
+                                    $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
+                                    $weixinopenService->getUserBehaviorDataByUserId($externaluser_follow_user, $start_time, $end_time);
+                                } catch (\Exception $e) {
+                                    $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                                }
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
+     * 获取「群聊数据统计」数据
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupchatstatistic
+     * @param array $params
+     */
+    public function getgroupchatstatisticAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $yesterday = date("Y-m-d", $now - 24 * 3600);
+        $start_time = strtotime($yesterday . " 00:00:00");
+        $end_time = strtotime($yesterday . " 23:59:59");
+        $cache = $this->getDI()->get("cache");
+
+        try {
+            $modelAgent = new \App\Qyweixin\Models\Agent\Agent();
+            $query = array(
+                'agentid' => '9999999'
+            );
+            $sort = array('_id' => 1);
+            $agentList = $modelAgent->findAll($query, $sort);
+            if (!empty($agentList)) {
+                foreach ($agentList as $agentItem) {
+
+                    // 进行锁定处理
+                    $provider_appid = $agentItem['provider_appid'];
+                    $authorizer_appid = $agentItem['authorizer_appid'];
+                    $agentid = $agentItem['agentid'];
+
+                    $lock = new \iLock(\App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock->setExpire(3600 * 8);
+                    if ($lock->lock()) {
+                        continue;
+                    }
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'getgroupchatstatistic:' . $authorizer_appid . ':' . $agentid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $agentid, $expire_time);
+
+                    try {
+                        $modelFollowUser = new \App\Qyweixin\Models\ExternalContact\FollowUser();
+                        $query = array();
+                        $sort = array('_id' => 1);
+                        $ecFolowUserList = $modelFollowUser->findAll($query, $sort);
+                        if (!empty($ecFolowUserList)) {
+                            foreach ($ecFolowUserList as $info) {
+
+                                $externaluser_follow_user = $info['follow_user'];
+                                $provider_appid = $info['provider_appid'];
+                                $authorizer_appid = $info['authorizer_appid'];
+                                $externaluser_agent_agentid = '9999999';
+
+                                // 如果缓存中已经存在那么就不做处理
+                                $cacheKey = 'getgroupchatstatistic:' . $authorizer_appid . ":" . $externaluser_follow_user;
+                                $userFromCache = $cache->get($cacheKey);
+                                if (!empty($userFromCache)) {
+                                    continue;
+                                }
+                                // 加缓存处理
+                                $expire_time = 8 * 60 * 60;
+                                $cache->save($cacheKey, $externaluser_follow_user, $expire_time);
+
+                                try {
+                                    $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $externaluser_agent_agentid);
+                                    $weixinopenService->getGroupChatStatisticGroupByDay($externaluser_follow_user, $start_time, $end_time);
+                                } catch (\Exception $e) {
+                                    $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                                }
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
      * @uses 私钥解密
      * @param string $encrypted
      * @return null
