@@ -318,7 +318,33 @@ class ExternalcontactgroupchatmemberController extends BaseController
                 'is_show' => true
             )
         );
-        
+        $schemas['is_exist'] = array(
+            'name' => '是否存在',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['sync_time'] = array(
             'name' => '同步时间',
             'data' => array(
