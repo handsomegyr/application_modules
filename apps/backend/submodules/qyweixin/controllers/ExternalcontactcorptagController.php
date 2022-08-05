@@ -62,7 +62,7 @@ class ExternalcontactcorptagController extends BaseController
                 }
 
                 $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agent_agentid);
-                $res = $weixinopenService->getCorpTagList(array());
+                $res = $weixinopenService->getCorpTagList(array(), array());
                 return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
@@ -433,6 +433,33 @@ class ExternalcontactcorptagController extends BaseController
                 'is_show' => true,
                 'items' => $this->trueOrFalseDatas,
                 'help' => '标签组是否已经被删除，只在指定tag_id进行查询时返回',
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['is_exist'] = array(
+            'name' => '是否存在',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
             ),
             'list' => array(
                 'is_show' => true,
