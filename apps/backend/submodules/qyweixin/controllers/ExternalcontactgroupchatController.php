@@ -84,11 +84,11 @@ class ExternalcontactgroupchatController extends BaseController
 
                 $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agent_agentid);
                 $status_filter = 0;
-                $offset = 0;
+                $cursor = "";
                 $limit = 1000;
                 $owner_filter = array();
                 $owner_filter['userid_list'] = array($groupchat_userid);
-                $res = $weixinopenService->getGroupChatList($status_filter, $owner_filter, $offset, $limit);
+                $res = $weixinopenService->getGroupChatList($status_filter, $owner_filter, $cursor, $limit);
                 return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
