@@ -22,7 +22,7 @@ class ExternalcontactgroupchatstatisticbyuseridController extends BaseController
     protected function getHeaderTools2($tools)
     {
         $tools['getgroupchatstatistic'] = array(
-            'title' => '获取客户群统计数据',
+            'title' => '获取客户群统计数据(按自然日聚合的方式)',
             'action' => 'getgroupchatstatistic',
             'is_show' => true,
             'is_export' => false,
@@ -53,6 +53,7 @@ class ExternalcontactgroupchatstatisticbyuseridController extends BaseController
                 $agent_agentid = trim($this->request->get('groupchatstatistic_agent_agentid'));
                 $groupchatstatistic_userid = trim($this->request->get('groupchatstatistic_userid'));
                 $groupchatstatistic_day_begin_time = trim($this->request->get('groupchatstatistic_day_begin_time'));
+                $groupchatstatistic_day_end_time = trim($this->request->get('groupchatstatistic_day_end_time'));
 
                 if (empty($provider_appid)) {
                     // return $this->response()->error("第三方服务商应用ID未设定");
@@ -70,7 +71,7 @@ class ExternalcontactgroupchatstatisticbyuseridController extends BaseController
                     return $this->makeJsonError("数据起始时间未设定");
                 }
                 $groupchatstatistic_day_begin_time = strtotime($groupchatstatistic_day_begin_time);
-
+                $groupchatstatistic_day_end_time = strtotime($groupchatstatistic_day_end_time);
                 if (time() - $groupchatstatistic_day_begin_time <= 0) {
                     return $this->makeJsonError("数据结束时间比数据起始时间早了");
                 }
@@ -80,13 +81,7 @@ class ExternalcontactgroupchatstatisticbyuseridController extends BaseController
                 }
 
                 $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agent_agentid);
-                $owner_filter = array();
-                $owner_filter['userid_list'] = array($groupchatstatistic_userid);
-                $order_by = 1;
-                $order_asc = 0;
-                $offset = 0;
-                $limit = 1000;
-                $res = $weixinopenService->getGroupChatStatistic($groupchatstatistic_day_begin_time, $owner_filter,  $order_by, $order_asc, $offset, $limit);
+                $res = $weixinopenService->getGroupChatStatisticGroupByDay($groupchatstatistic_userid, $groupchatstatistic_day_begin_time, $groupchatstatistic_day_end_time);
                 return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
@@ -155,7 +150,16 @@ class ExternalcontactgroupchatstatisticbyuseridController extends BaseController
                 'is_show' => true,
             ),
         );
-
+        $fields['groupchatstatistic_day_end_time'] = array(
+            'name' => '数据结束时间',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                'is_show' => true,
+            ),
+        );
         return $fields;
     }
 
