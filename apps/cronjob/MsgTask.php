@@ -8,7 +8,7 @@ class MsgTask extends \Phalcon\CLI\Task
      * 找满员商品揭晓结果通知的处理
      * 每个一分钟运行一次
      *
-     * @param array $params            
+     * @param array $params
      */
     public function processAction(array $params)
     {
@@ -40,7 +40,7 @@ class MsgTask extends \Phalcon\CLI\Task
     /**
      * 发送消息
      *
-     * @param array $params            
+     * @param array $params
      */
     public function sendmsg4lotteryresultAction(array $params)
     {

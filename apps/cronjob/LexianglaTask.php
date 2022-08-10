@@ -76,7 +76,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
     /**
      * 获取乐享的accesstoken
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php lexiangla getaccesstoken
-     * @param array $params            
+     * @param array $params
      */
     public function getaccesstokenAction(array $params)
     {
@@ -111,7 +111,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
     /**
      * 乐享消息通知
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php lexiangla sendmsg
-     * @param array $params            
+     * @param array $params
      */
     public function sendmsgAction(array $params)
     {
@@ -201,7 +201,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
     /**
      * 同步乐享
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php lexiangla synclexiangla
-     * @param array $params            
+     * @param array $params
      */
     public function synclexianglaAction(array $params)
     {

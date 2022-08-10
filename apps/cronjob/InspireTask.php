@@ -4,7 +4,7 @@ class InspireTask extends \Phalcon\CLI\Task
 
     /**
      * 处理
-     * @param array $params            
+     * @param array $params
      */
     public function handleAction(array $params)
     {

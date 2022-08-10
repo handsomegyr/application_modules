@@ -22,7 +22,7 @@ class WeixinnotificationprepareTask  extends \Phalcon\CLI\Task
     /**
      * 处理
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixinnotificationprepare handle
-     * @param array $params            
+     * @param array $params
      */
     public function handleAction(array $params)
     {

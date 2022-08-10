@@ -7,7 +7,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取企业微信的accesstoken
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getaccesstoken
-     * @param array $params            
+     * @param array $params
      */
     public function getaccesstokenAction(array $params)
     {
@@ -47,7 +47,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取获取会话内容
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getchatdata
-     * @param array $params            
+     * @param array $params
      */
     public function getchatdataAction(array $params)
     {
@@ -158,7 +158,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取部门列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getdepartmentlist
-     * @param array $params            
+     * @param array $params
      */
     public function getdepartmentlistAction(array $params)
     {
@@ -214,7 +214,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取部门成员
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getdepartmentusersimplelist
-     * @param array $params            
+     * @param array $params
      */
     public function getdepartmentusersimplelistAction(array $params)
     {
@@ -268,7 +268,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 从部门人员获取用户列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getuserlistfromdepartmentuser
-     * @param array $params            
+     * @param array $params
      */
     public function getuserlistfromdepartmentuserAction(array $params)
     {
@@ -332,7 +332,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取用户详情
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getuserinfo
-     * @param array $params            
+     * @param array $params
      */
     public function getuserinfoAction(array $params)
     {
@@ -385,9 +385,65 @@ class QyweixinTask extends \Phalcon\CLI\Task
     }
 
     /**
+     * 获取标签库
+     * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin gettaglist
+     * @param array $params
+     */
+    public function gettaglistAction(array $params)
+    {
+        $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
+        $now = time();
+        $cache = $this->getDI()->get("cache");
+
+        try {
+            $modelAgent = new \App\Qyweixin\Models\Agent\Agent();
+            $query = array(
+                'agentid' => '9999998'
+            );
+            $sort = array('_id' => 1);
+            $agentList = $modelAgent->findAll($query, $sort);
+            if (!empty($agentList)) {
+                foreach ($agentList as $agentItem) {
+
+                    // 进行锁定处理
+                    $provider_appid = $agentItem['provider_appid'];
+                    $authorizer_appid = $agentItem['authorizer_appid'];
+                    $agentid = $agentItem['agentid'];
+
+                    $lock = new \iLock(\App\Common\Utils\Helper::myCacheKey(__CLASS__, __METHOD__, 'provider_appid:' . $provider_appid . ' authorizer_appid:' . $authorizer_appid . ' agentid:' . $agentid));
+                    $lock->setExpire(3600 * 8);
+                    if ($lock->lock()) {
+                        continue;
+                    }
+
+                    // 如果缓存中已经存在那么就不做处理
+                    $cacheKey = 'get_tag_list:' . $authorizer_appid . ':' . $agentid;
+                    $userFromCache = $cache->get($cacheKey);
+                    if (!empty($userFromCache)) {
+                        continue;
+                    }
+
+                    // 加缓存处理
+                    $expire_time = 8 * 60 * 60;
+                    $cache->save($cacheKey, $agentid, $expire_time);
+
+                    try {
+                        $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agentid);
+                        $weixinopenService->getTagList();
+                    } catch (\Exception $e) {
+                        $modelActivityErrorLog->log($this->activity_id, $e, $now);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $modelActivityErrorLog->log($this->activity_id, $e, $now);
+        }
+    }
+
+    /**
      * 获取标签成员
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin gettagpartyuser
-     * @param array $params            
+     * @param array $params
      */
     public function gettagpartyuserAction(array $params)
     {
@@ -442,7 +498,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取配置了客户联系功能的成员列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getfollowuserlist
-     * @param array $params            
+     * @param array $params
      */
     public function getfollowuserlistAction(array $params)
     {
@@ -498,7 +554,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取客户列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getexternaluserlist
-     * @param array $params            
+     * @param array $params
      */
     public function getexternaluserlistAction(array $params)
     {
@@ -552,7 +608,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取客户详情
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getexternaluserinfo
-     * @param array $params            
+     * @param array $params
      */
     public function getexternaluserinfoAction(array $params)
     {
@@ -607,7 +663,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取客户列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupchatlist
-     * @param array $params            
+     * @param array $params
      */
     public function getgroupchatlistAction(array $params)
     {
@@ -666,7 +722,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取客户详情
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupchatinfo
-     * @param array $params            
+     * @param array $params
      */
     public function getgroupchatinfoAction(array $params)
     {
@@ -721,7 +777,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取企业客户朋友圈列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getmomentlist
-     * @param array $params            
+     * @param array $params
      */
     public function getmomentlistAction(array $params)
     {
@@ -795,7 +851,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取企业的全部群发记录
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupmsglist
-     * @param array $params            
+     * @param array $params
      */
     public function getgroupmsglistAction(array $params)
     {
@@ -886,7 +942,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取群发成员发送任务列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupmsgtasklist
-     * @param array $params            
+     * @param array $params
      */
     public function getgroupmsgtasklistAction(array $params)
     {
@@ -1090,7 +1146,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
     /**
      * 获取企业标签库
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getcorptaglist
-     * @param array $params            
+     * @param array $params
      */
     public function getcorptaglistAction(array $params)
     {

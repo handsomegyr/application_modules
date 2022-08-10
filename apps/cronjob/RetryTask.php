@@ -7,7 +7,7 @@ class RetryTask extends \Phalcon\CLI\Task
     /**
      * 重试的处理
      *
-     * @param array $params            
+     * @param array $params
      */
     public function processAction(array $params)
     {

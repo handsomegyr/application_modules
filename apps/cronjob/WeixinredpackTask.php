@@ -6,7 +6,7 @@ class WeixinredpackTask extends \Phalcon\CLI\Task
     /**
      * 补发红包
      *
-     * @param array $params            
+     * @param array $params
      */
     public function createnewperiodgoodsAction(array $params)
     {

@@ -8,7 +8,7 @@ class GoodsTask extends \Phalcon\CLI\Task
      * 找满员的商品进行生成新一期商品和抽奖的处理
      * 每个一分钟运行一次
      *
-     * @param array $params            
+     * @param array $params
      */
     public function processAction(array $params)
     {
@@ -42,7 +42,7 @@ class GoodsTask extends \Phalcon\CLI\Task
     /**
      * 生成新一期的商品
      *
-     * @param array $params            
+     * @param array $params
      */
     public function createnewperiodgoodsAction(array $params)
     {
@@ -88,7 +88,7 @@ class GoodsTask extends \Phalcon\CLI\Task
     /**
      * 商品抽奖处理
      *
-     * @param array $params            
+     * @param array $params
      */
     public function lotterygoodsAction(array $params)
     {

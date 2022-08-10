@@ -14,7 +14,7 @@ class MainTask extends \Phalcon\CLI\Task
 
     /**
      *
-     * @param array $params            
+     * @param array $params
      */
     public function testAction(array $params)
     {

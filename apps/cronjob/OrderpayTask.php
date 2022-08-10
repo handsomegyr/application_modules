@@ -8,7 +8,7 @@ class OrderpayTask extends \Phalcon\CLI\Task
      * 找已经支付完成的支付单进行支付完成后续的处理
      * 每个一分钟运行一次
      *
-     * @param array $params            
+     * @param array $params
      */
     public function processAction(array $params)
     {
@@ -35,7 +35,7 @@ class OrderpayTask extends \Phalcon\CLI\Task
     /**
      * 完成支付处理
      *
-     * @param array $params            
+     * @param array $params
      */
     public function finishpayAction(array $params)
     {

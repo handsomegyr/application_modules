@@ -22,7 +22,7 @@ class WeixinnotificationsendTask extends \Phalcon\CLI\Task
     /**
      * 处理
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixinnotificationsend handle 5e46128f69dc0a0f8415fe8f.csv
-     * @param array $params            
+     * @param array $params
      */
     public function handleAction(array $params)
     {

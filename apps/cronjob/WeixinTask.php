@@ -7,7 +7,7 @@ class WeixinTask extends \Phalcon\CLI\Task
     /**
      * 获取accesstoken
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixin getaccesstoken
-     * @param array $params            
+     * @param array $params
      */
     public function getaccesstokenAction(array $params)
     {
@@ -54,7 +54,7 @@ class WeixinTask extends \Phalcon\CLI\Task
     /**
      * 获取关注用户列表
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixin getsubscribeuserlist
-     * @param array $params            
+     * @param array $params
      */
     public function getsubscribeuserlistAction(array $params)
     {
