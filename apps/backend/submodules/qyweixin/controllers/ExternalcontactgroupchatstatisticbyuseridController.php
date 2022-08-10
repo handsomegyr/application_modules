@@ -71,7 +71,7 @@ class ExternalcontactgroupchatstatisticbyuseridController extends BaseController
                     return $this->makeJsonError("数据起始时间未设定");
                 }
                 $groupchatstatistic_day_begin_time = strtotime($groupchatstatistic_day_begin_time);
-                $groupchatstatistic_day_end_time = strtotime($groupchatstatistic_day_end_time);
+                $groupchatstatistic_day_end_time = strtotime($groupchatstatistic_day_end_time) - 1;
                 if (time() - $groupchatstatistic_day_begin_time <= 0) {
                     return $this->makeJsonError("数据结束时间比数据起始时间早了");
                 }
