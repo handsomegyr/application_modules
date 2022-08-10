@@ -94,6 +94,8 @@ class ServiceController extends ControllerBase
             $ret = array();
             $ret['jsapi_ticket'] = $authorizerInfo['jsapi_ticket'];
             $ret['jsapi_ticket_expire'] = $authorizerInfo['jsapi_ticket_expire'];
+            $ret['agent_jsapi_ticket'] = $authorizerInfo['agent_jsapi_ticket'];
+            $ret['agent_jsapi_ticket_expire'] = $authorizerInfo['agent_jsapi_ticket_expire'];
 
             $this->modelQyweixinScriptTracking->record($this->provider_appid, $this->authorizer_appid, $this->agentid, $this->trackingKey, $_SESSION['service_start_time'], microtime(true), "getJsapiTicket", $this->appConfig['_id']);
             return $this->result("OK", $ret);
@@ -145,11 +147,11 @@ class ServiceController extends ControllerBase
             // 初始化
             $this->doInitializeLogic();
 
-            $serviceQyweixin = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, "9999998");
-            $ret1 = $serviceQyweixin->getSignPackage($url);
+            // $serviceQyweixin = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, "9999998");
+            $ret1 = $this->weixinopenService->getSignPackage($url, 0);
             $ret1['appid'] = $this->authorizer_appid;
 
-            $ret2 = $this->weixinopenService->getSignPackage($url);
+            $ret2 = $this->weixinopenService->getSignPackage($url, 1);
             $ret2['corpid'] = $this->authorizer_appid;
             $ret2['agentid'] = $this->agentid;
 
