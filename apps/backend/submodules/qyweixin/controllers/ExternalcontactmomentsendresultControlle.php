@@ -109,6 +109,33 @@ class ExternalcontactmomentsendresultControlle extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['userid'] = array(
+            'name' => '发表成员用户userid',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['external_userid'] = array(
             'name' => '成员发送成功的外部联系人userid',
             'data' => array(

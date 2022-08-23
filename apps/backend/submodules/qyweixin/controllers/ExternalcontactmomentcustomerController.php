@@ -81,7 +81,6 @@ class ExternalcontactmomentcustomerController extends BaseController
                 'is_show' => true
             )
         );
-
         $schemas['moment_id'] = array(
             'name' => '朋友圈id',
             'data' => array(
@@ -190,7 +189,6 @@ class ExternalcontactmomentcustomerController extends BaseController
                 'is_show' => true
             )
         );
-
         return $schemas;
     }
 

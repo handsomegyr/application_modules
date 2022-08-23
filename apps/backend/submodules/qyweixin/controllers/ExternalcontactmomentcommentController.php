@@ -81,7 +81,6 @@ class ExternalcontactmomentcommentController extends BaseController
                 'is_show' => true
             )
         );
-
         $schemas['moment_id'] = array(
             'name' => '朋友圈id',
             'data' => array(
@@ -109,8 +108,89 @@ class ExternalcontactmomentcommentController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['comment_userid'] = array(
-            'name' => '评论的企业成员userid',
+        $schemas['userid'] = array(
+            'name' => '发表成员用户userid',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['behavior'] = array(
+            'name' => '互动行为',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['behavior_user_type'] = array(
+            'name' => '互动行为用户分类',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['behavior_userid'] = array(
+            'name' => '互动行为userid',
             'data' => array(
                 'type' => 'string',
                 'length' => 190,
@@ -123,7 +203,7 @@ class ExternalcontactmomentcommentController extends BaseController
                 'input_type' => 'text',
                 'is_show' => true,
                 'items' => '',
-                'help' => '评论的企业成员userid，userid与external_userid不会同时出现',
+                'help' => '互动行为的企业成员userid，userid与external_userid不会同时出现',
             ),
             'list' => array(
                 'is_show' => true,
@@ -137,171 +217,8 @@ class ExternalcontactmomentcommentController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['comment_userid_create_time'] = array(
-            'name' => '评论的企业成员userid的评论时间',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime()
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['comment_external_userid'] = array(
-            'name' => '评论的外部联系人userid',
-            'data' => array(
-                'type' => 'string',
-                'length' => 190,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['comment_external_userid_create_time'] = array(
-            'name' => '评论的外部联系人userid的评论时间',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime()
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['like_userid'] = array(
-            'name' => '点赞的企业成员userid',
-            'data' => array(
-                'type' => 'string',
-                'length' => 190,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '点赞的企业成员userid，userid与external_userid不会同时出现',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['like_userid_create_time'] = array(
-            'name' => '点赞的企业成员userid的点赞时间',
-            'data' => array(
-                'type' => 'datetime',
-                'length' => 19,
-                'defaultValue' => getCurrentTime()
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'datetimepicker',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['like_external_userid'] = array(
-            'name' => '点赞的外部联系人userid',
-            'data' => array(
-                'type' => 'string',
-                'length' => 190,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['like_external_userid_create_time'] = array(
-            'name' => '点赞的外部联系人userid的点赞时间',
+        $schemas['behavior_create_time'] = array(
+            'name' => '互动行为时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
@@ -354,7 +271,6 @@ class ExternalcontactmomentcommentController extends BaseController
                 'is_show' => true
             )
         );
-
         return $schemas;
     }
 
