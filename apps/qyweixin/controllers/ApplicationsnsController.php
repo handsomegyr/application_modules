@@ -173,8 +173,12 @@ class ApplicationsnsController extends ControllerBase
 
                 // 授权处理
                 // 应用类型 1:企业号
-                if (empty($this->authorizerConfig['provider_appid']) && $this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
-                    $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+                if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
+                    if (empty($this->authorizerConfig['provider_appid'])) {
+                        $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+                    } else {
+                        $objSns = new \Qyweixin\Token\Sns($this->authorizerConfig['provider_appid'], $this->authorizerConfig['appsecret']);
+                    }
                 } else {
                     throw new \Exception('该运用不支持授权操作');
                 }
@@ -283,8 +287,12 @@ class ApplicationsnsController extends ControllerBase
 
                 // 授权处理
                 // 应用类型 1:企业号
-                if (empty($this->authorizerConfig['provider_appid']) && $this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
-                    $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+                if ($this->app_type == \App\Qyweixin\Models\Authorize\Authorizer::APPTYPE_QY) {
+                    if (empty($this->authorizerConfig['provider_appid'])) {
+                        $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+                    } else {
+                        $objSns = new \Qyweixin\Token\Sns($this->authorizerConfig['provider_appid'], $this->authorizerConfig['appsecret']);
+                    }
                 } else {
                     throw new \Exception('该运用不支持授权操作');
                 }
@@ -343,7 +351,11 @@ class ApplicationsnsController extends ControllerBase
                 throw new \Exception('该运用不支持授权操作');
             }
 
-            $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+            if (empty($this->authorizerConfig['provider_appid'])) {
+                $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+            } else {
+                $objSns = new \Qyweixin\Token\Sns($this->authorizerConfig['provider_appid'], $this->authorizerConfig['appsecret']);
+            }
             if (empty($this->agentid)) {
                 $access_token = $this->authorizerConfig['access_token'];
             } else {
@@ -353,7 +365,7 @@ class ApplicationsnsController extends ControllerBase
 
             $arrAccessToken = $objSns->getUserInfo($access_token);
             if (!empty($arrAccessToken['errcode'])) {
-                throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
+                throw new \Exception("获取用户信息失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
             }
             $arrAccessToken['scope'] = $this->scope;
             $arrAccessToken['access_token'] = $access_token;
