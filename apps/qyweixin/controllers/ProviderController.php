@@ -16,6 +16,18 @@ class ProviderController extends ControllerBase
 {
     // 活动ID
     protected $activity_id = 1;
+    
+    /**
+     *
+     * @var \App\Qyweixin\Models\Auth\Corp
+     */
+    private $modelQyweixinAuthCorp;
+
+    /**
+     *
+     * @var \App\Qyweixin\Models\Agent\Agent
+     */
+    private $modelQyweixinAgent;
 
     /**
      *
@@ -76,6 +88,8 @@ class ProviderController extends ControllerBase
         $this->view->disable();
         $this->isNeedDecryptAndEncrypt = true;
 
+        $this->modelQyweixinAuthCorp = new \App\Qyweixin\Models\Auth\Corp();
+        $this->modelQyweixinAgent = new \App\Qyweixin\Models\Agent\Agent();
         $this->modelQyweixinProvider = new \App\Qyweixin\Models\Provider\Provider();
         $this->modelQyweixinAuthorizer = new \App\Qyweixin\Models\Authorize\Authorizer();
         $this->modelQyweixinProviderLoginBindTracking = new \App\Qyweixin\Models\Provider\ProviderLoginBindTracking();
@@ -331,6 +345,14 @@ class ProviderController extends ControllerBase
                     }
                 }
 
+                // 授权方ID
+                $this->authorizer_appid = $SuiteId;
+                if (!empty($this->authorizer_appid)) {
+                    $this->qyService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $this->agentid);
+                    $this->authorizerConfig = $this->qyService->getAppConfig4Authorizer();
+                    $this->objQyProvider = $this->qyService->getQyweixinProvider();
+                }
+
                 /**
                  * ==================================================================================
                  * ====================================以上逻辑请勿修改===================================
@@ -364,12 +386,22 @@ class ProviderController extends ControllerBase
                      * SuiteTicket Ticket内容，最长为512字节
                      */
                     $SuiteTicket = isset($datas['SuiteTicket']) ? trim($datas['SuiteTicket']) : ''; // Ticket内容
-                    // 获取第三方应用suite_access_token
-                    $suite_secret = $this->authorizerConfig['appsecret'];
-                    $suiteToken = $this->objQyProvider->getSuiteToken($SuiteId, $suite_secret, $SuiteTicket);
 
-                    // 更新suite_access_token
-                    $this->modelQyweixinAuthorizer->updateSuiteAccessToken($this->authorizerConfig['_id'], $suiteToken['component_access_token'], $suiteToken['expires_in'], $SuiteTicket);
+                    //https://developer.work.weixin.qq.com/document/path/90600#14939
+                    // https://developer.work.weixin.qq.com/document/path/95434
+                    // a. 应用代开发模版id即为suite_id。企业微信后台也会定期向应用代开发模版回调url推送suite_ticket
+                    // b. 可通过获取第三方应用凭证接口获取suite_access_token。
+                    // c. suite_access_token可用于获取企业永久授权码
+                    // d. 可调用获取企业授权信息（注意：此种情况接口会多返回is_customized_app字段，且值为true，表示是代开发模版授权）
+
+                    // 获取第三方应用suite_access_token
+                    if (!empty($this->authorizerConfig)) {
+                        $suite_secret = $this->authorizerConfig['appsecret'];
+                        $suiteToken = $this->objQyProvider->getSuiteToken($SuiteId, $suite_secret, $SuiteTicket);
+
+                        // 更新suite_access_token
+                        $this->modelQyweixinAuthorizer->updateSuiteAccessToken($this->authorizerConfig['id'], $suiteToken['suite_access_token'], $suiteToken['expires_in'], $SuiteTicket);
+                    }
                 } elseif ($InfoType == 'create_auth') { // 授权成功通知
                     /**
                      * 授权通知事件
@@ -388,6 +420,7 @@ class ProviderController extends ControllerBase
                      * <AuthCode><![CDATA[AUTHCODE]]></AuthCode>
                      * <InfoType><![CDATA[create_auth]]></InfoType>
                      * <TimeStamp>1403610513</TimeStamp>
+                     * <State><![CDATA[123]]></State>
                      * </xml>
                      * 服务商的响应必须在1000ms内完成，以保证用户安装应用的体验。建议在接收到此事件时，先记录下AuthCode，并立即回应企业微信，之后再做相关业务的处理。
                      *
@@ -398,8 +431,15 @@ class ProviderController extends ControllerBase
                      * AuthCode 授权的auth_code,最长为512字节。用于获取企业的永久授权码。5分钟内有效
                      * InfoType create_auth
                      * TimeStamp 时间戳
+                     * State	构造授权链接指定的state参数
                      */
                     $AuthCode = isset($datas['AuthCode']) ? trim($datas['AuthCode']) : ''; // 授权的auth_code,最长为512字节。用于获取企业的永久授权码。5分钟内有效
+                    $State = isset($datas['State']) ? trim($datas['State']) : ''; // 构造授权链接指定的state参数
+                    //https://developer.work.weixin.qq.com/document/path/95434
+                    // （1）企业管理员扫代开发模版授权码时，授权完成后会推送授权成功通知到应用代开发模版回调url。
+                    // （2）收到回调后，开发者通过获取企业永久授权码接口获取到的permanent_code，即为代开发应用的secret。
+                    //（注意：此种情况获取企业永久授权码接口会多返回is_customized_app字段，且值为true，表示是代开发模版授权，另外接口不返回access_token字段）。
+                    $this->getPermanentCode($AuthCode, $datas);
                 } elseif ($InfoType == 'change_auth') { // 变更授权通知
                     /**
                      * 变更授权通知
@@ -416,6 +456,7 @@ class ProviderController extends ControllerBase
                      * <InfoType><![CDATA[change_auth]]></InfoType>
                      * <TimeStamp>1403610513</TimeStamp>
                      * <AuthCorpId><![CDATA[wxf8b4f85f3a794e77]]></AuthCorpId>
+                     * <State><![CDATA[abc]]></State>
                      * </xml>
                      * 服务商的响应必须在1000ms内完成，以保证用户变更授权的体验。建议在接收到此事件时，立即回应企业微信，之后再做相关业务的处理。
                      *
@@ -426,8 +467,86 @@ class ProviderController extends ControllerBase
                      * InfoType change_auth
                      * TimeStamp 时间戳
                      * AuthCorpId 授权方的corpid
+                     * State	构造授权链接指定的state参数
                      */
                     $AuthCorpId = isset($datas['AuthCorpId']) ? trim($datas['AuthCorpId']) : ''; // 授权方的corpid
+                    $State = isset($datas['State']) ? trim($datas['State']) : ''; // 构造授权链接指定的state参数
+                    // https://developer.work.weixin.qq.com/document/path/90642#%E5%8F%98%E6%9B%B4%E6%8E%88%E6%9D%83%E9%80%9A%E7%9F%A5
+
+                    // 获取企业授权信息
+                    if (!empty($this->authorizerConfig)) {
+                        $suite_access_token = $this->authorizerConfig['suite_access_token'];
+                        $permanent_code = $this->authorizerConfig['permanent_code'];
+                        $authInfo = $this->objQyProvider->getAuthInfo($suite_access_token, $AuthCorpId, $permanent_code);
+                        // {
+                        //     "errcode":0 ,
+                        //     "errmsg":"ok" ,
+                        //     "auth_corp_info": 
+                        //     {
+                        //         "corpid": "xxxx",
+                        //         "corp_name": "name",
+                        //         "corp_type": "verified",
+                        //         "corp_square_logo_url": "yyyyy",
+                        //         "corp_user_max": 50,
+                        //         "corp_agent_max": 30,
+                        //         "corp_full_name":"full_name",
+                        //         "verified_end_time":1431775834,
+                        //         "subject_type": 1，
+                        //         "corp_wxqrcode": "zzzzz",
+                        //         "corp_scale": "1-50人",
+                        //         "corp_industry": "IT服务",
+                        //         "corp_sub_industry": "计算机软件/硬件/信息服务"
+                        //         "location":"广东省广州市"
+                        //     },
+                        //     "auth_info":
+                        //     {
+                        //         "agent" :
+                        //         [
+                        //             {
+                        //                 "agentid":1,
+                        //                 "name":"NAME",
+                        //                 "round_logo_url":"xxxxxx",
+                        //                 "square_logo_url":"yyyyyy",
+                        //                 "appid":1,
+                        //                 "privilege":
+                        //                 {
+                        //                     "level":1,
+                        //                     "allow_party":[1,2,3],
+                        //                     "allow_user":["zhansan","lisi"],
+                        //                     "allow_tag":[1,2,3],
+                        //                     "extra_party":[4,5,6],
+                        //                     "extra_user":["wangwu"],
+                        //                     "extra_tag":[4,5,6]
+                        //                 }
+                        //             },
+                        //             {
+                        //                 "agentid":2,
+                        //                 "name":"NAME2",
+                        //                 "round_logo_url":"xxxxxx",
+                        //                 "square_logo_url":"yyyyyy",
+                        //                 "appid":5
+                        //             }
+                        //         ]
+                        //     }
+                        // }
+
+                        if (!isset($authInfo['expires_in'])) {
+                            $authInfo['expires_in'] = -7200;
+                        }
+                        if (!isset($authInfo['access_token'])) {
+                            $authInfo['access_token'] = "";
+                        }
+                        $memo = [
+                            'event_datas' => $datas,
+                            'suite_access_token' => $suite_access_token,
+                            'permanent_code' => $permanent_code,
+                            'getAuthInfo' => $authInfo
+                        ];
+                        // 创建授权方企业
+                        $this->modelQyweixinAuthCorp->createAndUpdateAuthCorpInfo($this->provider_appid, $this->authorizer_appid, $authInfo['access_token'], $authInfo['expires_in'], $authInfo['auth_corp_info'], $memo);
+                        // 创建agent
+                        $this->modelQyweixinAgent->createAndUpdateAuthAgentInfo($this->provider_appid, $this->authorizer_appid, $permanent_code, $authInfo['access_token'], $authInfo['expires_in'], $authInfo['auth_info']['agent'][0], $memo);
+                    }
                 } elseif ($InfoType == 'cancel_auth') { // 取消授权通知
                     /**
                      * 取消授权通知
@@ -454,6 +573,37 @@ class ProviderController extends ControllerBase
                      * AuthCorpId 授权方企业的corpid
                      */
                     $AuthCorpId = isset($datas['AuthCorpId']) ? trim($datas['AuthCorpId']) : ''; // 授权方企业的corpid
+                } elseif ($InfoType == 'reset_permanent_code') {
+                    // 重置永久授权码通知
+                    // 最后更新：2022/06/23
+                    // 在服务商管理端的代开发应用详情页，点击“重新获取secret”会触发该事件的回调，服务商收到回调事件后，可使用AuthCode通过获取企业永久授权码接口获取代开发应用最新的secret（即permanent_code字段）。
+
+                    // 请求方式：POST（HTTPS）
+                    // 请求地址：https://127.0.0.1/suite/receive?msg_signature=3a7b08bb8e6dbce3c9671d6fdb69d15066227608&timestamp=1403610513&nonce=380320359
+
+                    // 请求包体：
+
+                    // <xml>
+                    // 	<SuiteId><![CDATA[dk4asffe9xxx4c0f4c]]></SuiteId>
+                    // 	<AuthCode><![CDATA[AUTHCODE]]></AuthCode>
+                    // 	<InfoType><![CDATA[reset_permanent_code]]></InfoType>
+                    // 	<TimeStamp>1403610513</TimeStamp>
+                    // </xml>
+                    // 服务商的响应必须在1000ms内完成，以保证用户安装应用的体验。建议在接收到此事件时，先记录下AuthCode，并立即回应企业微信，之后再做相关业务的处理。
+                    // 参数说明：
+
+                    // 参数	说明
+                    // SuiteId	代开发自建应用的SuiteId
+                    // AuthCode	临时授权码,最长为512字节。用于获取企业永久授权码。10分钟内有效
+                    // InfoType	reset_permanent_code
+                    // TimeStamp	时间戳
+                    $AuthCode = isset($datas['AuthCode']) ? trim($datas['AuthCode']) : ''; // 临时授权码
+
+                    //https://developer.work.weixin.qq.com/document/path/95434
+                    // 服务商可在服务商管理端的代开发应用详情页点击“重新获取”(见下图)来重置应用secret。
+                    // 点击“重新获取”后，企业微信后台会回调重置永久授权码通知。
+                    // 开发者收到回调事件后，可使用AuthCode通过获取企业永久授权码接口获取代开发应用最新的secret（即permanent_code字段）。
+                    $this->getPermanentCode($AuthCode, $datas);
                 }
 
                 /**
@@ -561,6 +711,76 @@ class ProviderController extends ControllerBase
             if ($this->requestLogDatas['log_type'] == 'authorizelog') { // 授权事件接收URL
                 $this->modelQyweixinAuthorizeLog->record($this->requestLogDatas);
             }
+        }
+    }
+
+    protected function getPermanentCode($AuthCode, $datas)
+    {
+        if (!empty($this->authorizerConfig)) {
+            // 使用授权码换取公众号的接口调用凭据和授权信息
+            $suite_access_token = $this->authorizerConfig['suite_access_token'];
+            $permanentCodeInfo = $this->objQyProvider->getPermanentCode($suite_access_token, $AuthCode);
+            // "permanent_code": "kt4M0Hacrr5iVBw48GVj0L6imrzTkwlDlzNpyR_vP_E", 
+            // "auth_corp_info": {
+            //     "corpid": "wpr7jrBgAArXPRgLB8LPaxpZvRIFkyeg", 
+            //     "corp_name": "潮玩地", 
+            //     "corp_type": "verified", 
+            //     "corp_round_logo_url": "http://p.qpic.cn/pic_wework/3746516520/3731dc24dd2bf466b68b64e4ac7a51d39e8df80ba0d3a5ab/0", 
+            //     "corp_square_logo_url": "https://p.qlogo.cn/bizmail/F0fukINIv59Z968ulh4AQT1AhWOTQ3ibicOeDWqmH8AX5f5qjZ8v7Ghg/0", 
+            //     "corp_user_max": 500, 
+            //     "corp_wxqrcode": "https://wework.qpic.cn/wwpic/669589_0W5HILq7SqiJema_1661520574/0", 
+            //     "corp_full_name": "潮玩地", 
+            //     "subject_type": 1, 
+            //     "verified_end_time": 1691223831, 
+            //     "corp_scale": "51-100人", 
+            //     "corp_industry": "批发/零售", 
+            //     "corp_sub_industry": "零售", 
+            //     "location": ""
+            // }, 
+            // "auth_info": {
+            //     "agent": [
+            //         {
+            //             "agentid": 1000017, 
+            //             "name": "企微助手", 
+            //             "square_logo_url": "https://wework.qpic.cn/wwpic/809268_NV47ah_dT3OIIyZ_1661491101/0", 
+            //             "privilege": {
+            //                 "level": 0, 
+            //                 "allow_party": [ ], 
+            //                 "allow_user": [ ], 
+            //                 "allow_tag": [ ], 
+            //                 "extra_party": [ ], 
+            //                 "extra_user": [ ], 
+            //                 "extra_tag": [ ]
+            //             }, 
+            //             "is_customized_app": true
+            //         }
+            //     ]
+            // }, 
+            // "auth_user_info": {
+            //     "userid": "wor7jrBgAAMJ4S40H0s56lp6O9sntFpw", 
+            //     "name": "郭永荣", 
+            //     "avatar": "http://wework.qpic.cn/bizmail/3781P7vBiadFNmvYJic4sy6n3uDrPfwveaScRhTExN7NBtP5cPp99MJA/0", 
+            //     "open_userid": "wor7jrBgAAMJ4S40H0s56lp6O9sntFpw"
+            // }
+            // 更新accesstoken
+            if (!isset($permanentCodeInfo['expires_in'])) {
+                $permanentCodeInfo['expires_in'] = -7200;
+            }
+            if (!isset($permanentCodeInfo['access_token'])) {
+                $permanentCodeInfo['access_token'] = "";
+            }
+            $memo = [
+                'event_datas' => $datas,
+                'suite_access_token' => $suite_access_token,
+                'auth_code' => $AuthCode,
+                'auth_expires_in' => $permanentCodeInfo['expires_in'],
+                'getPermanentCode' => $permanentCodeInfo
+            ];
+            $this->modelQyweixinAuthorizer->createAndUpdateAuthorizer($this->provider_appid, $this->authorizer_appid, $permanentCodeInfo['access_token'], $permanentCodeInfo['access_token'], $permanentCodeInfo['expires_in'], $permanentCodeInfo['permanent_code'], $permanentCodeInfo, $memo);
+            // 创建授权方企业
+            $this->modelQyweixinAuthCorp->createAndUpdateAuthCorpInfo($this->provider_appid, $this->authorizer_appid, $permanentCodeInfo['access_token'], $permanentCodeInfo['expires_in'], $permanentCodeInfo['auth_corp_info'], $memo);
+            // 创建agent
+            $this->modelQyweixinAgent->createAndUpdateAuthAgentInfo($this->provider_appid, $this->authorizer_appid, $permanentCodeInfo['permanent_code'], $permanentCodeInfo['access_token'], $permanentCodeInfo['expires_in'], $permanentCodeInfo['auth_info']['agent'][0], $memo);
         }
     }
 }
