@@ -17,6 +17,11 @@ class ComponentsnsController extends ControllerBase
      * @var \App\Qyweixin\Models\Contact\User
      */
     private $modelQyweixinUser;
+    /**
+     *
+     * @var \App\Qyweixin\Models\Agent\Agent
+     */
+    private $modelQyweixinAgent;
 
     /**
      * @var \App\Qyweixin\Models\Provider\Provider
@@ -80,7 +85,7 @@ class ComponentsnsController extends ControllerBase
     {
         parent::initialize();
         $this->view->disable();
-
+        $this->modelQyweixinAgent = new \App\Qyweixin\Models\Agent\Agent();
         $this->modelQyweixinUser = new \App\Qyweixin\Models\Contact\User();
         $this->modelQyweixinProvider = new \App\Qyweixin\Models\Provider\Provider();
         $this->modelQyweixinAuthorizer = new \App\Qyweixin\Models\Authorize\Authorizer();
@@ -158,7 +163,8 @@ class ComponentsnsController extends ControllerBase
 
                 // 授权处理
                 $objSns = new \Qyweixin\Token\ServiceSns();
-                $objSns->setAppid($this->authorizer_appid);
+                $objSns->setAppid($this->provider_appid);
+                // $objSns->setAppid($this->authorizer_appid);
                 $objSns->setScope($this->scope);
                 $objSns->setState($this->state);
                 $objSns->setRedirectUri($redirectUri);
@@ -244,7 +250,8 @@ class ComponentsnsController extends ControllerBase
 
                 // 授权处理
                 $objSns = new \Qyweixin\Token\ServiceSns();
-                $objSns->setAppid($this->authorizer_appid);
+                $objSns->setAppid($this->provider_appid);
+                // $objSns->setAppid($this->authorizer_appid);
                 $objSns->setScope($this->scope);
                 $objSns->setState($this->state);
                 $objSns->setAgentid($this->agentid);
@@ -354,6 +361,7 @@ class ComponentsnsController extends ControllerBase
                 // 授权处理
                 $objSns = new \Qyweixin\Token\ServiceSns();
                 $objSns->setAppid($this->provider_appid);
+                // $objSns->setAppid($this->authorizer_appid);
                 $objSns->setState($this->state);
                 $objSns->setUserType($usertype);
                 $objSns->setRedirectUri($redirectUri);
@@ -406,15 +414,28 @@ class ComponentsnsController extends ControllerBase
             $objQyProvider = $qyService->getQyweixinProvider();
 
             // 第二步：通过code获取访问用户身份
-            $suite_access_token = $this->authorizerConfig['suite_access_token'];
-            $arrAccessToken = $objQyProvider->getUserInfo3rd($suite_access_token, $code);
+            // $suite_access_token = $this->authorizerConfig['suite_access_token'];
+            // $arrAccessToken = $objQyProvider->getUserInfo3rd($suite_access_token, $code);
+            // if (!empty($arrAccessToken['errcode'])) {
+            //     throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
+            // }
+            $objSns = new \Qyweixin\Token\Sns($this->authorizer_appid, $this->authorizerConfig['appsecret']);
+            if (empty($this->agentid)) {
+                $suite_access_token = $this->authorizerConfig['access_token'];
+            } else {
+                $agentInfo = $this->modelQyweixinAgent->getInfoByAppid($this->provider_appid, $this->authorizer_appid, $this->agentid);
+                $suite_access_token = $agentInfo['access_token'];
+            }
+            $arrAccessToken = $objSns->getUserInfo($suite_access_token);
             if (!empty($arrAccessToken['errcode'])) {
-                throw new \Exception("获取token失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
+                throw new \Exception("获取用户信息失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
             }
 
             $arrAccessToken['scope'] = $this->scope;
             $arrAccessToken['access_token'] = $suite_access_token;
             $arrAccessToken['refresh_token'] = "";
+            // $e = new \Exception(myJsonEncode($arrAccessToken));
+            // $this->modelErrorLog->log($this->activity_id, $e, $this->now);
 
             $userInfoAndAccessTokenRet = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
             $arrAccessToken = $userInfoAndAccessTokenRet['arrAccessToken'];
@@ -722,7 +743,7 @@ class ComponentsnsController extends ControllerBase
             $arrAccessToken['userid'] = $arrAccessToken['UserId'];
             $arrAccessToken['is_qy_member'] = 1;
             $arrAccessToken['qyuserid'] = $arrAccessToken['userid'];
-            $arrAccessToken['open_userid'] = $arrAccessToken['open_userid'];
+            $arrAccessToken['open_userid'] = isset($arrAccessToken['open_userid']) ? $arrAccessToken['open_userid'] : "";
 
             // // 用户授权的作用域，使用逗号（,）分隔
             // $scopeArr = \explode(',', $arrAccessToken['scope']);
