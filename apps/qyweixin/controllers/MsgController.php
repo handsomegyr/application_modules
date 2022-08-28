@@ -203,7 +203,12 @@ class MsgController extends ControllerBase
                     $objQyWeixin = $this->objQyWeixin;
                 }
                 if (empty($ret4CheckSignature)) {
-                    $debug = \App\Common\Utils\Helper::myJsonEncode($this->requestLogDatas);
+                    $debug = \App\Common\Utils\Helper::myJsonEncode(array(
+                        'requestLogDatas' => $this->requestLogDatas,
+                        'verifyToken4checkSignature' => $verifyToken,
+                        'encodingAESKey4checkSignature' => $encodingAESKey,
+                        'receiveId4checkSignature' => $objQyWeixin->getCorpId()
+                    ));
                     throw new \Exception('签名错误' . $debug);
                 } else {
                     $AESInfo['replyEchoStr'] = $ret4CheckSignature['replyEchoStr'];
