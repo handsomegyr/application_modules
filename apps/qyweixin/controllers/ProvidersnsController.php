@@ -431,29 +431,16 @@ class ComponentsnsController extends ControllerBase
                 throw new \Exception("获取用户信息失败,原因:" . \App\Common\Utils\Helper::myJsonEncode($arrAccessToken));
             }
 
+            // {"UserId":"wor7jrBgAAMJ4S40H0s56lp6O9sntFpw","DeviceId":"13f9b8186d09531e","errcode":0,"errmsg":"ok"}
+            // $e = new \Exception(myJsonEncode($arrAccessToken));
+            // $this->modelErrorLog->log($this->activity_id, $e, $this->now);
             $arrAccessToken['scope'] = $this->scope;
             $arrAccessToken['access_token'] = $suite_access_token;
             $arrAccessToken['refresh_token'] = "";
-            // $e = new \Exception(myJsonEncode($arrAccessToken));
-            // $this->modelErrorLog->log($this->activity_id, $e, $this->now);
 
-            $userInfoAndAccessTokenRet = $this->getUserInfo4AccessToken($objQyProvider, $arrAccessToken);
+            $userInfoAndAccessTokenRet = $this->getUserInfo4AccessToken($objSns, $arrAccessToken);
             $arrAccessToken = $userInfoAndAccessTokenRet['arrAccessToken'];
             $userInfo = $userInfoAndAccessTokenRet['userInfo'];
-
-            if (!empty($userInfo)) {
-                if (!empty($userInfo['name'])) {
-                    $arrAccessToken['name'] = ($userInfo['name']);
-                }
-
-                if (!empty($userInfo['avatar'])) {
-                    $arrAccessToken['avatar'] = stripslashes($userInfo['avatar']);
-                }
-
-                if (!empty($userInfo['unionid'])) {
-                    $arrAccessToken['unionid'] = ($userInfo['unionid']);
-                }
-            }
 
             $_SESSION[$this->sessionKey] = $arrAccessToken;
 
@@ -632,13 +619,17 @@ class ComponentsnsController extends ControllerBase
     protected function getRedirectUrl4Sns($redirect, $arrAccessToken)
     {
         // $redirect = $this->addUrlParameter($redirect, array(
-        //     'it_userToken' => urlencode($arrAccessToken['access_token'])
+        // 'it_appid' => $this->appid
+        // ));
+        // if ($this->app_type != \App\Components\Qyweixin\Services\Models\Authorize\AuthorizerModel::APPTYPE_QY) {
+        // $redirect = $this->addUrlParameter($redirect, array(
+        // 'it_userToken' => urlencode($arrAccessToken['access_token'])
         // ));
 
         // $redirect = $this->addUrlParameter($redirect, array(
-        //     'it_refreshToken' => urlencode($arrAccessToken['refresh_token'])
+        // 'it_refreshToken' => urlencode($arrAccessToken['refresh_token'])
         // ));
-
+        // }
         $redirect = $this->addUrlParameter($redirect, array(
             'it_openid' => $arrAccessToken['openid']
         ));
@@ -677,6 +668,44 @@ class ComponentsnsController extends ControllerBase
         //         'it_signkey2' => $signkey
         //     ));
         // }
+
+        //     "gender":"1",
+        //     "avatar":"http://shp.qpic.cn/bizmp/xxxxxxxxxxx/0",
+        //     "qr_code":"https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=vcfc13b01dfs78e981c",
+        //     "mobile": "13800000000",
+        //      "email": "zhangsan@gzdev.com",
+        //      "biz_mail":"zhangsan@qyycs2.wecom.work",
+        //      "address": "广州市海珠区新港中路"
+        if (!empty($arrAccessToken['qr_code'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_qr_code' => urlencode(stripslashes($arrAccessToken['qr_code']))
+            ));
+        }
+        if (!empty($arrAccessToken['mobile'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_mobile' => urlencode(stripslashes($arrAccessToken['mobile']))
+            ));
+        }
+        if (!empty($arrAccessToken['email'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_email' => urlencode(stripslashes($arrAccessToken['email']))
+            ));
+        }
+        if (!empty($arrAccessToken['biz_mail'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_biz_mail' => urlencode(stripslashes($arrAccessToken['biz_mail']))
+            ));
+        }
+        if (!empty($arrAccessToken['address'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_address' => urlencode(stripslashes($arrAccessToken['address']))
+            ));
+        }
+        if (isset($arrAccessToken['gender'])) {
+            $redirect = $this->addUrlParameter($redirect, array(
+                'it_gender' => urlencode(stripslashes($arrAccessToken['gender']))
+            ));
+        }
 
         return $redirect;
     }
