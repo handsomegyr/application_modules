@@ -83,6 +83,10 @@ class AuthorizelogController extends \App\Backend\Controllers\FormController
         $infoTypeItems['cancel_auth'] = "取消授权通知";
         $infoTypeItems['change_auth'] = "变更授权通知";
         $infoTypeItems['create_auth'] = "授权成功通知";
+        $infoTypeItems['reset_permanent_code'] = "重置永久授权码通知";
+        $infoTypeItems['change_app_admin'] = "应用管理员变更通知";
+        $infoTypeItems['change_contact'] = "成员,部门,标签通知事件";
+        $infoTypeItems['share_agent_change'] = "共享应用事件回调";
 
         $schemas['InfoType'] = array(
             'name' => '事件',
