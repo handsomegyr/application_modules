@@ -251,7 +251,33 @@ class AgentController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
-
+        $schemas['is_customized_app'] = array(
+            'name' => '是否为代开发自建应用',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['agentid'] = array(
             'name' => '企业微信应用的唯一标识',
             'data' => array(
