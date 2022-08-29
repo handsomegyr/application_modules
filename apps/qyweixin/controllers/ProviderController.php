@@ -348,7 +348,7 @@ class ProviderController extends ControllerBase
                 // 授权方ID
                 $this->authorizer_appid = $SuiteId;
                 if (!empty($this->authorizer_appid)) {
-                    $this->qyService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $this->agentid);
+                    $this->qyService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, 0);
                     $this->authorizerConfig = $this->qyService->getAppConfig4Authorizer();
                     $this->objQyProvider = $this->qyService->getQyweixinProvider();
                 }
