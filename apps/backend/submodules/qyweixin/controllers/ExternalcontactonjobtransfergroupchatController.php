@@ -203,6 +203,36 @@ class ExternalcontactonjobtransfergroupchatController extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['agentid'] = array(
+            'name' => '应用ID',
+            'data' => array(
+                'type' => 'integer',
+                'length' => 11,
+                'defaultValue' => 0
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                'items' => $this->agentItems
+            ),
+            'search' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['chat_id'] = array(
             'name' => '需要转群主的客户群ID',
             'data' => array(
