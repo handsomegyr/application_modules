@@ -112,7 +112,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                                     // "content": "{\"content\":\"你好[微笑]\\n\"}"
                                     $chatdataItem['mixed_item_msgtype'] = $itemInfo['type'];
                                     $chatdataItem = array_merge($chatdataItem, $itemInfo['content']);
-                                    $modelChatdata->saveChatdataInfo($chatdataItem, $maxseqItem['provider_appid'], $maxseqItem['authorizer_appid']);
+                                    $modelChatdata->saveChatdataInfo($chatdataItem, $maxseqItem['agentid'], $maxseqItem['provider_appid'], $maxseqItem['authorizer_appid']);
                                 }
                             } else {
                                 $chatdataItem = $chatdataInfo;
@@ -137,7 +137,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                                 }
                                 // print_r($chatdataItem);
                                 // die('xxxxx');
-                                $modelChatdata->saveChatdataInfo($chatdataItem, $maxseqItem['provider_appid'], $maxseqItem['authorizer_appid']);
+                                $modelChatdata->saveChatdataInfo($chatdataItem, $maxseqItem['agentid'], $maxseqItem['provider_appid'], $maxseqItem['authorizer_appid']);
                             }
                         }
                     }

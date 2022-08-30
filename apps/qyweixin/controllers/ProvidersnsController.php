@@ -613,7 +613,7 @@ class ComponentsnsController extends ControllerBase
 
     protected function getSignKey($openid, $timestamp = 0)
     {
-        return $this->modelQyweixinAuthorizer->getSignKey($openid, $this->authorizerConfig['secretKey'], $timestamp);
+        return $this->modelQyweixinSnsApplication->getSignKey($openid, $this->appConfig['secretKey'], $timestamp);
     }
 
     protected function getRedirectUrl4Sns($redirect, $arrAccessToken)
