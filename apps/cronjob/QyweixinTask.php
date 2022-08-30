@@ -78,14 +78,13 @@ class QyweixinTask extends \Phalcon\CLI\Task
 
         date_default_timezone_set('Asia/Chongqing');
         foreach ($maxseqList as $maxseqItem) {
-            $corpid = $maxseqItem['authorizer_appid'];
             try {
                 // 获取agentInfo信息
                 $agentInfo = $modelAgent->getInfoByAppid($maxseqItem['provider_appid'], $maxseqItem['authorizer_appid'], 9999997, false);
                 if (empty($agentInfo)) {
                     continue;
                 }
-                $snList = $modelSn->getListByCorpid($corpid);
+                $snList = $modelSn->getListByCorpid(9999997, $maxseqItem['authorizer_appid'], $maxseqItem['provider_appid']);
                 if (empty($snList)) {
                     continue;
                 }
