@@ -150,9 +150,15 @@ class ServiceController extends ControllerBase
             // $serviceQyweixin = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, "9999998");
             $ret1 = $this->weixinopenService->getSignPackage($url, 0);
             $ret1['appid'] = $this->authorizer_appid;
+            if (!empty($this->provider_appid)) {
+                $ret1['corpid'] = $this->provider_appid;
+            }
 
             $ret2 = $this->weixinopenService->getSignPackage($url, 1);
             $ret2['corpid'] = $this->authorizer_appid;
+            if (!empty($this->provider_appid)) {
+                $ret2['corpid'] = $this->provider_appid;
+            }
             $ret2['agentid'] = $this->agentid;
 
             $ret = array();
