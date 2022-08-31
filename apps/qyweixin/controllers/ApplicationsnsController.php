@@ -392,7 +392,7 @@ class ApplicationsnsController extends ControllerBase
                 if (!empty($arrAccessToken['userid'])) {
                     $lock = new \iLock($this->lock_key_prefix . $arrAccessToken['userid'] . $this->authorizer_appid . $this->provider_appid);
                     if (!$lock->lock()) {
-                        $this->modelQyweixinUser->updateUserInfoBySns($arrAccessToken['userid'], $this->authorizer_appid, $this->provider_appid, $userInfo);
+                        $this->modelQyweixinUser->updateUserInfoBySns($arrAccessToken['userid'], $this->authorizer_appid, $this->provider_appid, $this->agentid, $userInfo);
                     }
                 }
             }

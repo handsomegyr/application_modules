@@ -299,7 +299,7 @@ class MsgController extends ControllerBase
                 // // 获取微信用户的个人信息
                 // if (!empty($this->authorizerConfig['access_token'])) {
                 $this->modelQyweixinUser->setQyweixinInstance($this->objQyWeixin);
-                $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
+                $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid, (empty($AgentID) ? $this->agentid : $AgentID));
                 // }
                 // 设定来源和目标用户的openid
                 $this->objQyWeixin->setFromAndTo($FromUserName, $ToUserName);
@@ -423,7 +423,7 @@ class MsgController extends ControllerBase
             $FromUserName = isset($_GET['FromUserName']) ? trim($_GET['FromUserName']) : '';
 
             $this->modelQyweixinUser->setQyweixinInstance($this->objQyWeixin);
-            $ret = $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid);
+            $ret = $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid, $this->agentid);
 
             return $this->result("OK", $ret);
         } catch (\Exception $e) {
