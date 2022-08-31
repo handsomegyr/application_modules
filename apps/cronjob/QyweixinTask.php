@@ -80,11 +80,11 @@ class QyweixinTask extends \Phalcon\CLI\Task
         foreach ($maxseqList as $maxseqItem) {
             try {
                 // 获取agentInfo信息
-                $agentInfo = $modelAgent->getInfoByAppid($maxseqItem['provider_appid'], $maxseqItem['authorizer_appid'], 9999997, false);
+                $agentInfo = $modelAgent->getInfoByAppid($maxseqItem['provider_appid'], $maxseqItem['authorizer_appid'], $maxseqItem['agentid'], false);
                 if (empty($agentInfo)) {
                     continue;
                 }
-                $snList = $modelSn->getListByCorpid(9999997, $maxseqItem['authorizer_appid'], $maxseqItem['provider_appid']);
+                $snList = $modelSn->getListByCorpid($maxseqItem['agentid'], $maxseqItem['authorizer_appid'], $maxseqItem['provider_appid']);
                 if (empty($snList)) {
                     continue;
                 }
@@ -239,7 +239,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $deptid = $info['deptid'];
                     $provider_appid = $info['provider_appid'];
                     $authorizer_appid = $info['authorizer_appid'];
-                    $externaluser_agent_agentid = '9999998';
+                    $externaluser_agent_agentid = $info['agentid'];
 
                     // 如果缓存中已经存在那么就不做处理
                     $cacheKey = 'get_department_user_simple_list:' . $authorizer_appid . ":" . $deptid;
@@ -295,7 +295,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $name = $info['name'];
                     $provider_appid = $info['provider_appid'];
                     $authorizer_appid = $info['authorizer_appid'];
-                    $externaluser_agent_agentid = '9999998';
+                    $externaluser_agent_agentid = $info['agentid'];
 
                     // 如果缓存中已经存在那么就不做处理
                     $cacheKey = 'get_user_list_from_department_user:' . $authorizer_appid . ":" . $userid;
@@ -308,7 +308,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $cache->save($cacheKey, $userid, $expire_time);
 
                     try {
-                        $userInfo = $modelUser->getInfoByUserId($userid, $authorizer_appid, $provider_appid);
+                        $userInfo = $modelUser->getInfoByUserId($userid, $authorizer_appid, $provider_appid, $externaluser_agent_agentid);
                         if (empty($userInfo)) {
                             $data = array();
                             $data['userid'] = $userid;
@@ -357,7 +357,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $userid = $info['userid'];
                     $provider_appid = $info['provider_appid'];
                     $authorizer_appid = $info['authorizer_appid'];
-                    $externaluser_agent_agentid = '9999998';
+                    $externaluser_agent_agentid = $info['agentid'];
 
                     // 如果缓存中已经存在那么就不做处理
                     $cacheKey = 'get_user_info:' . $authorizer_appid . ":" . $userid;
@@ -468,7 +468,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $tagid = $info['tagid'];
                     $provider_appid = $info['provider_appid'];
                     $authorizer_appid = $info['authorizer_appid'];
-                    $externaluser_agent_agentid = '9999998';
+                    $externaluser_agent_agentid = $info['agentid'];
 
                     // 如果缓存中已经存在那么就不做处理
                     $cacheKey = 'get_tag_party_user:' . $authorizer_appid . ":" . $tagid;
@@ -579,7 +579,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $externaluser_follow_user = $info['follow_user'];
                     $provider_appid = $info['provider_appid'];
                     $authorizer_appid = $info['authorizer_appid'];
-                    $externaluser_agent_agentid = '9999999';
+                    $externaluser_agent_agentid = $info['agentid'];
 
                     // 如果缓存中已经存在那么就不做处理
                     $cacheKey = 'get_external_user_list:' . $authorizer_appid . ":" . $externaluser_follow_user;
@@ -633,7 +633,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $external_userid = $info['external_userid'];
                     $provider_appid = $info['provider_appid'];
                     $authorizer_appid = $info['authorizer_appid'];
-                    $externaluser_agent_agentid = '9999999';
+                    $externaluser_agent_agentid = $info['agentid'];
 
                     // 如果缓存中已经存在那么就不做处理
                     $cacheKey = 'get_external_user_info:' . $authorizer_appid . ":" . $external_userid;
@@ -688,7 +688,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $externaluser_follow_user = $info['follow_user'];
                     $provider_appid = $info['provider_appid'];
                     $authorizer_appid = $info['authorizer_appid'];
-                    $externaluser_agent_agentid = '9999999';
+                    $externaluser_agent_agentid = $info['agentid'];
 
                     // 如果缓存中已经存在那么就不做处理
                     $cacheKey = 'get_group_chat_list:' . $authorizer_appid . ":" . $externaluser_follow_user;
@@ -747,7 +747,7 @@ class QyweixinTask extends \Phalcon\CLI\Task
                     $chat_id = $info['chat_id'];
                     $provider_appid = $info['provider_appid'];
                     $authorizer_appid = $info['authorizer_appid'];
-                    $externaluser_agent_agentid = '9999999';
+                    $externaluser_agent_agentid = $info['agentid'];
 
                     // 如果缓存中已经存在那么就不做处理
                     $cacheKey = 'get_group_chat_info:' . $authorizer_appid . ":" . $chat_id;

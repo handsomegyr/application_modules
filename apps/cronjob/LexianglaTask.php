@@ -444,6 +444,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
             // 从企业微信部门表中获取所有的数据
             $modelQyweixinDepartment = new \App\Qyweixin\Models\Contact\Department();
             $query = array();
+            $query['agentid'] = $weixinopenService->getAgentid();
             $query['authorizer_appid'] = $weixinopenService->getAuthorizerAppid();
             $query['provider_appid'] = $weixinopenService->getProviderAppid();
             $query['deptid'] = array('$ne' => '');
@@ -874,6 +875,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
             // 从企业微信标签表中获取所有的数据
             $modelQyweixinTag = new \App\Qyweixin\Models\Contact\Tag();
             $query = array();
+            $query['agentid'] = $weixinopenService->getAgentid();
             $query['authorizer_appid'] = $weixinopenService->getAuthorizerAppid();
             $query['provider_appid'] = $weixinopenService->getProviderAppid();
             $query['tagid'] = array('$ne' => '');
@@ -1240,6 +1242,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
                 // 对成员表进行处理，获取最新的成员信息
                 $modelQyweixinUser = new \App\Qyweixin\Models\Contact\User();
                 $query = array();
+                $query['agentid'] = $weixinopenService->getAgentid();
                 $query['authorizer_appid'] = $weixinopenService->getAuthorizerAppid();
                 $query['provider_appid'] = $weixinopenService->getProviderAppid();
                 $query['userid'] = array('$ne' => '');
@@ -1338,7 +1341,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
                 $modelLexianglaUser = new \App\Lexiangla\Models\Contact\User();
                 $query = array();
                 $query['staff_id'] = array('$ne' => '');
-                $query['is_exist'] = 1;
+                // $query['is_exist'] = 1;
                 $sort = array('_id' => 1);
                 $lexianglaUserList = $modelLexianglaUser->findAll($query, $sort);
                 if (!empty($lexianglaUserList)) {
@@ -1387,6 +1390,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
             // 从企业微信成员表中获取所有的数据
             $modelQyweixinUser = new \App\Qyweixin\Models\Contact\User();
             $query = array();
+            $query['agentid'] = $weixinopenService->getAgentid();
             $query['authorizer_appid'] = $weixinopenService->getAuthorizerAppid();
             $query['provider_appid'] = $weixinopenService->getProviderAppid();
             $query['userid'] = array('$ne' => '');
@@ -1512,7 +1516,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
                     $department = $this->getLexianglaDepartment($qyweixinUserInfo['department']);
                     // 如果成员名称发生了改变的话
                     $isChanged = $this->modelLexianglaUser->isUserInfoChanged($qyweixinUserInfo, $lexiangUserInfo, $main_depart, $department);
-                    if ($isChanged) {
+                    if ($isChanged || empty($lexiangUserInfo['is_exist'])) {
                         // 调用乐享更新成员接口更新成员处理
                         $this->doUpdateUser(
                             $serviceLexiangla,
@@ -1550,6 +1554,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
             $modelQyweixinDepartmentUser = new \App\Qyweixin\Models\Contact\DepartmentUser();
             $modelQyweixinDepartmentUser->physicalRemove(array(
                 'userid' => $qyweixinUserInfo['userid'],
+                'agentid' => $qyweixinUserInfo['agentid'],
                 'authorizer_appid' => $qyweixinUserInfo['authorizer_appid'],
                 'provider_appid' => $qyweixinUserInfo['provider_appid']
             ));
@@ -1725,6 +1730,12 @@ class LexianglaTask extends \Phalcon\CLI\Task
             $lexianglaUserInfo['sync_time'] = \App\Common\Utils\Helper::getCurrentTime();
             $lexianglaUserInfo['memo'] = \App\Common\Utils\Helper::myJsonEncode($retApi);
             $lexianglaUserInfo = $this->modelLexianglaUser->insert($lexianglaUserInfo);
+        } else {
+            $updateData = array();
+            $updateData['is_exist'] = 1;
+            $updateData['sync_time'] = \App\Common\Utils\Helper::getCurrentTime();
+            $updateData['memo'] = \App\Common\Utils\Helper::myJsonEncode($retApi);
+            $this->modelLexianglaUser->update(array('_id' => $lexianglaUserInfo['_id']), array('$set' => $updateData));
         }
         return $lexianglaUserInfo;
     }
@@ -1882,6 +1893,8 @@ class LexianglaTask extends \Phalcon\CLI\Task
         unset($updateData['retApi']);
         $updateData['memo'] = \App\Common\Utils\Helper::myJsonEncode($retApi);
         $updateData['department'] = \App\Common\Utils\Helper::myJsonEncode($department);
+        $updateData['is_exist'] = 1;
+        $updateData['sync_time'] = \App\Common\Utils\Helper::getCurrentTime();
         $this->modelLexianglaUser->update(array('_id' => $lexiangUserInfo['_id']), array('$set' => $updateData));
     }
 
@@ -1904,6 +1917,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
             try {
                 $modelQyweixinTag = new \App\Qyweixin\Models\Contact\Tag();
                 $query = array();
+                $query['agentid'] = $weixinopenService->getAgentid();
                 $query['authorizer_appid'] = $weixinopenService->getAuthorizerAppid();
                 $query['provider_appid'] = $weixinopenService->getProviderAppid();
                 $query['tagid'] = array('$ne' => '');
@@ -2019,6 +2033,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
             // 从企业微信标签成员表中获取所有的数据
             $modelQyweixinTagUser = new \App\Qyweixin\Models\Contact\TagUser();
             $query = array();
+            $query['agentid'] = $weixinopenService->getAgentid();
             $query['authorizer_appid'] = $weixinopenService->getAuthorizerAppid();
             $query['provider_appid'] = $weixinopenService->getProviderAppid();
             $query['tagid'] = array('$ne' => '');
@@ -2110,6 +2125,7 @@ class LexianglaTask extends \Phalcon\CLI\Task
             // 从企业微信标签部门表中获取所有的数据
             $modelQyweixinTagParty = new \App\Qyweixin\Models\Contact\TagParty();
             $query = array();
+            $query['agentid'] = $weixinopenService->getAgentid();
             $query['authorizer_appid'] = $weixinopenService->getAuthorizerAppid();
             $query['provider_appid'] = $weixinopenService->getProviderAppid();
             $query['tagid'] = array('$ne' => '');
@@ -2558,7 +2574,9 @@ class LexianglaTask extends \Phalcon\CLI\Task
         $modelQyweixinDepartmentUser = new \App\Qyweixin\Models\Contact\DepartmentUser();
         $query = array();
         $query['userid'] = $info['userid'];
+        $query['agentid'] = $info['agentid'];
         $query['authorizer_appid'] = $info['authorizer_appid'];
+        $query['provider_appid'] = $info['provider_appid'];
         $query['is_exist'] = 1;
         $departmentUserInfo = $modelQyweixinDepartmentUser->findOne($query);
         if (empty($departmentUserInfo)) {
