@@ -262,11 +262,17 @@ class MsgController extends ControllerBase
                 // 签名正确，将接受到的xml转化为数组数据并记录数据
                 $datas = $this->getDataFromWeixinServer();
                 foreach ($datas as $dtkey => $dtvalue) {
+                    if (trim($dtkey) == 'request_xml_datas') {
+                        continue;
+                    }
                     $this->requestLogDatas[$dtkey] = $dtvalue;
                 }
                 $this->requestLogDatas['response'] = 'success';
 
                 // 开始处理相关的业务逻辑
+                if (!isset($datas['AgentID']) && isset($datas['request_xml_datas']['AgentID'])) {
+                    $datas['AgentID'] = $datas['request_xml_datas']['AgentID'];
+                }
                 $AgentID = isset($datas['AgentID']) ? trim($datas['AgentID']) : '0';
                 $this->requestLogDatas['AgentID'] = $AgentID;
 
@@ -292,14 +298,15 @@ class MsgController extends ControllerBase
 
                 // 如果有AgentId的话那么重新获取接口对象
                 if (!empty($AgentID) && ($AgentID != $this->agentid)) {
+                    $this->agentid = $AgentID;
                     // 创建service
-                    $this->qyweixinService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $AgentID);
+                    $this->qyweixinService = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, $this->agentid);
                     $this->objQyWeixin = $this->qyweixinService->getQyWeixinObject();
                 }
                 // // 获取微信用户的个人信息
                 // if (!empty($this->authorizerConfig['access_token'])) {
                 $this->modelQyweixinUser->setQyweixinInstance($this->objQyWeixin);
-                $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid, (empty($AgentID) ? $this->agentid : $AgentID));
+                $this->modelQyweixinUser->updateUserInfoByAction($FromUserName, $this->authorizer_appid, $this->provider_appid, $this->agentid);
                 // }
                 // 设定来源和目标用户的openid
                 $this->objQyWeixin->setFromAndTo($FromUserName, $ToUserName);
@@ -503,7 +510,7 @@ class MsgController extends ControllerBase
     protected function getDataFromWeixinServer()
     {
         $postStr = file_get_contents('php://input');
-        $datas = $this->revieve($postStr);
+        $request_xml_datas = $datas = $this->revieve($postStr);
         // 需要解密
         if ($this->isNeedDecryptAndEncrypt) {
             // 如果是第3方服务商的话
@@ -518,6 +525,7 @@ class MsgController extends ControllerBase
             $errCode = $pc->decryptMsg($this->requestLogDatas['aes_info']['msg_signature'], $this->requestLogDatas['aes_info']['timestamp'], $this->requestLogDatas['aes_info']['nonce'], $postStr, $decryptMsg);
             if (empty($errCode)) {
                 $datas = $this->revieve($decryptMsg);
+                $datas['request_xml_datas'] = $request_xml_datas;
                 $this->requestLogDatas['aes_info']['decryptMsg'] = $decryptMsg;
             } else {
                 throw new \Exception('application EncodingAESKey is failure in decryptMsg, appid:' . $this->requestLogDatas['aes_info']['receiveId']);
