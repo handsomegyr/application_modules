@@ -16,7 +16,7 @@ class ProviderController extends ControllerBase
 {
     // 活动ID
     protected $activity_id = 1;
-    
+
     /**
      *
      * @var \App\Qyweixin\Models\Auth\Corp
@@ -232,7 +232,7 @@ class ProviderController extends ControllerBase
             return abort(500, $e->getMessage());
         }
     }
-    
+
     /**
      * 指令回调URL
      * 概述
@@ -279,7 +279,7 @@ class ProviderController extends ControllerBase
                 $verifyToken = isset($this->authorizerConfig['verify_token']) ? $this->authorizerConfig['verify_token'] : '';
                 $receiveId = $this->authorizer_appid;
             }
-            
+
             $AESInfo['EncodingAESKey'] = $encodingAESKey;
             $AESInfo['verify_token'] = $verifyToken;
             $AESInfo['receiveId'] = $receiveId;
@@ -545,7 +545,7 @@ class ProviderController extends ControllerBase
                         // 创建授权方企业
                         $this->modelQyweixinAuthCorp->createAndUpdateAuthCorpInfo($this->provider_appid, $this->authorizer_appid, $authInfo['access_token'], $authInfo['expires_in'], $authInfo['auth_corp_info'], $memo);
                         // 创建agent
-                        $this->modelQyweixinAgent->createAndUpdateAuthAgentInfo($this->provider_appid, $this->authorizer_appid, $permanent_code, $authInfo['access_token'], $authInfo['expires_in'], $authInfo['auth_info']['agent'][0], $memo);
+                        $this->modelQyweixinAgent->createAndUpdateAuthAgentInfo($this->provider_appid, $this->authorizer_appid, $permanent_code, $authInfo['access_token'], $authInfo['expires_in'], $authInfo['auth_info']['agent'][0], $authInfo['auth_corp_info'], $memo);
                     }
                 } elseif ($InfoType == 'cancel_auth') { // 取消授权通知
                     /**
@@ -780,7 +780,7 @@ class ProviderController extends ControllerBase
             // 创建授权方企业
             $this->modelQyweixinAuthCorp->createAndUpdateAuthCorpInfo($this->provider_appid, $this->authorizer_appid, $permanentCodeInfo['access_token'], $permanentCodeInfo['expires_in'], $permanentCodeInfo['auth_corp_info'], $memo);
             // 创建agent
-            $this->modelQyweixinAgent->createAndUpdateAuthAgentInfo($this->provider_appid, $this->authorizer_appid, $permanentCodeInfo['permanent_code'], $permanentCodeInfo['access_token'], $permanentCodeInfo['expires_in'], $permanentCodeInfo['auth_info']['agent'][0], $memo);
+            $this->modelQyweixinAgent->createAndUpdateAuthAgentInfo($this->provider_appid, $this->authorizer_appid, $permanentCodeInfo['permanent_code'], $permanentCodeInfo['access_token'], $permanentCodeInfo['expires_in'], $permanentCodeInfo['auth_info']['agent'][0], $permanentCodeInfo['auth_corp_info'], $memo);
         }
     }
 }
