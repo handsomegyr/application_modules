@@ -570,6 +570,7 @@ class MsgController extends ControllerBase
         $ToUserName = isset($datas['ToUserName']) ? trim($datas['ToUserName']) : '';
         $MsgType = isset($datas['MsgType']) ? trim($datas['MsgType']) : '';
         $response = isset($datas['response']) ? (trim($datas['response'])) : '';
+        $content = "";
 
         // 不同项目特定的业务逻辑开始
 

@@ -72,6 +72,8 @@ class ComponentsnsController extends ControllerBase
 
     private $authorizerConfig;
 
+    private $agentConfig;
+
     private $agentid = 0;
 
     private $scope;
@@ -165,6 +167,9 @@ class ComponentsnsController extends ControllerBase
                 $objSns = new \Qyweixin\Token\ServiceSns();
                 $objSns->setAppid($this->provider_appid);
                 // $objSns->setAppid($this->authorizer_appid);
+                if (!empty($this->agentConfig['auth_corpid'])) {
+                    $objSns->setAppid($this->agentConfig['auth_corpid']);
+                }
                 $objSns->setScope($this->scope);
                 $objSns->setState($this->state);
                 $objSns->setRedirectUri($redirectUri);
@@ -252,6 +257,9 @@ class ComponentsnsController extends ControllerBase
                 $objSns = new \Qyweixin\Token\ServiceSns();
                 $objSns->setAppid($this->provider_appid);
                 // $objSns->setAppid($this->authorizer_appid);
+                if (!empty($this->agentConfig['auth_corpid'])) {
+                    $objSns->setAppid($this->agentConfig['auth_corpid']);
+                }
                 $objSns->setScope($this->scope);
                 $objSns->setState($this->state);
                 $objSns->setAgentid($this->agentid);
@@ -755,6 +763,13 @@ class ComponentsnsController extends ControllerBase
         $this->state = isset($_GET['state']) ? trim($_GET['state']) : uniqid();
         $this->scope = isset($_GET['scope']) ? trim($_GET['scope']) : 'snsapi_userinfo';
         $this->sessionKey = $this->cookie_session_key . "_accessToken_{$this->provider_appid}_{$this->authorizer_appid}_{$this->scope}";
+        // 应用ID
+        if (!empty($this->agentid)) {
+            $this->agentConfig = $this->modelQyweixinAgent->getInfoByAppid($this->provider_appid, $this->authorizer_appid, $this->agentid);
+            if (empty($this->agentConfig)) {
+                throw new \Exception("provider_appid:{$this->provider_appid}和authorizer_appid:{$this->authorizer_appid}和agentid:{$this->agentid}所对应的记录不存在");
+            }
+        }
     }
 
     protected function getUserInfo4AccessToken($objQyProvider, $arrAccessToken)

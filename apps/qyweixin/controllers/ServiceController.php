@@ -18,6 +18,11 @@ class ServiceController extends ControllerBase
      * @var \App\Qyweixin\Models\SnsApplication
      */
     private $modelQyweixinSnsApplication;
+    /**
+     *
+     * @var \App\Qyweixin\Models\Agent\Agent
+     */
+    private $modelQyweixinAgent;
 
     // lock key
     private $lock_key_prefix = 'qyweixin_application_service_';
@@ -50,6 +55,7 @@ class ServiceController extends ControllerBase
 
         $this->modelQyweixinScriptTracking = new \App\Qyweixin\Models\ScriptTracking();
         $this->modelQyweixinSnsApplication = new \App\Qyweixin\Models\SnsApplication();
+        $this->modelQyweixinAgent = new \App\Qyweixin\Models\Agent\Agent();
 
         $_SESSION['service_start_time'] = microtime(true);
     }
@@ -146,7 +152,11 @@ class ServiceController extends ControllerBase
 
             // 初始化
             $this->doInitializeLogic();
-
+            // 应用ID
+            $agentConfig = array();
+            if (!empty($this->agentid) && !empty($this->provider_appid)) {
+                $agentConfig = $this->modelQyweixinAgent->getInfoByAppid($this->provider_appid, $this->authorizer_appid, $this->agentid);
+            }
             // $serviceQyweixin = new \App\Qyweixin\Services\QyService($this->authorizer_appid, $this->provider_appid, "9999998");
             $ret1 = $this->weixinopenService->getSignPackage($url, 0);
             $ret1['appid'] = $this->authorizer_appid;
@@ -160,7 +170,10 @@ class ServiceController extends ControllerBase
                 $ret2['corpid'] = $this->provider_appid;
             }
             $ret2['agentid'] = $this->agentid;
-
+            if (!empty($agentConfig['auth_corpid'])) {
+                $ret1['appid'] = $agentConfig['auth_corpid'];
+                $ret2['corpid'] = $agentConfig['auth_corpid'];
+            }
             $ret = array();
             $ret['config'] = $ret1;
             $ret['agentConfig'] = $ret2;
