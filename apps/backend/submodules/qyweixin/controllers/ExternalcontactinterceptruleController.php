@@ -19,13 +19,37 @@ class ExternalcontactinterceptruleController extends BaseController
         parent::initialize();
     }
 
+    protected function getHeaderTools2($tools)
+    {
+        $tools['getinterceptrulelist'] = array(
+            'title' => '获取敏感词列表',
+            'action' => 'getinterceptrulelist',
+            'is_show' => true,
+            'is_export' => false,
+            'icon' => 'fa-pencil-square-o',
+        );
+        return $tools;
+    }
+
     protected function getFormTools2($tools)
     {
-        $tools['InterceptRule'] = array(
-            'title' => '再分配',
-            'action' => 'InterceptRule',
+        $tools['addinterceptrule'] = array(
+            'title' => '配置敏感词',
+            'action' => 'addinterceptrule',
             'is_show' => function ($row) {
-                if (!empty($row['external_userid']) && !empty($row['handover_userid']) && !empty($row['takeover_userid']) && empty($row['is_InterceptRuleed']) && !empty($row['authorizer_appid'])) {
+                if (!empty($row['rule_id'])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+        $tools['getinterceptrule'] = array(
+            'title' => '获取敏感词',
+            'action' => 'getinterceptrule',
+            'is_show' => function ($row) {
+                if (!empty($row['rule_id'])) {
                     return true;
                 } else {
                     return false;
@@ -37,14 +61,94 @@ class ExternalcontactinterceptruleController extends BaseController
         return $tools;
     }
 
+
     /**
-     * @title({name="再分配"})
+     * @title({name="获取敏感词列表"})
      *
-     * @name 再分配
+     * @name 获取敏感词列表
      */
-    public function InterceptRuleAction()
+    public function getinterceptrulelistAction()
     {
-        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactInterceptRule/InterceptRule?id=xxx
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactinterceptrule/getinterceptrulelist
+        try {
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4HeaderTool();
+                $title = "获取敏感词列表";
+                $row = array();
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $provider_appid = trim($this->request->get('interceptrule_provider_appid'));
+                $authorizer_appid = trim($this->request->get('interceptrule_authorizer_appid'));
+                $agent_agentid = trim($this->request->get('interceptrule_agent_agentid'));
+                if (empty($provider_appid)) {
+                    // return $this->response()->error("第三方服务商应用ID未设定");
+                }
+                if (empty($authorizer_appid)) {
+                    return $this->makeJsonError("授权方应用ID未设定");
+                }
+                if (empty($agent_agentid)) {
+                    return $this->makeJsonError("企业应用ID未设定");
+                }
+
+                $weixinopenService = new \App\Qyweixin\Services\QyService($authorizer_appid, $provider_appid, $agent_agentid);
+                $res = $weixinopenService->getInterceptRuleList();
+                return $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    protected function getFields4HeaderTool()
+    {
+        $fields = array();
+        $fields['interceptrule_provider_appid'] = array(
+            'name' => '第三方服务商应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+            ),
+        );
+        $fields['interceptrule_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+            ),
+        );
+        $fields['interceptrule_agent_agentid'] = array(
+            'name' => '微信企业应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->agentItems,
+            ),
+        );
+
+        return $fields;
+    }
+
+    /**
+     * @title({name="配置敏感词"})
+     *
+     * @name 配置敏感词
+     */
+    public function addinterceptruleAction()
+    {
+        // http://www.myapplicationmodule.com/admin/qyweixin/externalcontactinterceptrule/addinterceptrule?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
@@ -60,17 +164,47 @@ class ExternalcontactinterceptruleController extends BaseController
 
                 // 构建modal里面Form表单内容
                 $fields = $this->getFields4FormTool();
-                $title = "再分配";
+                $title = "配置敏感词";
                 $row = $data;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $agent_agentid = trim($this->request->get('InterceptRule_agentid'));
-                if (empty($agent_agentid)) {
-                    return $this->makeJsonError("企业应用ID未设定");
-                }
-                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $agent_agentid);
-                $res = $weixinopenService->InterceptRule($data);
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
+                $res = $weixinopenService->addinterceptrule($data);
+                $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
 
+    /**
+     * @title({name="获取敏感词"})
+     *
+     * @name 获取敏感词
+     */
+    public function getinterceptruleAction()
+    {
+        // http://www.myapplicationmodule.com/admin/qyweixin/corpjoinqrcode/getinterceptrule?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modelExternalcontactInterceptRule->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+            // 如果是GET请求的话返回modal的内容
+            if ($this->request->isGet()) {
+
+                // 构建modal里面Form表单内容
+                $fields = $this->getFields4FormTool();
+                $title = "获取敏感词";
+                $row = $data;
+                return $this->showModal($title, $fields, $row);
+            } else {
+                $weixinopenService = new \App\Qyweixin\Services\QyService($data['authorizer_appid'], $data['provider_appid'], $data['agentid']);
+                $res = $weixinopenService->getInterceptRuleInfo($data->toArray());
                 $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             }
         } catch (\Exception $e) {
@@ -92,8 +226,8 @@ class ExternalcontactinterceptruleController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['external_userid'] = array(
-            'name' => '外部联系人的userid',
+        $fields['rule_name'] = array(
+            'name' => '名称',
             'validation' => array(
                 'required' => true
             ),
@@ -103,43 +237,8 @@ class ExternalcontactinterceptruleController extends BaseController
                 'readonly' => true
             ),
         );
-        $fields['handover_userid'] = array(
-            'name' => '离职成员的userid',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'readonly' => true
-            ),
-        );
-        $fields['takeover_userid'] = array(
-            'name' => '接替成员的userid',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'readonly' => true
-            ),
-        );
-        $fields['InterceptRule_agentid'] = array(
-            'name' => '微信企业应用ID',
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->agentItems,
-            ),
-        );
-
         return $fields;
     }
-
 
     protected function getSchemas2($schemas)
     {
@@ -202,7 +301,7 @@ class ExternalcontactinterceptruleController extends BaseController
             'export' => array(
                 'is_show' => true
             )
-        );        
+        );
         $schemas['agentid'] = array(
             'name' => '应用ID',
             'data' => array(
