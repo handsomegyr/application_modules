@@ -250,7 +250,7 @@ class AgentController extends \App\Backend\Controllers\FormController
             'export' => array(
                 'is_show' => true
             )
-        );        
+        );
         $schemas['auth_corpid'] = array(
             'name' => '授权方企业微信id',
             'data' => array(

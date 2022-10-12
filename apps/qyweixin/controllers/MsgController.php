@@ -195,9 +195,16 @@ class MsgController extends ControllerBase
 
                 // 如果是第3方服务商的话
                 if (!empty($this->providerConfig)) {
-                    $objQyWeixin = new \Qyweixin\Client($this->providerConfig['appid'], $this->providerConfig['appsecret']);
-                    if (!empty($this->providerConfig['access_token'])) {
-                        $objQyWeixin->setAccessToken($this->providerConfig['access_token']);
+                    if (!empty($this->authorizerConfig)) {
+                        $objQyWeixin = new \Qyweixin\Client($this->authorizerConfig['auth_corpid'], $this->authorizerConfig['appsecret']);
+                        if (!empty($this->authorizerConfig['access_token'])) {
+                            $objQyWeixin->setAccessToken($this->authorizerConfig['access_token']);
+                        }
+                    } else {
+                        $objQyWeixin = new \Qyweixin\Client($this->providerConfig['appid'], $this->providerConfig['appsecret']);
+                        if (!empty($this->providerConfig['access_token'])) {
+                            $objQyWeixin->setAccessToken($this->providerConfig['access_token']);
+                        }
                     }
                 } else {
                     $objQyWeixin = $this->objQyWeixin;

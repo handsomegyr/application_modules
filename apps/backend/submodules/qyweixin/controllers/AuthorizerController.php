@@ -1008,6 +1008,33 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
                 'is_show' => true
             )
         );
+        $schemas['auth_corpid'] = array(
+            'name' => '授权方企业微信id',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
 
         $schemas['auth_corp_info'] = array(
             'name' => '授权方企业信息',
