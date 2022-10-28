@@ -23,8 +23,10 @@ class SyncthirdpartyorderTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php syncthirdpartyorder handle xxxxx
      * @param array $params
      */
-    public function handleAction(array $params)
+    public function handleAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelLog = new \App\Cronjob\Models\DataImport\Log();
         $modelFile = new \App\Cronjob\Models\DataImport\File();
         $modelFileContent = new \App\Cronjob\Models\DataImport\FileContent();

@@ -28,8 +28,10 @@ class WeixinnotificationsendretryTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixinnotificationsendretry handle 5e46128f69dc0a0f8415fe8f.csv
      * @param array $params
      */
-    public function handleAction(array $params)
+    public function handleAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $task_id = empty($params[0]) ? '' : $params[0];

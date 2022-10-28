@@ -10,8 +10,10 @@ class GoodsTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function processAction(array $params)
+    public function processAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelGoods = new \App\Goods\Models\Goods();
         
         // 不断插数据到队列中获取数据
@@ -44,8 +46,10 @@ class GoodsTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function createnewperiodgoodsAction(array $params)
+    public function createnewperiodgoodsAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $serviceGoods = new \App\Goods\Services\Goods();
         $modelGoods = new \App\Goods\Models\Goods();
         
@@ -90,8 +94,10 @@ class GoodsTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function lotterygoodsAction(array $params)
+    public function lotterygoodsAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $serviceGoods = new \App\Goods\Services\Goods();
         
         // 不断从队列中获取数据

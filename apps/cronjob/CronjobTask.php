@@ -13,8 +13,9 @@ class CronjobTask extends \Phalcon\CLI\Task
      * 批量运营计划任务
      * /usr/bin/php /usr/share/nginx/learn-php/phalcon/application_modules/public/cli.php cronjob run a b &
      */
-    public function runAction(array $params)
+    public function runAction()
     {
+        $params = $this->dispatcher->getParams();
         echo "====================";
         echo "start time:" . date("Y-m-d H:i:s");
         echo "====================";
@@ -131,8 +132,10 @@ class CronjobTask extends \Phalcon\CLI\Task
      * 批量运营计划任务
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php cronjob runbyjobby a b &
      */
-    public function runbyjobbyAction(array $params)
+    public function runbyjobbyAction()
     {
+        $params = $this->dispatcher->getParams();
+
         echo "====================";
         echo "start time:" . date("Y-m-d H:i:s");
         echo "====================";
@@ -204,8 +207,10 @@ class CronjobTask extends \Phalcon\CLI\Task
      * 批量运营计划任务
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php cronjob runbyjobby2 &
      */
-    public function runbyjobby2Action(array $params)
+    public function runbyjobby2Action()
     {
+        $params = $this->dispatcher->getParams();
+
         echo "====================";
         echo "start time:" . date("Y-m-d H:i:s");
         echo "====================";

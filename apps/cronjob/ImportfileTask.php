@@ -33,9 +33,10 @@ class ImportfileTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php importfile handle 5e46128f69dc0a0f8415fe8f.csv
      * @param array $params
      */
-    public function handleAction(array $params)
+    public function handleAction()
     {
         error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING);
+        $params = $this->dispatcher->getParams();
 
         $this->time = time();
         $day = date("Ymd", $this->time);

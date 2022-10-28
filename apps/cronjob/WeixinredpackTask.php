@@ -8,8 +8,10 @@ class WeixinredpackTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function createnewperiodgoodsAction(array $params)
+    public function createnewperiodgoodsAction()
     {
+        $params = $this->dispatcher->getParams();
+
         try {
             set_time_limit(0);
             // 补发红包

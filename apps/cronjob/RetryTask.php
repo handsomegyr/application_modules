@@ -9,8 +9,10 @@ class RetryTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function processAction(array $params)
+    public function processAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $serviceGoods = new \App\Goods\Services\Goods();
         $serviceGoods = new \App\Order\Services\Pay();
         $pheanstalk = $this->getDI()->get('pheanstalk');

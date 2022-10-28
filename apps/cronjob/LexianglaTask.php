@@ -78,8 +78,10 @@ class LexianglaTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php lexiangla getaccesstoken
      * @param array $params
      */
-    public function getaccesstokenAction(array $params)
+    public function getaccesstokenAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
 
@@ -113,8 +115,10 @@ class LexianglaTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php lexiangla sendmsg
      * @param array $params
      */
-    public function sendmsgAction(array $params)
+    public function sendmsgAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $now = time();
         $params  = array(
             'name' => 'lexiangla:send_msg',
@@ -203,8 +207,10 @@ class LexianglaTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php lexiangla synclexiangla
      * @param array $params
      */
-    public function synclexianglaAction(array $params)
+    public function synclexianglaAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $this->modelLexianglaDepartment  = new \App\Lexiangla\Models\Contact\Department();
         $this->modelLexianglaDepartmentSync  = new \App\Lexiangla\Models\Contact\DepartmentSync();
         $this->modelLexianglaTag  = new \App\Lexiangla\Models\Contact\Tag();

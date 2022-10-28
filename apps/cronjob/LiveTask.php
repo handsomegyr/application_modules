@@ -16,8 +16,10 @@ class LiveTask extends \Phalcon\CLI\Task
      * redis-server /etc/redis.conf &
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php live run test
      */
-    public function runAction(array $params)
+    public function runAction()
     {
+        $params = $this->dispatcher->getParams();
+
         // 不断插数据到队列中获取数据
         try {
             $redisKey = $params[0];

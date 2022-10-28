@@ -9,8 +9,10 @@ class WeixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixin getaccesstoken
      * @param array $params
      */
-    public function getaccesstokenAction(array $params)
+    public function getaccesstokenAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
 
@@ -56,8 +58,10 @@ class WeixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixin getsubscribeuserlist
      * @param array $params
      */
-    public function getsubscribeuserlistAction(array $params)
+    public function getsubscribeuserlistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
 

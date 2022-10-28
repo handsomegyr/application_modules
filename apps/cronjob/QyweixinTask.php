@@ -9,8 +9,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getaccesstoken
      * @param array $params
      */
-    public function getaccesstokenAction(array $params)
+    public function getaccesstokenAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
 
@@ -49,8 +51,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getchatdata
      * @param array $params
      */
-    public function getchatdataAction(array $params)
+    public function getchatdataAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
 
         $now = time();
@@ -159,8 +163,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getdepartmentlist
      * @param array $params
      */
-    public function getdepartmentlistAction(array $params)
+    public function getdepartmentlistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -215,8 +221,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getdepartmentusersimplelist
      * @param array $params
      */
-    public function getdepartmentusersimplelistAction(array $params)
+    public function getdepartmentusersimplelistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -269,8 +277,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getuserlistfromdepartmentuser
      * @param array $params
      */
-    public function getuserlistfromdepartmentuserAction(array $params)
+    public function getuserlistfromdepartmentuserAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -333,8 +343,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getuserinfo
      * @param array $params
      */
-    public function getuserinfoAction(array $params)
+    public function getuserinfoAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -388,8 +400,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin gettaglist
      * @param array $params
      */
-    public function gettaglistAction(array $params)
+    public function gettaglistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -444,8 +458,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin gettagpartyuser
      * @param array $params
      */
-    public function gettagpartyuserAction(array $params)
+    public function gettagpartyuserAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -499,8 +515,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getfollowuserlist
      * @param array $params
      */
-    public function getfollowuserlistAction(array $params)
+    public function getfollowuserlistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -555,8 +573,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getexternaluserlist
      * @param array $params
      */
-    public function getexternaluserlistAction(array $params)
+    public function getexternaluserlistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -609,8 +629,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getexternaluserinfo
      * @param array $params
      */
-    public function getexternaluserinfoAction(array $params)
+    public function getexternaluserinfoAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -664,8 +686,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupchatlist
      * @param array $params
      */
-    public function getgroupchatlistAction(array $params)
+    public function getgroupchatlistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -723,8 +747,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupchatinfo
      * @param array $params
      */
-    public function getgroupchatinfoAction(array $params)
+    public function getgroupchatinfoAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -778,8 +804,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getmomentlist
      * @param array $params
      */
-    public function getmomentlistAction(array $params)
+    public function getmomentlistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -852,8 +880,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupmsglist
      * @param array $params
      */
-    public function getgroupmsglistAction(array $params)
+    public function getgroupmsglistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -943,8 +973,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupmsgtasklist
      * @param array $params
      */
-    public function getgroupmsgtasklistAction(array $params)
+    public function getgroupmsgtasklistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -1147,8 +1179,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getcorptaglist
      * @param array $params
      */
-    public function getcorptaglistAction(array $params)
+    public function getcorptaglistAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $cache = $this->getDI()->get("cache");
@@ -1203,8 +1237,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getuserbehaviordata
      * @param array $params
      */
-    public function getuserbehaviordataAction(array $params)
+    public function getuserbehaviordataAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $yesterday = date("Y-m-d", $now - 24 * 3600);
@@ -1290,8 +1326,10 @@ class QyweixinTask extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php qyweixin getgroupchatstatistic
      * @param array $params
      */
-    public function getgroupchatstatisticAction(array $params)
+    public function getgroupchatstatisticAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
         $yesterday = date("Y-m-d", $now - 24 * 3600);

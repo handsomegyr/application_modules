@@ -6,8 +6,10 @@ class InspireTask extends \Phalcon\CLI\Task
      * 处理
      * @param array $params
      */
-    public function handleAction(array $params)
+    public function handleAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $content = \uniqid();
         echo sprintf('%s', $content) . PHP_EOL;
 

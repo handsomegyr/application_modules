@@ -24,8 +24,10 @@ class QyweixinnotificationprepareTask  extends \Phalcon\CLI\Task
      * /usr/bin/php /learn-php/phalcon/application_modules/public/cli.php weixinnotificationprepare handle
      * @param array $params
      */
-    public function handleAction(array $params)
+    public function handleAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelActivityErrorLog = new \App\Activity\Models\ErrorLog();
         $now = time();
 

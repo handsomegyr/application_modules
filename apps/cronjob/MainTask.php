@@ -16,14 +16,18 @@ class MainTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function testAction(array $params)
+    public function testAction()
     {
+        $params = $this->dispatcher->getParams();
+
         echo sprintf('hello %s', $params[0] . uniqid()) . PHP_EOL;
         echo sprintf('best regards, %s', $params[1] . uniqid()) . PHP_EOL;
     }
 
-    public function testputsamejobtoqueueAction(array $params)
+    public function testputsamejobtoqueueAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $tube = $params[0];
         $pheanstalk->useTube($tube);
@@ -55,8 +59,10 @@ class MainTask extends \Phalcon\CLI\Task
         }
     }
 
-    public function testputjobtoqueueAction(array $params)
+    public function testputjobtoqueueAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $tube = $params[0];
         $pheanstalk->useTube($tube);
@@ -74,8 +80,10 @@ class MainTask extends \Phalcon\CLI\Task
         }
     }
 
-    public function testgetjobfromqueueAction(array $params)
+    public function testgetjobfromqueueAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $pheanstalk = $this->getDI()->get('pheanstalk');
         $tube = $params[0];
         $pheanstalk->watch($tube)->ignore('default');

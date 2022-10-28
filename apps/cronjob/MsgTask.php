@@ -10,8 +10,10 @@ class MsgTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function processAction(array $params)
+    public function processAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelOrderGoods = new \App\Order\Models\Goods();
         
         $pheanstalk = $this->getDI()->get('pheanstalk');
@@ -42,8 +44,10 @@ class MsgTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function sendmsg4lotteryresultAction(array $params)
+    public function sendmsg4lotteryresultAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelTemplate = new \App\Message\Models\Template();
         $modelMailSettings = new \App\Mail\Models\Settings();
         $modelSmsSettings = new \App\Sms\Models\Settings();

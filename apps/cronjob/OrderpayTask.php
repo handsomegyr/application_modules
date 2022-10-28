@@ -10,8 +10,10 @@ class OrderpayTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function processAction(array $params)
+    public function processAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $modelOrderPay = new \App\Order\Models\Pay();
         // 不断插数据到队列中获取数据
         try {
@@ -37,8 +39,10 @@ class OrderpayTask extends \Phalcon\CLI\Task
      *
      * @param array $params
      */
-    public function finishpayAction(array $params)
+    public function finishpayAction()
     {
+        $params = $this->dispatcher->getParams();
+
         $servicePay = new \App\Order\Services\Pay();
         
         // 不断从队列中获取数据
