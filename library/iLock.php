@@ -49,7 +49,7 @@ class iLock
         $host = '127.0.0.1';
         $port = 6379;
         
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $config = $di->get('config');
         // $_SERVER['REDIS_MASTERS'] = "{$config['redis']['host']}:{$config['redis']['port']}";
         $host = $config['redis']['host'];

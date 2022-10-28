@@ -2,7 +2,7 @@
 
 namespace App\Backend;
 
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
@@ -21,7 +21,7 @@ class Module
     {
         $loader = new Loader();
 
-        $loader->registerNamespaces(array(
+        $loader->setNamespaces(array(
             'App\Backend\Controllers' => __DIR__ . '/controllers/',
             'App\Backend\Tags' => __DIR__ . '/tags/',
             'App\Backend\Plugins' => __DIR__ . '/plugins/'
@@ -33,7 +33,7 @@ class Module
     /**
      * Registers the module-only services
      *
-     * @param Phalcon\DI $di            
+     * @param \Phalcon\Di\Di $di
      */
     public function registerServices($di)
     {

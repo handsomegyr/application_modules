@@ -9,7 +9,7 @@ class Hongbao
 
     public function getConnection()
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         if (!$di->has('dbfrom')) {
             throw new \Exception('dbfrom未正确初始化');
         }

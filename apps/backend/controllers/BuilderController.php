@@ -387,7 +387,7 @@ EOD;
                 throw new \Exception("module is empty");
             }
 
-            $di = \Phalcon\DI::getDefault();
+            $di = \Phalcon\Di\Di::getDefault();
             $db = $di['db'];
             $result = $db->query("SHOW TABLE STATUS LIKE 'i{$module}_%'", array());
             $result->setFetchMode(MYDB_FETCH_ASSOC);
@@ -487,7 +487,7 @@ EOD;
     protected function getAllTables()
     {
         // $tableInfo = DB::select("SHOW FULL COLUMNS FROM {$table}");
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $db = $di['db'];
         $result = $db->query("SHOW TABLES", array());
         $result->setFetchMode(MYDB_FETCH_ASSOC);
@@ -509,7 +509,7 @@ EOD;
     protected function getFields4Table($table)
     {
         // $tableInfo = DB::select("SHOW FULL COLUMNS FROM {$table}");
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $db = $di['db'];
         $result = $db->query("SHOW FULL COLUMNS FROM {$table}", array());
         $result->setFetchMode(MYDB_FETCH_ASSOC);

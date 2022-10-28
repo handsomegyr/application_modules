@@ -11,7 +11,7 @@ class Lang extends \Phalcon\Tag
      */
     static public function get($lang_key)
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $lang = $di->get('lang');
         print_r($lang);
         die('xxx');

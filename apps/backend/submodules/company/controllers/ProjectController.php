@@ -1900,7 +1900,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
     // 创建数据库
     protected function createDatabase($db_name)
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $connection = $di['db4admin'];
         $dbret1 = $connection->execute("CREATE DATABASE IF NOT EXISTS `{$db_name}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         return $dbret1;
@@ -1915,7 +1915,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
         /*服务器权限设置*/
         /*数据库权限设置*/
         // 检查用户是否存在
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $connection = $di['db4admin'];
         // 检查用户是否存在
         $dbUserInfo = $connection->fetchOne("SELECT * FROM user where User='{$db_user}' and Host='%'", MYDB_FETCH_ASSOC);
@@ -2005,7 +2005,7 @@ class ProjectController extends \App\Backend\Controllers\FormController
 
     protected function getConnection4Db($db_name)
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $config = $di->get('config');
         $connection = new \Phalcon\Db\Adapter\Pdo\Mysql(array(
             //$connection = new \App\Common\Models\Base\Mysql\Pdo\DbAdapter(array(

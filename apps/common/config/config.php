@@ -1,5 +1,5 @@
 <?php
-return new \Phalcon\Config(array(
+return new \Phalcon\Config\Config(array(
     'database' => array(
         'adapter' => 'Mysql',
         'host' => '192.168.81.129',

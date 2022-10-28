@@ -59,7 +59,8 @@ EOT;
         parent::initialize();
 
         // $this->tag->prependTitle('INVO | ');
-        $this->tag->prependTitle('AdminLTE | ');
+        // $this->tag->prependTitle('AdminLTE | ');
+        $this->tag->title()->prepend('AdminLTE | ');
 
         try {
             $adminConfig = $this->getDI()->get('adminConfig');
@@ -68,6 +69,7 @@ EOT;
             die($th->getMessage());
         }
 
+        // die('xxxx:' . \uniqid());
         // $this->view->setVar("resourceUrl", "/backend/metronic.bootstrap/");        
         // $this->view->setVar("resourceUrl", "/backend2/AdminLTE/");
         $this->view->setVar("resourceUrl", $adminConfig->admin->resourcePath);

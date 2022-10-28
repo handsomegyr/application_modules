@@ -1,7 +1,7 @@
 <?php
 namespace App\Backend\Order;
 
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
@@ -20,7 +20,7 @@ class Module
     {
         $loader = new Loader();
         
-        $loader->registerNamespaces(array(
+        $loader->setNamespaces(array(
             'App\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
             'App\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',            
@@ -33,7 +33,7 @@ class Module
     /**
      * Registers the module-only services
      *
-     * @param Phalcon\DI $di            
+     * @param \Phalcon\Di\Di $di
      */
     public function registerServices($di)
     {

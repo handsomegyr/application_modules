@@ -5,7 +5,7 @@
  */
 
 use Phalcon\Mvc\Router;
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 // use Phalcon\Cache\Backend\File as BackFile;    
 // use Phalcon\Cache\Backend\Libmemcached as Libmemcached;
@@ -27,7 +27,7 @@ registerServices($di);
 function registerAutoloaders()
 {
     $loader = new Loader();
-    $loader->registerNamespaces(array(
+    $loader->setNamespaces(array( //registerNamespaces
         'App\Common\Controllers' => APP_PATH . 'apps/common/controllers/',
         'App\Common\Plugins' => APP_PATH . 'apps/common/plugins/'
     ));
@@ -35,7 +35,7 @@ function registerAutoloaders()
     /**
      * We're a registering a set of directories taken from the configuration file
      */
-    $loader->registerDirs(array(
+    $loader->setDirectories(array( //registerDirs
         APP_PATH . 'library/'
     ));
     $loader->register();
@@ -44,7 +44,7 @@ function registerAutoloaders()
 /**
  * Registers the module-only services
  *
- * @param Phalcon\DI $di            
+ * @param \Phalcon\Di\Di $di
  */
 function registerServices($di)
 {
@@ -611,7 +611,7 @@ function registerServices($di)
             if (version_compare(PHALCON_VERSION, '4.0.0') < 0) {
                 $url = new \Phalcon\Mvc\Url();
             } else {
-                $url = new \Phalcon\Url();
+                $url = new \Phalcon\Mvc\Url();
             }
             $url->setBaseUri('/');
             return $url;

@@ -2,20 +2,25 @@
 
 use Phalcon\Mvc\Application;
 use Phalcon\DI\FactoryDefault;
-use Phalcon\DI;
+use Phalcon\Di\Di;
 // ini_set('display_errors', 'On');
 // die('xxx:' . ini_get('display_errors'));
-define('PHALCON_VERSION', \Phalcon\Version::get());
+$version = new \Phalcon\Support\Version();
+define('PHALCON_VERSION', $version->get());
 error_reporting(E_ALL);
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
 // error_reporting(- 1);
 
-ini_set("session.save_handler", "memcached"); // 是memcached不是memcache
-ini_set("session.save_path", "192.168.81.129:11211"); // 不要tcp:
+// ini_set("session.save_handler", "memcached"); // 是memcached不是memcache
+// ini_set("session.save_path", "192.168.81.129:11211"); // 不要tcp:
+
+ini_set("session.save_handler", "redis"); // 是memcached不是memcache
+ini_set("session.save_path", "tcp://192.168.81.129:6379"); //:
+
 // php7升级后session_start(): Unable to clear session lock record
 if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
-    ini_set('session.lazy_write', 0);
+    // ini_set('session.lazy_write', 0);
 }
 
 //https://docs.phalcon.io/4.0/en/upgrade

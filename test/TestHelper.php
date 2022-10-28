@@ -1,5 +1,5 @@
 <?php
-use Phalcon\DI;
+use Phalcon\Di\Di;
 use Phalcon\DI\FactoryDefault;
 
 ini_set('display_errors', 1);
@@ -19,14 +19,14 @@ include __DIR__ . "/UnitTestCase.php";
 
 // Use the application autoloader to autoload the classes
 // Autoload the dependencies found in composer
-$loader = new \Phalcon\Loader();
+$loader = new \Phalcon\Autoload\Loader();
 
-$loader->registerDirs(array(
+$loader->setDirectories(array(
     ROOT_PATH
 ));
 
 /**
-$loader->registerNamespaces(array(
+$loader->setNamespaces(array(
     'App\Common\Models' => APP_PATH . 'apps/common/models/base/',
     'App\Common\Models\Base\Mongodb' => APP_PATH . 'apps/common/models/base/mongodb/',
     'App\Common\Models\Base\Mysql' => APP_PATH . 'apps/common/models/base/mysql/',

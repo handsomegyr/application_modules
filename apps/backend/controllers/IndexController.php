@@ -4,8 +4,8 @@ namespace App\Backend\Controllers;
 
 use App\Backend\Models\User;
 use App\Backend\Models\Input;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
 
 /**
  * @title({name="管理中心"})

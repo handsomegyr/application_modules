@@ -40,7 +40,7 @@ abstract class iWebsitePluginMongo
     {
         try {
             // global $di;
-            $di = \Phalcon\DI::getDefault();
+            $di = \Phalcon\Di\Di::getDefault();
             $this->setDI($di);
             $db = $di->get("databases");
             if ($db) {

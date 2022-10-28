@@ -1,5 +1,5 @@
 <?php
-return new \Phalcon\Config(array(
+return new \Phalcon\Config\Config(array(
     'admin' => [
         // 后台资源路径
         // 'resourcePath' => '/backend/metronic.bootstrap/',

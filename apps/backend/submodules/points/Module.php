@@ -2,7 +2,7 @@
 
 namespace App\Backend\Points;
 
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use Phalcon\Mvc\Dispatcher;
@@ -23,7 +23,7 @@ class Module
     {
         $loader = new Loader();
 
-        $loader->registerNamespaces(array(
+        $loader->setNamespaces(array(
             'App\Backend\Controllers' => APP_PATH . 'apps/backend/controllers/',
             'App\Backend\Tags' => APP_PATH . 'apps/backend/tags/',
             'App\Backend\Plugins' => APP_PATH . 'apps/backend/plugins/',
@@ -36,7 +36,7 @@ class Module
     /**
      * Registers the module-only services
      *
-     * @param Phalcon\DI $di            
+     * @param \Phalcon\Di\Di $di
      */
     public function registerServices($di)
     {

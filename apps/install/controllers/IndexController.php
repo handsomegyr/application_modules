@@ -263,7 +263,7 @@ class IndexController extends ControllerBase
 
     protected function lang($lang_key, $force = true)
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $install_config = $di->get('install_config');
         $lang = isset($install_config['lang']) ? $install_config['lang'] : array();
         return isset($lang[$lang_key]) ? $lang[$lang_key] : ($force ? $lang_key : '');

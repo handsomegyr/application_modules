@@ -2,7 +2,7 @@
 
 namespace App\Campaign;
 
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Events\Manager as EventsManager;
@@ -20,7 +20,7 @@ class Module
     {
         $loader = new Loader();
 
-        $loader->registerNamespaces(array(
+        $loader->setNamespaces(array(
             'App\Campaign\Controllers' => __DIR__ . '/controllers/',
             'App\Campaign\Services' => __DIR__ . '/services/',
             'App\Campaign\Models' => __DIR__ . '/models/'
@@ -31,7 +31,7 @@ class Module
     /**
      * Registers the module-only services
      *
-     * @param Phalcon\DI $di            
+     * @param \Phalcon\Di\Di $di
      */
     public function registerServices($di)
     {

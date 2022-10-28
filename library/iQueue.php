@@ -5,7 +5,7 @@ class iQueue
 
     public static function enqueue($queueName, array $data)
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $cache = $di->get("cache");
         
         $data = serialize($data);
@@ -21,7 +21,7 @@ class iQueue
 
     public static function dequeue($queueName)
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         $pheanstalk = $di->get('pheanstalk');
         $pheanstalk->watch($queueName)->ignore('default');
         $job = $pheanstalk->reserve();

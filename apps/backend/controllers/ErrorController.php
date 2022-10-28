@@ -12,7 +12,8 @@ class ErrorController extends \App\Backend\Controllers\ControllerBase
 
     public function initialize()
     {
-        $this->tag->setTitle('Oops!');
+        // $this->tag->setTitle('Oops!');
+        $this->tag->title()->set('Oops');
         parent::initialize();
     }
 

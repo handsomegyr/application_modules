@@ -45,7 +45,7 @@ class iLock4Memcached
             throw new \Exception('请安装Memcached扩展');
         }
         
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di\Di::getDefault();
         if (! $di->has('memcached')) { // Zend_Registry::isRegistered('memcached')
             throw new \Exception('memcached未正确初始化');
         }

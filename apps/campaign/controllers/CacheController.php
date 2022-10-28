@@ -18,7 +18,7 @@ class CacheController extends ControllerBase
         try {
             parent::initialize();
             $this->view->disable();
-            $di = \Phalcon\DI::getDefault();
+            $di = \Phalcon\Di\Di::getDefault();
             $this->cache = $di->get("cache");
         } catch (\Exception $e) {
             $this->modelErrorLog->log($e);

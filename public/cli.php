@@ -2,8 +2,8 @@
 
 use Phalcon\DI\FactoryDefault\CLI as CliDI;
 use Phalcon\CLI\Console as ConsoleApp;
-
-define('PHALCON_VERSION', \Phalcon\Version::get());
+$version = new \Phalcon\Support\Version();
+define('PHALCON_VERSION', $version->get());
 //https://docs.phalcon.io/4.0/en/upgrade
 if (version_compare(PHALCON_VERSION, '4.0.0') < 0) {
     define('MYDB_FETCH_ASSOC', \Phalcon\Db::FETCH_ASSOC);
@@ -42,8 +42,8 @@ try {
     /**
      * Register the autoloader and tell it to register the tasks directory
      */
-    $loader = new \Phalcon\Loader();
-    $loader->registerDirs(array(
+    $loader = new \Phalcon\Autoload\Loader();
+    $loader->setDirectories(array(
         APP_PATH . 'apps/cronjob'
     ));
     $loader->register();

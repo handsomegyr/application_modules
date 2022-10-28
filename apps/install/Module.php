@@ -1,7 +1,7 @@
 <?php
 namespace App\Install;
 
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 
@@ -15,7 +15,7 @@ class Module
     {
         $loader = new Loader();
         
-        $loader->registerNamespaces(array(
+        $loader->setNamespaces(array(
             'App\Install\Controllers' => __DIR__ . '/controllers/',
             'App\Install\Tags' => __DIR__ . '/tags/'
         ));
@@ -25,7 +25,7 @@ class Module
     /**
      * Registers the module-only services
      *
-     * @param Phalcon\DI $di            
+     * @param \Phalcon\Di\Di $di
      */
     public function registerServices($di)
     {

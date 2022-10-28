@@ -4,10 +4,10 @@ namespace App\Backend\Controllers;
 
 use App\Backend\Models\Input;
 use PDO;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength;
-use Phalcon\Validation\Validator\Between;
+use Phalcon\Filter\Validation;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength;
+use Phalcon\Filter\Validation\Validator\Between;
 use Phalcon\Filter\FilterFactory;
 
 /**

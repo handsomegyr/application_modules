@@ -18,7 +18,7 @@ class RedisController extends ControllerBase
         try {
             parent::initialize();
             $this->view->disable();
-            $di = \Phalcon\DI::getDefault();
+            $di = \Phalcon\Di\Di::getDefault();
             $this->redis = $di->get("redis");
         } catch (\Exception $e) {
             $this->modelErrorLog->log($e);
