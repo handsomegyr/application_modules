@@ -449,6 +449,69 @@ class SnsapplicationController extends BaseController
             )
         );
 
+        
+        $schemas['ip_list'] = array(
+            'name' => 'IP检查列表',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '["111.000.111.000","000.111.000.111"]'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['cb_url_list'] = array(
+            'name' => '回调域名检查列表',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => '["www.baidu.com","www.baidu2.com"]'
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+                // 扩展设置
+                'extensionSettings' => function ($column, $Grid) {
+                    $column->style('width:10%;word-break:break-all;');
+                }
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         return $schemas;
     }
 

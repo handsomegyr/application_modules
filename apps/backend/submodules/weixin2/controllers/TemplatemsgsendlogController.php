@@ -516,6 +516,61 @@ class TemplatemsgsendlogController extends BaseController
             )
         );
 
+        $schemas['res_content'] = array(
+            'name' => '发送结果',
+            'data' => array(
+                'type' => 'json',
+                'length' => 1024,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'textarea',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => false,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['send_status'] = array(
+            'name' => '是否发送成功',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => 1,
+                'defaultValue' => false
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         return $schemas;
     }
 

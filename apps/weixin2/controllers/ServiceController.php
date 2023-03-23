@@ -43,7 +43,7 @@ class ServiceController extends ControllerBase
         parent::initialize();
         $this->view->disable();
 
-        $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
+        // $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
         $this->modelWeixinopenSnsApplication = new \App\Weixin2\Models\SnsApplication();
 
         $_SESSION['service_start_time'] = microtime(true);
@@ -66,7 +66,7 @@ class ServiceController extends ControllerBase
             $ret['access_token'] = $authorizerInfo['access_token'];
             $ret['access_token_expire'] = $authorizerInfo['access_token_expire'];
 
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['service_start_time'], microtime(true), "getAccessToken", $this->appConfig['_id']);
+            // $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['service_start_time'], microtime(true), "getAccessToken", $this->appConfig['_id']);
             return $this->result("OK", $ret);
         } catch (\Exception $e) {
             return $this->error(50000, "系统发生错误：" . $e->getMessage());
@@ -90,7 +90,7 @@ class ServiceController extends ControllerBase
             $ret['jsapi_ticket'] = $authorizerInfo['jsapi_ticket'];
             $ret['jsapi_ticket_expire'] = $authorizerInfo['jsapi_ticket_expire'];
 
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['service_start_time'], microtime(true), "getJsapiTicket", $this->appConfig['_id']);
+            // $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['service_start_time'], microtime(true), "getJsapiTicket", $this->appConfig['_id']);
             return $this->result("OK", $ret);
         } catch (\Exception $e) {
             return $this->error(50000, "系统发生错误：" . $e->getMessage());
@@ -117,7 +117,7 @@ class ServiceController extends ControllerBase
             $ret['wx_card_api_ticket'] = $authorizerInfo['wx_card_api_ticket'];
             $ret['wx_card_api_ticket_expire'] = $authorizerInfo['wx_card_api_ticket_expire'];
 
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['service_start_time'], microtime(true), "getWxcardapiTicket", $this->appConfig['_id']);
+            // $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['service_start_time'], microtime(true), "getWxcardapiTicket", $this->appConfig['_id']);
             return $this->result("OK", $ret);
         } catch (\Exception $e) {
             return $this->error(50000, "系统发生错误：" . $e->getMessage());
