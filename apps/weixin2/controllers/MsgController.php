@@ -884,6 +884,9 @@ class MsgController extends ControllerBase
             $onlyRevieve = true;
             // $content = "扫描二维码{$EventKey}";
             $content = $EventKey;
+            if (empty($content)) {
+                $content = '首访回复';
+            }
         } elseif ($Event == 'LOCATION') { // 上报地理位置事件
 
             // 用户同意上报地理位置后，每次进入公众号会话时，都会在进入时上报地理位置，或在进入会话后每5秒上报一次地理位置，公众号可以在公众平台网站中修改以上设置。上报地理位置时，微信会将上报地理位置事件推送到开发者填写的URL。
@@ -1362,13 +1365,13 @@ class MsgController extends ControllerBase
      */
     protected function answer($FromUserName, $ToUserName, $content, $authorizer_appid, $component_appid)
     {
-        $match = $this->modelWeixinopenKeyword->matchKeyWord($content, $authorizer_appid, $component_appid, false);
+        $match = $this->modelWeixinopenKeyword->matchKeyWord($content, $authorizer_appid, $component_appid, $this->now, false);
         if (empty($match)) {
             $this->modelWeixinopenWord->record($content, $authorizer_appid, $component_appid);
-            $match = $this->modelWeixinopenKeyword->matchKeyWord('默认回复', $authorizer_appid, $component_appid, false);
-            if (empty($match)) {
-                $match = $this->modelWeixinopenKeyword->matchKeyWord('默认回复', "", $component_appid, 0, false);
-            }
+            $match = $this->modelWeixinopenKeyword->matchKeyWord('默认回复', $authorizer_appid, $component_appid, $this->now, false);
+            // if (empty($match)) {
+            //     $match = $this->modelWeixinopenKeyword->matchKeyWord('默认回复', "", "", $this->now, false);
+            // }
         }
         $match['reply_msg_ids'] = $this->modelWeixinopenKeywordToReplyMsg->getReplyMsgIdsByKeywordId($match['_id']);
         $match['custom_msg_ids'] = $this->modelWeixinopenKeywordToCustomMsg->getCustomMsgIdsByKeywordId($match['_id']);

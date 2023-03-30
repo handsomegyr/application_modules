@@ -210,6 +210,98 @@ class KeywordController extends BaseController
                 'is_show' => true
             )
         );
+        $now = date('Y-m-d') . " 00:00:00";
+        $now = strtotime($now);
+
+        $schemas['start_time'] = array(
+            'name' => '开始时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => '19',
+                'defaultValue' => getCurrentTime($now)
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                // // 指定它对应的结束时间
+                // 'datetimepicker' => array('end' => 'end_time'),
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+
+        $schemas['end_time'] = array(
+            'name' => '截止时间',
+            'data' => array(
+                'type' => 'datetime',
+                'length' => '19',
+                'defaultValue' => getCurrentTime($now + 3600 * 24 * 2 - 1)
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'datetimepicker',
+                // 指定它对应的开始时间
+                'datetimepicker' => array('start' => 'start_time'),
+
+                // 'input_type' => 'datetimerange',
+                // 'datetimerange' => array('start' => 'start_time', 'name' => '活动时间'),
+
+                // 'input_type' => 'daterange',
+                // 'daterange' => array('start' => 'start_time', 'name' => '活动时间'),
+
+                // 'input_type' => 'timerange',
+                // 'timerange' => array('start' => 'start_time', 'name' => '活动时间'),
+
+                'is_show' => true
+            ),
+            'list' => array(
+                'is_show' => true
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['is_actived'] = array(
+            'name' => '是否开启',
+            'data' => array(
+                'type' => 'boolean',
+                'length' => '1',
+                'defaultValue' => true
+            ),
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'radio',
+                'is_show' => true,
+                'items' => $this->trueOrFalseDatas
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '1'
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['priority'] = array(
             'name' => '优先级',
             'data' => array(
