@@ -536,6 +536,32 @@ class CustommsgController extends BaseController
                 'is_show' => true
             )
         );
+        $schemas['article_id'] = array(
+            'name' => '成功发布的图文消息id',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
         $schemas['kf_account'] = array(
             'name' => '客服帐号',
             'data' => array(

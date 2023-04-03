@@ -2,40 +2,36 @@
 
 namespace App\Backend\Submodules\Weixin2\Controllers;
 
-use App\Backend\Submodules\Weixin2\Models\Material\Material;
-use App\Backend\Submodules\Weixin2\Models\Media\Type;
+use App\Backend\Submodules\Weixin2\Models\Draft\Draft;
 
 /**
- * @title({name="永久素材设置"})
+ * @title({name="草稿箱"})
  *
- * @name 永久素材设置
+ * @name 草稿箱
  */
-class MaterialController extends BaseController
+class DraftController extends BaseController
 {
-    private $modelMaterial;
-    private $modelMediaType;
+    private $modelDraft;
+
     public function initialize()
     {
-        $this->modelMaterial = new Material();
-        $this->modelMediaType = new Type();
-        $this->mediaTypeItems = $this->modelMediaType->getAll();
+        $this->modelDraft = new Draft();
         parent::initialize();
     }
-    protected $mediaTypeItems = null;
 
     protected function getHeaderTools2($tools)
     {
-        $tools['batchgetmaterial'] = array(
-            'title' => '获取素材列表',
-            'action' => 'batchgetmaterial',
+        $tools['batchgetdraft'] = array(
+            'title' => '获取草稿列表',
+            'action' => 'batchgetdraft',
             'is_show' => true,
             'is_export' => false,
             'icon' => 'fa-pencil-square-o',
         );
 
-        $tools['getmaterialcount'] = array(
-            'title' => '获取素材总数',
-            'action' => 'getmaterialcount',
+        $tools['getdraftcount'] = array(
+            'title' => '获取草稿总数',
+            'action' => 'getdraftcount',
             'is_show' => true,
             'is_export' => false,
             'icon' => 'fa-pencil-square-o',
@@ -46,13 +42,12 @@ class MaterialController extends BaseController
 
     protected function getFormTools2($tools)
     {
-        $tools['addmaterial'] = array(
-            'title' => '生成永久素材',
-            'action' => 'addmaterial',
+        $tools['adddraft'] = array(
+            'title' => '生成草稿',
+            'action' => 'adddraft',
             'is_show' => function ($row) {
                 if (
-                    !empty($row) && !empty($row['authorizer_appid']) &&
-                    !empty($row['type']) && !empty($row['media']) && empty($row['media_id']) && ($row['type'] != "news")
+                    !empty($row) && !empty($row['authorizer_appid']) && empty($row['media_id'])
                 ) {
                     return true;
                 } else {
@@ -62,41 +57,9 @@ class MaterialController extends BaseController
             'icon' => 'fa-pencil-square-o',
         );
 
-        $tools['addnews'] = array(
-            'title' => '新增永久图文素材',
-            'action' => 'addnews',
-            'is_show' => function ($row) {
-                if (
-                    !empty($row) && !empty($row['authorizer_appid']) &&
-                    !empty($row['type']) && empty($row['media_id']) && ($row['type'] == "news")
-                ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            'icon' => 'fa-pencil-square-o',
-        );
-
-        $tools['updatenews'] = array(
-            'title' => '修改永久图文素材',
-            'action' => 'updatenews',
-            'is_show' => function ($row) {
-                if (
-                    !empty($row) && !empty($row['authorizer_appid']) &&
-                    !empty($row['type']) && !empty($row['media_id']) && ($row['type'] == "news")
-                ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            'icon' => 'fa-pencil-square-o',
-        );
-
-        $tools['deletematerial'] = array(
-            'title' => '删除永久素材',
-            'action' => 'deletematerial',
+        $tools['deletedraft'] = array(
+            'title' => '删除草稿',
+            'action' => 'deletedraft',
             'is_show' => function ($row) {
                 if (
                     !empty($row) && !empty($row['authorizer_appid']) && !empty($row['media_id'])
@@ -109,9 +72,9 @@ class MaterialController extends BaseController
             'icon' => 'fa-pencil-square-o',
         );
 
-        $tools['getmaterial'] = array(
-            'title' => '获取永久素材',
-            'action' => 'getmaterial',
+        $tools['getdraft'] = array(
+            'title' => '获取草稿',
+            'action' => 'getdraft',
             'is_show' => function ($row) {
                 if (
                     !empty($row) && !empty($row['authorizer_appid']) && !empty($row['media_id'])
@@ -124,25 +87,54 @@ class MaterialController extends BaseController
             'icon' => 'fa-pencil-square-o',
         );
 
+        $tools['publishdraft'] = array(
+            'title' => '发布草稿',
+            'action' => 'publishdraft',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['media_id']) && empty($row['publish_id'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
+
+        $tools['getdraftpublishinfo'] = array(
+            'title' => '草稿发布状态轮询',
+            'action' => 'getdraftpublishinfo',
+            'is_show' => function ($row) {
+                if (
+                    !empty($row) && !empty($row['authorizer_appid']) && !empty($row['media_id']) && !empty($row['publish_id'])
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'icon' => 'fa-pencil-square-o',
+        );
         return $tools;
     }
 
     /**
-     * @title({name="获取素材列表"})
+     * @title({name="获取草稿列表"})
      *
-     * @name 获取素材列表
+     * @name 获取草稿列表
      */
-    public function batchgetmaterialAction()
+    public function batchgetdraftAction()
     {
-        // http://www.myapplicationmodule.com/admin/weixin2/material/batchgetmaterial?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/draft/batchgetdraft?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容
                 $fields = $this->getFields4HeaderTool();
 
-                // 单选框 type 是 素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
-                $fields['material_type'] = array(
+                // 单选框 type 是 草稿的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
+                $fields['draft_type'] = array(
                     'name' => '媒体文件类型',
                     'validation' => array(
                         'required' => true
@@ -153,9 +145,9 @@ class MaterialController extends BaseController
                         'items' => $this->mediaTypeItems
                     ),
                 );
-                //offset 是 从全部素材的该偏移位置开始返回，0表示从第一个素材 返回
-                $fields['material_offset'] = array(
-                    'name' => '偏移位置开始返回,0表示从第一个素材',
+                //offset 是 从全部草稿的该偏移位置开始返回，0表示从第一个草稿 返回
+                $fields['draft_offset'] = array(
+                    'name' => '偏移位置开始返回,0表示从第一个草稿',
                     'validation' => array(
                         'required' => true
                     ),
@@ -164,19 +156,19 @@ class MaterialController extends BaseController
                         'is_show' => true
                     ),
                 );
-                //count 是 返回素材的数量，取值在1到20之间
-                //$this->text('material_count', '返回素材的数量,取值在1到20之间')->value(20);
+                //count 是 返回草稿的数量，取值在1到20之间
+                //$this->text('draft_count', '返回草稿的数量,取值在1到20之间')->value(20);
 
-                $title = "获取素材列表";
+                $title = "获取草稿列表";
                 $row = array();
                 // 初始值
-                $row['material_offset'] = 0;
+                $row['draft_offset'] = 0;
                 return $this->showModal($title, $fields, $row);
             } else {
-                $component_appid = trim($this->request->get('material_component_appid'));
-                $authorizer_appid = trim($this->request->get('material_authorizer_appid'));
-                $type = trim($this->request->get('material_type'));
-                $offset = intval($this->request->get('material_offset'));
+                $component_appid = trim($this->request->get('draft_component_appid'));
+                $authorizer_appid = trim($this->request->get('draft_authorizer_appid'));
+                $type = trim($this->request->get('draft_type'));
+                $offset = intval($this->request->get('draft_offset'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
@@ -191,8 +183,8 @@ class MaterialController extends BaseController
                 }
                 $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->getWeixinObject()
-                    ->getMaterialManager()
-                    ->batchGetMaterial($type, $offset, 20);
+                    ->getdraftManager()
+                    ->batchGetdraft($type, $offset, 20);
                 // if (empty($res['errcode'])) {
                 //     return print_r($res);
                 //     return true;
@@ -210,25 +202,25 @@ class MaterialController extends BaseController
     }
 
     /**
-     * @title({name="获取素材总数"})
+     * @title({name="获取草稿总数"})
      *
-     * @name 获取素材总数
+     * @name 获取草稿总数
      */
-    public function getmaterialcountAction()
+    public function getdraftcountAction()
     {
-        // http://www.myapplicationmodule.com/admin/weixin2/material/getmaterialcount?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/draft/getdraftcount?id=xxx
         try {
             // 如果是GET请求的话返回modal的内容
             if ($this->request->isGet()) {
                 // 构建modal里面Form表单内容
                 $fields = $this->getFields4HeaderTool();
-                $title = "获取素材总数";
+                $title = "获取草稿总数";
                 $row = array();
                 return $this->showModal($title, $fields, $row);
             } else {
-                $component_appid = trim($this->request->get('material_component_appid'));
-                $authorizer_appid = trim($this->request->get('material_authorizer_appid'));
-                $user_id = trim($this->request->get('material_user_id'));
+                $component_appid = trim($this->request->get('draft_component_appid'));
+                $authorizer_appid = trim($this->request->get('draft_authorizer_appid'));
+                $user_id = trim($this->request->get('draft_user_id'));
                 if (empty($component_appid)) {
                     return $this->makeJsonError("第三方平台应用ID未设定");
                 }
@@ -237,8 +229,8 @@ class MaterialController extends BaseController
                 }
                 $weixinopenService = new \App\Weixin2\Services\WeixinService($authorizer_appid, $component_appid);
                 $res = $weixinopenService->getWeixinObject()
-                    ->getMaterialManager()
-                    ->getMaterialCount();
+                    ->getdraftManager()
+                    ->getdraftCount();
                 // if (empty($res['errcode'])) {
                 //     return print_r($res);
                 //     return true;
@@ -256,25 +248,25 @@ class MaterialController extends BaseController
     }
 
     /**
-     * @title({name="生成永久素材"})
+     * @title({name="生成草稿"})
      *
-     * @name 生成永久素材
+     * @name 生成草稿
      */
-    public function addmaterialAction()
+    public function adddraftAction()
     {
-        // http://www.myapplicationmodule.com/admin/weixin2/material/addmaterial?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/draft/adddraft?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
             }
-            $data = $this->modelMaterial->getInfoById($id);
+            $data = $this->modeldraft->getInfoById($id);
             if (empty($data)) {
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
-            $res = $weixinopenService->addMaterial($data);
+            $res = $weixinopenService->adddraft($data);
 
             $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
@@ -283,25 +275,25 @@ class MaterialController extends BaseController
     }
 
     /**
-     * @title({name="新增永久图文素材"})
+     * @title({name="删除草稿"})
      *
-     * @name 新增永久图文素材
+     * @name 删除草稿
      */
-    public function addnewsAction()
+    public function deletedraftAction()
     {
-        // http://www.myapplicationmodule.com/admin/weixin2/material/addnews?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/draft/deletedraft?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
             }
-            $data = $this->modelMaterial->getInfoById($id);
+            $data = $this->modeldraft->getInfoById($id);
             if (empty($data)) {
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
-            $res = $weixinopenService->addNews($id);
+            $res = $weixinopenService->deletedraft($data);
             return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
         } catch (\Exception $e) {
             $this->makeJsonError($e->getMessage());
@@ -309,79 +301,27 @@ class MaterialController extends BaseController
     }
 
     /**
-     * @title({name="修改永久图文素材"})
+     * @title({name="获取草稿"})
      *
-     * @name 修改永久图文素材
+     * @name 获取草稿
      */
-    public function updatenewsAction()
+    public function getdraftAction()
     {
-        // http://www.myapplicationmodule.com/admin/weixin2/material/updatenews?id=xxx
+        // http://www.myapplicationmodule.com/admin/weixin2/draft/getdraft?id=xxx
         try {
             $id = trim($this->request->get('id'));
             if (empty($id)) {
                 return $this->makeJsonError("记录ID未指定");
             }
-            $data = $this->modelMaterial->getInfoById($id);
-            if (empty($data)) {
-                return $this->makeJsonError("id：{$id}的记录不存在");
-            }
-
-            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
-            $res = $weixinopenService->updateNews($id);
-            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
-        } catch (\Exception $e) {
-            $this->makeJsonError($e->getMessage());
-        }
-    }
-
-    /**
-     * @title({name="删除永久素材"})
-     *
-     * @name 删除永久素材
-     */
-    public function deletematerialAction()
-    {
-        // http://www.myapplicationmodule.com/admin/weixin2/material/deletematerial?id=xxx
-        try {
-            $id = trim($this->request->get('id'));
-            if (empty($id)) {
-                return $this->makeJsonError("记录ID未指定");
-            }
-            $data = $this->modelMaterial->getInfoById($id);
-            if (empty($data)) {
-                return $this->makeJsonError("id：{$id}的记录不存在");
-            }
-
-            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
-            $res = $weixinopenService->deleteMaterial($data);
-            return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
-        } catch (\Exception $e) {
-            $this->makeJsonError($e->getMessage());
-        }
-    }
-
-    /**
-     * @title({name="获取永久素材"})
-     *
-     * @name 获取永久素材
-     */
-    public function getmaterialAction()
-    {
-        // http://www.myapplicationmodule.com/admin/weixin2/material/getmaterial?id=xxx
-        try {
-            $id = trim($this->request->get('id'));
-            if (empty($id)) {
-                return $this->makeJsonError("记录ID未指定");
-            }
-            $data = $this->modelMaterial->getInfoById($id);
+            $data = $this->modeldraft->getInfoById($id);
             if (empty($data)) {
                 return $this->makeJsonError("id：{$id}的记录不存在");
             }
 
             $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
             $res = $weixinopenService->getWeixinObject()
-                ->getMaterialManager()
-                ->getMaterial($data['media_id']);
+                ->getdraftManager()
+                ->getdraft($data['media_id']);
             if (empty($res['errcode'])) {
                 return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
             } else {
@@ -392,10 +332,70 @@ class MaterialController extends BaseController
         }
     }
 
+    /**
+     * @title({name="发布草稿"})
+     *
+     * @name 发布草稿
+     */
+    public function publishdraftAction()
+    {
+        // http://www.myapplicationmodule.com/admin/weixin2/draft/publishdraft?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modeldraft->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->publishDraft($data);
+            if (empty($res['errcode'])) {
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
+            } else {
+                return $this->makeJsonError($res['errmsg']);
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+
+    /**
+     * @title({name="草稿发布状态轮询"})
+     *
+     * @name 草稿发布状态轮询
+     */
+    public function getdraftpublishinfoAction()
+    {
+        // http://www.myapplicationmodule.com/admin/weixin2/draft/getdraftpublishinfo?id=xxx
+        try {
+            $id = trim($this->request->get('id'));
+            if (empty($id)) {
+                return $this->makeJsonError("记录ID未指定");
+            }
+            $data = $this->modeldraft->getInfoById($id);
+            if (empty($data)) {
+                return $this->makeJsonError("id：{$id}的记录不存在");
+            }
+
+            $weixinopenService = new \App\Weixin2\Services\WeixinService($data['authorizer_appid'], $data['component_appid']);
+            $res = $weixinopenService->getDraftPublishInfo($data);
+            if (empty($res['errcode'])) {
+                return  $this->makeJsonResult(array('then' => array('action' => 'refresh')), '操作成功:' . \App\Common\Utils\Helper::myJsonEncode($res));
+            } else {
+                return $this->makeJsonError($res['errmsg']);
+            }
+        } catch (\Exception $e) {
+            $this->makeJsonError($e->getMessage());
+        }
+    }
+    
     protected function getFields4HeaderTool()
     {
         $fields = array();
-        $fields['material_component_appid'] = array(
+        $fields['draft_component_appid'] = array(
             'name' => '第三方平台应用ID',
             'validation' => array(
                 'required' => true
@@ -406,7 +406,7 @@ class MaterialController extends BaseController
                 'items' => $this->componentItems,
             ),
         );
-        $fields['material_authorizer_appid'] = array(
+        $fields['draft_authorizer_appid'] = array(
             'name' => '授权方应用ID',
             'validation' => array(
                 'required' => true
@@ -482,9 +482,8 @@ class MaterialController extends BaseController
                 'is_show' => true
             )
         );
-
         $schemas['name'] = array(
-            'name' => '素材名',
+            'name' => '草稿箱名称',
             'data' => array(
                 'type' => 'string',
                 'length' => 50,
@@ -500,136 +499,6 @@ class MaterialController extends BaseController
             ),
             'list' => array(
                 'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['type'] = array(
-            'name' => '媒体文件类型',
-            'data' => array(
-                'type' => 'string',
-                'length' => 10,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->mediaTypeItems,
-                'help' => '媒体文件类型，分别有图片（image）、语音（voice）、视频（video）、缩略图（thumb）和图文（news）'
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                'items' => $this->mediaTypeItems
-            ),
-            'search' => array(
-                'input_type' => 'select',
-                'is_show' => true,
-                'items' => $this->mediaTypeItems
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['media'] = array(
-            'name' => '媒体文件',
-            'data' => array(
-                'type' => 'file',
-                'length' => 255,
-                'defaultValue' => '',
-                'file' => array(
-                    'path' => $this->modelMaterial->getUploadPath()
-                )
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'file',
-                'is_show' => true,
-                'items' => ''
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-                // 扩展设置
-                'extensionSettings' => function ($column, $Grid) {
-                    //display()方法来通过传入的回调函数来处理当前列的值：
-                    return $column->display(function () use ($column) {
-
-                        // 如果这一列的status字段的值等于1，直接显示title字段
-                        if ($this->type == 'image' || $this->type == 'thumb') {
-                            return $column->image("", 50, 50);
-                        } else {
-                            return $column->downloadable();
-                        }
-                    });
-                }
-            ),
-            'search' => array(
-                'is_show' => false
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['title'] = array(
-            'name' => '素材的标题',
-            'data' => array(
-                'type' => 'string',
-                'length' => 50,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'is_show' => true,
-                'items' => '',
-                'help' => '素材的标题，当类型为视频（video）有用',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['introduction'] = array(
-            'name' => '素材的描述',
-            'data' => array(
-                'type' => 'string',
-                'length' => 1024,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => true
-            ),
-            'form' => array(
-                'input_type' => 'textarea',
-                'is_show' => true,
-                'items' => '',
-                'help' => '素材的描述，当类型为视频（video）有用',
-            ),
-            'list' => array(
-                'is_show' => false,
                 'list_type' => '',
                 'render' => '',
             ),
@@ -641,10 +510,10 @@ class MaterialController extends BaseController
             )
         );
         $schemas['media_id'] = array(
-            'name' => '永久素材的media_id',
+            'name' => '上传后的获取标志media_id',
             'data' => array(
                 'type' => 'string',
-                'length' => 255,
+                'length' => 190,
                 'defaultValue' => ''
             ),
             'validation' => array(
@@ -659,35 +528,6 @@ class MaterialController extends BaseController
                 'is_show' => true,
                 'list_type' => '',
                 'render' => '',
-            ),
-            'search' => array(
-                'is_show' => true
-            ),
-            'export' => array(
-                'is_show' => true
-            )
-        );
-        $schemas['url'] = array(
-            'name' => '图片素材的图片URL',
-            'data' => array(
-                'type' => 'string',
-                'length' => 255,
-                'defaultValue' => ''
-            ),
-            'validation' => array(
-                'required' => false
-            ),
-            'form' => array(
-                'input_type' => 'text',
-                'content_type' => 'url',
-                'is_show' => true,
-                'items' => '',
-                'help' => '图片素材的图片URL（仅新增图片素材时会返回该字段）',
-            ),
-            'list' => array(
-                'is_show' => true,
-                'list_type' => '',
-                'render' => 'img',
             ),
             'search' => array(
                 'is_show' => true
@@ -697,7 +537,7 @@ class MaterialController extends BaseController
             )
         );
         $schemas['media_time'] = array(
-            'name' => '永久素材生成时间',
+            'name' => '草稿箱上传时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
@@ -723,8 +563,62 @@ class MaterialController extends BaseController
                 'is_show' => true
             )
         );
-        $schemas['delete_media_time'] = array(
-            'name' => '永久素材删除时间',
+        $schemas['publish_id'] = array(
+            'name' => '发布任务的id',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['msg_data_id'] = array(
+            'name' => '消息的数据ID',
+            'data' => array(
+                'type' => 'string',
+                'length' => 190,
+                'defaultValue' => ''
+            ),
+            'validation' => array(
+                'required' => false
+            ),
+            'form' => array(
+                'input_type' => 'text',
+                'is_show' => true,
+                'items' => ''
+            ),
+            'list' => array(
+                'is_show' => true,
+                'list_type' => '',
+                'render' => '',
+            ),
+            'search' => array(
+                'is_show' => true
+            ),
+            'export' => array(
+                'is_show' => true
+            )
+        );
+        $schemas['publish_time'] = array(
+            'name' => '发布任务时间',
             'data' => array(
                 'type' => 'datetime',
                 'length' => 19,
@@ -750,17 +644,16 @@ class MaterialController extends BaseController
                 'is_show' => true
             )
         );
-
         return $schemas;
     }
 
     protected function getName()
     {
-        return '永久素材设置';
+        return '草稿箱';
     }
 
     protected function getModel()
     {
-        return $this->modelMaterial;
+        return $this->modelDraft;
     }
 }
