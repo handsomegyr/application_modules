@@ -126,7 +126,33 @@ class FreepublisharticleController extends BaseController
             $this->makeJsonError($e->getMessage());
         }
     }
-
+    protected function getFields4HeaderTool()
+    {
+        $fields = array();
+        $fields['freepublisharticle_component_appid'] = array(
+            'name' => '第三方平台应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->componentItems,
+            ),
+        );
+        $fields['freepublisharticle_authorizer_appid'] = array(
+            'name' => '授权方应用ID',
+            'validation' => array(
+                'required' => true
+            ),
+            'form' => array(
+                'input_type' => 'select',
+                'is_show' => true,
+                'items' => $this->authorizerItems,
+            ),
+        );
+        return $fields;
+    }
     /**
      * @title({name="获取已发布文章"})
      *
