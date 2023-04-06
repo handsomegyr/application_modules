@@ -68,7 +68,7 @@ class ComponentsnsController extends ControllerBase
         $this->modelWeixinopenUser = new \App\Weixin2\Models\User\User();
         $this->modelWeixinopenComponent = new \App\Weixin2\Models\Component\Component();
         $this->modelWeixinopenAuthorizer = new \App\Weixin2\Models\Authorize\Authorizer();
-        $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
+        // $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
         $this->modelWeixinopenCallbackurls = new \App\Weixin2\Models\Callbackurls();
     }
 
@@ -114,7 +114,7 @@ class ComponentsnsController extends ControllerBase
             if (!$refresh && !empty($_SESSION[$this->sessionKey])) {
                 $arrAccessToken = $_SESSION[$this->sessionKey];
                 $redirect = $this->getRedirectUrl4Sns($redirect, $arrAccessToken);
-                $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+                // $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
                 header("location:{$redirect}");
                 exit();
             } else {
@@ -253,7 +253,7 @@ class ComponentsnsController extends ControllerBase
                     $this->modelWeixinopenUser->updateUserInfoBySns($arrAccessToken['openid'], $this->authorizer_appid, $this->component_appid, $userInfo);
                 }
             }
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
+            // $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $arrAccessToken['openid']);
 
             header("location:{$redirect}");
             exit();

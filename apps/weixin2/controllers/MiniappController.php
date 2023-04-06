@@ -61,7 +61,7 @@ class MiniappController extends ControllerBase
 
         $this->modelWeixinopenUser = new \App\Weixin2\Models\User\User();
         $this->modelWeixinopenAuthorizer = new \App\Weixin2\Models\Authorize\Authorizer();
-        $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
+        // $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
         $this->modelWeixinopenSnsApplication = new \App\Weixin2\Models\SnsApplication();
 
         $_SESSION['miniapp_start_time'] = microtime(true);
@@ -127,7 +127,7 @@ class MiniappController extends ControllerBase
                     'headimgurl4Oss' => $userInfo['oss_headimgurl'],
                 ]
             ];
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid,  $this->trackingKey, $_SESSION['miniapp_start_time'], microtime(true), "login", $this->appConfig['id']);
+            // $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid,  $this->trackingKey, $_SESSION['miniapp_start_time'], microtime(true), "login", $this->appConfig['id']);
             return $this->result("OK", $ret);
         } catch (\Exception $e) {
             return $this->error(50000, "系统发生错误：" . $e->getMessage());
@@ -228,7 +228,7 @@ class MiniappController extends ControllerBase
                 'headimgurl' => $userInfo['headimgurl'],
                 'headimgurl4Oss' => $userInfo['oss_headimgurl'],
             ];
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid,  $this->trackingKey, $_SESSION['miniapp_start_time'], microtime(true), "decryptUserInfo", $this->appConfig['id']);
+            // $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid,  $this->trackingKey, $_SESSION['miniapp_start_time'], microtime(true), "decryptUserInfo", $this->appConfig['id']);
             return $this->result("OK", $ret);
         } catch (\Exception $e) {
             return $this->error(50000, "系统发生错误：" . $e->getMessage());
@@ -290,7 +290,7 @@ class MiniappController extends ControllerBase
             $decRes['mobileEncode'] = $this->encryptParams([
                 'mobile' => $mobile,
             ]);
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid,  $this->trackingKey, $_SESSION['miniapp_start_time'], microtime(true), "decryptPhone", $this->appConfig['id']);
+            // $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid,  $this->trackingKey, $_SESSION['miniapp_start_time'], microtime(true), "decryptPhone", $this->appConfig['id']);
             return $this->result("OK", $decRes);
         } catch (\Exception $e) {
             return $this->error(50000, "系统发生错误：" . $e->getMessage());

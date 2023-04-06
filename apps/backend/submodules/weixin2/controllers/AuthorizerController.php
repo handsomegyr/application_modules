@@ -31,7 +31,7 @@ class AuthorizerController extends \App\Backend\Controllers\FormController
             'action' => 'getauthorizerinfo',
             // 'is_show' =>true,
             'is_show' => function ($row) {
-                if (!empty($row) && !empty($row['appid'])) {
+                if (!empty($row) && !empty($row['appid']) && !empty($row['component_appid'])) {
                     return true;
                 } else {
                     return false;

@@ -61,7 +61,7 @@ class SubscribemsgController extends ControllerBase
         parent::initialize();
         $this->view->disable();
 
-        $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
+        // $this->modelWeixinopenScriptTracking = new \App\Weixin2\Models\ScriptTracking();
         $this->modelWeixinopenCallbackurls = new \App\Weixin2\Models\Callbackurls();
         $this->modelWeixinopenSnsApplication = new \App\Weixin2\Models\SnsApplication();
         $this->modelWeixinopenSubscribeMsgSubscribeLog = new \App\Weixin2\Models\SubscribeMsg\SubscribeLog();
@@ -235,7 +235,7 @@ class SubscribemsgController extends ControllerBase
             $redirect = $this->addUrlParameter($redirect, array(
                 'it_subscribemsg_ts' => $timestamp
             ));
-            $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $openid, $this->appConfig['_id']);
+            // $this->modelWeixinopenScriptTracking->record($this->component_appid, $this->authorizer_appid, $this->trackingKey, $_SESSION['oauth_start_time'], microtime(true), $openid, $this->appConfig['_id']);
             header("location:{$redirect}");
             exit();
         } catch (\Exception $e) {
