@@ -581,6 +581,30 @@ class IndexController extends ControllerBase
         }
     }
 
+
+    public function downloadAction()
+    {
+        // http://www.myapplicationmodule.com/campaign/index/download?file=5e4b536969dc0a08a154c969.jpg&rename=
+        try {
+            //https://www.jianshu.com/p/e6b6c7be15de
+            //https://kovyrin.net/2006/11/01/nginx-x-accel-redirect-php-rails/
+            $this->view->disable();
+            if (!isset($_GET['file'])) {
+                die('文件不存在');
+            }
+            //比如下载的文件为： /public/upload/5e4b536969dc0a08a154c969.jpg
+            $file = $_GET['file'];
+            $rename = isset($_GET['rename']) ? $_GET['rename'] : $file;
+            // 模拟校验下载权限
+            header('Content-Type:application/octet-stream;');
+            header('Content-Disposition: attachment; filename=' . $rename);
+            header('X-Accel-Redirect: /xsendfile_download/' . ltrim($file, '/'));
+        } catch (Exception $e) {
+            var_dump($e);
+            exit();
+        }
+    }
+
     private function sendTemplateMsg($openid, $prize_name, $code)
     {
         try {
